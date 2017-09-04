@@ -20,9 +20,17 @@
         public function hasrole($contextname, $rolename)
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
+            if (!is_object($cname))
+            {
+                return FALSE;
+            }
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);
-            return (is_object($cname) && is_object($rname)) ? \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$cname->getID(), $rname->getID(), $this->bean->getID()]) : FALSE;
+            if (!is_object($rname))
+            {
+                return FALSE;
+            }
+            return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                [$cname->getID(), $rname->getID(), $this->bean->getID()]);
         }
 /**
  * Delete a role
