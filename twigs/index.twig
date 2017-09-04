@@ -1,0 +1,36 @@
+{% extends 'page.twig' %}
+
+{% block onload %}
+    $('#alert').on('click', function(){
+        bootbox.alert('Hello World')
+    })
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12">
+	<h1 class="cntr">Header</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <aside class="col">
+            <p>Left</p>
+        </aside>
+        <article class="col-md-8">
+            <div class="well">
+                This is the middle column
+            </div>
+            <button id="alert" class="btn btn-large btn-info" type="button">Alert</button>
+	</article>
+        <aside id="rightbar" class="col">
+	    <p>Right</p>
+	</aside>
+    </section>
+{% endblock main %}
+
+{% block footer %}
+    <section class="col-md-12">
+        <p class="cntr">Footer</p>
+    </section>
+{% endblock footer %}

@@ -1,0 +1,48 @@
+{% extends 'page.twig' %}
+
+{% import 'form.twig' as f %}
+
+{% block scripts %}
+    <script src="{{fwurls.parsley}}"></script>
+    <script src="{{assets}}/js/util.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+    $('#more').on('click', function(e){
+        e.preventDefault()
+        $('#mrow').before($('#example').clone())
+        $('input', $('#mrow').prev()).val('') // clear the inputs
+        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
+    })
+    $('#uform').on('submit', function(e){
+        return $(this).parsley().validate()
+    })
+    $('.delb').on('click', function(e){
+        dodelbean(e, this, 'role')
+    })
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12">
+	<h1>Page &ldquo;{{page.name}}&rdquo;</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+	    <form action="#" method="post" id="uform" data-parsley-validate>
+                {{f.hidden({name: 'bean', value: page.id})}}
+	        <fieldset>
+		    <legend>Page Name</legend>
+	            {{f.text({ label: 'Name', id: 'ln', name: 'name', value: page.name})}}
+		</fieldset>
+                {% include 'support/roleselect.twig' with {bean : page } %}
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+	    </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

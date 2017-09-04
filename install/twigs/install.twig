@@ -1,0 +1,161 @@
+{% extends 'page.twig' %}
+
+{% block scripts %}
+    <script src="{{fwurls.parsley}}"></script>
+{% endblock scripts %}
+
+{% block main%}
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+	    <h1>Framework Installer</h1>
+	    {% if fail %}
+		<h2>Error!!</h2>
+                {% if hashname %}
+		    <h3><span class="label label-danger"># character in site directory name</span></h3>
+                    <p>
+		        The directory you are installing into has a # character in its name.
+			This will cause an error in the function debase in class Local where a # is used
+			as a regular expression delimiter.
+                    </p>
+                {% endif %}
+                {% if phpversion %}
+		    <h3><span class="label label-danger">PHP version too old</span></h3>
+                    <p>
+                        The version of PHP you are running does not have support for some of the language and library
+			features needed by the framework. Please install the most recent version of the system.
+                    </p>
+                {% endif %}
+	        {% if nodotgw %}
+		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}&quot;</span></h3>
+                    <p>
+                        The installer needs to create a file in this directory. Your web server is probably running
+                        under a special user id and group - you need to either change the owner of the directory
+                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                    </p>
+		{% endif %}
+	        {% if noclassgw %}
+		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/class&quot;</span></h3>
+                    <p>
+                        The installer needs to create a file in this directory. Your web server is probably running
+                        under a special user id and group - you need to either change the owner of the directory
+                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                    </p>
+		{% endif %}
+	        {% if noassets %}
+		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/assets&quot;</span></h3>
+                    <p>
+                        You have asked for support for publically accessible uploaded files so the installer needs to
+			create a sub-directory in this directory. Your web server is probably running
+                        under a special user id and group - you need to either change the owner of the directory
+                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                    </p>
+		{% endif %}
+	        {% if nowhtaccess %}
+		    <h3><span class="label label-danger">No write access to .htaccess</span></h3>
+                    <p>
+                        The installer needs to to write to .htaccess. Your web server is probably running
+                        under a special user id and group - you need to either change the owner of the file
+                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                    </p>
+		{% endif %}
+	        {% if dberror %}
+		    <h3><span class="label label-danger">Error initialising database : &quot;{{dberror}}&quot;</span></h3>
+                    <p>
+                        Check that you have created the database &quot;{{dbname}}&quot; on host &quot;{{dbhost}}&quot; and that
+                        the user &quot;{{dbuser}}&quot; has access to it using the password you specified.
+                    </p>
+		{% endif %}
+	    {% else %}
+	        {% if timezone %}
+		    <h3><span class="label label-warning">Possible Timezone Error</span></h3>
+                    <p>
+                        It looks as though the timezone in your php.ini file may not be set to be correct for your region.
+                    </p>
+		{% endif %}
+		<form action="#" method="post" class="well" data-parsley-validate="parsley"/>
+		    <fieldset>
+			<legend>Site Information</legend>
+			<div class="form-group">
+			    <label for="sn" class="control-label">Site Name</label>
+			    <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
+			        class="form-control" required="required" data-parsley-type="alphanum"/>
+			</div>
+			<div class="form-group">
+			    <label for="sn" class="control-label">Site URL</label>
+			    <input type="text" id="sn" name="siteurl" placeholder="The canonical url for your site" class="form-control"
+				  required="required" data-parsley-type="url"/>
+			</div>
+			<div class="form-group">
+			    <label for="sn" class="control-label">Site No Reply Email</label>
+			    <input type="email" id="sn" name="sitenoreply" placeholder="noreply@your.site" class="form-control" required="required"/>
+			</div>
+		    </fieldset>
+		    <fieldset>
+			<legend>Database Information</legend>
+			<div class="form-group">
+			    <label for="dh" class="control-label">Host</label>
+			    <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
+			</div>
+			<div class="form-group">
+			    <label for="dn" class="control-label">Database</label>
+			    <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
+			        required="required" data-parsley-type="alphanum"/>
+			</div>
+			<div class="control-group">
+			    <label for="du" class="control-label">User</label>
+			    <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
+				required="required" data-parsley-type="alphanum"/>
+			</div>
+			<div class="control-group">
+			    <label for="dp" class="control-label">Password</label>
+			    <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
+			</div>
+			<div class="control-group">
+			    <label for="cdp" class="control-label">Confirm Password</label>
+			    <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+			</div>
+		    </fieldset>
+		    <fieldset>
+			<legend>Features</legend>
+			<div class="checkbox">
+			    <label>
+				<input type="checkbox" name="private"/> Support file uploading with access control on downloads
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+				<input type="checkbox" name="public"/> Support file uploading with <b>NO</b> access control on downloads
+			    </label>
+			</div>
+			<div class="checkbox">
+			    <label>
+				<input type="checkbox" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
+			    </label>
+			</div>
+		    </fieldset>
+		    <fieldset>
+			<legend>Security</legend>
+			<div class="form-group">
+			    <label for="em" class="control-label">Admin Email</label>
+			    <input type="email" id="em" name="sysadmin" placeholder="Email address for error reporting etc." class="form-control" required="required"/>
+			</div>
+			<div class="form-group">
+			    <label for="au" class="control-label">Admin User Login</label>
+			    <input type="text" id="au" name="admin" value="admin" placeholder="Admin user login" class="form-control"
+			        required="required" data-parsley-type="alphanum"/>
+			</div>
+			<div class="form-group">
+			    <label for="ap" class="control-label">Admin Password</label>
+			    <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required="required"/>
+			</div>
+			<div class="form-group">
+			    <label for="acdp" class="control-label">Confirm Password</label>
+			    <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required="required"/>
+			</div>
+		    </fieldset>
+		    <p><input type="submit" class="btn btn-primary" value="Install"/></p>
+		</form>
+	    {% endif %}
+	</div>
+    </div>
+{% endblock main %}

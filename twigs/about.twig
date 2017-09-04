@@ -1,0 +1,34 @@
+{% extends 'page.twig' %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load. NB you don't need <script></script> tags  here #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load. NB you don't need <script></script> tags  here #}
+{% endblock onload %}
+
+{% block header %}
+    <div class="col-md-12">
+        <h1 class="cntr">About The Framework</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-9 mr-auto">
+	    <p class="cntr">Information about the framework is available at <a href="http://catless.ncl.ac.uk/framework">http://catless.ncl.ac.uk/framework</a></p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

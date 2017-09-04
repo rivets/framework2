@@ -1,0 +1,86 @@
+<!doctype html>
+<!--[if lt IE 9]><html class="ie"><![endif]-->
+<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+
+    <title>{% block title %}{{fwurls.sitename|upper}}{% endblock title %}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+{#
+    <link rel="shortcut icon" href="{{assets}}/img/favicon.png"/>
+    <link rel="icon" type="image/png" href="{{assets}}/img/favicon.png"/>
+#}
+{#
+    <link rel="apple-touch-icon" href="{{assets}}/ico/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{assets}}/ico/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{assets}}/ico/apple-touch-icon-114x114.png">
+#}
+    <link rel="stylesheet" href="{{fwurls.bootcss}}" media="screen,print"/>
+    <link rel="stylesheet" href="{{fwurls.facss}}"/>
+    <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
+
+{% block links %}
+{% endblock links %}
+
+{% block type %}
+{% endblock type %}
+
+{% block css %}
+{% endblock css %}
+
+</head>
+<body lang="en-GB">
+    {% block navigation %}
+	{% include 'navbar.twig' %}
+    {% endblock navigation %}
+
+    <div class="container">
+	{% block pageheader %}
+	    <header class="row">
+		{% block header %}
+                    {% include 'header.twig' %}
+		{% endblock header %}
+	    </header>
+	{% endblock pageheader %}
+
+	{% block main %}
+	{% endblock main %}
+
+	{% block pagefooter %}
+	    <footer class="row">
+		{% block footer %}
+                    {% include 'footer.twig' %}
+		{% endblock footer %}
+	    </footer>
+	{% endblock pagefooter %}
+    </div>
+
+    <!--[if lt IE 9]>
+        <script src="{{fwurls.jquery1}}"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{{fwurls.jquery2}}"></script>
+    <!--<![endif]-->
+
+    <script src="{{fwurls.popperjs}}"></script>
+    <script src="{{fwurls.bootjs}}"></script>
+    <script src="{{fwurls.bootbox}}"></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+    <script>
+	var base = '{{base}}';
+
+	{% block setup %}
+	{% endblock setup %}
+
+	$(function(){
+	    {% block onload %}
+	    {% endblock onload %}
+	})
+    </script>
+</body>
+</html>

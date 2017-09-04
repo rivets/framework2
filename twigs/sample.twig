@@ -1,0 +1,89 @@
+{% extends 'page.twig' %}
+
+{# this brings in some useful macros for making forms
+{% import 'form.twig' as f %}
+#}
+
+{# put a string in this block that will appear as the title of the page
+{% block title %}
+{% endblock title %}
+#}
+
+{% block links %}
+{# <link> for non-css and non-type things#}
+{% endblock links %}
+
+{% block type %}
+{# <link> for webfonts #}
+{% endblock type %}
+
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load goes in this block. NB you don't need <script></script> tags  here #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load goes in this block. NB you don't need <script></script> tags  here #}
+{% endblock onload %}
+
+{% block navigation %}
+{# If you include this, then the navigation bar in page.twig will **NOT** appear #}
+{% endblock navigation %}
+
+{#
+    Edit the file navbar.twig to change the appearance of the
+    navigation bar. It is included by deafult from page.twig
+#}
+
+{# uncomment this and delete header block to remove the <header> tag altogether
+{% block pageheader %}
+{% endblock pageheader %}
+#}
+
+{#
+    If you have a standard header for all (most) pages then put the
+    content in the file header.twig. It is included by page.twig by
+    default. You then don't need to have a header block either.
+#}
+
+{% block header %}
+    <article class="col-md-12">
+	<h1 class="cntr">Header</h1>
+    </article>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-8">
+	    <p>8 columns offset 2 from the left</p>
+        </article>
+        <article class="col-md-2">
+	    <p>2 columns</p>
+	</article>
+    </section>
+{% endblock main %}
+
+{# uncomment this  and delete footer block to remove the <footer> tag altogether
+{% block pagefooter %}
+{% endblock pagefooter %}
+#}
+
+{#
+    If you have a standard footer for all (most) pages then put the
+    content in the file footer.twig. It is included by page.twig by
+    default. You then don't need to have a footer block either.
+#}
+
+{% block footer %}
+    <article class="col-md-12">
+        <p class="center-block">Footer</p>
+    </article>
+{% endblock footer %}

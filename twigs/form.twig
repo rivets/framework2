@@ -1,0 +1,130 @@
+{% macro hv(attr, value)%}
+{% if value != '' %} {{attr}}="{{value}}"{% endif %}
+{% endmacro hv %}
+
+{% macro fv(opts, attr)%}
+{% for v in ['required', 'disabled', 'readonly'] %}{% if opts[v] %} {{v}}="{{v}}"{% endif %}{% endfor %}
+{% endmacro fv %}
+
+{% macro cv(value)%}
+ class="form-control{% if value != '' %} {{value}}{% endif %}"
+{% endmacro cv %}
+
+{% macro data(opts) %}
+{% for k,v in opts %} data-{{k}}{%if v != '' %}="{{v}}"{% endif %}{% endfor %}
+{% endmacro data %}
+
+{% macro input(type, opts) %}
+{% import _self as h %}
+<input type="{{type}}"{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.hv('value', opts.value)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}/>
+{% endmacro input %}
+
+{% macro bsl(opts) %}
+{% import _self as h %}
+   <div class="form-group">
+        {% if opts.label != '' %}
+	    <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
+	{% endif %}
+{% endmacro bsl %}
+
+{% macro xsl(opts, cls) %}
+{% import _self as h %}
+   <div class="{{cls}}">
+        {% if opts.label != '' %}
+	    <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
+	{% endif %}
+{% endmacro xsl %}
+
+{% macro bse(opts) %}
+            {% if opts.warn != '' %}
+	       <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>
+            {% endif %}
+   </div>
+{% endmacro bse%}
+
+{% macro text(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    {{h.input('text', opts)}}
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro email(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    {{h.input('email', opts)}}
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro password(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    {{h.input('password', opts)}}
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro hidden(opts) %}
+{% import _self as h %}
+    {{h.input('hidden', opts)}}
+{% endmacro %}
+
+{% macro checkbox(opts) %}
+{% import _self as h %}
+    {{h.xsl(opts, 'form-check form-check-inline')}}
+    {% for ix,val in opts.values %}
+        <label class="form-check-label">
+	    <input type="checkbox" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if opts.check[ix] and opts.check[ix] == val %} checked="checked"{% endif %}/>
+        {{opts.labels[ix]|raw}}
+        </label>
+    {% endfor %}
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro radio(opts) %}
+{% import _self as h %}
+    {{h.xsl(opts, 'form-check form-check-inline')}}
+    {% for ix,val in opts.values %}
+        <label class="form-check-label">
+	    <input type="radio" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if val == opts.value %} checked="checked"{% endif %}/>
+        {{opts.labels[ix]|raw}}
+        </label>
+    {% endfor %}
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro textarea(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    <textarea{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}>{{opts.value}}</textarea>
+    {{h.bse(opts)}}
+{% endmacro %}
+
+{% macro file(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    {{h.input('file', opts)}}
+    {{h.bse(opts)}}
+{% endmacro file %}
+
+{% macro datetime(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    {{h.input('datetime', opts)}}
+    {{h.bse(opts)}}
+{% endmacro datetime %}
+
+{% macro select(opts) %}
+{% import _self as h %}
+    {{h.bsl(opts)}}
+    <select{{h.hv('id', opts.id)}}{{h.hv('name', opts.name)}}{{h.parsley(opts.parsley)}}>
+	{% for ov in opts.options %}
+	    <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text}}</option>
+	{% endfor %}
+    </select>
+    {{h.bse(opts)}}
+{% endmacro select %}
+
+{% macro submit(opts) %}
+{% import _self as h %}
+    <input class="btn btn-primary" type="submit" value="{{opts.value}}"/>
+{% endmacro submit %}

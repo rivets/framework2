@@ -1,0 +1,37 @@
+{% extends 'page.twig' %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load. NB you don't need <script></script> tags  here #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load. NB you don't need <script></script> tags  here #}
+{% endblock onload %}
+
+{% block header %}
+    <div class="col-md-12">
+	<h1 class="center-block">A static twig page with a multi-part URL</h1>
+    </div>
+{% endblock header %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-offset-2 col-md-9">
+	    <p>Content&hellip;</p></p>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block footer %}
+    <div class="col-md-12">
+        <p class="center-block">Footer</p>
+    <div>
+{% endblock footer %}

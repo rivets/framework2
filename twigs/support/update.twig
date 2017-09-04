@@ -1,0 +1,35 @@
+{% extends 'page.twig' %}
+
+{% import 'form.twig' as f %}
+
+{% block scripts %}
+    <script src="{{fwurls.parsley}}"></script>
+{% endblock scripts %}
+
+{% block header %}
+    <section class="col-md-12">
+	<h1>Update the Framework</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-offset-1 col-md-10">
+	    {% if nozip %}
+		<p>Your PHP needs to be built with support for the <a href="http://php.net/manual/en/book.zip.php">zip interface</a> for this feature to work.</p>
+	    {% else %}
+		{% include 'message.twig' %}
+		<form action="#" method="post" enctype="multipart/form-data">
+		    <fieldset>
+			<legend>Update File</legend>
+			{{f.file({ label: 'Update ZIP', id: 'upd', name: 'update'})}}
+		    </fieldset>
+		    <button class="btn btn-primary btn-lg" type="submit">Update</button>
+		</form>
+	    {% endif %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

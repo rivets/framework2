@@ -1,0 +1,55 @@
+{% extends 'page.twig' %}
+
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.remote.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+    $('#regform').parsley()
+{% endblock onload %}
+
+{% block navigation %}
+{% endblock navigation %}
+
+{% block pageheader %}
+{% endblock pageheader %}
+
+{% block main %}
+    <section class="row" id="frontpage">
+        <article class="col-md-8 col-md-offset-2">
+            {% if regok is defined %}
+                <h2>{{regok}}</h2>
+                <p><a href="/" class="btn btn-primary">Home Page</a></p>
+            {% else %}
+                <h1 class="jumbotron">Register for {{context.sitename}}</h1>
+                <form action="{{base}}/register" method="post" class="well" id="regform">
+                    <div class="form-group">
+                        <label for="un" class="control-label">User Name</label>
+                        <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
+                            data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax.php"
+                            data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="pw" class="control-label">Password</label>
+                        <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="rpw" class="control-label">Repeat Password</label>
+                        <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
+                            data-parsley-trigger="change" data-parsley-equalto="#pw"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="em" class="control-label">Email Adress</label>
+                        <input type="email" id="em" name="email" placeholder="pat@smith.com" data-parsley-trigger="change" class="form-control" required="required"/>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </form>
+            {% endif %}
+	</article>
+   </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

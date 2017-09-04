@@ -1,0 +1,50 @@
+<!doctype html>
+<!--[if lt IE 9]><html class="ie"><![endif]-->
+<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Framework Installer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Framework Installer"/>
+
+    <link rel="stylesheet" href="{{fwurls.bootcss}}" media="screen,print"/>
+    <link rel="stylesheet" href="{{fwurls.facss}}"/>
+
+{% block css %}
+{% endblock css %}
+
+</head>
+<body lang="en-GB">
+    <div class="container">
+	<article class="mainbody">
+	    {% block main %}
+	    {% endblock main %}
+	</article>
+    </div>
+
+    <!--[if lt IE 9]>
+        <script src="{{fwurls.jquery1}}"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{{fwurls.jquery2}}"></script>
+    <!--<![endif]-->
+
+    <script src="{{fwurls.bootjs}}"></script>
+    <script src="{{fwurls.bootbox}}"></script>
+
+    {% block scripts %}
+    {%endblock scripts %}
+
+    <script>
+	{% block setup %}
+	{% endblock setup %}
+
+	$(function(){
+	    {% block onload %}
+	    {% endblock onload %}
+	})
+    </script>
+</body>
+</html>
