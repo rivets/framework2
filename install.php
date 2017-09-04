@@ -134,14 +134,14 @@
     }
 
     $tpl = 'install.twig';
-    $vals = ['name' => $name, 'dir' => __DIR__, 'fwurls' => $fwurls];
+    $vals = ['name' => $name, 'dir' => __DIR__, 'fwurls' => $fwurls, 'siteurl' => 'http//'.$_SERVER['HTTP_HOST'].'/'.$name.'/', 'noreply' => 'noreply@'.$_SERVER['HTTP_HOST']];
 
     $fail = FALSE;
     if (preg_match('/#/', $name))
     { // names with # in them will break the regexp in Local debase()
         $fail = $vals['hashname'] = TRUE;
     }
-    elseif (version_compare(phpversion(), '5.6.0', '<')) {
+    elseif (version_compare(phpversion(), '7.0.0', '<')) {
         $fail = $vals['phpversion'] = TRUE;
     }
     elseif (!function_exists('password_hash'))
