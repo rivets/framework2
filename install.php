@@ -14,11 +14,80 @@
  **/
     function addfwconfig($name, $value)
     {
-        $fwc = R::dispense('fwconfig');
+        $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
         $fwc->value = $value;
-        R::store($fwc);
+        \R::store($fwc);
     }
+
+/**
+ * Shutdown function - this is used to catch certain errors that are not otherwise trapped and
+ * generate a clean screen as well as an error report to the developers.
+ *
+ * It also closes the RedBean connection
+ */
+    function shutdown()
+    {
+        if ($error = error_get_last())
+        { # are we terminating with an error?
+            if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
+            { # tell the developers about this
+                echo '<h2>There has been a system error</h2>';               
+            }
+            else
+            {
+                echo '<h2>There has been a system error</h2>';
+            }
+        }
+        \R::close(); # close RedBean connection
+    }
+/**
+ * Deal with untrapped exceptions - see PHP documentation
+ *
+ * @param Exception	$e
+ */
+    function exception_handler($e)
+    {
+        echo '<h2>There has been a system error</h2>';               
+        exit;
+    }
+/**
+ * Called when a PHP error is detected - see PHP documentation for details
+ *
+ * Note that we can chose to ignore errors. At the moment his is a fairly rough mechanism.
+ * It could be made more subtle by allowing the user to specifiy specific errors to ignore.
+ * However, exception handling is a much much better way of dealing with this kind of thing
+ * whenever possible.
+ *
+ * @param integer	$errno
+ * @param string	$errstr
+ * @param string	$errfile
+ * @param integer	$errline
+ * @param string	$errcontext
+ *
+ * @return boolean
+ */
+    function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+    {
+        echo '<h2>There has been a system error</h2>';               
+
+        if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
+        { # this is an internal error or we are debugging, so we need to stop
+            exit;
+        }
+/*
+ * If we get here it's a warning or a notice, so we arent stopping
+ *
+ * Change this to an exit if you don't want to continue on any errors
+ */
+        return TRUE;
+    }
+ /*
+ * Set up all the system error handlers
+ */
+        set_exception_handler('exception_handler');
+        set_error_handler('error_handler');
+        register_shutdown_function('shutdown');
 
     set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
 
@@ -375,7 +444,7 @@
             $arname = \R::dispense('rolename');
             $arname->name = 'Admin';
             $arname->fixed = 1;
-            \R::store($rname);
+            \R::store($arname);
 
             $role = \R::dispense('role');
             $role->otherinfo = '-';
@@ -391,7 +460,7 @@
 // Developer Role name
             $drname = \R::dispense('rolename');
             $drname->name = 'Developer';
-            \R::store($srname);
+            \R::store($drname);
 
             $role = \R::dispense('role');
             $role->otherinfo = '-';

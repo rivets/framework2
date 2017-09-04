@@ -45,7 +45,7 @@
 /**
  * @var array		A list of errors that have been emailed to the user. Only send a message once.
  */
-        private $senterrors	= array();
+        private $senterrors	= [];
 /**
  * @var	boolean		If TRUE then we are doing debugging
  */
@@ -61,7 +61,7 @@
 /**
  * @var	array		An array of email addresses for system administrators
  */
-        private $sysadmin	= array(Config::SYSADMIN);
+        private $sysadmin	= [Config::SYSADMIN];
 /**
  * @var	object		the Twig renderer
  */
@@ -69,11 +69,11 @@
 /**
  * @var	array		Key/value array of data to pass into template renderer
  */
-        private $tvals		= array();
+        private $tvals		= [];
 /**
  * @var array           Stash away messages so that messages.twig works
  */
-        private $messages       = array();
+        private $messages       = [];
 /**
  * @var string          Backtrace info - only used with errors
  */
@@ -218,7 +218,7 @@
                 $errfile,
                 $errline
             );
-            if ($this->debug || in_array($errno, array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR)))
+            if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
             { # this is an internal error or we are debugging, so we need to stop
                 $this->make500();
                 exit;
@@ -293,7 +293,7 @@
         {
             $this->twig = new \Twig_Environment(
                 new \Twig_Loader_Filesystem($this->makebasepath('twigs')),
-                array('cache' => $cache ? $this->makebasepath('twigcache') : FALSE)
+                ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
             );
 /*
  * A set of basic values that get passed into the TWIG renderer
@@ -302,7 +302,7 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
-            $this->tvals = array();
+            $this->tvals = [];
         }
 /**
  * Calls a user defined function with the twig object as a parameter.
@@ -402,7 +402,7 @@
         {
             if (!isset($this->messages[$kind]))
             {
-                $this->messages[$kind] = array();
+                $this->messages[$kind] = [];
             }
             $this->messages[$kind][] = $value;
         }
@@ -417,7 +417,7 @@
         {
             if ($kind === '')
             {
-                $this->messages = array();
+                $this->messages = [];
             }
             elseif (isset($this->messages[$kind]))
             {
@@ -494,7 +494,7 @@
             $this->basepath = $basedir;
             $this->devel = $devel;
         #    $bd = $basedir;
-        #    $bdr = array();
+        #    $bdr = [];
         #    while ($bd != $_SERVER['DOCUMENT_ROOT'])
         #    {
         #	$pp = pathinfo($bd);
@@ -506,9 +506,9 @@
  /*
  * Set up all the system error handlers
  */
-            set_exception_handler(array($this, 'exception_handler'));
-            set_error_handler(array($this, 'error_handler'));
-            register_shutdown_function(array($this, 'shutdown'));
+            set_exception_handler([$this, 'exception_handler']);
+            set_error_handler([$this, 'error_handler']);
+            register_shutdown_function([$this, 'shutdown']);
 
             if ($loadtwig)
             { # we want twig - there are some autoloader issues out there that adding twig seems to fix....
@@ -518,7 +518,7 @@
             $offl = $this->makebasepath('offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
-                $this->render('support/offline.twig', array('msg' => file_get_contents($offl)));
+                $this->render('support/offline.twig', ['msg' => file_get_contents($offl)]);
                 exit;
             }
 /*
@@ -530,7 +530,7 @@
             { # looks like there is a database configured
                 \R::setup('mysql:host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
-                $twurls = array();
+                $twurls = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
                     $twurls[$cnf->name] = $cnf['value'];
