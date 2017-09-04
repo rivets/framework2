@@ -331,7 +331,7 @@
 /**
  * Check that timezone setting for PHP has not made the date into the future...
  */
-            $dt = R::findOne('user', 'joined > NOW()');
+            $dt = \R::findOne('user', 'joined > NOW()');
             if (is_object($dt))
             {
                 $vals['timezone'] = TRUE;
@@ -360,43 +360,43 @@
  *
  * These are both granted to the admin user.
  */
-            $cname = R::dispense('rolecontext');
+            $cname = \R::dispense('rolecontext');
             $cname->name = 'Site';
             $cname->fixed = 1;
-            R::store($cname);
+            \R::store($cname);
 // Admin role name
-            $arname = R::dispense('rolename');
+            $arname = \R::dispense('rolename');
             $arname->name = 'Admin';
             $arname->fixed = 1;
-            R::store($rname);
+            \R::store($rname);
 
-            $role = R::dispense('role');
+            $role = \R::dispense('role');
             $role->otherinfo = '-';
             $role->start = $now;
             $role->end =   $now; # this makes RedBean make it a datetime field
-            R::store($role);
+            \R::store($role);
             $role->end = NULL; # clear end date as we don't want to time limit admin
-            R::store($role);
+            \R::store($role);
             $user->xownRole[] = $role;
             $cname->xownRole[] = $role;
             $arname->xownRole[] = $role;
-            R::store($arname);
+            \R::store($arname);
 // Developer Role name
-            $drname = R::dispense('rolename');
+            $drname = \R::dispense('rolename');
             $drname->name = 'Developer';
-            R::store($srname);
+            \R::store($srname);
 
-            $role = R::dispense('role');
+            $role = \R::dispense('role');
             $role->otherinfo = '-';
             $role->start = $now;
             $role->end = NULL; # no end date
-            R::store($role);
+            \R::store($role);
             $user->xownRole[] = $role;
             $cname->xownRole[] = $role;
             $drname->xownRole[] = $role;
-            R::store($user);
-            R::store($cname);
-            R::store($drname);
+            \R::store($user);
+            \R::store($cname);
+            \R::store($drname);
 /**
  * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
  *
@@ -420,7 +420,7 @@
             ];
             foreach ($pages as $name => $data)
             {
-                $page = R::dispense('page');
+                $page = \R::dispense('page');
                 $page->name = $options['regexp'] ? '^'.$name.'$' : $name;
                 $page->kind = $data[0];
                 $page->source = $data[1];
@@ -430,31 +430,31 @@
                 \R::store($page);
                 if ($data[2])
                 { // must be an admin
-                    $pagerole = R::dispense('pagerole');
+                    $pagerole = \R::dispense('pagerole');
                     $pagerole->start = $now;
                     $pagerole->end = NULL;
                     $pagerole->otherinfo = '';
-                    R::store($pagerole);
+                    \R::store($pagerole);
                     $page->xownPageRole[] = $pagerole;
                     $cname->xownPageRole[] = $pagerole;
                     $arname->xownPageRole[] = $pagerole;
-                    R::store($page);
-                    R::store($cname);
-                    R::store($arname);
+                    \R::store($page);
+                    \R::store($cname);
+                    \R::store($arname);
                 }
                 if ($data[4])
                 { // must be a developer
-                    $pagerole = R::dispense('pagerole');
+                    $pagerole = \R::dispense('pagerole');
                     $pagerole->start = $now;
                     $pagerole->end = NULL;
                     $pagerole->otherinfo = '';
-                    R::store($pagerole);
+                    \R::store($pagerole);
                     $page->xownPageRole[] = $pagerole;
                     $cname->xownPageRole[] = $pagerole;
                     $arname->xownPageRole[] = $pagerole;
-                    R::store($page);
-                    R::store($cname);
-                    R::store($drname);
+                    \R::store($page);
+                    \R::store($cname);
+                    \R::store($drname);
                 }
                     
             }
