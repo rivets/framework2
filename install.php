@@ -386,8 +386,8 @@
             $vals['dbname'] = $cvalue['dbname'];
             $vals['dbuser'] = $cvalue['dbuser'];
             \R::setup('mysql:host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
-            \R::freeze(FALSE);
-            \R::nuke(); # clear everything.....
+            \R::freeze(FALSE); // we need to be able to update things on the fly!
+            \R::nuke(); // clear everything.....
             $user = R::dispense('user');
             $user->email = $cvalue['sysadmin'];
             $user->login = $cvalue['admin'];
@@ -482,20 +482,20 @@
  * the link for install.php is to catch when people try to run install again after a successful install
  */
             $pages = [
-                'about'         => [Siteaction::TEMPLATE, 'about.twig', FALSE, 0, FALSE, 1],
-                'admin'         => [Siteaction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
-                'assets'        => [Siteaction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                'confirm'       => [Siteaction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                'contact'       => [Siteaction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
-                'devel'         => [Siteaction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
-                'forgot'        => [Siteaction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                'home'          => [Siteaction::TEMPLATE, 'index.twig', FALSE, 0, FALSE, 1],
-                'install.php'   => [Siteaction::TEMPLATE, 'oops.twig', FALSE, 0, FALSE, 1],
-                'login'         => [Siteaction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                'logout'        => [Siteaction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
-                'private'       => [Siteaction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
-                'register'      => [Siteaction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                'upload'        => [Siteaction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
+                'about'         => [\Framework\SiteAction::TEMPLATE, 'about.twig', FALSE, 0, FALSE, 1],
+                'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
+                'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
+                'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                'contact'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
+                'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
+                'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                'home'          => [\Framework\SiteAction::TEMPLATE, 'index.twig', FALSE, 0, FALSE, 1],
+                'install.php'   => [\Framework\SiteAction::TEMPLATE, 'oops.twig', FALSE, 0, FALSE, 1],
+                'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
+                'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
+                'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
             ];
             foreach ($pages as $name => $data)
             {
