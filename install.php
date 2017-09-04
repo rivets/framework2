@@ -22,13 +22,29 @@
 
     set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
 
-    include 'class/support/framework.php';
-    Framework::initialise();
+    include 'class/config/framework.php';
+    \Config\Framework::initialise();
 /*
  * Initialise template engine - check to see if it is installed!!
  *
  */
+    if (!file_exists('vendor'))
+    {
+/**
+ * @todo Genrate a better error message for this!
+ */
+        include 'install/errors/notwig.php';
+        exit;
+    }
     include 'vendor/autoload.php';
+/**
+ *  RedBean needs an alias to use namespaces
+ */
+    if (!class_alias('\RedBeanPHP\R','\R'))
+    {
+        include 'install/errors/notwig.php';
+        exit;
+    }
 /*
  * URLs for various clientside packages that are used by the installer and by the framework
  */
@@ -48,8 +64,8 @@
 
     try
     {
-        $twig = new Twig_Environment(
-            new Twig_Loader_Filesystem('./install/twigs'),
+        $twig = new \Twig_Environment(
+            new \Twig_Loader_Filesystem('./install/twigs'),
             ['cache' => FALSE, 'debug' => TRUE]
         );
     }
@@ -62,7 +78,7 @@
  * Test some PHP installation features...
  */
     $hasmb = function_exists('mb_strlen');
-    $haspdo = in_array('mysql', PDO::getAvailableDrivers());
+    $haspdo = in_array('mysql', \PDO::getAvailableDrivers());
 
     if (!$hasmb || !$haspdo)
     {
@@ -287,13 +303,13 @@
         require('rb.php');
         try
         {
-            $now = R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a weird problem with some XAMPP installations)
+            $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a weird problem with some XAMPP installations)
             $vals['dbhost'] = $cvalue['dbhost'];
             $vals['dbname'] = $cvalue['dbname'];
             $vals['dbuser'] = $cvalue['dbuser'];
-            R::setup('mysql:host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
-            R::freeze(FALSE);
-            R::nuke(); # clear everything.....
+            \R::setup('mysql:host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
+            \R::freeze(FALSE);
+            \R::nuke(); # clear everything.....
             $user = R::dispense('user');
             $user->email = $cvalue['sysadmin'];
             $user->login = $cvalue['admin'];
@@ -301,7 +317,7 @@
             $user->active = 1;
             $user->confirm = 1;
             $user->joined = $now;
-            R::store($user);
+            \R::store($user);
 /**
  * Now initialise the confirmation code table
  */
@@ -309,10 +325,10 @@
 	    $conf->code = 'this is a rubbish code';
 	    $conf->issued = $now;
 	    $conf->kind = 'C';
-	    R::store($conf);
+	    \R::store($conf);
 	    $user->xownConfirm[] = $conf;
-	    R::store($user);
-	    R::trash($conf);
+	    \R::store($user);
+	    \R::trash($conf);
 /**
  * Check that timezone setting for PHP has not made the date into the future...
  */
