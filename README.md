@@ -1,6 +1,10 @@
-# The Framework
+# The Framework Version 2
 
 A PHP Development Framework
+
+This version uses more features of PHP than the previous versions, so
+as to provide examplars of how they can be used as the Framework is
+used in a module teaching serverside development.
 
 http://catless.ncl.ac.uk/framework/ has details of installation and usage
 
