@@ -18,7 +18,7 @@
     <article class="container">
 	<div class="row">
 	   <div class="col-md-offset-3 col-md-6">
-	       <p>Please install the Twig template engine.</p>
+	       <p>Please run composer or install the Twig template engine by hand.</p>
 	   </div>
 	</div>
     </article>
