@@ -21,11 +21,11 @@
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);
-            return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$cname->getID(), $rname->getID(), $this->bean->getID()]);
+            return (is_object($cname) && is_object($rname)) ? \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                [$cname->getID(), $rname->getID(), $this->bean->getID()]) : FALSE;
         }
 /**
- * Check for a role
+ * Delete a role
  *
  * @param string	$contextname    The name of a context...
  * @param string	$rolename       The name of a role....
@@ -36,11 +36,14 @@
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);
-            $bn = \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$cname->getID(), $rname->getID(), $this->bean->getID()]);
-            if (is_object($bn))
+            if (is_object($cname) && is_object($rname))
             {
-                \R::trash($bn);
+                $bn = \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                    [$cname->getID(), $rname->getID(), $this->bean->getID()]);
+                if (is_object($bn))
+                {
+                    \R::trash($bn);
+                }
             }
         }
 /**
