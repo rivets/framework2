@@ -48,7 +48,10 @@
  */
     function exception_handler($e)
     {
-        echo '<h2>There has been a system error</h2>';               
+        echo '<h2>There has been a system error</h2>';
+        echo '<pre>';
+        var_dump($e);
+        echo '</pre>';
         exit;
     }
 /**
@@ -72,11 +75,11 @@
         echo '<h2>There has been a system error</h2>';               
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
-        { # this is an internal error or we are debugging, so we need to stop
+        { # this is an internal error so we need to stop
             exit;
         }
 /*
- * If we get here it's a warning or a notice, so we arent stopping
+ * If we get here it's a warning or a notice, so we aren't stopping
  *
  * Change this to an exit if you don't want to continue on any errors
  */
