@@ -300,7 +300,6 @@
 /*
  * Try opening the database and setting up the User table
  */
-        require('rb.php');
         try
         {
             $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a weird problem with some XAMPP installations)
