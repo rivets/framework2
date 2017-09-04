@@ -138,7 +138,7 @@
              'name' => $name,
              'dir' => __DIR__,
              'fwurls' => $fwurls,
-             'siteurl' => 'http//'.$_SERVER['HTTP_HOST'].'/'.$name.'/',
+             'siteurl' => 'http://'.$_SERVER['HTTP_HOST'].'/'.$name.'/',
              'noreply' => 'noreply@'.$_SERVER['HTTP_HOST'],
              'adminemail' => $_SERVER['SERVER_ADMIN'],
         ];
