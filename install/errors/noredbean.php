@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 -->
 
-    <link rel="stylesheet" href="<?= $fwurls['bootcss'] ?>" media="screen,print"/>
+    <link rel="stylesheet" href="<?php echo $fwurls['bootcss']; ?>" media="screen,print"/>
 
 </head>
 <body lang="en-GB">
@@ -22,6 +22,6 @@
 	   </div>
 	</div>
     </article>
-    <script src="<?= $fwurls['bootjs'] ?>"></script>
+    <script src="<?php echo $fwurls['bootjs']; ?>"></script>
 </body>
 </html>
