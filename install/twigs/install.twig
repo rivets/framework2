@@ -138,20 +138,20 @@
                         to work properly. The framework supports use of the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer class</a>
                         which can work without a local mail system (such as sendmail or exim) being configured.
                     </p>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="usephpm" id="mailon"/> Enable and configure PHPMailer
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="usephpm" id="mailon"/> Enable and configure PHPMailer
                         </label>
                     </div>
 		    <fieldset id="mailconfig">
 			<legend>Mail</legend>
 			<div class="form-group">
 			    <label for="sh" class="control-label">SMTP Server</label>
-			    <input type="text" id="sh" name="smtphost" value="smtp.gmail.com" placeholder="SMTP server hostrname you can use" class="form-control" disabled="disabled"/>
+			    <input type="text" id="sh" name="smtphost" placeholder="e.g. smtp.gmail.com" class="form-control" disabled="disabled"/>
 			</div>
 			<div class="form-group">
 			    <label for="sp" class="control-label">SMTP Port</label>
-			    <input type="text" id="sp" name="smtpport" value="465" placeholder="The port number on the server" class="form-control"
+			    <input type="text" id="sp" name="smtpport" placeholder="465" class="form-control"
 			         disabled="disabled" data-parsley-type="digits"/>
 			</div>
 			<div class="control-group">
@@ -171,19 +171,19 @@
 		    </fieldset>
 		    <fieldset>
 			<legend>Features</legend>
-			<div class="checkbox">
-			    <label>
-				<input type="checkbox" name="private"/> Support file uploading with access control on downloads
+			<div class="form-check">
+			    <label class="form-check-label">
+				<input type="checkbox" class="form-check-input" name="private"/> Support file uploading with access control on downloads
 			    </label>
 			</div>
-			<div class="checkbox">
-			    <label>
-				<input type="checkbox" name="public"/> Support file uploading with <b>NO</b> access control on downloads
+			<div class="form-check">
+			    <label class="form-check-label">
+				<input type="checkbox" class="form-check-input" name="public"/> Support file uploading with <b>NO</b> access control on downloads
 			    </label>
 			</div>
-			<div class="checkbox">
-			    <label>
-				<input type="checkbox" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
+			<div class="form-check disabled">
+			    <label class="form-check-labe">
+				<input type="checkbox" class="form-check-input" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
 			    </label>
 			</div>
 		    </fieldset>
