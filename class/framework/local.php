@@ -118,7 +118,7 @@
                     $mail->addAddress($em);
                 }
                 $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg;
-                $mail->AltBody = 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.PHP_EOL.$this->back;
+                $mail->Body = 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.PHP_EOL.$this->back;
                 $mail->send();
                 $this->senterrors[$ekey] = TRUE;
             }
