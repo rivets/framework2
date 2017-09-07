@@ -8,17 +8,15 @@
     $('#mailconfig').hide()
     $('#mailon').on('click', function(){
         var mc = $('#mailconfig')
-        if (!$(this).prop('checked'))
+        if ($(this).prop('checked'))
         { // show fieldset and enable inputs
             mc.show();
             $('input', mc).prop('disabled', false)
-            $(this).prop('checked', true)
         }
         else
         { // hide and disable
             mc.hide();
             $('input', mc).prop('disabled', true)
-            $(this).prop('checked', false)
         }
     })
 {% endblock onload %}
