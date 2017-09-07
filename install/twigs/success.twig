@@ -2,16 +2,16 @@
 
 {% block main %}
     <div class="row">
-        <div class="col-md-offset2 col-md-8">
-	    <div class="well">
-		<h1>Installed Sucessfully</h1>
+        <div class="ml-auto col-md-8 mr-auto">
+	    <div class="jumbotron">
+		<h1>Installed Sucessfully on {{siteurl}}</h1>
 		<p>
-		    Now cd to {{dir}} and remove the directory 'install' and the file
+		    Now cd to {{dir}} and run "afterinstall.sh" or remove the directory 'install' and the file
 		    'install.php'. Remember to remove any extra write
-		    permission for the webserver from the '.' and 'class'
-		    directories if you granted these for the installer.
+		    permission for the webserver from the '.', 'assets' and 'class/config'
+		    directories if you granted these for the installation.
 		</p>
-                <p>You can now <a href="admin">login as the site administrator</a>.</p>
+                <p>You can now <a href="{{base}}/admin">login as the site administrator</a>.</p>
 	    </div>
 	</div>
     </div>
