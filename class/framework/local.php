@@ -110,10 +110,14 @@
                 ob_start();
                 debug_print_backtrace();
                 $this->back = ob_get_clean(); # will get used later in make500
-                mail(implode(',', $this->sysadmin),
-                    date('c').' System Error - '.$msg.' ',
-                    'Type : '.$type.PHP_EOL.
-                    $file.' Line '.$line.PHP_EOL.$this->back);
+                $mail = new \Utility\FMailer;
+                foreach ($this->sysadmin as $em)
+                {
+                    $mail->addAddress($em);
+                }
+                $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg;
+                $mail->AltBody = 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.PHP_EOL.$this->back;
+                $mail->send();
                 $this->senterrors[$ekey] = TRUE;
             }
         }
