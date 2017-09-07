@@ -1,4 +1,13 @@
 RewriteEngine on
 Options -Indexes +FollowSymlinks
+RewriteBase /testfw2
+RewriteRule ^ajax.* ajax.php [L,NC,QSA]
+RewriteRule ^(assets)/(.*) $1/$2 [L,NC]
+RewriteRule ^.*$ index.php [L,QSA]
 
-RewriteRule ^.*$ install.php [L,QSA]
+# uncomment these to turn on compression of responses
+# Apache needs the deflate module and PHP needs the zlib module for these to work
+# AddOutputFilterByType DEFLATE text/css
+# AddOutputFilterByType DEFLATE text/javascript
+# php_flag zlib.output_compression  On
+# php_value zlib.output_compression_level 5
