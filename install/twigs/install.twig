@@ -8,13 +8,13 @@
     $('#mailconfig').hide()
     $('#mailon').on('click', function(){
         var mc = $('#mailconfig')
-        if ($this).prop('checked', true))
-        {
+        if ($(this).prop('checked', true))
+        { // show fieldset and enabke unouts
             mc.show();
             $('input', mc).prop('disabled', false)
         }
-       else
-        {
+        else
+        { // hide and disable
             mc.hide();
             $('input', mc).prop('disabled', true)
         }
