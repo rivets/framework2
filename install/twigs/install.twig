@@ -7,6 +7,7 @@
 {% block onload %}
     $('#mailconfig').hide()
     $('#mailon').on('click', function(){
+        var mc = $('#mailconfig')
         if (!$(this).prop('checked'))
         { // show fieldset and enable inputs
             mc.show();
