@@ -248,7 +248,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp',
+        'private', 'public', 'regexp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -272,17 +272,27 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
-            'dbhost'        => ['DBHOST', FALSE], # name of const, add to DB, DB fieldname
-            'dbname'        => ['DB', FALSE],
-            'dbuser'        => ['DBUSER', FALSE],
-            'dbpass'        => ['DBPW', FALSE],
-            'sitename'      => ['SITENAME', TRUE],
-            'siteurl'       => ['SITEURL', TRUE],
-            'sitenoreply'   => ['SITENOREPLY', TRUE],
-            'sysadmin'      => ['SYSADMIN', TRUE],
-            'admin'         => ['', FALSE],
-            'adminpw'       => ['', FALSE],
-            'cadminpw'      => ['', FALSE],
+            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, DB fieldname
+            'dbname'        => ['DB', FALSE, TRUE, 'string'],
+            'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
+            'dbpass'        => ['DBPW', FALSE, TRUE, 'string'],
+            'sitename'      => ['SITENAME', TRUE, TRUE, 'string'],
+            'siteurl'       => ['SITEURL', TRUE, TRUE, 'string'],
+            'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string'],
+            'sysadmin'      => ['SYSADMIN', TRUE, 'string'],
+            'admin'         => ['', FALSE, TRUE],
+            'adminpw'       => ['', FALSE, TRUE],
+            'cadminpw'      => ['', FALSE, TRUE],
+            'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
+            'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
+            'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
+            'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
+            'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
+            'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
+            'protocol'      => ['PROTOCOL', FALSE, FALSE, 'string'],
+            'smtpuser'      => ['SMTPUSER', FALSE, FALSE, 'string'],
+            'smtppass'      => ['SMTPPW', FALSE, FALSE, 'string'],
+            'csmtppass'     => ['', FALSE, FALSE, 'string'],
         ];
         $cvalue = [];
         foreach (array_keys($cvars) as $v)
@@ -291,8 +301,8 @@
             {
                 $cvalue[$v] = trim($_POST[$v]);
             }
-            else
-            {
+            elseif ($cvars[$v][2])
+            { // that variable must be present
                 header('HTTP/1.1 400 Bad Request');
                 exit;
             }
@@ -314,12 +324,21 @@
         {
             if ($pars[0] !== '')
             { # Only save relevant values - see above
-                fputs($fd, "\tconst ".$pars[0]."\t= '".$cvalue[$fld]."';".PHP_EOL);
+                fputs($fd, "\tconst ".$pars[0]."\t= '");
+                switch($pars[3])
+                {
+                case 'string':
+                    fputs($fd, $cvalue[$fld]."';".PHP_EOL);
+                    break;
+                case 'bool':
+                    fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+                    break;
+                }
             }
         }
-        fputs($fd, "\tconst DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
-        fputs($fd, "\tconst UPUBLIC\t= ".($options['public'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
-        fputs($fd, "\tconst UPRIVATE\t= ".($options['private'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+        //fputs($fd, "\tconst DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
+        //fputs($fd, "\tconst UPUBLIC\t= ".($options['public'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+        //fputs($fd, "\tconst UPRIVATE\t= ".($options['private'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
 
 
 	fputs($fd, "
