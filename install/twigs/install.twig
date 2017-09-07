@@ -154,7 +154,22 @@
 			    <input type="text" id="sp" name="smtpport" placeholder="465" class="form-control"
 			         disabled="disabled" data-parsley-type="digits"/>
 			</div>
-			<div class="control-group">
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value=""> Basic
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="ssl"> SSL
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="tsl"> TSL
+                          </label>
+                        </div>
+                        <div class="control-group">
 			    <label for="su" class="control-label">Username</label>
 			    <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control"
 				 disabled="disabled" data-parsley-type="alphanum"/>
@@ -182,7 +197,7 @@
 			    </label>
 			</div>
 			<div class="form-check disabled">
-			    <label class="form-check-labe">
+			    <label class="form-check-label">
 				<input type="checkbox" class="form-check-input" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
 			    </label>
 			</div>
