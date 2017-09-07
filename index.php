@@ -67,9 +67,9 @@
     }
     $mime = \Framework\Web\Web::HTMLMIME;
 /*
- * Look in the database for what to do based on the first part of the URL. DBOP is either = or regexp
+ * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
  */
-    $page = \R::findOne('page', 'name'.Config::DBOP.'? and active=?', [$action, 1]);
+    $page = \R::findOne('page', 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
     if (!is_object($page))
     { # No such page or it is marked as inactive
        $page = new stdClass;
