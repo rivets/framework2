@@ -4,6 +4,23 @@
     <script src="{{fwurls.parsley}}"></script>
 {% endblock scripts %}
 
+{% block onload %}
+    $('#mailconfig').hide()
+    $('#mailon').on('click', function(){
+        var mc = $('#mailconfig')
+        if ($this).prop('checked', true))
+        {
+            mc.show();
+            $('input', mc).prop('disabled', false)
+        }
+       else
+        {
+            mc.hide();
+            $('input', mc).prop('disabled', true)
+        }
+    })
+{% endblock onload %}
+
 {% block main%}
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
@@ -113,6 +130,43 @@
 			<div class="control-group">
 			    <label for="cdp" class="control-label">Confirm Password</label>
 			    <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+			</div>
+		    </fieldset>
+                    <p>
+                        The framework can use the mail system to send error information to you. However, many people do not
+                        have mail configured on their personal systems (especially WIndows systems) so the default PHP <code>mail()</code> function does
+                        to work properly. The framework supports use of the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer class</a>
+                        which can work without a local mail system (such as sendmail or exim) being configured.
+                    </p>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="usephpm" id="mailon"/> Enable and configure PHPMailer
+                        </label>
+                    </div>
+		    <fieldset id="mailconfig">
+			<legend>Mail</legend>
+			<div class="form-group">
+			    <label for="sh" class="control-label">SMTP Server</label>
+			    <input type="text" id="sh" name="smtphost" value="smtp.gmail.com" placeholder="SMTP server hostrname you can use" class="form-control" disabled="disabled"/>
+			</div>
+			<div class="form-group">
+			    <label for="sp" class="control-label">SMTP Port</label>
+			    <input type="text" id="sp" name="smtpport" value="465" placeholder="The port number on the server" class="form-control"
+			         disabled="disabled" data-parsley-type="digits"/>
+			</div>
+			<div class="control-group">
+			    <label for="su" class="control-label">Username</label>
+			    <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control"
+				 disabled="disabled" data-parsley-type="alphanum"/>
+			</div>
+			<div class="control-group">
+			    <label for="sp" class="control-label">Password</label>
+			    <input type="password" id="sp" name="smtppass" placeholder="**************" class="form-control"  disabled="disabled"/>
+			</div>
+			<div class="control-group">
+			    <label for="csp" class="control-label">Confirm Password</label>
+			    <input type="password" id="csp" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#sp"/>
+                            <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
 			</div>
 		    </fieldset>
 		    <fieldset>
