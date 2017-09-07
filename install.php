@@ -272,14 +272,14 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
-            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, DB fieldname
+            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, non-optional, type
             'dbname'        => ['DB', FALSE, TRUE, 'string'],
             'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
             'dbpass'        => ['DBPW', FALSE, TRUE, 'string'],
             'sitename'      => ['SITENAME', TRUE, TRUE, 'string'],
             'siteurl'       => ['SITEURL', TRUE, TRUE, 'string'],
             'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string'],
-            'sysadmin'      => ['SYSADMIN', TRUE, 'string'],
+            'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string'],
             'admin'         => ['', FALSE, TRUE],
             'adminpw'       => ['', FALSE, TRUE],
             'cadminpw'      => ['', FALSE, TRUE],
@@ -324,7 +324,7 @@
         {
             if ($pars[0] !== '')
             { # Only save relevant values - see above
-                fputs($fd, "\tconst ".$pars[0]."\t= '");
+                fputs($fd, "\tconst ".$pars[0]."\t= ");
                 switch($pars[3])
                 {
                 case 'string':
