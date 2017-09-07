@@ -111,6 +111,8 @@
                 debug_print_backtrace();
                 $this->back = ob_get_clean(); # will get used later in make500
                 $mail = new \Utility\FMailer;
+                $mail->setFrom(Config::SITENOREPLY);
+                $mail->addReplyTo(Config::SITENOREPLY);
                 foreach ($this->sysadmin as $em)
                 {
                     $mail->addAddress($em);

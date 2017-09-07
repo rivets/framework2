@@ -328,7 +328,7 @@
                 switch($pars[3])
                 {
                 case 'string':
-                    fputs($fd, $cvalue[$fld]."';".PHP_EOL);
+                    fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
                     break;
                 case 'bool':
                     fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
