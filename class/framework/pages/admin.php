@@ -57,7 +57,7 @@
 	        phpinfo();
 		exit;
 
-	    case 'edit' : // Edit something - forms and users
+	    case 'edit' : // Edit something - forms, user, pages...
 	        if (count($rest) < 3)
 		{
 		    Web::getinstance()->bad();
