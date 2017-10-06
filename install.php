@@ -328,10 +328,22 @@
                 switch($pars[3])
                 {
                 case 'string':
-                    fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
+                    if (isset($cvalue[$fld]))
+                    {
+                        fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
+                    }
+                    elseif ($pars[2])
+                    { // this is required
+                    }
                     break;
                 case 'bool':
-                    fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+                    if (isset($options[$fld]))
+                    {
+                        fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+                    }
+                    elseif ($pars[2])
+                    { // this is required
+                    }
                     break;
                 }
             }
@@ -381,21 +393,27 @@
         );
         fclose($fd);
 
-        mkdir('debug'); // make a directory for debugging output
+        if (!file_exists('debug'))
+        {
+            mkdir('debug'); // make a directory for debugging output
+        }
 /*
  *  Make directories for uploads if required
  */
-        if ($options['public'])
+        if ($options['public'] && !file_exists('assets'.DIRECTORY_SEPARATOR.'public'))
         { # make the directory for public files
             mkdir('assets'.DIRECTORY_SEPARATOR.'public', 0766);
         }
 
-        if ($options['private'])
+        if ($options['private'] && !file_exists('private'))
         { # make the directory for private files
             mkdir('private', 0766);
         }
 
-        mkdir('twigcache'); # in case we turn caching on for twig.
+        if (!file_exists('twigcache'))
+        {
+            mkdir('twigcache'); # in case we turn caching on for twig.
+        }
 /*
  * Try opening the database and setting up the User table
  */
