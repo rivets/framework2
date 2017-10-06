@@ -324,12 +324,12 @@
         {
             if ($pars[0] !== '')
             { # Only save relevant values - see above
-                fputs($fd, "\tconst ".$pars[0]."\t= ");
                 switch($pars[3])
                 {
                 case 'string':
                     if (isset($cvalue[$fld]))
                     {
+                        fputs($fd, "\tconst ".$pars[0]."\t= ");
                         fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
                     }
                     elseif ($pars[2])
@@ -339,6 +339,7 @@
                 case 'bool':
                     if (isset($options[$fld]))
                     {
+                        fputs($fd, "\tconst ".$pars[0]."\t= ");
                         fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
                     }
                     elseif ($pars[2])
