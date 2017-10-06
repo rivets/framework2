@@ -26,69 +26,78 @@
         <div class="ml-auto col-md-8 mr-auto">
 	    <h1>Framework Installer</h1>
 	    {% if fail %}
-		<h2>Error!!</h2>
-                {% if hashname %}
-		    <h3><span class="label label-danger"># character in site directory name</span></h3>
-                    <p>
-		        The directory you are installing into has a # character in its name.
-			This will cause an error in the function debase in class Local where a # is used
-			as a regular expression delimiter.
-                    </p>
+            <h2>Error!!</h2>
+            {% if hashname %}
+                <h3><span class="label label-danger"># character in site directory name</span></h3>
+                <p>
+                    The directory you are installing into has a # character in its name.
+                    This will cause an error in the function debase in class Local where a # is used
+                    as a regular expression delimiter.
+                </p>
                 {% endif %}
-                {% if phpversion %}
-		    <h3><span class="label label-danger">PHP version too old</span></h3>
-                    <p>
-                        The version of PHP you are running does not have support for some of the language and library
-			features needed by the framework. Please install the most recent version of the system.
-                    </p>
-                {% endif %}
+            {% if phpversion %}
+                <h3><span class="label label-danger">PHP version too old</span></h3>
+                <p>
+                    The version of PHP you are running does not have support for some of the language and library
+                    features needed by the framework. Please install the most recent version of the system.
+                </p>
+            {% endif %}
 	        {% if nodotgw %}
-		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}&quot;</span></h3>
-                    <p>
-                        The installer needs to create a file in this directory. Your web server is probably running
-                        under a special user id and group - you need to either change the owner of the directory
-                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-danger">No write access to directory &quot;{{dir}}&quot;</span></h3>
+                <p>
+                    The installer needs to create a file in this directory. Your web server is probably running
+                    under a special user id and group - you need to either change the owner of the directory
+                    to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                </p>
+            {% endif %}
 	        {% if noclassgw %}
-		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/class&quot;</span></h3>
-                    <p>
-                        The installer needs to create a file in this directory. Your web server is probably running
-                        under a special user id and group - you need to either change the owner of the directory
-                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/class&quot;</span></h3>
+                <p>
+                    The installer needs to create a file in this directory. Your web server is probably running
+                    under a special user id and group - you need to either change the owner of the directory
+                    to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                </p>
+            {% endif %}
 	        {% if noassets %}
-		    <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/assets&quot;</span></h3>
-                    <p>
-                        You have asked for support for publically accessible uploaded files so the installer needs to
-			create a sub-directory in this directory. Your web server is probably running
-                        under a special user id and group - you need to either change the owner of the directory
-                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-danger">No write access to directory &quot;{{dir}}/assets&quot;</span></h3>
+                <p>
+                    You have asked for support for publically accessible uploaded files so the installer needs to
+                    create a sub-directory in this directory. Your web server is probably running
+                    under a special user id and group - you need to either change the owner of the directory
+                    to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                </p>
+            {% endif %}
 	        {% if nowhtaccess %}
-		    <h3><span class="label label-danger">No write access to .htaccess</span></h3>
-                    <p>
-                        The installer needs to to write to .htaccess. Your web server is probably running
-                        under a special user id and group - you need to either change the owner of the file
-                        to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-danger">No write access to .htaccess</span></h3>
+                <p>
+                    The installer needs to to write to .htaccess. Your web server is probably running
+                    under a special user id and group - you need to either change the owner of the file
+                    to be the webserver user or change the group to be the same as the web server and do a chmod g+w.
+                </p>
+            {% endif %}
+	        {% if direrr %}
+                <h3><span class="label label-danger">Error creating directories</span></h3>
+                {% for x in dirmsg %}
+                    <h5>{{x}}</h5>
+                {% endfor %}
+                <p>
+                    Check that the server has write permission to where the directories that are being creeated are set correctly.
+                </p>
+            {% endif %}
 	        {% if dberror %}
-		    <h3><span class="label label-danger">Error initialising database : &quot;{{dberror}}&quot;</span></h3>
-                    <p>
-                        Check that you have created the database &quot;{{dbname}}&quot; on host &quot;{{dbhost}}&quot; and that
-                        the user &quot;{{dbuser}}&quot; has access to it using the password you specified.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-danger">Error initialising database : &quot;{{dberror}}&quot;</span></h3>
+                <p>
+                    Check that you have created the database &quot;{{dbname}}&quot; on host &quot;{{dbhost}}&quot; and that
+                    the user &quot;{{dbuser}}&quot; has access to it using the password you specified.
+                </p>
+            {% endif %}
 	    {% else %}
 	        {% if timezone %}
-		    <h3><span class="label label-warning">Possible Timezone Error</span></h3>
-                    <p>
-                        It looks as though the timezone in your php.ini file may not be set to be correct for your region.
-                    </p>
-		{% endif %}
+                <h3><span class="label label-warning">Possible Timezone Error</span></h3>
+                <p>
+                    It looks as though the timezone in your php.ini file may not be set to be correct for your region.
+                </p>
+            {% endif %}
 		<form action="#" method="post" class="well" data-parsley-validate="parsley"/>
 		    <fieldset>
 			<legend>Site Information</legend>
