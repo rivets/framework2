@@ -466,14 +466,14 @@
                 $user->xownConfirm[] = $conf;
                 \R::store($user);
                 \R::trash($conf);
-    /**
-     * Check that timezone setting for PHP has not made the date into the future...
-     */
-                $dt = \R::findOne('user', 'joined > NOW()');
-                if (is_object($dt))
-                {
-                    $vals['timezone'] = TRUE;
-                }
+    ///**
+    // * Check that timezone setting for PHP has not made the date into the future...
+    // */
+    //            $dt = \R::findOne('user', 'joined > NOW()');
+    //            if (is_object($dt))
+    //            {
+    //                $vals['timezone'] = TRUE;
+    //            }
     /**
      * Save some framework configuration information into the database
      * This will make it easier to remote updating of the system once
