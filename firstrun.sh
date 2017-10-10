@@ -1,3 +1,9 @@
 #!/bin/sh
-composer install
-chmod a+w . .htaccess class/config assets
+if [ ! -d vendor/twig ]
+then # looks like composer has not been run
+    composer install
+fi
+for i in . .htaccess class/config assets
+do
+    chmod a+w $i
+done
