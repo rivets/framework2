@@ -90,16 +90,18 @@
  *
  * @return object
  */
-        public function addrolebybean($context, $role, $otherinfo, $start, $end = '')
+        public function addrolebybean($rolecontext, $rolename, $otherinfo, $start, $end = '')
         {
+            \Framework\Debug::vdump($start);
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
-            $r->rolecontext = $context;
-            $r->rolename = $role;
+            $r->rolecontext = $rolecontext;
+            $r->rolename = $rolename;
             $r->otherinfo = $otherinfo;
-            $r->start = $start;
-            $r->end = $end === '' ? NULL : $end;
+            $r->start = ($start === '' || strtolower($start) == 'now') ? $context->utcnow() : $start;
+            $r->end = ($end === '' || strtolower($end) == 'never') ? NULL : $end;
             \R::store($r);
+            \Framework\Debug::vdump($r);
             return $r;
         }
 /**
@@ -111,10 +113,10 @@
  */
         public function roles($all = FALSE)
         {
-	    if ($all)
-	    {
-	        return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
-	    }
+            if ($all)
+            {
+                return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
+            }
             return $this->bean->withCondition('start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end')->{'own'.ucfirst($this->roletype)};
         }
 /**
@@ -128,8 +130,8 @@
         {
             $fdt = $context->formdata();
             $uroles = $this->roles();
-	    if ($fdt->haspost('exist'))
-	    {
+            if ($fdt->haspost('exist'))
+            {
                 foreach ($fdt->posta('exist') as $ix => $rid)
                 {
                     $rl = $context->load($this->roletype, $rid);

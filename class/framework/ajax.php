@@ -93,18 +93,41 @@
  */
         private function addpage($context)
         {
+            \Framework\Debug::vdump($_POST);
             $fdt = $context->formdata();
             $p = R::dispense('page');
             $p->name = $fdt->mustpost('name');
             $p->kind = $fdt->mustpost('kind');
             $p->source = $fdt->mustpost('source');
             $p->active = $fdt->mustpost('active');
-            $p->admin = $fdt->mustpost('admin');
             $p->needlogin = $fdt->mustpost('login');
             $p->mobileonly = $fdt->mustpost('mobile');
-            $p->devel = $fdt->mustpost('devel');
             R::store($p);
-            echo $p->getID();
+
+            try
+            {
+                foreach ($fdt->posta('context') as $ix => $cid)
+                { // context, role, start, end, otherinfo
+                    if ($cid !== '')
+                    {
+                        $start = $fdt->mustpost(['start', $ix], Context::RTHROW);
+                        $end = $fdt->mustpost(['end', $ix], Context::RTHROW);
+                        $p->addrolebybean(
+                            $context->load('rolecontext', $cid, Context::RTHROW),
+                            $context->load('rolename', $fdt->mustpost(['role', $ix], Context::RTHROW)),
+                            $fdt->mustpost(['otherinfo', $ix], Context::RTHROW),
+                            ($start === '' || strtolower($start) == 'now') ? $context->utcnow() : $start,
+                            ($end === '' || strtolower($end) == 'never') ? NULL : $end
+                        );
+                    }
+                }
+                echo $p->getID();
+            }
+            catch (Exception $e)
+            { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
+                R::trash($p);
+                $context->web()->bad($e->getmessage());
+            }
         }
 /**
  * Add a Rolename
@@ -169,8 +192,8 @@
             {
                 $context->web()->bad();
             }
-	    $v = R::dispense('fwconfig');
-	    $v->name = $fdt->mustpost('name');
+            $v = R::dispense('fwconfig');
+            $v->name = $fdt->mustpost('name');
             $v->value = $fdt->mustpost('value');
             R::store($v);
         }

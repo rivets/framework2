@@ -30,23 +30,21 @@
     var kname = []
     function paramset(params)
     {
-	params.id = params.pk
-	params.bean = 'page'
-	params.op = 'update'
-	return params
+        params.id = params.pk
+        params.bean = 'page'
+        params.op = 'update'
+        return params
     }
     kname = [
-    {% for v in types %}
-        {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
-    {% endfor %}
+        {% for v in types %}
+            {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
     ]
     var clicks = [
-	['delb', dodelbean, ''],
-	['admb', dotoggle, 'admin'],
-	['actb', dotoggle, 'active'],
-	['devb', dotoggle, 'devel'],
-	['logn', dotoggle, 'needlogin'],
-	['mobo', dotoggle, 'mobileonly']
+        ['delb', dodelbean, ''],
+        ['actb', dotoggle, 'active'],
+        ['logn', dotoggle, 'needlogin'],
+        ['mobo', dotoggle, 'mobileonly']
     ]
 {% endblock setup %}
 
@@ -56,93 +54,106 @@
     $('#addb').on('click', function(e){
         e.preventDefault()
         var pn = $('#npname').val().toLowerCase()
-	if (!pn.match(/^[a-z][a-z0-9.]*$/))
-	{
-	    bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
-	    return
-	}
-	var sp = null
-	var error = false
-	$('.pname').each(function(e){
-	    var t = $(this).text()
-	    if (t == pn)
-	    {
-	        error = true
-	        return false
-	    }
-	    if (t > pn)
-	    {
-		sp = $(this)
-		return false
-	    }
-	})
-	if (error)
-	{
-	    bootbox.alert('That page already exists')
-	    return
-	}
+        if (!pn.match(/^[a-z][a-z0-9.]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
+            return
+        }
+        var sp = null
+        var error = false
+        $('.pname').each(function(e){
+            var t = $(this).text()
+            if (t == pn)
+            {
+                error = true
+                return false
+            }
+            if (t > pn)
+            {
+            sp = $(this)
+            return false
+            }
+        })
+        if (error)
+        {
+            bootbox.alert('That page already exists')
+            return
+        }
         var src = $('#npsrc').val()
         if (src == '')
         {
-	    bootbox.alert('Please specify a source')
-	    return
+            bootbox.alert('Please specify a source')
+            return
         }
         var kind = $('#npkind').val()
         if (kind == '')
         {
-	    bootbox.alert('Please pick template or object')
-	    return
+            bootbox.alert('Please pick template or object')
+            return
         }
-	var admin = $('#npadmin').is(':checked') ? 1 : 0
-	var active = $('#npactive').is(':checked') ? 1 : 0
-	var login = $('#nplogin').is(':checked') ? 1 : 0
-	var mobile = $('#npmobile').is(':checked') ? 1 : 0
-	var devel = $('#npdevel').is(':checked') ? 1 : 0
-	$('#npage').modal('hide')
-	$.post('{{base}}/ajax.php', {
-		op : 'addpage',
-		name : pn,
-		kind : kind,
-		source : src,
-		admin : admin,
-		active : active,
-                devel : devel,
+        var active = $('#npactive').is(':checked') ? 1 : 0;
+        var login = $('#nplogin').is(':checked') ? 1 : 0;
+        var mobile = $('#npmobile').is(':checked') ? 1 : 0;
+        $('#npage').modal('hide');
+        fn = function(data){
+                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
+                '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
+                '<td>'+mktoggle('logn', login)+'</td>'+
+                '<td>'+mktoggle('mobo', mobile)+'</td>'+
+                '<td>'+mktoggle('actb', active)+'</td>'+
+                '<td><a href="/admin/edit/page/'+data+'"><i class="editb fa fa-pencil"></i></a></td>'+
+                '<td><i class="delb fa fa-trash-o"></i></td></tr>';
+                var nx
+                if (sp == null)
+                {
+                     nx = $(htm).appendTo($('#ptab tbody'))
+                }
+                else
+                {
+                    nx = $(htm).insertBefore(sp.parent())
+                }
+                nx.data('id', data)
+                $('.ppedit', nx).editable({params: paramset, source: kname});
+            };
+        dt = {
+                op : 'addpage',
+                name : pn,
+                kind : kind,
+                source : src,
+                active : active,
                 login : login,
                 mobile: mobile
-	    }, function(data){
-	        var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
-		    '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
-		    '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
-		    '<td>'+mktoggle('logn', login)+'</td>'+
-		    '<td>'+mktoggle('mobo', mobile)+'</td>'+
-		    '<td>'+mktoggle('admb', admin)+'</td>'+
-		    '<td>'+mktoggle('actb', active)+'</td>'+
-		    '<td>'+mktoggle('devb', devel)+'</td>'+
-		    '<td><a href="/admin/edit/page/'+data+'"><i class="editb fa fa-pencil"></i></a></td></tr>'
-		    '<td><i class="delb fa fa-trash-o"></i></td></tr>';
-	        var nx
-	        if (sp == null)
-	        {
-	             nx = $(htm).appendTo($('#ptab tbody'))
-	        }
-	        else
-	        {
-	            nx = $(htm).insertBefore(sp.parent())
-  	        }
-	        nx.data('id', data)
-		$('.ppedit', nx).editable({params: paramset, source: kname});
-	    }
-	)
+            };
+        var sel = ['context', 'role'];
+        var inp = ['start', 'end', 'otherinfo'];
+        var f = $('#npform');
+        var inx = 0;
+        for (var n in inp)
+        {
+            inx = 0;
+            $('input[name^="'+inp[n]+'"]', f).each(function(){
+                dt[inp[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        for (var n in sel)
+        {
+            inx = 0;
+            $('select[name^="'+sel[n]+'"]', f).each(function(){
+                dt[sel[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        $.post('{{base}}/ajax.php', dt, fn);
     })
     $('#ptab').on('click', function(e){
         var x = $(e.target)
-	for (var ix in clicks)
-	{
-	   if (x.hasClass(clicks[ix][0]))
-	   {
-	       clicks[ix][1](e, x, 'page', clicks[ix][2])
-	   }
-	}
+        for (var ix in clicks)
+        {
+            if (x.hasClass(clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, 'page', clicks[ix][2])
+            }
+        }
     })
     $('#npage').on('show.bs.modal', function(e){
 	$('#npform input,select').val('')
@@ -178,32 +189,28 @@
                         <th>Name</th>
                         <th>Kind</th>
                         <th>Source</th>
-			<th>Login Req.</th>
-			<th>Mobile Only</th>
-			<th>Admin</th>
-			<th>Active</th>
-			<th>Developer</th>
-			<th colspan="2">&nbsp;</th>
+                        <th>Login Req.</th>
+                        <th>Mobile Only</th>
+                        <th>Active</th>
+                        <th colspan="2">&nbsp;</th>
                     </tr>
                 </thead>
-		<tbody>
-		    {% for p in siteinfo.pages(page, pagesize) %}
-			<tr data-id="{{p.getID}}">
-			    <td class="pname">{{h.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-			    <td>{{h.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-			    <td>{{h.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
-			    <td>{{h.tick(p.needlogin, 'logn')}}</td>
-			    <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
-			    <td>{{h.tick(p.admin, 'admb')}}</td>
-			    <td>{{h.tick(p.active, 'actb')}}</td>
-			    <td>{{h.tick(p.devel, 'devb')}}</td>
-			    <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fa fa-pencil"></i></a></td>
-			    <td><i class="delb fa fa-trash-o"></i></td>
-			</tr>
-		    {% else %}
-		        <tr><td colspan="4">No pages defined</td></tr>
-		    {% endfor %}
-		</tbody>
+                <tbody>
+                    {% for p in siteinfo.pages(page, pagesize) %}
+                    <tr data-id="{{p.getID}}">
+                        <td class="pname">{{h.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
+                        <td>{{h.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
+                        <td>{{h.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                        <td>{{h.tick(p.needlogin, 'logn')}}</td>
+                        <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
+                        <td>{{h.tick(p.active, 'actb')}}</td>
+                        <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fa fa-pencil"></i></a></td>
+                        <td><i class="delb fa fa-trash-o"></i></td>
+                    </tr>
+                    {% else %}
+                        <tr><td colspan="4">No pages defined</td></tr>
+                    {% endfor %}
+                </tbody>
             </table>
             {% include 'paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
 	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#npage" type="button">Add Page</button></p>
