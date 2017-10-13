@@ -7,6 +7,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015 Newcastle University
  */
+    use Framework\Web\Web as Web;
 /**
  * A class that provides helpers for accessing form data
  */
@@ -109,7 +110,7 @@
  *
  * @return mixed
  */
-        public function mustget($name, $fail = TRUE)
+        public function mustget($name, $fail = Context::R400)
         {
             if (is_array($name) && filter_has_var(INPUT_GET, $name[0]))
             {
@@ -120,9 +121,18 @@
             {
                 return trim($_GET[$name]);
             }
-            if ($fail)
+            if ($fail === TRUE)
             {
+             // this is using the old interface and is a temporary fix
+                $fail = Context::R400;
+            }
+            switch($fail)
+            {
+            case Context::R400:
                 Web::getinstance()->bad();
+            
+            case Context::RTHROW:
+                throw new Exception('Missing get item');
             }
             return NULL;
         }
@@ -149,19 +159,28 @@
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param boolean	$fail	If TRUE then generate a 400 if the key does not exist in the array
+ * @param integer	$fail	if the key does not exist - see Context::load
  *
  * @return ArrayIterator
  */
-        public function mustgeta($name, $fail = TRUE)
+        public function mustgeta($name, $fail = Context::R400)
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            if ($fail)
+            if ($fail === TRUE)
             {
+             // this is using the old interface and is a temporary fix
+                $fail = Context::R400;
+            }
+            switch($fail)
+            {
+            case Context::R400:
                 Web::getinstance()->bad();
+            
+            case Context::RTHROW:
+                throw new Exception('Missing get item');
             }
             return NULL;
         }
@@ -202,11 +221,11 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param string	$name	The key
- * @param boolean	$fail	If TRUE then generate a 400 if the key does not exist in the array
+ * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
  */
-        public function mustpost($name, $fail = TRUE)
+        public function mustpost($name, $fail = Context::R400)
         {
             if (is_array($name) && filter_has_var(INPUT_POST, $name[0]))
             {
@@ -217,12 +236,21 @@
             {
                 return trim($_POST[$name]);
             }
-            if ($fail)
+            if ($fail === TRUE)
             {
+             // this is using the old interface and is a temporary fix
+                $fail = Context::R400;
+            }
+            switch($fail)
+            {
+            case Context::R400:
                 Web::getinstance()->bad();
+            
+            case Context::RTHROW:
+                throw new Exception('Missing post item');
             }
             return NULL;
-        }
+       }
 
 /**
  * Look in the $_POST array for a key and return its trimmed value or a default value
@@ -252,15 +280,24 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta($name, $fail = TRUE)
+        public function mustposta($name, $fail = Context::R400)
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            if ($fail)
+            if ($fail === TRUE)
             {
+             // this is using the old interface and is a temporary fix
+                $fail = Context::R400;
+            }
+            switch($fail)
+            {
+            case Context::R400:
                 Web::getinstance()->bad();
+            
+            case Context::RTHROW:
+                throw new Exception('Missing post item');
             }
             return NULL;
         }
@@ -305,15 +342,24 @@
  *
  * @return mixed
  */
-        public function mustcookie($name, $fail = TRUE)
+        public function mustcookie($name, $fail = Context::R400)
         {
             if (filter_has_var(INPUT_COOKIE, $name))
             {
                 return trim($_COOKIE[$name]);
             }
-            if ($fail)
+            if ($fail === TRUE)
             {
+             // this is using the old interface and is a temporary fix
+                $fail = Context::R400;
+            }
+            switch($fail)
+            {
+            case Context::R400:
                 Web::getinstance()->bad();
+            
+            case Context::RTHROW:
+                throw new Exception('Missing cookie item');
             }
             return NULL;
         }
@@ -346,15 +392,15 @@
         {
             $x = $_FILES[$name];
             if ($key !== '')
-	    {
+            {
                 return [
-	            'name'     => $x['name'][$key],
-		    'type'     => $x['type'][$key],
-		    'size'     => $x['size'][$key],
-		    'tmp_name' => $x['tmp_name'][$key],
-		    'error'    => $x['error'][$key]
-	        ];
-	    }
+                    'name'     => $x['name'][$key],
+                    'type'     => $x['type'][$key],
+                    'size'     => $x['size'][$key],
+                    'tmp_name' => $x['tmp_name'][$key],
+                    'error'    => $x['error'][$key]
+                ];
+            }
             return $x;
         }
     }
