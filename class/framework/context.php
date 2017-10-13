@@ -19,11 +19,11 @@
 /**
  * The name of the authentication token field.
  */
-	const TOKEN 	        = 'X-APPNAME-TOKEN';
+        const TOKEN 	        = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-	const KEY	        = 'Some string of text.....';
+        const KEY	        = 'Some string of text.....';
 /**
  * Value indicating to generate a 400 output from load function when id does not exist
  */
@@ -275,6 +275,8 @@
  * @param string	$table	    A bean type name
  * @param integer	$id	    A bean id
  * @param integer       $onerror    A flag indicating what to do on error (see constants above)
+ *
+ * @throws  Exception when asked to by the "onerror" value
  *
  * @return object
  */
