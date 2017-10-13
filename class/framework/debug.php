@@ -1,10 +1,10 @@
 <?php
-    namespace \Framework;
+    namespace Framework;
 /**
  * Contains definition of Debug class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2015 Newcastle University
+ * @copyright 2014-2017 Newcastle University
  */
 /**
  * A class that handles various debugging related things
@@ -14,17 +14,17 @@
 /**
  * @var Resource    The file descriptor
  */
-	private static $fd = NULL;
+        private static $fd = NULL;
 /**
  * Set up the file
  */
-	private static function setup()
-	{
-	    if (self::$fd === NULL)
-	    {
-	        self::$fd = fopen(Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
-	    }
-	}
+        private static function setup()
+        {
+            if (self::$fd === NULL)
+            {
+                self::$fd = fopen(Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
+            }
+        }
 /**
  * Display a string
  *
@@ -34,11 +34,11 @@
  * 
  * @return void
  */
-	public static function show($str)
-	{
-	    self::setup();
-	    fputs(self::$fd, $str."\n");
-	}
+        public static function show($str)
+        {
+            self::setup();
+            fputs(self::$fd, $str."\n");
+        }
 /**
  * Dump a variable - uses buffering to grab the output.
  *
@@ -48,13 +48,13 @@
  *
  * @return void
  */
-	public static function vdump($var)
-	{
-	    self::setup();
-	    ob_start();
-	    var_dump($var);
-	    fputs(self::$fd, ob_get_clean());
-	}
+        public static function vdump($var)
+        {
+            self::setup();
+            ob_start();
+            var_dump($var);
+            fputs(self::$fd, ob_get_clean());
+        }
 /**
  * Flush the output stream
  *
@@ -62,10 +62,10 @@
  */
         public static function flush()
         {
-	    if (self::$fd !== NULL)
-	    {
-	        fflush(self::$fd);
-	    }
+            if (self::$fd !== NULL)
+            {
+                fflush(self::$fd);
+            }
         }
 /**
  * Display a string in an X-DEBUG-INFO header
@@ -76,10 +76,10 @@
  *
  * @return void
  */
-	public static function head($str)
-	{
-	    Web::getinstance()->addheader('X-DEBUG-INFO', $str);
-	}
+        public static function head($str)
+        {
+            \Framework\Web::getinstance()->addheader('X-DEBUG-INFO', $str);
+        }
 
     }
 ?>
