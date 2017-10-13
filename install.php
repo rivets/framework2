@@ -589,7 +589,7 @@
                         \R::store($pagerole);
                         $page->xownPageRole[] = $pagerole;
                         $cname->xownPageRole[] = $pagerole;
-                        $arname->xownPageRole[] = $pagerole;
+                        $drname->xownPageRole[] = $pagerole;
                         \R::store($page);
                         \R::store($cname);
                         \R::store($drname);
