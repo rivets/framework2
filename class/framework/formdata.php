@@ -121,11 +121,6 @@
             {
                 return trim($_GET[$name]);
             }
-            if ($fail === TRUE)
-            {
-             // this is using the old interface and is a temporary fix
-                $fail = Context::R400;
-            }
             switch($fail)
             {
             case Context::R400:
@@ -168,11 +163,6 @@
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
                 return new \ArrayIterator($_GET[$name]);
-            }
-            if ($fail === TRUE)
-            {
-             // this is using the old interface and is a temporary fix
-                $fail = Context::R400;
             }
             switch($fail)
             {
@@ -236,11 +226,6 @@
             {
                 return trim($_POST[$name]);
             }
-            if ($fail === TRUE)
-            {
-             // this is using the old interface and is a temporary fix
-                $fail = Context::R400;
-            }
             switch($fail)
             {
             case Context::R400:
@@ -285,11 +270,6 @@
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
-            }
-            if ($fail === TRUE)
-            {
-             // this is using the old interface and is a temporary fix
-                $fail = Context::R400;
             }
             switch($fail)
             {
@@ -347,11 +327,6 @@
             if (filter_has_var(INPUT_COOKIE, $name))
             {
                 return trim($_COOKIE[$name]);
-            }
-            if ($fail === TRUE)
-            {
-             // this is using the old interface and is a temporary fix
-                $fail = Context::R400;
             }
             switch($fail)
             {
