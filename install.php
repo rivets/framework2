@@ -127,7 +127,7 @@
         'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
 
         'jquery1'       => '//code.jquery.com/jquery-1.12.4.min.js',
-        'jquery2'       => '//code.jquery.com/jquery-3.2.1.slim.min.js',
+        'jquery2'       => '//code.jquery.com/jquery-3.2.1.min.js',
         'bootjs'        => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js',
         'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
         'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.7.2/parsley.min.js',
