@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ -d /Applications/XAMPP/bin ]
+then # pick up the XAMPP on macOS
+    PATH=/Applications/XAMPP/bin:$PATH
+fi
 if which php >/dev/null
 then # we do have PHP
     if [ ! -d vendor/twig ]
