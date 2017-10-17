@@ -206,13 +206,21 @@
     }
 
     $tpl = 'install.twig';
+    $host = $_SERVER['HTTP_HOST'];
+    switch ($host)
+    {
+    case 'localhost':
+    case '127.0.0.1':
+        $host = 'localhost.org';
+        break;
+    }
     $vals = [
              'name'         => $name,
              'dir'          => __DIR__,
              'base'         => $dir,
              'fwurls'       => $fwurls,
-             'siteurl'      => 'http://'.$_SERVER['HTTP_HOST'].'/'.$dir.'/',
-             'noreply'      => 'noreply@'.$_SERVER['HTTP_HOST'],
+             'siteurl'      => 'http://'.$host.'/'.$dir.'/',
+             'noreply'      => 'noreply@'.$host,
              'adminemail'   => $_SERVER['SERVER_ADMIN'],
         ];
 
