@@ -103,136 +103,135 @@
  #}
                 <form action="#" method="post" class="well" data-parsley-validate="parsley"/>
                     <fieldset>
-                    <legend>Site Information</legend>
-                    <div class="form-group">
-                        <label for="sn" class="control-label">Site Name</label>
-                        <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
-                            class="form-control" required="required" data-parsley-type="alphanum"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="sn" class="control-label">Site URL</label>
-                        <input type="text" id="sn" name="siteurl" value="{{siteurl}}" placeholder="The canonical url for your site" class="form-control"
-                          required="required" data-parsley-type="url"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="sn" class="control-label">Site No Reply Email</label>
-                        <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required="required"/>
-                    </div>
+                        <legend>Site Information</legend>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site Name</label>
+                            <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
+                                class="form-control" required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site URL</label>
+                            <input type="text" id="sn" name="siteurl" value="{{siteurl}}" placeholder="The canonical url for your site" class="form-control"
+                              required="required" data-parsley-type="url"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site No Reply Email</label>
+                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required="required"/>
+                        </div>
                     </fieldset>
                     <fieldset>
-                    <legend>Database Information</legend>
-                    <div class="form-group">
-                        <label for="dh" class="control-label">Host</label>
-                        <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="dn" class="control-label">Database</label>
-                        <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
+                        <legend>Database Information</legend>
+                        <div class="form-group">
+                            <label for="dh" class="control-label">Host</label>
+                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="dn" class="control-label">Database</label>
+                            <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
+                                required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="du" class="control-label">User</label>
+                            <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
                             required="required" data-parsley-type="alphanum"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="du" class="control-label">User</label>
-                        <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
-                        required="required" data-parsley-type="alphanum"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="dp" class="control-label">Password</label>
-                        <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="cdp" class="control-label">Confirm Password</label>
-                        <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
-                    </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="dp" class="control-label">Password</label>
+                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="cdp" class="control-label">Confirm Password</label>
+                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+                        </div>
                     </fieldset>
-                            <p class="mt-4">
-                                The framework can use the mail system to send error information to you. However, many people do not
-                                have mail configured on their personal systems (especially WIndows systems) so the default PHP <code>mail()</code> function does
-                                not work properly. The framework supports use of the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer class</a>
-                                which can work without a local mail system (such as sendmail or exim) being configured.
-                            </p>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="usephpm" id="mailon"/> Enable and configure PHPMailer
-                                </label>
-                            </div>
+                    <p class="mt-4">
+                        The framework can use the mail system to send error information to you. However, many people do not
+                        have mail configured on their personal systems (especially WIndows systems) so the default PHP <code>mail()</code> function does
+                        not work properly. The framework supports use of the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer class</a>
+                        which can work without a local mail system (such as sendmail or exim) being configured.
+                    </p>
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="usephpm" id="mailon"/> Enable and configure PHPMailer
+                        </label>
+                    </div>
                     <fieldset id="mailconfig">
-                    <legend>Mail</legend>
-                    <div class="form-group">
-                        <label for="sh" class="control-label">SMTP Server</label>
-                        <input type="text" id="sh" name="smtphost" placeholder="e.g. smtp.gmail.com" class="form-control" disabled="disabled"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="sp" class="control-label">SMTP Port</label>
-                        <input type="text" id="sp" name="smtpport" placeholder="25, 465 for SSL, 587 for authenticated TLS" class="form-control"
-                             disabled="disabled" data-parsley-type="digits"/>
-                    </div>
-                                <div class="form-check form-check-inline">
-                                  <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="protocol" value="" disabled="disabled"> Plain
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="protocol" value="ssl" disabled="disabled"> SSL
-                                  </label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                  <label class="form-check-label">
-                                    <input class="form-check-input" type="radio" name="protocol" value="tsl" disabled="disabled"> TSL
-                                  </label>
-                                </div>
-                                <div class="control-group">
-                        <label for="su" class="control-label">Username</label>
-                        <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control"
-                         disabled="disabled" data-parsley-type="alphanum"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="sp" class="control-label">Password</label>
-                        <input type="password" id="sp" name="smtppass" placeholder="**************" class="form-control" disabled="disabled"/>
-                    </div>
-                    <div class="control-group">
-                        <label for="csp" class="control-label">Confirm Password</label>
-                        <input type="password" id="csp" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#sp"/>
-                                    <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
-                    </div>
+                        <legend>Mail</legend>
+                        <div class="form-group">
+                            <label for="sh" class="control-label">SMTP Server</label>
+                            <input type="text" id="sh" name="smtphost" placeholder="e.g. smtp.gmail.com" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sp" class="control-label">SMTP Port</label>
+                            <input type="text" id="sp" name="smtpport" placeholder="25, 465 for SSL, 587 for authenticated TLS" class="form-control"
+                                 disabled="disabled" data-parsley-type="digits"/>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="" disabled="disabled"> Plain
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="ssl" disabled="disabled"> SSL
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="tsl" disabled="disabled"> TSL
+                          </label>
+                        </div>
+                        <div class="control-group">
+                            <label for="su" class="control-label">Username</label>
+                            <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="sp" class="control-label">Password</label>
+                            <input type="password" id="sp" name="smtppass" placeholder="**************" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="csp" class="control-label">Confirm Password</label>
+                            <input type="password" id="csp" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#sp"/>
+                                        <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
+                        </div>
                     </fieldset>
                     <fieldset>
-                    <legend>Features</legend>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" name="private"/> Support file uploading with access control on downloads
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" name="public"/> Support file uploading with <b>NO</b> access control on downloads
-                        </label>
-                    </div>
-                    <div class="form-check disabled">
-                        <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
-                        </label>
-                    </div>
+                        <legend>Features</legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="private"/> Support file uploading with access control on downloads
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="public"/> Support file uploading with <b>NO</b> access control on downloads
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" name="regexp" disabled="disabled"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
+                            </label>
+                        </div>
                     </fieldset>
                     <fieldset>
-                    <legend>Security</legend>
-                    <div class="form-group">
-                        <label for="em" class="control-label">Admin Email</label>
-                        <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required="required"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="au" class="control-label">Admin User Login</label>
-                        <input type="text" id="au" name="admin" value="{{name}}admin" placeholder="Admin user login" class="form-control"
-                            required="required" data-parsley-type="alphanum"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="ap" class="control-label">Admin Password</label>
-                        <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required="required"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="acdp" class="control-label">Confirm Password</label>
-                        <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required="required"/>
-                    </div>
+                        <legend>Security</legend>
+                        <div class="form-group">
+                            <label for="em" class="control-label">Admin Email</label>
+                            <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="au" class="control-label">Admin User Login</label>
+                            <input type="text" id="au" name="admin" value="{{name}}admin" placeholder="Admin user login" class="form-control"
+                                required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="ap" class="control-label">Admin Password</label>
+                            <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="acdp" class="control-label">Confirm Password</label>
+                            <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required="required"/>
+                        </div>
                     </fieldset>
                     <p><input type="submit" class="btn btn-primary" value="Install"/></p>
                 </form>
