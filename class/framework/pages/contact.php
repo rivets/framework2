@@ -25,16 +25,16 @@
             $fd = $context->formdata();
             if (($msg = $fd->post('message', '')) !== '')
             { # there is a post
-                $mail = new \Utility\FMailer;
-                $mail->setFrom(Config::SITENOREPLY);
-                $mail->addReplyTo(Config::SITENOREPLY);
-                $mail->addAddress(Config::SYSADMIN);
+                //$mail = new \Utility\FMailer;
+                //$mail->setFrom(Config::SITENOREPLY);
+                //$mail->addReplyTo(Config::SITENOREPLY);
+                //$mail->addAddress(Config::SYSADMIN);
 
-                $mail->Subject = $fd->post('subject', 'No Subject');
-                $mail->AltBody= $msg;
-                $mail->send();
+                //$mail->Subject = $fd->post('subject', 'No Subject');
+                //$mail->AltBody= $msg;
+                //$mail->send();
 
-//                mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
+                mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
                 $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
             }
             return 'contact.twig';
