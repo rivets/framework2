@@ -59,79 +59,82 @@
 
 	    case 'edit' : // Edit something - forms, user, pages...
 	        if (count($rest) < 3)
-		{
-		    Web::getinstance()->bad();
-		}
+            {
+                $context->web()->bad();
+                /* NOT REACHED */
+            }
 	        $kind = $rest[1];
-                $obj = $context->load($kind, $rest[2]);
-                if (!is_object($obj))
-                {
-                    Web::getinstance()->bad();
+            $obj = $context->load($kind, $rest[2]);
+            if (!is_object($obj))
+            {
+                $context->web()->bad();
+                /* NOT REACHED */
+            }
+            if (($bid = $context->formdata()->post('bean', '')) !== '')
+            { # this is a post
+                if ($bid != $obj->getID())
+                { # something odd...
+                    $context->web()->bad();
+                    /* NOT REACHED */
                 }
-                if (($bid = $context->formdata()->post('bean', '')) !== '')
-                { # this is a post
-                    if ($bid != $obj->getID())
-                    { # something odd...
-                        Web::getinstance()->bad();
-                    }
-                    $obj->edit($context);
-                    // The edit call might divert to somewhere else so sometimes we may not get here.
-                }
-		$context->local()->addval($kind, $obj);
-		$tpl = 'support/edit'.$kind.'.twig';
-		break;
+                $obj->edit($context);
+                // The edit call might divert to somewhere else so sometimes we may not get here.
+            }
+            $context->local()->addval($kind, $obj);
+            $tpl = 'support/edit'.$kind.'.twig';
+            break;
 
 	    case 'view' : // view something - forms
 	        if (count($rest) < 3)
-		{
+            {
 		    Web::getinstance()->bad();
-		}
+            }
 	        $kind = $rest[1];
-                $obj = $context->load($kind, $rest[2]);
-                if (!is_object($obj))
-                {
-                    Web::getinstance()->bad();
+            $obj = $context->load($kind, $rest[2]);
+            if (!is_object($obj))
+            {
+                $context->local()->bad();
+            }
+            if (($bid = $context->formdata()->post('bean', '')) !== '')
+            { # this is a post
+                if ($bid != $obj->getID())
+                { # something odd...
+                    $context->local()->bad();
                 }
-                if (($bid = $context->formdata()->post('bean', '')) !== '')
-                { # this is a post
-                    if ($bid != $obj->getID())
-                    { # something odd...
-                        Web::getinstance()->bad();
-                    }
-                    $obj->edit($context);
-                    // The edit call might divert to somewhere else so sometimes we may not get here.
-                }
-		$context->local()->addval($kind, $obj);
-		$tpl = 'support/view'.$kind.'.twig';
-		break;
+                $obj->edit($context);
+                // The edit call might divert to somewhere else so sometimes we may not get here.
+            }
+            $context->local()->addval($kind, $obj);
+            $tpl = 'support/view'.$kind.'.twig';
+            break;
 
 	    case 'update':
-		if (function_exists('zip_open'))
-		{
-		    $formd = $context->formdata();
-		    if ($formd->hasfile('update'))
-		    {
-			$data = $formd->filedata('update');
-			if (($zd = zip_open($data['tmp_name'])) === FALSE)
-			{
-			    $context->local()->message(Local::ERROR, 'Cannot open the file');
-			}
-			else
-			{
-			    $context->local()->message(Local::MESSAGE, 'Done');
-			}
-		    }
-		}
-		else
-		{
-		    $context->local()->addval('nozip', TRUE);
-		}
-		$tpl = 'support/update.twig';
-		break;
+            if (function_exists('zip_open'))
+            {
+                $formd = $context->formdata();
+                if ($formd->hasfile('update'))
+                {
+                    $data = $formd->filedata('update');
+                    if (($zd = zip_open($data['tmp_name'])) === FALSE)
+                    {
+                        $context->local()->message(Local::ERROR, 'Cannot open the file');
+                    }
+                    else
+                    {
+                        $context->local()->message(Local::MESSAGE, 'Done');
+                    }
+                }
+            }
+            else
+            {
+                $context->local()->addval('nozip', TRUE);
+            }
+            $tpl = 'support/update.twig';
+            break;
 
 	    default :
-                $tpl = 'support/admin.twig';
-		break;
+            $tpl = 'support/admin.twig';
+            break;
 	    }
 	    return $tpl;
 	}
