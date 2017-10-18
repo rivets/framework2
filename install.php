@@ -202,7 +202,7 @@
     else
     {
         $dir = '/'.implode('/', $bdr);
-        $name = end($bdr); # don't use $bdr again so no need to reset() it...
+        $name = array_pop($bdr);
     }
 
     $tpl = 'install.twig';
