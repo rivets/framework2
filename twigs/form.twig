@@ -2,7 +2,7 @@
 {% if value != '' %} {{attr}}="{{value}}"{% endif %}
 {% endmacro hv %}
 
-{% macro fv(opts, attr)%}
+{% macro fv(opts)%}
 {% for v in ['required', 'disabled', 'readonly'] %}{% if opts[v] %} {{v}}="{{v}}"{% endif %}{% endfor %}
 {% endmacro fv %}
 
@@ -23,22 +23,22 @@
 {% import _self as h %}
    <div class="form-group">
         {% if opts.label != '' %}
-	    <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
-	{% endif %}
+            <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
+        {% endif %}
 {% endmacro bsl %}
 
 {% macro xsl(opts, cls) %}
 {% import _self as h %}
    <div class="{{cls}}">
         {% if opts.label != '' %}
-	    <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
-	{% endif %}
+            <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
+        {% endif %}
 {% endmacro xsl %}
 
 {% macro bse(opts) %}
-            {% if opts.warn != '' %}
+        {% if opts.warn != '' %}
 	       <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>
-            {% endif %}
+        {% endif %}
    </div>
 {% endmacro bse%}
 
@@ -116,11 +116,11 @@
 {% macro select(opts) %}
 {% import _self as h %}
     {{h.bsl(opts)}}
-    <select{{h.hv('id', opts.id)}}{{h.hv('name', opts.name)}}{{h.parsley(opts.parsley)}}>
-	{% for ov in opts.options %}
-	    <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text}}</option>
-	{% endfor %}
-    </select>
+    <select class="form-control"{{h.hv('id', opts.id)}}{{h.hv('name', opts.name)}}{{h.fv(opts)}}>
+        {% for ov in opts.options %}
+            <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text|raw}}</option>
+        {% endfor %}
+        </select>
     {{h.bse(opts)}}
 {% endmacro select %}
 

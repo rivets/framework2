@@ -12,14 +12,14 @@
 /**
  * Check for a role
  *
- * @param string        $contextname    The name of a context...
- * @param string	$rolename       The name of a role....
+ * @param string        $rolecontextname    The name of a context...
+ * @param string	    $rolename       The name of a role....
  *
  * @return object
  */
-        public function hasrole($contextname, $rolename)
+        public function hasrole($rolecontextname, $rolename)
         {
-            $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
+            $cname = \R::findOne('rolecontext', 'name=?', [$rolecontextname]);
             if (!is_object($cname))
             {
                 return FALSE;
@@ -31,6 +31,19 @@
             }
             return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$cname->getID(), $rname->getID(), $this->bean->getID()]);
+        }
+/**
+ * Check for a role by bean
+ *
+ * @param object    $rolecontext    A rolecontext
+ * @param object	$rolename       A rolename
+ *
+ * @return object
+ */
+        public function hasrolebybean($rolecontext, $rolename)
+        {
+            return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                [$rolecontext->getID(), $rolename->getID(), $this->bean->getID()]);
         }
 /**
  * Delete a role
@@ -101,7 +114,6 @@
             $r->start = ($start === '' || strtolower($start) == 'now') ? $context->utcnow() : $start;
             $r->end = ($end === '' || strtolower($end) == 'never') ? NULL : $end;
             \R::store($r);
-            \Framework\Debug::vdump($r);
             return $r;
         }
 /**
@@ -138,7 +150,7 @@
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);
-                    if (strtolower($start) == 'now')
+                    if (strtolower($start) == 'now' || $start === '')
                     {
                         $rl->start = $context->utcnow();
                     }
@@ -163,19 +175,48 @@
                     }
                     \R::store($rl);
                 }
-	    }
+            }
             foreach ($fdt->posta('context') as $ix => $cn)
             {
                 $rn = $fdt->post(['role', $ix]);
                 if ($rn !== '' && $cn !== '')
                 {
+                    $rcb = $context->load('rolecontext', $cn);
+                    $rnb = $context->load('rolename', $rn);
+                    $rprole = $this->hasrole($rcb, $rnb);
+
                     $end = $fdt->post(['end', $ix]);
                     $start = $fdt->post(['start', $ix]);
-                    $x = $this->addrolebybean($context->load('rolecontext', $cn), $context->load('rolename', $rn), $fdt->post(['otherinfo', $ix]),
-                        $start === '' || strtolower($start) == 'now' ? $context->utcnow() : $context->utcdate($start),
-                        $end === '' ||strtolower($end) == 'never' ? '' : $context->utcdate($end)
-                    );
-                    var_dump($x);
+                    $start = $start === '' || strtolower($start) == 'now' ? $context->utcnow() : $context->utcdate($start);
+                    $end = $end === '' ||strtolower($end) == 'never' ? '' : $context->utcdate($end);
+                    $info = $fdt->post(['otherinfo', $ix]);
+                    if (is_object($prole))
+                    { # exists already...
+                        $change = FALSE;
+                        if ($prole->start != $start)
+                        {
+                            $prole->start = $start;
+                            $change = TRUE;
+                        }
+                        if ($prole->end != $end)
+                        {
+                            $prole->end = $end;
+                            $change = TRUE;
+                        }
+                        if ($prole->otherinfo != $info)
+                        {
+                            $prole->otherinfo = $info;
+                            $change = TRUE;
+                        }
+                        if ($change)
+                        {
+                            \R::store($prole);
+                        }
+                    }
+                    else
+                    {
+                        $x = $this->addrolebybean($rcb, $rnb, $info, $start, $end);
+                    }
                 }
             }
         }

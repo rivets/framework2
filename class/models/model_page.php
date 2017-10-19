@@ -21,7 +21,12 @@
  * @var Array   Key is name of field and the array contains flags for checks
  */
         private static $editfields = array(
-            'name'     => array(TRUE),         # array(NOTEMPTY)
+            'name'          => array(TRUE, FALSE),   
+            'kind'          => array(TRUE, FALSE),  
+            'source'        => array(TRUE, FALSE),
+            'active'        => array(TRUE, TRUE),
+            'mobileonly'    => array(TRUE, TRUE),
+            'needlogin'     => array(TRUE, TRUE),
         );
 /**
  * Check user can access the page
@@ -64,7 +69,7 @@
             $fdt = $context->formdata();
             foreach (self::$editfields as $fld => $flags)
             { // might need more fields for different applications
-                $val = $fdt->post($fld, '');
+                $val = $fdt->post($fld, $flags[1] ? 0 : ''); # might be a flag
                 if ($flags[0] && $val === '')
                 { // this is an error as this is a required field
                     $error = TRUE;

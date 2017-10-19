@@ -4,7 +4,10 @@
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
-{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax.php" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{#
+    {% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax.php" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+#}
+{% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
@@ -14,10 +17,14 @@
     <script src="{{fwurls.parsley}}"></script>
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{fwurls.editable}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether-drop/1.4.2/js/drop.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/js/tooltip.min.js"></script>
 {% endblock scripts %}
 
 {% block css %}
     <link rel="stylesheet" href="{{fwurls.editablecss}}"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css" rel="stylesheet"/>
 {% endblock css %}
 
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
@@ -25,7 +32,8 @@
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+        return value;
+        //return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
     }
     var kname = []
     function paramset(params)
@@ -49,6 +57,7 @@
 {% endblock setup %}
 
 {% block onload %}
+    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="fa fa-fw fa-check"></i></button>' + '<button type="button" class="btn editable-cancel"><i class="fa fa-fw fa-remove"></i></button>' ;
     $('.ppedit').editable({params: paramset, source: kname});
     $('#npform').on('submit', false)
     $('#addb').on('click', function(e){

@@ -80,14 +80,14 @@
                 $obj->edit($context);
                 // The edit call might divert to somewhere else so sometimes we may not get here.
             }
-            $context->local()->addval($kind, $obj);
+            $context->local()->addval('bean', $obj);
             $tpl = 'support/edit'.$kind.'.twig';
             break;
 
 	    case 'view' : // view something - forms
 	        if (count($rest) < 3)
             {
-		    Web::getinstance()->bad();
+                $context->local()->bad();
             }
 	        $kind = $rest[1];
             $obj = $context->load($kind, $rest[2]);
@@ -109,7 +109,15 @@
             break;
 
 	    case 'update':
-            if (function_exists('zip_open'))
+            $ufd = fopen('https://catless.ncl.ac.uk/frameworknew/update/', 'r');
+            if ($ufd)
+            {
+                $upd = json_decode(fread($ufd, 1024));
+                $context->local()->addval('version', $upd->version);
+                fclose($ufd);
+                $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
+            }
+            elseif (function_exists('zip_open'))
             {
                 $formd = $context->formdata();
                 if ($formd->hasfile('update'))
