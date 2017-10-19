@@ -1,4 +1,0 @@
-RewriteEngine on
-Options -Indexes +FollowSymlinks
-
-RewriteRule ^.*$ install.php [L,QSA]
