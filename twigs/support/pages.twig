@@ -34,14 +34,14 @@
         return value;
         //return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
     }
-    var kname = []
-    function paramset(params)
-    {
-        params.id = params.pk
-        params.bean = 'page'
-        params.op = 'update'
-        return params
-    }
+    var kname = [];
+    //function paramset(params)
+    //{
+    //   params.id = params.pk
+    //   params.bean = 'page'
+    //   params.op = 'update'
+    //    return params
+    //}
     kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -56,8 +56,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="fa fa-fw fa-check"></i></button>' + '<button type="button" class="btn editable-cancel"><i class="fa fa-fw fa-remove"></i></button>' ;
-    $('.ppedit').editable({params: paramset, source: kname});
+    //$('.ppedit').editable({params: paramset, source: kname});
     $('#npform').on('submit', false)
     $('#addb').on('click', function(e){
         e.preventDefault()
@@ -122,7 +121,7 @@
                     nx = $(htm).insertBefore(sp.parent())
                 }
                 nx.data('id', data)
-                $('.ppedit', nx).editable({params: paramset, source: kname});
+                //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
         dt = {
                 op : 'addpage',
@@ -164,7 +163,7 @@
         }
     })
     $('#npage').on('show.bs.modal', function(e){
-	$('#npform input,select').val('')
+        $('#npform input,select').val('')
     })
     $('#more').on('click', function(e){
         e.preventDefault()
@@ -183,7 +182,7 @@
 
 {% block header %}
     <section class="col-md-12">
-	<h1>Pages</h1>
+        <h1>Pages</h1>
     </section>
 {% endblock header %}
 
