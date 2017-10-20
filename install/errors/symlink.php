@@ -16,14 +16,14 @@
 </head>
 <body lang="en-GB">
     <article class="container">
-	<div class="row">
-	   <div class="col-md-offset-3 col-md-6">
-	        <p>
+        <section class="row">
+           <div class="col-md-offset-3 col-md-6">
+                <p>
                     Your file system is using symbolic links to name the root of the server
                     and the installer cannot locate itself in your file hierarchy.
                 </p>
-	   </div>
-	</div>
+           </div>
+        </section>
     </article>
     <script src="<?php echo $fwurls['bootjs']; ?>"></script>
 </body>

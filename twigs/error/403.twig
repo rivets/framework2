@@ -1,15 +1,15 @@
 {% extends 'page.twig' %}
 
 {% block header %}
-    <div class="ml-auto col-md-8 mr-auto">
-	<h1>Access denied!</h1>
-    </div>
+    <section class="ml-auto col-md-8 mr-auto">
+        <h1>Access denied!</h1>
+    </section>
 {% endblock header %}
 
 {% block main %}
     <section class="row">
         <div class="ml-auto col-md-8 mr-auto">
-            <div class="well">
+            <div class="jumbotron">
                 Sorry, you do not have permission to do that.
             </div>
             <p><a href="{{base}}/">Return to home page</a></p>

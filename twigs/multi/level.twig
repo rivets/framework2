@@ -17,21 +17,18 @@
 {% endblock onload %}
 
 {% block header %}
-    <div class="col-md-12">
-	<h1 class="center-block">A static twig page with a multi-part URL</h1>
-    </div>
+    <section class="col-md-12">
+        <h1 class="center-block">A static twig page with a multi-part URL</h1>
+    </section>
 {% endblock header %}
 
 {% block main %}
-    <div class="row">
-        <div class="col-md-offset-2 col-md-9">
-	    <p>Content&hellip;</p></p>
-        </div>
-    </div>
+    <section class="row">
+        <article class="ml-auto col-md-9 mr-auto">
+            <p>Content&hellip;</p></p>
+        </article>
+    </section>
 {% endblock main %}
 
-{% block footer %}
-    <div class="col-md-12">
-        <p class="center-block">Footer</p>
-    <div>
-{% endblock footer %}
+{% block pagefooter %}
+{% endblock pagefooter %}

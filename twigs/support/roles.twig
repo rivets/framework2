@@ -112,24 +112,24 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-			<th>Fixed</th>
-			<th>&nbsp;</th>
+                        <th>Fixed</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
-		<tbody>
-		    {% for r in siteinfo.roles(page, pagesize) %}
-			<tr data-id="{{r.id}}">
-			    <td class="rname">{{r.name}}</td>
-			    <td>{{h.tick(r.fixed, 'fixed')}}</td>
-			    <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb fa fa-trash-o"></i>{% endif %}</td>
-			</tr>
-		    {% else %}
-		        <tr><td colspan="3">No roles defined</td></tr>
-		    {% endfor %}
-		</tbody>
+                <tbody>
+                    {% for r in siteinfo.roles(page, pagesize) %}
+                        <tr data-id="{{r.id}}">
+                            <td class="rname">{{r.name}}</td>
+                            <td>{{h.tick(r.fixed, 'fixed')}}</td>
+                            <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb fa fa-trash-o"></i>{% endif %}</td>
+                        </tr>
+                    {% else %}
+                    <tr><td colspan="3">No roles defined</td></tr>
+                {% endfor %}
+            </tbody>
             </table>
             {% include 'paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nrole" type="button">Add Role</button></p>
+            <p><button class="btn btn-primary" data-toggle="modal" data-target="#nrole" type="button">Add Role</button></p>
         </article>
     </section>
     <div class="modal fade" id="nrole" aria-labelledby="nrole" aria-hidden="true">

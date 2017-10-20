@@ -16,15 +16,14 @@
 {% block scripts %}
     <script src="{{fwurls.parsley}}"></script>
     <script src="{{assets}}/js/util.js"></script>
-    <script src="{{fwurls.editable}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.2/js/tether.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether-drop/1.4.2/js/drop.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/js/tooltip.min.js"></script>
+    {# <script src="{{fwurls.editable}}"></script> #}
 {% endblock scripts %}
 
 {% block css %}
+    {#
     <link rel="stylesheet" href="{{fwurls.editablecss}}"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css" rel="stylesheet"/>
+    #}
 {% endblock css %}
 
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}

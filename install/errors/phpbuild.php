@@ -16,15 +16,15 @@
 </head>
 <body lang="en-GB">
     <article class="container">
-	<div class="row">
-	   <div class="col-md-offset-3 col-md-6">
-	        <p>
+        <section class="row">
+           <div class="ml-auto ccol-md-6 mr-auto">
+                <p>
                     Your version of PHP needs to be built with the options
                     <code>--with-pdo-mysql</code> and <code>--enable-mbstring</code>
                     in order to run the framework.
                 </p>
-	   </div>
-	</div>
+           </div>
+        </section>
     </article>
     <script src="<?php echo $fwurls['bootjs']; ?>"></script>
 </body>

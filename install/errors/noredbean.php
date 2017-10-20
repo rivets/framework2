@@ -16,11 +16,11 @@
 </head>
 <body lang="en-GB">
     <article class="container">
-	<div class="row">
-	   <div class="col-md-offset-3 col-md-6">
-	       <p>Please run composer or install the RedBean ORM by hand.</p>
-	   </div>
-	</div>
+        <section class="row">
+           <div class="ml-auto col-md-6 mr-auto">
+               <p>Please run composer or install the RedBean ORM by hand.</p>
+           </div>
+        </section>
     </article>
     <script src="<?php echo $fwurls['bootjs']; ?>"></script>
 </body>

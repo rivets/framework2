@@ -1,7 +1,7 @@
 {% extends 'page.twig' %}
 
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.min.js"></script>
+     <script src="{{fwurls.parsley}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.remote.js"></script>
 {% endblock scripts %}
 
@@ -17,13 +17,13 @@
 
 {% block main %}
     <section class="row" id="frontpage">
-        <article class="col-md-8 col-md-offset-2">
+        <article class="ml-auto col-md-8 mr-auto">
             {% if regok is defined %}
                 <h2>{{regok}}</h2>
                 <p><a href="/" class="btn btn-primary">Home Page</a></p>
             {% else %}
-                <h1 class="jumbotron">Register for {{context.sitename}}</h1>
-                <form action="{{base}}/register" method="post" class="well" id="regform">
+                <h1 class="jumbotron">Register for {{fwurls.sitename}}</h1>
+                <form action="{{base}}/register" method="post" class="jumbotron" id="regform">
                     <div class="form-group">
                         <label for="un" class="control-label">User Name</label>
                         <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
@@ -47,8 +47,8 @@
                     <button class="btn btn-primary" type="submit">Register</button>
                 </form>
             {% endif %}
-	</article>
-   </section>
+        </article>
+    </section>
 {% endblock main %}
 
 {% block pagefooter %}
