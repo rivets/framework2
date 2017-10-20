@@ -6,39 +6,9 @@
  * @copyright 2012-2017 Newcastle University
  */
 /**
- * The framework assumes a self contained directory structure for a site like this :
- *
- * DOCUMENT_ROOT
- *    /sitename         This can be omitted if the site is the only one present and at the root
- *        /assets
- *            /css      CSS files
- *	      /favicons Favicon files
- *            /i18n     Any internationalisation files you may need
- *            /images   Image files
- *            /js       JavaScript
- *	      /public	Where non-access controlled uploaded files gets stored
- *            /...      Any other stuff that can be accessed without intermediation through PHP
- *        /class        PHP class definition files named "classname.php"
- *            /support  PHP class files for the administrative functions provided by the framework
- *            /models	RedBean Model class files
- *	  /debug	Used for debugging messages
- *        /lib          PHP files containing non-class definitions
- *	  /private	Where uploaded files get stored
- *        /twigcache    If twig cacheing is on this is where it stores the files
- *	  /twigs	Where the twig files go
- *            /error       Twig template files for error messages
- *            /support     Twig files for the admin support of the framework
- *        /vendor       If you are using composer then it puts stuff in here.
- *
- *         The .htaccess file directs
- * 	   anything in /assets to be served by Apache unless you are usin gthe Assets class to improve caching
- *         anything beginning "ajax" to be called directly i.e. ajax.php (this may or may not be useful - remove it if not)
- *         everything else gets passed into this script where it treats the URL thus:
- *                 /                        =>        /home and then
- *                 /action/r/e/st/          =>        Broken down in Context class. An action and an array of parameters.
- *
- *         Query strings and/or post fields are in the $_ arrays as normal but please use the access functions provided
- *         to get at the values whenever appropriate!
+ * See the information at
+ * 
+ * @link https://catless.ncl.ac.uk/framework/
  */
     use \Config\Config as Config;
     use \Framework\SiteAction as SiteAction;
@@ -79,19 +49,6 @@
     else
     {
         $page->check($context);
-	//if (($page->needlogin) && !$context->hasuser())
-	//{ # not logged in
-	//    $context->divert('/login?page='.urlencode($local->debase($_SERVER['REQUEST_URI'])));
-	//    /* NOT REACHED */
-	//}
-	//
-	//if (($page->admin && !$context->hasadmin()) ||		// not an admin
-	//    ($page->devel && !$context->hasdeveloper()) ||	// not a developer
-	//    ($page->mobileonly && !$context->hastoken()))	// not mobile and logged in
-	//{
-	//    $context->web()->sendstring($local->getrender('error/403.twig'), $mime, StatusCodes::HTTP_FORBIDDEN);
-	//    exit;
-	//}
     }
 
     $local->addval('context', $context);
@@ -110,10 +67,10 @@
     {
     case Siteaction::OBJECT: # fire up the object to handle the request
         $tpl = (new $page->source)->handle($context);
-	if (is_array($tpl))
-	{
-	    list($tpl, $mime, $code) = $tpl;
-	}
+        if (is_array($tpl))
+        {
+            list($tpl, $mime, $code) = $tpl;
+        }
         break;
 
     case Siteaction::TEMPLATE: # render a template
@@ -143,6 +100,6 @@
 
     if ($tpl !== '')
     { # an empty template string means generate no output here...
-	$context->web()->sendstring($local->getrender($tpl), $mime, $code);
+        $context->web()->sendstring($local->getrender($tpl), $mime, $code);
     }
 ?>
