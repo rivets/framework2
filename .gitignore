@@ -1,4 +1,5 @@
 *.komodoproject
 ._*
+.[a-z]*
 vendor
 composer.lock

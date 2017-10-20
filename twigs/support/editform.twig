@@ -31,21 +31,21 @@
     var kname = []
     function paramset(params)
     {
-	params.id = params.pk
-	params.bean = 'formfield'
-	params.op = 'update'
-	return params
+        params.id = params.pk
+        params.bean = 'formfield'
+        params.op = 'update'
+        return params
     }
     kname = [
-    {% for v in types %}
-        {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
-    {% endfor %}
+        {% for v in types %}
+            {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
     ]
     var clicks = [
-	['delb', dodelbean, ''],
-	['reqb', dotoggle, 'required'],
-	['rdob', dotoggle, 'readonly'],
-	['disb', dotoggle, 'disabled'],
+        ['delb', dodelbean, ''],
+        ['reqb', dotoggle, 'required'],
+        ['rdob', dotoggle, 'readonly'],
+        ['disb', dotoggle, 'disabled'],
     ]
 {% endblock setup %}
 
@@ -58,20 +58,20 @@
     })
     $('#ptab').on('click', function(e){
         var x = $(e.target)
-	for (var ix in clicks)
-	{
-	   if (x.hasClass(clicks[ix][0]))
-	   {
-	       clicks[ix][1](e, x, 'formfield', clicks[ix][2])
-	   }
-	}
+        for (var ix in clicks)
+        {
+           if (x.hasClass(clicks[ix][0]))
+           {
+               clicks[ix][1](e, x, 'formfield', clicks[ix][2])
+           }
+        }
     })
     $('.ppedit').editable({params: paramset, source: kname});
 {% endblock onload %}
 
 {% block header %}
     <section class="col-md-12">
-	<h1>Edit Form "{{form.name}}"</h1>
+        <h1>Edit Form "{{form.name}}"</h1>
     </section>
 {% endblock header %}
 
