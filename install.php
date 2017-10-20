@@ -273,8 +273,8 @@
     }
 
     $vals['fail'] = $fail;
-//    $hasconfig = file_exists('class/config.php');
-//    $hashtaccess  = file_exists('.htaccess');
+    $hasconfig = file_exists('class/config.php');
+    $hashtaccess  = file_exists('.htaccess');
 //    $vals['hasconfig'] = $hasconfig;
 //    $vals['hashtaccess'] =  $hashtaccess;
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
@@ -609,6 +609,7 @@
             catch (Exception $e)
             { # something went wrong - so cleanup and try again...
                 $vals['dberror'] = $e->getMessage();
+                $vals['fail'] = TRUE;
                 @unlink('.htaccess');
                 @unlink('class/config/config.php');
             }
