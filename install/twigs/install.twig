@@ -150,6 +150,11 @@
                         not work properly. The framework supports use of the <a href="https://github.com/PHPMailer/PHPMailer">PHPMailer class</a>
                         which can work without a local mail system (such as sendmail or exim) being configured.
                     </p>
+                    {% if not sendmail %}
+                        <p>
+                            It looks as though you do <strong>NOT</strong> have a mailer configured so you may wish to configure this option.
+                        </p>
+                    {% endif %}
                     <div class="form-check">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input" name="usephpm" id="mailon"/> Enable and configure PHPMailer
@@ -186,13 +191,13 @@
                             <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control" disabled="disabled"/>
                         </div>
                         <div class="control-group">
-                            <label for="sp" class="control-label">Password</label>
-                            <input type="password" id="sp" name="smtppass" placeholder="**************" class="form-control" disabled="disabled"/>
+                            <label for="spw" class="control-label">Password</label>
+                            <input type="password" id="spw" name="smtppass" placeholder="**************" class="form-control" disabled="disabled"/>
                         </div>
                         <div class="control-group">
                             <label for="csp" class="control-label">Confirm Password</label>
-                            <input type="password" id="csp" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#sp"/>
-                                        <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
+                            <input type="password" id="cspw" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#spw"/>
+                            <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
                         </div>
                     </fieldset>
                     <fieldset>
