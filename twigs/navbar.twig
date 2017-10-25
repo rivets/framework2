@@ -10,22 +10,22 @@
 
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav mr-auto">
-                    <li class="nav-item{{action == 'about' ? ' active'}}"><a class="nav-link" href="{{base}}/about">About</a></li>
-                    <li class="nav-item{{action == 'contact' ? ' active'}}"><a class="nav-link" href="{{base}}/contact">Contact</a></li>
+                    <li class="nav-item{{action == 'about' ? ' active'}}"><a class="nav-link" href="{{base}}/about/">About</a></li>
+                    <li class="nav-item{{action == 'contact' ? ' active'}}"><a class="nav-link" href="{{base}}/contact/">Contact</a></li>
                     {% if context.hasadmin %}
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id=ddadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
                             <div class="dropdown-menu" aria-labelledby="ddadmin">
-                                <a class="dropdown-item" href="{{base}}/admin/pages">Pages</a>
+                                <a class="dropdown-item" href="{{base}}/admin/pages/">Pages</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/admin/users">Users</a>
-                                <a class="dropdown-item" href="{{base}}/admin/contexts">Contexts</a>
-                                <a class="dropdown-item" href="{{base}}/admin/roles">Roles</a>
+                                <a class="dropdown-item" href="{{base}}/admin/users/">Users</a>
+                                <a class="dropdown-item" href="{{base}}/admin/contexts/">Contexts</a>
+                                <a class="dropdown-item" href="{{base}}/admin/roles/">Roles</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/admin/forms">Forms</a>
+                                <a class="dropdown-item" href="{{base}}/admin/forms/">Forms</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/admin/config">Config</a>
-                                <a class="dropdown-item" href="{{base}}/admin/update">Update</a>
+                                <a class="dropdown-item" href="{{base}}/admin/config/">Config</a>
+                                <a class="dropdown-item" href="{{base}}/admin/update/">Update</a>
                             </div>
                         </li>
                     {% endif %}
@@ -33,14 +33,14 @@
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="dddevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
                             <div class="dropdown-menu" aria-labelledby="dddevel">
-                                <a class="dropdown-item" href="{{base}}/devel/hack">Run Code</a>
+                                <a class="dropdown-item" href="{{base}}/devel/hack/">Run Code</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/devel/fail">Fail</a>
-                                <a class="dropdown-item" href="{{base}}/devel/throw">Throw</a>
+                                <a class="dropdown-item" href="{{base}}/devel/fail/">Fail</a>
+                                <a class="dropdown-item" href="{{base}}/devel/throw/">Throw</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/devel/mail">Test mail</a>
+                                <a class="dropdown-item" href="{{base}}/devel/mail/">Test mail</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/admin/info">PHP Info</a>
+                                <a class="dropdown-item" href="{{base}}/admin/info/">PHP Info</a>
 {#
                                 <a class="dropdown-item" href="{{base}}/devel/errlog">View Error Log</a>
                                 <a class="dropdown-item" href="{{base}}/devel/clearlog">Clear Error Log</a>
