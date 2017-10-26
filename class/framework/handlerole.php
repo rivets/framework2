@@ -1,4 +1,10 @@
 <?php
+/**
+ * A trait supporting classess that use roles
+ * 
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2017 Newcastle University
+ */
     namespace Framework;
     
     use \Framework\Web\Web as Web;
@@ -95,11 +101,11 @@
 /**
  *  Add a role
  *
- * @param object	$context        Contextname
- * @param object	$role           Rolename
+ * @param object	$rolecontext    Contextname
+ * @param object	$rolename       Rolename
  * @param string	$otherinfo      Any other info that is to be stored with the role
- * @param string	$start		A datetime
- * @param string	$end		A datetime or ''
+ * @param string	$start		    A datetime
+ * @param string	$end		    A datetime or ''
  *
  * @return object
  */

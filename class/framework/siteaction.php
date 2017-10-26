@@ -1,13 +1,13 @@
 <?php
-    namespace Framework;
-
-    use \Framework\Web\Web as Web;
 /**
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2015 Newcastle University
  */
+    namespace Framework;
+
+    use \Framework\Web\Web as Web;
 /**
  * A class that all provides a base class for any class that wants to implement a site action
  *

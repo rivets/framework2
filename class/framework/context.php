@@ -1,15 +1,14 @@
 <?php
-    namespace Framework;
-
-    use Config\Config as Config;
-    use Framework\Web\Web as Web;
-
 /**
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2017 Newcastle University
  */
+    namespace Framework;
+
+    use Config\Config as Config;
+    use Framework\Web\Web as Web;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
@@ -191,7 +190,7 @@
 /**
  * Generates a new, unique, sequential id value
  *
- * @param string	$id The prefix for the id
+ * @param string	$str The prefix for the id
  *
  * @return string
  */
@@ -272,9 +271,9 @@
 /**
  * Load a bean or fail with a 400 error
  *
- * @param string	$table	    A bean type name
- * @param integer	$id	    A bean id
- * @param integer       $onerror    A flag indicating what to do on error (see constants above)
+ * @param string	$bean	    A bean type name
+ * @param integer	$id	        A bean id
+ * @param integer   $onerror    A flag indicating what to do on error (see constants above)
  *
  * @throws  Exception when asked to by the "onerror" value
  *

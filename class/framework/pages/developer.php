@@ -1,11 +1,11 @@
 <?php
-    namespace Framework\Pages;
 /**
  * Contains definition of abstract Developer class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2017 Newcastle University
  */
+    namespace Framework\Pages;
 /**
  * Class for developer hacks and helpers...
  */

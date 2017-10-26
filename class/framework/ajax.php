@@ -1,8 +1,4 @@
 <?php
-    namespace Framework;
-
-    use \R as R;
-
 /**
  * Class for handling AJAX calls invoked from ajax.php. You could integrate the
  * AJAX handling calls into the normal index.php RESTful route, but sometimes
@@ -16,6 +12,9 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2017 Newcastle University
  */
+    namespace Framework;
+
+    use \R as R;
 /**
  * Handle Ajax operations in this class
  */

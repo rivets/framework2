@@ -1,15 +1,16 @@
 <?php
+ /**
+ * Class for handling contact messages
+ * 
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2012-2017 Newcastle University
+ */
     namespace Framework\Pages;
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
-
 /**
  * A class that contains code to implement a contact page
- *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2016 Newcastle University
- *
  */
     class Contact extends \Framework\Siteaction
     {

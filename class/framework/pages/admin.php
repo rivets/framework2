@@ -1,14 +1,13 @@
 <?php
-    namespace Framework\Pages;
-
-    use \Framework\Web\Web as Web;
-
 /**
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2015 Newcastle University
  */
+    namespace Framework\Pages;
+
+    use \Framework\Web\Web as Web;
 /**
  * A class that contains code to handle any /admin related requests.
  *

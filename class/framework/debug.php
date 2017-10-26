@@ -1,11 +1,11 @@
 <?php
-    namespace Framework;
 /**
  * Contains definition of Debug class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2017 Newcastle University
  */
+    namespace Framework;
 /**
  * A class that handles various debugging related things
  */

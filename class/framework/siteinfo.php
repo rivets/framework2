@@ -1,17 +1,28 @@
 <?php
-    namespace Framework;
 /**
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
+ * @copyright 2016-2017 Newcastle University
  *
  */
+    namespace Framework;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
     class SiteInfo
     {
+/**
+ * Get beans in chunks and turn them one by one using a generator
+ *
+ * @param string    $bean   A bean name
+ * @param string    $where  An SQL where condition
+ * @param array     $param  Substitutions for the where clause
+ * @param integer   $start  The start position
+ * @param integer   $count  The number wanted.
+ *
+ * @return void     But this yields beans
+ */
         public function collect($bean, $where, $param, $start, $count)
         {
             if ($start !== '')

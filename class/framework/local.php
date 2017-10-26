@@ -1,15 +1,14 @@
 <?php
-    namespace Framework;
-
-    use Config\Config as Config;
-    use Framework\Web\Web as Web;
-
 /**
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2015 Newcastle University
+ * @copyright 2012-2017 Newcastle University
  */
+    namespace Framework;
+
+    use Config\Config as Config;
+    use Framework\Web\Web as Web;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *

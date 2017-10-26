@@ -1,12 +1,12 @@
 <?php
-    namespace Framework;
-
 /**
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015 Newcastle University
  */
+    namespace Framework;
+
     use Framework\Web\Web as Web;
 /**
  * A class that provides helpers for accessing form data
@@ -190,6 +190,7 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
+ * @param string    $default    A default value
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
