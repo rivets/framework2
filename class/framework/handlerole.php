@@ -189,7 +189,7 @@
                 {
                     $rcb = $context->load('rolecontext', $cn);
                     $rnb = $context->load('rolename', $rn);
-                    $rprole = $this->hasrole($rcb, $rnb);
+                    $rprole = $this->hasrolebybean($rcb, $rnb);
 
                     $end = $fdt->post(['end', $ix]);
                     $start = $fdt->post(['start', $ix]);
