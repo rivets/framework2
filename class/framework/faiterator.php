@@ -9,7 +9,7 @@
 /**
  * A class to iterate over array values in $_FILES and make them look like singletons
  */
-    class FAIterator extends ArrayIterator
+    class FAIterator extends \ArrayIterator
     {
 /**
  * @var array   The base entry in the $_FILES array.
