@@ -15,7 +15,7 @@ then # we do have PHP
             php composer.phar install
         fi
     fi
-    for i in . .htaccess class/config assets
+    for i in . class/config assets
     do
         chmod a+w $i
     done
