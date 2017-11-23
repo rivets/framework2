@@ -8,15 +8,22 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#more').on('click', function(e){
-        e.preventDefault()
-        $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+     $('#more').on('click', function(e){
+        var mrow = $('#mrow');
+        mrow.before($('#example').clone());
+        var pr = $mrow.prev();
+        $('input', pr).val(''); // clear the inputs
+        $('option', pr).prop('selected', false); // clear any selections
+        $('.delb', pr).on('click', function(e){
+            dodelbean(e, this, 'pagerole');
+        });
+    });
     $('#uform').on('submit', function(e){
         return $(this).parsley().validate()
-    })
+    });
+    $('.delb').on('click', function(e){
+        dodelbean(e, this, 'pagerole');
+    });
 {% endblock onload %}
 
 {% block header %}

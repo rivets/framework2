@@ -9,14 +9,21 @@
 
 {% block onload %}
     $('#more').on('click', function(e){
-        e.preventDefault()
-        $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+        var mrow = $('#mrow');
+        mrow.before($('#example').clone());
+        var pr = $mrow.prev();
+        $('input', pr).val(''); // clear the inputs
+        $('option', pr).prop('selected', false); // clear any selections
+        $('.delb', pr).on('click', function(e){
+            dodelbean(e, this, 'role');
+        });
+    });
     $('#uform').on('submit', function(e){
-        return $(this).parsley().validate()
-    })
+        return $(this).parsley().validate();
+    });
+    $('.delb').on('click', function(e){
+        dodelbean(e, this, 'role');
+    });
 {% endblock onload %}
 
 {% block header %}
@@ -37,7 +44,7 @@
                     {{f.password({ label: 'Password', id: 'psw', name: 'pw', ph: 'Password' })}}
                     {{f.password({ label: 'Repeat Password', id: 'rpsw', name: 'rpw', ph: 'Repeat Password', data: {'parsley-equalto': '#psw', 'parsley-trigger': 'change'} })}}
                 </fieldset>
-                {% include 'support/roleselect.twig' with {bean : bean } %}
+                {% include 'support/roleselect.twig' with { bean : bean } %}
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
             </form>
         </article>
