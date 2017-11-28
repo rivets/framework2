@@ -16,6 +16,12 @@
  *
  *********  Make sure that you call the parent handle method for anything you are not handling yourself!! ***********
  */
+/*
+        public function yourop($context)
+        {
+            // your code
+        }
+ */
 /**
  * Handle AJAX operations
  *
@@ -25,6 +31,7 @@
  */
         public function handle($context)
         {
+            //$this->operation('yourop', [TRUE, []]); TRUE if login needed, array is a list of roles required  in form ['context name', 'role name']
             parent::handle($context);
         }
     }

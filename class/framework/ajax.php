@@ -425,6 +425,18 @@
             R::store($bn);
         }
 /**
+ * Add an operation
+ *
+ * @param string    $function   The name of a function
+ * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
+ *
+ * @return void
+ */
+        public function operation($function, $perms)
+        {
+            self::$ops[$function] = $perms;
+        }
+/**
  * Handle AJAX operations
  *
  * @param object	$context	The context object for the site
