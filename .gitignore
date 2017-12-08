@@ -3,3 +3,5 @@
 .[a-z]*
 vendor
 composer.lock
+
+*.codekit3
