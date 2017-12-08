@@ -10,16 +10,7 @@
 
     function toggle(x)
     {
-        if (x.hasClass('fa-toggle-off'))
-        {
-           x.removeClass('fa-toggle-off');
-           x.addClass('fa-toggle-on');
-        }
-        else
-        {
-           x.removeClass('fa-toggle-on');
-           x.addClass('fa-toggle-off');
-        }
+        x.toggleClass('fa-toggle-off', 'fa-toggle-on');
     }
 
     function dotoggle(e, x, bean, fld)
