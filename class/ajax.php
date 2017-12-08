@@ -31,7 +31,7 @@
  */
         public function handle($context)
         {
-            //$this->operation('yourop', [TRUE, []]); TRUE if login needed, array is a list of roles required  in form ['context name', 'role name']
+            //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]); // TRUE if login needed, array is a list of roles required  in form ['context name', 'role name']
             parent::handle($context);
         }
     }
