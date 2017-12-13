@@ -463,19 +463,30 @@
                     { # this operation requires a logged in user
                         $context->mustbeuser();
                     }
-                    //if ($curop[1])
-                    //{ # this operation needs admin privileges
-                    //    $context->mustbeadmin();
-                    //}
-                    //if ($curop[2])
-                    //{ # this operation needs developer privileges
-                    //    $context->mustbedeveloper();
-                    //}
                     foreach ($curop[1] as $rcs)
                     {
-                        if (!$context->user()->hasrole($rcs[0], $rcs[1]))
+                        if (is_array($rcs[0]))
+                        { // this is an OR
+                            $ok = FALSE;
+                            foreach ($rcs as $orv)
+                            {
+                                if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                                {
+                                    $ok = TRUE;
+                                    break;
+                                }
+                            }
+                            if (!$ok)
+                            {
+                                $context->web()->noaccess();
+                            }
+                        }
+                        else
                         {
-                            $context->web()->noaccess();
+                            if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                            {
+                                $context->web()->noaccess();
+                            }
                         }
                     }
                     $this->{$op}($context);
