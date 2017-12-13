@@ -46,39 +46,41 @@
 	{
 	    if ($da['size'] == 0 || $da['error'] != UPLOAD_ERR_OK)
 	    { # 0 length file or there was an error so ignore
-            return FALSE;
+                return FALSE;
 	    }
-        $dir = getcwd();
+	    if (!$public && !is_object($owner))
+	    {
+                if (!$context->hasuser())
+                { # no logged in user! This should never happen...
+                    @chdir($dir);
+                    throw new Exception('No user');
+                }
+                $owner = $context->user();
+	    }
+            $dir = getcwd();
 	    chdir($context->local()->basedir());
-	    $pname = array($public ? 'public' : 'private', $context->user()->getID(), date('Y'), date('m'));
-        foreach ($pname as $pd)
-        { # walk the path cding and making if needed
-            $this->mkch($pd);
-        }
+	    $pname = array($public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m'));
+            foreach ($pname as $pd)
+            { # walk the path cding and making if needed
+                $this->mkch($pd);
+            }
 	    $fname = uniqid('', TRUE).'.'.pathinfo($da['name'], PATHINFO_EXTENSION);
 	    if (!@move_uploaded_file($da['tmp_name'], $fname))
-        {
-            throw new Exception('Cannot move uploaded file to '.$fname);
-        }
+            {
+                @chdir($dir);
+                throw new Exception('Cannot move uploaded file to '.$fname);
+            }
 	    $this->added = \R::isodatetime();
 	    $pname[] = $fname;
 	    $this->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
             $this->filename = $da['name'];
-	    if (!$public && !is_object($owner))
-	    {
-            if (!$context->hasuser())
-            { # no logged in user! This should never happen...
-                throw new Exception('No user');
-            }
-            $owner = $context->user();
-	    }
 	    $this->public = $public ? 1: 0;
 	    $this->user = $owner;
 	    \R::store($this->bean);
 	    if (!@chdir($dir))
-        { # go back to where we were in the file system
-            throw new Exception('Cannot chdir ', $dir);
-        }
+            { # go back to where we were in the file system
+                throw new Exception('Cannot chdir ', $dir);
+            }
 	    return TRUE;
 	}
  /**
