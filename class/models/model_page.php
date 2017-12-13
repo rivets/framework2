@@ -44,7 +44,7 @@
                     $context->divert('/login?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])));
                     /* NOT REACHED */
                 }
-                $match = \R::getCell('select count(p.id) = count(r.id) from user as u inner join role as r on u.id = r.user_id inner join '.
+                $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from user as u inner join role as r on u.id = r.user_id inner join '.
                     '(select * from pagerole where page_id=?) as p on p.rolename_id = r.rolename_id and p.rolecontext_id = r.rolecontext_id where u.id=?',
                     [$this->bean->getID(), $context->user()->getID()]);
                 if (!$match ||                              // User does not have all the required roles
