@@ -20,7 +20,7 @@
         <article class="ml-auto col-md-8 mr-auto">
             {% if regok is defined %}
                 <h2>{{regok}}</h2>
-                <p><a href="/" class="btn btn-primary">Home Page</a></p>
+                <p><a href="{{base}}/" class="btn btn-primary">Home Page</a></p>
             {% else %}
                 <h1 class="jumbotron">Register for {{fwurls.sitename}}</h1>
                 <form action="{{base}}/register" method="post" class="jumbotron" id="regform">
