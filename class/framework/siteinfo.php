@@ -155,5 +155,25 @@
         {
             return $this->{$collect ? 'collect' : 'fetch'}('form', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
+/**
+ * Get all users with a particular context/role
+ * @param string    $rolecontext
+ * @param string    $rolename
+ * @param boolean   $all            If TRUE do not check if role is currentyl active
+ * @param integer   $start      Start position - used for pagination
+ * @param integer   $count      The number to be fetched - used for pagination
+ * @param string    $order      An order clause
+ * @param boolean   $collect    If TRUE then use collect not fetch
+ *
+ * @return array
+ */
+        public function roleuser($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
+        {
+            $context = Context::getinstance();
+            $res = \R::findMulti('user', 'select user.* from user join role on (role.user_id = user.id) where rolename_id=? and rolecontext_id = ?'.
+                ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
+                [$context->rolename($rolename)->getID(), $context->rolecontext($rolecontext)->getID()]);
+            return $res['user'];
+        }
     }
 ?>
