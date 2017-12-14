@@ -70,12 +70,12 @@
                 @chdir($dir);
                 throw new Exception('Cannot move uploaded file to '.$fname);
             }
-	    $this->added = \R::isodatetime();
+	    $this->bean->added = \R::isodatetime();
 	    $pname[] = $fname;
-	    $this->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
-            $this->filename = $da['name'];
-	    $this->public = $public ? 1: 0;
-	    $this->user = $owner;
+	    $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
+            $this->bean->filename = $da['name'];
+	    $this->bean->public = $public ? 1: 0;
+	    $this->bean->user = $owner;
 	    \R::store($this->bean);
 	    if (!@chdir($dir))
             { # go back to where we were in the file system
