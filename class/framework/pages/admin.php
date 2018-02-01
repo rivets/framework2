@@ -15,6 +15,8 @@
  */
     class Admin extends \Framework\Siteaction
     {
+        const EDITABLE = ['form', 'page', 'user'];
+        const VIEWABLE = ['form'];
 /**
  * Handle various admin operations /admin/xxxx
  *
@@ -58,90 +60,82 @@
 
 	    case 'edit' : // Edit something - forms, user, pages...
 	        if (count($rest) < 3)
-            {
-                $context->web()->bad();
-                /* NOT REACHED */
-            }
-	        $kind = $rest[1];
-            $obj = $context->load($kind, $rest[2]);
-            if (!is_object($obj))
-            {
-                $context->web()->bad();
-                /* NOT REACHED */
-            }
-            if (($bid = $context->formdata()->post('bean', '')) !== '')
-            { # this is a post
-                if ($bid != $obj->getID())
-                { # something odd...
+                {
                     $context->web()->bad();
                     /* NOT REACHED */
                 }
-                $obj->edit($context);
-                // The edit call might divert to somewhere else so sometimes we may not get here.
-            }
-            $context->local()->addval('bean', $obj);
-            $tpl = 'support/edit'.$kind.'.twig';
-            break;
+                $kind = $rest[1];
+                if (!in_array($kind, self::EDITABLE))
+                {
+                    $context->web()->bad();
+                    /* not reached */
+                }
+                $obj = $context->load($kind, $rest[2]);
+                if (($bid = $context->formdata()->post('bean', '')) !== '')
+                { // this is a post
+                    if ($bid != $obj->getID())
+                    { # something odd...
+                        $context->web()->bad();
+                        /* NOT REACHED */
+                    }
+                    $obj->edit($context);
+                    // The edit call might divert to somewhere else so sometimes we may not get here.
+                }
+                $context->local()->addval('bean', $obj);
+                $tpl = 'support/edit'.$kind.'.twig';
+                break;
 
-	    case 'view' : // view something - forms
+	    case 'view' : // view something - forms only at the moment
 	        if (count($rest) < 3)
-            {
-                $context->local()->bad();
-            }
-	        $kind = $rest[1];
-            $obj = $context->load($kind, $rest[2]);
-            if (!is_object($obj))
-            {
-                $context->local()->bad();
-            }
-            if (($bid = $context->formdata()->post('bean', '')) !== '')
-            { # this is a post
-                if ($bid != $obj->getID())
-                { # something odd...
+                {
                     $context->local()->bad();
                 }
-                $obj->edit($context);
-                // The edit call might divert to somewhere else so sometimes we may not get here.
-            }
-            $context->local()->addval($kind, $obj);
-            $tpl = 'support/view'.$kind.'.twig';
-            break;
+                $kind = $rest[1];
+                if (!in_array($kind, self::VIEWABLE))
+                {
+                    $context->web()->bad();
+                    /* NOT REACHED */
+                }
+                $obj = $context->load($kind, $rest[2]);
+                $context->local()->addval($kind, $obj);
+                $tpl = 'support/view'.$kind.'.twig';
+                break;
 
 	    case 'update':
-            $ufd = fopen('https://catless.ncl.ac.uk/frameworknew/update/', 'r');
-            if ($ufd)
-            {
-                $upd = json_decode(fread($ufd, 1024));
-                $context->local()->addval('version', $upd->version);
-                fclose($ufd);
-                $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
-            }
-            elseif (function_exists('zip_open'))
-            {
-                $formd = $context->formdata();
-                if ($formd->hasfile('update'))
+                $ufd = fopen('https://catless.ncl.ac.uk/frameworknew/update/', 'r');
+                if ($ufd)
                 {
-                    $data = $formd->filedata('update');
-                    if (($zd = zip_open($data['tmp_name'])) === FALSE)
+                    $upd = json_decode(fread($ufd, 1024));
+                    $context->local()->addval('version', $upd->version);
+                    fclose($ufd);
+                    $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
+                }
+                elseif (function_exists('zip_open'))
+                {
+                    $formd = $context->formdata();
+                    if ($formd->hasfile('update'))
                     {
-                        $context->local()->message(Local::ERROR, 'Cannot open the file');
-                    }
-                    else
-                    {
-                        $context->local()->message(Local::MESSAGE, 'Done');
+                        $data = $formd->filedata('update');
+                        if (($zd = zip_open($data['tmp_name'])) === FALSE)
+                        {
+                            $context->local()->message(Local::ERROR, 'Cannot open the file');
+                        }
+                        else
+                        {
+                            $context->local()->message(Local::MESSAGE, 'Done');
+                        }
                     }
                 }
-            }
-            else
-            {
-                $context->local()->addval('nozip', TRUE);
-            }
-            $tpl = 'support/update.twig';
-            break;
+                else
+                {
+                    $context->local()->addval('nozip', TRUE);
+                }
+                $tpl = 'support/update.twig';
+                break;
 
 	    default :
-            $tpl = 'support/admin.twig';
-            break;
+                $tpl = 'support/admin.twig';
+                break;
 	    }
 	    return $tpl;
 	}
