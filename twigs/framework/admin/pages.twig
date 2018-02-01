@@ -1,5 +1,8 @@
 {% extends '@util/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+
 {% macro tick(val, class) %}
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
@@ -124,7 +127,7 @@
                 //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
         dt = {
-                op : 'addpage',
+ //               op : 'addpage',
                 name : pn,
                 kind : kind,
                 source : src,
@@ -150,7 +153,7 @@
                 dt[sel[n]+'['+inx+']'] = $(this).val();
             });
         }
-        $.post('{{base}}/ajax.php', dt, fn);
+        $.post('{{base}}/ajax/addpage/', dt, fn);
     })
     $('#ptab').on('click', function(e){
         var x = $(e.target)
@@ -226,17 +229,28 @@
     <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
+                {{m.header({title: 'New page'})}}
+<!--                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">New Page</h4>
-                </div>
+                </div>-->
                 <div class="modal-body">
                     <form action="#" method="POST" id="npform">
-                        <div class="form-group">
+                        {{f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})}}
+<!--                        <div class="form-group">
                             <label for="npname">Name</label>
                             <input type="text" class="form-control" id="npname" placeholder="page name" required="required"/>
-                        </div>
-                        <div class="form-group">
+                        </div>-->
+                        {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
+                                {value: '', text: '&mdash; Pick a Type &mdash;'},
+                                {value: 1,  text: 'Object'},
+                                {value: 2,  text: 'Template'},
+                                {value: 3,  text: 'In-site Temporary Redirect'},
+                                {value: 4,  text: 'In-site Permanent Redirect'},
+                                {value: 5,  text: 'External Temporary Redirect'},
+                                {value: 6,  text: 'External Permanent Rehome'},
+                        })}}
+<!--                        <div class="form-group">
                             <label for="npkind">Kind</label>
                             <select id="npkind" class="form-control" required="required">
                                 <option value="">&mdash; Pick a Type &mdash;</option>
@@ -247,12 +261,16 @@
                                 <option value="5">External Temporary Redirect</option>
                                 <option value="6">External Permanent Rehome</option>
                             </select>
-                        </div>
-                        <div class="form-group">
+                        </div>-->
+                       {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
+<        <!--               <div class="form-group">
                             <label for="npsrc">Source</label>
                             <input type="text" class="form-control" id="npsrc" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
-                        </div>
-                        <div class="form-check">
+                        </div>-->
+                        {{f.({labels: ['Active'], values:[1], ids: ['npactive']})}}
+                        {{f.({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
+                        {{f.({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
+<!--                        <div class="form-check">
                             <label class="form-check-label"><input type="checkbox" value="1" id="npactive"/> Active</label>
                         </div>
                         <div class="form-check">
@@ -260,7 +278,7 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label"><input type="checkbox" value="1" id="nplogin"/> Must Login</label>
-                        </div>
+                        </div>-->
                         <fieldset>
                             <legend>Roles</legend>
                             <table class="table table-striped">
@@ -305,10 +323,11 @@
                         </fieldset>
                     </form>
                 </div>
-                <div class="modal-footer">
+                {{m.footer({action: 'Add', id: 'addb'})}}
+<!--                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

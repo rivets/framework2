@@ -1,5 +1,7 @@
 {% extends '@util/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+
 {% macro tick(val) %}
 {% if val %}<i class="fa fa-check"></i>{% endif %}
 {% endmacro tick %}
@@ -109,36 +111,42 @@
     <div class="modal fade" id="addf" tabindex="-1" role="dialog" aria-labelledby="Add a Form" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                {{m.header({title: 'Add a Form'})}}
+<!--                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Add a Form</h4>
-                </div>
+                    <h4 class="modal-title">Add a Form</h4>
+                </div>-->
                 <div class="modal-body">
                     <form id="addfform" action="#" method="post">
-                        <div class="form-group">
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only',
+                        name: 'name', required: 1, data: ['parsley-trigger': 'change', 'parsley-type': 'alphanum']})}}
+<!--                        <div class="form-group">
                             <label for="un" class="control-label">Form Name</label>
                             <input type="text" id="un" name="name" placeholder="form name - alphanumeric characters only" class="form-control" required="required"
                             data-parsley-trigger="change" data-parsley-type="alphanum"/>
-                        </div>
-                        <div class="form-group">
+                        </div>-->
+                        {{f.radio({names: ['method', 'method'], values:[1, 2], labels: ['GET', 'POST'], value: 1})}}
+<!--                       <div class="form-group">
                             <label class="radio-inline">
                                 <input type="radio" name="method" value="1" checked="checked"> GET
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="method" value="1"> POST
+                                <input type="radio" name="method" value="2"> POST
                             </label>
-                        </div>
-                        <div class="form-group">
+                        </div>-->
+                        {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
+<!--                        <div class="form-group">
                             <label class="checkbox-inline">
                                 <input type="checkbox" name="multipart" value="1"> Multipart Encoded
                             </label>
                         </div>
-                    </form>
+-->                    </form>
                 </div>
-                <div class="modal-footer">
+                {{m.footer({action: 'Add', id: 'addb'})}}
+<!--                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
