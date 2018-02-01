@@ -73,7 +73,7 @@
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label">
-	    <input type="checkbox" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if opts.check[ix] and opts.check[ix] == val %} checked="checked"{% endif %}/>
+	    <input type="checkbox" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if opts.ids[ix] is defined %} id="{{opts.ids[ix]}}{% endif %}{% if opts.check[ix] and opts.check[ix] == val %} checked="checked"{% endif %}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
@@ -85,7 +85,7 @@
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label">
-	    <input type="radio" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if val == opts.value %} checked="checked"{% endif %}/>
+	    <input type="radio" name="{{opts.names[ix]}}" value="{{val}}"{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{% if opts.ids[ix] is defined %} id="{{opts.ids[ix]}}{% endif %}{% if val == opts.value %} checked="checked"{% endif %}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
