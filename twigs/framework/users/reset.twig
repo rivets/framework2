@@ -1,0 +1,33 @@
+{% extends '@util/page.twig' %}
+
+{% block header %}
+    <section class="col-md-12">
+        <h1 class="cntr">Password Reset</h1>
+    </section>
+{% endblock header %}
+
+{% block navigation %}
+{% endblock navigation %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-6 mr-auto">
+            {% include '@util/message.twig' %}
+            {% if not done %}
+                <form action="{{base}}/forgot" method="post" class="jumbotron">
+                    <fieldset>
+                        <legend>Send Password Reset Message</legend>
+                        <div class="form-group">
+                            <label for="el" class="control-label">Email</label>
+                            <input type="text" id="el" name="eorl" placeholder="Your email address" class="form-control input-sm" required="required"/>
+                        </div>
+                        <button class="btn btn-primary btn-sm" type="submit">Reset</button>
+                    </fieldset>
+                </form>
+            {% endif %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -1,0 +1,25 @@
+{% extends '@util/page.twig' %}
+
+{% block header %}
+    <section class="col-md-12">
+        <h1>Upload a File</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+            <form action="#" method="post" role="form" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="f0" class="control-label">File</label>
+                    <input type="file" id="f0" name="uploads[]" class="form-control-file" required="required"/>
+                </div>
+                <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -38,6 +38,22 @@
             'update'        => array(TRUE, [['Site', 'Admin']]),
         );
 /**
+ * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
+ */
+        private static $restops = array(
+            'addcontext'    => [TRUE,   [['Site', 'Admin']]],
+            'addform'       => [TRUE,   [['Site', 'Admin']]],
+            'addpage'       => [TRUE,   [['Site', 'Admin']]],
+            'addrole'       => [TRUE,   [['Site', 'Admin']]],
+            'adduser'       => [TRUE,   [['Site', 'Admin']]],
+            'confvalue'     => [TRUE,   [['Site', 'Admin']]],
+            'delbean'       => [TRUE,   [['Site', 'Admin']]],
+            'deluser'       => [TRUE,   [['Site', 'Admin']]],
+            'logincheck'    => [FALSE,  []],
+            'newconf'       => [TRUE,   [['Site', 'Admin']]],
+            'toggle'        => [TRUE,   [['Site', 'Admin']]],
+            'update'        => [TRUE,   [['Site', 'Admin']]],
+        );/**
  * Add a User
  *
  * @param object	$context	The context object for the site
@@ -99,10 +115,10 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{% extends \'page.twig\' %}
+                    fwrite($fd,'{% extends \'@util/page.twig\' %}
 
 {# this brings in some useful macros for making forms
-{% import \'form.twig\' as f %}
+{% import \'@util/formmacro.twig\' as f %}
 #}
 
 {# put a string in this block that will appear as the title of the page
@@ -135,14 +151,14 @@
 {# Any javascript you need that MUST run on load goes in this block. NB you don\'t need <script></script> tags  here #}
 {% endblock onload %}
 
-{# If you include this, then the navigation bar in page.twig will **NOT** appear
+{# If you include this, then the navigation bar in @util/page.twig will **NOT** appear
 {% block navigation %}
 {% endblock navigation %}
 #}
 
 {#
     Edit the file navbar.twig to change the appearance of the
-    navigation bar. It is included by default from page.twig
+    navigation bar. It is included by default from @util/page.twig
 #}
 
 {# uncomment this and delete header block to remove the <header> tag altogether
@@ -152,7 +168,7 @@
 
 {#
     If you have a standard header for all (most) pages then put the
-    content in the file header.twig. It is included by page.twig by
+    content in the file header.twig. It is included by @util/page.twig by
     default. You then don\'t need to have a header block either.
 #}
 
@@ -177,7 +193,7 @@
 
 {#
     If you have a standard footer for all (most) pages then put the
-    content in the file footer.twig. It is included by page.twig by
+    content in the file footer.twig. It is included by @util/page.twig by
     default. You then don\'t need to have a footer block either.
 #}
 
@@ -435,6 +451,21 @@
         public function operation($function, $perms)
         {
             self::$ops[$function] = $perms;
+            self::$restops[$function] = $perms;
+        }
+/**
+ * Do a parsley login check
+ */
+        public function logincheck($context)
+        {
+            if (($lg = $context->formdata()->get('login', '')) !== '')
+            { # this is a parsley generated username check call
+                if (R::count('user', 'login=?', [$lg]) > 0)
+                {
+                    $context->web()->notfound(); // error if it exists....
+                    /* NOT REACHED */
+                }
+            }
         }
 /**
  * Handle AJAX operations
@@ -445,23 +476,14 @@
  */
         public function handle($context)
         {
-            $fdt = $context->formdata();
-            if (($lg = $fdt->get('login', '')) !== '')
-            { # this is a parsley generated username check call
-                if (R::count('user', 'login=?', array($lg)) > 0)
-                {
-                    return $context->web()->notfound(); // error if it exists....
-                }
-            }
-            else
-            {
-                $op = $fdt->mustpost('op');
-                if (isset(self::$ops[$op]))
+            if ($context->action() == 'ajax')
+            { # REST style AJAX call
+                if (isset(self::$restops[$op]))
                 { # a valid operation
-                    $curop = self::$ops[$op];
+                    $curop = self::$restops[$op];
                     if ($curop[0])
                     { # this operation requires a logged in user
-                        $context->mustbeuser();
+                        $context->mustbeuser(); // will not return if there is no user
                     }
                     foreach ($curop[1] as $rcs)
                     {
@@ -479,6 +501,7 @@
                             if (!$ok)
                             {
                                 $context->web()->noaccess();
+                                /* NOT REACHED */
                             }
                         }
                         else
@@ -486,6 +509,7 @@
                             if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
                             {
                                 $context->web()->noaccess();
+                                /* NOT REACHED */
                             }
                         }
                     }
@@ -494,6 +518,65 @@
                 else
                 { # return a 400
                     $context->web()->bad();
+                    /* NOT REACHED */
+                }
+            }
+            else
+            {
+                $fdt = $context->formdata();
+                if (($lg = $fdt->get('login', '')) !== '')
+                { # this is a parsley generated username check call
+                    if (R::count('user', 'login=?', array($lg)) > 0)
+                    {
+                        $context->web()->notfound(); // error if it exists....
+                        /* NOT REACHED */
+                    }
+                }
+                else
+                {
+                    $op = $fdt->mustpost('op');
+                    if (isset(self::$ops[$op]))
+                    { # a valid operation
+                        $curop = self::$ops[$op];
+                        if ($curop[0])
+                        { # this operation requires a logged in user
+                            $context->mustbeuser(); // will not return if there is no user
+                        }
+                        foreach ($curop[1] as $rcs)
+                        {
+                            if (is_array($rcs[0]))
+                            { // this is an OR
+                                $ok = FALSE;
+                                foreach ($rcs as $orv)
+                                {
+                                    if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                                    {
+                                        $ok = TRUE;
+                                        break;
+                                    }
+                                }
+                                if (!$ok)
+                                {
+                                    $context->web()->noaccess();
+                                    /* NOT REACHED */
+                                }
+                            }
+                            else
+                            {
+                                if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                                {
+                                    $context->web()->noaccess();
+                                    /* NOT REACHED */
+                                }
+                            }
+                        }
+                        $this->{$op}($context);
+                    }
+                    else
+                    { # return a 400
+                        $context->web()->bad();
+                        /* NOT REACHED */
+                    }
                 }
             }
         }

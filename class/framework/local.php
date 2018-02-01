@@ -300,8 +300,14 @@
  */
         public function setuptwig($cache = FALSE)
         {
+            $twigdir = $this->makebasepath('twigs');
+            $loader = new \Twig_Loader_Filesystem($twigdir);
+            foreach (['admin', 'devel', 'edit', 'error', 'pages', 'users', 'util', 'view'] as $tns)
+            {
+                $loader->addPath($twigdir.'/framework/'.$tns, $tns);
+            }
             $this->twig = new \Twig_Environment(
-                new \Twig_Loader_Filesystem($this->makebasepath('twigs')),
+                $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
             );
 /*
@@ -392,13 +398,13 @@
  *
  * The currently supported values for kind are :
  *
- *      'errmessage'
- *      'warnmessage'
- *      'message'
+ *      \Framework\Local\ERROR
+ *      \Framework\Local\WARNING
+ *      \Framework\Local\MESSAGE
  *
  * To have your Twig deal with these you need
  *
- * {% include 'message.twig %}
+ * {% include '@util/message.twig %}
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
@@ -527,7 +533,7 @@
             $offl = $this->makebasepath('offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
-                $this->render('support/offline.twig', ['msg' => file_get_contents($offl)]);
+                $this->render('@admin/offline.twig', ['msg' => file_get_contents($offl)]);
                 exit;
             }
 /*

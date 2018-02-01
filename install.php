@@ -32,7 +32,7 @@
         { # are we terminating with an error?
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
             { # tell the developers about this
-                echo '<h2>There has been a system error</h2>';               
+                echo '<h2>There has been a system error</h2>';
             }
             else
             {
@@ -72,7 +72,7 @@
  */
     function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        echo '<h2>There has been a system error</h2>';               
+        echo '<h2>There has been a system error</h2>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
         { # this is an internal error so we need to stop
@@ -218,7 +218,7 @@
  * See if we have a sendmail setting in the php.ini file
  */
     $sendmail = ini_get('sendmail_path');
-    
+
     $vals = [
              'name'         => $name,
              'dir'          => __DIR__,
@@ -355,7 +355,7 @@
                 $direrr[] = 'Cannot create directory "twigcache"';
             }
         }
-        
+
         if (!empty($direrr))
         {
             $vals['direrr'] = TRUE;
@@ -408,8 +408,8 @@
             //fputs($fd, "\tconst DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
             //fputs($fd, "\tconst UPUBLIC\t= ".($options['public'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
             //fputs($fd, "\tconst UPRIVATE\t= ".($options['private'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
-    
-    
+
+
             fputs($fd, "
         public static function setup()
         {
@@ -446,7 +446,7 @@
                 '# AddOutputFilterByType DEFLATE text/javascript'.PHP_EOL.
                 '# php_flag zlib.output_compression  On'.PHP_EOL.
                 '# php_value zlib.output_compression_level 5'.PHP_EOL
-    
+
             );
             fclose($fd);
     /*
@@ -521,7 +521,7 @@
                 $arname->name = 'Admin';
                 $arname->fixed = 1;
                 \R::store($arname);
-    
+
                 $role = \R::dispense('role');
                 $role->otherinfo = '-';
                 $role->start = $now;
@@ -537,7 +537,7 @@
                 $drname = \R::dispense('rolename');
                 $drname->name = 'Developer';
                 \R::store($drname);
-    
+
                 $role = \R::dispense('role');
                 $role->otherinfo = '-';
                 $role->start = $now;
@@ -555,7 +555,7 @@
      * the link for install.php is to catch when people try to run install again after a successful install
      */
                 $pages = [
-                    'about'         => [\Framework\SiteAction::TEMPLATE, 'about.twig', FALSE, 0, FALSE, 1],
+                    'about'         => [\Framework\SiteAction::TEMPLATE, '@pages/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
@@ -563,7 +563,7 @@
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'home'          => [\Framework\SiteAction::TEMPLATE, 'index.twig', FALSE, 0, FALSE, 1],
-                    'install.php'   => [\Framework\SiteAction::TEMPLATE, 'oops.twig', FALSE, 0, FALSE, 1],
+                    'install.php'   => [\Framework\SiteAction::TEMPLATE, '@pages/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
                     'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
@@ -608,7 +608,7 @@
                         \R::store($cname);
                         \R::store($drname);
                     }
-                        
+
                 }
                 $tpl = 'success.twig';
             }

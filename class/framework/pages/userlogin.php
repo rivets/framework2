@@ -22,10 +22,10 @@
  *
  * @return object	The user or NULL
  */
-	private function eorl($lg)
-	{
-	    return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', array($lg));
-	}
+        private function eorl($lg)
+        {
+            return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', array($lg));
+        }
 /**
  * Make a confirmation code and store it in the database
  *
@@ -35,18 +35,18 @@
  *
  * @return string
  */
-	private function makecode($context, $bn, $kind)
-	{
-	    R::trashAll(R::find('confirm', 'user_id=?', array($bn->getID())));
-	    $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
-	    $conf = R::dispense('confirm');
-	    $conf->code = $code;
-	    $conf->issued = $context->utcnow();
-	    $conf->kind = $kind;
-	    $conf->user = $bn;
-	    R::store($conf);
-	    return $code;
-	}
+        private function makecode($context, $bn, $kind)
+        {
+            R::trashAll(R::find('confirm', 'user_id=?', array($bn->getID())));
+            $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
+            $conf = R::dispense('confirm');
+            $conf->code = $code;
+            $conf->issued = $context->utcnow();
+            $conf->kind = $kind;
+            $conf->user = $bn;
+            R::store($conf);
+            return $code;
+        }
 /**
  * Mail a confirmation code
  *
@@ -55,15 +55,15 @@
  *
  * @return string
  */
-	private function sendconfirm($context, $bn)
-	{
-	    $code = $this->makecode($context, $bn, 'C');
-	    mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
-		"Please use this link to confirm your email address\n\n\n".
-		Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-		'From: '.Config::SITENOREPLY
-	    );
-	}
+        private function sendconfirm($context, $bn)
+        {
+            $code = $this->makecode($context, $bn, 'C');
+            mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
+            "Please use this link to confirm your email address\n\n\n".
+            Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+            'From: '.Config::SITENOREPLY
+            );
+        }
 /**
  * Mail a password reset code
  *
@@ -72,15 +72,15 @@
  *
  * @return string
  */
-	private function sendreset($context, $bn)
-	{
-	    $code = $this->makecode($context, $bn, 'P');
-	    mail($bn->email, 'Reset your '.Config::SITENAME.' password',
-		"Please use this link to reset your password\n\n\n".
-		Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-		'From: '.Config::SITENOREPLY
-	    );
-	}
+        private function sendreset($context, $bn)
+        {
+            $code = $this->makecode($context, $bn, 'P');
+            mail($bn->email, 'Reset your '.Config::SITENAME.' password',
+            "Please use this link to reset your password\n\n\n".
+            Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+            'From: '.Config::SITENOREPLY
+            );
+        }
 /**
  * Handle a logout
  *
@@ -92,26 +92,26 @@
  *
  * @param object	$context	The context object for the site
  */
-	public function logout($context)
-	{
-	    $_SESSION = array(); # Unset all the session variables.
+        public function logout($context)
+        {
+            $_SESSION = array(); # Unset all the session variables.
 
-	    # If it's desired to kill the session, also delete the session cookie.
-	    # Note: This will destroy the session, and not just the session data!
-	    if (ini_get('session.use_cookies'))
-	    {
-		$params = session_get_cookie_params();
-		setcookie(session_name(), '', time() - 42000,
-		    $params["path"], $params["domain"],
-		    $params["secure"], $params["httponly"]
-		);
-	    }
-	    if (session_status() == PHP_SESSION_ACTIVE)
-	    { # no session started yet
-	        session_destroy(); # Finally, destroy the -session.
+            # If it's desired to kill the session, also delete the session cookie.
+            # Note: This will destroy the session, and not just the session data!
+            if (ini_get('session.use_cookies'))
+            {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
             }
-	    $context->divert('/');
-	}
+            if (session_status() == PHP_SESSION_ACTIVE)
+            { # no session started yet
+                session_destroy(); # Finally, destroy the -session.
+            }
+            $context->divert('/');
+        }
 /**
  * Handle a login
  *
@@ -154,7 +154,7 @@
                 }
                 $local->addval('page', $page);
 	    }
-	    return 'login.twig';
+	    return '@users/login.twig';
 	}
 /**
  * handle a registration
@@ -213,7 +213,7 @@
                     $context->local()->message(Local::ERROR, $errmess);
                 }
 	    }
-	    return 'register.twig';
+	    return '@users/register.twig';
 	}
 /**
  * Handle things to do with email address confirmation
@@ -236,7 +236,7 @@
 		$lg = $context->formdata()->post('eorl', '');
 		if ($lg === '')
 		{ # show the form
-		    $tpl = 'resend.twig';
+		    $tpl = '@users/resend.twig';
 		}
 		else
 		{ # handle the form
@@ -289,7 +289,7 @@
 	    { # logged in, so this stupid....
 		$context->local()->addval('done', TRUE);
 		$context->local()->message(Local::WARNING, 'You are already logged in');
-		return 'reset.twig';
+		return '@users/reset.twig';
 	    }
             $local = $context->local();
             $fdt = $context->formdata();
@@ -298,11 +298,11 @@
 	    if ($rest[0] === '')
 	    {
 		$lg = $fdt->post('eorl', '');
-		$tpl = 'reset.twig';
+		$tpl = '@users/reset.twig';
 		if ($lg !== '')
 		{
 		    $user = $this->eorl($lg);
-		    $tpl = 'reset.twig';
+		    $tpl = '@users/reset.twig';
 		    if (is_object($user))
 		    {
 			$this->sendreset($context, $user);
@@ -317,7 +317,7 @@
 	    }
 	    elseif ($rest[0] === 'reset')
 	    {
-		$tpl = 'pwreset.twig';
+		$tpl = '@users/pwreset.twig';
 		$user = $context->load('user', $fdt->mustpost('uid'));
 		$code = $fdt->mustpost('code');
 		$xc = R::findOne('confirm', 'code=? and kind=?', array($code, 'P'));
@@ -360,7 +360,7 @@
 		    {
 			$local->addval('pwuser', $x->user);
 			$local->addval('code', $x->code);
-			$tpl = 'pwreset.twig';
+			$tpl = '@users/pwreset.twig';
 		    }
 		    else
 		    {
