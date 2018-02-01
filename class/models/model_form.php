@@ -20,5 +20,23 @@
         {
 	    return $this->bean->ownFormfield;
         }
+/**
+ * Handle a form edit
+ *
+ * @return void
+ */
+        public function edit($context)
+        {
+	    
+        }
+/**
+ * View a form
+ *
+ * @return void
+ */
+        public function view()
+        {
+	    
+        }
     }
 ?>
