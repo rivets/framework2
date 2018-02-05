@@ -9,7 +9,9 @@
  *
  */
     namespace \ModelExtend;
-
+/**
+ * User table stores info about users of the syste,
+ */
     trait Upload
     {
 
