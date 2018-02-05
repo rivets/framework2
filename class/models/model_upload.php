@@ -11,6 +11,9 @@
  */
     class Model_Upload extends \RedBeanPHP\SimpleModel
     {
+
+        use \ModelExtend\Upload;
+
 /**
  * Determine if a user can access the file
  *

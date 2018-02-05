@@ -16,6 +16,8 @@
  */
         private $roletype = 'role';
 
+        use \ModelExtend\User;
+
         use \Framework\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
