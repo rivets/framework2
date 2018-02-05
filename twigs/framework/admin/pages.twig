@@ -17,7 +17,7 @@
 {% import _self as h %}
 
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    {# <script src="{{fwurls.parsley}}"></script> #}
     <script src="{{assets}}/js/util.js"></script>
     {# <script src="{{fwurls.editable}}"></script> #}
 {% endblock scripts %}
@@ -230,17 +230,21 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 {{m.header({title: 'New page'})}}
-<!--                <div class="modal-header">
+{#
+                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title">New Page</h4>
-                </div>-->
+                </div>
+#}
                 <div class="modal-body">
                     <form action="#" method="POST" id="npform">
                         {{f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})}}
-<!--                        <div class="form-group">
+{#
+                        <div class="form-group">
                             <label for="npname">Name</label>
                             <input type="text" class="form-control" id="npname" placeholder="page name" required="required"/>
-                        </div>-->
+                        </div>
+#}
                         {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                                 {value: '', text: '&mdash; Pick a Type &mdash;'},
                                 {value: 1,  text: 'Object'},
@@ -250,7 +254,8 @@
                                 {value: 5,  text: 'External Temporary Redirect'},
                                 {value: 6,  text: 'External Permanent Rehome'},
                         })}}
-<!--                        <div class="form-group">
+{#
+                        <div class="form-group">
                             <label for="npkind">Kind</label>
                             <select id="npkind" class="form-control" required="required">
                                 <option value="">&mdash; Pick a Type &mdash;</option>
@@ -261,16 +266,20 @@
                                 <option value="5">External Temporary Redirect</option>
                                 <option value="6">External Permanent Rehome</option>
                             </select>
-                        </div>-->
+                        </div>
+#}
                        {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
-<        <!--               <div class="form-group">
+{#
+                       <div class="form-group">
                             <label for="npsrc">Source</label>
                             <input type="text" class="form-control" id="npsrc" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
-                        </div>-->
+                        </div>
+#}
                         {{f.({labels: ['Active'], values:[1], ids: ['npactive']})}}
                         {{f.({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
                         {{f.({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
-<!--                        <div class="form-check">
+{#
+                        <div class="form-check">
                             <label class="form-check-label"><input type="checkbox" value="1" id="npactive"/> Active</label>
                         </div>
                         <div class="form-check">
@@ -278,7 +287,8 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label"><input type="checkbox" value="1" id="nplogin"/> Must Login</label>
-                        </div>-->
+                        </div>
+#}
                         <fieldset>
                             <legend>Roles</legend>
                             <table class="table table-striped">
@@ -324,10 +334,12 @@
                     </form>
                 </div>
                 {{m.footer({action: 'Add', id: 'addb'})}}
-<!--                <div class="modal-footer">
+{#
+                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>-->
+                </div>
+#}
             </div>
         </div>
     </div>

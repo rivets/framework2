@@ -14,9 +14,13 @@
 {% for k,v in opts %} data-{{k}}{%if v != '' %}="{{v}}"{% endif %}{% endfor %}
 {% endmacro data %}
 
+{% macro parsley(opts) %}
+{% for k,v in opts %} data-parsley-{{k}}{%if v != '' %}="{{v}}"{% endif %}{% endfor %}
+{% endmacro parsley %}
+
 {% macro input(type, opts) %}
 {% import _self as h %}
-<input type="{{type}}"{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.hv('value', opts.value)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}/>
+<input type="{{type}}"{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.hv('value', opts.value)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}{{h.parsley(opts.parsley)}}/>
 {% endmacro input %}
 
 {% macro bsl(opts) %}

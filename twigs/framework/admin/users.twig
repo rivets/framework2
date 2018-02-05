@@ -1,5 +1,8 @@
 {% extends '@util/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+
 {% macro tick(val, class) %}
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
@@ -136,10 +139,11 @@
     <div class="modal fade" id="addu" tabindex="-1" role="dialog" aria-labelledby="Add User" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                {{m.header({title: 'Add A New User'})}}
+<!--                <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title" id="myModalLabel">Add User</h4>
-                </div>
+                </div>-->
                 <div class="modal-body">
                     <form id="adduform" action="#" method="post">
                         <div class="form-group">
@@ -171,10 +175,11 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
+                {{m.footer({action: 'Add', id: 'addb'})}}
+<!--                <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
