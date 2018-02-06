@@ -15,8 +15,13 @@
  */
     function cleanup()
     {
-        @unlink('class/config/config.php');
-        @unlink('.htaccess');
+        foreach (['class/config/config.php', '.htaccess'] as $file)
+        {
+            if (file_exists($file))
+            {
+                @unlink($file);
+            }
+        }
     }
 /**
  * Store a new framework config item
