@@ -1,5 +1,4 @@
 <?php
-    namespace Config;
 /**
  * This is loaded in index.php and ajax.php. It does mean that it has to be included as
  * it is setting up the autoloader and stuff. But it does keep things DRY - only one place to
@@ -13,6 +12,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2018 Newcastle University
  */
+    namespace Config;
 /**
  * Class for doing initial setup of the Framework.
  */

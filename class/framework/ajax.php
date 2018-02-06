@@ -24,20 +24,20 @@
 /**
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $ops = array(
-            'toggle'        => array(TRUE, [['Site', 'Admin']]),
-            'update'        => array(TRUE, [['Site', 'Admin']]),
-        );
+        private static $ops = [
+            'toggle'        => [TRUE, [['Site', 'Admin']]],
+            'update'        => [TRUE, [['Site', 'Admin']]],
+        ];
 /**
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $restops = array(
+        private static $restops = [
             'bean'          => [TRUE,   [['Site', 'Admin']]],
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'logincheck'    => [FALSE,  []],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
-        );/**
+        ];/**
  * Add a User
  *
  * @param object	$context	The context object for the site
@@ -564,7 +564,7 @@
                 $fdt = $context->formdata();
                 if (($lg = $fdt->get('login', '')) !== '')
                 { # this is a parsley generated username check call
-                    if (R::count('user', 'login=?', array($lg)) > 0)
+                    if (R::count('user', 'login=?', [$lg]) > 0)
                     {
                         $context->web()->notfound(); // error if it exists....
                         /* NOT REACHED */

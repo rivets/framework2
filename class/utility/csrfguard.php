@@ -73,7 +73,7 @@
 	public function generate()
 	{
 	    $name = 'CSRFGuard_'.mt_rand(0, mt_getrandmax());
-	    return array($name,  $this->maketoken($name));
+	    return [$name,  $this->maketoken($name)];
 	}
 /**
  * A constructor for a CSRF object

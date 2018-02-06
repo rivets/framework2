@@ -45,14 +45,14 @@
  * If the value is false then just the template is rendered and no object called up
  */
     $pages = array(
-        'about'     => array(Siteaction::TEMPLATE, 'about.twig'),
-        'admin'     => array(Siteaction::OBJECT, 'Admin'),
-#        'confirm'  => array(Siteaction::OBJECT, 'UserLogin'),
-#        'forgot'   => array(Siteaction::OBJECT, 'UserLogin'),
-        'home'      => array(Siteaction::TEMPLATE, 'index.twig'),
-#        'login'    => array(Siteaction::OBJECT, 'Userlogin'),
-#        'logout'   => array(Siteaction::OBJECT, 'Userlogin'),
-#        'register' => array(Siteaction::OBJECT, 'Userlogin'),
+        'about'     => [Siteaction::TEMPLATE, 'about.twig'],
+        'admin'     => [Siteaction::OBJECT, 'Admin'],
+#        'confirm'  => [Siteaction::OBJECT, 'UserLogin'],
+#        'forgot'   => [Siteaction::OBJECT, 'UserLogin'],
+        'home'      => [Siteaction::TEMPLATE, 'index.twig'],
+#        'login'    => [Siteaction::OBJECT, 'Userlogin'],
+#        'logout'   => [Siteaction::OBJECT, 'Userlogin'],
+#        'register' => [Siteaction::OBJECT, 'Userlogin'],
     );
 
     $action = $context->action();

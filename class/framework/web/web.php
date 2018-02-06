@@ -1,6 +1,6 @@
 <?php
     namespace Framework\Web;
-    
+
 /**
  * Contains definition of ther Web class
  *
@@ -19,7 +19,7 @@
 /**
  * @var array   Holds values for headers that are required. Keyed by the name of the header
  */
-        private $headers    = array();
+        private $headers    = [];
 /**
  * Generate a Location header
  *
@@ -39,7 +39,7 @@
 /**
  * @todo Check status of 308 code which should be used if nochage is TRUE. May not yet be official.
  */
-		$code = StatusCodes::HTTP_MOVED_PERMANENTLY;		
+		$code = StatusCodes::HTTP_MOVED_PERMANENTLY;
 	    }
 	    $this->addheader('Location', $where);
 	    $this->sendstring($msg, self::HTMLMIME);
@@ -92,7 +92,7 @@
 		}
 	    }
 	    $this->notsatisfiable();
-	    /* NOT REACHED */ 
+	    /* NOT REACHED */
 	}
 /**
  * Make a header sequence for a particular return code and add some other useful headers
@@ -211,7 +211,7 @@
 		$fd = fopen($path, 'r'); # open the file, seek to the required place and read and return the required amount.
 		fseek($fd, $range[0]);
 		echo fread($fd, $length);
-		fclose($fd); 
+		fclose($fd);
 	    }
 	    else
 	    {

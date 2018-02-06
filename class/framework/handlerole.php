@@ -86,12 +86,12 @@
  */
         public function addrole($contextname, $rolename, $otherinfo, $start, $end = '')
         {
-            $cname = \R::findOne('rolecontext', 'name=?', array($contextname));
+            $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             if (!is_object($cname))
             {
                 Web::getinstance()->bad();
             }
-            $rname = \R::findOne('rolename', 'name=?', array($rolename));
+            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
             if (!is_object($rname))
             {
                 Web::getinstance()->bad();

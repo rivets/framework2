@@ -459,11 +459,11 @@
         public static function setup()
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
-            'Date'			=> gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-target'		=> '_top',	# deframes things
-            'X-Frame-Options'	=> 'DENY',	# deframes things
+            'Date'              => gmstrftime('%b %d %Y %H:%M:%S', time()),
+            'Window-target'     => '_top',      # deframes things
+            'X-Frame-Options'	=> 'DENY',      # deframes things
             'Content-Language'	=> 'en',
-            'Vary'			=> 'Accept-Encoding',
+            'Vary'              => 'Accept-Encoding',
             ]);
         }".PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
