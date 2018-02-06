@@ -6,6 +6,19 @@
  * @copyright 2014-2018 Newcastle University
  */
 /**
+ * Function to cleanup after errors
+ *
+ * Not everything needs to be cleaned up though, just things that will
+ * stop the installer from running again.
+ *
+ * @return void
+ */
+    function cleanup()
+    {
+        @unlink('class/config/config.php');
+        @unlink('.htaccess');
+    }
+/**
  * Store a new framework config item
  * @param string    $name
  * @param string    $value
@@ -41,6 +54,7 @@
             {
                 echo '<h2>There has been an installer system error</h2>';
             }
+            cleanup();
         }
         \R::close(); # close RedBean connection
     }
@@ -55,6 +69,7 @@
         echo '<pre>';
         var_dump($e);
         echo '</pre>';
+        cleanup();
         exit;
     }
 /**
@@ -81,6 +96,7 @@
             echo '<pre>';
             var_dump($errno, $errstr, $errfile, $errline);
             echo '</pre>';
+            cleanup();
             exit;
         }
 /*
@@ -434,7 +450,7 @@
             $fd = fopen('.htaccess', 'w');
             if ($fd === FALSE)
             {
-                @unlink('class/config/config.php');
+                cleanup();
                 header('HTTP/1.1 500 Internal Error');
                 exit;
             }
@@ -621,8 +637,7 @@
             { # something went wrong - so cleanup and try again...
                 $vals['dberror'] = $e->getMessage();
                 $vals['fail'] = TRUE;
-                @unlink('.htaccess');
-                @unlink('class/config/config.php');
+                cleanup();
             }
         }
     }
