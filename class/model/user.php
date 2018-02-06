@@ -150,54 +150,6 @@
                 }
             }
             $this->editroles($context);
-//            $uroles = $this->roles();
-//	    if ($fdt->haspost('exist'))
-//	    {
-//                foreach ($_POST['exist'] as $ix => $rid)
-//                {
-//                    $rl = $context->load('role', $rid);
-//                    $start = $_POST['xstart'][$ix];
-//                    $end = $_POST['xend'][$ix];
-//                    $other = $_POST['xotherinfo'][$ix];
-//                    if (strtolower($start) == 'now')
-//                    {
-//                        $rl->start = $context->utcnow();
-//                    }
-//                    elseif ($start != $rl->start)
-//                    {
-//                        $rl->start = $context->utcdate($start);
-//                    }
-//                    if (strtolower($end) == 'never' || $end === '')
-//                    {
-//                        if ($rl->end !== '')
-//                        {
-//                            $rl->end = NULL;
-//                        }
-//                    }
-//                    elseif ($end != $rl->end)
-//                    {
-//                         $rl->end = $context->utcdate($end);
-//                    }
-//                    if ($other != $rl->otherinfo)
-//                    {
-//                        $rl->otherinfo = $other;
-//                    }
-//                    \R::store($rl);
-//                }
-//	    }
-//            foreach ($_POST['role'] as $ix => $rn)
-//            {
-//                $cn = $_POST['context'][$ix];
-//                if ($rn !== '' && $cn !== '')
-//                {
-//                    $end = $_POST['end'][$ix];
-//                    $start = $_POST['start'][$ix];
-//                    $this->addrolebybean($context->load('rolecontext', $cn), $context->load('rolename', $rn), $_POST['otherinfo'][$ix],
-//                        strtolower($start) == 'now' ? $context->utcnow() : $context->utcdate($start),
-//                        strtolower($end) == 'never' || $end === '' ? '' : $context->utcdate($end)
-//                    );
-//                }
-//            }
             return TRUE;
         }
     }
