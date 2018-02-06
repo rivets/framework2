@@ -34,6 +34,7 @@
                 implode(PATH_SEPARATOR, [
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class/models']),
+                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
                     get_include_path()
                 ])
             );
