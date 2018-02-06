@@ -25,7 +25,7 @@
 	$('input:text', frm).each(function(index, element){
 	     data[$(this).attr('name')] = $(this).val()
 	})
-	$.post('{{base}}/ajax.php', data, function(ret){
+	$.post('{{base}}/ajax/bean/form/', data).done(function(ret){
 	    $('#addf').modal('hide')
 	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.name+'</td>'+
 	        '<td>'+ (data['method'] == 0 ? 'GET' : 'POST')+'</td>' +
@@ -35,29 +35,15 @@
 		'<td><i class="delb fa fa-trash-o"></i></td></tr>'
 	    )
 	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
-	})
+	}).fail(function(){
+            bootbox.alert('Creation of new Form failed');
+        });
     })
     $('#utab').on('click', function(e){
         var x = $(e.target)
 	if (x.hasClass('delb'))
 	{
-	    e.preventDefault();
-	    e.stopPropagation();
-	    bootbox.confirm('Are you sure you you want to delete this form?', function(r){
-	        if (r)
-		{ // user picked OK
-		    var tr = x.parent().parent()
-		    $.post('{{base}}/ajax.php', {
-			    op:	'delbean',
-			    bean: 'form',
-			    id: tr.data('id')
-			},
-			function(data){
-			    tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove() })
-			}
-		    )
-		}
-	    })
+            dodelbean(e, x, 'form');
 	}
 	else if (x.hasClass('editb'))
 	{

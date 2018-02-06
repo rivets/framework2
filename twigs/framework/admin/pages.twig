@@ -7,10 +7,10 @@
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
-{#
-    {% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax.php" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="editcall" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{# use this if editable breaks....
+    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
-{% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
@@ -19,6 +19,7 @@
 {% block scripts %}
     {# <script src="{{fwurls.parsley}}"></script> #}
     <script src="{{assets}}/js/util.js"></script>
+    <script src="{{assets}}/js/bs4-editable-min.js"></script>
     {# <script src="{{fwurls.editable}}"></script> #}
 {% endblock scripts %}
 
@@ -32,19 +33,30 @@
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
 
 {% block setup %}
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/page/'+params.pk+'/'+params.name+'/';
+        return $.ajax($url,{
+            method: 'PUT',
+            data: {
+                value: params.value
+            }
+        })
+    }
+
     function mkinline(type, name, msg, id, value)
     {
-        return value;
-        //return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+//        return value;
+        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
     }
     var kname = [];
-    //function paramset(params)
-    //{
-    //   params.id = params.pk
-    //   params.bean = 'page'
-    //   params.op = 'update'
-    //    return params
-    //}
+    function paramset(params)
+    {
+        params.id = params.pk
+        params.bean = 'page'
+        params.op = 'update'
+        return params
+    }
     kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -59,7 +71,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    //$('.ppedit').editable({params: paramset, source: kname});
+    $('.ppedit').editable({params: paramset, source: kname});
     $('#npform').on('submit', false)
     $('#addb').on('click', function(e){
         e.preventDefault()
@@ -69,43 +81,43 @@
             bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
             return
         }
-        var sp = null
-        var error = false
+        var sp = null;
+        var error = false;
         $('.pname').each(function(e){
-            var t = $(this).text()
+            var t = $(this).text();
             if (t == pn)
             {
-                error = true
-                return false
+                error = true;
+                return false;
             }
             if (t > pn)
             {
-            sp = $(this)
-            return false
+                sp = $(this);
+                return false;
             }
         })
         if (error)
         {
-            bootbox.alert('That page already exists')
-            return
+            bootbox.alert('That page already exists');
+            return;
         }
         var src = $('#npsrc').val()
         if (src == '')
         {
-            bootbox.alert('Please specify a source')
-            return
+            bootbox.alert('Please specify a source');
+            return;
         }
-        var kind = $('#npkind').val()
+        var kind = $('#npkind').val();
         if (kind == '')
         {
-            bootbox.alert('Please pick template or object')
-            return
+            bootbox.alert('Please pick template or object');
+            return;
         }
         var active = $('#npactive').is(':checked') ? 1 : 0;
         var login = $('#nplogin').is(':checked') ? 1 : 0;
         var mobile = $('#npmobile').is(':checked') ? 1 : 0;
         $('#npage').modal('hide');
-        fn = function(data){
+        var fn = function(data){
                 var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
@@ -117,17 +129,16 @@
                 var nx
                 if (sp == null)
                 {
-                     nx = $(htm).appendTo($('#ptab tbody'))
+                     nx = $(htm).appendTo($('#ptab tbody'));
                 }
                 else
                 {
-                    nx = $(htm).insertBefore(sp.parent())
+                    nx = $(htm).insertBefore(sp.parent());
                 }
-                nx.data('id', data)
+                nx.data('id', data);
                 //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
-        dt = {
- //               op : 'addpage',
+        var dt = {
                 name : pn,
                 kind : kind,
                 source : src,
@@ -153,7 +164,9 @@
                 dt[sel[n]+'['+inx+']'] = $(this).val();
             });
         }
-        $.post('{{base}}/ajax/addpage/', dt, fn);
+        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(){
+            bootbox.alert('Failed to create new page');
+        });
     })
     $('#ptab').on('click', function(e){
         var x = $(e.target)
@@ -171,7 +184,7 @@
     $('#more').on('click', function(e){
         e.preventDefault()
         $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the inputs
+        $('input', $('#mrow').prev()).val('') // clear the new inputs
         $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
     })
 {% endblock onload %}

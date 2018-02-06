@@ -53,35 +53,19 @@
 	{
 	    nx = $(htm).insertBefore(sp.parent())
 	}
-	$.post('{{base}}/ajax.php', {
-		op : 'addcontext',
+	$.post('{{base}}/ajax/bean/rolecontext/', {
 		name : pn,
-	    }, function(data){
-	       nx.data('id', data)
-	    }
-	)
+	}).done(function(data){
+	       nx.data('id', data);
+	}).fail(function(){
+            bootbox.alert('Creation of new RoleContext failed');
+        });
     })
     $('#ctab').on('click', function(e){
         var x = $(e.target)
 	if (x.hasClass('delb'))
 	{
-	    e.preventDefault();
-	    e.stopPropagation();
-	    bootbox.confirm('Are you sure you you want to delete this context?', function(r){
-	        if (r)
-		{ // user picked OK
-		    var tr = $(x).parent().parent()
-		    $.post('{{base}}/ajax.php', {
-			    op :'delbean',
-			    'bean' : 'rolecontext',
-			    id : tr.data('id')
-			},
-			function(data){
-			    tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove() })
-			}
-		    )
-		}
-	    })
+            dodelbean(e, x, 'rolecontext');
 	}
 	else if (x.hasClass('fixed'))
 	{
