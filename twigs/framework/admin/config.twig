@@ -7,20 +7,20 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#inval').hide()
+    $('#inval').hide();
     $('#cfr').on('submit', false);
     $('.cval').on('blur', function(e){
-        e.preventDefault()
-        var t = $(this)
-        $.post('{{base}}/ajax.php', {
-                op :'confvalue',
-                name : t.prop('name'),
+        e.preventDefault();
+        var t = $(this);
+        $.ajax('{{base}}/ajax/config/'+t.prop('name')+'/', {
+            method: 'PUT', // because we are updating an item
+            data: {
                 value: t.val()
-            },
-            function(data){
             }
-        )
-    })
+        }).fail(function(){
+            bootbox.alert('Update failed');
+        }
+    });
     $('.nname').on('blur', function(e){
         e.preventDefault()
         var t = $(this)
@@ -44,24 +44,25 @@
         }
     })
     $('.nval').on('blur', function(e){
-        e.preventDefault()
-        var t = $(this)
-	var name = $('.nname').val()
-	var value = t.val()
-        $.post('{{base}}/ajax.php', {
-                op :'newconf',
-                name : name,
+        e.preventDefault();
+        var t = $(this);
+	var name = $('.nname').val();
+	var value = t.val();
+        $.ajax('{{base}}/ajax/config/'+name+'/', {
+            method: 'POST', // because we are creating a new item
+            data: {
                 value: value
-            },
-            function(data){
-	        $('.nname').parent().prev().after('<div class="form-group"><label for="X'+name+'">'+name+'</label><input type="text" id="X'+
-		    name+'" name="'+name+'" value="'+value+'" class="form-control cval"/></div>')
-		$('.nname').val('')
-		t.val('')
-		$('#inval').hide()
             }
-        )
-    })
+        }).done(function(data){
+	    $('.nname').parent().prev().after('<div class="form-group"><label for="X'+name+'">'+name+'</label><input type="text" id="X'+
+		name+'" name="'+name+'" value="'+value+'" class="form-control cval"/></div>');
+	    $('.nname').val('');
+	    t.val('');
+	    $('#inval').hide();
+        }).fail(function(){
+            bootbox.alert('Failed to add new configuration item');
+        })
+    });
 {% endblock onload %}
 
 {% if not page is defined %}

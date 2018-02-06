@@ -26,8 +26,8 @@
         else
         { // toggle at the other end
             var tr = x.parent().parent();
-            $.post(base+'/ajax.php', {
-                op : 'toggle',
+            $.post(base+'/ajax/toggle/', {
+//                op : 'toggle',
                 field : fld,
                 bean : bean,
                 id : tr.data('id')
@@ -45,19 +45,25 @@
             if (r)
             { // user picked OK
                 var tr = $(x).parent().parent();
-                $.post(base+'/ajax.php', {
-                    op :'delbean',
+                $.ajax(base+'/ajax/bean/'+bean+'/'+tr.data('id')+'/', {
+                    method: 'DELETE',
+                }).done(function(){
+                    tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
+                }).fail(function(){
+                    bootbox.alert('Delete failed');
+                });
+ /*               $.post(base+'/ajax/bean/', {
+//                    op :'delbean',
                     'bean' : bean,
                     id : tr.data('id')
-                    },
-                    function(data){
-                        tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
                     }
+
                 );
+*/
             }
         });
     }
-    
+
     function mkinline(type, name, msg, id, value)
     {
         return '<a href="#" class="ppedit" data-name="'+name+'" data-type="'+type+'" data-pk="'+id+'" data-url="'+base+'/ajax.php" data-title="'+msg+'">'+value+'</a>';

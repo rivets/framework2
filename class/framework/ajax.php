@@ -25,15 +25,6 @@
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $ops = array(
-            'addcontext'    => array(TRUE, [['Site', 'Admin']]),
-            'addform'       => array(TRUE, [['Site', 'Admin']]),
-            'addpage'       => array(TRUE, [['Site', 'Admin']]),
-            'addrole'       => array(TRUE, [['Site', 'Admin']]),
-            'adduser'       => array(TRUE, [['Site', 'Admin']]),
-            'confvalue'     => array(TRUE, [['Site', 'Admin']]),
-            'delbean'       => array(TRUE, [['Site', 'Admin']]),
-            'deluser'       => array(TRUE, [['Site', 'Admin']]),
-            'newconf'       => array(TRUE, [['Site', 'Admin']]),
             'toggle'        => array(TRUE, [['Site', 'Admin']]),
             'update'        => array(TRUE, [['Site', 'Admin']]),
         );
@@ -41,16 +32,9 @@
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = array(
-            'addcontext'    => [TRUE,   [['Site', 'Admin']]],
-            'addform'       => [TRUE,   [['Site', 'Admin']]],
-            'addpage'       => [TRUE,   [['Site', 'Admin']]],
-            'addrole'       => [TRUE,   [['Site', 'Admin']]],
-            'adduser'       => [TRUE,   [['Site', 'Admin']]],
-            'confvalue'     => [TRUE,   [['Site', 'Admin']]],
-            'delbean'       => [TRUE,   [['Site', 'Admin']]],
-            'deluser'       => [TRUE,   [['Site', 'Admin']]],
+            'bean'          => [TRUE,   [['Site', 'Admin']]],
+            'config'        => [TRUE,   [['Site', 'Admin']]],
             'logincheck'    => [FALSE,  []],
-            'newconf'       => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
         );/**
@@ -328,67 +312,72 @@
             echo $p->getID();
         }
 /**
- * Change a config value
+ * Check URL string for n values and pull them out
+ *
+ * The value in $rest[0] is the opcode so we always start at $rest[1]
+ *
+ * @param object        $context    The context object
+ * @param integer       $count      The number to check for
+ *
+ * @return array
+ */
+        private function restcheck($context, $count)
+        {
+            $values = [];
+            $rest = $context->rest();
+            foreach (range(1, $count) as $ix)
+            {
+                $val = $rest[$ix] ?? '';
+                if ($val === '')
+                {
+                    $context->web()->bad();
+                }
+                $values[] = $res;
+            }
+            return $values;
+        }
+/**
+ * Config value operation
  *
  * @param object	$context	The context object for the site
  *
  * @return void
  */
-        private function confvalue($context)
+        private function config($context)
         {
+            $rest = $context->rest();
+            list($bean, $name) = $this->restcheck($context, 2);
+            $v = R::findOne('fwconfig', 'name=?', [$name]);
             $fdt = $context->formdata();
-            $v = R::findOne('fwconfig', 'name=?', array($fdt->mustpost('name')));
-            if (!is_object($v))
+            switch ($_SERVER['REQUEST_METHOD'])
             {
+            case 'POST':
+                if (is_object($v))
+                {
+                    $context->web()->bad();
+                }
+                $v = R::dispense('fwconfig');
+                $v->name = $name;
+                $v->value = $fdt->mustpost('value');
+                R::store($v);
+                break;
+            case 'PUT':
+                if (!is_object($v))
+                {
+                    $context->web()->bad();
+                }
+                $v->value = $fdt->mustpost('value');
+                R::store($v);
+                break;
+            case 'DELETE':
+                R::trash($v);
+                break;
+            case 'GET':
+                echo $v->value;
+                break;
+            default:
                 $context->web()->bad();
             }
-            $v->value = $fdt->mustpost('value');
-            R::store($v);
-        }
-/**
- * Add a new  config value
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function newconf($context)
-        {
-            $fdt = $context->formdata();
-            $v = R::findOne('fwconfig', 'name=?', array($fdt->mustpost('name')));
-            if (is_object($v))
-            {
-                $context->web()->bad();
-            }
-            $v = R::dispense('fwconfig');
-            $v->name = $fdt->mustpost('name');
-            $v->value = $fdt->mustpost('value');
-            R::store($v);
-        }
-/**
- * Delete a bean
- *
- * The type of bean to be deleted is part of the message
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function delbean($context)
-        {
-            $fdt = $context->formdata();
-            R::trash($context->load($fdt->mustpost('bean'), $fdt->mustpost('id'), Context::R400));
-        }
-/**
- * Delete a User
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function deluser($context)
-        {
-            R::trash($context->load('user', $context->formdata()->mustpost('id'), Context::R400));
         }
 /**
  * Toggle a flag field in a bean
@@ -439,6 +428,55 @@
             $field = $fdt->mustpost('name');
             $bn->$field = $fdt->mustpost('value');
             R::store($bn);
+        }
+/**
+ * Carry out operations on beans
+ *
+ * @param object    $context The context object
+ *
+ * @return void
+ */
+        private function bean($context)
+        {
+            $rest = $context->rest();
+            $bean = $rest[1];
+            switch ($_SERVER['REQUEST_METHOD'])
+            {
+            case 'POST': // mae a new one /ajax/bean/KIND/
+                if (!method_exists($this, 'add'.$bean))
+                {
+                    $context->web()->bad();
+                }
+                $this->{'add'.$bean}($context);
+                break;
+            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
+                $id = $rest[2] ?? 0; // get the id from the URL
+                if ($id <= 0)
+                {
+                    $context->web()->bad();
+                }
+                $bn = $context->load($bean, $id);
+                $fields = R::inspect($bean); // gets all the fields
+                $field = $rest[3] ?? ''; // get the field name from the URL
+                if (!isset($fields[$field]))
+                {
+                    $context->web()->bad();
+                }
+                $bn->$field = $context->formdata()->mustpost('value');
+                R::store($bn);
+                break;
+            case 'DELETE': // /ajax/bean/KIND/ID/
+                $id = $rest[2] ?? 0; // get the id from the URL
+                if ($id <= 0)
+                {
+                    $context->web()->bad();
+                }
+                R::trash($context->load($bean, $id));
+                break;
+            case 'GET':
+            default:
+                $context->web()->bad();
+            }
         }
 /**
  * Add an operation
