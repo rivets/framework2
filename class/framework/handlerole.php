@@ -99,28 +99,6 @@
             return $this->addrolebybean($cname, $rname, $otherinfo, $start, $end);
         }
 /**
- *  Fixes up start values
- *
- *  @param string   $start  The input value
- *
- *  @return string
- */
-        private function checkstart($start)
-        {
-            return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
-        }
-/**
- *  Fixes up end values
- *
- *  @param string   $end  The input value
- *
- *  @return string
- */
-        private function checkend($end)
-        {
-            return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
-        }
-/**
  *  Add a role
  *
  * @param object	$rolecontext    Contextname
@@ -138,8 +116,8 @@
             $r->rolecontext = $rolecontext;
             $r->rolename = $rolename;
             $r->otherinfo = $otherinfo;
-            $r->start = $this->checkstart($start);
-            $r->end = $this->checkend($end);
+            $r->start = $start; // $this->checkstart($start);
+            $r->end = $end; //$this->checkend($end);
             \R::store($r);
             return $r;
         }
@@ -177,24 +155,26 @@
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);
-                    if (strtolower($start) == 'now' || $start === '')
+                    //if (strtolower($start) == 'now' || $start === '')
+                    //{
+                    //    $rl->start = $context->utcnow();
+                    //}
+                    //else
+                    if ($start != $rl->start)
                     {
-                        $rl->start = $context->utcnow();
+                        $rl->start = $start; //$context->utcdate($start);
                     }
-                    elseif ($start != $rl->start)
+                    //if (strtolower($end) == 'never' || $end === '')
+                    //{
+                    //    if ($rl->end !== '')
+                    //    {
+                    //        $rl->end = NULL;
+                    //    }
+                    //}
+                    //else
+                    if ($end != $rl->end)
                     {
-                        $rl->start = $context->utcdate($start);
-                    }
-                    if (strtolower($end) == 'never' || $end === '')
-                    {
-                        if ($rl->end !== '')
-                        {
-                            $rl->end = NULL;
-                        }
-                    }
-                    elseif ($end != $rl->end)
-                    {
-                         $rl->end = $context->utcdate($end);
+                         $rl->end = $end; // $context->utcdate($end);
                     }
                     if ($other != $rl->otherinfo)
                     {
@@ -217,28 +197,21 @@
                     $info = $fdt->post(['otherinfo', $ix]);
                     if (is_object($prole))
                     { # exists already...
-                        $change = FALSE;
-                        $start = $this->checkstart($start);
-                        $end = $this->checkstart($end);
+                        //$start = $this->checkstart($start);
+                        //$end = $this->checkstart($end);
                         if ($prole->start != $start)
                         {
                             $prole->start = $start;
-                            $change = TRUE;
                         }
                         if ($prole->end != $end)
                         {
                             $prole->end = $end;
-                            $change = TRUE;
                         }
                         if ($prole->otherinfo != $info)
                         {
                             $prole->otherinfo = $info;
-                            $change = TRUE;
                         }
-                        if ($change)
-                        { // only update if needed
-                            \R::store($prole);
-                        }
+                        \R::store($prole); // will only talk to DB if anyhting has changed...
                     }
                     else
                     {
