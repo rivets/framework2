@@ -10,6 +10,8 @@
  *
  * @link https://catless.ncl.ac.uk/framework/
  */
+    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
+
     use \Config\Config as Config;
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;

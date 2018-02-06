@@ -6,13 +6,14 @@
  * @copyright 2017-2018 Newcastle University
  *
  */
+    namespace Model;
 /**
  * A class implementing a RedBean model for Page beans
  */
 /**
  * @var string   The type of the bean that stores roles for this page
  */
-    class Model_Page extends \RedBeanPHP\SimpleModel
+    class Page extends \RedBeanPHP\SimpleModel
     {
         private $roletype = 'pagerole';
 

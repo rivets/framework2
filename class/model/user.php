@@ -6,10 +6,11 @@
  * @copyright 2013-2018 Newcastle University
  *
  */
+    namespace Model;
 /**
  * A class implementing a RedBean model for User beans
  */
-    class Model_User extends \RedBeanPHP\SimpleModel
+    class User extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page

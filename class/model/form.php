@@ -6,10 +6,11 @@
  * @copyright 2016 Newcastle University
  *
  */
+    namespace Model;
 /**
  * A class implementing a RedBean model for Form beans
  */
-    class Model_Form extends \RedBeanPHP\SimpleModel
+    class Form extends \RedBeanPHP\SimpleModel
     {
 /**
  * Return the forms fields
@@ -27,7 +28,7 @@
  */
         public function edit($context)
         {
-	    
+
         }
 /**
  * View a form
@@ -36,7 +37,7 @@
  */
         public function view()
         {
-	    
+
         }
     }
 ?>

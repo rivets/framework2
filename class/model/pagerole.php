@@ -1,15 +1,16 @@
 <?php
 /**
- * A model class for the RedBean object Role
+ * A model class for the RedBean object PageRole
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015 Newcastle University
  *
  */
+    namespace Model;
 /**
- * A class implementing a RedBean model for Role beans
+ * A class implementing a RedBean model for PageRole beans
  */
-    class Model_Role extends \RedBeanPHP\SimpleModel
+    class PageRole extends \RedBeanPHP\SimpleModel
     {
 /**
  * Return rolenam object

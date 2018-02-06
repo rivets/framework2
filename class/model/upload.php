@@ -6,10 +6,11 @@
  * @copyright 2015-2016 Newcastle University
  *
  */
+    namespace Model;
 /**
  * Upload table stores info about files that have been uploaded...
  */
-    class Model_Upload extends \RedBeanPHP\SimpleModel
+    class Upload extends \RedBeanPHP\SimpleModel
     {
         use \ModelExtend\Upload;
 /**
