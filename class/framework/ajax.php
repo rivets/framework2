@@ -303,7 +303,7 @@
  *
  * @return void
  */
-        private function addcontext($context)
+        private function addrolecontext($context)
         {
             $p = R::dispense('rolecontext');
             $p->name = $context->formdata()->mustpost('name');
