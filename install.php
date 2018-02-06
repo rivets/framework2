@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2018 Newcastle University
  */
-    global $cwd;
+    global $cwd, $verbose;
 /**
  * Function to cleanup after errors
  *
@@ -16,14 +16,21 @@
  */
     function cleanup()
     {
-        global $cwd;
+        global $cwd, $verbose;
 
         chdir($cwd);
+        if ($verbose)
+        {
+            echo '<p>Cleaning '.$cwd.'</p>';
+        }
         foreach (['class/config/config.php', '.htaccess'] as $file)
         {
             if (file_exists($file))
             {
-//                echo '<p>Removing '.$file.'</p>';
+                if ($verbose)
+                {
+                    echo '<p>Removing '.$file.'</p>';
+                }
                 @unlink($file);
             }
         }
@@ -116,6 +123,7 @@
  */
         return TRUE;
     }
+    $verbose = isset($_GET['verbose']);
 /*
  * Remember where we are in the file system
  */
@@ -123,6 +131,8 @@
  /*
   * Set up all the system error handlers
   */
+    error_reporting(E_ALL|E_STRICT);
+
     set_exception_handler('exception_handler');
     set_error_handler('error_handler');
     register_shutdown_function('shutdown');
