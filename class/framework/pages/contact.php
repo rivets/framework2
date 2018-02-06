@@ -1,7 +1,7 @@
 <?php
  /**
  * Class for handling contact messages
- * 
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2017 Newcastle University
  */
@@ -38,7 +38,7 @@
                 mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
                 $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
             }
-            return 'contact.twig';
+            return '@util/contact.twig';
         }
     }
 ?>
