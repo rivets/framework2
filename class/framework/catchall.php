@@ -31,12 +31,11 @@
  */
 	public function handle($context)
 	{
-	    $tpl = '';
 	    switch ($context->action())
 	    {
 	    case 'favicon.ico':
 		$context->web()->sendfile($context->local()->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
-		break;
+		return '';
 
 	    case 'robots.txt':
 		return ['robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
@@ -49,7 +48,7 @@
 		$context->local()->addval('page', $_SERVER['REQUEST_URI']);
 		return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
 	    }
-	    return $tpl;
+            /* NOT REACHED */
 	}
     }
 ?>
