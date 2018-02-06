@@ -1,12 +1,12 @@
 <?php
 /**
  * A trait supporting classess that use roles
- * 
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017 Newcastle University
  */
     namespace Framework;
-    
+
     use \Framework\Web\Web as Web;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
@@ -99,6 +99,28 @@
             return $this->addrolebybean($cname, $rname, $otherinfo, $start, $end);
         }
 /**
+ *  Fixes up start values
+ *
+ *  @param string   $start  The input value
+ *
+ *  @return string
+ */
+        private function checkstart($start)
+        {
+            return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
+        }
+/**
+ *  Fixes up end values
+ *
+ *  @param string   $end  The input value
+ *
+ *  @return string
+ */
+        private function checkend($end)
+        {
+            return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
+        }
+/**
  *  Add a role
  *
  * @param object	$rolecontext    Contextname
@@ -111,14 +133,13 @@
  */
         public function addrolebybean($rolecontext, $rolename, $otherinfo, $start, $end = '')
         {
-            \Framework\Debug::vdump($start);
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
             $r->rolecontext = $rolecontext;
             $r->rolename = $rolename;
             $r->otherinfo = $otherinfo;
-            $r->start = ($start === '' || strtolower($start) == 'now') ? $context->utcnow() : $start;
-            $r->end = ($end === '' || strtolower($end) == 'never') ? NULL : $end;
+            $r->start = $this->checkstart($start);
+            $r->end = $this->checkend($end);
             \R::store($r);
             return $r;
         }
@@ -193,12 +214,12 @@
 
                     $end = $fdt->post(['end', $ix]);
                     $start = $fdt->post(['start', $ix]);
-                    $start = $start === '' || strtolower($start) == 'now' ? $context->utcnow() : $context->utcdate($start);
-                    $end = $end === '' ||strtolower($end) == 'never' ? '' : $context->utcdate($end);
                     $info = $fdt->post(['otherinfo', $ix]);
                     if (is_object($prole))
                     { # exists already...
                         $change = FALSE;
+                        $start = $this->checkstart($start);
+                        $end = $this->checkstart($end);
                         if ($prole->start != $start)
                         {
                             $prole->start = $start;
@@ -215,7 +236,7 @@
                             $change = TRUE;
                         }
                         if ($change)
-                        {
+                        { // only update if needed
                             \R::store($prole);
                         }
                     }
