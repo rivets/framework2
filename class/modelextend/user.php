@@ -12,7 +12,7 @@
 /**
  * User table stores info about users of the syste,
  */
-    trait Upload
+    trait User
     {
 
     }
