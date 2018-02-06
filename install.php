@@ -5,6 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2018 Newcastle University
  */
+    global $cwd;
 /**
  * Function to cleanup after errors
  *
@@ -15,6 +16,9 @@
  */
     function cleanup()
     {
+        global $cwd;
+
+        chdir($cwd);
         foreach (['class/config/config.php', '.htaccess'] as $file)
         {
             if (file_exists($file))
@@ -112,6 +116,10 @@
  */
         return TRUE;
     }
+/*
+ * Remember where we are in the file system
+ */
+    $cwd = getcwd();
  /*
   * Set up all the system error handlers
   */
