@@ -32,11 +32,14 @@
         { # are we terminating with an error?
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
             { # tell the developers about this
-                echo '<h2>There has been a system error</h2>';
+                echo '<h2>There has been an installer system error</h2>';
+                echo '<pre>';
+                var_dump($error);
+                echo '</pre>';
             }
             else
             {
-                echo '<h2>There has been a system error</h2>';
+                echo '<h2>There has been an installer system error</h2>';
             }
         }
         \R::close(); # close RedBean connection
@@ -48,7 +51,7 @@
  */
     function exception_handler($e)
     {
-        echo '<h2>There has been a system error</h2>';
+        echo '<h2>There has been an installer system error</h2>';
         echo '<pre>';
         var_dump($e);
         echo '</pre>';
@@ -66,16 +69,18 @@
  * @param string	$errstr
  * @param string	$errfile
  * @param integer	$errline
- * @param string	$errcontext
  *
  * @return boolean
  */
-    function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+    function error_handler($errno, $errstr, $errfile, $errline)
     {
-        echo '<h2>There has been a system error</h2>';
+        echo '<h2>There has been an installer system error</h2>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
         { # this is an internal error so we need to stop
+            echo '<pre>';
+            var_dump($errno, $errstr, $errfile, $errline);
+            echo '</pre>';
             exit;
         }
 /*
@@ -86,11 +91,11 @@
         return TRUE;
     }
  /*
- * Set up all the system error handlers
- */
-        set_exception_handler('exception_handler');
-        set_error_handler('error_handler');
-        register_shutdown_function('shutdown');
+  * Set up all the system error handlers
+  */
+    set_exception_handler('exception_handler');
+    set_error_handler('error_handler');
+    register_shutdown_function('shutdown');
 
     set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
 
@@ -103,7 +108,7 @@
     if (!file_exists('vendor'))
     {
 /**
- * @todo Genrate a better error message for this!
+ * @todo Generate a better error message for this!
  */
         include 'install/errors/notwig.php';
         exit;
