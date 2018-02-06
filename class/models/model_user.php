@@ -22,9 +22,9 @@
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  */
-        private static $editfields = array(
-            'email'     => array(TRUE),         # array(NOTEMPTY)
-        );
+        private static $editfields = [
+            'email'     => [TRUE],         # [NOTEMPTY]
+        ];
 /**
  * Is this user an admin?
  *

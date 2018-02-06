@@ -24,7 +24,7 @@
  */
         private function eorl($lg)
         {
-            return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', array($lg));
+            return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
 /**
  * Make a confirmation code and store it in the database
@@ -37,7 +37,7 @@
  */
         private function makecode($context, $bn, $kind)
         {
-            R::trashAll(R::find('confirm', 'user_id=?', array($bn->getID())));
+            R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
             $conf = R::dispense('confirm');
             $conf->code = $code;
@@ -94,7 +94,7 @@
  */
         public function logout($context)
         {
-            $_SESSION = array(); # Unset all the session variables.
+            $_SESSION = []; # Unset all the session variables.
 
             # If it's desired to kill the session, also delete the session cookie.
             # Note: This will destroy the session, and not just the session data!
@@ -170,14 +170,13 @@
 	    $login = $fdt->post('login', '');
 	    if ($login !== '')
 	    {
-                $errmess = array();
-		$x = R::findOne('user', 'login=?', array($login));
+                $errmess = [];
+		$x = R::findOne('user', 'login=?', [$login]);
 		if (!is_object($x))
 		{
 		    $pw = $fdt->mustpost('password');
 		    $rpw = $fdt->mustpost('repeat');
 		    $email = $fdt->mustpost('email');
-                    $errmess = array();
 		    if ($pw != $rpw)
 		    {
 			$errmess[] = 'The passwords do not match';
@@ -258,7 +257,7 @@
 	    }
 	    else
 	    { # confirming the email
-		$x = R::findOne('confirm', 'code=? and kind=?', array($rest[0], 'C'));
+		$x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'C']);
 		if (is_object($x))
 		{
 		    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
@@ -320,7 +319,7 @@
 		$tpl = '@users/pwreset.twig';
 		$user = $context->load('user', $fdt->mustpost('uid'));
 		$code = $fdt->mustpost('code');
-		$xc = R::findOne('confirm', 'code=? and kind=?', array($code, 'P'));
+		$xc = R::findOne('confirm', 'code=? and kind=?', [$code, 'P']);
 		if (is_object($xc) && $xc->user_id == $user->getID())
 		{
 		    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($xc->issued));
@@ -352,7 +351,7 @@
 	    }
 	    else
 	    {
-		$x = R::findOne('confirm', 'code=? and kind=?', array($rest[0], 'P'));
+		$x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'P']);
 		if (is_object($x))
 		{
 		    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));

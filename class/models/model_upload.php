@@ -46,7 +46,7 @@
 	    }
             $dir = getcwd();
 	    chdir($context->local()->basedir());
-	    $pname = array($public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m'));
+	    $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m')];
             foreach ($pname as $pd)
             { # walk the path cding and making if needed
                 $this->mkch($pd);

@@ -20,14 +20,14 @@
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  */
-        private static $editfields = array(
-            'name'          => array(TRUE, FALSE),
-            'kind'          => array(TRUE, FALSE),
-            'source'        => array(TRUE, FALSE),
-            'active'        => array(TRUE, TRUE),
-            'mobileonly'    => array(TRUE, TRUE),
-            'needlogin'     => array(TRUE, TRUE),
-        );
+        private static $editfields = [
+            'name'          => [TRUE, FALSE],
+            'kind'          => [TRUE, FALSE],
+            'source'        => [TRUE, FALSE],
+            'active'        => [TRUE, TRUE],
+            'mobileonly'    => [TRUE, TRUE],
+            'needlogin'     => [TRUE, TRUE],
+        ];
 /**
  * Check user can access the page
  *
