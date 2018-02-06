@@ -11,7 +11,7 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2017 Newcastle University
+ * @copyright 2015-2018 Newcastle University
  */
 /**
  * Class for doing initial setup of the Framework.

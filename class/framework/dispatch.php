@@ -1,4 +1,10 @@
 <?php
+/**
+ * Contains the definition of the Dispatch class
+ *
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2012-2018 Newcastle University
+ */
     namespace Framework;
 
     use \Config\Config as Config;
@@ -6,12 +12,6 @@
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
 
-/**
- * Contains the definition of the Dispatch class
- *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2016 Newcastle University
- */
 /**
  * This class dispatches pages to the appropriate places
  */

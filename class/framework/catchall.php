@@ -1,19 +1,19 @@
 <?php
-    namespace Framework;
-
-    use Config\Config as Config;
-    use Framework\Web\Web as Web;
-    use \Framework\Web\StatusCodes as StatusCodes;
-
 /**
  * A class that contains a last resort handler for pages that are not found through the normal
  * mechanisms. Users should derive their own class from this to handle non-object or template
  * request.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
+ * @copyright 2017-2018 Newcastle University
  *
  */
+    namespace Framework;
+
+    use Config\Config as Config;
+    use Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes as StatusCodes;
+
 /**
  * The default behaviour when a page does not exist.
  */

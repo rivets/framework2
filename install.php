@@ -3,7 +3,7 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2017 Newcastle University
+ * @copyright 2014-2018 Newcastle University
  */
 /**
  * Store a new framework config item

@@ -3,11 +3,11 @@
  * Main entry point of the system
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  */
 /**
  * See the information at
- * 
+ *
  * @link https://catless.ncl.ac.uk/framework/
  */
     use \Config\Config as Config;
