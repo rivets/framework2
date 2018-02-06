@@ -37,16 +37,19 @@
     }
 /**
  * Store a new framework config item
+ *
  * @param string    $name
  * @param string    $value
+ * @param boolean   $local     If TRUE then this value should not be overwritten by remote updates
  *
  * @return void
- **/
-    function addfwconfig($name, $value)
+ */
+    function addfwconfig($name, $value, $local)
     {
         $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
         $fwc->value = $value;
+        $fwc->local = $local ? 1 : 0;
         \R::store($fwc);
     }
 
@@ -55,6 +58,8 @@
  * generate a clean screen as well as an error report to the developers.
  *
  * It also closes the RedBean connection
+ *
+ * @return void
  */
     function shutdown()
     {
@@ -162,22 +167,6 @@
         include 'install/errors/notwig.php';
         exit;
     }
-/*
- * URLs for various clientside packages that are used by the installer and by the framework
- */
-    $fwurls = [
-        'bootcss'       => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
-//        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
-//        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
-        'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-
-        'jquery1'       => '//code.jquery.com/jquery-1.12.4.min.js',
-        'jquery2'       => '//code.jquery.com/jquery-3.3.1.min.js',
-        'bootjs'        => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
-        'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
-        'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js',
-        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
-    ];
 
     try
     {
@@ -260,10 +249,32 @@
         break;
     }
 /*
+ * URLs for various clientside packages that are used by the installer and by the framework
+ */
+    $fwurls = [
+// CSS
+        'bootcss'       => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+//        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
+        'editablecss'   => '/'.$dir.'/assets/css/bs4-editable.css',
+        'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+// JS
+        'jquery1'       => '//code.jquery.com/jquery-1.12.4.min.js',
+        'jquery2'       => '//code.jquery.com/jquery-3.3.1.min.js',
+        'bootjs'        => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
+        'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
+//        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
+        'editable'      => '/'.$dir.'/assets/js/bs4-editable-min.js',
+        'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js',
+        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
+    ];
+/*
  * See if we have a sendmail setting in the php.ini file
  */
     $sendmail = ini_get('sendmail_path');
 
+/*
+ * Set up important values
+ */
     $vals = [
              'name'         => $name,
              'dir'          => __DIR__,
@@ -542,12 +553,12 @@
                 {
                     if ($pars[1])
                     {
-                        addfwconfig($fld, $cvalue[$fld]);
+                        addfwconfig($fld, $cvalue[$fld], TRUE);
                     }
                 }
                 foreach ($fwurls as $k => $v)
                 {
-                    addfwconfig($k, $v);
+                    addfwconfig($k, $v, FALSE);
                 }
     /**
      * Set up some roles for access control:
