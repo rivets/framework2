@@ -142,7 +142,7 @@
                     if (is_object($this->twig))
                     { # we have twig so render a nice page
                         $this->addval('message', $str);
-                        Web::getinstance()->sendstring($this->getrender('error/500.twig'), Web::HTMLMIME);
+                        Web::getinstance()->sendstring($this->getrender('@error/500.twig'), Web::HTMLMIME);
                     }
                     else
                     { # no twig so just dump

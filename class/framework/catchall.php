@@ -47,7 +47,7 @@
 
 	    default:
 		$context->local()->addval('page', $_SERVER['REQUEST_URI']);
-		return ['error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
+		return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
 	    }
 	    return $tpl;
 	}
