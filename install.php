@@ -23,7 +23,7 @@
         {
             if (file_exists($file))
             {
-                echo '<p>Removing '.$file.'</p>';
+//                echo '<p>Removing '.$file.'</p>';
                 @unlink($file);
             }
         }
