@@ -8,7 +8,7 @@
  * @copyright 2018 Newcastle University
  *
  */
-    namespace \ModelExtend;
+    namespace ModelExtend;
 /**
  * Upload table stores info about files that have been uploaded...
  */

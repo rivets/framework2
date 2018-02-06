@@ -8,7 +8,7 @@
  * @copyright 2018 Newcastle University
  *
  */
-    namespace \ModelExtend;
+    namespace ModelExtend;
 /**
  * User table stores info about users of the syste,
  */
