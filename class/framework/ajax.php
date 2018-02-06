@@ -288,7 +288,7 @@
  *
  * @return void
  */
-        private function addrole($context)
+        private function addrolename($context)
         {
             $p = R::dispense('rolename');
             $p->name = $context->formdata()->mustpost('name');
