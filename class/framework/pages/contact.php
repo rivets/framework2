@@ -38,7 +38,7 @@
                 mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
                 $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
             }
-            return '@util/contact.twig';
+            return '@pages/contact.twig';
         }
     }
 ?>
