@@ -127,7 +127,7 @@
 /*
  * Remember where we are in the file system
  */
-    $cwd = getcwd();
+    $cwd = __DIR__;
  /*
   * Set up all the system error handlers
   */
