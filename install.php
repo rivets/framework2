@@ -51,7 +51,7 @@
         { # are we terminating with an error?
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
             { # tell the developers about this
-                echo '<h2>There has been an installer system error</h2>';
+                echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
                 echo '<pre>';
                 var_dump($error);
                 echo '</pre>';
@@ -71,7 +71,7 @@
  */
     function exception_handler($e)
     {
-        echo '<h2>There has been an installer system error</h2>';
+        echo '<h2>There has been an installer system exception</h2>';
         echo '<pre>';
         var_dump($e);
         echo '</pre>';
@@ -95,7 +95,7 @@
  */
     function error_handler($errno, $errstr, $errfile, $errline)
     {
-        echo '<h2>There has been an installer system error</h2>';
+        echo '<h2>There has been an installer system error : '.$errno.'</h2>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
         { # this is an internal error so we need to stop
