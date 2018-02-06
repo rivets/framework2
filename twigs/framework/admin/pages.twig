@@ -288,9 +288,9 @@
                             <input type="text" class="form-control" id="npsrc" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
                         </div>
 #}
-                        {{f.({labels: ['Active'], values:[1], ids: ['npactive']})}}
-                        {{f.({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
-                        {{f.({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
+                        {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
+                        {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
+                        {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
 {#
                         <div class="form-check">
                             <label class="form-check-label"><input type="checkbox" value="1" id="npactive"/> Active</label>
