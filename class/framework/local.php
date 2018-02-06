@@ -210,11 +210,10 @@
  * @param string	$errstr
  * @param string	$errfile
  * @param integer	$errline
- * @param string	$errcontext
  *
  * @return boolean
  */
-        public function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+        public function error_handler($errno, $errstr, $errfile, $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
