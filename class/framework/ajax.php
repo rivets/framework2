@@ -345,7 +345,7 @@
         private function config($context)
         {
             $rest = $context->rest();
-            list($bean, $name) = $this->restcheck($context, 2);
+            list($name) = $this->restcheck($context, 1);
             $v = R::findOne('fwconfig', 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($_SERVER['REQUEST_METHOD'])
