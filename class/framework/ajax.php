@@ -461,7 +461,7 @@
                 {
                     $context->web()->bad();
                 }
-                $bn->$field = $context->formdata()->mustpost('value');
+                $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
