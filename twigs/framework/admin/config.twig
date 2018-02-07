@@ -83,7 +83,7 @@
         <article class="ml-auto col-md-8 mr-auto">
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-                <table><tbody></tbody>
+                <table class="table"><tbody></tbody>
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
 
                     <tr><td>{{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}</td>
