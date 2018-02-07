@@ -83,12 +83,14 @@
         <article class="ml-auto col-md-8 mr-auto">
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+                <table><tbody></tbody>
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <div>
-                    {{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}
-                    {{f.checkbox({labels: ['Local'], ids: ['L'~p.name], values: [1]})}}
+
+                    <tr><td>{{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}</td>
+                    <td>{{f.checkbox({labels: ['Local'], ids: ['L'~p.name], values: [1]})}}</td></tr>
                     </div>
                 {% endfor %}
+                </tbody></table>
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
                     {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
