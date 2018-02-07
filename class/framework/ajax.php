@@ -360,12 +360,13 @@
                 $v->value = $fdt->mustpost('value');
                 R::store($v);
                 break;
+            case 'PATCH':
             case 'PUT':
                 if (!is_object($v))
                 {
                     $context->web()->bad();
                 }
-                $v->value = $fdt->mustpost('value');
+                $v->value = $fdt->mustput('value');
                 R::store($v);
                 break;
             case 'DELETE':
