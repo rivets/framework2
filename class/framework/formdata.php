@@ -14,6 +14,16 @@
     class Formdata
     {
         use \Utility\Singleton;
+
+        private $putdata    = NULL;
+
+        private function setput()
+        {
+            if (!is_array($this->putdata))
+            {
+                parse_str(file_get_contents('php://input'), $this->putdata);
+            }
+        }
 /*
  *******************************************************************
  * Existence checking functions for $_GET, $_POST, $_COOKIE and $_FILES
@@ -95,6 +105,25 @@
                 }
             }
         }
+/**
+ * Method to handle error returning
+ *
+ * May not actually return;
+ *
+ * @return NULL
+ */
+        private function failure($option, $message)
+        {
+            switch($option)
+            {
+            case Context::R400:
+                Web::getinstance()->bad($message);
+
+            case Context::RTHROW:
+                throw new Exception($message);
+            }
+            return NULL;
+        }
 /*
  ***************************************
  * $_GET fetching methods
@@ -121,19 +150,11 @@
             {
                 return trim($_GET[$name]);
             }
-            switch($fail)
-            {
-            case Context::R400:
-                Web::getinstance()->bad();
-            
-            case Context::RTHROW:
-                throw new Exception('Missing get item');
-            }
-            return NULL;
+            return $this->failure($fail, 'Missing get item');
         }
 /**
  * Look in the $_GET array for a key and return its trimmed value or a default value
- * 
+ *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param string	$name	The key
@@ -164,15 +185,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            switch($fail)
-            {
-            case Context::R400:
-                Web::getinstance()->bad();
-            
-            case Context::RTHROW:
-                throw new Exception('Missing get item');
-            }
-            return NULL;
+            return $this->failure($fail, 'Missing get item');
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -208,7 +221,7 @@
  */
 /**
  * Look in the $_POST array for a key and return its trimmed value
- * 
+ *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param string	$name	The key
@@ -227,20 +240,12 @@
             {
                 return trim($_POST[$name]);
             }
-            switch($fail)
-            {
-            case Context::R400:
-                Web::getinstance()->bad();
-            
-            case Context::RTHROW:
-                throw new Exception('Missing post item');
-            }
-            return NULL;
+            return $this->failure($fail, 'Missing post item');
        }
 
 /**
  * Look in the $_POST array for a key and return its trimmed value or a default value
- * 
+ *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param string	$name	The key
@@ -272,15 +277,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            switch($fail)
-            {
-            case Context::R400:
-                Web::getinstance()->bad();
-            
-            case Context::RTHROW:
-                throw new Exception('Missing post item');
-            }
-            return NULL;
+            return $this->failure($fail, 'Missing post item');
         }
 
 /**
@@ -311,6 +308,56 @@
             return filter_input(INPUT_POST, $name, $filter, $options);
         }
 /*
+ ***************************************
+ * PUT data fetching methods
+ ***************************************
+ */
+/**
+ * Get php://input data, check array for a key and return its trimmed value
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param string	$name	The key
+ * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
+ *
+ * @return mixed
+ */
+        public function mustput($name, $fail = Context::R400)
+        {
+            setput();
+            if (is_array($name) && isset($this->putdata[$name[0]]))
+            {
+                $n = array_shift($name);
+                return $this->getval($this->putdata[$n], $name, NULL, $fail);
+            }
+            elseif (isset($this->putdata[$name]))
+            {
+                return trim($this->putdata[$name]);
+            }
+            return $this->failure($fail, 'Missing put/patch item');
+       }
+
+/**
+ * Get php://input data, check arrayfor a key and return its trimmed value or a default value
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param string	$name	The key
+ * @param mixed		$dflt	Returned if the key does not exist
+ *
+ * @return mixed
+ */
+        public function put($name, $dflt = '')
+        {
+            setput();
+            if (is_array($name) && isset($this->putdata[$name[0]]))
+            {
+                $n = array_shift($name);
+                return $this->getval($this->putdata[$n], $name, $dflt, FALSE);
+            }
+            return isset($this->putdata[$name]) ? trim($this->putdata[$name]) : $dflt;
+        }
+/*
  ******************************
  * $_COOKIE helper functions
  ******************************
@@ -333,7 +380,7 @@
             {
             case Context::R400:
                 Web::getinstance()->bad();
-            
+
             case Context::RTHROW:
                 throw new Exception('Missing cookie item');
             }
