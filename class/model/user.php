@@ -113,19 +113,18 @@
  *
  * @param object   $context    The context object
  *
- * @return void
+ * @return  array   [TRUE if error, [error messages]]
  */
         public function edit($context)
         {
-            $change = FALSE;
-            $error = FALSE;
+            $emess = [];
             $fdt = $context->formdata();
             foreach (self::$editfields as $fld => $flags)
             { // might need more fields for different applications
                 $val = $fdt->post($fld, '');
                 if ($flags[0] && $val === '')
                 { // this is an error as this is a required field
-                    $error = TRUE;
+                    $emess = [$fld.' is required'];
                 }
                 elseif ($val != $this->bean->$fld)
                 {
@@ -143,11 +142,11 @@
                 }
                 else
                 {
-                    $error = TRUE;
+                    $emess[] = 'Passwords do not match';
                 }
             }
             $this->editroles($context);
-            return $error;
+            return [!empty($emess), $emess];
         }
     }
 ?>

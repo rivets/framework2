@@ -78,7 +78,11 @@
                         $context->web()->bad();
                         /* NOT REACHED */
                     }
-                    $obj->edit($context);
+                    list($error, $emess) = $obj->edit($context);
+                    if ($error)
+                    {
+                        $context->local()->error(\Framework\Local\ERROR, $emess);
+                    }
                     // The edit call might divert to somewhere else so sometimes we may not get here.
                 }
                 $context->local()->addval('bean', $obj);
