@@ -83,12 +83,12 @@
         <article class="ml-auto col-md-8 mr-auto">
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-                <table class="table"><tbody>
+                <table class="table"><tbody></tbody>
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <tr>
-                        <td>{{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}</td>
-                        <td>{{f.checkbox({labels: ['Local'], ids: ['L'~p.name], values: [1]})}}</td>
-                    </tr>
+
+                    <tr><td>{{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}</td>
+                    <td>{{f.checkbox({labels: ['Local'], ids: ['L'~p.name], values: [1]})}}</td></tr>
+                    </div>
                 {% endfor %}
                 </tbody></table>
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
