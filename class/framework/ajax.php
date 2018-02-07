@@ -561,62 +561,9 @@
                 }
             }
             else
-            {
-                $fdt = $context->formdata();
-                if (($lg = $fdt->get('login', '')) !== '')
-                { # this is a parsley generated username check call
-                    if (R::count('user', 'login=?', [$lg]) > 0)
-                    {
-                        $context->web()->notfound(); // error if it exists....
-                        /* NOT REACHED */
-                    }
-                }
-                else
-                {
-                    $op = $fdt->mustpost('op');
-                    if (isset(self::$ops[$op]))
-                    { # a valid operation
-                        $curop = self::$ops[$op];
-                        if ($curop[0])
-                        { # this operation requires a logged in user
-                            $context->mustbeuser(); // will not return if there is no user
-                        }
-                        foreach ($curop[1] as $rcs)
-                        {
-                            if (is_array($rcs[0]))
-                            { // this is an OR
-                                $ok = FALSE;
-                                foreach ($rcs as $orv)
-                                {
-                                    if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
-                                    {
-                                        $ok = TRUE;
-                                        break;
-                                    }
-                                }
-                                if (!$ok)
-                                {
-                                    $context->web()->noaccess();
-                                    /* NOT REACHED */
-                                }
-                            }
-                            else
-                            {
-                                if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
-                                {
-                                    $context->web()->noaccess();
-                                    /* NOT REACHED */
-                                }
-                            }
-                        }
-                        $this->{$op}($context);
-                    }
-                    else
-                    { # return a 400
-                        $context->web()->bad();
-                        /* NOT REACHED */
-                    }
-                }
+            { // for the moment no other options
+                $context->web()->bad();
+                /* NOT REACHED */
             }
         }
     }
