@@ -7,7 +7,7 @@
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
-{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="editcall" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
 {# use this if editable breaks....
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
@@ -72,7 +72,13 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({params: paramset, source: kname});
+    $('.ppedit').editable({
+        ajaxOptions: { type: PUT},
+        params: paramset,
+        source: kname,
+        onblur: 'cancel'
+        url: editcall
+    });
     $('#npform').on('submit', false)
     $('#addb').on('click', function(e){
         e.preventDefault()
