@@ -20,10 +20,9 @@
     {
         use \Utility\Singleton;
 
-        const ERROR     = 'errmessage';
-        const WARNING   = 'warnmessage';
-        const MESSAGE   = 'message';
-
+        const ERROR     = 0;        # 'errmessage';
+        const WARNING   = 1;        # 'warnmessage';
+        const MESSAGE   = 2;        # 'message';
 /**
  * @var	string		The absolute path to the site directory
  */
@@ -72,7 +71,7 @@
 /**
  * @var array           Stash away messages so that messages.twig works
  */
-        private $messages       = [];
+        private $messages       = [[], [], []];
 /**
  * @var string          Backtrace info - only used with errors
  */
@@ -408,17 +407,20 @@
  * somewhere in the relevant twig (usually at the top of the main body)
  *
  * @param string	$kind		The kind of message
- * @param mixed		$value		The value to be stored
+ * @param mixed		$value		The value to be stored or an array of values
  *
  * @return void
  */
         public function message($kind, $value)
         {
-            if (!isset($this->messages[$kind]))
+            if (is_array($value))
             {
-                $this->messages[$kind] = [];
+                $this->messages[$kind] = array_merge($this->messages[$kind], $value);
             }
-            $this->messages[$kind][] = $value;
+            else
+            {
+                $this->messages[$kind][] = $value;
+            }
         }
 /**
  * Clear out messages
@@ -431,11 +433,11 @@
         {
             if ($kind === '')
             {
-                $this->messages = [];
+                $this->messages = [[], [], []];
             }
-            elseif (isset($this->messages[$kind]))
+            else
             {
-                unset($this->messages[$kind]);
+                $this->messages[$kind] = [];
             }
         }
 /**
