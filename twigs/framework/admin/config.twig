@@ -85,6 +85,7 @@
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
                     {{f.text({label: p.name, name: p.name, class: 'cval', id: 'X'~p.name, value: p.value })}}
+                    {{f.checkbox{labels: ['Local'], ids: ['L'~p.name], values: [1]}}}
                 {% endfor %}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
