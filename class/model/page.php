@@ -78,13 +78,10 @@
                 elseif ($val != $this->bean->$fld)
                 {
                     $this->bean->$fld = $val;
-                    $change = TRUE;
                 }
             }
-            if ($change)
-            {
-                \R::store($this->bean);
-            }
+            \R::store($this->bean);
+
             $this->editroles($context);
             $admin = $this->hasrole('Site', 'Admin');
             if (is_object($devel = $this->hasrole('Site', 'Developer')) && !is_object($admin))
@@ -96,7 +93,7 @@
                 $this->bean->needlogin = 1;
                 \R::store($this->bean);
             }
-            return TRUE;
+            return $error;
         }
     }
 ?>

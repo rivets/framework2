@@ -130,13 +130,10 @@
                 elseif ($val != $this->bean->$fld)
                 {
                     $this->bean->$fld = $val;
-                    $change = TRUE;
                 }
             }
-            if ($change)
-            {
-                \R::store($this->bean);
-            }
+            \R::store($this->bean);
+
             $pw = $fdt->post('pw', '');
             if ($pw !== '')
             {
@@ -150,7 +147,7 @@
                 }
             }
             $this->editroles($context);
-            return TRUE;
+            return $error;
         }
     }
 ?>
