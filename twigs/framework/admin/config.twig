@@ -19,7 +19,7 @@
             }
         }).fail(function(){
             bootbox.alert('Update failed');
-        }
+        });
     });
     $('.nname').on('blur', function(e){
         e.preventDefault()
@@ -34,12 +34,12 @@
 	    }
 	    else if ($('input[name="'+name+'"]').length != 0)
 	    {
-	        bootbox.alert('That item already exists')
+	        bootbox.alert('That item already exists');
 	    }
 	    else
 	    {
-	        $('#inval').show()
-		$('#Xnewval').focus()
+	        $('#inval').show();
+		$('#Xnewval').focus();
 	    }
         }
     })
@@ -61,7 +61,7 @@
 	    $('#inval').hide();
         }).fail(function(){
             bootbox.alert('Failed to add new configuration item');
-        })
+        });
     });
 {% endblock onload %}
 
