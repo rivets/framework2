@@ -37,7 +37,7 @@
     function editcall(params)
     {
         var url = base+'/ajax/bean/page/'+params.pk+'/'+params.name+'/';
-        return $.ajax($url,{
+        return $.ajax(url,{
             method: 'PUT',
             data: {
                 value: params.value
