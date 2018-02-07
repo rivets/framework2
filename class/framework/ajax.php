@@ -331,7 +331,7 @@
                 {
                     $context->web()->bad();
                 }
-                $values[] = $res;
+                $values[] = $val;
             }
             return $values;
         }
