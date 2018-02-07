@@ -516,6 +516,8 @@
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call
+                $rest = $context->rest();
+                $op = $rest[0];
                 if (isset(self::$restops[$op]))
                 { # a valid operation
                     $curop = self::$restops[$op];
