@@ -24,20 +24,14 @@
 /**
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $ops = [
-            'toggle'        => [TRUE, [['Site', 'Admin']]],
-            'update'        => [TRUE, [['Site', 'Admin']]],
-        ];
-/**
- * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
- */
         private static $restops = [
             'bean'          => [TRUE,   [['Site', 'Admin']]],
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'logincheck'    => [FALSE,  []],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
-        ];/**
+        ];
+/**
  * Add a User
  *
  * @param object	$context	The context object for the site
@@ -326,8 +320,7 @@
             $rest = $context->rest();
             foreach (range(1, $count) as $ix)
             {
-                $val = $rest[$ix] ?? '';
-                if ($val === '')
+                if (($val = $rest[$ix] ?? '') === '')
                 {
                     $context->web()->bad();
                 }
@@ -443,11 +436,18 @@
             switch ($_SERVER['REQUEST_METHOD'])
             {
             case 'POST': // mae a new one /ajax/bean/KIND/
-                if (!method_exists($this, 'add'.$bean))
+                if (method_exists(REDBEAN_MODEL_PREFIX.$bean, add))
+                {
+                    REDBEAN_MODEL_PREFIX.$bean::add($context);
+                }
+                elseif (!method_exists($this, 'add'.$bean))
                 {
                     $context->web()->bad();
                 }
-                $this->{'add'.$bean}($context);
+                else
+                {
+                    $this->{'add'.$bean}($context);
+                }
                 break;
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
@@ -489,7 +489,6 @@
  */
         public function operation($function, $perms)
         {
-            self::$ops[$function] = $perms;
             self::$restops[$function] = $perms;
         }
 /**
