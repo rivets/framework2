@@ -57,6 +57,206 @@
            }
         }
 /**
+ * Make a twig file if we have permission
+ *
+ * @param string    $page   The name of the page
+ * @param string    $name   The name of the twig
+ *
+ * @return void
+ */
+        private function maketwig($context, $page, $name)
+        {
+            $file = $context->local()->makebasepath('twigs', $name);
+            if (!file_exists($file))
+            { // make the file
+                $fd = fopen($file, 'w');
+                if ($fd !== FALSE)
+                {
+                    fwrite($fd,'{% extends \'@util/page.twig\' %}
+
+{# this brings in some useful macros for making forms
+{% import \'@util/formmacro.twig\' as f %}
+#}
+
+{# this brings in some useful macros for making bootstrap modals
+{% import \'@util/modalmacro.twig\' as f %}
+#}
+
+{# put a string in this block that will appear as the title of the page
+{% block title %}
+{% endblock title %}
+#}
+
+{% block links %}
+{# <link> for non-css and non-type things#}
+{% endblock links %}
+
+{% block type %}
+{# <link> for webfonts #}
+{% endblock type %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load goes in this block. NB you don\'t need <script></script> tags  here #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load goes in this block. NB you don\'t need <script></script> tags  here #}
+{% endblock onload %}
+
+{# If you include this, then the navigation bar in @util/page.twig will **NOT** appear
+{% block navigation %}
+{% endblock navigation %}
+#}
+
+{#
+    Edit the file navbar.twig to change the appearance of the
+    navigation bar. It is included by default from @util/page.twig
+#}
+
+{# uncomment this and delete header block to remove the <header> tag altogether
+{% block pageheader %}
+{% endblock pageheader %}
+#}
+
+{#
+    If you have a standard header for all (most) pages then put the
+    content in the file header.twig. It is included by @util/page.twig by
+    default. You then don\'t need to have a header block either.
+#}
+
+{% block header %}
+    <article class="col-md-12">
+        <h1 class="cntr">'.strtoupper($page).'</h1>
+    </article>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+            <p>Coming soon</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{# uncomment this  and delete footer block to remove the <footer> tag altogether
+{% block pagefooter %}
+{% endblock pagefooter %}
+#}
+
+{#
+    If you have a standard footer for all (most) pages then put the
+    content in the file footer.twig. It is included by @util/page.twig by
+    default. You then don\'t need to have a footer block either.
+#}
+
+{% block footer %}
+{% endblock footer %}
+');
+                    fclose($fd);
+                }
+            }
+       }
+/**
+ * Add a Page
+ *
+ * This will be called from ajax.php
+ *
+ * @param object	$context	The context object for the site
+ *
+ * @return void
+ */
+        public static function add($context)
+        {
+            $fdt = $context->formdata();
+            $p = R::dispense('page');
+            $p->name = $fdt->mustpost('name');
+            $p->kind = $fdt->mustpost('kind');
+            $p->source = $fdt->mustpost('source');
+            $p->active = $fdt->mustpost('active');
+            $p->needlogin = $fdt->mustpost('login');
+            $p->mobileonly = $fdt->mustpost('mobile');
+            R::store($p);
+
+            try
+            {
+                foreach ($fdt->posta('context') as $ix => $cid)
+                { // context, role, start, end, otherinfo
+                    if ($cid !== '')
+                    {
+                        $p->addrolebybean(
+                            $context->load('rolecontext', $cid, Context::RTHROW),
+                            $context->load('rolename', $fdt->mustpost(['role', $ix], Context::RTHROW)),
+                            $fdt->mustpost(['otherinfo', $ix], Context::RTHROW),
+                            $fdt->mustpost(['start', $ix], Context::RTHROW),
+                            $fdt->mustpost(['end', $ix], Context::RTHROW)
+                        );
+                    }
+                }
+                $local = $context->local();
+                switch ($p->kind)
+                {
+                case SiteAction::OBJECT:
+                    $tl = strtolower($p->source);
+                    $src = preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
+                    $file = $local->makebasepath('class', $src);
+                    if (!file_exists($file))
+                    { // make the file
+                        $fd = fopen($file, 'w');
+                        if ($fd !== FALSE)
+                        {
+                            fwrite($fd, '<?php
+/**
+ * A class that contains code to handle any requests for  /'.$tl.'
+ */
+/**
+ * Support // or /home/'.$tl.'
+ */
+    class '.$p->source.' extends \\Framework\\Siteaction
+    {
+/**
+ * Handle '.$tl.' operations /
+ *
+ * @param object	$context	The context object for the site
+ *
+ * @return string	A template name
+ */
+        public function handle($context)
+        {
+            return \''.$tl.'.twig\';
+        }
+    }
+?>');
+                            fclose($fd);
+                        }
+                    }
+                    $this->maketwig($context, $tl, $tl.'.twig');
+                    break;
+                case SiteAction::TEMPLATE:
+                    $this->maketwig($context, $p->name, $p->source);
+                    break;
+                case SiteAction::REDIRECT:
+                case SiteAction::REHOME:
+                case SiteAction::XREDIRECT:
+                case SiteAction::XREHOME:
+                    break;
+                }
+                echo $p->getID();
+            }
+            catch (Exception $e)
+            { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
+                R::trash($p);
+                $context->web()->bad($e->getmessage());
+            }
+        }
+/**
  * Handle an edit form for this page
  *
  * @param object   $context    The context object
