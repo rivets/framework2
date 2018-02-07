@@ -324,7 +324,7 @@
  */
         public function mustput($name, $fail = Context::R400)
         {
-            setput();
+            $this->setput();
             if (is_array($name) && isset($this->putdata[$name[0]]))
             {
                 $n = array_shift($name);
@@ -349,7 +349,7 @@
  */
         public function put($name, $dflt = '')
         {
-            setput();
+            $this->setput();
             if (is_array($name) && isset($this->putdata[$name[0]]))
             {
                 $n = array_shift($name);
