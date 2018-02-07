@@ -197,7 +197,6 @@
  */
         private function addpage($context)
         {
-            \Framework\Debug::vdump($_POST);
             $fdt = $context->formdata();
             $p = R::dispense('page');
             $p->name = $fdt->mustpost('name');
