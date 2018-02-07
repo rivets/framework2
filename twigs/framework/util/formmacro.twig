@@ -2,9 +2,9 @@
 {% if value != '' %} {{attr}}="{{value}}"{% endif %}
 {% endmacro hv %}
 
-{% macro cd(cond, attr, value)%}
+{% macro cd(cond, attr, value) %}
 {% if cond %} {{attr}}="{{value}}"{% endif %}
-{% endmacro hv %}
+{% endmacro cd %}
 
 {% macro fv(opts)%}
 {% for v in ['required', 'disabled', 'readonly'] %}{% if opts[v] %} {{v}}="{{v}}"{% endif %}{% endfor %}
