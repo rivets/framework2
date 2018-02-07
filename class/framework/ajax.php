@@ -448,6 +448,7 @@
                 }
                 $this->{'add'.$bean}($context);
                 break;
+            case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
                 $id = $rest[2] ?? 0; // get the id from the URL
                 if ($id <= 0)
