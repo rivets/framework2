@@ -52,14 +52,6 @@
                 }).fail(function(){
                     bootbox.alert('Delete failed');
                 });
- /*               $.post(base+'/ajax/bean/', {
-//                    op :'delbean',
-                    'bean' : bean,
-                    id : tr.data('id')
-                    }
-
-                );
-*/
             }
         });
     }
