@@ -50,6 +50,7 @@
         $fwc->name = $name;
         $fwc->value = $value;
         $fwc->local = $local ? 1 : 0;
+        $fwc->fixed = 1;
         \R::store($fwc);
     }
 
