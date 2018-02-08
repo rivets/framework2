@@ -80,13 +80,13 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="col-md-12">
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
                     <div class="row">
                         <label class="col-sm-2 col-form-label" for="X{{p.name}}">{{p.name}}</label>
-                        <div class="col-md-8">
+                        <div class="col-md-9">
                             <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
                         </div>
                         <div class="col-md-2">
@@ -94,8 +94,12 @@
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                            </div>
                         </div>
+                        <div class="col-md-2">
+                           <i class="delb fa fa-trash"></i>
+                        </div>
                     </div>
                 {% endfor %}
+{# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
                     {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
