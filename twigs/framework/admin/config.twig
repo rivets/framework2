@@ -45,7 +45,7 @@
 	var name = t.val()
 	if (name != '')
         {
-	    if (!name.match(/^[a-z][a-z0-9]+$/i))
+	    if (!name.match(/^[a-z][a-z0-9]*$/i))
 	    {
 	        bootbox.alert('Invalid name format')
 		t.val('')
@@ -64,13 +64,11 @@
     $('.nval').on('blur', function(e){
         e.preventDefault();
         var t = $(this);
-	var name = $('.nname').val();
-	var value = t.val();
-        $.ajax('{{base}}/ajax/bean/fwconfig/'+name+'/', {
+        $.ajax('{{base}}/ajax/bean/fwconfig/', {
             method: 'POST', // because we are creating a new item
             data: {
-                name: name,
-                value: value,
+                name: $('.nname').val(),
+                value: t.val(),
                 local: $('#Xnewlocal').is(':checked') ? 1 : 0
             }
         }).done(function(data){
@@ -126,6 +124,9 @@
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
                         {{f.checkbox({labels: ['Local'], values:[1], class: 'nlval', names:['newlocal'], ids:['Xnewlocal']})}}
+                        <div>
+                            <button class="btn btn-lg btn-primary">Add</button>
+                        </div>
                     </div>
                 </div>
             </form>
