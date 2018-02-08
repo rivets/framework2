@@ -84,9 +84,10 @@
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <div class="row">
-			<div class="col-md-10">
-                            <label for="X{{p.name}}">{{p.name}}</label></label><input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
+                    <div class="form-row">
+                        <label class="col-sm-2 col-form-label" for="X{{p.name}}">{{p.name}}</label>
+                        <div class="col-md-8">
+                            <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
                         </div>
                         <div class="col-md-2">
                            <div class="form-check form-check-inline">
