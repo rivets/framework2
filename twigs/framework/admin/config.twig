@@ -10,7 +10,7 @@
     $('#inval').hide();
     $('#cfr').on('submit', false);
     $('.delb').on('click', function(e){
-        dodelbean(e, $(this), 'fwconfig');
+        dodelbean(e, this, 'fwconfig');
     })
     $('.lval').on('change', function(e){
         e.preventDefault();
@@ -83,8 +83,9 @@
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"'+(local ? ' checked="checked"' : '')+'/> Local</label>'+
-                        '</div><i class="delb fa fa-trash"></i></div></div>'
+                        '</div><i class="delb ndelb fa fa-trash"></i></div></div>'
             );
+            $('.ndelb').on('click', function(e) { dodelbean(e, this, 'fwconfig')}).removeClass('ndelb')
 	    $('.nname').val('');
 	    t.val('');
 	    $('#inval').hide();
