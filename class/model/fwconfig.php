@@ -15,12 +15,19 @@
  */
     class FWConfig extends \RedBeanPHP\SimpleModel
     {
-        public function add($context)
+/**
+ * Add a new FWConfig bean
+ *
+ * @param object    $context    The context object
+ *
+ * @return void
+ */
+        public static function add($context)
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');
-            $v = \R::findOne('fwconfig', 'name=?', [$name]);
-            if (is_object($v))
+            $bn = \R::findOne('fwconfig', 'name=?', [$name]);
+            if (is_object($bn))
             {
                 $context->web()->bad();
             }
