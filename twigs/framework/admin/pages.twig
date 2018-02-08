@@ -38,7 +38,7 @@
     {
         var url = base+'/ajax/bean/page/'+params.pk+'/'+params.name+'/';
         return $.ajax(url,{
-            method: 'PUT',
+            method: 'PATCH',
             data: {
                 value: params.value
             }
