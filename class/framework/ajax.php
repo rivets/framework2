@@ -436,9 +436,10 @@
             switch ($_SERVER['REQUEST_METHOD'])
             {
             case 'POST': // make a new one /ajax/bean/KIND/
-                if (method_exists(REDBEAN_MODEL_PREFIX.$bean, 'add'))
+                $class = REDBEAN_MODEL_PREFIX.$bean;
+                if (method_exists($class, 'add'))
                 {
-                    REDBEAN_MODEL_PREFIX.$bean::add($context);
+                    $class::add($context);
                 }
                 elseif (!method_exists($this, 'add'.$bean))
                 {

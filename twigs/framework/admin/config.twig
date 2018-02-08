@@ -15,7 +15,7 @@
     $('.lval').on('change', function(e){
         e.preventDefault();
         var t = $(this);
-        var id = t.parent().parent().parent().data('id');
+        var id = t.parent().parent().parent().parent().data('id');
          $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/local/', {
             method: 'PATCH', // because we are updating an item
             data: {
