@@ -9,6 +9,12 @@
 {% block onload %}
     $('#inval').hide();
     $('#cfr').on('submit', false);
+    $('.delb').on('click', function(e){
+        dodelbean(e, $(this), 'fwconfig');
+    })
+    $('.lval').on('click', function(e){
+
+    })
     $('.cval').on('blur', function(e){
         e.preventDefault();
         var t = $(this);
@@ -84,7 +90,7 @@
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <div class="row mb-2">
+                    <div class="row mb-2" data-id="{{p.id}}">
                         <label class="col-md-1 col-form-label" for="X{{p.name}}">{{p.name}}</label>
                         <div class="col-md-9">
                             <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
