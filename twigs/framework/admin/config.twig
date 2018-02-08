@@ -80,7 +80,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
+        <article class="ml-auto col-md-10 mr-auto">
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
