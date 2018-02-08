@@ -64,16 +64,27 @@
     $('.nval').on('blur', function(e){
         e.preventDefault();
         var t = $(this);
+        var name = $('.nname').val();
+        var value = t.val();
+        var local = $('#Xnewlocal').is(':checked') ? 1 : 0;
         $.ajax('{{base}}/ajax/bean/fwconfig/', {
             method: 'POST', // because we are creating a new item
             data: {
-                name: $('.nname').val(),
-                value: t.val(),
-                local: $('#Xnewlocal').is(':checked') ? 1 : 0
+                name: name,
+                value: value,
+                local: local
             }
         }).done(function(data){
-	    $('.nname').parent().prev().after('<div class="form-group"><label for="X'+name+'">'+name+'</label><input type="text" id="X'+
-		name+'" name="'+name+'" value="'+value+'" class="form-control cval"/></div>');
+	    $('.nname').parent().prev().after('<div class="row mb-2" data-id="'+data+'">'+
+                '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
+                    '<div class="col-md-9">'+
+                            '<input type="text" id="X'+name+'" name="'+name'+" value="'+value+'" class="form-control cval"/>'+
+                    '</div>'+
+                    '<div class="col-md-2">'+
+                        '<div class="form-check form-check-inline">'+
+                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"'+(local ? ' checked="checked"' : '')+'/> Local</label>'+
+                        '</div><i class="delb fa fa-trash"></i></div></div>'
+            );
 	    $('.nname').val('');
 	    t.val('');
 	    $('#inval').hide();
