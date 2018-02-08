@@ -90,10 +90,12 @@
                             <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
                         </div>
                         <div class="col-md-2">
-                           <div class="form-check form-check-inline">
+                            <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
-                           </div>
-                           <i class="delb fa fa-trash"></i>
+                            </div>
+                            {% if not p.fixed %}
+                                <i class="delb fa fa-trash"></i>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -103,7 +105,7 @@
                     {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
-                        {{f.checkbox({[labels: ['Local'], values:[1], class: 'nlval', names:['newlocal'], ids:['Xnewlocal']})}}
+                        {{f.checkbox({labels: ['Local'], values:[1], class: 'nlval', names:['newlocal'], ids:['Xnewlocal']})}}
                     </div>
                 </div>
             </form>
