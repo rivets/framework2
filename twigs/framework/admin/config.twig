@@ -84,8 +84,8 @@
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <div class="row">
-                        <label class="col-sm-2 col-form-label" for="X{{p.name}}">{{p.name}}</label>
+                    <div class="row mb-2">
+                        <label class="col-md-1 col-form-label" for="X{{p.name}}">{{p.name}}</label>
                         <div class="col-md-9">
                             <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
                         </div>
@@ -93,8 +93,6 @@
                            <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                            </div>
-                        </div>
-                        <div class="col-md-2">
                            <i class="delb fa fa-trash"></i>
                         </div>
                     </div>
@@ -105,7 +103,7 @@
                     {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
-                        {{f.checkbox({[labels: ['Local'], values:[1], class: 'nlval', namdes:['newlocal'], ids:['newlocal']})}}
+                        {{f.checkbox({[labels: ['Local'], values:[1], class: 'nlval', names:['newlocal'], ids:['Xnewlocal']})}}
                     </div>
                 </div>
             </form>
