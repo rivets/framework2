@@ -12,14 +12,26 @@
     $('.delb').on('click', function(e){
         dodelbean(e, $(this), 'fwconfig');
     })
-    $('.lval').on('click', function(e){
+    $('.lval').on('change', function(e){
+        e.preventDefault();
+        var t = $(this);
+        var id = t.parent().parent().parent().data('id');
+         $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/local/', {
+            method: 'PATCH', // because we are updating an item
+            data: {
+                value: t.is(':checked') ? 1 : 0
+            }
+        }).fail(function(){
+            bootbox.alert('Update failed');
+        });
 
     })
     $('.cval').on('blur', function(e){
         e.preventDefault();
         var t = $(this);
-        $.ajax('{{base}}/ajax/config/'+t.prop('name')+'/', {
-            method: 'PUT', // because we are updating an item
+        var id = t.parent().parent().data('id');
+        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/name/', {
+            method: 'PATCH', // because we are updating an item
             data: {
                 value: t.val()
             }
@@ -54,10 +66,12 @@
         var t = $(this);
 	var name = $('.nname').val();
 	var value = t.val();
-        $.ajax('{{base}}/ajax/config/'+name+'/', {
+        $.ajax('{{base}}/ajax/bean/fwconfig/'+name+'/', {
             method: 'POST', // because we are creating a new item
             data: {
-                value: value
+                name: name,
+                value: value,
+                local: $('#Xnewlocal').is(':checked') ? 1 : 0
             }
         }).done(function(data){
 	    $('.nname').parent().prev().after('<div class="form-group"><label for="X'+name+'">'+name+'</label><input type="text" id="X'+
