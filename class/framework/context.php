@@ -243,7 +243,7 @@
             session_name($sn);
             if (isset($_COOKIE[$sn]))
             {
-                session_set_cookie_params(60*60*24, $this->local()->base());
+                session_set_cookie_params(60*60*24, $this->local()->base().'/');
                 session_start();
                 if (isset($_SESSION[$var]))
                 {
