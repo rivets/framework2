@@ -239,7 +239,7 @@
  */
         public function sessioncheck($var, $fail = TRUE)
         {
-            $sn = 'PSI'.preg_replace('/[^a-z0-9]/i', '', Config\Config::SITENAME);
+            $sn = 'PSI'.preg_replace('/[^a-z0-9]/i', '', Config::SITENAME);
             session_name($sn);
             if (isset($_COOKIE[$sn]))
             {
