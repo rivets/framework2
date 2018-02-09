@@ -6,13 +6,9 @@
     <script src="{{assets}}/js/util.js"></script>
 {% endblock scripts %}
 
-{% block onload %}
-    $('#inval').hide();
-    $('#cfr').on('submit', false);
-    $('.delb').on('click', function(e){
-        dodelbean(e, this, 'fwconfig');
-    })
-    $('.lval').on('change', function(e){
+{% block setup %}
+    function setlocal(e)
+    {
         e.preventDefault();
         var t = $(this);
         var id = t.parent().parent().parent().parent().data('id');
@@ -24,8 +20,19 @@
         }).fail(function(){
             bootbox.alert('Update failed');
         });
+    }
 
-    })
+    function delbean(e)
+    {
+        dodelbean(e, this, 'fwconfig');
+    }
+{% endblock setup %}
+
+{% block onload %}
+    $('#inval').hide();
+    $('#cfr').on('submit', false);
+    $('.delb').on('click', delbean)
+    $('.lval').on('change', setlocal)
     $('.cval').on('blur', function(e){
         e.preventDefault();
         var t = $(this);
@@ -72,7 +79,7 @@
             data: {
                 name: name,
                 value: value,
-                local: local
+                local: 0
             }
         }).done(function(data){
 	    $('.nname').parent().parent().prev().prev().after('<div class="row mb-2" data-id="'+data+'">'+
@@ -82,10 +89,11 @@
                     '</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
-                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"'+(local ? ' checked="checked"' : '')+'/> Local</label>'+
+                            '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
                         '</div><i class="delb ndelb fa fa-trash"></i></div></div>'
             );
-            $('.ndelb').on('click', function(e) { dodelbean(e, this, 'fwconfig')}).removeClass('ndelb')
+            $('.ndelb').on('click', delbean).removeClass('ndelb')
+            $('.nlval').on('click', setlocal).removeClass('nlval')
 	    $('.nname').val('');
 	    t.val('');
 	    $('#inval').hide();
@@ -135,10 +143,6 @@
                     {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
-                        {{f.checkbox({labels: ['Local'], values:[1], class: 'nlval', names:['newlocal'], ids:['Xnewlocal']})}}
-                        <div>
-                            <button class="btn btn-lg btn-primary">Add</button>
-                        </div>
                     </div>
                 </div>
             </form>
