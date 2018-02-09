@@ -241,6 +241,8 @@
         {
             if (isset($_COOKIE[ini_get('session.name')]))
             {
+                session_set_cookie_params(60*60*24, $this->local()->base());
+                session_name('session_'.preg_replace('/[^a-z0-9]/i', '', Config\Config::SITENAME));
                 session_start();
                 if (isset($_SESSION[$var]))
                 {
