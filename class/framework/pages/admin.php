@@ -112,7 +112,7 @@
                     $upd = json_decode(fread($ufd, 1024));
                     if (isset($upd->config))
                     { // now see if there are any config values that need updating.
-                        foreach ($upd->config as $cname => $cvalue)
+                        foreach ($upd->config as $cname => list($cvalue, $cfixed))
                         {
                             $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
                             if (is_object($lval))
@@ -120,6 +120,7 @@
                                 if ($lval->local == 0 && $lval->value != $cvalue)
                                 { // update if not locally set and there is a new value
                                     $lval->value = $cvalue;
+                                    $lval->fixed = $cfixed;
                                     \R::store($lval);
                                 }
                             }
@@ -129,6 +130,7 @@
                                 $lval->name = $cname;
                                 $lval->value = $cvalue;
                                 $lval->local = 0;
+                                $lval->fixed = $cfixed;
                                 \R::store($lval);
                             }
                         }
