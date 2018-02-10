@@ -239,7 +239,7 @@
  */
         public function sessioncheck($var, $fail = TRUE)
         {
-            if (isset($_COOKIE[ini_get('session.name')]))
+            if (isset($_COOKIE[Config::SESSIONNAME]))
             {
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
