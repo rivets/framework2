@@ -239,11 +239,8 @@
  */
         public function sessioncheck($var, $fail = TRUE)
         {
-            $sn = 'PSI'.preg_replace('/[^a-z0-9]/i', '', Config::SITENAME);
-            session_name($sn);
-            if (isset($_COOKIE[$sn]))
+            if (session_status() == PHP_SESSION_ACTIVE) //isset($_COOKIE[ini_get('session.name')]))
             {
-                session_set_cookie_params(60*60*24, $this->local()->base().'/');
                 session_start();
                 if (isset($_SESSION[$var]))
                 {
