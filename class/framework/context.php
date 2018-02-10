@@ -241,7 +241,7 @@
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
-                session_start(['name' => Config::SESSIONNAME, 'sid_length' => 256]);
+                session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
                     return $_SESSION[$var];
