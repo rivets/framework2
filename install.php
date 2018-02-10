@@ -498,8 +498,6 @@
                 'RewriteRule ^(assets'.($options['public'] ? '|public' : '').')/(.*) $1/$2 [L,NC]'.PHP_EOL.
     //            'RewriteRule ^(themes/[^/]*/assets/(css|js)/[^/]*) $1 [L,NC]'.PHP_EOL.
                 'RewriteRule ^.*$ index.php [L,QSA]'.PHP_EOL.PHP_EOL.
-                'php_value session.cookie_name PSI'.preg_replace('/[^a-z0-9]/i', '', $cvalue['SITENAME']).PHP_EOL.
-                'php_value session.cookie_path '.$dir.'/'.PHP_EOL.PHP_EOL.
                 '# uncomment these to turn on compression of responses'.PHP_EOL.
                 '# Apache needs the deflate module and PHP needs the zlib module for these to work'.PHP_EOL.
                 '# AddOutputFilterByType DEFLATE text/css'.PHP_EOL.

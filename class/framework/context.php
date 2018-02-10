@@ -241,7 +241,7 @@
         {
             if (session_status() == PHP_SESSION_ACTIVE) //isset($_COOKIE[ini_get('session.name')]))
             {
-                session_start();
+                session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
                     return $_SESSION[$var];
