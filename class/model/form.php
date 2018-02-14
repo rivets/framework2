@@ -13,7 +13,25 @@
     class Form extends \RedBeanPHP\SimpleModel
     {
 /**
- * Return the forms fields
+ * Return the form name
+ *
+ * @return object
+ */
+        public function name()
+        {
+	    return $this->bean->name;
+        }
+/**
+ * Return the form's method
+ *
+ * @return object
+ */
+        public function method()
+        {
+	    return $this->bean->method;
+        }
+/**
+ * Return the form's fields
  *
  * @return object
  */

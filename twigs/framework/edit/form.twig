@@ -78,7 +78,7 @@
 {% block main %}
     <section class="row">
         <article class="col-md-12">
-            <form id="addfform" action="#" method="post">
+            <form id="addform" action="#" method="post">
             <fieldset>
                 <legend>Form details</legend>
                 <div class="form-group">
@@ -88,10 +88,10 @@
                 </div>
                 <div class="form-group">
                 <label class="radio-inline">
-                    <input type="radio" name="method" value="1"{% if form.method == 0 %} checked="checked"{% endif %}> GET
+                    <input type="radio" name="method" value="1"{% if form.method == 1 %} checked="checked"{% endif %}> GET
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="method" value="1"{% if form.method == 1 %} checked="checked"{% endif %}> POST
+                    <input type="radio" name="method" value="2"{% if form.method == 2 %} checked="checked"{% endif %}> POST
                 </label>
                 </div>
                 <div class="form-group">
