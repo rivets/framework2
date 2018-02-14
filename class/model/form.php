@@ -38,11 +38,11 @@
         public static function add($context)
         {
             $fdt = $context->formdata();
-            $p = R::dispense('form');
+            $p = \R::dispense('form');
             $p->name = $fdt->mustpost('name');
             $p->method = $fdt->mustpost('method');
             $p->multipart = $fdt->post('multipart', 0);
-            echo R::store($p);
+            echo \R::store($p);
         }
 /**
  * View a form
