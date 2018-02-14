@@ -37,7 +37,7 @@
 
 {% macro xsl(opts, cls, clear) %}
 {% import _self as h %}
-   <div class="{{cls}}{% if clear %} clear{% endif %}">
+   <div class="{{cls}}{% if clear %} clearfix{% endif %}">
         {% if opts.label != '' %}
             <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
         {% endif %}
