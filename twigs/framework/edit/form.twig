@@ -12,18 +12,21 @@
 {{h.tick(val, class ~ ' htick')}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
-{% macro inline(type, name, msg, id, value) %}
-<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax.php" data-title="{{msg}}">{{value}}</a>
+{% macro inline(type, name, msg, id, value, class) %}
+<a href="#" class="ppedit{{class}}" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax/bean/" data-title="{{msg}}">{{value}}</a>
 {% endmacro inline %}
 
 {% block scripts %}
     <script src="{{fwurls.parsley}}"></script>
     <script src="{{assets}}/js/util.js"></script>
-    <script src="{{fwurls.editablecss}}"></script>
+    {#<script src="{{fwurls.editablecss}}"></script>-->#}
+    <script src="{{assets}}/js/bs4-editable-min.js"></scrip
 {% endblock scripts %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{fwurls.editable}}"/>
+    <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
+
+    {#<link rel="stylesheet" href="{{fwurls.editable}}"/>#}
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
@@ -122,10 +125,10 @@
                     <tbody>
                         {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}">
-                                <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}</td>
-                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
-                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
-                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}<a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.htmlid}}</a></td>
+                                <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type, ' form-control')}}</td>
+                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label, ' form-control')}}</td>
+                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name, ' form-control')}}</td>
+                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label, ' form-control')}}<a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.htmlid}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="class" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter class">{{fld.class}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="placeholder" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter placeholder">{{fld.placeholder}}</a></td>
                                 <td>{{h.tick(fld.required, 'reqb')}}</td>
