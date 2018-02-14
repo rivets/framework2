@@ -46,7 +46,29 @@
  */
         public function edit($context)
         {
-
+            $fdt = $context->formdata();
+            $this->bean->name = $fdt->mustpost('name');
+            $this->bean->method = $fdt->mustpost('method');
+            $this->bean->multipart = $fdt->post('multipart', 0);
+            \R::store($this->bean);
+            
+            foreach ($fdt->posta('fldid') as $ix => $fid)
+            {
+                if ($fid == 'new')
+                {
+                    $fld = \R::dispense('formfield');
+                    $fld->type = $fdt->post(['type', $ix], 'text');
+                    $fld->label = $fdt->post(['label', $ix], '');
+                    $fld->name = $fdt->post(['name', $ix], '');
+                    $fld->class = $fdt->post(['class', $ix], '');
+                    $fld->idval = $fdt->post(['id', $ix], 'text');
+                    $fld->placeholder = $fdt->post(['placeholder', $ix], 'text');
+                    \R::store($fld);
+                }
+                else
+                {
+                }
+            }
         }
 /**
  * Add a form
