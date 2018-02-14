@@ -12,8 +12,8 @@
 {{h.tick(val, class ~ ' htick')}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
-{% macro inline(type, name, msg, id, value, class) %}
-<a href="#" class="ppedit{{class}}" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax/bean/" data-title="{{msg}}">{{value}}</a>
+{% macro inline(type, name, msg, id, value) %}
+<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax/bean/" data-title="{{msg}}">{{value}}</a>
 {% endmacro inline %}
 
 {% block scripts %}
@@ -125,9 +125,9 @@
                     <tbody>
                         {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}">
-                                <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type, ' form-control')}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
-                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label, ' form-control')}}</td>
-                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name, ' form-control')}}</td>
+                                <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
+                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
+                                <td>{{h.inline('text', 'fname', 'Enter name', fld.getID, fld.name)}}</td>
                                 <td><a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.idval}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="class" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter class">{{fld.class}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="placeholder" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter placeholder">{{fld.placeholder}}</a></td>
