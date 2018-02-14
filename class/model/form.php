@@ -59,9 +59,9 @@
                     $fld = \R::dispense('formfield');
                     $fld->type = $fdt->post(['type', $ix], 'text');
                     $fld->label = $fdt->post(['label', $ix], '');
-                    $fld->name = $fdt->post(['name', $ix], '');
+                    $fld->name = $fdt->post(['fname', $ix], '');
                     $fld->class = $fdt->post(['class', $ix], '');
-                    $fld->idval = $fdt->post(['id', $ix], 'text');
+                    $fld->idval = $fdt->post(['idval', $ix], 'text');
                     $fld->placeholder = $fdt->post(['placeholder', $ix], 'text');
                     \R::store($fld);
                 }
