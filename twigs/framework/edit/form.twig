@@ -75,7 +75,7 @@
 
 {% block header %}
     <section class="col-md-12">
-        <h1>Edit Form "{{form.name}}"</h1>
+        <h1>Edit Form "{{bean.name}}"</h1>
     </section>
 {% endblock header %}
 
@@ -88,7 +88,7 @@
                     <legend>Form details</legend>
                     <div class="form-group">
                     <label for="un" class="control-label">Form Name</label>
-                    <input type="text" id="un" name="name" placeholder="form name - alphanumeric characters only" class="form-control" required="required"
+                    <input type="text" id="un" name="formname" placeholder="form name - alphanumeric characters only" class="form-control" required="required"
                         data-parsley-trigger="change" data-parsley-type="alphanum" value="{{bean.name}}"/>
                     </div>
                     <div class="form-group">
@@ -127,7 +127,7 @@
                             <tr data-id="{{fld.getID}}">
                                 <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
-                                <td>{{h.inline('text', 'fname', 'Enter name', fld.getID, fld.name)}}</td>
+                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
                                 <td><a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.idval}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="class" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter class">{{fld.class}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="placeholder" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter placeholder">{{fld.placeholder}}</a></td>
