@@ -1,6 +1,7 @@
 {% extends '@util/page.twig' %}
 
 {% import _self as h %}
+{% import '@util/formmacro.twig' as f %}
 
 {% macro tick(val, class) %}
 <i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
@@ -79,24 +80,25 @@
     <section class="row">
         <article class="col-md-12">
             <form id="addform" action="#" method="post">
+                {{f.hidden({name: 'bean', value: bean.id)}}
             <fieldset>
                 <legend>Form details</legend>
                 <div class="form-group">
                 <label for="un" class="control-label">Form Name</label>
                 <input type="text" id="un" name="name" placeholder="form name - alphanumeric characters only" class="form-control" required="required"
-                    data-parsley-trigger="change" data-parsley-type="alphanum" value="{{form.name}}"/>
+                    data-parsley-trigger="change" data-parsley-type="alphanum" value="{{bean.name}}"/>
                 </div>
                 <div class="form-group">
                 <label class="radio-inline">
-                    <input type="radio" name="method" value="1"{% if form.method == 1 %} checked="checked"{% endif %}> GET
+                    <input type="radio" name="method" value="1"{% if bean.method == 1 %} checked="checked"{% endif %}> GET
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="method" value="2"{% if form.method == 2 %} checked="checked"{% endif %}> POST
+                    <input type="radio" name="method" value="2"{% if bean.method == 2 %} checked="checked"{% endif %}> POST
                 </label>
                 </div>
                 <div class="form-group">
                 <label class="checkbox-inline">
-                    <input type="checkbox" name="multipart" value="1"{% if form.multipart == 1 %} checked="checked"{% endif %}> Multipart Encoded
+                    <input type="checkbox" name="multipart" value="1"{% if bean.multipart == 1 %} checked="checked"{% endif %}> Multipart Encoded
                 </label>
                 </div>
             </fieldset>
@@ -118,7 +120,7 @@
                        </tr>
                     </thead>
                     <tbody>
-                        {% for fld in form.fields %}
+                        {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}">
                                 <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
