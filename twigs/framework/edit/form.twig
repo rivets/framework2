@@ -128,7 +128,7 @@
                                 <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type, ' form-control')}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label, ' form-control')}}</td>
                                 <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name, ' form-control')}}</td>
-                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label, ' form-control')}}<a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.htmlid}}</a></td>
+                                <td><a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.idval}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="class" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter class">{{fld.class}}</a></td>
                                 <td><a href="#" class="ppedit" data-name="placeholder" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter placeholder">{{fld.placeholder}}</a></td>
                                 <td>{{h.tick(fld.required, 'reqb')}}</td>
