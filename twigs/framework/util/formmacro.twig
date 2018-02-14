@@ -80,7 +80,7 @@
 {% import _self as h %}
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
-        <label class="form-check-label ml-2">
+        <label class="form-check-label mr-2">
 	    <input type="checkbox" value="{{val}}"{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] and opts.check[ix] == val, 'checked', 'checked')}}/>
         {{opts.labels[ix]|raw}}
         </label>
@@ -92,7 +92,7 @@
 {% import _self as h %}
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
-        <label class="form-check-label ml-2">
+        <label class="form-check-label mr-2">
 	    <input type="radio" value="{{val}}"{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] and opts.check[ix] == val, 'checked', 'checked')}}/>
         {{opts.labels[ix]|raw}}
         </label>
