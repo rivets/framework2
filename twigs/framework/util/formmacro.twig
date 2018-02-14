@@ -78,7 +78,7 @@
 
 {% macro checkbox(opts) %}
 {% import _self as h %}
-    {{h.xsl(opts, 'form-check form-check-inline', opts.clear id defined)}}
+    {{h.xsl(opts, 'form-check form-check-inline', opts.clear is defined)}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
 	    <input type="checkbox" value="{{val}}"{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] is defined, 'checked', 'checked')}}/>
@@ -90,7 +90,7 @@
 
 {% macro radio(opts) %}
 {% import _self as h %}
-    {{h.xsl(opts, 'form-check form-check-inline', opts.clear id defined)}}
+    {{h.xsl(opts, 'form-check form-check-inline', opts.clear is defined)}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
 	    <input type="radio" value="{{val}}"{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] is defined, 'checked', 'checked')}}/>
