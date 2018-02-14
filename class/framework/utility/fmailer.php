@@ -11,7 +11,7 @@
 /**
  * The FMailer class
  */
-    class FMailer extends \PHPMailer
+    class FMailer extends PHPMailer
     {
         public function __construct($exceptions = TRUE)
         {
