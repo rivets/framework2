@@ -87,6 +87,10 @@
  */
         private function getval($porg, $keys, $default = NULL, $fail = FALSE)
         {
+            if (!is_array($porg))
+            { // make sure we have been given an array
+                Web::getinstance()->bad();
+            }
             while (TRUE)
             {
                 $key = array_shift($keys);
@@ -185,7 +189,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            return $this->failure($fail, 'Missing get item');
+            return $this->failure($fail, 'Missing get array');
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
