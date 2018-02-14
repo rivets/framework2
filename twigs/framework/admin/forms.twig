@@ -29,7 +29,7 @@
 	$.post('{{base}}/ajax/bean/form/', data).done(function(ret){
 	    $('#addf').modal('hide')
 	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.name+'</td>'+
-	        '<td>'+ (data['method'] == 0 ? 'GET' : 'POST')+'</td>' +
+	        '<td>'+ (data['method'] == 1 ? 'GET' : 'POST')+'</td>' +
 	        '<td>'+(data['multipart'] != undefined ? '<i class="fa fa-check"></i>' : '')+'</td>' +
 		'<td title="View"><i class="viewb fa fa-eye"></i></td>' +
 		'<td title="Edit"><i class="editb fa fa-pencil"></i></td>' +
