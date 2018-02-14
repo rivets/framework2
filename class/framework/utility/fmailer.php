@@ -1,5 +1,5 @@
 <?php
-    namespace Frameowrk\Utility;
+    namespace Framework\Utility;
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
