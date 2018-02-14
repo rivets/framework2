@@ -17,7 +17,7 @@
  */
     class Dispatch
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 
         public function handle($context, $action)
         {

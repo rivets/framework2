@@ -26,7 +26,7 @@
             $fd = $context->formdata();
             if (($msg = $fd->post('message', '')) !== '')
             { # there is a post
-                //$mail = new \Utility\FMailer;
+                //$mail = new \Framework\Utility\FMailer;
                 //$mail->setFrom(Config::SITENOREPLY);
                 //$mail->addReplyTo(Config::SITENOREPLY);
                 //$mail->addAddress(Config::SYSADMIN);

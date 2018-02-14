@@ -20,7 +20,7 @@
  */
     class Ajax
     {
-        use \Utility\Singleton;
+        use Utility\Singleton;
 /**
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */

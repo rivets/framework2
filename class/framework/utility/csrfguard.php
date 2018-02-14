@@ -1,5 +1,5 @@
 <?php
-    namespace Utility
+    namespace Framework\Utility;
 /**
  * A class to generate and handling CSRF prevention tokens.
  *
@@ -14,7 +14,8 @@
  */
 /**
  * Contains definition of CRSFGuard class
- */    class CSRFGuard
+ */
+    class CSRFGuard
     {
 /**
  * @var string		Used for generating unique ids when there is no sha512

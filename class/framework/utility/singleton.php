@@ -1,5 +1,5 @@
 <?php
-    namespace Utility;
+    namespace Framework\Utility;
 /**
  * This trait provides Singleton pattern (only one instance for the concrete class) to the classes that use it.
  * All the entire application can accept its only instance via the public static method getInstance(),
@@ -10,7 +10,7 @@
  *
  * @author Kiril Savchev (k.savchev@gmail.com)
  *
- * @example class MyClass { use Singletone; }
+ * @example class MyClass { use Singleton; }
  *
  * @version 1.4
  *
@@ -18,7 +18,7 @@
  *
  * Copyright (C) 2015 Kiril Savchev
  *
- * Minor mods by Lindsay Marshall to remove namespaces and reformat code into suitable
+ * Minor mods by Lindsay Marshall to re-namespace and reformat code into suitable
  * style for the Framework.
  *
  * This program is free software: you can redistribute it and/or modify

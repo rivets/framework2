@@ -14,7 +14,7 @@
  */
     class Context
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 /**
  * The name of the authentication token field.
  */

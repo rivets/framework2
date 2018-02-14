@@ -1,5 +1,5 @@
 <?php
-    namespace Utility;
+    namespace Frameowrk\Utility;
 
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
@@ -11,7 +11,7 @@
 /**
  * The FMailer class
  */
-    class FMailer extends PHPMailer
+    class FMailer extends \PHPMailer
     {
         public function __construct($exceptions = TRUE)
         {

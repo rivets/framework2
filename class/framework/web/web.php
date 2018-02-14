@@ -12,7 +12,7 @@
  */
     class Web
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 
  	const HTMLMIME	= 'text/html; charset="utf-8"';
 

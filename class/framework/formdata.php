@@ -13,7 +13,7 @@
  */
     class Formdata
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 
         private $putdata    = NULL;
 

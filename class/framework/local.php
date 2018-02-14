@@ -18,7 +18,7 @@
  */
     class Local
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 
         const ERROR     = 0;        # 'errmessage';
         const WARNING   = 1;        # 'warnmessage';
@@ -110,7 +110,7 @@
                 $this->back = ob_get_clean(); # will get used later in make500
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
-                    $mail = new \Utility\FMailer;
+                    $mail = new \Framework\Utility\FMailer;
                     $mail->setFrom(Config::SITENOREPLY);
                     $mail->addReplyTo(Config::SITENOREPLY);
                     foreach ($this->sysadmin as $em)
