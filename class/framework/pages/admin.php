@@ -137,22 +137,6 @@
                     fclose($ufd);
                     $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
                 }
-                elseif (function_exists('zip_open'))
-                {
-                    $formd = $context->formdata();
-                    if ($formd->hasfile('update'))
-                    {
-                        $data = $formd->filedata('update');
-                        if (($zd = zip_open($data['tmp_name'])) === FALSE)
-                        {
-                            $context->local()->message(Local::ERROR, 'Cannot open the file');
-                        }
-                        else
-                        {
-                            $context->local()->message(Local::MESSAGE, 'Done');
-                        }
-                    }
-                }
                 else
                 {
                     $context->local()->addval('nozip', TRUE);
