@@ -64,7 +64,7 @@
  *
  * @return void
  */
-        private function maketwig($context, $page, $name)
+        private static function maketwig($context, $page, $name)
         {
             $file = $context->local()->makebasepath('twigs', $name);
             if (!file_exists($file))
@@ -237,10 +237,10 @@
                             fclose($fd);
                         }
                     }
-                    $this->maketwig($context, $tl, $tl.'.twig');
+                    self::maketwig($context, $tl, $tl.'.twig');
                     break;
                 case SiteAction::TEMPLATE:
-                    $this->maketwig($context, $p->name, $p->source);
+                    self::maketwig($context, $p->name, $p->source);
                     break;
                 case SiteAction::REDIRECT:
                 case SiteAction::REHOME:
