@@ -78,29 +78,25 @@
 /**
  * Utility function to dig out an element from a possibly multi-dimensional array
  *
+ * @interna
+ * @see \Framework\Context for failure action constants
+ *
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param boolean   $fail       If TRUE then exit the process with a 400 Bad return code
+ * @param integer   $fail       Failure action
  *
+ * @throws Exception
  * @return string
  */
-        private function getval($porg, $keys, $default = NULL, $fail = FALSE)
+        private function getval(array $porg, array $keys, $default = NULL, $fail = Context::RDEFAULT)
         {
-            if (!is_array($porg))
-            { // make sure we have been given an array
-                Web::getinstance()->bad();
-            }
             while (TRUE)
             {
                 $key = array_shift($keys);
                 if (!isset($porg[$key]))
                 {
-                    if ($fail)
-                    {
-                        Web::getinstance()->bad();
-                    }
-                    return $default;
+                    break;
                 }
                 $val = $porg[$key];
                 if (empty($keys))
@@ -108,15 +104,24 @@
                     return trim($val);
                 }
             }
+            return $this->failure($fail, 'Missing form array item', $dflt);
         }
 /**
  * Method to handle error returning
  *
+ * @internal
+ * @see \Framework\Context for failure action constants
+ *
  * May not actually return;
  *
+ * @param integer   $option     The action to take (constants defined in Context)
+ * @param string    $message    Error message
+ * @param mixed     $dflt       Default value to return
+ *
+ * @throws Exception
  * @return NULL
  */
-        private function failure($option, $message)
+        private function failure($option, $message, $dflt = NULL)
         {
             switch($option)
             {
@@ -125,8 +130,44 @@
 
             case Context::RTHROW:
                 throw new Exception($message);
+
+            case Context::RNULL:
+                return NULL;
+
+            case Context::RDEFAULT:
+                return $dflt;
             }
-            return NULL;
+            Web::getinstance()->internal(); // should never get here
+        }
+/**
+ * Pick out and treat a value
+ *
+ * @internal
+ *
+ * @param integer   $filter     The flag used for the filter test
+ * @param array     $arr        The array to pick value from
+ * @param mixed     $name       The string name of the entry or [name, selector,...]
+ * @param mixed     $dflt       A default value to return
+ * @param integer   $fail       What to do if not defined - constant defined in Context
+ *
+ * @throws Exception
+ * @return mixed
+ */
+        private function fetchit($filter, array $arr, $name, $dflt = '', $fail = Context::R400)
+        {
+            if (is_array($name))
+            {
+                $n = array_shift($name); // shift off the variable name
+                if (filter_has_var($filter, $n))
+                { // the entry is there
+                    return $this->getval($arr[$n], $name, NULL, $fail);
+                }
+            }
+            elseif (filter_has_var(INPUT_GET, $name))
+            {
+                return trim($arr[$name]);
+            }
+            return $this->failure($fail, 'Missing form item', $dflt);
         }
 /*
  ***************************************
@@ -145,16 +186,7 @@
  */
         public function mustget($name, $fail = Context::R400)
         {
-            if (is_array($name) && filter_has_var(INPUT_GET, $name[0]))
-            {
-                $n = array_shift($name);
-                return $this->getval($_GET[$n], $name, NULL, $fail);
-            }
-            elseif (filter_has_var(INPUT_GET, $name))
-            {
-                return trim($_GET[$name]);
-            }
-            return $this->failure($fail, 'Missing get item');
+            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
         }
 /**
  * Look in the $_GET array for a key and return its trimmed value or a default value
@@ -168,12 +200,7 @@
  */
         public function get($name, $dflt = '')
         {
-            if (is_array($name) && filter_has_var(INPUT_GET, $name[0]))
-            {
-                $n = array_shift($name);
-                return $this->getval($_GET[$n], $name, $dflt, FALSE);
-            }
-            return filter_has_var(INPUT_GET, $name) ? trim($_GET[$name]) : $dflt;
+            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, Context::RDEFAULT);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -235,36 +262,22 @@
  */
         public function mustpost($name, $fail = Context::R400)
         {
-            if (is_array($name) && filter_has_var(INPUT_POST, $name[0]))
-            {
-                $n = array_shift($name);
-                return $this->getval($_POST[$n], $name, NULL, $fail);
-            }
-            elseif (filter_has_var(INPUT_POST, $name))
-            {
-                return trim($_POST[$name]);
-            }
-            return $this->failure($fail, 'Missing post item');
-       }
+            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
+        }
 
 /**
  * Look in the $_POST array for a key and return its trimmed value or a default value
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param string	$name	The key
+ * @param mixed	$name	The key
  * @param mixed		$dflt	Returned if the key does not exist
  *
  * @return mixed
  */
         public function post($name, $dflt = '')
         {
-            if (is_array($name) && filter_has_var(INPUT_POST, $name[0]))
-            {
-                $n = array_shift($name);
-                return $this->getval($_POST[$n], $name, $dflt, FALSE);
-            }
-            return filter_has_var(INPUT_POST, $name) ? trim($_POST[$name]) : $dflt;
+            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, Context::RDEFAULT);
         }
 
 /**
@@ -281,7 +294,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure($fail, 'Missing post item');
+            return $this->failure($fail, 'Missing post array');
         }
 
 /**
@@ -329,10 +342,13 @@
         public function mustput($name, $fail = Context::R400)
         {
             $this->setput();
-            if (is_array($name) && isset($this->putdata[$name[0]]))
+            if (is_array($name))
             {
-                $n = array_shift($name);
-                return $this->getval($this->putdata[$n], $name, NULL, $fail);
+                if (isset($this->putdata[$name[0]]))
+                {
+                    $n = array_shift($name);
+                    return $this->getval($this->putdata[$n], $name, NULL, $fail);
+                }
             }
             elseif (isset($this->putdata[$name]))
             {
@@ -354,10 +370,14 @@
         public function put($name, $dflt = '')
         {
             $this->setput();
-            if (is_array($name) && isset($this->putdata[$name[0]]))
+            if (is_array($name))
             {
-                $n = array_shift($name);
-                return $this->getval($this->putdata[$n], $name, $dflt, FALSE);
+                if (isset($this->putdata[$name[0]]))
+                {
+                    $n = array_shift($name);
+                    return $this->getval($this->putdata[$n], $name, $dflt, FALSE);
+                }
+                return $dflt;
             }
             return isset($this->putdata[$name]) ? trim($this->putdata[$name]) : $dflt;
         }
@@ -380,15 +400,7 @@
             {
                 return trim($_COOKIE[$name]);
             }
-            switch($fail)
-            {
-            case Context::R400:
-                Web::getinstance()->bad();
-
-            case Context::RTHROW:
-                throw new Exception('Missing cookie item');
-            }
-            return NULL;
+            return $this->failure($fail, 'Missing cookie', '');
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value

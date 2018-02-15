@@ -24,17 +24,21 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * Value indicating to generate a 400 output from load function when id does not exist
+ * Value indicating to generate a 400 output from function when id or name does not exist
  */
         const R400              = 0;
 /**
- * Value indicating to generate a NULL return from load function when id does not exist
+ * Value indicating to generate a NULL return from function when id or name does not exist
  */
         const RNULL             = 1;
 /**
- * Value indicating to throw an error from load function when id does not exist
+ * Value indicating to throw an error from function when id or name does not exist
  */
         const RTHROW            = 2;
+/**
+ * Value indicating to return default value from function when id or name does not exist
+ */
+        const RDEFAULT          =  3;
 /**
  * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
  */
