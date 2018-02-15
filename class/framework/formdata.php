@@ -104,7 +104,7 @@
                     return trim($val);
                 }
             }
-            return $this->failure($fail, 'Missing form array item', $dflt);
+            return $this->failure($fail, 'Missing form array item', $default);
         }
 /**
  * Method to handle error returning
