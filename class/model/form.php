@@ -50,7 +50,6 @@
             $this->bean->name = $fdt->mustpost('formname');
             $this->bean->method = $fdt->mustpost('method');
             $this->bean->multipart = $fdt->post('multipart', 0);
-            \R::store($this->bean);
             
             foreach ($fdt->posta('fldid') as $ix => $fid)
             {
@@ -60,15 +59,17 @@
                     $fld->type = $fdt->post(['type', $ix], 'text');
                     $fld->label = $fdt->post(['label', $ix], '');
                     $fld->name = $fdt->post(['name', $ix], '');
-                    $fld->class = $fdt->post(['class', $ix], '');
+                    $fld->{'class'} = $fdt->post(['class', $ix], '');
                     $fld->idval = $fdt->post(['idval', $ix], 'text');
                     $fld->placeholder = $fdt->post(['placeholder', $ix], 'text');
                     \R::store($fld);
+                    $this->bean->xownForm[] = $fld;
                 }
                 else
                 {
                 }
             }
+            \R::store($this->bean);
         }
 /**
  * Add a form
