@@ -163,7 +163,7 @@
                     return $this->getval($arr[$n], $name, NULL, $fail);
                 }
             }
-            elseif (filter_has_var(INPUT_GET, $name))
+            elseif (filter_has_var($filter, $name))
             {
                 return trim($arr[$name]);
             }
