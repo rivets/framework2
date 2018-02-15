@@ -12,26 +12,53 @@
 {{h.tick(val, class ~ ' htick')}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
-{% macro inline(type, name, msg, id, value) %}
-<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-url="{{base}}/ajax/bean/" data-title="{{msg}}">{{value}}</a>
-{% endmacro inline %}
+{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{# use this if editable breaks....
+    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
+#}
+
+{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
 {% block scripts %}
     <script src="{{fwurls.parsley}}"></script>
-    <script src="{{assets}}/js/util.js"></script>
+    <script src="{{assets}}/js/util-min.js"></script>
     {#<script src="{{fwurls.editablecss}}"></script>-->#}
-    <script src="{{assets}}/js/bs4-editable-min.js"></scrip
+    <script src="{{assets}}/js/bs4-editable-min.js"></script>
 {% endblock scripts %}
 
 {% block css %}
     <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
-
     {#<link rel="stylesheet" href="{{fwurls.editable}}"/>#}
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
 
 {% block setup %}
+    function addmore(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        $('#mrow').before($('#example').clone());
+        $('#example').attr('id', '');
+        $('input', $('#mrow').prev()).val(''); // clear the inputs
+        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
+    }
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/formfield/'+params.pk+'/'+params.name+'/';
+        return $.ajax(url,{
+            method: 'PATCH',
+            data: {
+                value: params.value
+            }
+        })
+    }
+
+    function mkinline(type, name, msg, id, value)
+    {
+        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+    }
+    
     var kname = []
     function paramset(params)
     {
@@ -47,30 +74,34 @@
     ]
     var clicks = [
         ['delb', dodelbean, ''],
+        ['more', addmore, ''],
+        ['chkb', dotoggle, 'checked'],
         ['reqb', dotoggle, 'required'],
         ['rdob', dotoggle, 'readonly'],
         ['disb', dotoggle, 'disabled'],
-    ]
+    ];
 {% endblock setup %}
 
 {% block onload %}
-    $('#more').on('click', function(e){
-        e.preventDefault()
-        $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+    $('.ppedit').editable({
+        ajaxOptions: { type: 'PATCH' },
+        params: paramset,
+        source: kname,
+        onblur: 'cancel',
+        url: editcall
+    });
+ 
     $('#ptab').on('click', function(e){
-        var x = $(e.target)
+        var x = $(e.target);
         for (var ix in clicks)
         {
-           if (x.hasClass(clicks[ix][0]))
-           {
-               clicks[ix][1](e, x, 'formfield', clicks[ix][2])
-           }
+            if (x.hasClass(clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, 'formfield', clicks[ix][2]);
+                break;
+            }
         }
-    })
-    $('.ppedit').editable({params: paramset, source: kname});
+    });
 {% endblock onload %}
 
 {% block header %}
@@ -116,6 +147,8 @@
                             <th>ID</th>
                             <th>Class</th>
                             <th>Placeholder</th>
+                            <th>Value</th>
+                            <th>Checked</th>
                             <th>Required</th>
                             <th>Readonly</th>
                             <th>Disabled</th>
@@ -128,37 +161,41 @@
                                 <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                 <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
-                                <td><a href="#" class="ppedit" data-name="id" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter id">{{fld.idval}}</a></td>
-                                <td><a href="#" class="ppedit" data-name="class" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter class">{{fld.class}}</a></td>
-                                <td><a href="#" class="ppedit" data-name="placeholder" data-type="text" data-pk="{{fld.getID}}" data-url="{{base}}/ajax.php" data-title="Enter placeholder">{{fld.placeholder}}</a></td>
+                                <td>{{h.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
+                                <td>{{h.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
+                                <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
+                                <td>{{h.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
+                                <td>{{h.tick(fld.checked, 'chkb')}}</td>
                                 <td>{{h.tick(fld.required, 'reqb')}}</td>
                                 <td>{{h.tick(fld.readonly, 'rdob')}}</td>
                                 <td>{{h.tick(fld.disabled, 'disb')}}</td>
                                 <td><i class="fa fa-trash-o delb"></i></td>
                             </tr>
                         {% endfor %}
-                        <tr data-id="new">
+                        <tr data-id="new" id="example">
                             <td>
-                                <select name="type[]" class="form-control col-md-2">
-                                <option value="">Type</option>
-                                {% for v in types %}
-                                    <option value="{{v}}">{{v}}</option>
-                                {% endfor %}
+                                <select name="type[]">
+                                    <option value="">&mdash; Type &mdash;</option>
+                                    {% for v in types %}
+                                        <option value="{{v}}">{{v}}</option>
+                                    {% endfor %}
                                 </select>
                             </td>
-                            <td><input type="text" name="label[]" placeholder="<label>" class="form-control"/>{{f.hidden({name: 'fldid[]', value: 'new'})}}</td>
-                            <td><input type="text" name="fname[]" placeholder="name=" class="form-control"/></td>
-                            <td><input type="text" name="idval[]" placeholder="id=" class="form-control"/></td>
-                            <td><input type="text" name="class[]" placeholder="class=" class="form-control"/></td>
-                            <td><input type="text" name="placeholder[]" placeholder="placeholder=" class="form-control"/></td>
+                            <td><input type="text" name="label[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
+                            <td><input type="text" name="fname[]" placeholder="name" class="form-control"/></td>
+                            <td><input type="text" name="idval[]" placeholder="id" class="form-control"/></td>
+                            <td><input type="text" name="class[]" placeholder="class" class="form-control"/></td>
+                            <td><input type="text" name="placeholder[]" placeholder="placeholder" class="form-control"/></td>
+                            <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
+                            <td>{{h.htick(0, 'chkb', 'checked')}}</td>
                             <td>{{h.htick(0, 'reqb', 'required')}}</td>
                             <td>{{h.htick(0, 'rdob', 'readonly')}}</td>
                             <td>{{h.htick(0, 'disb', 'disabled')}}</td>
-                            <td><i class="fa fa-trash-o delb"></i></td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr id="mrow">
-                            <td colspan="8">&nbsp;</td>
-                            <td colspan="2"><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
+                            <td colspan="10">&nbsp;</td>
+                            <td colspan="2"><button class="more btn btn-xs btn-info pull-right">Add More</button></td>
                         </tr>
                         </tbody>
                     </table>

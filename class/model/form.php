@@ -51,22 +51,18 @@
             $this->bean->method = $fdt->mustpost('method');
             $this->bean->multipart = $fdt->post('multipart', 0);
             
-            foreach ($fdt->posta('fldid') as $ix => $fid)
+            foreach ($fdt->posta('new') as $ix => $fid)
             {
-                if ($fid == 'new')
+                if (($type = $fdt->post(['type', $ix], '')) !== '')
                 {
                     $fld = \R::dispense('formfield');
-                    $fld->type = $fdt->post(['type', $ix], 'text');
-                    $fld->label = $fdt->post(['label', $ix], '');
-                    $fld->name = $fdt->post(['name', $ix], '');
-                    $fld->{'class'} = $fdt->post(['class', $ix], '');
-                    $fld->idval = $fdt->post(['idval', $ix], 'text');
-                    $fld->placeholder = $fdt->post(['placeholder', $ix], 'text');
+                    $fld->type = $type;
+                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'checked', 'required', 'readonly', 'disabled'] as $fname)
+                    {
+                        $fld->$fname = $fdt->post([$fname, $ix], '');
+                    }
                     \R::store($fld);
                     $this->bean->xownForm[] = $fld;
-                }
-                else
-                {
                 }
             }
             \R::store($this->bean);

@@ -10,7 +10,7 @@
 
     function toggle(x)
     {
-        x.toggleClass('fa-toggle-off', 'fa-toggle-on');
+        x.toggleClass('fa-toggle-off').toggleClass('fa-toggle-on');
     }
 
     function dotoggle(e, x, bean, fld)
@@ -27,7 +27,6 @@
         { // toggle at the other end
             var tr = x.parent().parent();
             $.post(base+'/ajax/toggle/', {
-//                op : 'toggle',
                 field : fld,
                 bean : bean,
                 id : tr.data('id')
