@@ -17,7 +17,7 @@
     {
         e.preventDefault();
         e.stopPropagation();
-        if (x.is(':disabled'))
+        if (x.hasClass('fadis'))
         {
             return;
         }

@@ -3,13 +3,13 @@
 {% import _self as h %}
 {% import '@util/formmacro.twig' as f %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+{% macro tick(val, class, disabled) %}
+<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}{% if disabled %} fadis{% endif %}"></i>
 {% endmacro tick %}
 
 {% macro htick(val, class, name, disabled) %}
 {% import _self as h %}
-{{h.tick(val, class ~ ' htick')}}<input type="hidden" value="{{val}}" name="{{name}}[]"{% if disabled %} disabled="disabled"{% endif %}/>
+{{h.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
 {% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
@@ -165,7 +165,7 @@
                                 <td>{{h.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
                                 <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
                                 <td>{{h.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
-                                <td>{{h.tick(fld.checked, 'chkb')}}</td>
+                                <td>{{h.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
                                 <td>{{h.tick(fld.required, 'reqb')}}</td>
                                 <td>{{h.tick(fld.readonly, 'rdob')}}</td>
                                 <td>{{h.tick(fld.disabled, 'disb')}}</td>
