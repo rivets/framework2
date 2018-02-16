@@ -102,6 +102,18 @@
             }
         }
     });
+    $('#example select').on('change', function(e){
+        var = $(this).val();
+        var x = $('#example .chkb');
+        if (val == 'checkbox' || val == 'radio')
+        {
+            x.removeClass('fadis').next().prop('disabled', false);
+        }
+        else
+        {
+            x.addClass('fadis').next().prop('disabled', true);
+        }
+    }
 {% endblock onload %}
 
 {% block header %}
