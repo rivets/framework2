@@ -37,32 +37,31 @@
     {% endblock navigation %}
 
     <div class="container">
-	{% block pageheader %}
-	    <header class="row">
-		{% block header %}
-                    {% include 'surround/header.twig' %}
-		{% endblock header %}
-	    </header>
-	{% endblock pageheader %}
+        {% block pageheader %}
+            <header class="row">
+            {% block header %}
+                        {% include 'surround/header.twig' %}
+            {% endblock header %}
+            </header>
+        {% endblock pageheader %}
 
-	{% block main %}
-	{% endblock main %}
+        {% block main %}
+        {% endblock main %}
 
-	{% block pagefooter %}
-	    <footer class="row">
-		{% block footer %}
-                    {% include 'surround/footer.twig' %}
-		{% endblock footer %}
-	    </footer>
-	{% endblock pagefooter %}
+        {% block pagefooter %}
+            <footer class="row">
+            {% block footer %}
+                {% include 'surround/footer.twig' %}
+            {% endblock footer %}
+            </footer>
+        {% endblock pagefooter %}
     </div>
 
-    <!--[if lt IE 9]>
-        <script src="{{fwurls.jquery1}}"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-        <script src="{{fwurls.jquery2}}"></script>
-    <!--<![endif]-->
+    {% if noajax %}
+        <script src="{{fwurls.jqueryslim}}"></script>
+    {% else %}
+        <script src="{{fwurls.jquery}}"></script>
+    {% endif %}
 
     <script src="{{fwurls.popperjs}}"></script>
     <script src="{{fwurls.bootjs}}"></script>
