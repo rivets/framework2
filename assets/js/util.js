@@ -17,6 +17,10 @@
     {
         e.preventDefault();
         e.stopPropagation();
+        if (x.is(':disabled'))
+        {
+            return;
+        }
         if (x.hasClass('htick'))
         { // this is not yet created so tick the hidden box
             var n = x.next();
