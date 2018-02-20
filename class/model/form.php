@@ -53,8 +53,8 @@
             $fdt = $context->formdata();
             $this->bean->name = $fdt->mustpost('formname');
             $this->bean->method = $fdt->mustpost('action');
-            $this->bean->method = $fdt->mustpost('idval');
-            $this->bean->method = $fdt->mustpost('class');
+            $this->bean->method = $fdt->mustpost('formidval');
+            $this->bean->method = $fdt->mustpost('formclass');
             $this->bean->method = $fdt->mustpost('method');
             $this->bean->multipart = $fdt->post('multipart', 0);
             
