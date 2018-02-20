@@ -129,7 +129,7 @@
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 <fieldset>
                     <legend>Form details</legend>
-                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'formname', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
                         {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
