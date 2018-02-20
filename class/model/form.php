@@ -86,7 +86,7 @@
  *
  * @return string  The field idval might be updated also
  */
-        private function doLabel($fld, $class)
+        private function doLabel($fld, $class = '')
         {
             $label = '';
             if ($fld->label !== '')
