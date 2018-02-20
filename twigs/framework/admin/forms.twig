@@ -28,9 +28,10 @@
 	})
 	$.post('{{base}}/ajax/bean/form/', data).done(function(ret){
 	    $('#addf').modal('hide')
-	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.name+'</td>'+
-	        '<td>'+ (data['method'] == 1 ? 'GET' : 'POST')+'</td>' +
-	        '<td>'+(data['multipart'] != undefined ? '<i class="fa fa-check"></i>' : '')+'</td>' +
+	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
+	        '<td>' + data.action + '</td>' +
+	        '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
+	        '<td>' + (data.multipart != undefined ? '<i class="fa fa-check"></i>' : '') + '</td>' +
 		'<td title="View"><i class="viewb fa fa-eye"></i></td>' +
 		'<td title="Edit"><i class="editb fa fa-pencil"></i></td>' +
 		'<td><i class="delb fa fa-trash-o"></i></td></tr>'
@@ -72,15 +73,20 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Method</th>
+                        <th>Action</th>
+                        <th>ID</th>
+                        <th>Class</th>
                         <th>Multipart</th>
-            			<th colspan="3">&nbsp;</th>
+            		<th colspan="3">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for u in siteinfo.forms %}
                     <tr data-id="{{u.id}}">
                         <td>{{u.name}}</td>
+                        <td>{{u.action}}</td>
+                        <td>{{u.idval}}</td>
+                        <td>{{u.class}}</td>
                         <td>{{u.method == 0 ? 'GET' : 'POST'}}</td>
                         <td>{% if u.multipart %}{{h.tick(u.multipart)}}{% endif %}</td>
                         <td title="View"><i class="viewb fa fa-eye"></i></td>
@@ -102,6 +108,9 @@
                 <div class="modal-body">
                     <form id="addfform" action="#" method="post">
                         {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
                         {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
                         <br/>
                         {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
