@@ -88,8 +88,8 @@
                         <td>{{u.action}}</td>
                         <td>{{u.idval}}</td>
                         <td>{{u.class}}</td>
-                        <td>{{u.method == 0 ? 'GET' : 'POST'}}</td>
-                        <td>{% if u.multipart %}{{h.tick(u.multipart)}}{% endif %}</td>
+                        <td>{{u.method == 1 ? 'GET' : 'POST'}}</td>
+                        <td>{{h.tick(u.multipart)}}</td>
                         <td title="View"><i class="viewb fa fa-eye"></i></td>
                         <td title="Edit"><i class="editb fa fa-pencil"></i></td>
                         <td title="Delete"><i class="delb fa fa-trash-o"></i></td>
