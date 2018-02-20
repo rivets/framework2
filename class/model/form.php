@@ -187,6 +187,8 @@
             $p = \R::dispense('form');
             $p->name = $fdt->mustpost('name');
             $p->action = $fdt->mustpost('action');
+            $p->class = $fdt->mustpost('class');
+            $p->idval = $fdt->mustpost('idval');
             $p->method = $fdt->mustpost('method');
             $p->multipart = $fdt->post('multipart', 0);
             echo \R::store($p);
