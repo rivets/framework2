@@ -110,7 +110,7 @@
         private function fieldAttr($fld, $class, $doValue = TRUE)
         {
             $attrs = self::$attributes;
-            if ($dovalue)
+            if ($doValue)
             { // include the value in the attributes
                 $attrs[] = 'value';
             }
@@ -123,7 +123,7 @@
             { // add a standard class
                 $fld->class = trim($class.' '.$fld->class);
             }
-            foreach (self::$attrs as $atr)
+            foreach ($attrs as $atr)
             {
                 if ($fld->$atr !== '')
                 {
