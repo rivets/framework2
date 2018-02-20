@@ -9,7 +9,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
-            {{form.render}}
+            {{form.render|raw}}
         </article>
     </section>
 {% endblock main %}
