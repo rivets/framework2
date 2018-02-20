@@ -129,24 +129,13 @@
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 <fieldset>
                     <legend>Form details</legend>
-                    <div class="form-group">
-                    <label for="un" class="control-label">Form Name</label>
-                    <input type="text" id="un" name="formname" placeholder="form name - alphanumeric characters only" class="form-control" required="required"
-                        data-parsley-trigger="change" data-parsley-type="alphanum" value="{{bean.name}}"/>
-                    </div>
-                    <div class="form-group">
-                    <label class="radio-inline">
-                        <input type="radio" name="method" value="1"{% if bean.method == 1 %} checked="checked"{% endif %}> GET
-                    </label>
-                    <label class="radio-inline">
-                        <input type="radio" name="method" value="2"{% if bean.method == 2 %} checked="checked"{% endif %}> POST
-                    </label>
-                    </div>
-                    <div class="form-group">
-                    <label class="checkbox-inline">
-                        <input type="checkbox" name="multipart" value="1"{% if bean.multipart == 1 %} checked="checked"{% endif %}> Multipart Encoded
-                    </label>
-                    </div>
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
+                        {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
+                        <br/>
+                        {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']}
                 </fieldset>
             <fieldset>
                 <legend>Field details</legend>
