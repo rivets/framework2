@@ -171,7 +171,7 @@
                 }
                 return trim($arr[$name]);
             }
-            return $this->failure($fail, 'Missing form item '.(is_array($name) ? ($name[0].'['.$name[1].']') : $name), $dflt);
+            return $this->failure($fail, 'Missing form item '.(is_array($name) ? ($n.'['.$name[0].']') : $name), $dflt);
         }
 /*
  ***************************************
