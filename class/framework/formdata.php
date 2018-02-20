@@ -165,10 +165,10 @@
             }
             elseif (filter_has_var($filter, $name))
             {
-                if (is_array($name))
+                if (is_array($arr[$name]))
                 {
                     return $this->failure($fail, $name.' is array', $dflt);
-               }
+                }
                 return trim($arr[$name]);
             }
             return $this->failure($fail, 'Missing form item '.$name, $dflt);
