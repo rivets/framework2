@@ -132,7 +132,7 @@
                         {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
                         {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' value: bean.class})}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
                         {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [bean.method == 1, bean.method == 2]})}}
                         <br/>
                         {{f.checkbox({names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
