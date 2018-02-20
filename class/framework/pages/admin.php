@@ -101,7 +101,7 @@
                     /* NOT REACHED */
                 }
                 $obj = $context->load($kind, $rest[2]);
-                $context->local()->addval('$kind'bean', $obj);
+                $context->local()->addval('bean', $obj);
                 $tpl = '@view/'.$kind.'.twig';
                 break;
 
