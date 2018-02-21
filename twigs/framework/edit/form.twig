@@ -32,6 +32,13 @@
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
+{% set flags = [
+    {value: 'checked', text: 'Checked', disabled: TRUE},
+    {value: 'disabled', text: 'Disabled', disabled: FALSE},
+    {value: 'multiple', text: 'Multiple', disabled: TRUE},
+    {value: 'readonly', text: 'Readonly', disabled: FALSE},
+    {value: 'required', text: 'Required', disabled: FALSE},
+] %}
 
 {% block setup %}
     function addmore(e)
@@ -102,17 +109,10 @@
             }
         }
     });
-    $('#example select').on('change', function(e){
+    $('#example .typesel').on('change', function(e){
         var val = $(this).val();
-        var x = $('#example .chkb');
-        if (val == 'checkbox' || val == 'radio')
-        {
-            x.removeClass('fadis').next().prop('disabled', false);
-        }
-        else
-        {
-            x.addClass('fadis').next().prop('disabled', true).next().prop('checked', false);
-        }
+        $('#example .flagsel option[value="checked"]').prop('disabled', val == 'checkbox' || val == 'radio')
+        $('#example .flagsel option[value="multiple"]').prop('disabled', val == 'select')
     })
 {% endblock onload %}
 
@@ -175,7 +175,7 @@
                         {% endfor %}
                         <tr data-id="new" id="example">
                             <td>
-                                <select name="type[]">
+                                <select class="typesel" name="type[]">
                                     <option value="">&mdash; Type &mdash;</option>
                                     {% for v in types %}
                                         <option value="{{v}}">{{v}}</option>
@@ -189,19 +189,13 @@
                             <td><input type="text" name="placeholder[]" placeholder="placeholder" class="form-control"/></td>
                             <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
                             <td>
-                                    <select name="flags" multiple="multiple">
-                                        <option disabled="disabled">Checked</option>
-                                        <option>Disabled</option>
-                                        <option disabled="disabled">Multiple</option>
-                                        <option>Readonly</option>
-                                        <option>Required</option>
+                                    <select class="flagsel" name="flags" multiple="multiple">
+                                        {% for opt in flags %}
+                                            <option value="{{opt.value}}{% if opt.disabled %} disabled="disabled"{% endif %}">{{opt.text}}</option>
+                                        {% endfor %}
                                     </select>
                             </td>
                             <td><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
-                            <td>{{h.htick(0, 'chkb', 'checked', TRUE)}}</td>
-                            <td>{{h.htick(0, 'reqb', 'required')}}</td>
-                            <td>{{h.htick(0, 'rdob', 'readonly')}}</td>
-                            <td>{{h.htick(0, 'disb', 'disabled')}}</td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr id="mrow">
