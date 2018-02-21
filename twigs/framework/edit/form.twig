@@ -174,7 +174,7 @@
                             </tr>
                         {% endfor %}
                         <tr data-id="new" id="example">
-                            <td>
+                            <td rowspan="2">
                                 <select class="typesel" name="type[]">
                                     <option value="">&mdash; Type &mdash;</option>
                                     {% for v in types %}
@@ -197,7 +197,7 @@
                             </td>
                             <td rowspan="2">&nbsp</td>
                             <tr>
-                                <td><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
+                                <td colspan="3"><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
                             </tr>
                         </tr>
                         <tr id="mrow">
