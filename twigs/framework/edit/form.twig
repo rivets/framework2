@@ -45,10 +45,16 @@
     {
         e.preventDefault();
         e.stopPropagation();
-        $('#mrow').before($('#example').clone());
+        var m = $('#mrow');
+        m.before($('#example').clone());
+        $('input[type="text"]', m.prev()).val(''); // clear the inputs
+        $('option', m.prev()).prop('selected', false); // clear any selections
+        $('option', m.prev()).prop('checked', false); // clear any checking
+        m.before($('#example').next().clone());
+        $('input[type="text"]', m.prev()).val(''); // clear the inputs
+        $('option', m.prev()).prop('selected', false); // clear any selections
+        $('option', m.prev()).prop('checked', false); // clear any checking
         $('#example').attr('id', '');
-        $('input', $('#mrow').prev()).val(''); // clear the inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
     }
     function editcall(params)
     {
@@ -192,7 +198,7 @@
                             <td><input type="text" name="class[]" placeholder="class" class="form-control"/></td>
                             <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
                             <td rowspan="2">
-                                    <select class="flagsel" name="flags" multiple="multiple">
+                                    <select class="flagsel" name="flags" multiple="multiple" size="5">
                                         {% for opt in flags %}
                                             <option value="{{opt.value}}"{% if opt.disabled %} disabled="disabled"{% endif %}>{{opt.text}}</option>
                                         {% endfor %}
