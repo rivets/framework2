@@ -188,15 +188,17 @@
                             <td><input type="text" name="class[]" placeholder="class" class="form-control"/></td>
                             <td><input type="text" name="placeholder[]" placeholder="placeholder" class="form-control"/></td>
                             <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
-                            <td>
+                            <td rowspan="2">
                                     <select class="flagsel" name="flags" multiple="multiple">
                                         {% for opt in flags %}
                                             <option value="{{opt.value}}"{% if opt.disabled %} disabled="disabled"{% endif %}>{{opt.text}}</option>
                                         {% endfor %}
                                     </select>
                             </td>
-                            <td><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
-                            <td>&nbsp;</td>
+                            <td rowspan="2">&nbsp</td>
+                            <tr>
+                                <td><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
+                            </tr>
                         </tr>
                         <tr id="mrow">
                             <td colspan="10">&nbsp;</td>
