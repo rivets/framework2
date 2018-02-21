@@ -143,7 +143,8 @@
                     <thead>
                         <tr>
                             <th>Type</th>
-                            <th>Label</th>
+                            <th colspan="6">Attributes</th>
+                            {#<th>Label</th>
                             <th>Name</th>
                             <th>ID</th>
                             <th>Class</th>
@@ -152,25 +153,28 @@
                             <th>Checked</th>
                             <th>Required</th>
                             <th>Readonly</th>
-                            <th>Disabled</th>
+                            <th>Disabled</th> #}
                             <th>&nbsp;</th>
                        </tr>
                     </thead>
                     <tbody>
                         {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}">
-                                <td>{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
+                                <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                 <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
                                 <td>{{h.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
                                 <td>{{h.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
-                                <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
                                 <td>{{h.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
-                                <td>{{h.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
+                                <td rowspan="2"><i class="fa fa-trash-o delb"></i></td>
+                            </tr>
+                            <tr>
+                                <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
+                                <td>{{h.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+ {#                               <td>{{h.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
                                 <td>{{h.tick(fld.required, 'reqb')}}</td>
                                 <td>{{h.tick(fld.readonly, 'rdob')}}</td>
-                                <td>{{h.tick(fld.disabled, 'disb')}}</td>
-                                <td><i class="fa fa-trash-o delb"></i></td>
+                                <td>{{h.tick(fld.disabled, 'disb')}}</td>#}
                             </tr>
                         {% endfor %}
                         <tr data-id="new" id="example">
