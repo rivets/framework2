@@ -159,7 +159,7 @@
                     </thead>
                     <tbody>
                         {% for fld in bean.fields %}
-                            <tr data-id="{{fld.getID}}" class="border-bottom border-dark">
+                            <tr data-id="{{fld.getID}}" class="border-top border-dark">
                                 <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                 <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
@@ -177,7 +177,7 @@
                                 <td>{{h.tick(fld.disabled, 'disb')}}</td>#}
                             </tr>
                         {% endfor %}
-                        <tr data-id="new" id="example">
+                        <tr data-id="new" id="example" class="border-top border-dark">
                             <td rowspan="2">
                                 <select class="typesel" name="type[]">
                                     <option value="">&mdash; Type &mdash;</option>
