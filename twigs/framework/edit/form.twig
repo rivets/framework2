@@ -111,8 +111,8 @@
     });
     $('#example .typesel').on('change', function(e){
         var val = $(this).val();
-        $('#example .flagsel option[value="checked"]').prop('disabled', val == 'checkbox' || val == 'radio')
-        $('#example .flagsel option[value="multiple"]').prop('disabled', val == 'select')
+        $('#example .flagsel option[value="checked"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
+        $('#example .flagsel option[value="multiple"]').prop('disabled', val != 'select')
     })
 {% endblock onload %}
 
@@ -191,7 +191,7 @@
                             <td>
                                     <select class="flagsel" name="flags" multiple="multiple">
                                         {% for opt in flags %}
-                                            <option value="{{opt.value}}{% if opt.disabled %} disabled="disabled"{% endif %}">{{opt.text}}</option>
+                                            <option value="{{opt.value}}"{% if opt.disabled %} disabled="disabled"{% endif %}>{{opt.text}}</option>
                                         {% endfor %}
                                     </select>
                             </td>
