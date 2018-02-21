@@ -147,7 +147,7 @@
  *
  * @return string
  */
-        public function render()
+        public function render($values = [])
         {
             $this->lcount = 1;
             $form = '<form action="'.
@@ -159,22 +159,91 @@
                 '>';
             foreach ($this->fields() as $fld)
             {
+                if (isset($fld->done))
+                { // if we group radio buttons then some may get marked as done.
+                    continue;
+                }
                 switch ($fld->type)
                 {
                 case 'checkbox':
-                case 'radio':
+                    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
+                    {
+                        $fld->checked = 1;
+                    }
                     $label = $this->doLabel($fld, 'form-check-label'); // need to do this first as it might set the label field in $fld
-                    $form .= '<div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE).'>'.$label.'</div>';
+                    $form .= '<div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div>';
+                    break;
+                    case 'radio':
+                    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
+                    {
+                        $fld->checked = 1;
+                    }
+                    $label = $this->doLabel($fld, 'form-check-label'); // need to do this first as it might set the label field in $fld
+                    $form .= '<div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div>';
                     break;
                 case 'select':
                     $form .= '<div class="form-group">'.$this->doLabel($fld).'<select'.$this->fieldAttr($fld, 'form-control', FALSE).'>';
+                    $optgroup = FALSE;
+                    foreach ($values[$fld->name] as $option)
+                    {
+                        if (is_object($option))
+                        {
+                            if (isset($option->optgroup))
+                            {
+                                if ($optgroup)
+                                { // one open already so close it
+                                    $form .= '</optgroup>';
+                                }
+                                if ($option->optgroup !== '') // If the name is empty then we want to close an open optgroup without startng a new one
+                                { 
+                                    $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
+                                    $optgroup == TRUE;
+                                }
+                            }
+                            else
+                            {
+                                $form .= '<option value="'.$option->value.'">'.$option->text.'</option>';
+                            }
+                        }
+                        elseif (is_array($option))
+                        {
+                            if ($option[0] === NULL)
+                            {
+                                if ($optgroup)
+                                { // one open already so close it
+                                    $form .= '</optgroup>';
+                                }
+                                if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without startng a new one
+                                { 
+                                    $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
+                                    $optgroup == TRUE;
+                                }
+                            }
+                            else
+                            {
+                                $form .= '<option value="'.$option[0].'">'.$option[1].'</option>';
+                            }
+                        }
+                        else
+                        {
+                            $form .= '<option value="'.$option.'">'.$option.'</option>';
+                        }
+                    }
+                    if ($optgroup)
+                    { // close any open optgroup
+                        $form .= '</optgroup>';
+                    }
                     $form .= '</select></div>';
                     break;
                 case 'textarea':
-                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<textarea'.$this->fieldAttr($fld, 'form-control', FALSE).'>'.$this->value.'</textarea></div>';
+                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<textarea'.$this->fieldAttr($fld, 'form-control', FALSE).'>'.($values[$fld->name] ?? $this->value).'</textarea></div>';
                     break;
                 default: // all the other types are very much the same.
-                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<input'.$this->fieldAttr($fld, 'form-control', TRUE).'/></div>';
+                    if (isset($values[$fld->name]))
+                    {
+                        $fld->value = $values[$fld->name];
+                    }
+                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<input'.$this->fieldAttr($fld, 'form-control', TRUE, $values).'/></div>';
                     break;
                 }
             }
