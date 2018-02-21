@@ -64,7 +64,7 @@
                 {
                     $fld = \R::dispense('formfield');
                     $fld->type = $type;
-                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'checked', 'required', 'readonly', 'disabled'] as $fname)
+                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other', 'flags'] as $fname)
                     {
                         $fld->$fname = $fdt->post([$fname, $ix], '');
                     }
