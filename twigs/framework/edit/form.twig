@@ -139,7 +139,7 @@
                 </fieldset>
             <fieldset>
                 <legend>Field details</legend>
-                <table id="ptab" class="table table-striped table-hover">
+                <table id="ptab" class="table">
                     <thead>
                         <tr>
                             <th>Type</th>
@@ -159,7 +159,7 @@
                     </thead>
                     <tbody>
                         {% for fld in bean.fields %}
-                            <tr data-id="{{fld.getID}}">
+                            <tr data-id="{{fld.getID}}" class="border-bottom border-dark">
                                 <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                 <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
