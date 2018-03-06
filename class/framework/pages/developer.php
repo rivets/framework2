@@ -20,7 +20,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             if ($context->hasdeveloper())
             {
