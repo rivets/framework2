@@ -9,6 +9,8 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
+    use \Framework\Context as Context;
+
 /**
  * A class that contains code to implement a contact page
  */

@@ -2,6 +2,7 @@
     namespace Framework\Pages;
 
     use \Framework\Web\Web as Web;
+    use \Framework\Context as Context;
 
 /**
  * Handle assets access if that is what is wanted

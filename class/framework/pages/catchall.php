@@ -4,6 +4,7 @@
     use \Config\Config as Config;
     use \Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
+    use \Framework\Context as Context;
 
 /**
  * A class that contains a last resort handler for pages that are not found through the normal

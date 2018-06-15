@@ -2,6 +2,7 @@
     namespace Framework\Pages;
 
     use \Config\Config as Config;
+    use \Framework\Context as Context;
 
 /**
  * A class that contains code to handle any /upload related requests.

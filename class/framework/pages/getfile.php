@@ -1,5 +1,8 @@
 <?php
     namespace Framework\Pages;
+
+    use \Framework\Context as Context;
+
 /**
  * A class that contains code to handle file data fetching requests related requests.
  *

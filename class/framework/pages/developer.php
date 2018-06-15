@@ -6,6 +6,9 @@
  * @copyright 2012-2017 Newcastle University
  */
     namespace Framework\Pages;
+    
+    use \Framework\Context as Context;
+
 /**
  * Class for developer hacks and helpers...
  */
