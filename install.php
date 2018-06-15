@@ -121,17 +121,17 @@
  * URLs for various clientside packages that are used by the installer and by the framework
  */
     $fwurls = [
-        'bootcss'       => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+        'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
 //        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
 //        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
         'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
 
         'jquery1'       => '//code.jquery.com/jquery-1.12.4.min.js',
         'jquery2'       => '//code.jquery.com/jquery-3.3.1.min.js',
-        'bootjs'        => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
+        'bootjs'        => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
         'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
         'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js',
-        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
+        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
     ];
 
     try
