@@ -3,6 +3,7 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
+    use \Framework\Context as Context;
     use \R as R;
 /**
  * Definition of Userlogin class
