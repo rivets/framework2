@@ -9,6 +9,7 @@
 
     use \Framework\Web\Web as Web;
     use \Framework\Context as Context;
+
 /**
  * A class that contains code to handle any /admin related requests.
  *
