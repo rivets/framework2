@@ -254,19 +254,19 @@
  */
     $fwurls = [
 // CSS
-        'bootcss'       => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+        'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
 //        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
         'editablecss'   => '/'.$dir.'/assets/css/bs4-editable.css',
-        'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+        'facss'         => '//use.fontawesome.com/releases/v5.0.13/css/all.css',
 // JS
         'jquery'       => 'https://code.jquery.com/jquery-3.3.1.min.js',
-        'jqueryslim'     => 'https://code.jquery.com/jquery-3.2.1.slim.min.js',
-        'bootjs'        => '//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
+        'jqueryslim'     => 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        'bootjs'        => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
         'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
 //        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
         'editable'      => ($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js',
         'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js',
-        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
+        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
     ];
 /*
  * See if we have a sendmail setting in the php.ini file
