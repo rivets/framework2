@@ -8,6 +8,8 @@
     namespace Framework;
 
     use \Framework\Web\Web as Web;
+    use \Framework\Context as Context;
+    
 /**
  * A class that all provides a base class for any class that wants to implement a site action
  *
@@ -48,7 +50,7 @@
  *
  * @return mixed	A template name or an array [template name, mimetype, HTTP code]
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{ # should never get called really
 	    $context->divert('/');
 	    /* NOT REACHED */
