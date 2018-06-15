@@ -4,7 +4,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% macro tick(val) %}
-{% if val %}<i class="fa fa-check"></i>{% endif %}
+{% if val %}<i class="fas fa-check"></i>{% endif %}
 {% endmacro tick %}
 
 {% import _self as h %}
@@ -31,7 +31,7 @@
 	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
 	        '<td>' + data.action + '</td>' +
 	        '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
-	        '<td>' + (data.multipart != undefined ? '<i class="fa fa-check"></i>' : '') + '</td>' +
+	        '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
 		'<td title="View"><i class="viewb fa fa-eye"></i></td>' +
 		'<td title="Edit"><i class="editb fa fa-pencil"></i></td>' +
 		'<td><i class="delb fa fa-trash-o"></i></td></tr>'
