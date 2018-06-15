@@ -17,10 +17,7 @@
  */
     class CSRFGuard
     {
-/**
- * @var string		Used for generating unique ids when there is no sha512
- */
-	private static $alfno = 'abcdefghijklmnopqrstuvwxyz0123456789'; # could be a CONST but not all PHPs let you [] a const
+        const STRENGTH  = 64;
 /**
  * Generate unique token
  *
@@ -28,20 +25,9 @@
  *
  * @return string	The token
  */
-	private static function maketoken($uname)
+	private function maketoken($uname)
 	{
-	    if (function_exists('hash_algos') && in_array('sha512', hash_algos()))
-	    {
-		$token = hash('sha512', mt_rand(0, mt_getrandmax()));
-	    }
-	    else
-	    {
-		$token = '';
-		foreach (range(0, 127) as $i)
-		{
-		    $token .= self::$alfno[mt_rand(0, 35)];
-		}
-	    }
+            $token = bin2hex(random_bytes(self::STRENGTH));
 	    if (isset($_SESSION))
 	    {
 		$_SESSION[$uname] = $token;
@@ -56,7 +42,7 @@
  *
  * @return boolean	The token
  */
-	private static function validate($uname, $tocheck)
+	private function validate($uname, $tocheck)
 	{
 	    if (!isset($_SESSION[$uname]))
 	    { # no token in there so we are not checking so it's valid
@@ -73,7 +59,7 @@
  */
 	public function generate()
 	{
-	    $name = 'CSRFGuard_'.mt_rand(0, mt_getrandmax());
+	    $name ='CSRFGuard_'.mt_rand(0,mt_getrandmax());
 	    return [$name,  $this->maketoken($name)];
 	}
 /**
@@ -90,7 +76,7 @@
 		{
 		    throw Exception('No CSRFName found, probable invalid request.');
 		}
-		if (!csrfguard_validate_token($_POST['CSRFName'], $_POST['CSRFToken']))
+		if (!$this->validate($_POST['CSRFName'], $_POST['CSRFToken']))
 		{
 		    throw Exception('Invalid CSRF token');
 		}
