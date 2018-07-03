@@ -51,6 +51,6 @@
 		return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
 	    }
 	    return $tpl;
-	}
+        }
     }
 ?>
