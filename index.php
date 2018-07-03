@@ -77,6 +77,7 @@
         break;
 
     case Siteaction::TEMPLATE: # render a template
+        Config::setCSP();
         $tpl = $page->source;
         break;
 
