@@ -51,7 +51,6 @@
     else
     {
         $page->check($context);
-        $page->setCSP();
     }
 
     $local->addval('context', $context);
@@ -69,7 +68,9 @@
     switch ($page->kind)
     {
     case Siteaction::OBJECT: # fire up the object to handle the request
-        $tpl = (new $page->source)->handle($context);
+        $pageObj = new $page->source;
+        $pageObj->setCSP();
+        $tpl = $pageObj->handle($context);
         if (is_array($tpl))
         {
             list($tpl, $mime, $code) = $tpl;
