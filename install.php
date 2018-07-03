@@ -251,13 +251,15 @@
     }
 /*
  * URLs for various clientside packages that are used by the installer and by the framework
+ *
+ * N.B. WHEN UPDATING THESE DON'T FORGET TO UPDATE THE CSP LOCATIONS IF NECESSARY!!!!!!!!!
  */
     $fwurls = [
 // CSS
         'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
 //        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
         'editablecss'   => '/'.$dir.'/assets/css/bs4-editable.css',
-        'facss'         => '//use.fontawesome.com/releases/v5.0.13/css/all.css',
+        'facss'         => '//use.fontawesome.com/releases/v5.1.0/css/all.css',
 // JS
         'jquery'       => 'https://code.jquery.com/jquery-3.3.1.min.js',
         'jqueryslim'     => 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
@@ -267,6 +269,12 @@
         'editable'      => ($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js',
         'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js',
         'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+    ];
+    
+    $fwcsp = [
+        'default-src'   => '\'self\'',
+        'css-src'       => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
+        'script-src'    => '\'self\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com',
     ];
 /*
  * See if we have a sendmail setting in the php.ini file
@@ -479,6 +487,15 @@
             'Vary'              => 'Accept-Encoding',
             ]);
         }".PHP_EOL);
+            fputs($fd, '
+        public static function defaultCSP()
+        {
+            return ['.PHP_EOL);
+            foreach ($fwcsp as $key => $val)
+            {
+                fputs($fd, "        '".$key."' => \"".$val.'"'.PHP_EOL);
+            }
+            fputs($fd, '}'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
     /*
