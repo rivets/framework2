@@ -66,7 +66,7 @@
         public function setCSP()
         {
             $csp = '';
-            foreach (Config::deafultCSP() as $key => $val)
+            foreach (Config::defaultCSP() as $key => $val)
             {
                 $csp .= ' '.$key.' '.$val.';';
             }
