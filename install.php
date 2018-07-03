@@ -505,13 +505,13 @@
  */
         public function setCSP()
         {
-            $csp = '';
-            foreach (Config::$defaultCSP as $key => $val)
+            \$csp = '';
+            foreach (Config::\$defaultCSP as \$key => \$val)
             {
-                $csp .= ' '.$key.' '.$val.';';
+                $csp .= ' '.\$key.' '.\$val.';';
             }
             \\Framework\\Web\\Web::getinstance()->addheader([
-                'Content-Security-Policy'   => $csp
+                'Content-Security-Policy'   => \$csp
             ]);
         }".PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
