@@ -113,12 +113,12 @@
     function error_handler($errno, $errstr, $errfile, $errline)
     {
         echo '<h2>There has been an installer system error : '.$errno.'</h2>';
+        echo '<pre>';
+        var_dump($errno, $errstr, $errfile, $errline);
+        echo '</pre>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
         { # this is an internal error so we need to stop
-            echo '<pre>';
-            var_dump($errno, $errstr, $errfile, $errline);
-            echo '</pre>';
             cleanup();
             exit;
         }
