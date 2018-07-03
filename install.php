@@ -508,7 +508,7 @@
             \$csp = '';
             foreach (Config::\$defaultCSP as \$key => \$val)
             {
-                $csp .= ' '.\$key.' '.\$val.';';
+                \$csp .= ' '.\$key.' '.\$val.';';
             }
             \\Framework\\Web\\Web::getinstance()->addheader([
                 'Content-Security-Policy'   => \$csp
