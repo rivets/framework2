@@ -488,15 +488,32 @@
             ]);
         }".PHP_EOL.PHP_EOL);
             fputs($fd, '
-        public static function defaultCSP()
-        {
-            return ['.PHP_EOL);
+        public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
             {
                 fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
             }
-            fputs($fd, '            ];'.PHP_EOL);
-            fputs($fd, '}'.PHP_EOL);
+            fputs($fd, '        ];'.PHP_EOL);
+            fputs ($fd,"
+/**
+ * Set up default CSP headers for a page
+ *
+ * There will be a basic set of default CSP permissions for the site to function,
+ * but individual pages may wish to extend or restrict these.
+ *
+ * @return void
+ */
+        public function setCSP()
+        {
+            $csp = '';
+            foreach (Config::$defaultCSP as $key => $val)
+            {
+                $csp .= ' '.$key.' '.$val.';';
+            }
+            \\Framework\\Web\\Web::getinstance()->addheader([
+                'Content-Security-Policy'   => $csp
+            ]);
+        }".PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
     /*

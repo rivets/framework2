@@ -65,14 +65,7 @@
  */
         public function setCSP()
         {
-            $csp = '';
-            foreach (Config::defaultCSP() as $key => $val)
-            {
-                $csp .= ' '.$key.' '.$val.';';
-            }
-            \Framework\Web\Web::getinstance()->addheader([
-                'Content-Security-Policy'   => $csp
-            ]);
+            Config::setCSP();
         }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
