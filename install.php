@@ -486,7 +486,7 @@
             'Content-Language'	=> 'en',
             'Vary'              => 'Accept-Encoding',
             ]);
-        }".PHP_EOL);
+        }".PHP_EOL.PHP_EOL);
             fputs($fd, '
         public static function defaultCSP()
         {
