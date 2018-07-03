@@ -69,14 +69,14 @@
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
             { # tell the developers about this
                 echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
-                echo '<pre>';
-                var_dump($error);
-                echo '</pre>';
             }
             else
             {
                 echo '<h2>There has been an installer system error</h2>';
             }
+            echo '<pre>';
+            var_dump($error);
+            echo '</pre>';
             cleanup();
         }
         \R::close(); # close RedBean connection
