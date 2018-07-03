@@ -493,8 +493,9 @@
             return ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
             {
-                fputs($fd, "        '".$key."' => \"".$val.'"'.PHP_EOL);
+                fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
             }
+            fputs($fd, '            ];'.PHP_EOL);
             fputs($fd, '}'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
