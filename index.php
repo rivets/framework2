@@ -51,6 +51,7 @@
     else
     {
         $page->check($context);
+        $page->setCSP();
     }
 
     $local->addval('context', $context);
