@@ -503,7 +503,7 @@
  *
  * @return void
  */
-        public function setCSP()
+        public static function setCSP()
         {
             \$csp = '';
             foreach (Config::\$defaultCSP as \$key => \$val)
