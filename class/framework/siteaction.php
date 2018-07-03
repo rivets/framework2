@@ -65,7 +65,7 @@
  */
         public function setCSP()
         {
-            \Framework\Config::setCSP();
+            \Config\Config::setCSP();
         }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
