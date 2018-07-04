@@ -328,7 +328,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'usephpm',
+        'private', 'public', 'regexp', 'usecsp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -366,6 +366,7 @@
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
+            'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -488,14 +489,16 @@
             'Vary'              => 'Accept-Encoding',
             ]);
         }".PHP_EOL.PHP_EOL);
-            fputs($fd, '
-        public static $defaultCSP = ['.PHP_EOL);
-            foreach ($fwcsp as $key => $val)
+            if ($options['usecsp'])
             {
-                fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
-            }
-            fputs($fd, '        ];'.PHP_EOL);
-            fputs ($fd,"
+                fputs($fd, '
+        public static $defaultCSP = ['.PHP_EOL);
+                foreach ($fwcsp as $key => $val)
+                {
+                 fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
+                }
+                fputs($fd, '        ];'.PHP_EOL);
+                fputs ($fd,"
 /**
  * Set up default CSP headers for a page
  *
@@ -515,6 +518,19 @@
                 'Content-Security-Policy'   => \$csp
             ]);
         }".PHP_EOL);
+            }
+            else
+            {
+                fputs ($fd,"
+/**
+ * Dummy CSP function
+ *
+ * @return void
+ */
+        public static function setCSP()
+        {
+        }".PHP_EOL);
+            }
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
     /*
