@@ -273,7 +273,7 @@
     
     $fwcsp = [
         'default-src'   => '\'self\'',
-        'css-src'       => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
+        'style-src'       => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
         'script-src'    => '\'self\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
     ];
 /*
