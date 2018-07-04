@@ -274,7 +274,7 @@
     $fwcsp = [
         'default-src'   => '\'self\'',
         'font-src'       => '\'self\' use.fontawesome.com',
-        'script-src'    => '\'self\' unsafe-inline stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
+        'script-src'    => '\'self\' \'unsafe-inline\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
         'style-src'       => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
     ];
 /*
