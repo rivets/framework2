@@ -489,6 +489,7 @@
             'Vary'              => 'Accept-Encoding',
             ]);
         }".PHP_EOL.PHP_EOL);
+
             if ($options['usecsp'])
             {
                 fputs($fd, '
