@@ -8,25 +8,6 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    {% set sjs = '' %}
-    {% set ojs = '' %}
-    {% if block('setup') is defined %}
-        {% set sjs = block('setup')|trim %}
-    {% endif %}
-    {% if block('onload') is defined %}
-        {% set ojs = block('onload')|trim %}
-        {% if ojs|length > 0 %}
-            {% set ojs = '$(function(){'~ojs~'});' %}
-        {% endif %}
-    {% endif %}
-    {% set js = sjs~ojs %}
-    {% set jsmd5 = '' %}
-    {% if js|length > 0 %}
-        {% set js = 'var base = \'{{base}}\';' ~ sjs ~ '
-' ~ ojs %}
-        {% set jsmd5 = md5(js) %}
-        <meta name='Content-Security-Policy' content="script-src 'md5-{{jsmd5}}'"/>
-    {% endif %}
 {#
     <link rel="shortcut icon" href="{{assets}}/img/favicon.png"/>
     <link rel="icon" type="image/png" href="{{assets}}/img/favicon.png"/>
@@ -88,8 +69,23 @@
 
     {% block scripts %}
     {% endblock scripts %}
-
+    {% set sjs = '' %}
+    {% set ojs = '' %}
+    {% if block('setup') is defined %}
+        {% set sjs = block('setup')|trim %}
+    {% endif %}
+    {% if block('onload') is defined %}
+        {% set ojs = block('onload')|trim %}
+        {% if ojs|length > 0 %}
+            {% set ojs = '$(function(){'~ojs~'});' %}
+        {% endif %}
+    {% endif %}
+    {% set js = sjs~ojs %}
+    {% set jsmd5 = '' %}
     {% if js|length > 0 %}
+        {% set js = 'var base = \''~base~'\';' ~ sjs ~ '
+' ~ ojs %}
+        {% set jsmd5 = md5(js) %}
         <script hash="md5-{{jsmd5}}">{{js|raw}}</script>
     {% endif %}
 </body>
