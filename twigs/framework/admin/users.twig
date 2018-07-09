@@ -4,7 +4,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% macro tick(val, class) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
 {% import _self as h %}
@@ -34,8 +34,8 @@
 		'<td>'+mktoggle('active', data.active)+'</td>'+
 		'<td>'+mktoggle('admb', data.admin)+'</td>'+
 		'<td>'+mktoggle('devb', data.devel)+'</td>'+
-		'<td><i class="editb fa fa-pencil"></i></td>' +
-		'<td><i class="delb fa fa-trash-o"></i></td></tr>'
+		'<td><i class="editb fas fa-edit"></i></td>' +
+		'<td><i class="delb fas fa-trash-alt"></i></td></tr>'
 	    );
 	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
 	}).fail(function(){
@@ -110,8 +110,8 @@
                             <td>{{h.tick(u.isactive, 'active')}}</td>
                             <td>{{h.tick(u.isadmin, 'admb')}}</td>
                             <td>{{h.tick(u.isdeveloper, 'devb')}}</td>
-                            <td><i class="editb fa fa-pencil"></i></td>
-                            <td><i class="delb fa fa-trash-o"></i></td>
+                            <td><i class="editb fas fa-edit"></i></td>
+                            <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>
                     {% else %}
                         <tr><td colspan="4">No users defined</td></tr>

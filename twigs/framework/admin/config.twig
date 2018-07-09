@@ -90,7 +90,7 @@
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
-                        '</div><i class="delb ndelb fa fa-trash"></i></div></div>'
+                        '</div><i class="delb ndelb fas fa-trash-alt"></i></div></div>'
             );
             $('.ndelb').on('click', delbean).removeClass('ndelb')
             $('.nlval').on('change', setlocal).removeClass('nlval')
@@ -132,7 +132,7 @@
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                             </div>
                             {% if not p.fixed %}
-                                <i class="delb fa fa-trash"></i>
+                                <i class="delb fas fa-trash-alt"></i>
                             {% endif %}
                         </div>
                     </div>

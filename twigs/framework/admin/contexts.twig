@@ -3,7 +3,7 @@
 {% import '@util/formmacro.twig' as f %}
 
 {% macro tick(val, class) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
 {% import _self as h %}
@@ -43,7 +43,7 @@
 	    return
 	}
 	$('#ncontext').modal('hide')
-	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb fa fa-trash-o"></i></td></tr>'
+	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb fas fa-trash-alt"></i></td></tr>'
 	var nx
 	if (sp == null)
 	{
@@ -107,7 +107,7 @@
                     <tr data-id="{{c.id}}">
                         <td class="cname">{{c.name}}</td>
                         <td>{{h.tick(c.fixed, 'fixed')}}</td>
-                        <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb fa fa-trash-o"></i>{% endif %}</td>
+                        <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb fas fa-trash-alt"></i>{% endif %}</td>
                     </tr>
                     {% else %}
                         <tr><td colspan="3">No contexts defined</td></tr>
