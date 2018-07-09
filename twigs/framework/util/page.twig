@@ -69,24 +69,18 @@
 
     {% block scripts %}
     {% endblock scripts %}
-    {% set sjs = '' %}
-    {% set ojs = '' %}
-    {% if block('setup') is defined %}
-        {% set sjs = block('setup')|trim %}
-    {% endif %}
+
+    {% set sjs, ojs = ', '' %}
+    {% if block('setup') is defined %}{% set sjs = block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
         {% set ojs = block('onload')|trim %}
-        {% if ojs|length > 0 %}
-            {% set ojs = '$(function(){'~ojs~'});' %}
-        {% endif %}
+        {% if ojs|length > 0 %}{% set ojs = '$(function(){'~ojs~'});' %}{% endif %}
     {% endif %}
     {% set js = sjs~ojs %}
-    {% set jsmd5 = '' %}
     {% if js|length > 0 %}
         {% set js = 'var base = \''~base~'\';' ~ sjs ~ '
 ' ~ ojs %}
-        {% set jsmd5 = md5(js) %}
-        <script hash="md5-{{jsmd5}}">{{js|raw}}</script>
+        <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
     {% endif %}
 </body>
 </html>
