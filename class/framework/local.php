@@ -315,6 +315,10 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
+            $function = new Twig_Function('md5', function ($string) {
+                return md5($string);
+            });
+            $twig->addFunction($function);  
             $this->tvals = [];
         }
 /**
