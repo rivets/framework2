@@ -131,8 +131,8 @@
                 '<td>'+mktoggle('logn', login)+'</td>'+
                 '<td>'+mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+mktoggle('actb', active)+'</td>'+
-                '<td><a href="/admin/edit/page/'+data+'"><i class="editb fas fa-pencil"></i></a></td>'+
-                '<td><i class="delb fas fa-trash-o"></i></td></tr>';
+                '<td><a href="/admin/edit/page/'+data+'"><i class="editb fas fa-edit"></i></a></td>'+
+                '<td><i class="delb fas fa-trash-alt"></i></td></tr>';
                 var nx
                 if (sp == null)
                 {
@@ -234,8 +234,8 @@
                             <td>{{h.tick(p.needlogin, 'logn')}}</td>
                             <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{h.tick(p.active, 'actb')}}</td>
-                            <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fas fa-pencil"></i></a></td>
-                            <td><i class="delb fas fa-trash-o"></i></td>
+                            <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fas fa-edit"></i></a></td>
+                            <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>
                     {% else %}
                         <tr><td colspan="4">No pages defined</td></tr>
