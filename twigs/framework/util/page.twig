@@ -83,8 +83,9 @@
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
-        {% set js = 'var base = \'{{base}}\';' ~ block('setup') ~ block('onload') %}
-        <script hash="md5-{{md5(js)}}">{{js}}</script>
+        {% set js = 'var base = \'{{base}}\';' ~ sjs ~ '
+' ~ ojs %}
+        <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
     {% endif %}
 </body>
 </html>
