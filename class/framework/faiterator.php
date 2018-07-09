@@ -18,8 +18,6 @@
 /**
  *  The constructor
  *
- *  @param string       $name
- *
  *  @param string    $name The name of the entry in the $_FILES array
  */
         public function __construct($name)
