@@ -1,12 +1,12 @@
 <?php
 /**
  * A trait supporting classess that use roles
- * 
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017 Newcastle University
  */
     namespace Framework;
-    
+
     use \Framework\Web\Web as Web;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
@@ -86,12 +86,12 @@
  */
         public function addrole($contextname, $rolename, $otherinfo, $start, $end = '')
         {
-            $cname = \R::findOne('rolecontext', 'name=?', array($contextname));
+            $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             if (!is_object($cname))
             {
                 Web::getinstance()->bad();
             }
-            $rname = \R::findOne('rolename', 'name=?', array($rolename));
+            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
             if (!is_object($rname))
             {
                 Web::getinstance()->bad();
@@ -111,14 +111,13 @@
  */
         public function addrolebybean($rolecontext, $rolename, $otherinfo, $start, $end = '')
         {
-            \Framework\Debug::vdump($start);
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
             $r->rolecontext = $rolecontext;
             $r->rolename = $rolename;
             $r->otherinfo = $otherinfo;
-            $r->start = ($start === '' || strtolower($start) == 'now') ? $context->utcnow() : $start;
-            $r->end = ($end === '' || strtolower($end) == 'never') ? NULL : $end;
+            $r->start = $start; // $this->checkstart($start);
+            $r->end = $end; //$this->checkend($end);
             \R::store($r);
             return $r;
         }
@@ -156,24 +155,26 @@
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);
-                    if (strtolower($start) == 'now' || $start === '')
+                    //if (strtolower($start) == 'now' || $start === '')
+                    //{
+                    //    $rl->start = $context->utcnow();
+                    //}
+                    //else
+                    if ($start != $rl->start)
                     {
-                        $rl->start = $context->utcnow();
+                        $rl->start = $start; //$context->utcdate($start);
                     }
-                    elseif ($start != $rl->start)
+                    //if (strtolower($end) == 'never' || $end === '')
+                    //{
+                    //    if ($rl->end !== '')
+                    //    {
+                    //        $rl->end = NULL;
+                    //    }
+                    //}
+                    //else
+                    if ($end != $rl->end)
                     {
-                        $rl->start = $context->utcdate($start);
-                    }
-                    if (strtolower($end) == 'never' || $end === '')
-                    {
-                        if ($rl->end !== '')
-                        {
-                            $rl->end = NULL;
-                        }
-                    }
-                    elseif ($end != $rl->end)
-                    {
-                         $rl->end = $context->utcdate($end);
+                         $rl->end = $end; // $context->utcdate($end);
                     }
                     if ($other != $rl->otherinfo)
                     {
@@ -193,31 +194,24 @@
 
                     $end = $fdt->post(['end', $ix]);
                     $start = $fdt->post(['start', $ix]);
-                    $start = $start === '' || strtolower($start) == 'now' ? $context->utcnow() : $context->utcdate($start);
-                    $end = $end === '' ||strtolower($end) == 'never' ? '' : $context->utcdate($end);
                     $info = $fdt->post(['otherinfo', $ix]);
                     if (is_object($prole))
                     { # exists already...
-                        $change = FALSE;
+                        //$start = $this->checkstart($start);
+                        //$end = $this->checkstart($end);
                         if ($prole->start != $start)
                         {
                             $prole->start = $start;
-                            $change = TRUE;
                         }
                         if ($prole->end != $end)
                         {
                             $prole->end = $end;
-                            $change = TRUE;
                         }
                         if ($prole->otherinfo != $info)
                         {
                             $prole->otherinfo = $info;
-                            $change = TRUE;
                         }
-                        if ($change)
-                        {
-                            \R::store($prole);
-                        }
+                        \R::store($prole); // will only talk to DB if anyhting has changed...
                     }
                     else
                     {

@@ -23,13 +23,13 @@
  *
  * @return void     But this yields beans
  */
-        public function collect($bean, $where, $param, $start, $count)
+        public function collect($bean, $where, array $params, $start, $count)
         {
             if ($start !== '')
             {
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
-            $collection = R::findCollection($bean, $where, $param);
+            $collection = R::findCollection($bean, $where, $params);
             while( $item = $collection->next() )
             {
                 yield $item;
@@ -46,7 +46,7 @@
  *
  * @return array
  */
-        public function fetch($bean, $where, $params, $start, $count)
+        public function fetch($bean, $where, array $params, $start, $count)
         {
             if ($start !== '')
             {
@@ -67,7 +67,7 @@
  *
  * @return integer
  */
-        public function count($bean, $where = '', $params = [])
+        public function count($bean, $where = '', array $params = [])
         {
             return \R::count($bean, $where, $params);
         }
@@ -167,12 +167,14 @@
  *
  * @return array
  */
-        public function roleuser($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
+        public function userWith($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
         {
             $context = Context::getinstance();
+            $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();
+            $rcid = is_object($rolecontext) ? $rolecontext->getID() : $context->rolecontext($rolecontext)->getID();
             $res = \R::findMulti('user', 'select user.* from user join role on (role.user_id = user.id) where rolename_id=? and rolecontext_id = ?'.
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
-                [$context->rolename($rolename)->getID(), $context->rolecontext($rolecontext)->getID()]);
+                [$rnid, $rcid]);
             return $res['user'];
         }
     }

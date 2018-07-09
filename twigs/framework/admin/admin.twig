@@ -1,0 +1,21 @@
+{% set noajax = TRUE %}
+{% extends '@util/page.twig' %}
+
+{% block header %}
+    <section class="col-md-12">
+        <h1>Admin</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+            {% include '@util/message.twig' %}
+            <p>Please select an adminstrator action from the navigation bar.</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

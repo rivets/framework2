@@ -1,0 +1,18 @@
+{% extends '@util/page.twig' %}
+
+{% block header %}
+    <section class="col-md-12">
+	<h1>View Form "{{bean.name}}" <a href="{{base}}/admin/edit/form/{{bean.id}}"><i class="viewb fa fa-pencil"></i></a></h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            {{bean.render|raw}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

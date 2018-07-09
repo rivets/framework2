@@ -1,8 +1,4 @@
 <?php
-    namespace Framework\Pages;
-
-    use \Framework\Web\Web as Web;
-
 /**
  * Handle assets access if that is what is wanted
  *
@@ -10,6 +6,11 @@
  * @copyright 2016 Newcastle University
  *
  */
+    namespace Framework\Pages;
+
+    use \Framework\Web\Web as Web;
+    use \Framework\Context as Context;
+
 /**
  * Handle all the cacheing stuff and maybe return a file
  */
@@ -46,7 +47,7 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{
 	    chdir($context->local()->assetsdir());
 

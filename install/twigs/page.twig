@@ -24,12 +24,7 @@
 	</article>
     </div>
 
-    <!--[if lt IE 9]>
-        <script src="{{fwurls.jquery1}}"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-        <script src="{{fwurls.jquery2}}"></script>
-    <!--<![endif]-->
+    <script src="{{fwurls.jqueryslim}}"></script>
 
     <script src="{{fwurls.popperjs}}"></script>
     <script src="{{fwurls.bootjs}}"></script>
@@ -38,14 +33,18 @@
     {% block scripts %}
     {%endblock scripts %}
 
-    <script>
-	{% block setup %}
-	{% endblock setup %}
-
-	$(function(){
-	    {% block onload %}
-	    {% endblock onload %}
-	})
-    </script>
+    {% if block('setup') is defined or block('onload') is defined %}
+        <script>
+            {% block setup %}
+            {% endblock setup %}
+    
+            {% if block('onload') is defined %}
+                $(function(){
+                    {% block onload %}
+                    {% endblock onload %}
+                })
+            {% endif %}
+        </script>
+    {% endif %}
 </body>
 </html>

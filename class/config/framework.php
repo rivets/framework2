@@ -1,5 +1,4 @@
 <?php
-    namespace Config;
 /**
  * This is loaded in index.php and ajax.php. It does mean that it has to be included as
  * it is setting up the autoloader and stuff. But it does keep things DRY - only one place to
@@ -11,8 +10,9 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2017 Newcastle University
+ * @copyright 2015-2018 Newcastle University
  */
+    namespace Config;
 /**
  * Class for doing initial setup of the Framework.
  */
@@ -33,7 +33,8 @@
             set_include_path(
                 implode(PATH_SEPARATOR, [
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/models']),
+                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
+                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
                     get_include_path()
                 ])
             );

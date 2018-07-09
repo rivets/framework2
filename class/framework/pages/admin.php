@@ -8,6 +8,8 @@
     namespace Framework\Pages;
 
     use \Framework\Web\Web as Web;
+    use \Framework\Context as Context;
+
 /**
  * A class that contains code to handle any /admin related requests.
  *
@@ -24,42 +26,42 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
-	{
-	    $rest = $context->rest();
-	    switch ($rest[0])
-	    {
-	    case 'pages':
-		$tpl = 'support/pages.twig';
-		break;
+        public function handle(Context $context)
+        {
+            $rest = $context->rest();
+            switch ($rest[0])
+            {
+            case 'pages':
+                $tpl = '@admin/pages.twig';
+                break;
 
-	    case 'contexts':
-		$tpl = 'support/contexts.twig';
-		break;
+            case 'contexts':
+                $tpl = '@admin/contexts.twig';
+                break;
 
-	    case 'roles':
-		$tpl = 'support/roles.twig';
-		break;
+            case 'roles':
+                $tpl = '@admin/roles.twig';
+                break;
 
-	    case 'users':
-		$tpl = 'support/users.twig';
-		break;
+            case 'users':
+                $tpl = '@admin/users.twig';
+                break;
 
-	    case 'forms':
-		$tpl = 'support/forms.twig';
-		break;
+            case 'forms':
+                $tpl = '@admin/forms.twig';
+                break;
 
-	    case 'config':
-		$tpl = 'support/config.twig';
-		break;
+            case 'config':
+                $tpl = '@admin/config.twig';
+                break;
 
-	    case 'info':
-		$_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
-	        phpinfo();
-		exit;
+            case 'info':
+                $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
+                phpinfo();
+                exit;
 
-	    case 'edit' : // Edit something - forms, user, pages...
-	        if (count($rest) < 3)
+            case 'edit' : // Edit something - forms, user, pages...
+                if (count($rest) < 3)
                 {
                     $context->web()->bad();
                     /* NOT REACHED */
@@ -78,15 +80,19 @@
                         $context->web()->bad();
                         /* NOT REACHED */
                     }
-                    $obj->edit($context);
+                    list($error, $emess) = $obj->edit($context);
+                    if ($error)
+                    {
+                        $context->local()->error(\Framework\Local\ERROR, $emess);
+                    }
                     // The edit call might divert to somewhere else so sometimes we may not get here.
                 }
                 $context->local()->addval('bean', $obj);
-                $tpl = 'support/edit'.$kind.'.twig';
+                $tpl = '@edit/'.$kind.'.twig';
                 break;
 
-	    case 'view' : // view something - forms only at the moment
-	        if (count($rest) < 3)
+            case 'view' : // view something - forms only at the moment
+                if (count($rest) < 3)
                 {
                     $context->local()->bad();
                 }
@@ -97,11 +103,11 @@
                     /* NOT REACHED */
                 }
                 $obj = $context->load($kind, $rest[2]);
-                $context->local()->addval($kind, $obj);
-                $tpl = 'support/view'.$kind.'.twig';
+                $context->local()->addval('bean', $obj);
+                $tpl = '@view/'.$kind.'.twig';
                 break;
 
-	    case 'update':
+            case 'update':
                 $ufd = fopen('https://catless.ncl.ac.uk/frameworknew/update/', 'r');
                 if ($ufd)
                 {
@@ -141,14 +147,14 @@
                 {
                     $context->local()->addval('nozip', TRUE);
                 }
-                $tpl = 'support/update.twig';
+                $tpl = '@admin/update.twig';
                 break;
 
-	    default :
-                $tpl = 'support/admin.twig';
+            default :
+                $tpl = '@admin/admin.twig';
                 break;
-	    }
-	    return $tpl;
-	}
+            }
+            return $tpl;
+        }
     }
 ?>

@@ -3,7 +3,7 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  */
     namespace Framework;
 
@@ -18,12 +18,11 @@
  */
     class Local
     {
-        use \Utility\Singleton;
+        use \Framework\Utility\Singleton;
 
-        const ERROR     = 'errmessage';
-        const WARNING   = 'warnmessage';
-        const MESSAGE   = 'message';
-
+        const ERROR     = 0;        # 'errmessage';
+        const WARNING   = 1;        # 'warnmessage';
+        const MESSAGE   = 2;        # 'message';
 /**
  * @var	string		The absolute path to the site directory
  */
@@ -72,7 +71,7 @@
 /**
  * @var array           Stash away messages so that messages.twig works
  */
-        private $messages       = [];
+        private $messages       = [[], [], []];
 /**
  * @var string          Backtrace info - only used with errors
  */
@@ -111,7 +110,7 @@
                 $this->back = ob_get_clean(); # will get used later in make500
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
-                    $mail = new \Utility\FMailer;
+                    $mail = new \Framework\Utility\FMailer;
                     $mail->setFrom(Config::SITENOREPLY);
                     $mail->addReplyTo(Config::SITENOREPLY);
                     foreach ($this->sysadmin as $em)
@@ -142,7 +141,7 @@
                     if (is_object($this->twig))
                     { # we have twig so render a nice page
                         $this->addval('message', $str);
-                        Web::getinstance()->sendstring($this->getrender('error/500.twig'), Web::HTMLMIME);
+                        Web::getinstance()->sendstring($this->getrender('@error/500.twig'), Web::HTMLMIME);
                     }
                     else
                     { # no twig so just dump
@@ -210,11 +209,10 @@
  * @param string	$errstr
  * @param string	$errfile
  * @param integer	$errline
- * @param string	$errcontext
  *
  * @return boolean
  */
-        public function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+        public function error_handler($errno, $errstr, $errfile, $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -300,8 +298,14 @@
  */
         public function setuptwig($cache = FALSE)
         {
+            $twigdir = $this->makebasepath('twigs');
+            $loader = new \Twig_Loader_Filesystem($twigdir);
+            foreach (['admin', 'devel', 'edit', 'error', 'pages', 'users', 'util', 'view'] as $tns)
+            {
+                $loader->addPath($twigdir.'/framework/'.$tns, $tns);
+            }
             $this->twig = new \Twig_Environment(
-                new \Twig_Loader_Filesystem($this->makebasepath('twigs')),
+                $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
             );
 /*
@@ -392,28 +396,31 @@
  *
  * The currently supported values for kind are :
  *
- *      'errmessage'
- *      'warnmessage'
- *      'message'
+ *      \Framework\Local\ERROR
+ *      \Framework\Local\WARNING
+ *      \Framework\Local\MESSAGE
  *
  * To have your Twig deal with these you need
  *
- * {% include 'message.twig %}
+ * {% include '@util/message.twig %}
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
  * @param string	$kind		The kind of message
- * @param mixed		$value		The value to be stored
+ * @param mixed		$value		The value to be stored or an array of values
  *
  * @return void
  */
         public function message($kind, $value)
         {
-            if (!isset($this->messages[$kind]))
+            if (is_array($value))
             {
-                $this->messages[$kind] = [];
+                $this->messages[$kind] = array_merge($this->messages[$kind], $value);
             }
-            $this->messages[$kind][] = $value;
+            else
+            {
+                $this->messages[$kind][] = $value;
+            }
         }
 /**
  * Clear out messages
@@ -426,11 +433,11 @@
         {
             if ($kind === '')
             {
-                $this->messages = [];
+                $this->messages = [[], [], []];
             }
-            elseif (isset($this->messages[$kind]))
+            else
             {
-                unset($this->messages[$kind]);
+                $this->messages[$kind] = [];
             }
         }
 /**
@@ -527,7 +534,7 @@
             $offl = $this->makebasepath('offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
-                $this->render('support/offline.twig', ['msg' => file_get_contents($offl)]);
+                $this->render('@admin/offline.twig', ['msg' => file_get_contents($offl)]);
                 exit;
             }
 /*

@@ -1,4 +1,5 @@
-{% extends 'page.twig' %}
+{% set noajax = TRUE %}
+{% extends '@util/page.twig' %}
 
 {% block onload %}
     $('#alert').on('click', function(){

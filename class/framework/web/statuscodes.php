@@ -70,7 +70,7 @@
 /**
  * @var string[]        The messages for each code.
  */
-	private static $messages = array(
+	private static $messages = [
 	// [Informational 1xx]
 	    100	=> 'Continue',
 	    101	=> 'Switching Protocols',
@@ -121,7 +121,7 @@
 	    503	=> 'Service Unavailable',
 	    504	=> 'Gateway Timeout',
 	    505	=> 'HTTP Version Not Supported'
-	);
+	];
 /**
  * Generate a header
  *

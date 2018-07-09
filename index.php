@@ -3,13 +3,15 @@
  * Main entry point of the system
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  */
 /**
  * See the information at
- * 
+ *
  * @link https://catless.ncl.ac.uk/framework/
  */
+    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
+
     use \Config\Config as Config;
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
@@ -66,7 +68,9 @@
     switch ($page->kind)
     {
     case Siteaction::OBJECT: # fire up the object to handle the request
-        $tpl = (new $page->source)->handle($context);
+        $pageObj = new $page->source;
+        $pageObj->setCSP();
+        $tpl = $pageObj->handle($context);
         if (is_array($tpl))
         {
             list($tpl, $mime, $code) = $tpl;
@@ -74,6 +78,7 @@
         break;
 
     case Siteaction::TEMPLATE: # render a template
+        Config::setCSP();
         $tpl = $page->source;
         break;
 

@@ -1,0 +1,227 @@
+{% extends '@util/page.twig' %}
+
+{% import _self as h %}
+{% import '@util/formmacro.twig' as f %}
+
+{% macro tick(val, class, disabled) %}
+<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}{% if disabled %} fadis{% endif %}"></i>
+{% endmacro tick %}
+
+{% macro htick(val, class, name, disabled) %}
+{% import _self as h %}
+{{h.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
+{% endmacro htick %}
+
+{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{# use this if editable breaks....
+    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
+#}
+
+{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
+
+{% block scripts %}
+    <script src="{{fwurls.parsley}}"></script>
+    <script src="{{assets}}/js/util-min.js"></script>
+    {#<script src="{{fwurls.editablecss}}"></script>-->#}
+    <script src="{{assets}}/js/bs4-editable-min.js"></script>
+{% endblock scripts %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
+    {#<link rel="stylesheet" href="{{fwurls.editable}}"/>#}
+{% endblock css %}
+
+{% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
+{% set flags = [
+    {value: 'checked', text: 'Checked', disabled: TRUE},
+    {value: 'disabled', text: 'Disabled', disabled: FALSE},
+    {value: 'multiple', text: 'Multiple', disabled: TRUE},
+    {value: 'readonly', text: 'Readonly', disabled: FALSE},
+    {value: 'required', text: 'Required', disabled: FALSE},
+] %}
+
+{% block setup %}
+    function addmore(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        var m = $('#mrow');
+        m.before($('#example').clone());
+        $('input[type="text"]', m.prev()).val(''); // clear the inputs
+        $('option', m.prev()).prop('selected', false); // clear any selections
+        $('option', m.prev()).prop('checked', false); // clear any checking
+        m.before($('#example').next().clone());
+        $('input[type="text"]', m.prev()).val(''); // clear the inputs
+        $('option', m.prev()).prop('selected', false); // clear any selections
+        $('option', m.prev()).prop('checked', false); // clear any checking
+        $('#example').attr('id', '');
+    }
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/formfield/'+params.pk+'/'+params.name+'/';
+        return $.ajax(url,{
+            method: 'PATCH',
+            data: {
+                value: params.value
+            }
+        })
+    }
+
+    function mkinline(type, name, msg, id, value)
+    {
+        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+    }
+
+    var kname = []
+    function paramset(params)
+    {
+        params.id = params.pk
+        params.bean = 'formfield'
+        params.op = 'update'
+        return params
+    }
+    kname = [
+        {% for v in types %}
+            {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
+    ]
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['more', addmore, ''],
+        ['chkb', dotoggle, 'checked'],
+        ['reqb', dotoggle, 'required'],
+        ['rdob', dotoggle, 'readonly'],
+        ['disb', dotoggle, 'disabled'],
+    ];
+{% endblock setup %}
+
+{% block onload %}
+    $('.ppedit').editable({
+        ajaxOptions: { type: 'PATCH' },
+        params: paramset,
+        source: kname,
+        onblur: 'cancel',
+        url: editcall
+    });
+
+    $('#ptab').on('click', function(e){
+        var x = $(e.target);
+        for (var ix in clicks)
+        {
+            if (x.hasClass(clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, 'formfield', clicks[ix][2]);
+                break;
+            }
+        }
+    });
+    $('#example .typesel').on('change', function(e){
+        var val = $(this).val();
+        $('#example .flagsel option[value="checked"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
+        $('#example .flagsel option[value="multiple"]').prop('disabled', val != 'select')
+    })
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12">
+        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}"><i class="viewb fa fa-eye"></i></a></h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-12">
+            <form id="addform" action="#" method="post">
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                <fieldset>
+                    <legend>Form details</legend>
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'formname', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'formidval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'formclass', value: bean.class})}}
+                        {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [bean.method == 1, bean.method == 2]})}}
+                        <br/>
+                        {{f.checkbox({names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
+                </fieldset>
+            <fieldset>
+                <legend>Field details</legend>
+                <table id="ptab" class="table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th colspan="5">Attributes</th>
+                            {#<th>Label</th>
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Class</th>
+                            <th>Placeholder</th>
+                            <th>Value</th>
+                            <th>Checked</th>
+                            <th>Required</th>
+                            <th>Readonly</th>
+                            <th>Disabled</th> #}
+                            <th>&nbsp;</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for fld in bean.fields %}
+                            <tr data-id="{{fld.getID}}" class="border-top border-dark">
+                                <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
+                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
+                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
+                                <td>{{h.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
+                                <td>{{h.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
+                                <td>{{h.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
+                                <td rowspan="2"><i class="fas fa-trash-o delb"></i></td>
+                            </tr>
+                            <tr>
+                                <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
+                                <td>{{h.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+ {#                               <td>{{h.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
+                                <td>{{h.tick(fld.required, 'reqb')}}</td>
+                                <td>{{h.tick(fld.readonly, 'rdob')}}</td>
+                                <td>{{h.tick(fld.disabled, 'disb')}}</td>#}
+                            </tr>
+                        {% endfor %}
+                        <tr data-id="new" id="example" class="border-top border-dark">
+                            <td rowspan="2">
+                                <select class="typesel" name="type[]">
+                                    <option value="">&mdash; Type &mdash;</option>
+                                    {% for v in types %}
+                                        <option value="{{v}}">{{v}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="text" name="label[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
+                            <td><input type="text" name="fname[]" placeholder="name" class="form-control"/></td>
+                            <td><input type="text" name="idval[]" placeholder="id" class="form-control"/></td>
+                            <td><input type="text" name="class[]" placeholder="class" class="form-control"/></td>
+                            <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
+                            <td rowspan="2">
+                                    <select class="flagsel" name="flags[]" multiple="multiple" size="5">
+                                        {% for opt in flags %}
+                                            <option value="{{opt.value}}"{% if opt.disabled %} disabled="disabled"{% endif %}>{{opt.text}}</option>
+                                        {% endfor %}
+                                    </select>
+                            </td>
+                            <td rowspan="2">&nbsp</td>
+                            <tr>
+                                <td colspan="2"><input type="text" name="placeholder[]" placeholder="placeholder" class="form-control"/></td>
+                                <td colspan="3"><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
+                            </tr>
+                        </tr>
+                        <tr id="mrow">
+                            <td colspan="10">&nbsp;</td>
+                            <td colspan="2"><button class="more btn btn-xs btn-info pull-right">Add More</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -1,0 +1,29 @@
+{% extends '@util/page.twig' %}
+
+{% block header %}
+    <h1>Resend Confirmation Email</h1>
+{% endblock header %}
+
+{% block navigation %}
+{% endblock navigation %}
+
+{% block main %}
+    <section class="row" id="frontpage">
+        <article class="ml-auto col-md-6 mr-auto">
+            {% include '@util/message.twig' %}
+            <form action="{{base}}/confirm/resend" method="post" class="jumbotron">
+                <fieldset>
+                    <legend>Resend Email Confirmation Message</legend>
+                    <div class="form-group">
+                        <label for="el" class="control-label">User Name</label>
+                        <input type="text" id="el" name="eorl" placeholder="Your user name or email address" class="form-control input-sm" required="required"/>
+                    </div>
+                    <button class="btn btn-primary btn-sm" type="submit">Resend</button>
+                </fieldset>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

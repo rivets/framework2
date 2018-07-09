@@ -1,10 +1,4 @@
 <?php
-    namespace Framework\Pages;
-
-    use \Config\Config as Config;
-    use \Framework\Web\Web as Web;
-    use \Framework\Web\StatusCodes as StatusCodes;
-
 /**
  * A class that contains a last resort handler for pages that are not found through the normal
  * mechanisms. Users should derive their own class from this to handle non-object or template
@@ -14,6 +8,13 @@
  * @copyright 2016 Newcastle University
  *
  */
+    namespace Framework\Pages;
+
+    use \Config\Config as Config;
+    use \Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes as StatusCodes;
+    use \Framework\Context as Context;
+
 /**
  * The default behaviour when a page does not exist.
  */
@@ -29,7 +30,7 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{
 	    $tpl = '';
 	    switch ($context->action())
@@ -47,9 +48,9 @@
 
 	    default:
 		$context->local()->addval('page', $_SERVER['REQUEST_URI']);
-		return ['error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
+		return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
 	    }
 	    return $tpl;
-	}
+        }
     }
 ?>

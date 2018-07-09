@@ -1,0 +1,19 @@
+{% macro hv(attr, value)%}
+{% if value != '' %} {{attr}}="{{value}}"{% endif %}
+{% endmacro hv %}
+
+{% macro header(opts) %}
+{% import _self as h %}
+    <div class="modal-header">
+        <h4 class="modal-title"{{h.hv('id', opts.id)}}>{{opts.title}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+    </div>
+{% endmacro header %}
+
+{% macro footer(opts) %}
+{% import _self as h %}
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"{{h.hv('id', opts.id)}}>{{opts.action}}</button>
+    </div>
+{% endmacro footer %}

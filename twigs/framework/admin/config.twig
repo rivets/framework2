@@ -1,0 +1,155 @@
+{% extends '@util/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/util.js"></script>
+{% endblock scripts %}
+
+{% block setup %}
+    function setlocal(e)
+    {
+        e.preventDefault();
+        var t = $(this);
+        var id = t.parent().parent().parent().parent().data('id');
+         $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/local/', {
+            method: 'PATCH', // because we are updating an item
+            data: {
+                value: t.is(':checked') ? 1 : 0
+            }
+        }).fail(function(){
+            bootbox.alert('Update failed');
+        });
+    }
+
+    function delbean(e)
+    {
+        dodelbean(e, this, 'fwconfig');
+    }
+{% endblock setup %}
+
+{% block onload %}
+    $('#inval').hide();
+    $('#cfr').on('submit', false);
+    $('.delb').on('click', delbean)
+    $('.lval').on('change', setlocal)
+    $('.cval').on('blur', function(e){
+        e.preventDefault();
+        var t = $(this);
+        var id = t.parent().parent().data('id');
+        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/name/', {
+            method: 'PATCH', // because we are updating an item
+            data: {
+                value: t.val()
+            }
+        }).fail(function(){
+            bootbox.alert('Update failed');
+        });
+    });
+    $('.nname').on('blur', function(e){
+        e.preventDefault()
+        var t = $(this)
+	var name = t.val()
+	if (name != '')
+        {
+	    if (!name.match(/^[a-z][a-z0-9]*$/i))
+	    {
+	        bootbox.alert('Invalid name format')
+		t.val('')
+	    }
+	    else if ($('input[name="'+name+'"]').length != 0)
+	    {
+	        bootbox.alert('That item already exists');
+	    }
+	    else
+	    {
+	        $('#inval').show();
+		$('#Xnewval').focus();
+	    }
+        }
+    })
+    $('.nval').on('blur', function(e){
+        e.preventDefault();
+        var t = $(this);
+        var name = $('.nname').val();
+        var value = t.val();
+        var local = $('#Xnewlocal').is(':checked') ? 1 : 0;
+        $.ajax('{{base}}/ajax/bean/fwconfig/', {
+            method: 'POST', // because we are creating a new item
+            data: {
+                name: name,
+                value: value,
+                local: 0
+            }
+        }).done(function(data){
+	    $('.nname').parent().parent().prev().prev().after('<div class="row mb-2" data-id="'+data+'">'+
+                '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
+                    '<div class="col-md-9">'+
+                            '<input type="text" id="X'+name+'" name="'+name+'" value="'+value+'" class="form-control cval"/>'+
+                    '</div>'+
+                    '<div class="col-md-2">'+
+                        '<div class="form-check form-check-inline">'+
+                            '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
+                        '</div><i class="delb ndelb fa fa-trash"></i></div></div>'
+            );
+            $('.ndelb').on('click', delbean).removeClass('ndelb')
+            $('.nlval').on('change', setlocal).removeClass('nlval')
+	    $('.nname').val('');
+	    t.val('');
+	    $('#inval').hide();
+        }).fail(function(){
+            bootbox.alert('Failed to add new configuration item');
+        });
+    });
+{% endblock onload %}
+
+{% if not page is defined %}
+    {% set page = 1 %}
+    {% set pagesize = 10 %}
+{% endif %}
+
+{% set pages = (siteinfo.count('fwconfig')/pagesize)|round(0, 'ceil') %}
+
+{% block header %}
+    <section class="col-md-12">
+        <h1>Configuration Values</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-12">
+            <form id="cfr" action="#" method="post">
+                {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+                {% for p in siteinfo.siteconfig(page, pagesize) %}
+                    <div class="row mb-2" data-id="{{p.id}}">
+                        <label class="col-md-1 col-form-label" for="X{{p.name}}">{{p.name}}</label>
+                        <div class="col-md-9">
+                            <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
+                            </div>
+                            {% if not p.fixed %}
+                                <i class="delb fa fa-trash"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+{# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
+                {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+                <div class="jumbotron">
+                    {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
+                    <div id="inval">
+                        {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

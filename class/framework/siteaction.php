@@ -8,6 +8,8 @@
     namespace Framework;
 
     use \Framework\Web\Web as Web;
+    use \Framework\Context as Context;
+    
 /**
  * A class that all provides a base class for any class that wants to implement a site action
  *
@@ -48,11 +50,23 @@
  *
  * @return mixed	A template name or an array [template name, mimetype, HTTP code]
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{ # should never get called really
 	    $context->divert('/');
 	    /* NOT REACHED */
 	}
+/**
+ * Set up any CSP headers for a page
+ *
+ * There will be a basic set of default CSP permissions for the site to function,
+ * but individual pages may wish to extend or restrict these.
+ *
+ * @return void
+ */
+        public function setCSP()
+        {
+            \Config\Config::setCSP();
+        }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
  *

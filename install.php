@@ -3,20 +3,54 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2017 Newcastle University
+ * @copyright 2014-2018 Newcastle University
  */
+    global $cwd, $verbose;
 /**
- * Store a new framework config item
- * @param string    $name
- * @param string    $value
+ * Function to cleanup after errors
+ *
+ * Not everything needs to be cleaned up though, just things that will
+ * stop the installer from running again.
  *
  * @return void
- **/
-    function addfwconfig($name, $value)
+ */
+    function cleanup()
+    {
+        global $cwd, $verbose;
+
+        chdir($cwd);
+        if ($verbose)
+        {
+            echo '<p>Cleaning '.$cwd.'</p>';
+        }
+        foreach (['class/config/config.php', '.htaccess'] as $file)
+        {
+            if (file_exists($file))
+            {
+                if ($verbose)
+                {
+                    echo '<p>Removing '.$file.'</p>';
+                }
+                @unlink($file);
+            }
+        }
+    }
+/**
+ * Store a new framework config item
+ *
+ * @param string    $name
+ * @param string    $value
+ * @param boolean   $local     If TRUE then this value should not be overwritten by remote updates
+ *
+ * @return void
+ */
+    function addfwconfig($name, $value, $local)
     {
         $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
         $fwc->value = $value;
+        $fwc->local = $local ? 1 : 0;
+        $fwc->fixed = 1;
         \R::store($fwc);
     }
 
@@ -25,6 +59,8 @@
  * generate a clean screen as well as an error report to the developers.
  *
  * It also closes the RedBean connection
+ *
+ * @return void
  */
     function shutdown()
     {
@@ -32,12 +68,16 @@
         { # are we terminating with an error?
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
             { # tell the developers about this
-                echo '<h2>There has been a system error</h2>';               
+                echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
             }
             else
             {
-                echo '<h2>There has been a system error</h2>';
+                echo '<h2>There has been an installer system error</h2>';
             }
+            echo '<pre>';
+            var_dump($error);
+            echo '</pre>';
+            cleanup();
         }
         \R::close(); # close RedBean connection
     }
@@ -48,10 +88,11 @@
  */
     function exception_handler($e)
     {
-        echo '<h2>There has been a system error</h2>';
+        echo '<h2>There has been an installer system exception</h2>';
         echo '<pre>';
         var_dump($e);
         echo '</pre>';
+        cleanup();
         exit;
     }
 /**
@@ -66,16 +107,19 @@
  * @param string	$errstr
  * @param string	$errfile
  * @param integer	$errline
- * @param string	$errcontext
  *
  * @return boolean
  */
-    function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+    function error_handler($errno, $errstr, $errfile, $errline)
     {
-        echo '<h2>There has been a system error</h2>';               
+        echo '<h2>There has been an installer system error : '.$errno.'</h2>';
+        echo '<pre>';
+        var_dump($errno, $errstr, $errfile, $errline);
+        echo '</pre>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
         { # this is an internal error so we need to stop
+            cleanup();
             exit;
         }
 /*
@@ -85,12 +129,19 @@
  */
         return TRUE;
     }
- /*
- * Set up all the system error handlers
+    $verbose = isset($_GET['verbose']);
+/*
+ * Remember where we are in the file system
  */
-        set_exception_handler('exception_handler');
-        set_error_handler('error_handler');
-        register_shutdown_function('shutdown');
+    $cwd = __DIR__;
+ /*
+  * Set up all the system error handlers
+  */
+    error_reporting(E_ALL|E_STRICT);
+
+    set_exception_handler('exception_handler');
+    set_error_handler('error_handler');
+    register_shutdown_function('shutdown');
 
     set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
 
@@ -103,7 +154,7 @@
     if (!file_exists('vendor'))
     {
 /**
- * @todo Genrate a better error message for this!
+ * @todo Generate a better error message for this!
  */
         include 'install/errors/notwig.php';
         exit;
@@ -117,22 +168,6 @@
         include 'install/errors/notwig.php';
         exit;
     }
-/*
- * URLs for various clientside packages that are used by the installer and by the framework
- */
-    $fwurls = [
-        'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
-//        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
-//        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
-//        'facss'         => '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
-	'facss'		=>'//use.fontawesome.com/releases/v5.0.13/css/all.css',
-        'jquery1'       => '//code.jquery.com/jquery-1.12.4.min.js',
-        'jquery2'       => '//code.jquery.com/jquery-3.3.1.min.js',
-        'bootjs'        => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
-        'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
-        'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js',
-        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
-    ];
 
     try
     {
@@ -215,10 +250,42 @@
         break;
     }
 /*
+ * URLs for various clientside packages that are used by the installer and by the framework
+ *
+ * N.B. WHEN UPDATING THESE DON'T FORGET TO UPDATE THE CSP LOCATIONS IF NECESSARY!!!!!!!!!
+ */
+    $fwurls = [
+// CSS
+        'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
+//        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
+        'editablecss'   => '/'.$dir.'/assets/css/bs4-editable.css',
+        'facss'         => '//use.fontawesome.com/releases/v5.1.0/css/all.css',
+// JS
+        'jquery'       => 'https://code.jquery.com/jquery-3.3.1.min.js',
+        'jqueryslim'     => 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
+        'bootjs'        => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
+        'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
+//        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
+        'editable'      => ($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js',
+        'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js',
+        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+    ];
+    
+    $fwcsp = [
+        'default-src'   => '\'self\'',
+        'font-src'      => '\'self\' use.fontawesome.com',
+        'img-src'       => '\'self\' data:',
+        'script-src'    => '\'self\' \'unsafe-inline\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
+        'style-src'     => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
+    ];
+/*
  * See if we have a sendmail setting in the php.ini file
  */
     $sendmail = ini_get('sendmail_path');
-    
+
+/*
+ * Set up important values
+ */
     $vals = [
              'name'         => $name,
              'dir'          => __DIR__,
@@ -262,7 +329,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'usephpm',
+        'private', 'public', 'regexp', 'usecsp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -300,6 +367,7 @@
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
+            'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -355,7 +423,7 @@
                 $direrr[] = 'Cannot create directory "twigcache"';
             }
         }
-        
+
         if (!empty($direrr))
         {
             $vals['direrr'] = TRUE;
@@ -376,6 +444,7 @@
             fputs($fd, '<?php'.PHP_EOL.'    namespace Config;'.PHP_EOL);
             fputs($fd, '/**'.PHP_EOL.' * Generated by framework installer - '.date('r').PHP_EOL.'*/'.PHP_EOL.'    class Config'.PHP_EOL.'    {'.PHP_EOL);
             fputs($fd, "\tconst BASEDNAME\t= '".$dir."';".PHP_EOL);
+            fputs($fd, "\tconst SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', $cvalue['sitename'])."';".PHP_EOL);
             foreach ($cvars as $fld => $pars)
             {
                 if ($pars[0] !== '')
@@ -408,19 +477,62 @@
             //fputs($fd, "\tconst DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
             //fputs($fd, "\tconst UPUBLIC\t= ".($options['public'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
             //fputs($fd, "\tconst UPRIVATE\t= ".($options['private'] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
-    
-    
+
+
             fputs($fd, "
         public static function setup()
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
-            'Date'			=> gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-target'		=> '_top',	# deframes things
-            'X-Frame-Options'	=> 'DENY',	# deframes things
+            'Date'              => gmstrftime('%b %d %Y %H:%M:%S', time()),
+            'Window-target'     => '_top',      # deframes things
+            'X-Frame-Options'	=> 'DENY',      # deframes things
             'Content-Language'	=> 'en',
-            'Vary'			=> 'Accept-Encoding',
+            'Vary'              => 'Accept-Encoding',
+            ]);
+        }".PHP_EOL.PHP_EOL);
+
+            if ($options['usecsp'])
+            {
+                fputs($fd, '
+        public static $defaultCSP = ['.PHP_EOL);
+                foreach ($fwcsp as $key => $val)
+                {
+                 fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
+                }
+                fputs($fd, '        ];'.PHP_EOL);
+                fputs ($fd,"
+/**
+ * Set up default CSP headers for a page
+ *
+ * There will be a basic set of default CSP permissions for the site to function,
+ * but individual pages may wish to extend or restrict these.
+ *
+ * @return void
+ */
+        public static function setCSP()
+        {
+            \$csp = '';
+            foreach (Config::\$defaultCSP as \$key => \$val)
+            {
+                \$csp .= ' '.\$key.' '.\$val.';';
+            }
+            \\Framework\\Web\\Web::getinstance()->addheader([
+                'Content-Security-Policy'   => \$csp
             ]);
         }".PHP_EOL);
+            }
+            else
+            {
+                fputs ($fd,"
+/**
+ * Dummy CSP function
+ *
+ * @return void
+ */
+        public static function setCSP()
+        {
+        }".PHP_EOL);
+            }
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
     /*
@@ -429,7 +541,7 @@
             $fd = fopen('.htaccess', 'w');
             if ($fd === FALSE)
             {
-                @unlink('class/config/config.php');
+                cleanup();
                 header('HTTP/1.1 500 Internal Error');
                 exit;
             }
@@ -446,7 +558,7 @@
                 '# AddOutputFilterByType DEFLATE text/javascript'.PHP_EOL.
                 '# php_flag zlib.output_compression  On'.PHP_EOL.
                 '# php_value zlib.output_compression_level 5'.PHP_EOL
-    
+
             );
             fclose($fd);
     /*
@@ -497,12 +609,12 @@
                 {
                     if ($pars[1])
                     {
-                        addfwconfig($fld, $cvalue[$fld]);
+                        addfwconfig($fld, $cvalue[$fld], TRUE);
                     }
                 }
                 foreach ($fwurls as $k => $v)
                 {
-                    addfwconfig($k, $v);
+                    addfwconfig($k, $v, FALSE);
                 }
     /**
      * Set up some roles for access control:
@@ -521,7 +633,7 @@
                 $arname->name = 'Admin';
                 $arname->fixed = 1;
                 \R::store($arname);
-    
+
                 $role = \R::dispense('role');
                 $role->otherinfo = '-';
                 $role->start = $now;
@@ -537,7 +649,7 @@
                 $drname = \R::dispense('rolename');
                 $drname->name = 'Developer';
                 \R::store($drname);
-    
+
                 $role = \R::dispense('role');
                 $role->otherinfo = '-';
                 $role->start = $now;
@@ -555,7 +667,7 @@
      * the link for install.php is to catch when people try to run install again after a successful install
      */
                 $pages = [
-                    'about'         => [\Framework\SiteAction::TEMPLATE, 'about.twig', FALSE, 0, FALSE, 1],
+                    'about'         => [\Framework\SiteAction::TEMPLATE, '@pages/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
@@ -563,7 +675,7 @@
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'home'          => [\Framework\SiteAction::TEMPLATE, 'index.twig', FALSE, 0, FALSE, 1],
-                    'install.php'   => [\Framework\SiteAction::TEMPLATE, 'oops.twig', FALSE, 0, FALSE, 1],
+                    'install.php'   => [\Framework\SiteAction::TEMPLATE, '@pages/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
                     'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
@@ -608,7 +720,7 @@
                         \R::store($cname);
                         \R::store($drname);
                     }
-                        
+
                 }
                 $tpl = 'success.twig';
             }
@@ -616,8 +728,7 @@
             { # something went wrong - so cleanup and try again...
                 $vals['dberror'] = $e->getMessage();
                 $vals['fail'] = TRUE;
-                @unlink('.htaccess');
-                @unlink('class/config/config.php');
+                cleanup();
             }
         }
     }
