@@ -78,8 +78,7 @@
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
-        {% set js = 'var base = \''~base~'\';' ~ sjs ~ '
-' ~ ojs %}
+        {% set js = "var base = '"~base~"';" ~ sjs ~ "\n" ~ ojs %}
         <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
     {% endif %}
 </body>
