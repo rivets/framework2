@@ -28,6 +28,5 @@
 	{
 	    return $this->bean->user->equals($user) || $user->isadmin();
 	}
-
     }
 ?>

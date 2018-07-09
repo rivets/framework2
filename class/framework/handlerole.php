@@ -19,7 +19,7 @@
  * Check for a role
  *
  * @param string        $rolecontextname    The name of a context...
- * @param string	    $rolename       The name of a role....
+ * @param string	$rolename           The name of a role....
  *
  * @return object
  */
@@ -42,7 +42,7 @@
  * Check for a role by bean
  *
  * @param object    $rolecontext    A rolecontext
- * @param object	$rolename       A rolename
+ * @param object    $rolename       A rolename
  *
  * @return object
  */
