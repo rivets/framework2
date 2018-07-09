@@ -7,6 +7,8 @@
  *
  */
     namespace Model;
+    
+    use Framework\SiteAction as SiteAction;
 /**
  * A class implementing a RedBean model for Page beans
  */
