@@ -70,12 +70,10 @@
     {% block scripts %}
     {% endblock scripts %}
 
-    {%set slen = 0 %}
-    {% set olen = 0 %}
+    {% set sjs = '' %}
+    {% set ojs = '' %}
     {% if block('setup') is defined %}
         {% set sjs = block('setup')|trim %}
-        {% if sjs|length > 0 %}
-        {% endif %}
     {% endif %}
     {% if block('onload') is defined %}
         {% set ojs = block('onload')|trim %}
