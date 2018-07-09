@@ -7,7 +7,7 @@
  *
  */
 /**
- * A wrapper for the real Context class that allows people to extend it's functionality
+ * A wrapper for the real Context class that allows people to extend its functionality
  * in ways that are apporpriate for their particular website.
  */
     class Context extends \Framework\Context
