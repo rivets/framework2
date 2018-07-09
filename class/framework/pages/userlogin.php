@@ -172,42 +172,42 @@
             if ($login !== '')
             {
                     $errmess = [];
-            $x = R::findOne('user', 'login=?', [$login]);
-            if (!is_object($x))
-            {
-                $pw = $fdt->mustpost('password');
-                $rpw = $fdt->mustpost('repeat');
-                $email = $fdt->mustpost('email');
-                if ($pw != $rpw)
-                {
-                $errmess[] = 'The passwords do not match';
-                }
-                if (preg_match('/[^a-z0-9]/i', $login))
-                {
-                $errmess[] = 'Your username can only contain letters and numbers';
-                }
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-                {
-                $errmess[] = 'Please provide a valid email address';
-                }
-                if (empty($errmess))
-                {
-                $x = R::dispense('user');
-                $x->login = $login;
-                $x->email = $email;
-                $x->confirm = 0;
+                    $x = R::findOne('user', 'login=?', [$login]);
+                    if (!is_object($x))
+                    {
+                        $pw = $fdt->mustpost('password');
+                        $rpw = $fdt->mustpost('repeat');
+                        $email = $fdt->mustpost('email');
+                        if ($pw != $rpw)
+                        {
+                        $errmess[] = 'The passwords do not match';
+                        }
+                        if (preg_match('/[^a-z0-9]/i', $login))
+                        {
+                        $errmess[] = 'Your username can only contain letters and numbers';
+                        }
+                        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                        {
+                        $errmess[] = 'Please provide a valid email address';
+                        }
+                        if (empty($errmess))
+                        {
+                            $x = R::dispense('user');
+                            $x->login = $login;
+                            $x->email = $email;
+                            $x->confirm = 0;
                             $x->active = 1;
-                $x->joined = $context->utcnow();
-                R::store($x);
-                $x->setpw($pw);
-                $this->sendconfirm($context, $x);
-                $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
-                }
-            }
-            else
-            {
-                $errmess[] = 'That user name is already in use';
-            }
+                            $x->joined = $context->utcnow();
+                            R::store($x);
+                            $x->setpw($pw);
+                            $this->sendconfirm($context, $x);
+                            $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                        }
+                    }
+                    else
+                    {
+                        $errmess[] = 'That user name is already in use';
+                    }
                     if (!empty($errmess))
                     {
                         $context->local()->message(Local::ERROR, $errmess);
