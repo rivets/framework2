@@ -4,7 +4,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% macro tick(val, class) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
 {% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
@@ -131,8 +131,8 @@
                 '<td>'+mktoggle('logn', login)+'</td>'+
                 '<td>'+mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+mktoggle('actb', active)+'</td>'+
-                '<td><a href="/admin/edit/page/'+data+'"><i class="editb fa fa-pencil"></i></a></td>'+
-                '<td><i class="delb fa fa-trash-o"></i></td></tr>';
+                '<td><a href="/admin/edit/page/'+data+'"><i class="editb fas fa-pencil"></i></a></td>'+
+                '<td><i class="delb fas fa-trash-o"></i></td></tr>';
                 var nx
                 if (sp == null)
                 {
@@ -227,16 +227,16 @@
                 </thead>
                 <tbody>
                     {% for p in siteinfo.pages(page, pagesize) %}
-                    <tr data-id="{{p.getID}}">
-                        <td class="pname">{{h.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-                        <td>{{h.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-                        <td>{{h.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
-                        <td>{{h.tick(p.needlogin, 'logn')}}</td>
-                        <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
-                        <td>{{h.tick(p.active, 'actb')}}</td>
-                        <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fa fa-pencil"></i></a></td>
-                        <td><i class="delb fa fa-trash-o"></i></td>
-                    </tr>
+                        <tr data-id="{{p.getID}}">
+                            <td class="pname">{{h.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
+                            <td>{{h.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
+                            <td>{{h.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                            <td>{{h.tick(p.needlogin, 'logn')}}</td>
+                            <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
+                            <td>{{h.tick(p.active, 'actb')}}</td>
+                            <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fas fa-pencil"></i></a></td>
+                            <td><i class="delb fas fa-trash-o"></i></td>
+                        </tr>
                     {% else %}
                         <tr><td colspan="4">No pages defined</td></tr>
                     {% endfor %}
