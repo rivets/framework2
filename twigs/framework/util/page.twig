@@ -70,7 +70,7 @@
     {% block scripts %}
     {% endblock scripts %}
 
-    {% set sjs, ojs = ', '' %}
+    {% set sjs, ojs = '', '' %}
     {% if block('setup') is defined %}{% set sjs = block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
         {% set ojs = block('onload')|trim %}
