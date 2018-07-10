@@ -70,7 +70,7 @@
                 if (!in_array($kind, self::EDITABLE))
                 {
                     $context->web()->bad();
-                    /* not reached */
+                    /* NOT REACHED */
                 }
                 $obj = $context->load($kind, $rest[2]);
                 if (($bid = $context->formdata()->post('bean', '')) !== '')
