@@ -300,7 +300,7 @@
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig_Loader_Filesystem($twigdir);
-            foreach (['admin', 'devel', 'edit', 'error', 'pages', 'users', 'util', 'view'] as $tns)
+            foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
                 $loader->addPath($twigdir.'/framework/'.$tns, $tns);
             }
