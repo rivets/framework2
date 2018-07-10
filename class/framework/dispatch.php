@@ -8,7 +8,7 @@
     namespace Framework;
 
     use \Config\Config as Config;
-    use \Support\SiteAction as SiteAction;
+    use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
 

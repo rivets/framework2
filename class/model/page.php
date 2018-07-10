@@ -8,7 +8,7 @@
  */
     namespace Model;
     
-    use \Support\SiteAction as SiteAction;
+    use \Framework\SiteAction as SiteAction;
     use \Support\Context as Context;
 /**
  * A class implementing a RedBean model for Page beans

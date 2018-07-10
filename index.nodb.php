@@ -35,7 +35,7 @@
  */
   
     use \Config\Config as Config;
-    use \Support\SiteAction as SiteAction;
+    use \Framework\SiteAction as SiteAction;
 
     include 'class/config/framework.php';
     \Config\Framework::initialise();

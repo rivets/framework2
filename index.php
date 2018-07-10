@@ -13,7 +13,7 @@
     define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 
     use \Config\Config as Config;
-    use \Support\SiteAction as SiteAction;
+    use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
 
     include 'class/config/framework.php';
@@ -55,7 +55,7 @@
 
     $local->addval('context', $context);
     $local->addval('action', $action);
-    $local->addval('siteinfo', new Siteinfo($local)); // make sure we get the derived version not the Framework version
+    $local->addval('siteinfo', new \Support\Siteinfo($local)); // make sure we get the derived version not the Framework version
 /**
  * If you don't want pagination anywhere you can comment out the next bit
  */
