@@ -46,7 +46,7 @@
     { # No such page or it is marked as inactive
        $page = new stdClass;
        $page->kind = Siteaction::OBJECT;
-       $page->source = 'NoPage';
+       $page->source = '\Pages\NoPage';
     }
     else
     {
