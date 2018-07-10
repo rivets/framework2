@@ -48,9 +48,20 @@
     {
         $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
-        $fwc->value = $value;
         $fwc->local = $local ? 1 : 0;
-        $fwc->fixed = 1;
+        if (is_array($value))
+        {
+            $fwc->value = $value[0];
+            $fwc->fixed = $value[1];
+            $fwc->integrity = $value[2];
+            $fwc->crossorigin = $value[3];
+            $fwc->defer = $value[4];
+            $fwc->type = $value[5];
+        }
+        else
+        {
+            $fwc->type = 'string';
+        }
         \R::store($fwc);
     }
 
@@ -256,24 +267,24 @@
  */
     $fwurls = [
 // CSS
-        'bootcss'       => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css',
-//        'editablecss'   => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css',
-        'editablecss'   => '/'.$dir.'/assets/css/bs4-editable.css',
-        'facss'         => '//use.fontawesome.com/releases/v5.1.0/css/all.css',
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', 1, '', '', 0, 'css'],
+//        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 'css'],
+        'editablecss'   => ['/'.$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 'css'],
+        'facss'         => ['//use.fontawesome.com/releases/v5.1.0/css/all.css', 1, '', '', 0, 'css'],
 // JS
-        'jquery'       => 'https://code.jquery.com/jquery-3.3.1.min.js',
-        'jqueryslim'     => 'https://code.jquery.com/jquery-3.3.1.slim.min.js',
-        'bootjs'        => '//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js',
-        'bootbox'       => '//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js',
-//        'editable'      => '//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js',
-        'editable'      => ($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js',
-        'parsley'       => '//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js',
-        'popperjs'      => '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js',
+        'jquery'       => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, '', '', 0, 'js'],
+        'jqueryslim'     => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, '', '', 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', 1, '', '', 0, 'js'],
+        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 'js'],
+//        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 'js'],
+        'editable'      => [($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js', 1, '', '', 0, 'js'],
+        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 'js'],
     ];
     
     $fwcsp = [
         'default-src'   => '\'self\'',
-        'font-src'      => '\'self\' use.fontawesome.com',
+        'font-src'      =>'\'self\' use.fontawesome.com',
         'img-src'       => '\'self\' data:',
         'script-src'    => '\'self\' \'unsafe-inline\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
         'style-src'     => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
