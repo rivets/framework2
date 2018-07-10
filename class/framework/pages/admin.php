@@ -108,7 +108,7 @@
                 break;
 
             case 'update':
-                $ufd = fopen('https://catless.ncl.ac.uk/frameworknew/update/', 'r');
+                $ufd = fopen('https://catless.ncl.ac.uk/framework/update/', 'r');
                 if ($ufd)
                 {
                     $upd = json_decode(fread($ufd, 1024));
