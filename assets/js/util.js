@@ -1,6 +1,6 @@
     function mktoggle(tclass, v)
     {
-        return '<i class="'+tclass+' fa fa-toggle-'+(v ? 'on' : 'off')+'"></i>';
+        return '<i class="'+tclass+' fas fa-toggle-'+(v ? 'on' : 'off')+'"></i>';
     }
 
     function tick(v)

@@ -4,7 +4,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% macro tick(val, class) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
+<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
 
 {% import _self as h %}
@@ -34,8 +34,8 @@
 		'<td>'+mktoggle('active', data.active)+'</td>'+
 		'<td>'+mktoggle('admb', data.admin)+'</td>'+
 		'<td>'+mktoggle('devb', data.devel)+'</td>'+
-		'<td><i class="editb fa fa-pencil"></i></td>' +
-		'<td><i class="delb fa fa-trash-o"></i></td></tr>'
+		'<td><i class="editb fas fa-edit"></i></td>' +
+		'<td><i class="delb fas fa-trash-alt"></i></td></tr>'
 	    );
 	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
 	}).fail(function(){
@@ -110,11 +110,11 @@
                             <td>{{h.tick(u.isactive, 'active')}}</td>
                             <td>{{h.tick(u.isadmin, 'admb')}}</td>
                             <td>{{h.tick(u.isdeveloper, 'devb')}}</td>
-                            <td><i class="editb fa fa-pencil"></i></td>
-                            <td><i class="delb fa fa-trash-o"></i></td>
+                            <td><i class="editb fas fa-edit"></i></td>
+                            <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>
                     {% else %}
-                        <tr><td colspan="4">No users defined</td></tr>
+                        <tr><td colspan="8">No users defined</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -126,10 +126,6 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 {{m.header({title: 'Add A New User'})}}
-<!--                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Add User</h4>
-                </div>-->
                 <div class="modal-body">
                     <form id="adduform" action="#" method="post">
                         <div class="form-group">
@@ -162,10 +158,6 @@
                     </form>
                 </div>
                 {{m.footer({action: 'Add', id: 'addb'})}}
-<!--                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>-->
             </div>
         </div>
     </div>

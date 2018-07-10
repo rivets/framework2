@@ -4,7 +4,7 @@
 {% import '@util/formmacro.twig' as f %}
 
 {% macro tick(val, class, disabled) %}
-<i class="{{class}} fa fa-toggle-{% if val %}on{% else %}off{% endif %}{% if disabled %} fadis{% endif %}"></i>
+<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}{% if disabled %} fadis{% endif %}"></i>
 {% endmacro tick %}
 
 {% macro htick(val, class, name, disabled) %}
@@ -124,7 +124,7 @@
 
 {% block header %}
     <section class="col-md-12">
-        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}"><i class="viewb fa fa-eye"></i></a></h1>
+        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}"><i class="viewb fas fa-eye"></i></a></h1>
     </section>
 {% endblock header %}
 

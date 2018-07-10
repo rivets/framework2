@@ -70,16 +70,16 @@
     {% block scripts %}
     {% endblock scripts %}
 
-    <script>
-	var base = '{{base}}';
-
-	{% block setup %}
-	{% endblock setup %}
-
-	$(function(){
-	    {% block onload %}
-	    {% endblock onload %}
-	})
-    </script>
+    {% set sjs, ojs = '', '' %}
+    {% if block('setup') is defined %}{% set sjs = block('setup')|trim %}{% endif %}
+    {% if block('onload') is defined %}
+        {% set ojs = block('onload')|trim %}
+        {% if ojs|length > 0 %}{% set ojs = '$(function(){'~ojs~'});' %}{% endif %}
+    {% endif %}
+    {% set js = sjs~ojs %}
+    {% if js|length > 0 %}
+        {% set js = "var base = '"~base~"';" ~ sjs ~ "\n" ~ ojs %}
+        <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
+    {% endif %}
 </body>
 </html>

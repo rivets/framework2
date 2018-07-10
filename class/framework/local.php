@@ -315,6 +315,7 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
+            $this->twig->addFunction(new \Twig_Function('md5', function ($string) { return base64_encode(md5($string, TRUE)); }));
             $this->tvals = [];
         }
 /**

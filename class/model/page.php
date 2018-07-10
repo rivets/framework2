@@ -7,6 +7,8 @@
  *
  */
     namespace Model;
+    
+    use Framework\SiteAction as SiteAction;
 /**
  * A class implementing a RedBean model for Page beans
  */
@@ -176,14 +178,14 @@
         public static function add($context)
         {
             $fdt = $context->formdata();
-            $p = R::dispense('page');
+            $p = \R::dispense('page');
             $p->name = $fdt->mustpost('name');
             $p->kind = $fdt->mustpost('kind');
             $p->source = $fdt->mustpost('source');
             $p->active = $fdt->mustpost('active');
             $p->needlogin = $fdt->mustpost('login');
             $p->mobileonly = $fdt->mustpost('mobile');
-            R::store($p);
+            \R::store($p);
 
             try
             {
@@ -252,7 +254,7 @@
             }
             catch (Exception $e)
             { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
-                R::trash($p);
+                \R::trash($p);
                 $context->web()->bad($e->getmessage());
             }
         }
