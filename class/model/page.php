@@ -68,6 +68,14 @@
  */
         private static function maketwig($context, $page, $name)
         {
+            if (preg_match('%@content/(.*)%'. $name, $m))
+            {
+                $name = $m[1];
+            }
+            elseif (preg_match('%@([a-z]+)/(.*)%'. $name, $m))
+            {
+                $name = 'framework/'.$m[1]/$m[2];
+            }
             $name = preg_replace('/(\.twig)*$/', '.twig', $name); // this adds a missing .twig and removes extra .twigs .....
             $file = $context->local()->makebasepath('twigs', $name);
             if (!file_exists($file))
