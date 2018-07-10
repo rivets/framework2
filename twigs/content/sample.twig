@@ -1,3 +1,8 @@
+{#
+    Set this to TRUE if your page does not use AJAX (it loads less JS in that case so is faster)
+#}
+{% set noajax = FALSE %}
+
 {% extends '@util/page.twig' %}
 
 {# this brings in some useful macros for making forms
