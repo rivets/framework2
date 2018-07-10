@@ -124,7 +124,6 @@
                                     $lval->value = $cvalue;
                                     $lval->fixed = $cfixed;
                                     $lval->local = 0; // Once everyone has the local column this can go away
-                                    $lval->fixed = $cfixed;
                                     \R::store($lval);
                                 }
                             }
