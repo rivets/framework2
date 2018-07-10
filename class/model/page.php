@@ -68,13 +68,15 @@
  */
         private static function maketwig($context, $page, $name)
         {
+            $name = preg_replace('/(\.twig)*$/', '.twig', $name); // this adds a missing .twig and removes extra .twigs .....
             $file = $context->local()->makebasepath('twigs', $name);
             if (!file_exists($file))
             { // make the file
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{% extends \'@util/page.twig\' %}
+                    fwrite($fd,'{% set noajax = FALSE %}
+{% extends \'@util/page.twig\' %}
 
 {# this brings in some useful macros for making forms
 {% import \'@util/formmacro.twig\' as f %}
@@ -216,10 +218,10 @@
                         {
                             fwrite($fd, '<?php
 /**
- * A class that contains code to handle any requests for  /'.$tl.'
+ * A class that contains code to handle any requests for  /'.$tl.'/
  */
 /**
- * Support // or /home/'.$tl.'
+ * Support /'.$tl.'/
  */
     class '.$p->source.' extends \\Framework\\Siteaction
     {
