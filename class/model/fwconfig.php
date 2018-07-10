@@ -36,6 +36,8 @@
             $bn->value = $fdt->mustpost('value');
             $bn->local = $fdt->post('local', 0);
             $bn->fixed = 0;
+            $bn->integrity = '';
+            $bn->defer = 0;
             echo \R::store($bn);
         }
     }
