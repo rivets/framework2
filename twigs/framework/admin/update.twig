@@ -20,19 +20,7 @@
             {% if current == version %}
                 <p>You are up to date</p>
             {% else %}
-                <p>You have version {{current}}</p>
-                {% if nozip %}
-                    <p>Your PHP needs to be built with support for the <a href="http://php.net/manual/en/book.zip.php">zip interface</a> for this feature to work.</p>
-                {% else %}
-                    {% include '@util/message.twig' %}
-                    <form action="#" method="post" enctype="multipart/form-data">
-                        <fieldset>
-                            <legend>Update File</legend>
-                            {{f.file({ label: 'Update ZIP', id: 'upd', name: 'update'})}}
-                        </fieldset>
-                        <button class="btn btn-primary btn-lg" type="submit">Update</button>
-                    </form>
-                {% endif %}
+                <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
          </article>
     </section>
