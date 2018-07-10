@@ -22,7 +22,7 @@
             {% else %}
                 <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
-            {% foreach key,val in updated %}
+            {% for key,val in updated %}
                 <p>"{{key}}" updated to "{{val}}"</p>
             {% else %}
                 <p>'No support software link updates</p>
