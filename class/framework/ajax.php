@@ -10,11 +10,12 @@
  * Of course, this is entirely arbitrary and you can do whatever you want!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2017 Newcastle University
+ * @copyright 2014-2018 Newcastle University
  */
     namespace Framework;
 
     use \R as R;
+    use \Support\Context as Context;
 /**
  * Handle Ajax operations in this class
  */

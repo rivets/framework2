@@ -3,9 +3,10 @@
  * A class that handles Ajax calls
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017 Newcastle University
+ * @copyright 2017-2018 Newcastle University
  *
  */
+    namespace Support;
 /**
  * Handles Ajax Calls.
  */

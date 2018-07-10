@@ -8,7 +8,7 @@
     namespace Framework;
 
     use \Config\Config as Config;
-    use \Framework\SiteAction as SiteAction;
+    use \Support\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
 
@@ -52,7 +52,7 @@
 
             $local->addval('context', $context);
             $local->addval('page', $action);
-            $local->addval('siteinfo', new \Siteinfo($local)); // make sure we get the derived version not the Framework version
+            $local->addval('siteinfo', new Siteinfo($local)); // make sure we get the derived version not the Framework version
 
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)

@@ -30,14 +30,18 @@
  *                 Query strings and/or post fields are in the $_ arrays as normal.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2013 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  *
  */
-    include 'class/support/framework.php';
-    Framework::initialise();
+  
+    use \Config\Config as Config;
+    use \Support\SiteAction as SiteAction;
 
-    $local = Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, FALSE); # Not Ajax, debug on, load twig, no RB
-    $context = Context::getinstance()->setup($local);
+    include 'class/config/framework.php';
+    \Config\Framework::initialise();
+
+    $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, FALSE); # Not Ajax, debug on, load twig, no RB
+    $context = \Support\Context::getinstance()->setup($local);
 
 /*
  * The valid actions for the site, i.e. valid first part of the URL
@@ -45,20 +49,20 @@
  * If the value is false then just the template is rendered and no object called up
  */
     $pages = array(
-        'about'     => [Siteaction::TEMPLATE, 'about.twig'],
+        'about'     => [Siteaction::TEMPLATE, '@content/about.twig'],
         'admin'     => [Siteaction::OBJECT, 'Admin'],
-#        'confirm'  => [Siteaction::OBJECT, 'UserLogin'],
-#        'forgot'   => [Siteaction::OBJECT, 'UserLogin'],
-        'home'      => [Siteaction::TEMPLATE, 'index.twig'],
-#        'login'    => [Siteaction::OBJECT, 'Userlogin'],
-#        'logout'   => [Siteaction::OBJECT, 'Userlogin'],
-#        'register' => [Siteaction::OBJECT, 'Userlogin'],
+#        'confirm'  => [Siteaction::OBJECT, '\Framework\Pages\UserLogin'],
+#        'forgot'   => [Siteaction::OBJECT, '\Framework\Pages\UserLogin'],
+        'home'      => [Siteaction::TEMPLATE, '@content/index.twig'],
+#        'login'    => [Siteaction::OBJECT, '\Framework\Pages\Userlogin'],
+#        'logout'   => [Siteaction::OBJECT, '\Framework\Pages\Userlogin'],
+#        'register' => [Siteaction::OBJECT, '\Framework\Pages\Userlogin'],
     );
 
     $action = $context->action();
     if (!isset($pages[$action]))
     { # oops, we've been asked to do something that we don't do
-        Web::getinstance()->notfound('No such page'); # a basic 404 - the page should be much more helpful
+        \Framework\Web\Web::getinstance()->notfound('No such page'); # a basic 404 - the page should be much more helpful
         # DOES NOT RETURN
     }
 
@@ -78,7 +82,7 @@
         break;
 
     default :
-        Web::getinstance()->internal('Weird error');
+        \Framework\Web\Web::getinstance()->internal('Weird error');
     }
 
     ob_start('ob_gzhandler');

@@ -8,7 +8,8 @@
  */
     namespace Model;
     
-    use Framework\SiteAction as SiteAction;
+    use \Support\SiteAction as SiteAction;
+    use \Support\Context as Context;
 /**
  * A class implementing a RedBean model for Page beans
  */
@@ -84,7 +85,7 @@
                 if ($fd !== FALSE)
                 {
                     fwrite($fd,'{% set noajax = FALSE %}
-{% extends \'@util/page.twig\' %}
+{% extends \'@content/page.twig\' %}
 
 {# this brings in some useful macros for making forms
 {% import \'@util/formmacro.twig\' as f %}

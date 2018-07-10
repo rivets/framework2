@@ -13,7 +13,6 @@
     use Config\Config as Config;
     use Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
-
 /**
  * The default behaviour when a page does not exist.
  */

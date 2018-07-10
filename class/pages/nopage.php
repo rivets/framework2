@@ -6,9 +6,10 @@
  * Note that 
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
+ * @copyright 2016-2018 Newcastle University
  *
  */
+    namespace Pages;
 /**
  * The default behaviour when a page does not match in the database.
  */

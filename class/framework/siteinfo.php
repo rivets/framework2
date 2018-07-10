@@ -3,10 +3,12 @@
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2017 Newcastle University
+ * @copyright 2016-2018 Newcastle University
  *
  */
     namespace Framework;
+
+    use \Support\Context as Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */

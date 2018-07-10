@@ -6,6 +6,7 @@
  * @copyright 2012-2013 Newcastle University
  *
  */
+    namespace Pages;
 /**
  * Provide support for a nested static page structure
  */

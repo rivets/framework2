@@ -15,5 +15,5 @@
 
     // Ajax on, debug on, load twig, load RB
     $ld = \Framework\Local::getinstance()->setup(__DIR__, TRUE, TRUE, TRUE, TRUE); # setup the Local singleton
-    \Ajax::getinstance()->handle(\Context::getinstance()->setup());
+    \Support\Ajax::getinstance()->handle(\Support\Context::getinstance()->setup());
 ?>

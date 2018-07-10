@@ -1,13 +1,13 @@
 {% set noajax = TRUE %}
-{% extends '@util/page.twig' %}
+{% extends '@content/page.twig' %}
 
 {% block scripts %}
     <script src="{{fwurls.parsley}}"></script>
 {% endblock scripts %}
 
 {% block header %}
-    <section class="col-md-12">
-	<h1 class="cntr">Contact</h1>
+    <section class="col-md-12 mt-5">
+	<h1>Contact</h1>
     </section>
 {% endblock header %}
 
@@ -17,7 +17,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
+        <article class="offset-md-1 col">
             {% include '@util/message.twig' %}
             <form id="cform" action="#" method="post" role="form">
                 <input type="hidden" name="details" value="1"/>

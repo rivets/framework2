@@ -3,11 +3,12 @@
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015 Newcastle University
+ * @copyright 2015-2018 Newcastle University
  */
     namespace Framework;
 
     use Framework\Web\Web as Web;
+    use \Support\Context as Context;
 /**
  * A class that provides helpers for accessing form data
  */

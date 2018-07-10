@@ -13,7 +13,7 @@
     define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 
     use \Config\Config as Config;
-    use \Framework\SiteAction as SiteAction;
+    use \Support\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
 
     include 'class/config/framework.php';
@@ -21,7 +21,7 @@
     Config::setup(); # add default headers etc. - anything that the user choses to add to the code.
 
     $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, TRUE); # Not Ajax, developer mode on, load twig, load RB
-    $context = \Context::getinstance()->setup();
+    $context = \Support\Context::getinstance()->setup();
 
     $local->enabledebug(); # turn debugging on
 
@@ -55,7 +55,7 @@
 
     $local->addval('context', $context);
     $local->addval('action', $action);
-    $local->addval('siteinfo', new \Siteinfo($local)); // make sure we get the derived version not the Framework version
+    $local->addval('siteinfo', new Siteinfo($local)); // make sure we get the derived version not the Framework version
 /**
  * If you don't want pagination anywhere you can comment out the next bit
  */
