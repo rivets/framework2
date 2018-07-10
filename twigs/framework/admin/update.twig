@@ -18,10 +18,15 @@
         <article class="ml-auto col-md-10 mr-auto">
             <h2>Latest version is Framework {{version}}</h2>
             {% if current == version %}
-                <p>You are up to date</p>
+                <p>You have the latest code version</p>
             {% else %}
                 <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
+            {% foreach key,val in updated %}
+                <p>"{{key}}" updated to "{{val}}"</p>
+            {% else %}
+                <p>'No support software link updates</p>
+            {%endfor %}
          </article>
     </section>
 {% endblock main %}

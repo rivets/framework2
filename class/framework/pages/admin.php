@@ -111,6 +111,7 @@
                 $ufd = fopen('https://catless.ncl.ac.uk/framework/update/', 'r');
                 if ($ufd)
                 {
+                    $updated = [];
                     $upd = json_decode(fread($ufd, 1024));
                     if (isset($upd->config))
                     { // now see if there are any config values that need updating.
@@ -119,12 +120,12 @@
                             $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
                             if (is_object($lval))
                             {
-                                if (/*$lval->local == 0 && */$lval->value != $cvalue)
+                                if ($lval->local == 0 && $lval->value != $cvalue)
                                 { // update if not locally set and there is a new value
                                     $lval->value = $cvalue;
                                     $lval->fixed = $cfixed;
-                                    $lval->local = 0; // Once everyone has the local column this can go away
                                     \R::store($lval);
+                                    $updated[$cname] = $cvalue;
                                 }
                             }
                             else
@@ -135,10 +136,12 @@
                                 $lval->local = 0;
                                 $lval->fixed = $cfixed;
                                 \R::store($lval);
+                                $updated[$cname] = $cvalue;
                             }
                         }
                     }
                     $context->local()->addval('version', $upd->version);
+                    $context->local()->addval('updated', $updated);
                     fclose($ufd);
                     $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
                 }
