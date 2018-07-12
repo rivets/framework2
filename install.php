@@ -6,6 +6,8 @@
  * @copyright 2014-2018 Newcastle University
  */
     global $cwd, $verbose;
+
+    define('DBPREFIX', 'fw');
 /**
  * Function to cleanup after errors
  *
@@ -46,7 +48,7 @@
  */
     function addfwconfig($name, $value, $local)
     {
-        $fwc = \R::dispense('fwconfig');
+        $fwc = \R::dispense(DBPREFIX.'config');
         $fwc->name = $name;
         $fwc->local = $local ? 1 : 0;
         if (is_array($value))
@@ -254,7 +256,7 @@
     $tpl = 'install.twig';
     $host = $_SERVER['HTTP_HOST'];
     switch ($host)
-    { // makes for a proper looking fake email address....
+    { # makes for a proper looking fake email address....
     case 'localhost':
     case '127.0.0.1':
         $host = 'localhost.org';
