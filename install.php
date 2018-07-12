@@ -254,14 +254,14 @@
     $tpl = 'install.twig';
     $host = $_SERVER['HTTP_HOST'];
     switch ($host)
-    {
+    { // makes for a proper looking fake email address....
     case 'localhost':
     case '127.0.0.1':
         $host = 'localhost.org';
         break;
     }
 /*
- * URLs for various clientside packages that are used by the installer and by the framework
+ * URLs for various client side packages that are used by the installer and by the framework
  *
  * N.B. WHEN UPDATING THESE DON'T FORGET TO UPDATE THE CSP LOCATIONS IF NECESSARY!!!!!!!!!
  */
