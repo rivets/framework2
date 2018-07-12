@@ -262,6 +262,17 @@
         $host = 'localhost.org';
         break;
     }
+    
+    $beans = [
+        'config',
+        'confirm',
+        'page',
+        'pagerole',
+        'role',
+        'rolecontext'
+        'rolename',
+        'user',
+    ];
 /*
  * URLs for various client side packages that are used by the installer and by the framework
  *
