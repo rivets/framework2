@@ -46,6 +46,8 @@
 /**
  * Handle a form edit
  *
+ * @param object    $context
+ *
  * @return void
  */
         public function edit($context)
@@ -86,8 +88,9 @@
  * Handle a label
  *
  * @param object    $fld    The field
+ * @param string    $class  The class name
  *
- * @return string  The field idval might be updated also
+ * @return string   The field idval might be updated also
  */
         private function doLabel($fld, $class = '')
         {
@@ -107,6 +110,8 @@
  * Render a field's attributes
  *
  * @param object    $fld
+ * @param string    $class  The class name
+ * @param boolean   $doValue  The class name
  *
  * @return string
  */
