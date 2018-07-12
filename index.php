@@ -67,7 +67,7 @@
     $code = StatusCodes::HTTP_OK;
     switch ($page->kind)
     {
-    case Siteaction::OBJECT: # fire up the object to handle the request
+    case SiteAction::OBJECT: # fire up the object to handle the request
         $pageObj = new $page->source;
         $pageObj->setCSP();
         $tpl = $pageObj->handle($context);
@@ -77,24 +77,24 @@
         }
         break;
 
-    case Siteaction::TEMPLATE: # render a template
+    case SiteAction::TEMPLATE: # render a template
         Config::setCSP();
         $tpl = $page->source;
         break;
 
-    case Siteaction::REDIRECT: # redirect to somewhere else on the this site (temporary)
+    case SiteAction::REDIRECT: # redirect to somewhere else on the this site (temporary)
         $context->divert($page->source, TRUE);
         /* NOT REACHED */
 
-    case Siteaction::REHOME: # redirect to somewhere else on the this site (permanent)
+    case SiteAction::REHOME: # redirect to somewhere else on the this site (permanent)
         $context->divert($page->source, FALSE);
         /* NOT REACHED */
 
-    case Siteaction::XREDIRECT: # redirect to an external URL (temporary)
+    case SiteAction::XREDIRECT: # redirect to an external URL (temporary)
         $context->web()->relocate($page->source, TRUE);
         /* NOT REACHED */
 
-    case Siteaction::XREHOME: # redirect to an external URL (permanent)
+    case SiteAction::XREHOME: # redirect to an external URL (permanent)
         $context->web()->relocate($page->source, FALSE);
         /* NOT REACHED */
 
