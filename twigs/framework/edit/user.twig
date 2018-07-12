@@ -1,3 +1,4 @@
+{% set noajax = FALSE %}
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
@@ -27,14 +28,14 @@
 {% endblock onload %}
 
 {% block header %}
-    <section class="col-md-12">
+    <section class="col-md-12 mt-5">
         <h1>User &ldquo;{{bean.login}}&rdquo;</h1>
     </section>
 {% endblock header %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="offset-md-1 col">
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 <fieldset>
