@@ -1,16 +1,16 @@
 <?php
+/**
+ * Definition of Userlogin class
+ *
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2012-2018 Newcastle University
+ */
     namespace Framework\Pages;
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
     use \Framework\Context as Context;
     use \R as R;
-/**
- * Definition of Userlogin class
- *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2015 Newcastle University
- */
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
