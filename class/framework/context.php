@@ -357,7 +357,7 @@
  * Setup the Context - the constructor is hidden in Singleton
  ***************************************
  */
- /**
+/**
  * Initialise the context and return self
  *
  * @param boolean	$local	The singleton local object
@@ -379,7 +379,7 @@
             }
             if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
             {
-/**
+/*
  *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
  *  Older versions will not have this so the code will do nothing.
  */
