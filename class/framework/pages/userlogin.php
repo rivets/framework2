@@ -155,7 +155,7 @@
                 }
                 $local->addval('page', $page);
             }
-            return '@users/login.twig';
+            return '@content/login.twig';
         }
 /**
  * handle a registration
@@ -213,7 +213,7 @@
                         $context->local()->message(Local::ERROR, $errmess);
                     }
             }
-            return '@users/register.twig';
+            return '@content/register.twig';
         }
 /**
  * Handle things to do with email address confirmation
