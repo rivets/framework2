@@ -1,5 +1,7 @@
 {% extends '@content/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+
 {% macro tick(val, class) %}
 <i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
 {% endmacro tick %}
@@ -126,8 +128,7 @@
                         <div class="modal-body">
                             <form action="#" method="POST" id="nrform">
                                 <div class="form-group">
-                                    <label for="nrname">Name</label>
-                                    <input type="text" class="form-control" id="nrname" placeholder="role name" required="required"/>
+                                    {{f.text({id: 'nrname', label: 'Name', ph: 'Role Name', required: TRUE})}}
                                 </div>
                            </form>
                         </div>
