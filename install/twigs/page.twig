@@ -9,8 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="Framework Installer"/>
 
-    <link rel="stylesheet" href="{{fwurls[0].bootcss}}" media="screen,print"/>
-    <link rel="stylesheet" href="{{fwurls[0].facss}}"/>
+    <link rel="stylesheet" href="{{fwurls.bootcss[0]}}" media="screen,print"/>
+    <link rel="stylesheet" href="{{fwurls.facss[0]}}"/>
 
 {% block css %}
 {% endblock css %}
@@ -24,11 +24,11 @@
 	</article>
     </div>
 
-    <script src="{{fwurls[0].jqueryslim}}"></script>
+    <script src="{{fwurls.jqueryslim[0]}}"></script>
 
-    <script src="{{fwurls[0].popperjs}}"></script>
-    <script src="{{fwurls[0].bootjs}}"></script>
-    <script src="{{fwurls[0].bootbox}}"></script>
+    <script src="{{fwurls.popperjs[0]}}"></script>
+    <script src="{{fwurls.bootjs[0]}}"></script>
+    <script src="{{fwurls.bootbox[0]}}"></script>
 
     {% block scripts %}
     {%endblock scripts %}
