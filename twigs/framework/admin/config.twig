@@ -37,7 +37,7 @@
         e.preventDefault();
         var t = $(this);
         var id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/name/', {
+        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/value/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: t.val()
