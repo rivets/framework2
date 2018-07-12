@@ -69,7 +69,7 @@
  */
         private static function maketwig($context, $page, $name)
         {
-            if (preg_match('%@content/(.*)%'. $name, $m))
+            if (preg_match('%@content/(.*)%', $name, $m))
             {
                 $name = 'content/'.$m[1];
             }
@@ -77,7 +77,7 @@
             {
                 $name = 'framework/'.$m[1]/$m[2];
             }
-            if (!preg_match('/\.twig$', $name))
+            if (!preg_match('/\.twig$/', $name))
             {
                 $name .= '.twig';
             }
