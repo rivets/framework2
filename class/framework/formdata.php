@@ -15,7 +15,9 @@
     class Formdata
     {
         use \Framework\Utility\Singleton;
-
+/**
+ * @var string    Holds data read from php://input
+ */
         private $putdata    = NULL;
 /**
  * Fetch the input data if required
