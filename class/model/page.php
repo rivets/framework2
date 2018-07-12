@@ -73,7 +73,7 @@
             {
                 $name = 'content/'.$m[1];
             }
-            elseif (preg_match('%@([a-z]+)/(.*)%'. $name, $m))
+            elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
             {
                 $name = 'framework/'.$m[1]/$m[2];
             }
