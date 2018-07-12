@@ -17,7 +17,11 @@
         use \Framework\Utility\Singleton;
 
         private $putdata    = NULL;
-
+/**
+ * Fetch the input data if required
+ *
+ * @return void
+ */
         private function setput()
         {
             if (!is_array($this->putdata))

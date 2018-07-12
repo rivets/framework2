@@ -18,7 +18,14 @@
     class Dispatch
     {
         use \Framework\Utility\Singleton;
-
+/**
+ * Handle dispatch of a page.
+ *
+ * @param object    $context
+ * @param string    $action
+ *
+ * @return void
+ */
         public function handle($context, $action)
         {
             $local = $context->local();
