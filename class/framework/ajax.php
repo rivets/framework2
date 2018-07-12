@@ -281,6 +281,10 @@
         }
 /**
  * Do a parsley login check
+ *
+ * @param object    $context
+ *
+ * @return void
  */
         public function logincheck($context)
         {
