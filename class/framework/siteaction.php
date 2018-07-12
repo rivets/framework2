@@ -19,27 +19,27 @@
  */
     abstract class Siteaction
     {
-/**
+/*
  * Indicates that there is an Object that handles the call
  */
 	const OBJECT	= 1;
-/**
+/*
  * Indicates that there is only a template for this URL.
  */
 	const TEMPLATE	= 2;
-/**
+/*
  * Indicates that the URL should be temporarily redirected
  */
 	const REDIRECT	= 3;
-/**
+/*
  * Indicates that the URL should be permanently redirected
  */
 	const REHOME	= 4;
-/**
+/*
  * Indicates that the URL should be temporarily redirected
  */
 	const XREDIRECT	= 5;
-/**
+/*
  * Indicates that the URL should be permanently redirected
  */
 	const XREHOME	= 6;
