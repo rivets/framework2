@@ -204,14 +204,14 @@
 {% set pages = (siteinfo.count('page') + pagesize)/pagesize %}
 
 {% block header %}
-    <section class="col-md-12">
+    <section class="col-md-12 mt-5">
         <h1>Pages</h1>
     </section>
 {% endblock header %}
 
 {% block main %}
     <section class="row">
-        <article class="col ml-auto col-md-10 mr-auto">
+        <article class="offset-md-1 col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <table class="table table-responsive table-striped table-hover" id="ptab">
                 <thead class="thead-inverse">
