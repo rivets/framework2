@@ -153,7 +153,7 @@
 #}
 
 {% block header %}
-    <article class="col-md-12">
+    <article class="col-md-12 mt-5">
         <h1 class="cntr">'.strtoupper($page).'</h1>
     </article>
 {% endblock header %}
@@ -224,7 +224,16 @@
                 switch ($p->kind)
                 {
                 case SiteAction::OBJECT:
+                    if (!preg_match('/\\\\/', $p->source))
+                    { # no namespace so put it in \Pages
+                        $p->source = '\\Pages\\'.$p->source;
+                        \R::store($p);
+                    }
                     $tl = strtolower($p->source);
+                    $tspl = explode('\\', $p->source);
+                    $base = array_pop($tspl);
+                    $lbase = strtolower($base);
+                    $namespace = implode('\\', array_filter($tspl));
                     $src = preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
                     $file = $local->makebasepath('class', $src);
                     if (!file_exists($file))
@@ -234,15 +243,16 @@
                         {
                             fwrite($fd, '<?php
 /**
- * A class that contains code to handle any requests for  /'.$tl.'/
+ * A class that contains code to handle any requests for  /'.$p->name.'/
  */
+     namespace '.$namespace.';
 /**
- * Support /'.$tl.'/
+ * Support /'.$p->name.'/
  */
-    class '.$p->source.' extends \\Framework\\Siteaction
+    class '.$base.' extends \\Framework\\Siteaction
     {
 /**
- * Handle '.$tl.' operations /
+ * Handle '.$p->name.' operations
  *
  * @param object	$context	The context object for the site
  *
@@ -250,16 +260,21 @@
  */
         public function handle($context)
         {
-            return \''.$tl.'.twig\';
+            return \'@content/'.$lbase.'.twig\';
         }
     }
 ?>');
                             fclose($fd);
                         }
                     }
-                    self::maketwig($context, $tl, $tl.'.twig');
+                    self::maketwig($context, $p->name, '@content/'.$lbase.'.twig');
                     break;
                 case SiteAction::TEMPLATE:
+                    if (!preg_match('@', $p->source))
+                    { # no namespace so put it in @content
+                        $p->source = '@content/'.$p->source;
+                        \R::store($p);
+                    }
                     self::maketwig($context, $p->name, $p->source);
                     break;
                 case SiteAction::REDIRECT:
