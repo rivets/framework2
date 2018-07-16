@@ -55,7 +55,7 @@
 
     $local->addval('context', $context);
     $local->addval('action', $action);
-    $local->addval('siteinfo', new \Support\Siteinfo($local)); // make sure we get the derived version not the Framework version
+    $local->addval('siteinfo', \Support\Siteinfo::getinstance()); // make sure we get the derived version not the Framework version
 /**
  * If you don't want pagination anywhere you can comment out the next bit
  */
