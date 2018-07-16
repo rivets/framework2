@@ -14,6 +14,7 @@
  */
     class SiteInfo
     {
+        use \Framework\Utility\Singleton;
 /**
  * Get beans in chunks and turn them one by one using a generator
  *
