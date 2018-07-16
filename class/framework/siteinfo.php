@@ -169,7 +169,7 @@
  *
  * @return array
  */
-        public function userWith($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
+        public function usersWith($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
         {
             $context = Context::getinstance();
             $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();
