@@ -46,35 +46,41 @@
  * Now use curl to talk to proxycheck.io
  */
             $ch = curl_init(self::PCURL.$ip.'?'.implode('&', $query));
-            $curl_options = [
+            $curlopts = [
               CURLOPT_CONNECTTIMEOUT => 30,
               CURLOPT_POST => 1,
               CURLOPT_POSTFIELDS => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
               CURLOPT_RETURNTRANSFER => true
             ];
-            curl_setopt_array($ch, $curl_options);
+            curl_setopt_array($ch, $curlopts);
             $json = curl_exec($ch);
             curl_close($ch);
             
-            $res = json_decode($json, TRUE);
-            $res['block'] = FALSE;
-            $res['reason'] = '';
+            if ($json === FALSE)
+            {
+                $res = ['error' => TRUE, 'errno' => curl_error($ch)];
+            }
+            else
+            {
+                $res = json_decode($json, TRUE);
+                $res['block'] = FALSE;
+                $res['reason'] = '';
+        
+                if (isset($res[$ip]['proxy']))
+                { // this is a proxy server
+                    if ($res[$ip]['proxy'] == 'yes')
+                    {
+                        $res['block'] = TRUE;
+                        $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
+                    }
     
-            if (isset($res[$ip]['proxy']))
-            { // this is a proxy server
-                if ($res[$ip]['proxy'] == 'yes')
-                {
-                    $res['block'] = TRUE;
-                    $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
-                }
-
-                if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
-                {
-                    $res['block'] = TRUE;
-                    $res['block_reason'] = 'country';
+                    if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
+                    {
+                        $res['block'] = TRUE;
+                        $res['block_reason'] = 'country';
+                    }
                 }
             }
-
             return $res;
         }
     }
