@@ -42,7 +42,6 @@
                     $query[] = $fld.'='.$options[$fld];
                 }
             }
-          
 /*
  * Now use curl to talk to proxycheck.io
  */
