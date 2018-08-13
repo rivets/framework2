@@ -335,10 +335,10 @@
  */
         public function setCSP()
         {
-            if (\Config::USECSP)
+            if (\Config\Config::USECSP)
             {
                 $csp = '';
-                foreach (\Config::$defaultCSP as $key => $val)
+                foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
                     $csp .= ' '.$key.' '.$val.';';
                 }
