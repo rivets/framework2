@@ -54,8 +54,6 @@
             ];
             curl_setopt_array($ch, $curlopts);
             $json = curl_exec($ch);
-            curl_close($ch);
-            
             if ($json === FALSE)
             {
                 $res = ['error' => TRUE, 'errno' => curl_error($ch)];
@@ -81,6 +79,7 @@
                     }
                 }
             }
+            curl_close($ch);
             return $res;
         }
     }
