@@ -1,3 +1,4 @@
+    {% set pages = pages|round(0, 'floor') %}
     {% if pages >= 2 %}
 	{% if page > pages %}
 	    {% set page = pages %}
