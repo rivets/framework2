@@ -65,7 +65,7 @@
  */
         public function setCSP()
         {
-            \Context::getinstance()->web()->setCSP();
+            \Framework\Context::getinstance()->web()->setCSP();
         }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
