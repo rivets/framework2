@@ -42,17 +42,16 @@
                     $query[] = $fld.'='.$options[$fld];
                 }
             }
-          
 /*
  * Now use curl to talk to proxycheck.io
  */
             $ch = curl_init(self::PCURL.$ip.'?'.implode('&', $query));
-            $curl_options = array(
+            $curl_options = [
               CURLOPT_CONNECTTIMEOUT => 30,
               CURLOPT_POST => 1,
               CURLOPT_POSTFIELDS => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
               CURLOPT_RETURNTRANSFER => true
-            );
+            ];
             curl_setopt_array($ch, $curl_options);
             $json = curl_exec($ch);
             curl_close($ch);
@@ -61,10 +60,10 @@
             $res['block'] = FALSE;
             $res['reason'] = '';
     
-            if ( isset($res[$ip]['proxy']))
+            if (isset($res[$ip]['proxy']))
             { // this is a proxy server
                 $res['block'] = TRUE;
-                $res["reason"] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
+                $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
             }
 
             if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
@@ -73,6 +72,6 @@
                 $res['block_reason'] = 'country';
             }
 
-            return $Decoded_JSON;
+            return $res;
         }
     }
