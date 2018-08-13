@@ -4,7 +4,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2018 Newcastle University
- *
  */
     namespace Model;
     
@@ -13,11 +12,11 @@
 /**
  * A class implementing a RedBean model for Page beans
  */
+    class Page extends \RedBeanPHP\SimpleModel
+    {
 /**
  * @var string   The type of the bean that stores roles for this page
  */
-    class Page extends \RedBeanPHP\SimpleModel
-    {
         private $roletype = 'pagerole';
 
         use \Framework\HandleRole;
@@ -62,8 +61,9 @@
 /**
  * Make a twig file if we have permission
  *
- * @param string    $page   The name of the page
- * @param string    $name   The name of the twig
+ * @param object    $context    The Context object
+ * @param string    $page       The name of the page
+ * @param string    $name       The name of the twig
  *
  * @return void
  */

@@ -20,7 +20,7 @@
  *
  * @param string    $bean   A bean name
  * @param string    $where  An SQL where condition
- * @param array     $param  Substitutions for the where clause
+ * @param array     $params Substitutions for the where clause
  * @param integer   $start  The start position
  * @param integer   $count  The number wanted.
  *
