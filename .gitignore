@@ -5,3 +5,4 @@ vendor
 composer.lock
 
 *.codekit3
+*.php~

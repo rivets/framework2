@@ -1,12 +1,11 @@
 <?php
-    namespace Framework\Web;
-
 /**
- * Contains definition of ther Web class
+ * Contains definition of the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2015 Newcastle University
  */
+    namespace Framework\Web;
 /**
  * A class that handles various web related things.
  */
