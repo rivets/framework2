@@ -62,14 +62,17 @@
     
             if (isset($res[$ip]['proxy']))
             { // this is a proxy server
-                $res['block'] = TRUE;
-                $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
-            }
+                if ($res[$ip]['proxy'] == 'yes')
+                {
+                    $res['block'] = TRUE;
+                    $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
+                }
 
-            if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
-            {
-                $res['block'] = TRUE;
-                $res['block_reason'] = 'country';
+                if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
+                {
+                    $res['block'] = TRUE;
+                    $res['block_reason'] = 'country';
+                }
             }
 
             return $res;
