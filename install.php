@@ -269,7 +269,7 @@
         'page',
         'pagerole',
         'role',
-        'rolecontext'
+        'rolecontext',
         'rolename',
         'user',
     ];
@@ -280,14 +280,14 @@
  */
     $fwurls = [
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css', 1, '', '', 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', 1, '', '', 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 'css'],
         'editablecss'   => ['/'.$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 'css'],
-        'facss'         => ['//use.fontawesome.com/releases/v5.1.0/css/all.css', 1, '', '', 0, 'css'],
+        'facss'         => ['//use.fontawesome.com/releases/v5.2.0/css/all.css', 1, '', '', 0, 'css'],
 // JS
         'jquery'       => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, '', '', 0, 'js'],
         'jqueryslim'     => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, '', '', 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js', 1, '', '', 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 1, '', '', 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 'js'],
         'editable'      => [($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js', 1, '', '', 0, 'js'],
@@ -391,7 +391,7 @@
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
-            'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
+            'usecsp'        => ['USECSP', FALSE, TRUE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -516,48 +516,13 @@
             ]);
         }".PHP_EOL.PHP_EOL);
 
-            if ($options['usecsp'])
-            {
-                fputs($fd, '
+            fputs($fd, '
         public static $defaultCSP = ['.PHP_EOL);
-                foreach ($fwcsp as $key => $val)
-                {
-                 fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
-                }
-                fputs($fd, '        ];'.PHP_EOL);
-                fputs ($fd,"
-/**
- * Set up default CSP headers for a page
- *
- * There will be a basic set of default CSP permissions for the site to function,
- * but individual pages may wish to extend or restrict these.
- *
- * @return void
- */
-        public static function setCSP()
-        {
-            \$csp = '';
-            foreach (Config::\$defaultCSP as \$key => \$val)
+            foreach ($fwcsp as $key => $val)
             {
-                \$csp .= ' '.\$key.' '.\$val.';';
+                fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
             }
-            \\Framework\\Web\\Web::getinstance()->addheader([
-                'Content-Security-Policy'   => \$csp
-            ]);
-        }".PHP_EOL);
-            }
-            else
-            {
-                fputs ($fd,"
-/**
- * Dummy CSP function
- *
- * @return void
- */
-        public static function setCSP()
-        {
-        }".PHP_EOL);
-            }
+            fputs($fd, '        ];'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
             fclose($fd);
     /*

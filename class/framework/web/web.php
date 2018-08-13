@@ -325,5 +325,27 @@
                 ob_end_clean();
             }
         }
+/**
+ * Set up default CSP headers for a page
+ *
+ * There will be a basic set of default CSP permissions for the site to function,
+ * but individual pages may wish to extend or restrict these.
+ *
+ * @return void
+ */
+        public function setCSP()
+        {
+            if (\Config::USECSP)
+            {
+                $csp = '';
+                foreach (\Config::$defaultCSP as $key => $val)
+                {
+                    $csp .= ' '.$key.' '.$val.';';
+                }
+                \Framework\Web\Web::getinstance()->addheader([
+                    'Content-Security-Policy'   => $csp
+                ]);
+            }
+        }
     }
 ?>
