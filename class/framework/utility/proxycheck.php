@@ -56,7 +56,7 @@
             $json = curl_exec($ch);
             if ($json === FALSE)
             {
-                $res = ['error' => TRUE, 'errno' => curl_error($ch)];
+                $res = ['status' => 'error', 'message' => curl_error($ch)];
             }
             else
             {
@@ -72,7 +72,7 @@
                         $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
                     }
     
-                    if (!empty($options['countries']) && in_array($res[$ip]['country'], $options['countries']))
+                    if (!empty($options['countries']) && in_array($res[$ip]['isocode'], $options['countries']))
                     {
                         $res['block'] = TRUE;
                         $res['block_reason'] = 'country';
