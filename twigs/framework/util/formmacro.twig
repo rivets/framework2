@@ -3,7 +3,7 @@
 {% endmacro hv %}
 
 {% macro hvd(attr, value, dflt)%}
-{{attr}}="{{value != '' ?: dflt}}"{% endif %}
+{{attr}}="{{value != '' ?: dflt}}"
 {% endmacro hvd %}
 
 {% macro cd(cond, attr, value) %}
@@ -15,14 +15,14 @@
 {% if cond %}{{h.hv(attr, value, dflt)}}{% endif %}
 {% endmacro cdd %}
 
+{% macro cv(value)%}
+ class="form-control{{value != '' ? ' '~value}}"
+{% endmacro cv %}
+
 {% macro fv(opts)%}
 {% import _self as h %}
 {% for v in ['required', 'disabled', 'readonly'] %}{{h.cv(opts[v], v, v)}}{% endfor %}
 {% endmacro fv %}
-
-{% macro cv(value)%}
- class="form-control{{value != '' ? ' '~value}}"
-{% endmacro cv %}
 
 {% macro data(opts) %}
 {% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}
