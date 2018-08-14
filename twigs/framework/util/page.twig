@@ -28,10 +28,10 @@
     {% block body %}
     {% endblock body %}
 
-    {% if noajax %}
-        <script src="{{fwurls.jqueryslim}}"></script>
-    {% else %}
+    {% if ajax %}
         <script src="{{fwurls.jquery}}"></script>
+    {% else %}
+        <script src="{{fwurls.jqueryslim}}"></script>
     {% endif %}
 
     <script src="{{fwurls.popperjs}}"></script>
