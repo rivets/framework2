@@ -10,7 +10,7 @@
 {% if cond %} {{attr}}="{{value}}"{% endif %}
 {% endmacro cd %}
 
-{% macro cd(cond, attr, value, dflt) %}
+{% macro cdd(cond, attr, value, dflt) %}
 {% import _self as h %}
 {% if cond %}{{h.hv(attr, value, dflt)}}{% endif %}
 {% endmacro cdd %}
