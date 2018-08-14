@@ -53,15 +53,20 @@
         $page->check($context);
     }
 
-    $local->addval('context', $context);
-    $local->addval('action', $action);
-    $local->addval('siteinfo', \Support\Siteinfo::getinstance()); // make sure we get the derived version not the Framework version
+    $local->addval([
+        'context'   => $context,
+        'action'    => $action,
+        'siteinfo'  => \Support\Siteinfo::getinstance(), // make sure we get the derived version not the Framework version
+        'ajax'      => FALSE,                            // Mark pages as not using AJAX by default
+    ]);
 /**
  * If you don't want pagination anywhere you can comment out the next bit
  */
     $form = $context->formdata();
-    $local->addval('page', $form->filterget('page', 1, FILTER_VALIDATE_INT)); // just in case there is any pagination going on
-    $local->addval('pagesize', $form->filterget('pagesize', 10, FILTER_VALIDATE_INT));
+    $local->addval([
+        'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
+        'pagesize'  => $form->filterget('pagesize', 10, FILTER_VALIDATE_INT)
+    ]);
 /** end of pagination helper **/
 
     $code = StatusCodes::HTTP_OK;

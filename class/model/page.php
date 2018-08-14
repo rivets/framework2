@@ -91,8 +91,7 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{% set noajax = FALSE %}
-{% extends \'@content/page.twig\' %}
+                    fwrite($fd,'{% extends \'@content/page.twig\' %}
 
 {# this brings in some useful macros for making forms
 {% import \'@util/formmacro.twig\' as f %}

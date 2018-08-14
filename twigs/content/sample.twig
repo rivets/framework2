@@ -1,7 +1,7 @@
 {#
-    Set this to TRUE if your page does NOT use AJAX (it loads less JS in that case so is faster)
+    If your page uses AJAX include this line at the start of the file - it loads a different version of jQuery.
+{% set ajax = TRUE %}
 #}
-{% set noajax = FALSE %}
 
 {% extends '@content/page.twig' %}
 

@@ -346,5 +346,40 @@
                 ]);
             }
         }
+/**
+ * Check a recaptcha value
+ *
+ * This assumes that file_get_contetns 
+ *
+ * @param string    $secret  The recaptcha secret for this site
+ *
+ * @return array
+ */
+        public function recaptcha($secret)
+        {
+            if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+            {
+                $data = http_build_query([
+                    'secret'    => $secret,
+                    'response'  => $_POST['g-recaptcha-response'],
+                    'remoteip'  => $_SERVER['REMOTE_ADDR']
+                ]);
+                $opts = ['http' =>
+                    [
+                        'method'  => 'POST',
+                        'header'  => 'Content-Type: application/x-www-form-urlencoded',
+                        'content' => $data
+                    ]
+                ];
+                $context  = stream_context_create($opts);
+                $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
+                if ($result !== FALSE)
+                {
+                    $check = json_decode($result, TRUE);
+                    return $check->success;
+                }
+            }
+            return FALSE;
+        }
     }
 ?>
