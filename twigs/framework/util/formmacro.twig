@@ -2,24 +2,34 @@
 {% if value != '' %} {{attr}}="{{value}}"{% endif %}
 {% endmacro hv %}
 
+{% macro hvd(attr, value, dflt)%}
+{{attr}}="{{value != '' ?: dflt}}"{% endif %}
+{% endmacro hvd %}
+
 {% macro cd(cond, attr, value) %}
 {% if cond %} {{attr}}="{{value}}"{% endif %}
 {% endmacro cd %}
 
+{% macro cd(cond, attr, value, dflt) %}
+{% import _self as h %}
+{% if cond %}{{h.hv(attr, value, dflt)}}{% endif %}
+{% endmacro cdd %}
+
 {% macro fv(opts)%}
-{% for v in ['required', 'disabled', 'readonly'] %}{% if opts[v] %} {{v}}="{{v}}"{% endif %}{% endfor %}
+{% import _self as h %}
+{% for v in ['required', 'disabled', 'readonly'] %}{{h.cv(opts[v], v, v)}}{% endfor %}
 {% endmacro fv %}
 
 {% macro cv(value)%}
- class="form-control{% if value != '' %} {{value}}{% endif %}"
+ class="form-control{{value != '' ? ' '~value}}"
 {% endmacro cv %}
 
 {% macro data(opts) %}
-{% for k,v in opts %} data-{{k}}{%if v != '' %}="{{v}}"{% endif %}{% endfor %}
+{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}
 {% endmacro data %}
 
 {% macro parsley(opts) %}
-{% for k,v in opts %} data-parsley-{{k}}{%if v != '' %}="{{v}}"{% endif %}{% endfor %}
+{% for k,v in opts %} data-parsley-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}
 {% endmacro parsley %}
 
 {% macro input(type, opts) %}
@@ -45,7 +55,7 @@
 
 {% macro bse(opts) %}
         {% if opts.warn != '' %}
-	       <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>
+	    <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>
         {% endif %}
    </div>
 {% endmacro bse%}
@@ -134,5 +144,14 @@
 
 {% macro submit(opts) %}
 {% import _self as h %}
-    <input class="btn btn-primary" type="submit" value="{{opts.value}}"/>
+    <input class="btn {{opts.style != '' ?: 'btn-primary'}}" type="submit" value="{{opts.value}}"{{h.hv('id', opts.id)}}/>
 {% endmacro submit %}
+
+{% macro recaptcha(key, label, callback, opts) %}
+{% import _self as h %}
+    {% if key != '' %}
+        <button class="btn {{opts.style != '' ?: 'btn-primary'}} g-recaptcha" data-sitekey="{{key}}" data-callback="{{callback}}"{{h.hv('id', opts.id)}}>{{label}}</button>
+    {% else %}
+        <button class="btn {{opts.style != '' ?: 'btn-primary'}}" onclick="{{callback}}('');"{{h.hv('id', opts.id)}}>{{label}}</button>        
+    {% endif %}
+{% endmacro recaptcha %}
