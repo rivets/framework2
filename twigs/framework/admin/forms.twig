@@ -12,7 +12,7 @@
 {% import _self as h %}
 
 {% block scripts %}
-    <script src="{{h.urlattr(fwurls.parsley)}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bgfade.js"></script>
 {% endblock scripts %}
