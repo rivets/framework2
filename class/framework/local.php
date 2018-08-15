@@ -316,7 +316,7 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
-            $this->twig->addFunction(new \Twig_Function('sha256', function ($string) { return base64_encode(sha256($string, TRUE)); }));
+            $this->twig->addFunction(new \Twig_Function('sha256', function ($string) { return base64_encode(hash('sha256', $string, TRUE)); }));
             $this->tvals = [];
         }
 /**
