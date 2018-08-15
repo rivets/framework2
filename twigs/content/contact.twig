@@ -1,7 +1,7 @@
 {% extends '@content/page.twig' %}
 
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
 {% endblock scripts %}
 
 {% block header %}

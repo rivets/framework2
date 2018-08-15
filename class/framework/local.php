@@ -551,7 +551,7 @@
                 $twurls = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
-                    $twurls[$cnf->name] = $cnf['value'];
+                    $twurls[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {

@@ -58,12 +58,17 @@
             $fwc->integrity = $value[2];
             $fwc->crossorigin = $value[3];
             $fwc->defer = $value[4];
-            $fwc->type = $value[5];
+            $fwc->async = $value[5];
+            $fwc->type = $value[6];
         }
         else
         {
             $fwc->value = $value;
             $fwc->fixed = 1;
+            $fwc->integrity = '';
+            $fwc->crossorigin = '';
+            $fwc->defer = 0;
+            $fwc->async = 0;
             $fwc->type = 'string';
         }
         \R::store($fwc);
