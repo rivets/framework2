@@ -3,6 +3,7 @@
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
 
 {% block scripts %}
     <script src="{{assets}}/js/util.js"></script>
@@ -118,19 +119,13 @@
     <div class="modal fade" id="ncontext" aria-labelledby="ncontext" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">New Context</h4>
-                </div>
+                {{m.header({title: 'New Context'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="nrform">
                         {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE})}}
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>
+                {{m.footer({action: 'Add', id: 'addb'})}}
             </div>
         </div>
     </div>
