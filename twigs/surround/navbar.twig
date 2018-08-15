@@ -1,8 +1,8 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
         {% if action == 'home' %}
-            <span class="navbar-brand">{{fwurls.sitename}}</span>
+            <span class="navbar-brand">{{fwurls.sitename.value}}</span>
         {% else %}
-            <a class="navbar-brand" href="{{base}}/">{{fwurls.sitename}}</a>
+            <a class="navbar-brand" href="{{base}}/">{{fwurls.sitename.value}}</a>
         {% endif %}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
