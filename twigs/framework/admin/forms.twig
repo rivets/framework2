@@ -9,9 +9,8 @@
 {% if val %}<i class="fas fa-check"></i>{% endif %}
 {% endmacro tick %}
 
-{% import _self as h %}
-
 {% block scripts %}
+    {% import _self as h %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bgfade.js"></script>
@@ -69,6 +68,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             <table class="table table-striped table-hover" id="utab">

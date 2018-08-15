@@ -5,11 +5,7 @@
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
-{% endmacro tick %}
-
-{% import _self as h %}
+{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
@@ -88,6 +84,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}

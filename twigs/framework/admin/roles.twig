@@ -4,11 +4,7 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
-{% endmacro tick %}
-
-{% import _self as h %}
+{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
 
 {% block scripts %}
     <script src="{{assets}}/js/util.js"></script>
@@ -93,6 +89,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}

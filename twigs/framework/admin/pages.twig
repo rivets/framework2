@@ -14,9 +14,8 @@
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
-{% import _self as h %}
-
 {% block scripts %}
+    {% import _self as h %}
     {# <script {{h.urlattr(fwurls.parsley)}}></script> #}
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bs4-editable-min.js"></script>
@@ -210,6 +209,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="offset-md-1 col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
