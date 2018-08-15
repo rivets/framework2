@@ -19,10 +19,12 @@
  * @var Array   Key is name of field and the array contains flags for checks
  */
         private static $editfields = [
-            'value'       => [TRUE],         # [NOTEMPTY]
-            'integrity'   => [FALSE],
-            'crossorigin' => [FALSE],
-            'type'        => [TRUE],
+            'value'       => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
+            'integrity'   => [FALSE, FALSE],
+            'crossorigin' => [FALSE, FALSE],
+            'defer'       => [FALSE, TRUE],
+            'async'       => [FALSE, TRUE],
+            'type'        => [TRUE, FALSE],
         ];
 /**
  * Add a new FWConfig bean
@@ -72,6 +74,11 @@
                     $this->bean->$fld = $val;
                 }
             }
-            \R::store($this->bean);        }
+            if (empty($emess))
+            {
+                \R::store($this->bean);
+            }
+            return [!empty($emess), $emess];
+        }
     }
 ?>
