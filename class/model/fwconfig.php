@@ -16,6 +16,15 @@
     class FWConfig extends \RedBeanPHP\SimpleModel
     {
 /**
+ * @var Array   Key is name of field and the array contains flags for checks
+ */
+        private static $editfields = [
+            'value'       => [TRUE],         # [NOTEMPTY]
+            'integrity'   => [FALSE],
+            'crossorigin' => [FALSE],
+            'type'        => [TRUE],
+        ];
+/**
  * Add a new FWConfig bean
  *
  * @param object    $context    The context object
@@ -40,5 +49,29 @@
             $bn->defer = 0;
             echo \R::store($bn);
         }
+/**
+ * Handle an edit form for this fwconfig item
+ *
+ * @param object   $context    The context object
+ *
+ * @return  array   [TRUE if error, [error messages]]
+ */
+        public function edit($context)
+        {
+            $emess = [];
+            $fdt = $context->formdata();
+            foreach (self::$editfields as $fld => $flags)
+            { // might need more fields for different applications
+                $val = $fdt->post($fld, '');
+                if ($flags[0] && $val === '')
+                { // this is an error as this is a required field
+                    $emess = [$fld.' is required'];
+                }
+                elseif ($val != $this->bean->$fld)
+                {
+                    $this->bean->$fld = $val;
+                }
+            }
+            \R::store($this->bean);        }
     }
 ?>
