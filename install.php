@@ -315,7 +315,7 @@
              'dir'          => __DIR__,
              'base'         => $dir,
              'fwurls'       => $fwurls,
-             'siteurl'      => 'http://'.$host.'/'.$dir.'/',
+             'siteurl'      => 'http://'.$host.$dir.'/',
              'noreply'      => 'noreply@'.$host,
              'adminemail'   => $_SERVER['SERVER_ADMIN'],
              'sendmail'     => $sendmail !== '',
@@ -353,7 +353,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'usecsp', 'usephpm',
+        'private', 'public', 'regexp', 'register', 'usecsp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -389,6 +389,7 @@
             'adminpw'       => ['', FALSE, TRUE],
             'cadminpw'      => ['', FALSE, TRUE],
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
+            'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
             'usecsp'        => ['USECSP', FALSE, TRUE, 'bool'],
@@ -660,7 +661,7 @@
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
@@ -669,7 +670,7 @@
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
                     'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
-                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
                 ];
                 foreach ($pages as $name => $data)

@@ -36,9 +36,11 @@
                     <button class="btn btn-primary" type="submit">Login</button>
                 </fieldset>
                 <p><small><a href="{{base}}/forgot">Lost password?</a></small></p>
-                <p><small><a href="{{base}}/confirm">Confirm email?</a></small></p>
-                <p>or</p>
-                <a class="btn btn-info btn-sm" href="{{base}}/register">Register</a>
+                {% if register %}
+                    <p><small><a href="{{base}}/confirm">Confirm email?</a></small></p>
+                    <p>or</p>
+                    <p><a class="btn btn-info btn-sm" href="{{base}}/register">Register</a></p>
+                {% endif %}
             </form>
         </article>
     </section>
