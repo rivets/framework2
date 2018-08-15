@@ -90,6 +90,11 @@
 
 {% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
 
+{% macro htick(val, class, name, disabled) %}
+{% import _self as fx %}
+{{fx.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
+{% endmacro htick %}
+
 {% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
 {# use this if editable breaks....
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
