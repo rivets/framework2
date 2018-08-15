@@ -64,12 +64,21 @@
             $fdt = $context->formdata();
             foreach (self::$editfields as $fld => $flags)
             { // might need more fields for different applications
-                $val = $fdt->post($fld, '');
-                if ($flags[0] && $val === '')
-                { // this is an error as this is a required field
-                    $emess = [$fld.' is required'];
+                if ($flags[1])
+                { // this is a checkbox
+                    $val = $fdt->post($fld, 0);
                 }
-                elseif ($val != $this->bean->$fld)
+                else
+                {
+                    $val = $fdt->post($fld, '');
+                    if ($flags[0] && $val === '')
+                    { // this is an error as this is a required field
+                        $emess = [$fld.' is required'];
+                        continue;
+                    }
+
+                }
+                if ($val != $this->bean->$fld)
                 {
                     $this->bean->$fld = $val;
                 }
