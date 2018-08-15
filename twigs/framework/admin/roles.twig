@@ -4,8 +4,6 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
-
 {% block scripts %}
     <script src="{{assets}}/js/util.js"></script>
 {% endblock scripts %}
@@ -105,7 +103,7 @@
                     {% for r in siteinfo.roles(page, pagesize) %}
                         <tr data-id="{{r.id}}">
                             <td class="rname">{{r.name}}</td>
-                            <td>{{h.tick(r.fixed, 'fixed')}}</td>
+                            <td>{{f.tick(r.fixed, 'fixed')}}</td>
                             <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb fas fa-trash-alt"></i>{% endif %}</td>
                         </tr>
                     {% else %}

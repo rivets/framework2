@@ -4,22 +4,12 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import _self as s %}
-
-{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
-
-{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
-{# use this if editable breaks....
-    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
-#}
-
-{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
 {% block scripts %}
-    {# <script {{s.urlattr(fwurls.parsley)}}></script> #}
+    {# <script {{h.urlattr(fwurls.parsley)}}></script> #}
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bs4-editable-min.js"></script>
-    {# <script {{s.urlattr(fwurls.editable)}}></script> #}
+    {# <script {{h.urlattr(fwurls.editable)}}></script> #}
 {% endblock scripts %}
 
 {% block css %}
@@ -47,7 +37,7 @@
     function mkinline(type, name, msg, id, value)
     {
 //        return value;
-        return '{{s.inline(s.wrap('type'), s.wrap('name'), s.wrap('msg'), s.wrap('id'), s.wrap('value'))}}'
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
     var kname = [];
     function paramset(params)
@@ -227,12 +217,12 @@
                 <tbody>
                     {% for p in siteinfo.pages(page, pagesize) %}
                         <tr data-id="{{p.getID}}">
-                            <td class="pname">{{s.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-                            <td>{{s.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-                            <td>{{s.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
-                            <td>{{s.tick(p.needlogin, 'logn')}}</td>
-                            <td>{{s.tick(p.mobileonly, 'mobo')}}</td>
-                            <td>{{s.tick(p.active, 'actb')}}</td>
+                            <td class="pname">{{f.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
+                            <td>{{f.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
+                            <td>{{f.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                            <td>{{f.tick(p.needlogin, 'logn')}}</td>
+                            <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
+                            <td>{{f.tick(p.active, 'actb')}}</td>
                             <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fas fa-edit"></i></a></td>
                             <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>
