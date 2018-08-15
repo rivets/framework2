@@ -43,8 +43,12 @@
                     {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
                     {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity})}}
                     {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin})}}
+                    <div class="form-group">
                     {{f.checkbox({names: ['defer'], values:[1], check: [bean.defer], labels: ['Defer']})}}
+                    </div>
+                    <div class="form-group">
                     {{f.checkbox({names: ['async'], values:[1], check: [bean.async], labels: ['Async']})}}
+                    </div>
                     {{f.select({label : 'Type', name: 'type', required: TRUE, selected: bean.type,
                         options: [
                             { value: '',  text: '&mdash; Pick a Type &mdash;' },
