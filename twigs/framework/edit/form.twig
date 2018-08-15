@@ -22,15 +22,15 @@
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util-min.js"></script>
-    {#<script src="{{fwurls.editablecss}}"></script>-->#}
+    {#<script {{h.urlattr(fwurls.editablecss)}}></script>-->#}
     <script src="{{assets}}/js/bs4-editable-min.js"></script>
 {% endblock scripts %}
 
 {% block css %}
     <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
-    {#<link rel="stylesheet" href="{{fwurls.editable}}"/>#}
+    {#<link rel="stylesheet" {{h.urlattr(fwurls.editable)}}/>#}
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
