@@ -306,7 +306,7 @@
                 $val = $fdt->post($fld, $flags[1] ? 0 : ''); # might be a flag
                 if ($flags[0] && $val === '')
                 { // this is an error as this is a required field
-                    $emess = [$fld.' is required'];
+                    $emess[] = $fld.' is required';
 
                 }
                 elseif ($val != $this->bean->$fld)
@@ -314,7 +314,10 @@
                     $this->bean->$fld = $val;
                 }
             }
-            \R::store($this->bean);
+            if (empty($emess))
+            {
+                \R::store($this->bean);
+            }
 
             $this->editroles($context);
             $admin = $this->hasrole('Site', 'Admin');

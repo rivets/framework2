@@ -17,6 +17,17 @@
         
         private $lcount             = 1;
 /**
+ * @var Array   Key is name of field and the array contains flags for checks
+ */
+        private static $editfields = [
+            'name'            => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
+            'action'          => [TRUE, FALSE],
+            'method'          => [TRUE, FALSE],
+            'idval'           => [FALSE, FALSE],
+            'formclass'       => [FALSE, FALSE],
+            'multipart'       => [FALSE, TRUE],
+        ];
+/**
  * Return the form name
  *
  * @return object
@@ -52,13 +63,32 @@
  */
         public function edit($context)
         {
+            $emess = [];
             $fdt = $context->formdata();
-            $this->bean->name = $fdt->mustpost('formname');
-            $this->bean->method = $fdt->mustpost('action');
-            $this->bean->method = $fdt->mustpost('formidval');
-            $this->bean->method = $fdt->mustpost('formclass');
-            $this->bean->method = $fdt->mustpost('method');
-            $this->bean->multipart = $fdt->post('multipart', 0);
+            foreach (self::$editfields as $fld => $flags)
+            {
+                if ($flags[1])
+                { // this is a checkbox - they can't be required
+                    $val = $fdt->post($fld, 0);
+                }
+                else
+                {
+                    $val = $fdt->post($fld, '');
+                    if ($flags[0] && $val === '')
+                    { // this is an error as this is a required field
+                        $emess[] = $fld.' is required';
+                        continue;
+                    }
+                }
+                if ($val != $this->bean->$fld)
+                {
+                    $this->bean->$fld = $val;
+                }
+            }
+            if (empty($emess))
+            {
+                \R::store($this->bean);
+            }
             
             foreach ($fdt->posta('new') as $ix => $fid)
             {
@@ -75,6 +105,7 @@
                 }
             }
             \R::store($this->bean);
+            return [!empty($emess), $emess];
         }
 /**
  * View a form

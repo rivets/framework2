@@ -124,7 +124,7 @@
                 $val = $fdt->post($fld, '');
                 if ($flags[0] && $val === '')
                 { // this is an error as this is a required field
-                    $emess = [$fld.' is required'];
+                    $emess[] = $fld.' is required';
                 }
                 elseif ($val != $this->bean->$fld)
                 {
