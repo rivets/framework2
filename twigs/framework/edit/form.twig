@@ -55,7 +55,7 @@
 
     function mkinline(type, name, msg, id, value)
     {
-        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
     var kname = []
@@ -152,7 +152,7 @@
                     <tbody>
                         {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}" class="border-top border-dark">
-                                <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
+                                <td rowspan="2">{{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
                                 <td>{{f.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                 <td>{{f.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
                                 <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
