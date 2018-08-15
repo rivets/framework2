@@ -17,7 +17,7 @@
  */
     class Admin extends \Framework\Siteaction
     {
-        const EDITABLE = ['form', 'page', 'user'];
+        const EDITABLE = ['form', 'fwconfig', 'page', 'user'];
         const VIEWABLE = ['form'];
 /**
  * Handle various admin operations /admin/xxxx

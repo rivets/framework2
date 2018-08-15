@@ -1,0 +1,57 @@
+{% set ajax = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import _self as h %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.parsley)}}></script>
+    <script src="{{assets}}/js/util.js"></script>
+{% endblock scripts %}
+
+{% block onload %}
+    $('#more').on('click', function(e){
+        var mrow = $('#mrow');
+        mrow.before($('#example').clone());
+        var pr = $mrow.prev();
+        $('input', pr).val(''); // clear the inputs
+        $('option', pr).prop('selected', false); // clear any selections
+        $('.delb', pr).on('click', function(e){
+            dodelbean(e, this, 'role');
+        });
+    });
+    $('#uform').on('submit', function(e){
+        return $(this).parsley().validate();
+    });
+    $('.delb').on('click', function(e){
+        dodelbean(e, this, 'role');
+    });
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Config Item "{{bean.name}}"</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            <form action="#" method="post" id="uform" data-parsley-validate>
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                <fieldset>
+                    <legend>Login details</legend>
+                    {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
+                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity})}}
+                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin})}}
+                    {{f.text({ label: 'Type', id: 'ty', name: 'type', value: bean.type})}}
+                </fieldset>
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}
