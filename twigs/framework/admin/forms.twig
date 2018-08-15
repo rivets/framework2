@@ -4,15 +4,10 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-
-{% macro tick(val) %}
-{% if val %}<i class="fas fa-check"></i>{% endif %}
-{% endmacro tick %}
-
 {% import _self as h %}
-
+    
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bgfade.js"></script>
 {% endblock scripts %}
@@ -91,7 +86,7 @@
                         <td>{{u.idval}}</td>
                         <td>{{u.class}}</td>
                         <td>{{u.method == 1 ? 'GET' : 'POST'}}</td>
-                        <td>{{h.tick(u.multipart)}}</td>
+                        <td>{{f.tick(u.multipart)}}</td>
                         <td title="View"><i class="viewb fas fa-eye"></i></td>
                         <td title="Edit"><i class="editb fas fa-edit"></i></td>
                         <td title="Delete"><i class="delb fas fa-trash-alt"></i></td>

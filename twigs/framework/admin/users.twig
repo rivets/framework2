@@ -5,14 +5,10 @@
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
-{% endmacro tick %}
-
 {% import _self as h %}
 
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bgfade.js"></script>
 {% endblock scripts %}
@@ -88,6 +84,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
@@ -108,10 +105,10 @@
                         <tr data-id="{{u.id}}">
                             <td>{{u.login}}</td>
                             <td><a href="mailto:{{u.email}}">{{u.email}}</a></td>
-                            <td>{{h.tick(u.isconfirmed, 'confirm')}}</td>
-                            <td>{{h.tick(u.isactive, 'active')}}</td>
-                            <td>{{h.tick(u.isadmin, 'admb')}}</td>
-                            <td>{{h.tick(u.isdeveloper, 'devb')}}</td>
+                            <td>{{f.tick(u.isconfirmed, 'confirm')}}</td>
+                            <td>{{f.tick(u.isactive, 'active')}}</td>
+                            <td>{{f.tick(u.isadmin, 'admb')}}</td>
+                            <td>{{f.tick(u.isdeveloper, 'devb')}}</td>
                             <td><i class="editb fas fa-edit"></i></td>
                             <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>

@@ -123,6 +123,7 @@
         public function login(Context $context)
         {
             $local = $context->local();
+            $local->addval('register', \Config\Config::REGISTER);
             if ($context->hasuser())
             { # already logged in
                 $local->message(Local::MESSAGE, 'Please log out before trying to login');

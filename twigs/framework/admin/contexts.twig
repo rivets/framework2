@@ -4,12 +4,6 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
-{% endmacro tick %}
-
-{% import _self as h %}
-
 {% block scripts %}
     <script src="{{assets}}/js/util.js"></script>
 {% endblock scripts %}
@@ -93,6 +87,7 @@
 {% endblock header %}
 
 {% block main %}
+    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
@@ -108,7 +103,7 @@
                     {% for c in siteinfo.contexts(page, pagesize) %}
                     <tr data-id="{{c.id}}">
                         <td class="cname">{{c.name}}</td>
-                        <td>{{h.tick(c.fixed, 'fixed')}}</td>
+                        <td>{{f.tick(c.fixed, 'fixed')}}</td>
                         <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb fas fa-trash-alt"></i>{% endif %}</td>
                     </tr>
                     {% else %}
@@ -142,5 +137,4 @@
 {% endblock main %}
 
 {% block pagefooter %}
-{# I don't want a footer #}
 {% endblock pagefooter %}

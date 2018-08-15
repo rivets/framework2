@@ -8,6 +8,13 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+{% macro vshow(name, value) %}{% if value != '' %} {{name}}="{{value}}"{% endif %}{% endmacro vshow %}
+
+{% macro urlattr(fwv) %}{% import _self as h %}{{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity)}}{{h.vshow('crossorigin',fwv.crossorigin)}}{{fwv.defer ? ' defer'}}{{fwv.async ? ' async'}}{% endmacro urlattr %}
+
+{% import _self as h %}
+
 {#
     <link rel="shortcut icon" href="{{assets}}/img/favicon.png"/>
     <link rel="icon" type="image/png" href="{{assets}}/img/favicon.png"/>
@@ -17,8 +24,8 @@
     <link rel="apple-touch-icon" sizes="72x72" href="{{assets}}/ico/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="{{assets}}/ico/apple-touch-icon-114x114.png">
 #}
-    <link rel="stylesheet" href="{{fwurls.bootcss}}" media="screen,print"/>
-    <link rel="stylesheet" href="{{fwurls.facss}}"/>
+    <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
+    <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
     <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
 
     {% block head %}
@@ -29,14 +36,14 @@
     {% endblock body %}
 
     {% if ajax %}
-        <script src="{{fwurls.jquery}}"></script>
+        <script {{h.urlattr(fwurls.jquery)}}></script>
     {% else %}
-        <script src="{{fwurls.jqueryslim}}"></script>
+        <script {{h.urlattr(fwurls.jqueryslim)}}></script>
     {% endif %}
 
-    <script src="{{fwurls.popperjs}}"></script>
-    <script src="{{fwurls.bootjs}}"></script>
-    <script src="{{fwurls.bootbox}}"></script>
+    <script {{h.urlattr(fwurls.popperjs)}}></script>
+    <script {{h.urlattr(fwurls.bootjs)}}></script>
+    <script {{h.urlattr(fwurls.bootbox)}}></script>
 
     {% block userscripts %}
     {% endblock userscripts %}
@@ -50,7 +57,7 @@
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
         {% set js = "var base = '"~base~"';" ~ sjs ~ "\n" ~ ojs %}
-        <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
+        <script hash="sha256-{{sha256(js)}}">{{js|raw}}</script>
     {% endif %}
 </body>
 </html>

@@ -1,97 +1,57 @@
-{% macro hv(attr, value)%}
-{% if value != '' %} {{attr}}="{{value}}"{% endif %}
-{% endmacro hv %}
+{% macro hv(attr, value)%}{% if value != '' %} {{attr}}="{{value}}"{% endif %}{% endmacro hv %}
 
-{% macro hvd(attr, value, dflt)%}
-{{attr}}="{{value != '' ?: dflt}}"
-{% endmacro hvd %}
+{% macro hvd(attr, value, dflt)%} {{attr}}="{{value != '' ?: dflt}}"{% endmacro hvd %}
 
-{% macro cd(cond, attr, value) %}
-{% if cond %} {{attr}}="{{value}}"{% endif %}
-{% endmacro cd %}
+{% macro cd(cond, attr, value) %}{% if cond %} {{attr}}="{{value}}"{% endif %}{% endmacro cd %}
 
-{% macro cdd(cond, attr, value, dflt) %}
-{% import _self as h %}
-{% if cond %}{{h.hv(attr, value, dflt)}}{% endif %}
-{% endmacro cdd %}
+{% macro cdd(cond, attr, value, dflt) %}{% import _self as fx %}{% if cond %}{{fx.hvd(attr, value, dflt)}}{% endif %}{% endmacro cdd %}
 
-{% macro cv(value)%}
- class="form-control{{value != '' ? ' '~value}}"
-{% endmacro cv %}
+{% macro cv(value)%} class="form-control{% if value != '' %} {{value}}{% endif %}"{% endmacro cv %}
 
-{% macro fv(opts)%}
-{% import _self as h %}
-{% for v in ['required', 'disabled', 'readonly'] %}{{h.cv(opts[v], v, v)}}{% endfor %}
-{% endmacro fv %}
+{% macro fv(opts)%}{% import _self as h %}{% for v in ['required', 'disabled', 'readonly'] %}{{fx.cd(opts[v], v, v)}}{% endfor %}{% endmacro fv %}
 
-{% macro data(opts) %}
-{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}
-{% endmacro data %}
+{% macro data(opts) %}{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro data %}
 
-{% macro parsley(opts) %}
-{% for k,v in opts %} data-parsley-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}
-{% endmacro parsley %}
+{% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro parsley %}
 
 {% macro input(type, opts) %}
-{% import _self as h %}
-<input type="{{type}}"{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.hv('value', opts.value)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}{{h.parsley(opts.parsley)}}/>
+{% import _self as fx %}
+<input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}/>
 {% endmacro input %}
 
 {% macro bsl(opts) %}
-{% import _self as h %}
+{% import _self as fx %}
    <div class="form-group">
         {% if opts.label != '' %}
-            <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
+            <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
         {% endif %}
 {% endmacro bsl %}
 
 {% macro xsl(opts, cls) %}
-{% import _self as h %}
-   <div class="{{cls}}">
-        {% if opts.label != '' %}
-            <label{{h.hv('for', opts.id)}}>{{opts.label}}</label>
-        {% endif %}
+{% import _self as fx %}
+<div class="{{cls}}">
+{% if opts.label != '' %}    <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}
 {% endmacro xsl %}
 
 {% macro bse(opts) %}
-        {% if opts.warn != '' %}
-	    <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>
-        {% endif %}
-   </div>
+{% if opts.warn != '' %}    <span class="help-inline {{opts.warnc}}">{{opts.warn}}</span>{% endif %}
+</div>
 {% endmacro bse%}
 
-{% macro text(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    {{h.input('text', opts)}}
-    {{h.bse(opts)}}
-{% endmacro %}
+{% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro email(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    {{h.input('email', opts)}}
-    {{h.bse(opts)}}
-{% endmacro %}
+{% macro email(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('email', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro password(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    {{h.input('password', opts)}}
-    {{h.bse(opts)}}
-{% endmacro %}
+{% macro password(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('password', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro hidden(opts) %}
-{% import _self as h %}
-    {{h.input('hidden', opts)}}
-{% endmacro %}
+{% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
 {% macro checkbox(opts) %}
-{% import _self as h %}
+{% import _self as fx %}
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
-	    <input type="checkbox" value="{{val}}"{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}/>
+	    <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}{{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
@@ -99,59 +59,46 @@
 {% endmacro %}
 
 {% macro radio(opts) %}
-{% import _self as h %}
+{% import _self as fx %}
     {{h.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
-	    <input type="radio" value="{{val}}"{{h.cd(opts.name is defined, 'name', opts.name)}}{{h.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{h.hv('class', opts.class)}}{{h.data(opts.data)}}{{h.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{h.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}/>
+	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}{{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
     {{h.bse(opts)}}
 {% endmacro %}
 
-{% macro textarea(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    <textarea{{h.hv('id', opts.id)}}{{h.fv(opts)}}{{h.hv('name', opts.name)}}{{h.cv(opts.class)}}{{h.hv('placeholder', opts.ph)}}{{h.data(opts.data)}}>{{opts.value}}</textarea>
-    {{h.bse(opts)}}
-{% endmacro %}
+{% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
 
-{% macro file(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    {{h.input('file', opts)}}
-    {{h.bse(opts)}}
-{% endmacro file %}
+{% macro file(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('file', opts)}}{{fx.bse(opts)}}{% endmacro file %}
 
-{% macro datetime(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    {{h.input('datetime', opts)}}
-    {{h.bse(opts)}}
-{% endmacro datetime %}
+{% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
-{% macro select(opts) %}
-{% import _self as h %}
-    {{h.bsl(opts)}}
-    <select class="form-control"{{h.hv('id', opts.id)}}{{h.hv('name', opts.name)}}{{h.fv(opts)}}>
+{% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
+    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}>
         {% for ov in opts.options %}
             <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text|raw}}</option>
         {% endfor %}
-        </select>
-    {{h.bse(opts)}}
-{% endmacro select %}
+    </select>{{fx.bse(opts)}}{% endmacro select %}
 
-{% macro submit(opts) %}
-{% import _self as h %}
-    <input class="btn {{opts.style != '' ?: 'btn-primary'}}" type="submit" value="{{opts.value}}"{{h.hv('id', opts.id)}}/>
-{% endmacro submit %}
+{% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.style != '' ?: 'btn-primary'}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}/>{% endmacro submit %}
 
 {% macro recaptcha(key, label, callback, opts) %}
-{% import _self as h %}
+{% import _self as fx %}
     {% if key != '' %}
-        <button class="btn {{opts.style != '' ?: 'btn-primary'}} g-recaptcha" data-sitekey="{{key}}" data-callback="{{callback}}"{{h.hv('id', opts.id)}}>{{label}}</button>
+        <button class="btn {{opts.style != '' ?: 'btn-primary'}} g-recaptcha" data-sitekey="{{key}}" data-callback="{{callback}}"{{fx.hv('id', opts.id)}}>{{label}}</button>
     {% else %}
-        <button class="btn {{opts.style != '' ?: 'btn-primary'}}" onclick="{{callback}}('');"{{h.hv('id', opts.id)}}>{{label}}</button>        
+        <button class="btn {{opts.style != '' ?: 'btn-primary'}}" onclick="{{callback}}('');"{{fx.hv('id', opts.id)}}>{{label}}</button>        
     {% endif %}
 {% endmacro recaptcha %}
+
+{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
+
+{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
+{# use this if editable breaks....
+    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
+#}
+
+{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}

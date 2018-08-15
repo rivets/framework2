@@ -5,30 +5,17 @@
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
-{% macro tick(val, class) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>
-{% endmacro tick %}
-
-{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
-{# use this if editable breaks....
-    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
-#}
-
-{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
-
-{% import _self as h %}
-
 {% block scripts %}
-    {# <script src="{{fwurls.parsley}}"></script> #}
+    {# <script {{h.urlattr(fwurls.parsley)}}></script> #}
     <script src="{{assets}}/js/util.js"></script>
     <script src="{{assets}}/js/bs4-editable-min.js"></script>
-    {# <script src="{{fwurls.editable}}"></script> #}
+    {# <script {{h.urlattr(fwurls.editable)}}></script> #}
 {% endblock scripts %}
 
 {% block css %}
     <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
     {#
-    <link rel="stylesheet" href="{{fwurls.editablecss}}"/>
+    <link rel="stylesheet" {{s.urlattr(fwurls.editablecss)}}/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css" rel="stylesheet"/>
     #}
 {% endblock css %}
@@ -50,7 +37,7 @@
     function mkinline(type, name, msg, id, value)
     {
 //        return value;
-        return '{{h.inline(h.wrap('type'), h.wrap('name'), h.wrap('msg'), h.wrap('id'), h.wrap('value'))}}'
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
     var kname = [];
     function paramset(params)
@@ -230,12 +217,12 @@
                 <tbody>
                     {% for p in siteinfo.pages(page, pagesize) %}
                         <tr data-id="{{p.getID}}">
-                            <td class="pname">{{h.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-                            <td>{{h.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-                            <td>{{h.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
-                            <td>{{h.tick(p.needlogin, 'logn')}}</td>
-                            <td>{{h.tick(p.mobileonly, 'mobo')}}</td>
-                            <td>{{h.tick(p.active, 'actb')}}</td>
+                            <td class="pname">{{f.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
+                            <td>{{f.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
+                            <td>{{f.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                            <td>{{f.tick(p.needlogin, 'logn')}}</td>
+                            <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
+                            <td>{{f.tick(p.active, 'actb')}}</td>
                             <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb fas fa-edit"></i></a></td>
                             <td><i class="delb fas fa-trash-alt"></i></td>
                         </tr>

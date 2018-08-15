@@ -3,9 +3,10 @@
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
+{% import _self as h %}
 
 {% block scripts %}
-    <script src="{{fwurls.parsley}}"></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
 {% endblock scripts %}
 

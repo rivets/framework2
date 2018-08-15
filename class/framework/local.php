@@ -105,9 +105,12 @@
             $ekey = $file.'/'.$line.'/'.$type.'/'.$msg;
             if (!isset($this->senterrors[$ekey]))
             {
-                ob_start();
-                debug_print_backtrace();
-                $this->back = ob_get_clean(); # will get used later in make500
+                if (isset($_GET['fwtrace']))
+                {
+                    ob_start();
+                    debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
+                    $this->back = ob_get_clean(); # will get used later in make500
+                }
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $mail = new \Framework\Utility\FMailer;
@@ -124,20 +127,24 @@
                 }
                 $this->senterrors[$ekey] = TRUE;
             }
+            return $ekey;
         }
 /**
  * Generate a 500 and possibly an error page
  *
+ * @param $ekey    string    Error information string
+ *
  * @return void
  */
-        private function make500()
+        private function make500($ekey)
         {
             if (!headers_sent())
             { # haven't generated any output yet.
                 if (!$this->ajax)
                 { # not in an ajax page so try and send a pretty error
-                    $str = $this->debug ? '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>' :
-                        'There has been an internal error';
+                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? '<pre>'.
+                        str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>' :
+                        'There has been an internal error');
                     if (is_object($this->twig))
                     { # we have twig so render a nice page
                         $this->addval('message', $str);
@@ -166,13 +173,13 @@
             { # are we terminating with an error?
                 if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
                 { # tell the developers about this
-                    $this->telladmin(
+                    $ekey = $this->telladmin(
                 	$error['message'],
                         $error['type'],
                         $error['file'],
                 	$error['line']
                     );
-                    $this->make500();
+                    $this->make500($ekey);
                 }
                 else
                 {
@@ -188,13 +195,13 @@
  */
         public function exception_handler($e)
         {
-            $this->telladmin(
+            $ekey = $this->telladmin(
                 $e->getMessage().' ',
                 get_class($e),
                 $e->getFile(),
                 $e->getLine()
             );
-            $this->make500();
+            $this->make500($ekey);
             exit;
         }
 /**
@@ -219,7 +226,7 @@
                 $this->wasignored = TRUE; # remember we did ignore though
                 return TRUE;
             }
-            $this->telladmin(
+            $ekey = $this->telladmin(
                 $errno.' '.$errstr,
                 'Error',
                 $errfile,
@@ -227,7 +234,7 @@
             );
             if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
             { # this is an internal error or we are debugging, so we need to stop
-                $this->make500();
+                $this->make500($ekey);
                 exit;
             }
 /*
@@ -316,7 +323,7 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
-            $this->twig->addFunction(new \Twig_Function('md5', function ($string) { return base64_encode(md5($string, TRUE)); }));
+            $this->twig->addFunction(new \Twig_Function('sha256', function ($string) { return base64_encode(hash('sha256', $string, TRUE)); }));
             $this->tvals = [];
         }
 /**
@@ -551,7 +558,7 @@
                 $twurls = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
-                    $twurls[$cnf->name] = $cnf['value'];
+                    $twurls[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {

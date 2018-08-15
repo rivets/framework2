@@ -51,13 +51,13 @@
     $('.nname').on('blur', function(e){
         e.preventDefault()
         var t = $(this)
-	var name = t.val()
+        var name = t.val()
 	if (name != '')
         {
 	    if (!name.match(/^[a-z][a-z0-9]*$/i))
 	    {
 	        bootbox.alert('Invalid name format')
-		t.val('')
+                t.val('')
 	    }
 	    else if ($('input[name="'+name+'"]').length != 0)
 	    {
@@ -142,7 +142,7 @@
 {# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
-                    {{f.text({label: 'New Config', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
+                    {{f.text({label: 'New Config Item', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
                     </div>

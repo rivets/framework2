@@ -58,10 +58,17 @@
             $fwc->integrity = $value[2];
             $fwc->crossorigin = $value[3];
             $fwc->defer = $value[4];
-            $fwc->type = $value[5];
+            $fwc->async = $value[5];
+            $fwc->type = $value[6];
         }
         else
         {
+            $fwc->value = $value;
+            $fwc->fixed = 1;
+            $fwc->integrity = '';
+            $fwc->crossorigin = '';
+            $fwc->defer = 0;
+            $fwc->async = 0;
             $fwc->type = 'string';
         }
         \R::store($fwc);
@@ -280,19 +287,19 @@
  */
     $fwurls = [
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', 1, '', '', 0, 'css'],
-//        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 'css'],
-        'editablecss'   => ['/'.$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 'css'],
-        'facss'         => ['//use.fontawesome.com/releases/v5.2.0/css/all.css', 1, '', '', 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+//        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
+        'editablecss'   => ['/'.$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['//use.fontawesome.com/releases/v5.2.0/css/all.css', 1, '', '', 0, 0, 'css'],
 // JS
-        'jquery'       => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, '', '', 0, 'js'],
-        'jqueryslim'     => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, '', '', 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 1, '', '', 0, 'js'],
-        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 'js'],
-//        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 'js'],
-        'editable'      => [($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js', 1, '', '', 0, 'js'],
-        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 'js'],
+        'jquery'       => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, '', '', 0, 0, 'js'],
+        'jqueryslim'     => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
+//        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
+        'editable'      => [($dir != '/' ? ('/'.$dir) : '' ).'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
     ];
     
     $fwcsp = [
@@ -315,7 +322,7 @@
              'dir'          => __DIR__,
              'base'         => $dir,
              'fwurls'       => $fwurls,
-             'siteurl'      => 'http://'.$host.'/'.$dir.'/',
+             'siteurl'      => 'http://'.$host.$dir.'/',
              'noreply'      => 'noreply@'.$host,
              'adminemail'   => $_SERVER['SERVER_ADMIN'],
              'sendmail'     => $sendmail !== '',
@@ -353,7 +360,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'usecsp', 'usephpm',
+        'private', 'public', 'regexp', 'register', 'usecsp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -389,9 +396,10 @@
             'adminpw'       => ['', FALSE, TRUE],
             'cadminpw'      => ['', FALSE, TRUE],
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
+            'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
-            'usecsp'        => ['USECSP', FALSE, TRUE, 'bool'],
+            'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -660,7 +668,7 @@
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
@@ -669,7 +677,7 @@
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
                     'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
-                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
                 ];
                 foreach ($pages as $name => $data)
