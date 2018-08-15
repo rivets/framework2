@@ -83,7 +83,7 @@
                     list($error, $emess) = $obj->edit($context);
                     if ($error)
                     {
-                        $context->local()->message(\Framework\Local\ERROR, $emess);
+                        $context->local()->message(\Framework\Local::ERROR, $emess);
                     }
                     // The edit call might divert to somewhere else so sometimes we may not get here.
                 }
