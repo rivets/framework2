@@ -43,7 +43,16 @@
                     {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
                     {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity})}}
                     {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin})}}
-                    {{f.text({ label: 'Type', id: 'ty', name: 'type', value: bean.type})}}
+                    {{f.checkbox({names: ['defer'], values:[1], check: [bean.defer], labels: ['Defer']})}}
+                    {{f.checkbox({names: ['async'], values:[1], check: [bean.async], labels: ['Async']})}}
+                    {{f.select({label : 'Type', name: 'type', required: TRUE, selected: bean.type,
+                        options: [
+                            { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                            { value: 'css', text: 'css' },
+                            { value: 'js', text: 'js' },
+                            { value: 'string', text: 'string' },
+                        ]
+                    })}}
                 </fieldset>
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
             </form>
