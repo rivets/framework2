@@ -16,16 +16,16 @@
  * @var string   The type of the bean that stores roles for this page
  */
         private $roletype = 'role';
-
-        use \ModelExtend\User;
-
-        use \Framework\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  */
         private static $editfields = [
-            'email'     => [TRUE],         # [NOTEMPTY]
+            'email'     => [TRUE, FALSE],         # [NOTEMPTY]
         ];
+
+        use \ModelExtend\User;
+        use \ModelExtend\FWEdit;
+        use \Framework\HandleRole;
 /**
  * Is this user an admin?
  *
@@ -117,24 +117,8 @@
  */
         public function edit($context)
         {
-            $emess = [];
             $fdt = $context->formdata();
-            foreach (self::$editfields as $fld => $flags)
-            { // might need more fields for different applications
-                $val = $fdt->post($fld, '');
-                if ($flags[0] && $val === '')
-                { // this is an error as this is a required field
-                    $emess[] = $fld.' is required';
-                }
-                elseif ($val != $this->bean->$fld)
-                {
-                    $this->bean->$fld = $val;
-                }
-            }
-            if (empty($emess))
-            {
-                \R::store($this->bean);
-            }
+            $emess = $this->dofields($fdt);
 
             $pw = $fdt->post('pw', '');
             if ($pw !== '')

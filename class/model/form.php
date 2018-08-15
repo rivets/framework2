@@ -27,6 +27,8 @@
             'formclass'       => [FALSE, FALSE],
             'multipart'       => [FALSE, TRUE],
         ];
+
+        use \ModelExtend\FWEdit;
 /**
  * Return the form name
  *
@@ -63,33 +65,9 @@
  */
         public function edit($context)
         {
-            $emess = [];
             $fdt = $context->formdata();
-            foreach (self::$editfields as $fld => $flags)
-            {
-                if ($flags[1])
-                { // this is a checkbox - they can't be required
-                    $val = $fdt->post($fld, 0);
-                }
-                else
-                {
-                    $val = $fdt->post($fld, '');
-                    if ($flags[0] && $val === '')
-                    { // this is an error as this is a required field
-                        $emess[] = $fld.' is required';
-                        continue;
-                    }
-                }
-                if ($val != $this->bean->$fld)
-                {
-                    $this->bean->$fld = $val;
-                }
-            }
-            if (empty($emess))
-            {
-                \R::store($this->bean);
-            }
-            
+            $emess = $this->dofields($fdt);
+
             foreach ($fdt->posta('new') as $ix => $fid)
             {
                 if (($type = $fdt->post(['type', $ix], '')) !== '')

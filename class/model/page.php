@@ -31,6 +31,8 @@
             'mobileonly'    => [TRUE, TRUE],
             'needlogin'     => [TRUE, TRUE],
         ];
+
+        use \ModelExtend\FWEdit;
 /**
  * Check user can access the page
  *
@@ -299,25 +301,8 @@
  */
         public function edit($context)
         {
-            $emess = [];
             $fdt = $context->formdata();
-            foreach (self::$editfields as $fld => $flags)
-            { // might need more fields for different applications
-                $val = $fdt->post($fld, $flags[1] ? 0 : ''); # might be a flag
-                if ($flags[0] && $val === '')
-                { // this is an error as this is a required field
-                    $emess[] = $fld.' is required';
-
-                }
-                elseif ($val != $this->bean->$fld)
-                {
-                    $this->bean->$fld = $val;
-                }
-            }
-            if (empty($emess))
-            {
-                \R::store($this->bean);
-            }
+            $emess = $this->dofields($fdt);
 
             $this->editroles($context);
             $admin = $this->hasrole('Site', 'Admin');
