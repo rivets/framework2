@@ -6,7 +6,7 @@
 
 {% macro cdd(cond, attr, value, dflt) %}{% import _self as h %}{% if cond %}{{h.hvd(attr, value, dflt)}}{% endif %}{% endmacro cdd %}
 
-{% macro cv(value)%} class="form-control{{value != '' ? ' '~value}}"{% endmacro cv %}
+{% macro cv(value)%} class="form-control{{value != '' ? (' '~value) : ''}}"{% endmacro cv %}
 
 {% macro fv(opts)%}{% import _self as h %}{% for v in ['required', 'disabled', 'readonly'] %}{{h.cv(opts[v], v, v)}}{% endfor %}{% endmacro fv %}
 
