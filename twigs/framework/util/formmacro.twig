@@ -53,7 +53,7 @@
 {% endmacro %}
 
 {% macro radio(opts) %}
-{% import _self as fx %}{%if opts.group %}{{fx.bsl({})}}>{% endif %}
+{% import _self as fx %}{%if opts.group %}{{fx.bsl({})}}{% endif %}
     {{fx.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
