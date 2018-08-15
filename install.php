@@ -62,6 +62,7 @@
         }
         else
         {
+            $fwc->value = $value;
             $fwc->type = 'string';
         }
         \R::store($fwc);
@@ -392,7 +393,7 @@
             'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
-            'usecsp'        => ['USECSP', FALSE, TRUE, 'bool'],
+            'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
