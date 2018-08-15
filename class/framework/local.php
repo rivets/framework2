@@ -108,7 +108,7 @@
                 if (isset($_GET['fwtrace']))
                 {
                     ob_start();
-                    debug_print_backtrace();
+                    debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back = ob_get_clean(); # will get used later in make500
                 }
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
