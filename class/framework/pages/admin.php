@@ -65,19 +65,19 @@
                 {
                 if (count($rest) < 3)
                 {
-                    throw new Exception('Too Few');
+                    throw new \Exception('Too Few');
                 }
                 $kind = $rest[1];
                 if (!in_array($kind, self::EDITABLE))
                 {
-                    throw new Exception('Not Editable');
+                    throw new \Exception('Not Editable');
                 }
                 $obj = $context->load($kind, $rest[2]);
                 if (($bid = $context->formdata()->post('bean', '')) !== '')
                 { // this is a post
                     if ($bid != $obj->getID())
                     { # something odd...
-                        throw new Exception('Oddness');
+                        throw new \Exception('Oddness');
                     }
                     list($error, $emess) = $obj->edit($context);
                     if ($error)
