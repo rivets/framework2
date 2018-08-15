@@ -61,24 +61,23 @@
                 exit;
 
             case 'edit' : // Edit something - forms, user, pages...
+                try
+                {
                 if (count($rest) < 3)
                 {
-                    $context->web()->bad();
-                    /* NOT REACHED */
+                    throw new Exception('Too Few');
                 }
                 $kind = $rest[1];
                 if (!in_array($kind, self::EDITABLE))
                 {
-                    $context->web()->bad();
-                    /* NOT REACHED */
+                    throw new Exception('Not Editable');
                 }
                 $obj = $context->load($kind, $rest[2]);
                 if (($bid = $context->formdata()->post('bean', '')) !== '')
                 { // this is a post
                     if ($bid != $obj->getID())
                     { # something odd...
-                        $context->web()->bad();
-                        /* NOT REACHED */
+                        throw new Exception('Oddness');
                     }
                     list($error, $emess) = $obj->edit($context);
                     if ($error)
@@ -86,6 +85,12 @@
                         $context->local()->message(\Framework\Local::ERROR, $emess);
                     }
                     // The edit call might divert to somewhere else so sometimes we may not get here.
+                }
+                }
+                catch (Exception $e)
+                {
+                    $context->web()->bad();
+                    /* NOT REACHED */
                 }
                 $context->local()->addval('bean', $obj);
                 $tpl = '@edit/'.$kind.'.twig';
