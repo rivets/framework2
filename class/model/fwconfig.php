@@ -26,6 +26,8 @@
             'async'       => [FALSE, TRUE],
             'type'        => [TRUE, FALSE],
         ];
+
+        use \ModelExtend\FWEdit;
 /**
  * Add a new FWConfig bean
  *
@@ -60,33 +62,7 @@
  */
         public function edit($context)
         {
-            $emess = [];
-            $fdt = $context->formdata();
-            foreach (self::$editfields as $fld => $flags)
-            { // might need more fields for different applications
-                if ($flags[1])
-                { // this is a checkbox
-                    $val = $fdt->post($fld, 0);
-                }
-                else
-                {
-                    $val = $fdt->post($fld, '');
-                    if ($flags[0] && $val === '')
-                    { // this is an error as this is a required field
-                        $emess = [$fld.' is required'];
-                        continue;
-                    }
-
-                }
-                if ($val != $this->bean->$fld)
-                {
-                    $this->bean->$fld = $val;
-                }
-            }
-            if (empty($emess))
-            {
-                \R::store($this->bean);
-            }
+            $emess = $this->dofields($context->formdata());
             return [!empty($emess), $emess];
         }
     }
