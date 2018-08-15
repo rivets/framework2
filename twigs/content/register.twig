@@ -2,8 +2,10 @@
 
 {% extends '@content/page.twig' %}
 
+{% import _self as h %}
+
 {% block scripts %}
-     <script src="{{fwurls.parsley}}"></script>
+     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.remote.js"></script>
 {% endblock scripts %}
 
@@ -24,7 +26,7 @@
                 <h2>{{regok}}</h2>
                 <p><a href="{{base}}/" class="btn btn-primary">Home Page</a></p>
             {% else %}
-                <h1 class="jumbotron">Register for {{fwurls.sitename}}</h1>
+                <h1 class="jumbotron">Register for {{fwurls.sitename.value}}</h1>
                 <form action="{{base}}/register" method="post" class="jumbotron" id="regform">
                     <div class="form-group">
                         <label for="un" class="control-label">User Name</label>
