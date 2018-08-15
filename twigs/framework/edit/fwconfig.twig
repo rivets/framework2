@@ -24,9 +24,6 @@
     $('#uform').on('submit', function(e){
         return $(this).parsley().validate();
     });
-    $('.delb').on('click', function(e){
-        dodelbean(e, this, 'role');
-    });
 {% endblock onload %}
 
 {% block header %}
