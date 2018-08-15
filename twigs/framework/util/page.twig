@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
 {% macro vshow(name, value) %}
-{{value != '' ? (' '~name~'="'~value~'"')}}
+{% if value != '' %} {{name}}="{{value}}"{% endif %}
 {% endmacro vshow }
 
 {% macro urlattr(fwv) %}
