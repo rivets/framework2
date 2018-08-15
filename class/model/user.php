@@ -131,7 +131,10 @@
                     $this->bean->$fld = $val;
                 }
             }
-            \R::store($this->bean);
+            if (empty($emess))
+            {
+                \R::store($this->bean);
+            }
 
             $pw = $fdt->post('pw', '');
             if ($pw !== '')
