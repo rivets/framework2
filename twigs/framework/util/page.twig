@@ -8,9 +8,12 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
+{% macro vshow(name, value) %}
+{{value != '' ? ' '~name~'="'~value~'"'}}
+{% endmacro vshow }
 {% macro urlattr(fwv) %}
-{{fwv.type == 'js' ? 'src' : 'href'}}={{fwv.value}}{{fwv.integrity != '' ? ' integrity="'~fwv.integrity~'"'}}{{fwv.crossorigin != '' ? ' crossorigin="'~fwv.crossorigin~'"'}}{{fwv.defer != '' ? ' defer'}}{{fwv.async != '' ? ' async'}}
+{% import _self as h %}
+{{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity}}{{h.vshow('crossorigin',fwv.crossorigin}}{{fwv.defer != '' ? ' defer'}}{{fwv.async != '' ? ' async'}}
 {% endmacro urlattr %}
 
 {% import _self as h %}
@@ -41,9 +44,9 @@
         <script {{h.urlattr(fwurls.jqueryslim)}}></script>
     {% endif %}
 
-    <script {{h.urlattr(fwurls.popperjs}}></script>
-    <script {{h.urlattr(fwurls.bootjs}}></script>
-    <script {{h.urlattr(fwurls.bootbox}}></script>
+    <script {{h.urlattr(fwurls.popperjs)}}></script>
+    <script {{h.urlattr(fwurls.bootjs)}}></script>
+    <script {{h.urlattr(fwurls.bootbox)}}></script>
 
     {% block userscripts %}
     {% endblock userscripts %}
