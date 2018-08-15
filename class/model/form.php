@@ -24,7 +24,7 @@
             'action'          => [TRUE, FALSE],
             'method'          => [TRUE, FALSE],
             'idval'           => [FALSE, FALSE],
-            'formclass'       => [FALSE, FALSE],
+            'class'           => [FALSE, FALSE],
             'multipart'       => [FALSE, TRUE],
         ];
 

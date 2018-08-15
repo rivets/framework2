@@ -5,22 +5,6 @@
 {% import _self as h %}
 {% import '@util/formmacro.twig' as f %}
 
-{% macro tick(val, class, disabled) %}
-<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}{% if disabled %} fadis{% endif %}"></i>
-{% endmacro tick %}
-
-{% macro htick(val, class, name, disabled) %}
-{% import _self as h %}
-{{h.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
-{% endmacro htick %}
-
-{% macro inline(type, name, msg, id, value) %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}">{{value}}</a>{% endmacro inline %}
-{# use this if editable breaks....
-    {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
-#}
-
-{% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
-
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util-min.js"></script>
@@ -169,20 +153,20 @@
                         {% for fld in bean.fields %}
                             <tr data-id="{{fld.getID}}" class="border-top border-dark">
                                 <td rowspan="2">{{h.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
-                                <td>{{h.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
-                                <td>{{h.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
-                                <td>{{h.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
-                                <td>{{h.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
-                                <td>{{h.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
+                                <td>{{f.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
+                                <td>{{f.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
+                                <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
+                                <td>{{f.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
+                                <td>{{f.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
                                 <td rowspan="2"><i class="fas fa-trash-o delb"></i></td>
                             </tr>
                             <tr>
-                                <td>{{h.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
-                                <td>{{h.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
- {#                               <td>{{h.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
-                                <td>{{h.tick(fld.required, 'reqb')}}</td>
-                                <td>{{h.tick(fld.readonly, 'rdob')}}</td>
-                                <td>{{h.tick(fld.disabled, 'disb')}}</td>#}
+                                <td>{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
+                                <td>{{f.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+ {#                               <td>{{f.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
+                                <td>{{f.tick(fld.required, 'reqb')}}</td>
+                                <td>{{f.tick(fld.readonly, 'rdob')}}</td>
+                                <td>{{f.tick(fld.disabled, 'disb')}}</td>#}
                             </tr>
                         {% endfor %}
                         <tr data-id="new" id="example" class="border-top border-dark">
