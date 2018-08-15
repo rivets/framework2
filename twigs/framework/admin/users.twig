@@ -5,6 +5,8 @@
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
+{% import _self as h %}
+
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util.js"></script>
