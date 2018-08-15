@@ -19,8 +19,7 @@
 <input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}/>
 {% endmacro input %}
 
-{% macro bsl(opts) %}
-{% import _self as fx %}
+{% macro bsl(opts) %}{% import _self as fx %}
    <div class="form-group">
         {% if opts.label != '' %}
             <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
@@ -43,7 +42,7 @@
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
 {% macro checkbox(opts) %}
-{% import _self as fx %}
+{% import _self as fx %}{%if opts.group %}{{h.bsl({})}}{% endif %}
     {{fx.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
@@ -51,11 +50,11 @@
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
-    {{fx.bse(opts)}}
+    {{fx.bse(opts)}}{%if opts.group %}{{h.bse({})}}{% endif %}
 {% endmacro %}
 
 {% macro radio(opts) %}
-{% import _self as fx %}
+{% import _self as fx %}{%if opts.group %}{{h.bsl({})}}{% endif %}
     {{fx.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
@@ -63,7 +62,7 @@
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
-    {{fx.bse(opts)}}
+    {{fx.bse(opts)}}{%if opts.group %}{{h.bse({})}}{% endif %}
 {% endmacro %}
 
 {% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
