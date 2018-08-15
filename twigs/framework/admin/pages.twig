@@ -238,22 +238,10 @@
     <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                {{m.header({title: 'New page'})}}
-{#
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">New Page</h4>
-                </div>
-#}
+                {{m.header({title: 'New Page'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="npform">
                         {{f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})}}
-{#
-                        <div class="form-group">
-                            <label for="npname">Name</label>
-                            <input type="text" class="form-control" id="npname" placeholder="page name" required="required"/>
-                        </div>
-#}
                         {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                                 {value: '', text: '&mdash; Pick a Type &mdash;'},
                                 {value: 1,  text: 'Object'},
@@ -263,41 +251,10 @@
                                 {value: 5,  text: 'External Temporary Redirect'},
                                 {value: 6,  text: 'External Permanent Rehome'},
                         ]})}}
-{#
-                        <div class="form-group">
-                            <label for="npkind">Kind</label>
-                            <select id="npkind" class="form-control" required="required">
-                                <option value="">&mdash; Pick a Type &mdash;</option>
-                                <option value="1">Object</option>
-                                <option value="2">Template</option>
-                                <option value="3">In-site Temporary Redirect</option>
-                                <option value="4">In-site Permanent Redirect</option>
-                                <option value="5">External Temporary Redirect</option>
-                                <option value="6">External Permanent Rehome</option>
-                            </select>
-                        </div>
-#}
-                       {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
-{#
-                       <div class="form-group">
-                            <label for="npsrc">Source</label>
-                            <input type="text" class="form-control" id="npsrc" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
-                        </div>
-#}
+                        {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
                         {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
                         {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
                         {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
-{#
-                        <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" value="1" id="npactive"/> Active</label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" value="1" id="npmobile"/> Mobile Only</label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label"><input type="checkbox" value="1" id="nplogin"/> Must Login</label>
-                        </div>
-#}
                         <fieldset>
                             <legend>Roles</legend>
                             <table class="table table-striped">
@@ -343,12 +300,6 @@
                     </form>
                 </div>
                 {{m.footer({action: 'Add', id: 'addb'})}}
-{#
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="addb">Add</button>
-                </div>
-#}
             </div>
         </div>
     </div>
