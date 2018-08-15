@@ -63,6 +63,7 @@
         else
         {
             $fwc->value = $value;
+            $fwc->fixed = 1;
             $fwc->type = 'string';
         }
         \R::store($fwc);
