@@ -9,14 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
-{% macro vshow(name, value) %}
-{% if value != '' %} {{name}}="{{value}}"{% endif %}
-{% endmacro vshow %}
+{% macro vshow(name, value) %}{% if value != '' %} {{name}}="{{value}}"{% endif %}{% endmacro vshow %}
 
-{% macro urlattr(fwv) %}
-{% import _self as h %}
-{{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity)}}{{h.vshow('crossorigin',fwv.crossorigin)}}{{fwv.defer ? ' defer'}}{{fwv.async ? ' async'}}
-{% endmacro urlattr %}
+{% macro urlattr(fwv) %}{% import _self as h %}{{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity)}}{{h.vshow('crossorigin',fwv.crossorigin)}}{{fwv.defer ? ' defer'}}{{fwv.async ? ' async'}}{% endmacro urlattr %}
 
 {% import _self as h %}
 
