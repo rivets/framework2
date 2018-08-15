@@ -8,9 +8,11 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
 {% macro vshow(name, value) %}
 {{value != '' ? ' '~name~'="'~value~'"'}}
 {% endmacro vshow }
+
 {% macro urlattr(fwv) %}
 {% import _self as h %}
 {{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity}}{{h.vshow('crossorigin',fwv.crossorigin}}{{fwv.defer != '' ? ' defer'}}{{fwv.async != '' ? ' async'}}
@@ -60,7 +62,7 @@
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
         {% set js = "var base = '"~base~"';" ~ sjs ~ "\n" ~ ojs %}
-        <script hash="md5-{{md5(js)}}">{{js|raw}}</script>
+        <script hash="sha256-{{sha256(js)}}">{{js|raw}}</script>
     {% endif %}
 </body>
 </html>
