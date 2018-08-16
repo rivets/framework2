@@ -76,7 +76,7 @@
             {
                 if ($this->bean->$atr !== '')
                 {
-                    $res[] = $atr.'="'.$fld->$atr.'"';
+                    $res[] = $atr.'="'.$this->bean->$atr.'"';
                 }
             }
             foreach (self::$flags as $atr)
