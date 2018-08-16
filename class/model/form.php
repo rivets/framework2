@@ -147,7 +147,7 @@
                 ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').'" '.
                 'method="'.self::$methods[$this->bean->method].'"'.
                 ($this->multipart ? ' enctype="multipart/form-data"' : '').
-                '>'.PHP_EOL;
+                ' role="form">'.PHP_EOL;
             foreach ($this->sequence() as $flds)
             {
                 $fld = reset($flds);
@@ -167,14 +167,6 @@
                     }
                     $form .= '</div></div>';
                     break;
-                //case 'radio':
-                //    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
-                //    {
-                //        $fld->checked = 1;
-                //    }
-                //    $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
-                //    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'/>'.$label.'</div></div>';
-                //    break;
                 case 'select':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<select'.$fld->fieldAttr('form-control', FALSE).'>';
                     $optgroup = FALSE;
