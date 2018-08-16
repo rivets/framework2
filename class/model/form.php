@@ -163,7 +163,7 @@
                             $fld->checked = 1;
                         }
                         $input = '<input'.$fld->fieldAttr('', TRUE).'/> ';
-                        $form .= $fld->doLabel(FALSE, 'form-check-label', $input); # need to do this first as it might set the label field in $fld
+                        $form .= $fld->doLabel(FALSE, 'form-check-label mr-2', $input); # need to do this first as it might set the label field in $fld
                     }
                     $form .= '</div></div>';
                     break;
