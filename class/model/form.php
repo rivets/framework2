@@ -211,7 +211,7 @@
                         $fld->checked = 1;
                     }
                     $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
-                    $form .= '<div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div>';
+                    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div></div>';
                     break;
                     case 'radio':
                     if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
@@ -219,7 +219,7 @@
                         $fld->checked = 1;
                     }
                     $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
-                    $form .= '<div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div>';
+                    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div></div>';
                     break;
                 case 'select':
                     $form .= '<div class="form-group">'.$this->doLabel($fld).'<select'.$this->fieldAttr($fld, 'form-control', FALSE).'>';
