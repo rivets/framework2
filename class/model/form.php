@@ -31,11 +31,11 @@
  * @var array The kinds of flags that fields can have
  */
         private static $flags = [
-            'checked'       => ['Checked', TRUE],
-            'disabled'      => ['Disabled', FALSE],
-            'multiple'      => ['Multiple', TRUE],
-            'readonly'      => ['Readonly', FALSE],
-            'required'      => ['Required', FALSE],
+            'checked'       => ['Checked', TRUE, 0x01],
+            'disabled'      => ['Disabled', FALSE, 0x02],
+            'multiple'      => ['Multiple', TRUE, 0x04],
+            'readonly'      => ['Readonly', FALSE, 0x08],
+            'required'      => ['Required', FALSE, 0x10],
         ];
 
         use \ModelExtend\FWEdit;
@@ -98,6 +98,11 @@
                     foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other'] as $fname)
                     {
                         $fld->$fname = $fdt->post(['fld'.$fname, $ix], '');
+                    }
+                    $fld->flags = 0;
+                    foreach (self::$flags as $fn => $fv)
+                    {
+                        $fld->flags |= $fdt->post(['fld'.$fn, $ix], 0);
                     }
                     \R::store($fld);
                     $this->bean->xownForm[] = $fld;
