@@ -8,32 +8,29 @@
 
 {% block header %}
     <section class="col-md-12 mt-5">
-        <h1>The Framework</h1>
+        <h1 class="cntr">Header</h1>
     </section>
 {% endblock header %}
 
 {% block main %}
     <section class="row">
-        <div class="offset-md-2 col-md-8">
+        <aside class="col">
+            <p>Left</p>
+        </aside>
+        <article class="col-md-8">
             <div class="jumbotron">
-              <p>A simple framework for building RESTful websites using:</p>
-	      <ul>
-	          <li><a href="http://php.net">PHP</a></li>
-	          <li><a href="http://redbeanphp.com">RedBean</a></li>
-	          <li><a href="http://getbootstrap.com">Bootstrap</a></li>
-	          <li><a href="http://jquery.com">jQuery</a></li>
-                  <li><a href="http://twig.sensiolabs.org/">Twig</a></li>
-	          <li><a href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a></li>
-                  <li><a href="http://parsleyjs.org/">Parsely JS</a></li>
-                  <li><a href="http://bootboxjs.com/">BootBox</a></li>
-	      </ul>
-	      <p>Get it from the <a href="{{base}}/download">download page</a>.
-	      <p>Or fork it on  <a href="http://github.com/rivets/framework2">GitHub</a>.
+                This is the middle column
             </div>
-	</div>
-        {% include "docs/docbar.twig" %}
+            <button id="alert" class="btn btn-large btn-info" type="button">Alert</button>
+        </article>
+        <aside id="rightbar" class="col">
+            <p>Right</p>
+        </aside>
     </section>
 {% endblock main %}
 
-{% block pagefooter %}
-{% endblock pagefooter %}
+{% block footer %}
+    <section class="col-md-12">
+        <p class="cntr">Footer</p>
+    </section>
+{% endblock footer %}

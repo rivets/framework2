@@ -6,4 +6,3 @@ composer.lock
 
 *.codekit3
 *.php~
-*.twig~
