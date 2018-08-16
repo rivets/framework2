@@ -134,69 +134,6 @@
         {
         }
 /**
- * Handle a label
- *
- * @param object    $fld    The field
- * @param string    $class  The class name
- *
- * @return string   The field idval might be updated also
- */
-        private function doLabel($fld, $class = '', $inp = '')
-        {
-            $label = '';
-            if ($fld->label !== '')
-            {
-                if ($fld->idval == '')
-                {
-                    $fld->idval = $this->bean->name.$this->lcount;
-                    $this->lcount += 1;
-                }
-                return '<label for="'.$fld->idval.'"'.($class !== '' ? (' class="'.$class.'"') : '').'>'.$inp.$fld->label.'</label>';
-            }
-            return '';
-        }
-/**
- * Render a field's attributes
- *
- * @param object    $fld
- * @param string    $class  The class name
- * @param boolean   $doValue  The class name
- *
- * @return string
- */
-        private function fieldAttr($fld, $class, $doValue = TRUE)
-        {
-            $attrs = self::$attributes;
-            if ($doValue)
-            { # include the value in the attributes
-                $attrs[] = 'value';
-            }
-            $res = ['']; # ensures a space at the start of the result
-            if ($fld->idval !== '')
-            {
-                $res[] = 'id="'.$fld->idval.'"';
-            }
-            if ($class !== '')
-            { # add a standard class
-                $fld->class = trim($class.' '.$fld->class);
-            }
-            foreach ($attrs as $atr)
-            {
-                if ($fld->$atr !== '')
-                {
-                    $res[] = $atr.'="'.$fld->$atr.'"';
-                }
-            }
-            foreach (self::$flags as $atr)
-            {
-                if ($fld->flags & $atr[2])
-                {
-                    $res[] = $atr[0].'="'.$atr[0].'"';
-                }
-            }
-            return implode(' ', $res);
-        }
-/**
  * Render a form
  *
  * @return string
@@ -309,6 +246,7 @@
                     $form .= '<div class="form-group">'.$fld->doLabel().'<input'.$fld->fieldAttr('form-control', TRUE, $values).'/></div>';
                     break;
                 }
+                $form .= PHP_EOL;
             }
             return $form.'</form>';
         }
