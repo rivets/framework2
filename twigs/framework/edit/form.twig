@@ -96,8 +96,8 @@
     });
     $('#example .typesel').on('change', function(e){
         var val = $(this).val();
-        $('#example .flagsel input[name="fldchecked"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
-        $('#example .flagsel input[name="fldmultiple"]').prop('disabled', val != 'select')
+        $('#example .flagsel input[name="fldchecked"]').prop('checked', false).prop('disabled', !(val == 'checkbox' || val == 'radio'))
+        $('#example .flagsel input[name="fldmultiple"]').prop('checked', false).prop('disabled', val != 'select')
     })
 {% endblock onload %}
 
@@ -145,7 +145,10 @@
                         <tbody>
                             {% for fld in bean.fields %}
                                 <tr data-id="{{fld.getID}}" class="border-top border-dark">
-                                    <td rowspan="3">{{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</td>
+                                    <td rowspan="3">
+                                        <p>{{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
+                                        <p>{{f.inline('text', 'seqn', 'Enter seqn no.', fld.getID, fld.seqn)}}</td>
+                                    </td>
                                     <td>{{f.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
                                     <td>{{f.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
                                     <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
@@ -154,43 +157,54 @@
                                     <td rowspan="3"><i class="fas fa-trash-alt delb"></i></td>
                                 </tr>
                                 <tr>
-                                    <td>{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
-                                    <td>{{f.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+                                    <td colspan="2">{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
+                                    <td colspan="3">{{f.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
                                 </tr>
                                 <tr>
-     {#                               <td>{{f.tick(fld.checked, 'chkb', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
-                                    <td>{{f.tick(fld.required, 'reqb')}}</td>
-                                    <td>{{f.tick(fld.readonly, 'rdob')}}</td>
-                                    <td>{{f.tick(fld.disabled, 'disb')}}</td>#}
+                                    {% for fn,fv in flags %}
+                                        <td>{{f.tick(fld.flags b-and fv.2, 'chkb', fn~'[]', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
+                                    {% endfor %}
                                 </tr>
                             {% endfor %}
-                            <tr data-id="new" id="example" class="border-top border-dark">
-                                <td rowspan="3">
-                                    <select class="typesel" name="type[]">
-                                        <option value="">&mdash; Type &mdash;</option>
-                                        {% for v in types %}
-                                            <option value="{{v}}">{{v}}</option>
-                                        {% endfor %}
-                                    </select>
+                            <tr id="example">
+                                <td colspan="7">
+                                    <table>
+                                        <tbody>
+                                            <tr data-id="new" class="border-top border-dark">
+                                                <td rowspan="3">
+                                                    <p>
+                                                        <select class="typesel" name="type[]">
+                                                            <option value="">&mdash; Type &mdash;</option>
+                                                            {% for v in types %}
+                                                                <option value="{{v}}">{{v}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </p>
+                                                    <p>
+                                                        <input type="text" name="fldseqn[]" placeholder="seqn. no." class="form-control col-md-8"/>
+                                                    </p>
+                                                </td>
+                                                <td><input type="text" name="fldlabel[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
+                                                <td><input type="text" name="fldname[]" placeholder="name" class="form-control"/></td>
+                                                <td><input type="text" name="fldidval[]" placeholder="id" class="form-control"/></td>
+                                                <td><input type="text" name="fldclass[]" placeholder="class" class="form-control"/></td>
+                                                <td><input type="text" name="fldvalue[]" placeholder="value" class="form-control"/></td>
+                                                <td rowspan="3">&nbsp</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><input type="text" name="fldplaceholder[]" placeholder="placeholder" class="form-control"/></td>
+                                                <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
+                                            </tr>
+                                            <tr class="flagsel">
+                                                {% for fn, fv in flags %}
+                                                    <td>
+                                                        {{f.checkbox({labels:[fv.0], names: ['fld'~fn], disabled: [fv.1], values: [fv.2]})}}
+                                                    </td>
+                                                {% endfor %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </td>
-                                <td><input type="text" name="fldlabel[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
-                                <td><input type="text" name="fldname[]" placeholder="name" class="form-control"/></td>
-                                <td><input type="text" name="fldidval[]" placeholder="id" class="form-control"/></td>
-                                <td><input type="text" name="fldclass[]" placeholder="class" class="form-control"/></td>
-                                <td><input type="text" name="fldvalue[]" placeholder="value" class="form-control"/></td>
-
-                                <td rowspan="3">&nbsp</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><input type="text" name="fldplaceholder[]" placeholder="placeholder" class="form-control"/></td>
-                                <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
-                            </tr>
-                            <tr class="flagsel">
-                                {% for fn, fv in flags %}
-                                    <td>
-                                        {{f.checkbox({labels:[fv.0], names: ['fld'~fn], disabled: [fv.1], values: [fv.2]})}}
-                                    </td>
-                                {% endfor %}
                             </tr>
                             <tr id="mrow">
                                 <td colspan="10">&nbsp;</td>

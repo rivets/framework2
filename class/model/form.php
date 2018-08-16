@@ -64,7 +64,7 @@
  */
         public function fields()
         {
-	    return $this->bean->ownFormfield;
+	    return $this->bean->with('order by seqn,name')->ownFormfield;
         }
 /**
  * Setup for an edit
@@ -95,7 +95,7 @@
                 {
                     $fld = \R::dispense('formfield');
                     $fld->type = $type;
-                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other'] as $fname)
+                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other', 'seqn'] as $fname)
                     {
                         $fld->$fname = $fdt->post(['fld'.$fname, $ix], '');
                     }
