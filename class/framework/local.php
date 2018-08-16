@@ -23,6 +23,8 @@
         const ERROR     = 0;        # 'errmessage';
         const WARNING   = 1;        # 'warnmessage';
         const MESSAGE   = 2;        # 'message';
+        
+        private  static $msgnames  = ['errmessage', 'warnmessage', 'message'];
 /**
  * @var	string		The absolute path to the site directory
  */
@@ -84,9 +86,9 @@
  */
         private function addmessages()
         {
-            foreach ($this->messages as $name => $vals)
+            foreach ($this->messages as $ix => $vals)
             {
-                $this->addval($name, $vals);
+                $this->addval(self::$msgnames[$ix], $vals);
             }
             $this->clearmessages();
         }
