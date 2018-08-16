@@ -188,7 +188,7 @@
                             <tr>
                                 {% for fn, fv in flags %}
                                     <td>
-                                        {{f.checkbox({labels:[fv.0], names: ['fld'~fn], disabled: fv.1, values: [fv.2]})}}
+                                        {{f.checkbox({labels:[fv.0], names: ['fld'~fn], disabled: [fv.1], values: [fv.2]})}}
                                     </td>
                                 {% endfor %}
                             </tr>
