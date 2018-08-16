@@ -40,8 +40,8 @@
             {
                 if ($makefor && $this->bean->idval === '')
                 {
-                    $this->bean->idval = 'xxid'.$this->lcount;
-                    $this->lcount += 1;
+                    $this->bean->idval = 'xxid'.self::$lcount;
+                    self::$lcount += 1;
                 }
                 return '<label'.($this->bean->idval !== '' ? ' for="'.$this->bean->idval.'"' : '').
                     ($class !== '' ? (' class="'.$class.'"') : '').'>'.$inp.$this->bean->label.'</label>';
