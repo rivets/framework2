@@ -64,7 +64,7 @@
                 $attrs[] = 'value';
             }
             $res = ['']; # ensures a space at the start of the result
-            if ($fthis->bean->idval !== '')
+            if ($this->bean->idval !== '')
             {
                 $res[] = 'id="'.$this->bean->idval.'"';
             }
