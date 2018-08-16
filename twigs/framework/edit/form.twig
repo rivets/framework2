@@ -96,8 +96,8 @@
     });
     $('#example .typesel').on('change', function(e){
         var val = $(this).val();
-        $('#example .flagsel input[name="fldchecked[]"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
-        $('#example .flagsel input[name="fldmultiple[]"]').prop('disabled', val != 'select')
+        $('#example .flagsel input[name="fldchecked"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
+        $('#example .flagsel input[name="fldmultiple"]').prop('disabled', val != 'select')
     })
 {% endblock onload %}
 
