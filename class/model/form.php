@@ -187,11 +187,11 @@
                     $res[] = $atr.'="'.$fld->$atr.'"';
                 }
             }
-            foreach (['checked', 'selected', 'required', 'readonly', 'disabled'] as $atr)
+            foreach (self::$flags as $atr)
             {
-                if ($fld->$atr)
+                if ($fld->flags & $atr[2])
                 {
-                    $res[] = $atr.'="'.$atr.'"';
+                    $res[] = $atr[0].'="'.$atr[0].'"';
                 }
             }
             return implode(' ', $res);
@@ -225,7 +225,7 @@
                         {
                             $fld->checked = 1;
                         }
-                        $input = '<input'.$this->fieldAttr($fld, '', FALSE, $values).'/>';
+                        $input = ' <input'.$this->fieldAttr($fld, '', TRUE).'/>';
                         $form .= $this->doLabel($fld, 'form-check-label', $input); # need to do this first as it might set the label field in $fld
                     }
                     $form .= '</div></div>';
