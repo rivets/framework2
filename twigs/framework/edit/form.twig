@@ -186,7 +186,7 @@
                                 <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
                             </tr>
                             <tr>
-                                {% foreach fn, fv in flags %}
+                                {% for fn, fv in flags %}
                                     <td>
                                         {{f.checkbox({label:fv.0, name: 'fld'~fn, disabled: fv.1, value: 1})}}
                                     </td>
