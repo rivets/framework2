@@ -278,6 +278,12 @@
                 case 'textarea':
                     $form .= '<div class="form-group">'.$this->doLabel($fld).'<textarea'.$this->fieldAttr($fld, 'form-control', FALSE).'>'.($values[$fld->name] ?? $this->value).'</textarea></div>';
                     break;
+                case 'submit' :
+                    $form .= '<div class="form-group"><button type="submit"'.$this->fieldAttr($fld, '', FALSE).'>'.$fld->value.'</button></div>';
+                    break;
+                case 'button' :
+                    $form .= '<div class="form-group"><button'.$this->fieldAttr($fld, '', FALSE).'>'.$fld->value.'</button></div>';
+                    break;
                 default: # all the other types are very much the same.
                     if (isset($values[$fld->name]))
                     {
