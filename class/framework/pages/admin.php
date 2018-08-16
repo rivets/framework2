@@ -79,7 +79,7 @@
                         { # something odd...
                             throw new \Exception('Oddness');
                         }
-                        list($error, $emess) = $obj->edit($context);
+                        list($error, $emess) = $obj->edit($context); // handle the edit result
                         if ($error)
                         {
                             $context->local()->message(\Framework\Local::ERROR, $emess);
@@ -93,6 +93,7 @@
                     /* NOT REACHED */
                 }
                 $context->local()->addval('bean', $obj);
+                $obj->startEdit($context); // do any soecial setup that the edit requires
                 $tpl = '@edit/'.$kind.'.twig';
                 break;
 

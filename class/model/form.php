@@ -17,7 +17,7 @@
         
         private $lcount             = 1;
 /**
- * @var Array   Key is name of field and the array contains flags for checks
+ * @var array   Key is name of field and the array contains flags for checks
  */
         private static $editfields = [
             'name'            => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
@@ -26,6 +26,16 @@
             'idval'           => [FALSE, FALSE],
             'class'           => [FALSE, FALSE],
             'multipart'       => [FALSE, TRUE],
+        ];
+/**
+ * @var array The kinds of flags that fields can have
+ */
+        private static $flags = [
+            'checked'       => ['Checked', TRUE],
+            'disabled'      => ['Disabled', FALSE],
+            'multiple'      => ['Multiple', TRUE],
+            'readonly'      => ['Readonly', FALSE],
+            'required'      => ['Required', FALSE],
         ];
 
         use \ModelExtend\FWEdit;
@@ -57,6 +67,17 @@
 	    return $this->bean->ownFormfield;
         }
 /**
+ * Setup for an edit
+ *
+ * @param object    $context*
+ * 
+ * @return void
+ */
+        public function startEdit($context)
+        {
+            $context->local()->addval('flags', self::$flags);
+        }
+/**
  * Handle a form edit
  *
  * @param object    $context
@@ -74,9 +95,9 @@
                 {
                     $fld = \R::dispense('formfield');
                     $fld->type = $type;
-                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other', 'flags'] as $fname)
+                    foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other'] as $fname)
                     {
-                        $fld->$fname = $fdt->post([$fname, $ix], '');
+                        $fld->$fname = $fdt->post(['fld'.$fname, $ix], '');
                     }
                     \R::store($fld);
                     $this->bean->xownForm[] = $fld;
