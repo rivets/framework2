@@ -225,7 +225,7 @@
                         {
                             $fld->checked = 1;
                         }
-                        $input = '<input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'/>';
+                        $input = '<input'.$this->fieldAttr($fld, '', FALSE, $values).'/>';
                         $form .= $this->doLabel($fld, 'form-check-label', $input); # need to do this first as it might set the label field in $fld
                     }
                     $form .= '</div></div>';
