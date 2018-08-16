@@ -96,7 +96,7 @@
 {{fx.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
-{% macro inline(type, name, msg, id, value, empty = '') %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}
+{% macro inline(type, name, msg, id, value, empty = '----') %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}
 {# use this if editable breaks....
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
