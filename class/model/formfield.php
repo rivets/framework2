@@ -33,7 +33,7 @@
  *
  * @return string   The field idval might be updated also
  */
-        private function doLabel($class = '', $inp = '')
+        public function doLabel($class = '', $inp = '')
         {
             $label = '';
             if ($this->bean->label !== '')
@@ -56,7 +56,7 @@
  *
  * @return string
  */
-        private function fieldAttr($class, $doValue = TRUE)
+        public function fieldAttr($class, $doValue = TRUE)
         {
             $attrs = self::$attributes;
             if ($doValue)
