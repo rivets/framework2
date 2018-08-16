@@ -1,1 +1,3 @@
-body{font-family:sans-serif;background-color:#fff}.cntr{text-align:center}.delb,.noconfirm{color:red}.actb,.admb,.editb,.delb,.devb,.reqb,.rdob,.disb{cursor:pointer}.fadis{color:#aaa}
+body{font-family:"Open Sans",sans-serif;background-color:#fcfcfc;color:#777;font-size:13px;line-height:1.42857}.cntr{text-align:center}
+h1{font-size:33px}h2{font-size:27px}h2{font-size:23px}h4{font-size:17px}.jumbotron{background-color:#f4f4f4 !important}
+.delb,.noconfirm{color:red}.actb,.admb,.editb,.delb,.devb,.reqb,.rdob,.disb{cursor:pointer}.fadis{color:#aaa}
