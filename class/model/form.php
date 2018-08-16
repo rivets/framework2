@@ -225,8 +225,8 @@
                         {
                             $fld->checked = 1;
                         }
-                        $input = ' <input'.$this->fieldAttr($fld, '', TRUE).'/>';
-                        $form .= $this->doLabel($fld, 'form-check-label', $input); # need to do this first as it might set the label field in $fld
+                        $input = ' <input'.$fld->fieldAttr('', TRUE).'/>';
+                        $form .= $fld->doLabel('form-check-label', $input); # need to do this first as it might set the label field in $fld
                     }
                     $form .= '</div></div>';
                     break;
@@ -239,7 +239,7 @@
                 //    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'/>'.$label.'</div></div>';
                 //    break;
                 case 'select':
-                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<select'.$this->fieldAttr($fld, 'form-control', FALSE).'>';
+                    $form .= '<div class="form-group">'.$fld->doLabel().'<select'.$fld->fieldAttr('form-control', FALSE).'>';
                     $optgroup = FALSE;
                     foreach ($values[$fld->name] as $option)
                     {
@@ -293,20 +293,20 @@
                     $form .= '</select></div>';
                     break;
                 case 'textarea':
-                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<textarea'.$this->fieldAttr($fld, 'form-control', FALSE).'>'.($values[$fld->name] ?? $this->value).'</textarea></div>';
+                    $form .= '<div class="form-group">'.$fld->doLabel().'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $this->value).'</textarea></div>';
                     break;
                 case 'submit' :
-                    $form .= '<div class="form-group"><button type="submit"'.$this->fieldAttr($fld, '', FALSE).'>'.$fld->value.'</button></div>';
+                    $form .= '<div class="form-group"><button type="submit"'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
                 case 'button' :
-                    $form .= '<div class="form-group"><button'.$this->fieldAttr($fld, '', FALSE).'>'.$fld->value.'</button></div>';
+                    $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
                 default: # all the other types are very much the same.
                     if (isset($values[$fld->name]))
                     {
                         $fld->value = $values[$fld->name];
                     }
-                    $form .= '<div class="form-group">'.$this->doLabel($fld).'<input'.$this->fieldAttr($fld, 'form-control', TRUE, $values).'/></div>';
+                    $form .= '<div class="form-group">'.$fld->doLabel().'<input'.$fld->fieldAttr('form-control', TRUE, $values).'/></div>';
                     break;
                 }
             }
