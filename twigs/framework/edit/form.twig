@@ -96,8 +96,8 @@
     });
     $('#example .typesel').on('change', function(e){
         var val = $(this).val();
-        $('#example .flagsel option[value="checked"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
-        $('#example .flagsel option[value="multiple"]').prop('disabled', val != 'select')
+        $('#example .flagsel input[name="fldchecked[]"]').prop('disabled', !(val == 'checkbox' || val == 'radio'))
+        $('#example .flagsel input[name="fldmultiple[]"]').prop('disabled', val != 'select')
     })
 {% endblock onload %}
 
@@ -185,7 +185,7 @@
                                 <td colspan="2"><input type="text" name="fldplaceholder[]" placeholder="placeholder" class="form-control"/></td>
                                 <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
                             </tr>
-                            <tr>
+                            <tr class="flagsel">
                                 {% for fn, fv in flags %}
                                     <td>
                                         {{f.checkbox({labels:[fv.0], names: ['fld'~fn], disabled: [fv.1], values: [fv.2]})}}
