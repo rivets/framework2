@@ -67,6 +67,20 @@
 	    return $this->bean->with('order by seqn,name')->ownFormfield;
         }
 /**
+ * Return the form's fields by sequence
+ *
+ * @return object
+ */
+        public function sequence()
+        {
+            $res = [];
+            foreach ($this->bean->fields() as $fld)
+            {
+                $res[$fld->seqn][] = $fld;
+            }
+	    return $res;
+        }
+/**
  * Setup for an edit
  *
  * @param object    $context*
@@ -127,7 +141,7 @@
  *
  * @return string   The field idval might be updated also
  */
-        private function doLabel($fld, $class = '')
+        private function doLabel($fld, $class = '', $inp = '')
         {
             $label = '';
             if ($fld->label !== '')
@@ -137,7 +151,7 @@
                     $fld->idval = $this->bean->name.$this->lcount;
                     $this->lcount += 1;
                 }
-                return '<label for="'.$fld->idval.'"'.($class !== '' ? (' class="'.$class.'"') : '').'>'.$fld->label.'</label>';
+                return '<label for="'.$fld->idval.'"'.($class !== '' ? (' class="'.$class.'"') : '').'>'.$inp.$fld->label.'</label>';
             }
             return '';
         }
@@ -197,30 +211,33 @@
                 'method="'.self::$methods[$this->bean->method].'"'.
                 ($this->multipart ? ' enctype="multipart/form-data"' : '').
                 '>';
-            foreach ($this->fields() as $fld)
+            foreach ($this->sequence() as $flds)
             {
-                if (isset($fld->done))
-                { # if we group radio buttons then some may get marked as done.
-                    continue;
-                }
+                $fld = reset($flds);
                 switch ($fld->type)
                 {
                 case 'checkbox':
-                    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
+                case 'radio':
+                    $form = '<div class="form-group"><div class="form-check'.(count($flds) > 1 ? ' form-check-inline' : '').'">';
+                    foreach ($flds as $fld)
                     {
-                        $fld->checked = 1;
+                        if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
+                        {
+                            $fld->checked = 1;
+                        }
+                        $input = '<input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'/>';
+                        $form .= $this->doLabel($fld, 'form-check-label', $input); # need to do this first as it might set the label field in $fld
                     }
-                    $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
-                    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div></div>';
+                    $form .= '</div></div>';
                     break;
-                    case 'radio':
-                    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
-                    {
-                        $fld->checked = 1;
-                    }
-                    $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
-                    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'>'.$label.'</div></div>';
-                    break;
+                //case 'radio':
+                //    if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
+                //    {
+                //        $fld->checked = 1;
+                //    }
+                //    $label = $this->doLabel($fld, 'form-check-label'); # need to do this first as it might set the label field in $fld
+                //    $form .= '<div class="form-group"><div class="form-check"><input'.$this->fieldAttr($fld, 'form-check-input', FALSE, $values).'/>'.$label.'</div></div>';
+                //    break;
                 case 'select':
                     $form .= '<div class="form-group">'.$this->doLabel($fld).'<select'.$this->fieldAttr($fld, 'form-control', FALSE).'>';
                     $optgroup = FALSE;
