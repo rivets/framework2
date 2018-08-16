@@ -33,12 +33,12 @@
  *
  * @return string   The field idval might be updated also
  */
-        public function doLabel($class = '', $inp = '')
+        public function doLabel($makefor = TRUE, $class = '', $inp = '')
         {
             $label = '';
             if ($this->bean->label !== '')
             {
-                if ($this->bean->idval == '')
+                if ($makefor && $this->bean->idval === '')
                 {
                     $this->bean->idval = $this->bean->name.$this->lcount;
                     $this->lcount += 1;
