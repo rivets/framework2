@@ -14,7 +14,7 @@
     {
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
         
-        private $lcount             = 1;
+        private static $lcount             = 1;
 /**
  * @var array The kinds of flags that fields can have
  */
@@ -40,10 +40,11 @@
             {
                 if ($makefor && $this->bean->idval === '')
                 {
-                    $this->bean->idval = $this->bean->name.$this->lcount;
+                    $this->bean->idval = 'xxid'.$this->lcount;
                     $this->lcount += 1;
                 }
-                return '<label for="'.$this->bean->idval.'"'.($class !== '' ? (' class="'.$class.'"') : '').'>'.$inp.$this->bean->label.'</label>';
+                return '<label'.($this->bean->idval !== '' ? ' for="'.$this->bean->idval.'"' : '').
+                    ($class !== '' ? (' class="'.$class.'"') : '').'>'.$inp.$this->bean->label.'</label>';
             }
             return '';
         }
