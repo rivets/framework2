@@ -98,17 +98,25 @@
                 break;
 
             case 'view' : // view something - forms only at the moment
-                if (count($rest) < 3)
+                try
+                {
+                    if (count($rest) < 3)
+                    {
+                        throw new \Exception('Too few');
+                    }
+                    $kind = $rest[1];
+                    if (!in_array($kind, self::VIEWABLE))
+                    {
+                        throw new \Exception('Not Viewable');
+                    }
+                }
+                catch (\Exception $e)
                 {
                     $context->local()->bad();
-                }
-                $kind = $rest[1];
-                if (!in_array($kind, self::VIEWABLE))
-                {
-                    $context->web()->bad();
                     /* NOT REACHED */
                 }
                 $obj = $context->load($kind, $rest[2]);
+                $obj->view(); // do any required set up
                 $context->local()->addval('bean', $obj);
                 $tpl = '@view/'.$kind.'.twig';
                 break;
