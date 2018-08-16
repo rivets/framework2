@@ -293,6 +293,16 @@
             }
         }
 /**
+ * Setup for an edit
+ *
+ * @param object    $context*
+ * 
+ * @return void
+ */
+        public function startEdit($context)
+        {
+        }
+/**
  * Handle an edit form for this page
  *
  * @param object   $context    The context object

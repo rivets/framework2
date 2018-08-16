@@ -18,13 +18,6 @@
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'checkbox', 'radio', 'password', 'select'] %}
-{% set flags = [
-    {value: 'checked', text: 'Checked', disabled: TRUE},
-    {value: 'disabled', text: 'Disabled', disabled: FALSE},
-    {value: 'multiple', text: 'Multiple', disabled: TRUE},
-    {value: 'readonly', text: 'Readonly', disabled: FALSE},
-    {value: 'required', text: 'Required', disabled: FALSE},
-] %}
 
 {% block setup %}
     function addmore(e)
@@ -122,10 +115,10 @@
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 <fieldset>
                     <legend>Form details</legend>
-                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'formname', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
-                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'formidval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'formclass', value: bean.class})}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
                         {{f.radio({group: TRUE, name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [bean.method == 1, bean.method == 2]})}}
                         {{f.checkbox({group: TRUE, names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
                 </fieldset>
@@ -158,7 +151,15 @@
                                 <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
                                 <td>{{f.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
                                 <td>{{f.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
-                                <td rowspan="2"><i class="fas fa-trash-o delb"></i></td>
+                                <td rowspan="2"><i class="fas fa-trash-alt delb"></i></td>
+                                <td rowspan="2">
+                                    {{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}
+                                    <select class="flagsel" name="flags[]" multiple="multiple" size="5">
+                                        {% for opt in flags %}
+                                            <option value="{{opt.value}}"{% if opt.disabled %} disabled="disabled"{% endif %}>{{opt.text}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <td>{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
@@ -178,11 +179,11 @@
                                     {% endfor %}
                                 </select>
                             </td>
-                            <td><input type="text" name="label[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
-                            <td><input type="text" name="fname[]" placeholder="name" class="form-control"/></td>
-                            <td><input type="text" name="idval[]" placeholder="id" class="form-control"/></td>
-                            <td><input type="text" name="class[]" placeholder="class" class="form-control"/></td>
-                            <td><input type="text" name="value[]" placeholder="value" class="form-control"/></td>
+                            <td><input type="text" name="fldlabel[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
+                            <td><input type="text" name="fldname[]" placeholder="name" class="form-control"/></td>
+                            <td><input type="text" name="fldidval[]" placeholder="id" class="form-control"/></td>
+                            <td><input type="text" name="fldclass[]" placeholder="class" class="form-control"/></td>
+                            <td><input type="text" name="fldvalue[]" placeholder="value" class="form-control"/></td>
                             <td rowspan="2">
                                     <select class="flagsel" name="flags[]" multiple="multiple" size="5">
                                         {% for opt in flags %}
@@ -191,10 +192,10 @@
                                     </select>
                             </td>
                             <td rowspan="2">&nbsp</td>
-                            <tr>
-                                <td colspan="2"><input type="text" name="placeholder[]" placeholder="placeholder" class="form-control"/></td>
-                                <td colspan="3"><input type="text" name="other[]" placeholder="Other attributes" class="form-control"/></td>
-                            </tr>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="text" name="fldplaceholder[]" placeholder="placeholder" class="form-control"/></td>
+                            <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
                         </tr>
                         <tr id="mrow">
                             <td colspan="10">&nbsp;</td>
