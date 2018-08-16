@@ -155,7 +155,7 @@
                 {
                 case 'checkbox':
                 case 'radio':
-                    $form .= '<div class="form-group"><div class="form-check'.(count($flds) > 1 ? ' form-check-inline' : '').'">';
+                    $form .= '<div class="form-group"><div class="form-check form-check-inline">';
                     foreach ($flds as $fld)
                     {
                         if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
