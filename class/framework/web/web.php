@@ -343,7 +343,7 @@
             return $hash;
         }
 /**
- * Add an item for use in a CSP header - could be 
+ * Add an item for use in a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
  * @param string  $type    What the item is for (script-src, css-src etc.)
  * @param string  $string  The item to add
