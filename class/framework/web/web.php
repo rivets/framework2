@@ -338,8 +338,7 @@
  */
         public function saveCSP($type, $string)
         {
-            $this->csp[$type][] = 'sha256-'.base64_encode(hash('sha256', $string, TRUE));
-            return $hash;
+            return ($this->csp[$type][] = 'sha256-'.base64_encode(hash('sha256', $string, TRUE)));
         }
 /**
  * Set up default CSP headers for a page
