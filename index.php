@@ -114,4 +114,8 @@
         $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.
         $context->web()->sendstring($html, $mime, $code);
     }
+    else if ($code != StatusCodes::HTTP_OK);
+    {
+        header(StatusCodes::httpHeaderFor($code));
+    }
 ?>

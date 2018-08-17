@@ -1,10 +1,10 @@
 <?php
  /**
- * Class for handling contact messages
- *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
- */
+  * Class for handling contact messages
+  *
+  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+  * @copyright 2012-2018 Newcastle University
+  */
     namespace Framework\Pages;
 
     use \Config\Config as Config;
