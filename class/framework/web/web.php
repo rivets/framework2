@@ -371,7 +371,7 @@
                 {
                     $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                 }
-                \Framework\Web\Web::getinstance()->addheader([
+                $this->addheader([
                     'Content-Security-Policy'   => $csp
                 ]);
             }
