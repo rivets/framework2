@@ -356,7 +356,7 @@
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
-                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$type])) ? (' '.implode(' ', $this->csp[$type])) : '').';';
+                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$type])  ? (' '.implode(' ', $this->csp[$type])) : '').';';
                 }
                 \Framework\Web\Web::getinstance()->addheader([
                     'Content-Security-Policy'   => $csp
