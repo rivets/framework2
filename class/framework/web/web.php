@@ -329,7 +329,7 @@
             }
         }
 /**
- * comute, save and return a hash for use in a CSP header
+ * compute, save and return a hash for use in a CSP header
  *
  * @param string  $type    What the hash is for (script-src, css-src etc.)
  * @param string  $string  The data to be hashed
@@ -338,7 +338,21 @@
  */
         public function saveCSP($type, $string)
         {
-            return ($this->csp[$type][] = 'sha256-'.base64_encode(hash('sha256', $string, TRUE)));
+            $hash = '\'sha256-'.base64_encode(hash('sha256', $string, TRUE))."'";
+            $this->addCSP($type, $hash);
+            return $hash;
+        }
+/**
+ * Add an item for use in a CSP header - could be 
+ *
+ * @param string  $type    What the item is for (script-src, css-src etc.)
+ * @param string  $string  The item to add
+ *
+ * @return void
+ */
+        public function addCSP($type, $string)
+        {
+            $this->csp[$type][] = $string;
         }
 /**
  * Set up default CSP headers for a page
@@ -355,7 +369,7 @@
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
-                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (" '".implode("' '", $this->csp[$key]))."'" : '').';';
+                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                 }
                 \Framework\Web\Web::getinstance()->addheader([
                     'Content-Security-Policy'   => $csp
