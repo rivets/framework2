@@ -74,7 +74,7 @@
     {
     case SiteAction::OBJECT: // fire up the object to handle the request
         $pageObj = new $page->source;
-        $pageObj->setCSP(); // set up CSP header if in use.
+        $csp = $pageObj;
         $tpl = $pageObj->handle($context);
         if (is_array($tpl))
         { // page is returning more than just a template filename
@@ -83,7 +83,7 @@
         break;
 
     case SiteAction::TEMPLATE: // render a template
-        $context->web()->setCSP(); // set up CSP header if in use.
+        $csp = $context->web();
         $tpl = $page->source;
         break;
 
@@ -110,6 +110,8 @@
 
     if ($tpl !== '')
     { # an empty template string means generate no output here...
-        $context->web()->sendstring($local->getrender($tpl), $mime, $code);
+        $html = $local->getrender($tpl);
+        $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.
+        $context->web()->sendstring($html, $mime, $code);
     }
 ?>

@@ -20,6 +20,10 @@
  */
         private $headers    = [];
 /**
+ * @var array   Holds hash calues that need to be added to CSP headers.
+ */
+        private $csp        = [];
+/**
  * Generate a Location header
  *
  * @param string		$where		The URL to divert to
@@ -325,6 +329,19 @@
             }
         }
 /**
+ * comute, save and return a hash for use in a CSP header
+ *
+ * @param string  $type    What the hash is for (script-src, css-src etc.)
+ * @param string  $string  The data to be hashed
+ *
+ * @return string Returns the hash
+ */
+        public function saveCSP($type, $string)
+        {
+            $this->csp[$type][] = 'sha256-'.base64_encode(hash('sha256', $string, TRUE));
+            return $hash;
+        }
+/**
  * Set up default CSP headers for a page
  *
  * There will be a basic set of default CSP permissions for the site to function,
@@ -339,7 +356,7 @@
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
-                    $csp .= ' '.$key.' '.$val.';';
+                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$type])) ? (' '.implode(' ', $this->csp[$type])) : '').';';
                 }
                 \Framework\Web\Web::getinstance()->addheader([
                     'Content-Security-Policy'   => $csp
