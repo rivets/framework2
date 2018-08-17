@@ -306,7 +306,7 @@
         'default-src'   => '\'self\'',
         'font-src'      =>'\'self\' use.fontawesome.com',
         'img-src'       => '\'self\' data:',
-        'script-src'    => '\'self\' \'unsafe-inline\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
+        'script-src'    => '\'self\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
         'style-src'     => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
     ];
 /*
