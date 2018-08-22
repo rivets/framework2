@@ -306,7 +306,6 @@
         'default-src'   => '\'self\'',
         'font-src'      =>'\'self\' use.fontawesome.com',
         'img-src'       => '\'self\' data:',
-        'report-uri'    => '/csp-report',
         'script-src'    => '\'self\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
         'style-src'     => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
     ];
@@ -361,7 +360,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'register', 'usecsp', 'usephpm',
+        'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
     ];
     $options = [];
     foreach ($flags as $fn)
@@ -401,6 +400,7 @@
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
             'usecsp'        => ['USECSP', FALSE, FALSE, 'bool'],
+            'reportcsp'     => ['REPORTCSP', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -671,7 +671,7 @@
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
-                    'csp-report'    => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, 1],
+                    'csp-report'    => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'home'          => [\Framework\SiteAction::TEMPLATE, '@content/index.twig', FALSE, 0, FALSE, 1],

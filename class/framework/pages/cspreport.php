@@ -25,8 +25,11 @@
  */
         public function handle(Context $context)
         {
-            $data = file_get_contents('php://input');  // get the JSON ereport
-            mail(Config::SYSADMIN, 'CSP Error Report', $data);
+            mail(Config::SYSADMIN, Config::SITENAME.' CSP Error Report',
+                 file_get_contents('php://input'), // get the JSON ereport
+                 'From: CSP Report <'.Config::SITENOREPLY.'>'.PHP_EOL);
+            header(\Framework\Web\StatusCodes::httpHeaderFor(\Framework\Web\StatusCodes::HTTP_NO_CONTENT));
+            exit;
             return ['', '', \Framework\Web\StatusCodes::HTTP_NO_CONTENT];
         }
     }

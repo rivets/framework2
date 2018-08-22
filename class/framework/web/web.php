@@ -371,6 +371,10 @@
                 {
                     $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                 }
+                if (\Config\Config::REPORTCSP)
+                {
+                    $csp .= ' report-uri: '.Context::getinstance()->local()->base().'/cspreport/;';
+                }
                 $this->addheader([
                     'Content-Security-Policy'   => $csp
                 ]);
