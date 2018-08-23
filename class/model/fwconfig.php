@@ -10,9 +10,6 @@
 /**
  * A class implementing a RedBean model for Page beans
  */
-/**
- * @var string   The type of the bean that stores roles for this page
- */
     class FWConfig extends \RedBeanPHP\SimpleModel
     {
 /**
