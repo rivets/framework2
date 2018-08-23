@@ -79,6 +79,10 @@
  */
         private $back;
 /**
+ * @var array           Config values from database
+ */
+        private $fwconfig       = [];
+/**set
  * See if there are any messages and add them into the Twig values
  * and then clear the messages array.
  *
@@ -297,6 +301,17 @@
         public function assetsdir()
         {
             return $this->basedir().DIRECTORY_SEPARATOR.'assets';
+        }
+/**
+ * Return a named config value
+ *
+ * @param string       $name  The name of the item
+ *
+ * @return string
+ */
+        public function config($name)
+        {
+            return $this->fwconfig[$name] ?? '';
         }
 /**
  * Initialise twig template engine
@@ -556,14 +571,14 @@
             { # looks like there is a database configured
                 \R::setup('mysql:host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
-                $twurls = [];
+                $this->fwconfig = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
-                    $twurls[$cnf->name] = $cnf;
+                    $this->fwconfig[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {
-                    $this->twig->addGlobal('fwurls', $twurls); # Package URL values for use in Twigs
+                    $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
                 }
 	    }
             return $this;
