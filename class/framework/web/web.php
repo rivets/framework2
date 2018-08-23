@@ -367,14 +367,14 @@
         public function setCSP($context)
         {
             $local = $context->local();
-            if ($local->config(usecsp))
+            if ($local->config('usecsp'))
             {
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
                     $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                 }
-                if ($local->config(reportcsp))
+                if ($local->config('reportcsp'))
                 {
                     $csp .= ' report-uri: '.$local->base().'/cspreport/;';
                 }
