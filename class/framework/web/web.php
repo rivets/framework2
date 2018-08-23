@@ -364,16 +364,17 @@
  */
         public function setCSP()
         {
-            if (\Config\Config::USECSP)
+            $local = Context::getinstance()->local();
+            if ($local->config(usecsp))
             {
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
                     $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                 }
-                if (\Config\Config::REPORTCSP)
+                if ($local->config(reportcsp))
                 {
-                    $csp .= ' report-uri: '.Context::getinstance()->local()->base().'/cspreport/;';
+                    $csp .= ' report-uri: '.$local->base().'/cspreport/;';
                 }
                 $this->addheader([
                     'Content-Security-Policy'   => $csp
