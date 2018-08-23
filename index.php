@@ -111,7 +111,7 @@
     if ($tpl !== '')
     { # an empty template string means generate no output here...
         $html = $local->getrender($tpl);
-        $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.
+        $csp->setCSP($context); // set up CSP Header in use : rendering the page may have generated new hashcodes.
         $context->web()->sendstring($html, $mime, $code);
     }
     else if ($code != StatusCodes::HTTP_OK);

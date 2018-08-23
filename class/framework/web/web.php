@@ -360,11 +360,13 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
+ * @param object   $context    The context object
+ *
  * @return void
  */
-        public function setCSP()
+        public function setCSP($context)
         {
-            $local = Context::getinstance()->local();
+            $local = $context->local();
             if ($local->config(usecsp))
             {
                 $csp = '';

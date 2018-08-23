@@ -61,11 +61,13 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
+ * @param object   $context    The context object
+ *
  * @return void
  */
-        public function setCSP()
+        public function setCSP($context)
         {
-            \Framework\Context::getinstance()->web()->setCSP();
+            \Framework\Context::getinstance()->web()->setCSP($context);
         }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
