@@ -20,9 +20,13 @@
  */
         private $headers    = [];
 /**
- * @var array   Holds hash calues that need to be added to CSP headers.
+ * @var array   Holds values that need to be added to CSP headers.
  */
         private $csp        = [];
+/**
+ * @var array   Holds values that need to be removed from CSP headers.
+ */
+        private $nocsp      = [];
 /**
  * Generate a Location header
  *
@@ -355,6 +359,18 @@
             $this->csp[$type][] = $string;
         }
 /**
+ * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
+ *
+ * @param string  $type    What the item is for (script-src, css-src etc.)
+ * @param string  $string  The item to add
+ *
+ * @return void
+ */
+        public function removeCSP($type, $string)
+        {
+            $this->nocsp[$type][] = $string;
+        }
+/**
  * Set up default CSP headers for a page
  *
  * There will be a basic set of default CSP permissions for the site to function,
@@ -372,7 +388,14 @@
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
                 {
-                    $csp .= ' '.$key.' '.$val.(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
+                    if (isset($this->nocsp[$key]))
+                    {
+                        $val = array_diff($val, $this->nocsp[$key]);
+                    }
+                    if (!empty($val))
+                    {
+                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
+                    }
                 }
                 if ($local->config('reportcsp')->value)
                 {
@@ -386,7 +409,7 @@
 /**
  * Check a recaptcha value
  *
- * This assumes that file_get_contetns 
+ * This assumes that file_get_contetns
  *
  * @param string    $secret  The recaptcha secret for this site
  *

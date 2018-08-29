@@ -269,7 +269,7 @@
         $host = 'localhost.org';
         break;
     }
-    
+
     $beans = [
         'config',
         'confirm',
@@ -301,13 +301,13 @@
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
     ];
-    
+
     $fwcsp = [
-        'default-src'   => '\'self\'',
-        'font-src'      =>'\'self\' use.fontawesome.com',
-        'img-src'       => '\'self\' data:',
-        'script-src'    => '\'self\' stackpath.bootstrapcdn.com cdnjs.cloudflare.com code.jquery.com',
-        'style-src'     => '\'self\' use.fontawesome.com stackpath.bootstrapcdn.com',
+        'default-src'   => ["self"],
+        'font-src'      => ["self", 'use.fontawesome.com'],
+        'img-src'       => ["self", 'data:'],
+        'script-src'    => ["self", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com'],
+        'style-src'     => ["self", 'use.fontawesome.com', 'stackpath.bootstrapcdn.com'],
     ];
 /*
  * See if we have a sendmail setting in the php.ini file
@@ -529,7 +529,7 @@
         public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
             {
-                fputs($fd, "                '".$key."' => \"".$val.'",'.PHP_EOL);
+                fputs($fd, "                '".$key."' => [\"".implode('", "', $val).'"],'.PHP_EOL);
             }
             fputs($fd, '        ];'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.'?>');
