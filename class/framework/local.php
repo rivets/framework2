@@ -9,6 +9,7 @@
 
     use Config\Config as Config;
     use Framework\Web\Web as Web;
+    use Framework\Web\StatusCodes as StatusCodes;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -50,6 +51,10 @@
  * @var	boolean		If TRUE then we are doing debugging
  */
         private $debug		= FALSE;
+/**
+ * @var boolean         If TRUE then we are handling an error
+ */
+        private $error          = FALSE;
 /**
  * @var	boolean		If TRUE then we are in developer mode
  */
@@ -108,7 +113,8 @@
  */
         private function telladmin($msg, $type, $file, $line)
         {
-            $ekey = $file.'/'.$line.'/'.$type.'/'.$msg;
+            $this->error = TRUE; // flag that we are handling an error
+            $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
             if (!isset($this->senterrors[$ekey]))
             {
                 if (isset($_GET['fwtrace']))
@@ -153,8 +159,7 @@
                         'There has been an internal error');
                     if (is_object($this->twig))
                     { # we have twig so render a nice page
-                        $this->addval('message', $str);
-                        Web::getinstance()->sendstring($this->getrender('@error/500.twig'), Web::HTMLMIME);
+                        Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
                     { # no twig so just dump
@@ -163,7 +168,7 @@
                 }
                 else
                 {
-                    header('HTTP/1.1 500 Internal Server Error');
+                    header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
                 }
             }
         }
@@ -201,6 +206,10 @@
  */
         public function exception_handler($e)
         {
+            if ($this->error)
+            { // try and ignore errors within errors
+                return;
+            }
             $ekey = $this->telladmin(
                 $e->getMessage().' ',
                 get_class($e),
@@ -230,6 +239,10 @@
             if ($this->errignore)
             { # wanted to ignore this so just return
                 $this->wasignored = TRUE; # remember we did ignore though
+                return TRUE;
+            }
+            if ($this->error)
+            { // already handling an error so just carry on
                 return TRUE;
             }
             $ekey = $this->telladmin(
