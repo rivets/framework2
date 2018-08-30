@@ -413,7 +413,7 @@
  *
  * @param string    $secret  The recaptcha secret for this site
  *
- * @return array
+ * @return boolean
  */
         public function recaptcha($secret)
         {
