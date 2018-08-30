@@ -122,45 +122,40 @@
                 break;
 
             case 'update':
-                $ufd = fopen('https://catless.ncl.ac.uk/framework/update/', 'r');
-                if ($ufd)
-                {
-                    $updated = [];
-                    $upd = json_decode(fread($ufd, 1024));
-                    if (isset($upd->config))
-                    { // now see if there are any config values that need updating.
-                        foreach ($upd->config as $cname => $cdata)
+                $updated = [];
+                $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
+                if (isset($upd->fwconfig))
+                { // now see if there are any config values that need updating.
+                    foreach ($upd->fwconfig as $cname => $cdata)
+                    {
+                        $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
+                        if (is_object($lval))
                         {
-                            $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
-                            if (is_object($lval))
-                            {
-                                if ($lval->local == 0 && $lval->value != $cdata['value'])
-                                { // update if not locally set and there is a new value
-                                    foreach ($cdata as $k => $v)
-                                    {
-                                        $lval->$k = $v;
-                                    }
-                                    \R::store($lval);
-                                    $updated[$cname] = $cdata['value'];
-                                }
-                            }
-                            else
-                            {
-                                $lval = \R::dispense('fwconfig');
-                                $lval->name = $cname;
-                                $lval->local = 0;
+                            if ($lval->local == 0 && $lval->value != $cdata->value)
+                            { // update if not locally set and there is a new value
                                 foreach ($cdata as $k => $v)
                                 {
                                     $lval->$k = $v;
                                 }
                                 \R::store($lval);
-                                $updated[$cname] = $cdata['value'];
+                                $updated[$cname] = $cdata->value;
                             }
+                        }
+                        else
+                        {
+                            $lval = \R::dispense('fwconfig');
+                            $lval->name = $cname;
+                            $lval->local = 0;
+                            foreach ($cdata as $k => $v)
+                            {
+                                $lval->$k = $v;
+                            }
+                            \R::store($lval);
+                            $updated[$cname] = $cdata['value'];
                         }
                     }
                     $context->local()->addval('version', $upd->version);
                     $context->local()->addval('updated', $updated);
-                    fclose($ufd);
                     $context->local()->addval('current', trim(file_get_contents($context->local()->makebasepath('version.txt'))));
                 }
                 else
