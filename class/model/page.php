@@ -31,10 +31,6 @@
             'mobileonly'    => [TRUE, TRUE],
             'needlogin'     => [TRUE, TRUE],
         ];
-/**
- * @var Holds the CSRF var for the edit form
- */
-        private static $csrf = NULL;
 
         use \ModelExtend\FWEdit;
 /**
@@ -305,10 +301,6 @@
  */
         public function startEdit($context)
         {
-            if (!is_object(self::$csrf))
-            {
-                self::$csrf = new \Framework\Utility\CSRFGuard;
-            }
         }
 /**
  * Return the CSRFGuard inputs for inclusion in a form;
@@ -317,7 +309,7 @@
  */
         public function guard()
         {
-            return self::$csrf->inputs();
+            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle an edit form for this page

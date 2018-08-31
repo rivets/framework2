@@ -81,6 +81,7 @@
                         { # something odd...
                             throw new \Exception('Oddness');
                         }
+                        \Framework\Utility\CSRFGuard::getinstance()->check();
                         list($error, $emess) = $obj->edit($context); // handle the edit result
                         if ($error)
                         {

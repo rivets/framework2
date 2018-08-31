@@ -17,6 +17,8 @@
  */
     class CSRFGuard
     {
+        use \Framework\Utility\Singleton;
+
         const STRENGTH  = 64;
         const NAME      = 'CSRFName';
         const TOKEN     = 'CSRFToken';
@@ -75,27 +77,39 @@
             return '<input type="hidden" name="'.self::NAME.'" value="'.$grd[0].'"/><input type="hidden" name="'.self::TOKEN.'" value="'.$grd[1].'"/>';
         }
 /**
- * A constructor for a CSRF object
+ * Check a form
  *
- * @param integer    $type  Defaults to INPUT_POST, but could be INPUT_GET, however support for GETs is not in yet
- * @todo fix support for GETs
+ * @param integer    $type  Defaults to INPUT_POST, but could be INPUT_GET
  *
  * @throws Exception when CSRFName is expected and not found
  * @throws Exception when token or name is not as stored in session
  */
-	public function __construct($type = INPUT_POST)
+	public function check($type = INPUT_POST)
 	{
-	    if ($_SERVER['REQUEST_METHOD'] == 'POST')
-	    {
-		if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
-		{
-		    throw \Exception('No CSRF Name found, probable invalid request.');
-		}
-		if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
-		{
-		    throw \Exception('Invalid CSRF token');
-		}
+            switch ($type)
+            {
+            case INPUT_POST:
+                if (!$_SERVER['REQUEST_METHOD'] == 'POST')
+                {
+                    return;
+                }
+                break;
+            case INPUT_GET;
+                if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET))
+                {
+                    break;
+                }
+            default:
+                return;
 	    }
+            if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
+            {
+                throw \Exception('No CSRF Name found, probable invalid request.');
+            }
+            if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
+            {
+                throw \Exception('Invalid CSRF token');
+            }
 	}
     }
 ?>

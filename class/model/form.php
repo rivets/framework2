@@ -41,10 +41,6 @@
             'readonly'      => ['Readonly', FALSE, 0x08],
             'required'      => ['Required', FALSE, 0x10],
         ];
-/**
- * @var Holds the CSRF var for the edit form
- */
-        private static $csrf = NULL;
 
         use \ModelExtend\FWEdit;
 /**
@@ -98,10 +94,6 @@
         public function startEdit($context)
         {
             $context->local()->addval('flags', self::$flags);
-            if (!is_object(self::$csrf))
-            {
-                self::$csrf = new \Framework\Utility\CSRFGuard;
-            }
         }
 /**
  * Return the CSRFGuard inputs for inclusion in a form;
@@ -110,7 +102,7 @@
  */
         public function guard()
         {
-            return self::$csrf->inputs();
+            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle a form edit
