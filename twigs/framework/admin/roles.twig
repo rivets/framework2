@@ -40,7 +40,7 @@
 	    return
 	}
 	$('#nrole').modal('hide')
-	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb fas fa-trash-alt"></i></td></tr>'
+	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>'
 	var nx
 	if (sp == null)
 	{
@@ -105,7 +105,7 @@
                         <tr data-id="{{r.id}}">
                             <td class="rname">{{r.name}}</td>
                             <td>{{f.tick(r.fixed, 'fixed')}}</td>
-                            <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb fas fa-trash-alt"></i>{% endif %}</td>
+                            <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
                         </tr>
                     {% else %}
                     <tr><td colspan="3">No roles defined</td></tr>

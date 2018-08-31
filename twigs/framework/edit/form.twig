@@ -103,7 +103,7 @@
 
 {% block header %}
     <section class="col-md-12 mt-5">
-        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}"><i class="viewb fas fa-eye"></i></a></h1>
+        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}"><i class="viewb far fa-eye"></i></a></h1>
     </section>
 {% endblock header %}
 
@@ -155,7 +155,7 @@
                                     <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
                                     <td>{{f.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
                                     <td>{{f.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
-                                    <td rowspan="3"><i class="fas fa-trash-alt delb"></i></td>
+                                    <td rowspan="3"><i class="far fa-trash-alt delb"></i></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>

@@ -40,7 +40,7 @@
 	    return
 	}
 	$('#ncontext').modal('hide')
-	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb fas fa-trash-alt"></i></td></tr>'
+	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>'
 	var nx
 	if (sp == null)
 	{
@@ -105,7 +105,7 @@
                     <tr data-id="{{c.id}}">
                         <td class="cname">{{c.name}}</td>
                         <td>{{f.tick(c.fixed, 'fixed')}}</td>
-                        <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb fas fa-trash-alt"></i>{% endif %}</td>
+                        <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
                     </tr>
                     {% else %}
                         <tr><td colspan="3">No contexts defined</td></tr>

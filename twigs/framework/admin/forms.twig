@@ -29,9 +29,9 @@
 	        '<td>' + data.action + '</td>' +
 	        '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
 	        '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
-		'<td title="View"><i class="viewb fas fa-eye"></i></td>' +
-		'<td title="Edit"><i class="editb fas fa-edit"></i></td>' +
-		'<td><i class="delb fas fa-trash-alt"></i></td></tr>'
+		'<td title="View"><i class="viewb far fa-eye"></i></td>' +
+		'<td title="Edit"><i class="editb far fa-edit"></i></td>' +
+		'<td><i class="delb far fa-trash-alt"></i></td></tr>'
 	    )
 	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
 	}).fail(function(){
@@ -87,9 +87,9 @@
                         <td>{{u.class}}</td>
                         <td>{{u.method == 1 ? 'GET' : 'POST'}}</td>
                         <td>{{f.tick(u.multipart)}}</td>
-                        <td title="View"><i class="viewb fas fa-eye"></i></td>
-                        <td title="Edit"><i class="editb fas fa-edit"></i></td>
-                        <td title="Delete"><i class="delb fas fa-trash-alt"></i></td>
+                        <td title="View"><i class="viewb far fa-eye"></i></td>
+                        <td title="Edit"><i class="editb far fa-edit"></i></td>
+                        <td title="Delete"><i class="delb far fa-trash-alt"></i></td>
                     </tr>
                     {% else %}
                         <tr><td colspan="4">No forms defined</td></tr>
