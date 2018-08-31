@@ -1,5 +1,4 @@
 <?php
-    namespace Framework\Utility;
 /**
  * A class to generate and handling CSRF prevention tokens.
  *
@@ -12,6 +11,7 @@
  *
  * ****************** NB This is just me playing around at the moment!!!! Not tested at all *******************
  */
+    namespace Framework\Utility;
 /**
  * Contains definition of CRSFGuard class
  */

@@ -87,7 +87,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context*
+ * @param object    $context The context object
  * 
  * @return void
  */
@@ -111,7 +111,7 @@
 /**
  * Handle a form edit
  *
- * @param object    $context
+ * @param object    $context  The context object
  *
  * @return void
  */
