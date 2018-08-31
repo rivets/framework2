@@ -290,7 +290,7 @@
         'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', 1, 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['//use.fontawesome.com/releases/v5.3.1/css/all.css', 1, 'sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU', 'anonymous', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.3.1/css/all.css', 1, 'sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU', 'anonymous', 0, 0, 'css'],
 // JS
         'jquery'       => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, 'sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', 'anonymous', 0, 0, 'js'],
         'jqueryslim'     => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'anonymous', 0, 0, 'js'],
