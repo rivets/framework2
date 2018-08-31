@@ -30,7 +30,7 @@
 {% macro xsl(opts, cls) %}{% import _self as fx %}<div class="{{cls}}">{% if opts.label != '' %}    <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}{% endmacro xsl %}
 
 {% macro bse(opts) %}
-{% if opts.help != '' %}<small id="{{opts.id}}Help" class="form-text text-muted">{{opts.help}}</small>{% endif %}
+{% if opts.help != '' %}<small id="{{opts.id}}Help" class="form-text text-muted">{{opts.help|raw}}</small>{% endif %}
 </div>
 {% endmacro bse%}
 
