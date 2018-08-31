@@ -18,6 +18,8 @@
     class CSRFGuard
     {
         const STRENGTH  = 64;
+        const NAME      = 'CSRFName';
+        const TOKEN     = 'CSRFToken';
 /**
  * Generate unique token
  *
@@ -35,7 +37,7 @@
 	    return $token;
 	}
 /**
- * Generate unique token
+ * Validate token
  *
  * @param string	$uname		The name to be used for storing the token into the Session data
  * @param string	$tocheck	The token to be compared with what is stored
@@ -63,22 +65,35 @@
 	    return [$name,  $this->maketoken($name)];
 	}
 /**
+ * Return HTML inputs for CSRF
+ *
+ * @return string
+ */
+        public function inputs()
+        {
+            $grd = $this->generate();
+            return '<input type="hidden" name="'.self::NAME.'" value="'.$grd[0].'"/><input type="hidden" name="'.self::TOKEN.'" value="'.$grd[1].'"/>';
+        }
+/**
  * A constructor for a CSRF object
+ *
+ * @param integer    $type  Defaults to INPUT_POST, but could be INPUT_GET, however support for GETs is not in yet
+ * @todo fix support for GETs
  *
  * @throws Exception when CSRFName is expected and not found
  * @throws Exception when token or name is not as stored in session
  */
-	public function __construct()
+	public function __construct($type = INPUT_POST)
 	{
-	    if (!empty($_POST))
+	    if ($_SERVER['REQUEST_METHOD'] == 'POST')
 	    {
-		if (!isset($_POST['CSRFName']) || !isset($_POST['CSRFToken']) )
+		if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
 		{
-		    throw Exception('No CSRFName found, probable invalid request.');
+		    throw \Exception('No CSRF Name found, probable invalid request.');
 		}
-		if (!$this->validate($_POST['CSRFName'], $_POST['CSRFToken']))
+		if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
 		{
-		    throw Exception('Invalid CSRF token');
+		    throw \Exception('Invalid CSRF token');
 		}
 	    }
 	}

@@ -113,6 +113,7 @@
         <article class="col-md-12">
             <form id="addform" action="#" method="post">
                 {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
                 <fieldset>
                     <legend>Form details</legend>
                         {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}

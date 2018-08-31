@@ -41,6 +41,7 @@
         <article class="ml-auto col-md-10 mr-auto">
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
                 <fieldset>
                     <legend>Page Name</legend>
                     {{f.text({ label: 'Name', id: 'ln', name: 'name', value: bean.name, required: TRUE})}}

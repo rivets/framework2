@@ -41,6 +41,7 @@
         <article class="offset-md-1 col">
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
                 <fieldset>
                     <legend>Login details</legend>
                     {{f.text({ label: 'Login', id: 'ln', name: 'login', value: bean.login, readonly: true })}}

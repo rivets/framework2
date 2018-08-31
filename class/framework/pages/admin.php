@@ -73,6 +73,8 @@
                         throw new \Exception('Not Editable');
                     }
                     $obj = $context->load($kind, $rest[2]);
+                    $context->local()->addval('bean', $obj);
+                    $obj->startEdit($context); // do any special setup that the edit requires
                     if (($bid = $context->formdata()->post('bean', '')) !== '')
                     { // this is a post
                         if ($bid != $obj->getID())
@@ -92,8 +94,6 @@
                     $context->web()->bad();
                     /* NOT REACHED */
                 }
-                $context->local()->addval('bean', $obj);
-                $obj->startEdit($context); // do any soecial setup that the edit requires
                 $tpl = '@edit/'.$kind.'.twig';
                 break;
 

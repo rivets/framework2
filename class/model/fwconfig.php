@@ -23,6 +23,10 @@
             'async'       => [FALSE, TRUE],
             'type'        => [TRUE, FALSE],
         ];
+/**
+ * @var Holds the CSRF var for the edit form
+ */
+        private static $csrf = NULL;
 
         use \ModelExtend\FWEdit;
 /**
@@ -53,12 +57,25 @@
 /**
  * Setup for an edit
  *
- * @param object    $context    The context object
+ * @param object    $context   The context object
  * 
  * @return void
  */
         public function startEdit($context)
         {
+            if (!is_object(self::$csrf))
+            {
+                self::$csrf = new \Framework\Utility\CSRFGuard;
+            }
+        }
+/**
+ * Return the CSRFGuard inputs for inclusion in a form;
+ * 
+ * @return string
+ */
+        public function guard()
+        {
+            return self::$csrf->inputs();
         }
 /**
  * Handle an edit form for this fwconfig item
