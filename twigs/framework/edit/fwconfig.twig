@@ -48,7 +48,9 @@
                     {{f.select({label : 'Type', name: 'type', required: TRUE, selected: bean.type,
                         options: [
                             { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                            { value: 'boolean', text: 'boolean' },
                             { value: 'css', text: 'css' },
+                            { value: 'integer', text: 'integer' },
                             { value: 'js', text: 'js' },
                             { value: 'string', text: 'string' },
                         ]
