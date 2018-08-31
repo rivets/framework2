@@ -41,8 +41,8 @@
                 <fieldset>
                     <legend>Login details</legend>
                     {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
-                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity})}}
-                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin})}}
+                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, help: 'The hashcode value for the integrity attribute for URLs'})}}
+                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, help:'Valid values are <i>anonymous</i> or <i>use-credentials</i>'})}}
                     {{f.checkbox({group: TRUE, names: ['defer'], values:[1], check: [bean.defer], labels: ['Defer']})}}
                     {{f.checkbox({group: TRUE, names: ['async'], values:[1], check: [bean.async], labels: ['Async']})}}
                     {{f.select({label : 'Type', name: 'type', required: TRUE, selected: bean.type,
