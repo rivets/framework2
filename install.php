@@ -418,8 +418,15 @@
             }
             elseif ($cvars[$v][2])
             { // that variable must be present
-                header('HTTP/1.1 400 Bad Request');
-                exit;
+                if ($cvars[$v][3] == 'bool')
+                {
+                    $cvalue[$v] = 0;
+                }
+                else
+                {
+                    header('HTTP/1.1 400 Bad Request');
+                    exit;
+                }
             }
         }
         $direrr = [];
