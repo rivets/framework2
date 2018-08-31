@@ -12,10 +12,14 @@
  */
     class Form extends \RedBeanPHP\SimpleModel
     {
+/**
+ * @var METHOD options for forms
+ */
         private static $methods     = ['', 'GET', 'POST'];
+/**
+ * @var Attributes for inputs
+ */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
-        
-        private $lcount             = 1;
 /**
  * @var array   Key is name of field and the array contains flags for checks
  */
@@ -153,11 +157,12 @@
 /**
  * Render a form
  *
+ * @param array    $values Values to enter into form
+ *
  * @return string
  */
         public function render($values = [])
         {
-            $this->lcount = 1;
             $form = '<form action="'.
                 ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
                 ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').'" '.
@@ -261,6 +266,8 @@
         }
 /**
  * Add a form
+ *
+ * @param object    $context  The context object
  *
  * @return void
  */
