@@ -5,7 +5,7 @@
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
   * @copyright 2012-2018 Newcastle University
   */
-    namespace Framework\Pages;
+    namespace \Pages;
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
