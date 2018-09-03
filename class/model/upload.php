@@ -30,7 +30,7 @@
  * @param boolean	$public		If TRUE then store in the public directory
  * @param object	$owner		The user who owns the upload. If NULL then  the currently logged in user
  */
-	public function savefile($context, $da, $public, $owner = NULL)
+	public function savefile($context, array $da, bool $public, $owner = NULL)
 	{
 	    if ($da['size'] == 0 || $da['error'] != UPLOAD_ERR_OK)
 	    { # 0 length file or there was an error so ignore
@@ -75,8 +75,13 @@
  * Make a directory if necessary and cd into it
  *
  * @param string    $dir The directory name
+ *
+ * @throws Cannot mkdir
+ * @throws Cannot chdir
+ *
+ * @return void
  */
-        private static function mkch($dir)
+        private static function mkch(string $dir)
         {
             if (!file_exists($dir))
             {

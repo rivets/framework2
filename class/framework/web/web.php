@@ -55,7 +55,7 @@
 /**
  * output a header and msg - this never returns
  *
- * @param number	$code	The return code
+ * @param integer	$code	The return code
  * @param string	$msg	The message (or '')
  */
         private function sendhead($code, string $msg)

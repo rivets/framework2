@@ -69,7 +69,7 @@
  *
  * @return void
  */
-        public function setpw($pw)
+        public function setpw(string $pw)
         {
             $this->bean->password = password_hash($pw, PASSWORD_DEFAULT);
             \R::store($this->bean);
@@ -81,7 +81,7 @@
  *
  * @return boolean
  */
-        public function pwok($pw)
+        public function pwok(string $pw)
         {
             return password_verify($pw, $this->bean->password);
         }
@@ -103,10 +103,10 @@
  *
  * @return string
  */
-	public function maketoken($device = '')
+	public function maketoken(string $device = '')
 	{
 	    $token = (object)['iss' => \Config\Config::SITEURL, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
-	    return JWT::encode($token, \Framework\Context::KEY);
+	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
 	}
 /**
  * Setup for an edit

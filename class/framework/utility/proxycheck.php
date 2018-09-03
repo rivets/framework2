@@ -26,7 +26,7 @@
  *
  * @return array
  */
-        public static function check($key, $ip, $options, $tag = '')
+        public static function check(string $key, string $ip, array $options, string $tag = '')
         {          
             // Check if they have enabled the blocked country feature by providing countries.
             if (!empty($options['countries']))

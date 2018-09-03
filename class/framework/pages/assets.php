@@ -112,7 +112,7 @@
  *
  * @return boolean
  */
-	public function checkmodtime($time)
+	public function checkmodtime(string $time)
 	{
 	    return $this->mtime > $time;
 	}

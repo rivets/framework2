@@ -150,7 +150,7 @@
  *
  * @return boolean
  */
-        public function checkmodtime($time)
+        public function checkmodtime(string $time)
         {
             return $time == $this->mtime;
         }
@@ -165,7 +165,7 @@
  *
  * @return boolean
  */
-        public function checketag($tag)
+        public function checketag(string $tag)
         {
             return $tag == $this->mtime;
         }
