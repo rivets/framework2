@@ -229,8 +229,8 @@
         while (!is_link($sdn) && $sdn != '/')
         {
             $pp = pathinfo($sdn);
-            array_unshift($sdr, $pp['basename']);
             $sdn = $pp['dirname'];
+            $sdr[] = $pp['basename'];
         }
         if (is_link($sdn))
         { # not a symbolic link clearly.
