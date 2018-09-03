@@ -244,10 +244,10 @@
     }
     $bdr = [];
     while ($dn != $sdir)
-    {
+    { // go backwards till we get to document root
         $pp = pathinfo($dn);
         $dn = $pp['dirname'];
-        array_unshift($bdr, $pp['basename']);
+        $bdr[] = $pp['basename'];
     }
     if (empty($bdr))
     {
