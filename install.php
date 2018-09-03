@@ -672,7 +672,7 @@
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
-                    'contact'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Contact', FALSE, 0, FALSE, 1],
+                    'contact'       => [\Framework\SiteAction::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'cspreport'    => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
