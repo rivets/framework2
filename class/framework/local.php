@@ -24,7 +24,7 @@
         const ERROR     = 0;        # 'errmessage';
         const WARNING   = 1;        # 'warnmessage';
         const MESSAGE   = 2;        # 'message';
-        
+
         private  static $msgnames  = ['errmessage', 'warnmessage', 'message'];
 /**
  * @var	string		The absolute path to the site directory
@@ -542,20 +542,25 @@
  */
         public function setup($basedir, $ajax, $devel, $loadtwig, $loadrb = TRUE)
         {
-#
-# For a fixed place production system you probably just want to replace all the directory munging with constants!
-#
-            $this->basepath = $basedir;
             $this->devel = $devel;
-        #    $bd = $basedir;
-        #    $bdr = [];
-        #    while ($bd != $_SERVER['DOCUMENT_ROOT'])
-        #    {
-        #	$pp = pathinfo($bd);
-        #	$bd = $pp['dirname'];
-        #	$bdr[] = $pp['basename'];
-        #    }
+            ini_set('zend.assertions', $devel ? '1' : '-1'); // enable assertions if in development mode
+            $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
+/*
+ * If you want to be able to move the system arbitrarily you will need
+ * the functionality of the next block of code.
+ *
+ * N.B. This will get confused if there are symbolic links in use!!!!!
+ */
+        //    $bd = $basedir;
+        //    $bdr = [''];
+        //    while ($bd != $_SERVER['DOCUMENT_ROOT'])
+        //    { // keep stripping of the last component until we get to the document root
+        //	$pp = pathinfo($bd);
+        //	$bd = $pp['dirname'];
+        //	$bdr[] = $pp['basename'];
+        //    }
+        //    $this->basedname = implode('/', $bdr);
             $this->ajax = $ajax;
  /*
  * Set up all the system error handlers
