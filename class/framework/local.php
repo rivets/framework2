@@ -111,7 +111,7 @@
  *
  * @return void
  */
-        private function telladmin(string $msg, int $type, string $file, int $line)
+        private function telladmin($msg, $type, $file, $line)
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
@@ -234,7 +234,7 @@
  *
  * @return boolean
  */
-        public function error_handler(int $errno, string $errstr, string $errfile, int $errline)
+        public function error_handler($errno, $errstr, $errfile, $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
