@@ -376,9 +376,17 @@
             foreach (getallheaders() as $k => $v)
             {
                 if (self::TOKEN === strtoupper($k))
-                {
-                    $tok = JWT::decode($v, self::KEY);
-                    $this->luser = $this->load('user', $tok->sub);
+                { // we have mobile authentication in use
+                    try
+                    {
+                        $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
+                        $this->luser = $this->load('user', $tok->sub, self::THROW);
+                    }
+                    catch (\Exception $e)
+                    { // token error of some kind so return no access.
+                        $this->web()->noaccess();
+                        /* NOT REACHED */
+                    }
                     $this->tokauth = TRUE;
                     break;
                 }
