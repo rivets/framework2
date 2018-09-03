@@ -543,6 +543,9 @@
         public function setup($basedir, $ajax, $devel, $loadtwig, $loadrb = TRUE)
         {
             $this->devel = $devel;
+/**
+ * @link http://php.net/manual/en/function.assert.php
+ */
             ini_set('zend.assertions', $devel ? '1' : '-1'); // enable assertions if in development mode
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
