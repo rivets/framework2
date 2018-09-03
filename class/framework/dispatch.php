@@ -11,6 +11,7 @@
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
+    use Support\Context as Context;
 
 /**
  * This class dispatches pages to the appropriate places
@@ -26,7 +27,7 @@
  *
  * @return void
  */
-        public function handle($context, string $action)
+        public function handle(Context $context, string $action)
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;

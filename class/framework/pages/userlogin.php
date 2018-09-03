@@ -9,7 +9,7 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
-    use \Framework\Context as Context;
+    use \Support\Context as Context;
     use \R as R;
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
@@ -36,7 +36,7 @@
  *
  * @return string
  */
-        private function makecode($context, $bn, string $kind)
+        private function makecode(Context $context, $bn, string $kind)
         {
             R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
@@ -56,7 +56,7 @@
  *
  * @return string
  */
-        private function sendconfirm($context, $bn)
+        private function sendconfirm(Context $context, $bn)
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
@@ -73,7 +73,7 @@
  *
  * @return string
  */
-        private function sendreset($context, $bn)
+        private function sendreset(Context $context, $bn)
         {
             $code = $this->makecode($context, $bn, 'P');
             mail($bn->email, 'Reset your '.Config::SITENAME.' password',
@@ -93,7 +93,7 @@
  *
  * @param object	$context	The context object for the site
  */
-        public function logout($context)
+        public function logout(Context $context)
         {
             $_SESSION = []; # Unset all the session variables.
 
@@ -120,7 +120,7 @@
  *
  * @return string	A template name
  */
-        public function login($context)
+        public function login(Context $context)
         {
             $local = $context->local();
             $local->addval('register', \Config\Config::REGISTER);
@@ -166,7 +166,7 @@
  *
  * @return string	A template name
  */
-        public function register($context)
+        public function register(Context $context)
         {
                 $fdt = $context->formdata();
             $login = $fdt->post('login', '');
@@ -223,7 +223,7 @@
  *
  * @return string	A template name
  */
-        public function confirm($context)
+        public function confirm(Context $context)
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
@@ -284,7 +284,7 @@
  *
  * @return string	A template name
  */
-        public function forgot($context)
+        public function forgot(Context $context)
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
@@ -378,7 +378,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $action = $context->action(); # the validity of the action value has been checked before we get here
             return $this->$action($context);

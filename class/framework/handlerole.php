@@ -8,6 +8,7 @@
     namespace Framework;
 
     use \Framework\Web\Web as Web;
+    use Support\Context as Context;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
  *
@@ -23,7 +24,7 @@
  *
  * @return object
  */
-        public function hasrole($rolecontextname, $rolename)
+        public function hasrole(string $rolecontextname, string $rolename)
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$rolecontextname]);
             if (!is_object($cname))
@@ -84,7 +85,7 @@
  *
  * @return object
  */
-        public function addrole($contextname, $rolename, $otherinfo, $start, $end = '')
+        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '')
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             if (!is_object($cname))
@@ -104,12 +105,12 @@
  * @param object	$rolecontext    Contextname
  * @param object	$rolename       Rolename
  * @param string	$otherinfo      Any other info that is to be stored with the role
- * @param string	$start		    A datetime
- * @param string	$end		    A datetime or ''
+ * @param string	$start		A datetime
+ * @param string	$end		A datetime or ''
  *
  * @return object
  */
-        public function addrolebybean($rolecontext, $rolename, $otherinfo, $start, $end = '')
+        public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '')
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
@@ -128,7 +129,7 @@
  *
  * @return array
  */
-        public function roles($all = FALSE)
+        public function roles(bool $all = FALSE)
         {
             if ($all)
             {
@@ -143,7 +144,7 @@
  *
  * @return void
  */
-        public function editroles($context)
+        public function editroles(Context $context)
         {
             $fdt = $context->formdata();
             $uroles = $this->roles();

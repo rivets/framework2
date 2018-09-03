@@ -39,7 +39,7 @@
  *
  * @return void
  */
-        private function adduser($context)
+        private function adduser(Context $context)
         {
             $now = $context->utcnow(); # make sure time is in UTC
             $fdt = $context->formdata();
@@ -68,7 +68,7 @@
  *
  * @return void
  */
-        private function addrolename($context)
+        private function addrolename(Context $context)
         {
             $p = R::dispense('rolename');
             $p->name = $context->formdata()->mustpost('name');
@@ -83,7 +83,7 @@
  *
  * @return void
  */
-        private function addrolecontext($context)
+        private function addrolecontext(Context $context)
         {
             $p = R::dispense('rolecontext');
             $p->name = $context->formdata()->mustpost('name');
@@ -101,7 +101,7 @@
  *
  * @return array
  */
-        private function restcheck($context, $count)
+        private function restcheck(Context $context, $count)
         {
             $values = [];
             $rest = $context->rest();
@@ -122,7 +122,7 @@
  *
  * @return void
  */
-        private function config($context)
+        private function config(Context $context)
         {
             $rest = $context->rest();
             list($name) = $this->restcheck($context, 1);
@@ -169,7 +169,7 @@
  *
  * @return void
  */
-        private function toggle($context)
+        private function toggle(Context $context)
         {
             $fdt = $context->formdata();
             $type = $fdt->mustpost('bean');
@@ -200,7 +200,7 @@
  *
  * @return void
  */
-        private function update($context)
+        private function update(Context $context)
         {
             $fdt = $context->formdata();
 
@@ -216,7 +216,7 @@
  *
  * @return void
  */
-        private function bean($context)
+        private function bean(Context $context)
         {
             $rest = $context->rest();
             $bean = $rest[1];
@@ -286,7 +286,7 @@
  *
  * @return void
  */
-        public function logincheck($context)
+        public function logincheck(Context $context)
         {
             if (($lg = $context->formdata()->get('login', '')) !== '')
             { # this is a parsley generated username check call
@@ -304,7 +304,7 @@
  *
  * @return void
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call

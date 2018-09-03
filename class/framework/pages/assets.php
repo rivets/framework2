@@ -9,7 +9,7 @@
     namespace Framework\Pages;
 
     use \Framework\Web\Web as Web;
-    use \Framework\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * Handle all the cacheing stuff and maybe return a file
@@ -47,7 +47,7 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{
 	    chdir($context->local()->assetsdir());
 

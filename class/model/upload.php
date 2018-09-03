@@ -7,6 +7,7 @@
  *
  */
     namespace Model;
+    use Support\Context as Context;
 /**
  * Upload table stores info about files that have been uploaded...
  */
@@ -30,7 +31,7 @@
  * @param boolean	$public		If TRUE then store in the public directory
  * @param object	$owner		The user who owns the upload. If NULL then  the currently logged in user
  */
-	public function savefile($context, array $da, bool $public, $owner = NULL)
+	public function savefile(Context $context, array $da, bool $public, $owner = NULL)
 	{
 	    if ($da['size'] == 0 || $da['error'] != UPLOAD_ERR_OK)
 	    { # 0 length file or there was an error so ignore

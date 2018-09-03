@@ -1,8 +1,7 @@
 <?php
     namespace Framework\Pages;
 
-    use \Framework\Context as Context;
-
+    use \Support\Context as Context;
 /**
  * A class that contains code to handle file data fetching requests related requests.
  *
@@ -50,7 +49,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $web = $context->web(); # it's used all over the place so grab it once
 

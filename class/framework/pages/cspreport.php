@@ -9,7 +9,7 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
-    use \Framework\Context as Context;
+    use \support\Context as Context;
 
 /**
  * A class that contains code to implement a contact page
@@ -23,7 +23,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             mail(Config::SYSADMIN, Config::SITENAME.' CSP Error Report',
                  file_get_contents('php://input'), // get the JSON ereport

@@ -7,6 +7,8 @@
  *
  */
     namespace Pages;
+
+    use Support\Context as Context;
 /**
  * Provide support for a nested static page structure
  */
@@ -19,7 +21,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $action = $context->action();
             $rest = $action.'/'.implode(DIRECTORY_SEPARATOR, $context->rest());

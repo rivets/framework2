@@ -8,7 +8,7 @@
     namespace Framework\Pages;
 
     use \Framework\Web\Web as Web;
-    use \Framework\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * A class that contains code to handle any /admin related requests.
@@ -26,7 +26,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $rest = $context->rest();
             switch ($rest[0])

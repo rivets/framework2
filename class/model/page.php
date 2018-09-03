@@ -40,7 +40,7 @@
  *
  * @return boolean
  */
-        public function check($context)
+        public function check(Context $context)
         {
             if ($this->bean->needlogin)
             {
@@ -69,7 +69,7 @@
  *
  * @return void
  */
-        private static function maketwig($context, $page, $name)
+        private static function maketwig(Context $context, $page, $name)
         {
             if (preg_match('%@content/(.*)%', $name, $m))
             {
@@ -194,7 +194,7 @@
  *
  * @return void
  */
-        public static function add($context)
+        public static function add(Context $context)
         {
             $fdt = $context->formdata();
             $p = \R::dispense('page');
@@ -247,6 +247,8 @@
  * A class that contains code to handle any requests for  /'.$p->name.'/
  */
      namespace '.$namespace.';
+
+     use \\Support\\Context as Context;
 /**
  * Support /'.$p->name.'/
  */
@@ -259,7 +261,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             return \'@content/'.$lbase.'.twig\';
         }
@@ -299,7 +301,7 @@
  * 
  * @return void
  */
-        public function startEdit($context)
+        public function startEdit(Context $context)
         {
         }
 /**
@@ -318,7 +320,7 @@
  *
  * @return array [TRUE if error, [error messages]]
  */
-        public function edit($context)
+        public function edit(Context $context)
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);

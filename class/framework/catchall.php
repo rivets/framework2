@@ -11,6 +11,7 @@
     namespace Framework;
 
     use Config\Config as Config;
+    use Support\Context as Context;
     use Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
 /**
@@ -28,7 +29,7 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{
 	    switch ($context->action())
 	    {

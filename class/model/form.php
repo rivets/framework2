@@ -7,6 +7,7 @@
  *
  */
     namespace Model;
+    use Support\Context as Context;
 /**
  * A class implementing a RedBean model for Form beans
  */
@@ -91,7 +92,7 @@
  * 
  * @return void
  */
-        public function startEdit($context)
+        public function startEdit(Context $context)
         {
             $context->local()->addval('flags', self::$flags);
         }
@@ -111,7 +112,7 @@
  *
  * @return void
  */
-        public function edit($context)
+        public function edit(Context $context)
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);
@@ -263,7 +264,7 @@
  *
  * @return void
  */
-        public static function add($context)
+        public static function add(Context $context)
         {
             $fdt = $context->formdata();
             $p = \R::dispense('form');

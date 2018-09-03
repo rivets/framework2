@@ -7,6 +7,7 @@
  *
  */
     namespace Model;
+    use Support\Context as Context;
 /**
  * A class implementing a RedBean model for Page beans
  */
@@ -32,7 +33,7 @@
  *
  * @return void
  */
-        public static function add($context)
+        public static function add(Context $context)
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');
@@ -57,7 +58,7 @@
  * 
  * @return void
  */
-        public function startEdit($context)
+        public function startEdit(Context $context)
         {
         }
 /**
@@ -76,7 +77,7 @@
  *
  * @return  array   [TRUE if error, [error messages]]
  */
-        public function edit($context)
+        public function edit(Context $context)
         {
             $emess = $this->dofields($context->formdata());
             return [!empty($emess), $emess];

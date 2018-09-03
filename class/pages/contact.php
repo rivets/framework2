@@ -9,7 +9,7 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
-    use \Framework\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * A class that contains code to implement a contact page
@@ -23,7 +23,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $fd = $context->formdata();
             if (($msg = $fd->post('message', '')) !== '')

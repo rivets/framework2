@@ -7,8 +7,7 @@
  */
     namespace Framework\Pages;
     
-    use \Framework\Context as Context;
-
+    use \Support\Context as Context;
 /**
  * Class for developer hacks and helpers...
  */
@@ -23,7 +22,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             if ($context->hasdeveloper())
             {

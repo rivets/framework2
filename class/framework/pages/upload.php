@@ -2,8 +2,7 @@
     namespace Framework\Pages;
 
     use \Config\Config as Config;
-    use \Framework\Context as Context;
-
+    use \Support\Context as Context;
 /**
  * A class that contains code to handle any /upload related requests.
  *
@@ -23,7 +22,7 @@
  *
  * @return string	A template name
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             $fd = $context->formdata();
             if ($fd->hasfile('uploads'))

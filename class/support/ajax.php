@@ -7,6 +7,8 @@
  *
  */
     namespace Support;
+
+    use Support\Context as Context;
 /**
  * Handles Ajax Calls.
  */
@@ -18,7 +20,7 @@
  *********  Make sure that you call the parent handle method for anything you are not handling yourself!! ***********
  */
 /*
-        public function yourop($context)
+        public function yourop(Context $context)
         {
             // your code
         }
@@ -30,7 +32,7 @@
  *
  * @return void
  */
-        public function handle($context)
+        public function handle(Context $context)
         {
             //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]); // TRUE if login needed, array is a list of roles required  in form ['context name', 'role name']
             parent::handle($context);

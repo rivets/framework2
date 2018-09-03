@@ -13,7 +13,7 @@
     use \Config\Config as Config;
     use \Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
-    use \Framework\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * The default behaviour when a page does not exist.
@@ -30,7 +30,7 @@
  *
  * @return string	A template name
  */
-	public function handle($context)
+	public function handle(Context $context)
 	{
 	    $tpl = '';
 	    switch ($context->action())

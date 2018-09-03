@@ -6,6 +6,7 @@
  * @copyright 2012-2015 Newcastle University
  */
     namespace Framework\Web;
+    use Support\Context as Context;
 /**
  * A class that handles various web related things.
  */
@@ -380,7 +381,7 @@
  *
  * @return void
  */
-        public function setCSP($context)
+        public function setCSP(Context $context)
         {
             $local = $context->local();
             if ($local->config('usecsp')->value)
