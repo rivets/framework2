@@ -36,7 +36,7 @@
  *
  * @return string
  */
-        private function makecode(Context $context, object $bn, $kind)
+        private function makecode($context, $bn, string $kind)
         {
             R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
@@ -56,7 +56,7 @@
  *
  * @return string
  */
-        private function sendconfirm(Context $context, object $bn)
+        private function sendconfirm($context, $bn)
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
@@ -73,7 +73,7 @@
  *
  * @return string
  */
-        private function sendreset(Context $context, object $bn)
+        private function sendreset($context, $bn)
         {
             $code = $this->makecode($context, $bn, 'P');
             mail($bn->email, 'Reset your '.Config::SITENAME.' password',
@@ -93,7 +93,7 @@
  *
  * @param object	$context	The context object for the site
  */
-        public function logout(Context $context)
+        public function logout($context)
         {
             $_SESSION = []; # Unset all the session variables.
 
@@ -120,7 +120,7 @@
  *
  * @return string	A template name
  */
-        public function login(Context $context)
+        public function login($context)
         {
             $local = $context->local();
             $local->addval('register', \Config\Config::REGISTER);
@@ -166,7 +166,7 @@
  *
  * @return string	A template name
  */
-        public function register(Context $context)
+        public function register($context)
         {
                 $fdt = $context->formdata();
             $login = $fdt->post('login', '');
@@ -223,7 +223,7 @@
  *
  * @return string	A template name
  */
-        public function confirm(Context $context)
+        public function confirm($context)
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
@@ -284,7 +284,7 @@
  *
  * @return string	A template name
  */
-        public function forgot(Context $context)
+        public function forgot($context)
         {
             if ($context->hasuser())
             { # logged in, so this stupid....

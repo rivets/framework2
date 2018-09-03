@@ -23,7 +23,7 @@
  *
  * @return string	A template name
  */
-        public function handle(Context $context)
+        public function handle($context)
         {
             mail(Config::SYSADMIN, Config::SITENAME.' CSP Error Report',
                  file_get_contents('php://input'), // get the JSON ereport

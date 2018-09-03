@@ -26,7 +26,7 @@
  *
  * @return string	A template name
  */
-        public function handle(Context $context)
+        public function handle($context)
         {
             $rest = $context->rest();
             switch ($rest[0])

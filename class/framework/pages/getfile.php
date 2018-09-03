@@ -50,7 +50,7 @@
  *
  * @return string	A template name
  */
-        public function handle(Context $context)
+        public function handle($context)
         {
             $web = $context->web(); # it's used all over the place so grab it once
 

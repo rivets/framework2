@@ -23,7 +23,7 @@
  *
  * @return string	A template name
  */
-        public function handle(Context $context)
+        public function handle($context)
         {
             $fd = $context->formdata();
             if ($fd->hasfile('uploads'))
