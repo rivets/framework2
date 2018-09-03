@@ -50,7 +50,7 @@
  *
  * @return mixed	A template name or an array [template name, mimetype, HTTP code]
  */
-	public function handle(Context $context)
+	public function handle($context)
 	{ # should never get called really
 	    $context->divert('/');
 	    /* NOT REACHED */
@@ -228,7 +228,7 @@
  *
  * @return boolean
  */
-	public function checkmodtime($time)
+	public function checkmodtime(string $time)
 	{
 	    return FALSE;
 	}
@@ -239,7 +239,7 @@
  *
  * @return boolean
  */
-	public function checketag($tag)
+	public function checketag(string $tag)
 	{
 	    return $tag === $this->makeetag();
 	}

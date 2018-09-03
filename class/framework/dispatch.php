@@ -26,7 +26,7 @@
  *
  * @return void
  */
-        public function handle($context, $action)
+        public function handle($context, string $action)
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;

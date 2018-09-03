@@ -34,7 +34,7 @@
  * 
  * @return void
  */
-        public static function show($str)
+        public static function show(string $str)
         {
             self::setup();
             fputs(self::$fd, $str."\n");
@@ -76,7 +76,7 @@
  *
  * @return void
  */
-        public static function head($str)
+        public static function head(string $str)
         {
             \Framework\Web::getinstance()->addheader('X-DEBUG-INFO', $str);
         }

@@ -26,7 +26,7 @@
  *
  * @return void     But this yields beans
  */
-        public function collect($bean, $where, array $params, $start, $count)
+        public function collect(string $bean, string $where, array $params, $start, $count)
         {
             if ($start !== '')
             {
@@ -49,7 +49,7 @@
  *
  * @return array
  */
-        public function fetch($bean, $where, array $params, $start, $count)
+        public function fetch(string $bean, string $where, array $params, $start, $count)
         {
             if ($start !== '')
             {
@@ -70,7 +70,7 @@
  *
  * @return integer
  */
-        public function count($bean, $where = '', array $params = [])
+        public function count(string $bean, string $where = '', array $params = [])
         {
             return \R::count($bean, $where, $params);
         }
@@ -84,7 +84,7 @@
  *
  * @return array
  */
-        public function users($start = '', $count = '', $order = '', $collect = FALSE)
+        public function users($start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('user', $order !== '' ? $order : ' order by login', [], $start, $count);
         }
@@ -98,7 +98,7 @@
  *
  * @return array
  */
-        public function pages($start = '', $count = '', $order = '', $collect = FALSE)
+        public function pages($start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('page', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
@@ -112,7 +112,7 @@
  *
  * @return array
  */
-        public function roles($start = '', $count = '', $order = '', $collect = FALSE)
+        public function roles($start = '', $count = '', string $order = '', $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('rolename', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
@@ -126,7 +126,7 @@
  *
  * @return array
  */
-        public function contexts($start = '', $count = '', $order = '', $collect = FALSE)
+        public function contexts($start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('rolecontext', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
@@ -140,7 +140,7 @@
  *
  * @return array
  */
-        public function siteconfig($start = '', $count = '', $order = '', $collect = FALSE)
+        public function siteconfig($start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('fwconfig', $order, [], $start, $count);
         }
@@ -154,14 +154,14 @@
  *
  * @return array
  */
-        public function forms($start = '', $count = '', $order = '', $collect = FALSE)
+        public function forms($start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             return $this->{$collect ? 'collect' : 'fetch'}('form', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
  * Get all users with a particular context/role
- * @param string    $rolecontext
- * @param string    $rolename
+ * @param mixed     $rolecontext
+ * @param mixed     $rolename
  * @param boolean   $all            If TRUE do not check if role is currentyl active
  * @param integer   $start      Start position - used for pagination
  * @param integer   $count      The number to be fetched - used for pagination
@@ -170,7 +170,7 @@
  *
  * @return array
  */
-        public function usersWith($rolecontext, $rolename, $all = FALSE, $start = '', $count = '', $order = '', $collect = '')
+        public function usersWith($rolecontext, $rolename, bool $all = FALSE, $start = '', $count = '', string $order = '', bool $collect = FALSE)
         {
             $context = Context::getinstance();
             $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();

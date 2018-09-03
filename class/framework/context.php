@@ -158,7 +158,9 @@
 	}
 /**
  * Check for logged in and 403 if not
- */
+  *
+  * @return void
+  */
         public function mustbeuser()
         {
             if (!$this->hasuser())
@@ -168,6 +170,8 @@
         }
 /**
  * Check for an admin and 403 if not
+ *
+ * @return void
  */
         public function mustbeadmin()
         {
@@ -178,6 +182,8 @@
         }
 /**
  * Check for an developer and 403 if not
+ *
+ * @return void
  */
         public function mustbedeveloper()
         {
@@ -198,7 +204,7 @@
  *
  * @return string
  */
-        public function newid($str = 'id')
+        public function newid(string $str = 'id')
         {
             $this->idgen += 1;
             return $str.$this->idgen;
@@ -210,7 +216,7 @@
  *
  * @return object
  */
-        public function rolename($name)
+        public function rolename(string $name)
         {
             if (!isset($this->roles[$name]))
             {
@@ -225,7 +231,7 @@
  *
  * @return object
  */
-        public function rolecontext($name)
+        public function rolecontext(string $name)
         {
             if (!isset($this->roles[$name]))
             {
@@ -237,11 +243,11 @@
  * Check to see if there is a session and return a specific value from it if it exists
  *
  * @param string	$var	The variable name
- * @param boolean	$fail	If TRUE then exit with an error returnif the value  does not exist
+ * @param boolean	$fail	If TRUE then exit with an error return if the value  does not exist
  *
  * @return mixed
  */
-        public function sessioncheck($var, $fail = TRUE)
+        public function sessioncheck(string $var, bool $fail = TRUE)
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
@@ -267,7 +273,7 @@
  *
  * @return void NEVER returns
  */
-        public function divert($where, $temporary = TRUE, $msg = '', $nochange = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
         {
             $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange);
         }
@@ -276,14 +282,14 @@
  * Load a bean or fail with a 400 error
  *
  * @param string	$bean	    A bean type name
- * @param integer	$id	        A bean id
- * @param integer   $onerror    A flag indicating what to do on error (see constants above)
+ * @param integer	$id	    A bean id
+ * @param integer       $onerror    A flag indicating what to do on error (see constants above)
  *
  * @throws  Exception when asked to by the "onerror" value
  *
  * @return object
  */
-        public function load($bean, $id, $onerror = self::R400)
+        public function load(string $bean, $id, $onerror = self::R400)
         {
             $foo = \R::load($bean, $id);
             if ($foo->getID() == 0)
@@ -348,7 +354,7 @@
  *
  * @return string
  */
-        public function utcdate($datetime)
+        public function utcdate(string $datetime)
         {
             return \R::isodatetime(strtotime($datetime) - date('Z'));
         }

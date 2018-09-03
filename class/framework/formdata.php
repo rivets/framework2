@@ -43,7 +43,7 @@
  *
  * @return boolean
  */
-        public function hasget($name)
+        public function hasget(string $name)
         {
             return filter_has_var(INPUT_GET, $name);
         }
@@ -54,7 +54,7 @@
  *
  * @return boolean
  */
-        public function haspost($name)
+        public function haspost(string $name)
         {
             return filter_has_var(INPUT_POST, $name);
         }
@@ -65,7 +65,7 @@
  *
  * @return boolean
  */
-        public function hascookie($name)
+        public function hascookie(string $name)
         {
             return filter_has_var(INPUT_COOKIE, $name);
         }
@@ -78,7 +78,7 @@
  *
  * @return boolean
  */
-        public function hasfile($name)
+        public function hasfile(string $name)
         {
             return isset($_FILES[$name]);
         }
@@ -128,7 +128,7 @@
  * @throws Exception
  * @return NULL
  */
-        private function failure($option, $message, $dflt = NULL)
+        private function failure($option, string $message, $dflt = NULL)
         {
             switch($option)
             {
@@ -191,7 +191,7 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param boolean	$fail	If TRUE then generate a 400 if the key does not exist in the array
+ * @param integer	$fail	What to do if not defined - constant defined in Context
  *
  * @return mixed
  */
@@ -245,7 +245,7 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string    $default    A default value
+ * @param string        $default    A default value
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -295,7 +295,7 @@
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param boolean	$fail	If TRUE then generate a 400 if the key does not exist in the array
+ * @param integer	$fail	What to do if not defined - constant defined in Context
  *
  * @return ArrayIterator
  */
@@ -345,7 +345,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param string	$name	The key
+ * @param mixed	$name	The key
  * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
@@ -373,7 +373,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param string	$name	The key
+ * @param mixed	$name	The key
  * @param mixed		$dflt	Returned if the key does not exist
  *
  * @return mixed
@@ -400,12 +400,12 @@
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
- * @param string    $name
+ * @param string     $name
  * @param boolean    $fail
  *
  * @return mixed
  */
-        public function mustcookie($name, $fail = Context::R400)
+        public function mustcookie(string $name, $fail = Context::R400)
         {
             if (filter_has_var(INPUT_COOKIE, $name))
             {
@@ -421,7 +421,7 @@
  *
  * @return mixed
  */
-        public function cookie($name, $dflt = '')
+        public function cookie(string $name, $dflt = '')
         {
             return filter_has_var(INPUT_COOKIE, $name) ? trim($_COOKIE[$name]) : $dflt;
         }
@@ -434,11 +434,11 @@
  * Make arrays of files work more like singletons
  *
  * @param string    $name
- * @param string    $key
+ * @param mixed     $key
  *
  * @return array
  */
-        public function filedata($name, $key = '')
+        public function filedata(string $name, $key = '')
         {
             $x = $_FILES[$name];
             if ($key !== '')
