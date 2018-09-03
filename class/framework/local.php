@@ -111,7 +111,7 @@
  *
  * @return void
  */
-        private function telladmin($msg, $type, $file, $line)
+        private function telladmin(string $msg, int $type, string $file, int $line)
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
@@ -148,7 +148,7 @@
  *
  * @return void
  */
-        private function make500($ekey)
+        private function make500(string $ekey)
         {
             if (!headers_sent())
             { # haven't generated any output yet.
@@ -234,7 +234,7 @@
  *
  * @return boolean
  */
-        public function error_handler($errno, $errstr, $errfile, $errline)
+        public function error_handler(int $errno, string $errstr, string $errfile, int $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -272,7 +272,7 @@
  *
  * @return boolean	The last value of the wasignored flag
  */
-        public function eignore($ignore)
+        public function eignore(bool $ignore)
         {
             $this->errignore = $ignore;
             $wi = $this->wasignored;
@@ -322,7 +322,7 @@
  *
  * @return string
  */
-        public function config($name)
+        public function config(string $name)
         {
             return $this->fwconfig[$name] ?? '';
         }
@@ -333,7 +333,7 @@
  *
  * @return void
  */
-        public function setuptwig($cache = FALSE)
+        public function setuptwig(bool $cache = FALSE)
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig_Loader_Filesystem($twigdir);
@@ -363,7 +363,7 @@
  *
  * @return void
  */
-        public function extendtwig($fn)
+        public function extendtwig(callable $fn)
         {
             $fn($this->twig);
         }
@@ -384,7 +384,7 @@
  *
  * @return string
  */
-        public function getrender($tpl, $vals = [])
+        public function getrender(string $tpl, array $vals = [])
         {
             if ($tpl === '')
             { // no template so no output
@@ -400,7 +400,7 @@
  * @param string	$tpl	The template
  * @param array	        $vals	Values to set for the twig
  */
-        public function render($tpl, $vals = [])
+        public function render(string $tpl, array $vals = [])
         {
             if ($tpl !== '')
             {
@@ -467,7 +467,7 @@
  *
  * @return void
  */
-        public function clearmessages($kind = '')
+        public function clearmessages(string $kind = '')
         {
             if ($kind === '')
             {
@@ -506,7 +506,7 @@
  *
  * @return string
  */
-        public function debase($url)
+        public function debase(string $url)
         {
             if ($this->base() !== '')
             {
@@ -540,7 +540,7 @@
  *
  * @return object
  */
-        public function setup($basedir, $ajax, $devel, $loadtwig, $loadrb = TRUE)
+        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE)
         {
             $this->devel = $devel;
             $this->basepath = $basedir;
