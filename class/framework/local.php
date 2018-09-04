@@ -341,7 +341,10 @@
             {
                 $loader->addPath($twigdir.'/framework/'.$tns, $tns);
             }
-            $loader->addPath($twigdir.'/content', 'content');
+            foreach (['content', 'surround'] as $tns)
+            {
+                $loader->addPath($twigdir.'/'.$tns, $tns);
+            }
             $this->twig = new \Twig_Environment(
                 $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
