@@ -13,14 +13,14 @@
 
 {% block body %}
     {% block navigation %}
-	{% include 'surround/navbar.twig' %}
+	{% include '@surround/navbar.twig' %}
     {% endblock navigation %}
 
     <div class="container">
         {% block pageheader %}
             <header class="row">
             {% block header %}
-                {% include 'surround/header.twig' %}
+                {% include '@surround/header.twig' %}
             {% endblock header %}
             </header>
         {% endblock pageheader %}
@@ -31,7 +31,7 @@
         {% block pagefooter %}
             <footer class="row">
             {% block footer %}
-                {% include 'surround/footer.twig' %}
+                {% include '@surround/footer.twig' %}
             {% endblock footer %}
             </footer>
         {% endblock pagefooter %}
