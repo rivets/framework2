@@ -290,7 +290,6 @@
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, Context::RDEFAULT);
         }
-
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
@@ -307,7 +306,6 @@
             }
             return $this->failure($fail, 'Missing post array');
         }
-
 /**
  * Look in the $_POST array for a key that is an array and return an
  ArrayIterator over it
@@ -321,7 +319,6 @@
         {
             return new \ArrayIterator(filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]) ? $_POST[$name] : $dflt);
         }
-
 /**
  * Look in the $_POST array for a key and  apply filters
  *
@@ -407,11 +404,7 @@
  */
         public function mustcookie(string $name, $fail = Context::R400)
         {
-            if (filter_has_var(INPUT_COOKIE, $name))
-            {
-                return trim($_COOKIE[$name]);
-            }
-            return $this->failure($fail, 'Missing cookie', '');
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
@@ -423,7 +416,48 @@
  */
         public function cookie(string $name, $dflt = '')
         {
-            return filter_has_var(INPUT_COOKIE, $name) ? trim($_COOKIE[$name]) : $dflt;
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, Context::RDEFAULT);
+        }
+/**
+ * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
+ *
+ * @param string	$name	The key
+ * @param integer	$fail	What to do if not defined - constant defined in Context
+ *
+ * @return ArrayIterator
+ */
+        public function mustcookiea($name, $fail = Context::R400)
+        {
+            if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
+            {
+                return new \ArrayIterator($_POST[$name]);
+            }
+            return $this->failure($fail, 'Missing cookie array');
+        }
+/**
+ * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
+ *
+ * @param string	$name	The key
+ * @param array		$dflt	Returned if the key does not exist
+ *
+ * @return ArrayIterator
+ */
+        public function cookiea($name, array $dflt = [])
+        {
+            return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
+        }
+/**
+ * Look in the $_POST array for a key and  apply filters
+ *
+ * @param string	$name		The key
+ * @param int		$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @return mixed
+ */
+        public function filtercookie($name, $filter, $options = '')
+        {
+            return filter_input(INPUT_COOKIE, $name, $filter, $options);
         }
 /*
  ******************************
