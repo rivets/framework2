@@ -114,7 +114,7 @@
         private function telladmin($msg, $type, $file, $line)
         {
             $this->error = TRUE; // flag that we are handling an error
-            $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
+            $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
             if (!isset($this->senterrors[$ekey]))
             {
                 if (isset($_GET['fwtrace']))
