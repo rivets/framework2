@@ -673,10 +673,10 @@
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
-                    'cspreport'    => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
+                    'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'home'          => [\Framework\SiteAction::TEMPLATE, '@content/index.twig', FALSE, 0, FALSE, 1],
+                    'home'          => [\Framework\SiteAction::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
                     'install.php'   => [\Framework\SiteAction::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
