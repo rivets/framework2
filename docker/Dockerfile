@@ -1,15 +1,4 @@
-# Start image :
-# docker run -d -p 80:80 -v /home/user/public_html:/var/www/html
-#
-# Open browser :
-# http://localhost
-#-----------------------------------------------------------------------
-
 FROM ubuntu:18.04
-#FROM debian
-
-LABEL maintainer="theboss@jeffprod.com"
-LABEL description="Apache / PHP for dev"
 
 ARG DEBIAN_FRONTEND=newt
 
@@ -24,8 +13,7 @@ php7.2-xml \
 php7.2-mbstring \
 php7.2-zip \
 mcrypt \
-mysql-server \
-postfix
+mysql-server
 
 VOLUME /var/www/html
 VOLUME /var/lib/mysql
