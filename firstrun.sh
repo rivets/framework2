@@ -15,7 +15,7 @@ then # we do have PHP
             php composer.phar install
         fi
     fi
-    for i in . class/config assets
+    for i in . class/config assets class/pages twigs/content
     do
         chmod a+w $i
     done
