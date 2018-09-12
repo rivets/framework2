@@ -1,0 +1,9 @@
+Build a docker container:
+
+    docker build -t csc3123 .
+
+Then you can run it :
+
+    docker run -d -p 80:80 -v PATH-TO-PARENT:/var/www/html -v PATH-TO-PARENT/db:/var/lib/mysql csc3123
+
+where PATH-TO-PARENT is the full path to the parent of this directory.
