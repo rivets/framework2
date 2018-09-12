@@ -17,7 +17,7 @@
 <body lang="en-GB">
     <article class="container">
         <section class="row">
-           <div class="col-md-offset-3 col-md-6">
+           <div class="ml-auto col-md-6 mr-auto mt-5">
                 <p>
                     Your file system is using symbolic links to name the root of the server
                     and the installer cannot locate itself in your file hierarchy.

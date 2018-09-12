@@ -17,7 +17,7 @@
 <body lang="en-GB">
     <article class="container">
         <section class="row">
-           <div class="ml-auto ccol-md-6 mr-auto">
+           <div class="ml-auto col-md-6 mr-auto mt-5">
                 <p>
                     Your version of PHP needs to be built with the options
                     <code>--with-pdo-mysql</code> and <code>--enable-mbstring</code>
