@@ -47,6 +47,8 @@ RUN chmod 755 -R /var/www
 ADD run.sh /usr/bin/run.sh
 RUN chmod a+rx /usr/bin/run.sh
 
+ADD init.sql /tmp/init.sql
+
 RUN chgrp -R www-data /var/www
 RUN find /var/www -type d -exec chmod 775 {} +
 RUN find /var/www -type f -exec chmod 664 {} +

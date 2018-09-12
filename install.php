@@ -99,7 +99,10 @@
             echo '</pre>';
             cleanup();
         }
-        \R::close(); # close RedBean connection
+        if (class_exists('R'))
+        {
+            \R::close(); # close RedBean connection
+        }
     }
 /**
  * Deal with untrapped exceptions - see PHP documentation
@@ -164,7 +167,15 @@
     register_shutdown_function('shutdown');
 
     set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
-
+/*
+ * Initialise template engine - check to see if it is installed!!
+ *
+ */
+    if (!file_exists('vendor'))
+    {
+        include 'install/errors/composer.php';
+        exit;
+    }
     include 'class/config/framework.php';
     \Config\Framework::initialise();
 /**
@@ -237,19 +248,6 @@
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
     ];
-/*
- * Initialise template engine - check to see if it is installed!!
- *
- */
-    if (!file_exists('vendor'))
-    {
-/**
- * @todo Generate a better error message for this!
- */
-        include 'install/errors/notwig.php';
-        exit;
-    }
-    include 'vendor/autoload.php';
 /**
  *  RedBean needs an alias to use namespaces
  */
