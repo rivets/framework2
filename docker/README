@@ -4,7 +4,7 @@ Build a docker container:
 
 Then you can run it :
 
-    docker run -d -p 80:80 -v PATH-TO-PARENT:/var/www/html -v PATH-TO-PARENT/db:/var/lib/mysql framework
+    docker run -d -p 80:80 -v PATH-TO-PARENT:/var/www/html -v PATH-TO-PARENT/docker/db:/var/lib/mysql framework
 
 where PATH-TO-PARENT is the full path to the parent of this directory.
 
