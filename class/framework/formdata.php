@@ -128,7 +128,7 @@
  * @throws Exception
  * @return NULL
  */
-        private function failure(integer $option, string $message, $dflt = NULL)
+        private function failure(int $option, string $message, $dflt = NULL)
         {
             switch($option)
             {
@@ -271,7 +271,7 @@
  *
  * @return mixed
  */
-        public function mustpost(string $name, integer $fail = Context::R400)
+        public function mustpost(string $name, int $fail = Context::R400)
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
         }
@@ -298,7 +298,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta(string $name, integer $fail = Context::R400)
+        public function mustposta(string $name, int $fail = Context::R400)
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
@@ -347,7 +347,7 @@
  *
  * @return mixed
  */
-        public function mustput($name, integer $fail = Context::R400)
+        public function mustput($name, int $fail = Context::R400)
         {
             $this->setput();
             if (is_array($name))
@@ -402,7 +402,7 @@
  *
  * @return mixed
  */
-        public function mustcookie(string $name, integer $fail = Context::R400)
+        public function mustcookie(string $name, int $fail = Context::R400)
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
         }
@@ -426,7 +426,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustcookiea(string $name, integer $fail = Context::R400)
+        public function mustcookiea(string $name, int $fail = Context::R400)
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {
