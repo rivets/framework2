@@ -322,11 +322,11 @@
  *
  * @param string       $name  The name of the item
  *
- * @return string
+ * @return ?object
  */
-        public function config(string $name) : string
+        public function config(string $name) : ?object
         {
-            return $this->fwconfig[$name] ?? '';
+            return $this->fwconfig[$name] ?? NULL;
         }
 /**
  * Initialise twig template engine
