@@ -1,11 +1,14 @@
 #!/bin/bash
-if [ -e /var/lib/mysql/empty ]
+if [ ! -e /var/lib/mysql/framework ]
 then
-   rm /var/lib/mysql/empty
-   /usr/sbin/mysqld --initialize-insecure --init-file=/tmp/init.sql
-   cd /var/www/html
-   ./firstrun.sh
-   cd /
+    /usr/sbin/mysqld --initialize-insecure --init-file=/tmp/init.sql
+    cd /var/www/html
+    if [ ! -e class ]
+    then
+        git clone https://github.com/rivets/framework2.git .
+    fi
+    ./firstrun.sh
+    cd /
 fi
 /etc/init.d/mysql start
 /usr/sbin/apache2ctl -DFOREGROUND -k start

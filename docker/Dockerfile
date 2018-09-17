@@ -13,7 +13,10 @@ php7.2-xml \
 php7.2-mbstring \
 php7.2-zip \
 mcrypt \
-mysql-server
+mysql-server \
+git \
+composer \
+curl
 
 VOLUME /var/www/html
 VOLUME /var/lib/mysql
