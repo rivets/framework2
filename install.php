@@ -218,7 +218,7 @@
     if (empty($bdr))
     {
         $dir = '';
-        $name = 'newproject';
+        $name = 'framework';
     }
     else
     {
@@ -684,10 +684,10 @@
                     'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
                 ];
-                foreach ($pages as $name => $data)
+                foreach ($pages as $pname => $data)
                 {
                     $page = \R::dispense('page');
-                    $page->name = $options['regexp'] ? '^'.$name.'$' : $name;
+                    $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
                     $page->source = $data[1];
                     $page->needlogin = $data[3];
