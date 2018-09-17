@@ -258,12 +258,12 @@
  *
  * This supports having more than one header with the same name.
  *
- * @param string        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
- * @param string        $value
+ * @param mixed        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
+ * @param string       $value
  *
  * @return void
  */
-        public function addheader(string $key, string $value = '')
+        public function addheader($key, string $value = '')
         {
             if (is_array($key))
             {
