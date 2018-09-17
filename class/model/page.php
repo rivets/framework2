@@ -69,7 +69,7 @@
  *
  * @return void
  */
-        private static function maketwig(Context $context, $page, $name)
+        private static function maketwig(Context $context, string $page, string $name)
         {
             if (preg_match('%@content/(.*)%', $name, $m))
             {
@@ -93,7 +93,11 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{% extends \'@content/page.twig\' %}
+                    fwrite($fd,'{# Uncomment this if your page uses AJAX
+{% set ajax = TRUE %}
+#}
+
+{% extends \'@content/page.twig\' %}
 
 {# this brings in some useful macros for making forms
 {% import \'@util/formmacro.twig\' as f %}

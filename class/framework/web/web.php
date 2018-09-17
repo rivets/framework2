@@ -263,7 +263,7 @@
  *
  * @return void
  */
-        public function addheader($key, $value = '')
+        public function addheader(string $key, string $value = '')
         {
             if (is_array($key))
             {
@@ -341,7 +341,7 @@
  *
  * @return string Returns the hash
  */
-        public function saveCSP($type, $string)
+        public function saveCSP(string $type, string $string)
         {
             $hash = '\'sha256-'.base64_encode(hash('sha256', $string, TRUE))."'";
             $this->addCSP($type, $hash);
@@ -355,7 +355,7 @@
  *
  * @return void
  */
-        public function addCSP($type, $string)
+        public function addCSP(string $type, string $string)
         {
             $this->csp[$type][] = $string;
         }
@@ -416,7 +416,7 @@
  *
  * @return boolean
  */
-        public function recaptcha($secret)
+        public function recaptcha(string $secret)
         {
             if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
             {

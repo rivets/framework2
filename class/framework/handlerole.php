@@ -60,7 +60,7 @@
  *
  * @return void
  */
-        public function delrole($contextname, $rolename)
+        public function delrole(string $contextname, string $rolename)
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);

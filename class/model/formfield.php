@@ -32,13 +32,13 @@
 /**
  * Handle a label
  *
- * @param boolean    $makefor    If TRUE thgen make a for attribute
+ * @param boolean    $makefor    If TRUE then make a for attribute
  * @param string     $class      The class name
  * @param string     $inp        The input HTML
  *
  * @return string   The field idval might be updated also
  */
-        public function doLabel($makefor = TRUE, $class = '', $inp = '')
+        public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '')
         {
             $label = '';
             if ($this->bean->label !== '')
@@ -61,7 +61,7 @@
  *
  * @return string
  */
-        public function fieldAttr($class, $doValue = TRUE)
+        public function fieldAttr(string $class, bool $doValue = TRUE)
         {
             $attrs = self::$attributes;
             if ($doValue)

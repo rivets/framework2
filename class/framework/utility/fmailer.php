@@ -21,7 +21,7 @@
  *
  * @param boolean   $exceptions    Passed to the PHPMailer constructor
  */
-        public function __construct($exceptions = TRUE)
+        public function __construct(bool $exceptions = TRUE)
         {
             parent::__construct($exceptions);
             if (Config::USEPHPM)

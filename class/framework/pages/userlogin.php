@@ -69,7 +69,7 @@
  * Mail a password reset code
  *
  * @param object	$context The context object
- * @param object	$bn	A User bean
+ * @param object	$bn	 A User bean
  *
  * @return string
  */

@@ -128,7 +128,7 @@
  * @throws Exception
  * @return NULL
  */
-        private function failure($option, string $message, $dflt = NULL)
+        private function failure(integer $option, string $message, $dflt = NULL)
         {
             switch($option)
             {
@@ -246,12 +246,12 @@
  *
  * @param string	$name		The key
  * @param string        $default    A default value
- * @param int		$filter		Filter values - see PHP manual
+ * @param integer	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterget($name, $default, $filter, $options = '')
+        public function filterget(string $name, string $default, $filter, $options = '')
         {
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             return $res === FALSE || $res === NULL ? $default : $res;
@@ -271,7 +271,7 @@
  *
  * @return mixed
  */
-        public function mustpost($name, $fail = Context::R400)
+        public function mustpost(string $name, integer $fail = Context::R400)
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
         }
@@ -281,7 +281,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	$name	The key
+ * @param mixed 	$name	The key
  * @param mixed		$dflt	Returned if the key does not exist
  *
  * @return mixed
@@ -298,7 +298,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta($name, $fail = Context::R400)
+        public function mustposta(string $name, integer $fail = Context::R400)
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
@@ -310,7 +310,7 @@
  * Look in the $_POST array for a key that is an array and return an
  ArrayIterator over it
  *
- * @param string	$name	The key
+ * @param mixed 	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
  * @return ArrayIterator
@@ -322,8 +322,8 @@
 /**
  * Look in the $_POST array for a key and  apply filters
  *
- * @param string	$name		The key
- * @param int		$filter		Filter values - see PHP manual
+ * @param mixed 	$name		The key
+ * @param integer		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
@@ -347,7 +347,7 @@
  *
  * @return mixed
  */
-        public function mustput($name, $fail = Context::R400)
+        public function mustput($name, integer $fail = Context::R400)
         {
             $this->setput();
             if (is_array($name))
@@ -397,12 +397,12 @@
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
- * @param string     $name
- * @param boolean    $fail
+ * @param string     $name The cookie name
+ * @param integer    $fail Action to take on failure
  *
  * @return mixed
  */
-        public function mustcookie(string $name, $fail = Context::R400)
+        public function mustcookie(string $name, integer $fail = Context::R400)
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
         }
@@ -426,7 +426,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustcookiea($name, $fail = Context::R400)
+        public function mustcookiea(string $name, integer $fail = Context::R400)
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {
@@ -442,7 +442,7 @@
  *
  * @return ArrayIterator
  */
-        public function cookiea($name, array $dflt = [])
+        public function cookiea(string $name, array $dflt = [])
         {
             return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
         }
@@ -455,7 +455,7 @@
  *
  * @return mixed
  */
-        public function filtercookie($name, $filter, $options = '')
+        public function filtercookie(string $name, $filter, $options = '')
         {
             return filter_input(INPUT_COOKIE, $name, $filter, $options);
         }

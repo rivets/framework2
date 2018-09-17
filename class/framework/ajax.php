@@ -275,7 +275,7 @@
  *
  * @return void
  */
-        public function operation($function, array $perms)
+        public function operation(string $function, array $perms)
         {
             self::$restops[$function] = $perms;
         }
