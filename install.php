@@ -333,7 +333,7 @@
     { // names with # in them will break the regexp in Local debase()
         $fail = $vals['hashname'] = TRUE;
     }
-    elseif (version_compare(phpversion(), '7.0.0', '<')) {
+    elseif (version_compare(phpversion(), '7.1.0', '<')) {
         $fail = $vals['phpversion'] = TRUE;
     }
     elseif (!function_exists('password_hash'))

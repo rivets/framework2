@@ -21,7 +21,7 @@
                 <p>
                     Your version of PHP needs to be built with the options
                     <code>--with-pdo-mysql</code> and <code>--enable-mbstring</code>
-                    in order to run the framework.
+                    in order to run the framework and must be at least version 7.1
                 </p>
            </div>
         </section>
