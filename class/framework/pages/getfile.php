@@ -122,7 +122,7 @@
  *
  * @return string
  */
-        public function makeetag()
+        public function makeetag() : string
         {
             return $this->mtime;
         }
@@ -134,7 +134,7 @@
  *
  * @return integer
  */
-        public function lastmodified()
+        public function lastmodified() : int
         {
             return $this->mtime;
         }
@@ -149,7 +149,7 @@
  *
  * @return boolean
  */
-        public function checkmodtime(string $time)
+        public function checkmodtime(string $time) : bool
         {
             return $time == $this->mtime;
         }
@@ -164,7 +164,7 @@
  *
  * @return boolean
  */
-        public function checketag(string $tag)
+        public function checketag(string $tag) : bool
         {
             return $tag == $this->mtime;
         }

@@ -78,7 +78,7 @@
  *
  * @return array
  */
-        public function hasrange(int $size, $code = StatusCodes::HTTP_OK)
+        public function hasrange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
             if (!isset($_SERVER['HTTP_RANGE']))
             {
@@ -112,7 +112,7 @@
  *
  * @return void
  */
-        public function sendheaders($code, string $mtype = '', $length = '', string $name = '')
+        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '')
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
@@ -297,7 +297,7 @@
  *
  * @return boolean
  */
-        public function acceptgzip()
+        public function acceptgzip() : bool
         {
             return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') &&
                 substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') > 0;
@@ -307,7 +307,7 @@
  *
  * @return string
  */
-        public function method()
+        public function method() : string
         {
             return $_SERVER['REQUEST_METHOD'];
         }
@@ -316,7 +316,7 @@
  *
  * @return boolean
  */
-        public function ispost()
+        public function ispost() : bool
         {
             return $this->method() == 'POST';
         }
@@ -341,7 +341,7 @@
  *
  * @return string Returns the hash
  */
-        public function saveCSP(string $type, string $string)
+        public function saveCSP(string $type, string $string) : string
         {
             $hash = '\'sha256-'.base64_encode(hash('sha256', $string, TRUE))."'";
             $this->addCSP($type, $hash);
@@ -416,7 +416,7 @@
  *
  * @return boolean
  */
-        public function recaptcha(string $secret)
+        public function recaptcha(string $secret) : bool
         {
             if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
             {

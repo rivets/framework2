@@ -36,7 +36,7 @@
  *
  * @return string
  */
-        private function makecode(Context $context, $bn, string $kind)
+        private function makecode(Context $context, $bn, string $kind) : string
         {
             R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
@@ -56,7 +56,7 @@
  *
  * @return string
  */
-        private function sendconfirm(Context $context, $bn)
+        private function sendconfirm(Context $context, $bn) : string
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
@@ -73,7 +73,7 @@
  *
  * @return string
  */
-        private function sendreset(Context $context, $bn)
+        private function sendreset(Context $context, $bn) : string
         {
             $code = $this->makecode($context, $bn, 'P');
             mail($bn->email, 'Reset your '.Config::SITENAME.' password',
@@ -92,6 +92,8 @@
  * @link	http://php.net/manual/en/function.session-destroy.php
  *
  * @param object	$context	The context object for the site
+ *
+ * @return void
  */
         public function logout(Context $context)
         {
@@ -120,7 +122,7 @@
  *
  * @return string	A template name
  */
-        public function login(Context $context)
+        public function login(Context $context) : string
         {
             $local = $context->local();
             $local->addval('register', \Config\Config::REGISTER);
@@ -166,53 +168,53 @@
  *
  * @return string	A template name
  */
-        public function register(Context $context)
+        public function register(Context $context) : string
         {
                 $fdt = $context->formdata();
             $login = $fdt->post('login', '');
             if ($login !== '')
             {
-                    $errmess = [];
-                    $x = R::findOne('user', 'login=?', [$login]);
-                    if (!is_object($x))
+                $errmess = [];
+                $x = R::findOne('user', 'login=?', [$login]);
+                if (!is_object($x))
+                {
+                    $pw = $fdt->mustpost('password');
+                    $rpw = $fdt->mustpost('repeat');
+                    $email = $fdt->mustpost('email');
+                    if ($pw != $rpw)
                     {
-                        $pw = $fdt->mustpost('password');
-                        $rpw = $fdt->mustpost('repeat');
-                        $email = $fdt->mustpost('email');
-                        if ($pw != $rpw)
-                        {
-                        $errmess[] = 'The passwords do not match';
-                        }
-                        if (preg_match('/[^a-z0-9]/i', $login))
-                        {
-                        $errmess[] = 'Your username can only contain letters and numbers';
-                        }
-                        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-                        {
-                        $errmess[] = 'Please provide a valid email address';
-                        }
-                        if (empty($errmess))
-                        {
-                            $x = R::dispense('user');
-                            $x->login = $login;
-                            $x->email = $email;
-                            $x->confirm = 0;
-                            $x->active = 1;
-                            $x->joined = $context->utcnow();
-                            R::store($x);
-                            $x->setpw($pw);
-                            $this->sendconfirm($context, $x);
-                            $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
-                        }
+                    $errmess[] = 'The passwords do not match';
                     }
-                    else
+                    if (preg_match('/[^a-z0-9]/i', $login))
                     {
-                        $errmess[] = 'That user name is already in use';
+                    $errmess[] = 'Your username can only contain letters and numbers';
                     }
-                    if (!empty($errmess))
+                    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
                     {
-                        $context->local()->message(Local::ERROR, $errmess);
+                    $errmess[] = 'Please provide a valid email address';
                     }
+                    if (empty($errmess))
+                    {
+                        $x = R::dispense('user');
+                        $x->login = $login;
+                        $x->email = $email;
+                        $x->confirm = 0;
+                        $x->active = 1;
+                        $x->joined = $context->utcnow();
+                        R::store($x);
+                        $x->setpw($pw);
+                        $this->sendconfirm($context, $x);
+                        $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                    }
+                }
+                else
+                {
+                    $errmess[] = 'That user name is already in use';
+                }
+                if (!empty($errmess))
+                {
+                    $context->local()->message(Local::ERROR, $errmess);
+                }
             }
             return '@content/register.twig';
         }
@@ -223,7 +225,7 @@
  *
  * @return string	A template name
  */
-        public function confirm(Context $context)
+        public function confirm(Context $context) : string
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
@@ -284,7 +286,7 @@
  *
  * @return string	A template name
  */
-        public function forgot(Context $context)
+        public function forgot(Context $context) : string
         {
             if ($context->hasuser())
             { # logged in, so this stupid....

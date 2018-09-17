@@ -129,7 +129,7 @@
  *
  * @return string
  */
-	public static function httpHeaderFor($code)
+	public static function httpHeaderFor(int $code) : string
 	{
 	    return 'HTTP/1.1 ' . self::getMessageForCode($code);
 	}
@@ -140,7 +140,7 @@
  *
  * @return string
  */
-	public static function getMessage($code)
+	public static function getMessage(int $code) : string
 	{
 	    return self::isValid($code) ? self::$messages[$code] : 'Unknown Error Code';
 	}
@@ -151,7 +151,7 @@
  *
  * @return string
  */
-	public static function getMessageForCode($code)
+	public static function getMessageForCode(int $code) : string
 	{
 	    return  $code . ' ' . self::getMessage($code);
 	}
@@ -162,7 +162,7 @@
  *
  * @return boolean
  */
-	public static function isError($code)
+	public static function isError(int $code) : bool
 	{
 	    return is_numeric($code) && $code >= self::HTTP_BAD_REQUEST;
 	}
@@ -173,18 +173,18 @@
  *
  * @return boolean
  */
-	public static function isValid($code)
+	public static function isValid(int $code) : bool
 	{
 	    return is_numeric($code) && isset(self::$messages[$code]);
 	}
 /**
- * ICan there be a body sent with this return code?
+ * Can there be a body sent with this return code?
  *
  * @param integer        $code    The code number
  *
  * @return boolean
  */
-	public static function canHaveBody($code)
+	public static function canHaveBody(int $code) : bool
 	{
 	    return
 	    // True if not in 100s

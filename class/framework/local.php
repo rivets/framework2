@@ -274,7 +274,7 @@
  *
  * @return boolean	The last value of the wasignored flag
  */
-        public function eignore(bool $ignore)
+        public function eignore(bool $ignore) : bool
         {
             $this->errignore = $ignore;
             $wi = $this->wasignored;
@@ -286,7 +286,7 @@
  *
  * @return string
  */
-        public function makepath()
+        public function makepath() : string
         {
             return implode(DIRECTORY_SEPARATOR, func_get_args());
         }
@@ -295,7 +295,7 @@
  *
  * @return string
  */
-        public function makebasepath()
+        public function makebasepath() : string
         {
             return $this->basedir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, func_get_args());
         }
@@ -304,7 +304,7 @@
  *
  * @return string
  */
-        public function assets()
+        public function assets() : string
         {
             return $this->base().'/assets'; # for HTML so the / is OK to use here
         }
@@ -313,7 +313,7 @@
  *
  * @return string
  */
-        public function assetsdir()
+        public function assetsdir() : string
         {
             return $this->basedir().DIRECTORY_SEPARATOR.'assets';
         }
@@ -324,7 +324,7 @@
  *
  * @return string
  */
-        public function config(string $name)
+        public function config(string $name) : string
         {
             return $this->fwconfig[$name] ?? '';
         }
@@ -377,7 +377,7 @@
  *
  * @return boolean
  */
-        public function hastwig()
+        public function hastwig() : bool
         {
             return is_object($this->twig);
         }
@@ -389,7 +389,7 @@
  *
  * @return string
  */
-        public function getrender(string $tpl, array $vals = [])
+        public function getrender(string $tpl, array $vals = []) : string
         {
             if ($tpl === '')
             { // no template so no output
@@ -404,6 +404,8 @@
  *
  * @param string	$tpl	The template
  * @param array	        $vals	Values to set for the twig
+ *
+ * @return void
  */
         public function render(string $tpl, array $vals = [])
         {
@@ -449,12 +451,12 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param string	$kind		The kind of message
+ * @param integer	$kind		The kind of message
  * @param mixed		$value		The value to be stored or an array of values
  *
  * @return void
  */
-        public function message($kind, $value)
+        public function message(int $kind, $value)
         {
             if (is_array($value))
             {
@@ -488,7 +490,7 @@
  *
  * @return string
  */
-        public function base()
+        public function base() : string
         {
             return $this->basedname;
         }
@@ -497,7 +499,7 @@
  *
  * @return string
  */
-        public function basedir()
+        public function basedir() : string
         {
             return $this->basepath;
         }
@@ -511,7 +513,7 @@
  *
  * @return string
  */
-        public function debase(string $url)
+        public function debase(string $url) : string
         {
             if ($this->base() !== '')
             {
@@ -522,6 +524,7 @@
 /**
  * Put the system into debugging mode
  *
+ * @return void
  */
         public function enabledebug()
         {

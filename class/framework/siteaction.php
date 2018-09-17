@@ -166,7 +166,7 @@
  *
  * @return string
  */
-	public function makeetag()
+	public function makeetag() : string
 	{
 	    return '';
 	}
@@ -189,7 +189,7 @@
  *
  * @return boolean
  */
-	public function exists()
+	public function exists() : bool
 	{
 	    return TRUE;
 	}
@@ -201,7 +201,7 @@
  *
  * @return integer
  */
-	public function lastmodified()
+	public function lastmodified() : int
 	{
 	    return time();
 	}
@@ -212,7 +212,7 @@
  *
  * @return string
  */
-	public function makemod($time)
+	public function makemod(int $time) : string
 	{
 	    return gmdate('D, d M Y H:i:s', $time).' GMT';
 	}
@@ -227,7 +227,7 @@
  *
  * @return boolean
  */
-	public function checkmodtime(string $time)
+	public function checkmodtime(string $time) : bool
 	{
 	    return FALSE;
 	}
@@ -238,7 +238,7 @@
  *
  * @return boolean
  */
-	public function checketag(string $tag)
+	public function checketag(string $tag) : bool
 	{
 	    return $tag === $this->makeetag();
 	}

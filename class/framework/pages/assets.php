@@ -90,7 +90,7 @@
  *
  * @return string
  */
-	public function makeetag()
+	public function makeetag() : string
 	{
 	    return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.(Web::getinstance()->acceptgzip() ? 1 : 0);
 	}
@@ -101,7 +101,7 @@
  *
  * @return integer
  */
-	public function makemaxage()
+	public function makemaxage() : int
 	{
 	    return 3600*24*365; # make it a year
 	}
@@ -112,7 +112,7 @@
  *
  * @return boolean
  */
-	public function checkmodtime(string $time)
+	public function checkmodtime(string $time) : bool
 	{
 	    return $this->mtime > $time;
 	}

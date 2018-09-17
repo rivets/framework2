@@ -77,7 +77,7 @@
  *
  * @return string
  */
-        public function action()
+        public function action() : string
         {
             return $this->reqaction;
         }
@@ -91,7 +91,7 @@
  *
  * @return array
  */
-        public function rest()
+        public function rest() : array
         {
             return $this->reqrest;
         }
@@ -116,7 +116,7 @@
  *
  * @return boolean
  */
-        public function sameuser($user)
+        public function sameuser($user) : bool
         {
             return $this->hasuser() && $this->user()->equals($user);
         }
@@ -125,7 +125,7 @@
  *
  * @return boolean
  */
-        public function hasuser()
+        public function hasuser() : bool
         {
             return is_object($this->luser);
         }
@@ -134,7 +134,7 @@
  *
  * @return boolean
  */
-        public function hasadmin()
+        public function hasadmin() : bool
         {
             return $this->hasuser() && $this->user()->isadmin();
         }
@@ -143,7 +143,7 @@
  *
  * @return boolean
  */
-        public function hasdeveloper()
+        public function hasdeveloper() : bool
         {
             return $this->hasuser() && $this->user()->isdeveloper();
         }
@@ -152,7 +152,7 @@
  *
  * @return boolean
  */
-	public function hastoken()
+	public function hastoken() : bool
 	{
 	    return $this->tokauth;
 	}
@@ -204,7 +204,7 @@
  *
  * @return string
  */
-        public function newid(string $str = 'id')
+        public function newid(string $str = 'id') : string
         {
             $this->idgen += 1;
             return $str.$this->idgen;
@@ -289,7 +289,7 @@
  *
  * @return object
  */
-        public function load(string $bean, $id, $onerror = self::R400)
+        public function load(string $bean, int $id, int $onerror = self::R400)
         {
             $foo = \R::load($bean, $id);
             if ($foo->getID() == 0)
@@ -343,7 +343,7 @@
  *
  * @return string
  */
-        public function utcnow()
+        public function utcnow() : string
         {
             return \R::isodatetime(time() - date('Z'));
         }
@@ -354,7 +354,7 @@
  *
  * @return string
  */
-        public function utcdate(string $datetime)
+        public function utcdate(string $datetime) : string
         {
             return \R::isodatetime(strtotime($datetime) - date('Z'));
         }

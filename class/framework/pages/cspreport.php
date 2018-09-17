@@ -30,7 +30,7 @@
                  'From: CSP Report <'.Config::SITENOREPLY.'>'.PHP_EOL);
             header(\Framework\Web\StatusCodes::httpHeaderFor(\Framework\Web\StatusCodes::HTTP_NO_CONTENT));
             exit;
-            return ['', '', \Framework\Web\StatusCodes::HTTP_NO_CONTENT];
+//            return ['', '', \Framework\Web\StatusCodes::HTTP_NO_CONTENT];
         }
     }
 ?>

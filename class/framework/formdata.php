@@ -43,7 +43,7 @@
  *
  * @return boolean
  */
-        public function hasget(string $name)
+        public function hasget(string $name) : bool
         {
             return filter_has_var(INPUT_GET, $name);
         }
@@ -54,7 +54,7 @@
  *
  * @return boolean
  */
-        public function haspost(string $name)
+        public function haspost(string $name) : bool
         {
             return filter_has_var(INPUT_POST, $name);
         }
@@ -65,7 +65,7 @@
  *
  * @return boolean
  */
-        public function hascookie(string $name)
+        public function hascookie(string $name) : bool
         {
             return filter_has_var(INPUT_COOKIE, $name);
         }
@@ -78,7 +78,7 @@
  *
  * @return boolean
  */
-        public function hasfile(string $name)
+        public function hasfile(string $name) : bool
         {
             return isset($_FILES[$name]);
         }
@@ -96,7 +96,7 @@
  * @throws Exception
  * @return string
  */
-        private function getval(array $porg, array $keys, $default = NULL, $fail = Context::RDEFAULT)
+        private function getval(array $porg, array $keys, $default = NULL, int $fail = Context::RDEFAULT) : string
         {
             while (TRUE)
             {
@@ -160,7 +160,7 @@
  * @throws Exception
  * @return mixed
  */
-        private function fetchit($filter, array $arr, $name, $dflt = '', $fail = Context::R400)
+        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = Context::R400)
         {
             if (is_array($name))
             {
@@ -195,7 +195,7 @@
  *
  * @return mixed
  */
-        public function mustget($name, $fail = Context::R400)
+        public function mustget($name, int $fail = Context::R400)
         {
             return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
         }
@@ -204,8 +204,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param string	$name	The key
- * @param mixed		$dflt	Returned if the key does not exist
+ * @param mixed	    $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed	    $dflt	Returned if the key does not exist
  *
  * @return mixed
  */
@@ -216,12 +216,12 @@
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key
+ * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param integer	$fail	if the key does not exist - see Context::load
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
-        public function mustgeta($name, $fail = Context::R400)
+        public function mustgeta($name, int $fail = Context::R400)
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
@@ -235,9 +235,9 @@
  * @param string	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
-        public function geta($name, array $dflt = [])
+        public function geta(string $name, array $dflt = []) : \ArrayIterator
         {
             return new \ArrayIterator(filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]) ? $_GET[$name] : $dflt);
         }
@@ -251,7 +251,7 @@
  *
  * @return mixed
  */
-        public function filterget(string $name, string $default, $filter, $options = '')
+        public function filterget(string $name, string $default, int $filter, $options = '')
         {
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             return $res === FALSE || $res === NULL ? $default : $res;
@@ -266,7 +266,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param string	$name	The key
+ * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
@@ -281,7 +281,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param mixed		$dflt	Returned if the key does not exist
  *
  * @return mixed
@@ -298,7 +298,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta(string $name, int $fail = Context::R400)
+        public function mustposta(string $name, int $fail = Context::R400) : \ArrayIterator
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
@@ -310,25 +310,25 @@
  * Look in the $_POST array for a key that is an array and return an
  ArrayIterator over it
  *
- * @param mixed 	$name	The key
+ * @param string 	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
  * @return ArrayIterator
  */
-        public function posta($name, array $dflt = [])
+        public function posta(string $name, array $dflt = []) :\ArrayIterator
         {
             return new \ArrayIterator(filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]) ? $_POST[$name] : $dflt);
         }
 /**
  * Look in the $_POST array for a key and  apply filters
  *
- * @param mixed 	$name		The key
- * @param integer		$filter		Filter values - see PHP manual
+ * @param string 	$name		The key
+ * @param int    	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterpost($name, $filter, $options = '')
+        public function filterpost(string $name, int $filter, $options = '')
         {
             return filter_input(INPUT_POST, $name, $filter, $options);
         }
@@ -342,8 +342,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	$name	The key
- * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
+ * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param int	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
  */
@@ -370,8 +370,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	$name	The key
- * @param mixed		$dflt	Returned if the key does not exist
+ * @param mixed	  $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed	  $dflt	Returned if the key does not exist
  *
  * @return mixed
  */
@@ -424,9 +424,9 @@
  * @param string	$name	The key
  * @param integer	$fail	What to do if not defined - constant defined in Context
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
-        public function mustcookiea(string $name, int $fail = Context::R400)
+        public function mustcookiea(string $name, int $fail = Context::R400) : \ArrayIterator
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {
@@ -440,9 +440,9 @@
  * @param string	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
-        public function cookiea(string $name, array $dflt = [])
+        public function cookiea(string $name, array $dflt = []) : \ArrayIterator
         {
             return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
         }
@@ -455,7 +455,7 @@
  *
  * @return mixed
  */
-        public function filtercookie(string $name, $filter, $options = '')
+        public function filtercookie(string $name, int $filter, $options = '')
         {
             return filter_input(INPUT_COOKIE, $name, $filter, $options);
         }
@@ -472,7 +472,7 @@
  *
  * @return array
  */
-        public function filedata(string $name, $key = '')
+        public function filedata(string $name, $key = '') : array
         {
             $x = $_FILES[$name];
             if ($key !== '')
