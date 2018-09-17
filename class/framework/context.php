@@ -380,7 +380,7 @@
                     try
                     {
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                        $this->luser = $this->load('user', $tok->sub, self::THROW);
+                        $this->luser = $this->load('user', $tok->sub, self::RTHROW);
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.
