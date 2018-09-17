@@ -125,7 +125,7 @@
 /**
  * Get all currently valid roles for this bean
  *
- * @param boolean	$all	If TRUE then include expired roles
+ * @param bool       	$all	If TRUE then include expired roles
  *
  * @return array
  */

@@ -91,7 +91,7 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param integer   $fail       Failure action
+ * @param int       $fail       Failure action
  *
  * @throws Exception
  * @return string
@@ -121,7 +121,7 @@
  *
  * May not actually return;
  *
- * @param integer   $option     The action to take (constants defined in Context)
+ * @param int       $option     The action to take (constants defined in Context)
  * @param string    $message    Error message
  * @param mixed     $dflt       Default value to return
  *
@@ -151,11 +151,11 @@
  *
  * @internal
  *
- * @param integer   $filter     The flag used for the filter test
+ * @param int       $filter     The flag used for the filter test
  * @param array     $arr        The array to pick value from
  * @param mixed     $name       The string name of the entry or [name, selector,...]
  * @param mixed     $dflt       A default value to return
- * @param integer   $fail       What to do if not defined - constant defined in Context
+ * @param int       $fail       What to do if not defined - constant defined in Context
  *
  * @throws Exception
  * @return mixed
@@ -191,7 +191,7 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param integer	$fail	What to do if not defined - constant defined in Context
+ * @param int    	$fail	What to do if not defined - constant defined in Context
  *
  * @return mixed
  */
@@ -217,7 +217,7 @@
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param integer	$fail	if the key does not exist - see Context::load
+ * @param int   	$fail	if the key does not exist - see Context::load
  *
  * @return \ArrayIterator
  */
@@ -246,7 +246,7 @@
  *
  * @param string	$name		The key
  * @param string        $default    A default value
- * @param integer	$filter		Filter values - see PHP manual
+ * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
@@ -267,7 +267,7 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param integer	$fail	Fail if the key does not exist in the array - see Context::load
+ * @param int 	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
  */
@@ -294,7 +294,7 @@
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param integer	$fail	What to do if not defined - constant defined in Context
+ * @param int   	$fail	What to do if not defined - constant defined in Context
  *
  * @return ArrayIterator
  */
@@ -398,7 +398,7 @@
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
  * @param string     $name The cookie name
- * @param integer    $fail Action to take on failure
+ * @param int        $fail Action to take on failure
  *
  * @return mixed
  */
@@ -422,7 +422,7 @@
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param integer	$fail	What to do if not defined - constant defined in Context
+ * @param int   	$fail	What to do if not defined - constant defined in Context
  *
  * @return \ArrayIterator
  */

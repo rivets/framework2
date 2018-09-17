@@ -229,14 +229,14 @@
  * However, exception handling is a much much better way of dealing with this kind of thing
  * whenever possible.
  *
- * @param integer	$errno
+ * @param int           $errno
  * @param string	$errstr
  * @param string	$errfile
- * @param integer	$errline
+ * @param int   	$errline
  *
  * @return boolean
  */
-        public function error_handler($errno, $errstr, $errfile, $errline)
+        public function error_handler(int $errno, string $errstr, string $errfile, int $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -270,7 +270,7 @@
  *
  * This always clears the wasignored flag
  *
- * @param boolean	$ignore	If TRUE then ignore the error otherwise stop ignoring
+ * @param bool       	$ignore	If TRUE then ignore the error otherwise stop ignoring
  *
  * @return boolean	The last value of the wasignored flag
  */
@@ -331,7 +331,7 @@
 /**
  * Initialise twig template engine
  *
- * @param boolean	$cache	if TRUE then enable the TWIG cache
+ * @param bool       	$cache	if TRUE then enable the TWIG cache
  *
  * @return void
  */
@@ -451,7 +451,7 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param integer	$kind		The kind of message
+ * @param int   	$kind		The kind of message
  * @param mixed		$value		The value to be stored or an array of values
  *
  * @return void
@@ -541,10 +541,10 @@
  * The $loadrb parameter simplifies some of the unit testing for this class
  *
  * @param string	$basedir	The full path to the site directory
- * @param boolean	$ajax		If TRUE then this is an AJAX call
- * @param boolean	$devel		If TRUE then we are developing the system
- * @param boolean	$loadtwig	if TRUE then load in Twig.
- * @param boolean	$loadrb		if TRUE then load in RedBean
+ * @param bool       	$ajax		If TRUE then this is an AJAX call
+ * @param bool       	$devel		If TRUE then we are developing the system
+ * @param bool       	$loadtwig	if TRUE then load in Twig.
+ * @param bool       	$loadrb		if TRUE then load in RedBean
  *
  * @return object
  */

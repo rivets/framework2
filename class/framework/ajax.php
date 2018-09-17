@@ -97,11 +97,11 @@
  * The value in $rest[0] is the opcode so we always start at $rest[1]
  *
  * @param object        $context    The context object
- * @param integer       $count      The number to check for
+ * @param int           $count      The number to check for
  *
  * @return array
  */
-        private function restcheck(Context $context, $count)
+        private function restcheck(Context $context, int $count) : array
         {
             $values = [];
             $rest = $context->rest();

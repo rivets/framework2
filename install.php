@@ -42,7 +42,7 @@
  *
  * @param string    $name
  * @param string    $value
- * @param boolean   $local     If TRUE then this value should not be overwritten by remote updates
+ * @param bool          $local     If TRUE then this value should not be overwritten by remote updates
  *
  * @return void
  */
@@ -126,14 +126,14 @@
  * However, exception handling is a much much better way of dealing with this kind of thing
  * whenever possible.
  *
- * @param integer	$errno
+ * @param int   	$errno
  * @param string	$errstr
  * @param string	$errfile
- * @param integer	$errline
+ * @param int    	$errline
  *
  * @return boolean
  */
-    function error_handler($errno, $errstr, $errfile, $errline)
+    function error_handler(int $errno, string $errstr, string $errfile, int $errline) : bool
     {
         echo '<h2>There has been an installer system error : '.$errno.'</h2>';
         echo '<pre>';

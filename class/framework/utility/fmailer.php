@@ -19,7 +19,7 @@
 /**
  * The constructor
  *
- * @param boolean   $exceptions    Passed to the PHPMailer constructor
+ * @param bool          $exceptions    Passed to the PHPMailer constructor
  */
         public function __construct(bool $exceptions = TRUE)
         {

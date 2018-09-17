@@ -32,9 +32,9 @@
  * Generate a Location header
  *
  * @param string		$where		The URL to divert to
- * @param boolean		$temporary	TRUE if this is a temporary redirect
+ * @param bool       		$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
- * @param boolean		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  */
         public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
         {
@@ -56,7 +56,7 @@
 /**
  * output a header and msg - this never returns
  *
- * @param integer	$code	The return code
+ * @param int    	$code	The return code
  * @param string	$msg	The message (or '')
  */
         private function sendhead($code, string $msg)
@@ -73,7 +73,7 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param integer	$size	The size of the output data
+ * @param int    	$size	The size of the output data
  * @param mixed		$code	The HTTP return code or ''
  *
  * @return array
@@ -105,7 +105,7 @@
 /**
  * Make a header sequence for a particular return code and add some other useful headers
  *
- * @param integer	$code	The HTTP return code
+ * @param int    	$code	The HTTP return code
  * @param string	$mtype	The mime-type of the file
  * @param string 	$length	The length of the data
  * @param string	$name	A file name
@@ -231,7 +231,7 @@
  *
  * @param string	$value	The data to send
  * @param string	$mime	The mime type of the file
- * @param integer	$code	The HTTP return code
+ * @param int    	$code	The HTTP return code
  *
  * @return void
  */

@@ -145,7 +145,7 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param integer	$time	The time value to check
+ * @param int 	$time	The time value to check
  *
  * @return boolean
  */

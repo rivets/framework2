@@ -208,7 +208,7 @@
 /**
  * Format a time suitable for Last-Modified header
  *
- * @param integer	$time	The last modified time
+ * @param int 	$time	The last modified time
  *
  * @return string
  */

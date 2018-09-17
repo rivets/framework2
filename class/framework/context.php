@@ -243,7 +243,7 @@
  * Check to see if there is a session and return a specific value from it if it exists
  *
  * @param string	$var	The variable name
- * @param boolean	$fail	If TRUE then exit with an error return if the value  does not exist
+ * @param bool       	$fail	If TRUE then exit with an error return if the value  does not exist
  *
  * @return mixed
  */
@@ -267,9 +267,9 @@
  * Generate a Location header for within this site
  *
  * @param string		$where		The page to divert to
- * @param boolean		$temporary	TRUE if this is a temporary redirect
+ * @param bool       		$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
- * @param boolean		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  *
  * @return void NEVER returns
  */
@@ -282,8 +282,8 @@
  * Load a bean or fail with a 400 error
  *
  * @param string	$bean	    A bean type name
- * @param integer	$id	    A bean id
- * @param integer       $onerror    A flag indicating what to do on error (see constants above)
+ * @param int    	$id	    A bean id
+ * @param int           $onerror    A flag indicating what to do on error (see constants above)
  *
  * @throws  Exception when asked to by the "onerror" value
  *
@@ -366,7 +366,7 @@
 /**
  * Initialise the context and return self
  *
- * @param boolean	$local	The singleton local object
+ * @param bool       	$local	The singleton local object
  *
  * @return object
  */

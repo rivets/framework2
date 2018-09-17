@@ -125,7 +125,7 @@
 /**
  * Generate a header
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return string
  */
@@ -136,7 +136,7 @@
 /**
  * Return the message part for a code
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return string
  */
@@ -147,7 +147,7 @@
 /**
  * return code and message
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return string
  */
@@ -158,7 +158,7 @@
 /**
  * Is this an error code?
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return boolean
  */
@@ -169,7 +169,7 @@
 /**
  * Is this a valid code?
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return boolean
  */
@@ -180,7 +180,7 @@
 /**
  * Can there be a body sent with this return code?
  *
- * @param integer        $code    The code number
+ * @param int            $code    The code number
  *
  * @return boolean
  */

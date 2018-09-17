@@ -32,7 +32,7 @@
 /**
  * Handle a label
  *
- * @param boolean    $makefor    If TRUE then make a for attribute
+ * @param bool           $makefor    If TRUE then make a for attribute
  * @param string     $class      The class name
  * @param string     $inp        The input HTML
  *
@@ -57,7 +57,7 @@
  * Render a field's attributes
  *
  * @param string    $class  The class name
- * @param boolean   $doValue  If TRUE Then add a value attribute
+ * @param bool          $doValue  If TRUE Then add a value attribute
  *
  * @return string
  */

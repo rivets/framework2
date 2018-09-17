@@ -79,10 +79,12 @@
 /**
  * Check a form
  *
- * @param integer    $type  Defaults to INPUT_POST, but could be INPUT_GET
+ * @param int    $type  Defaults to INPUT_POST, but could be INPUT_GET
  *
  * @throws Exception when CSRFName is expected and not found
  * @throws Exception when token or name is not as stored in session
+ *
+ * @return void
  */
 	public function check($type = INPUT_POST)
 	{
