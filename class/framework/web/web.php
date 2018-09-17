@@ -59,9 +59,9 @@
  * @param int    	$code	The return code
  * @param string	$msg	The message (or '')
  */
-        private function sendhead($code, string $msg)
+        private function sendhead(int $code, string $msg)
         {
-            $this->sendheaders(StatusCodes::httpHeaderFor($code));
+            $this->sendheaders($code);
             if ($msg !== '')
             {
                 echo '<p>'.$msg.'</p>';
