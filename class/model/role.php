@@ -39,7 +39,7 @@
  *
  * @return string
  */
-        private function checkstart($start)
+        private function checkstart(string $start)
         {
             return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
@@ -50,7 +50,7 @@
  *
  * @return string
  */
-        private function checkend($end)
+        private function checkend(string $end)
         {
             return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
         }
