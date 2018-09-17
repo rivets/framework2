@@ -1,8 +1,4 @@
 <?php
-    namespace Framework\Web;
-/**
- * Contains definition of StatusCodes class
- */
 /**
  * StatusCodes provides named constants for
  * HTTP protocol status codes. Written for the
@@ -14,7 +10,11 @@
  *
  * Modfied by LFM to separate the message text from the code number.
  */
+    namespace Framework\Web;
 
+/**
+ * Contains definition of StatusCodes class
+ */
     class StatusCodes
     {
 	// [Informational 1xx]

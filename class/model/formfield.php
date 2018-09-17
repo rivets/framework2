@@ -3,8 +3,7 @@
  * A model class for the RedBean object FormField
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
- *
+ * @copyright 2016-2018 Newcastle University
  */
     namespace Model;
 /**
@@ -12,8 +11,13 @@
  */
     class FormField extends \RedBeanPHP\SimpleModel
     {
+/**
+ * @var array Atributes that this supports
+ */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
-        
+ /**
+  * @var integer Counter used for generating new IDs
+  */
         private static $lcount             = 1;
 /**
  * @var array The kinds of flags that fields can have
@@ -28,8 +32,9 @@
 /**
  * Handle a label
  *
- * @param object    $fld    The field
- * @param string    $class  The class name
+ * @param boolean    $makefor    If TRUE thgen make a for attribute
+ * @param string     $class      The class name
+ * @param string     $inp        The input HTML
  *
  * @return string   The field idval might be updated also
  */
@@ -51,9 +56,8 @@
 /**
  * Render a field's attributes
  *
- * @param object    $fld
  * @param string    $class  The class name
- * @param boolean   $doValue  The class name
+ * @param boolean   $doValue  If TRUE Then add a value attribute
  *
  * @return string
  */

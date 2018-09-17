@@ -37,7 +37,9 @@ class JWT
      * Will default to PHP time() value if null.
      */
     public static $timestamp = null;
-
+/**
+ * @var array Hash algorthms that this supports
+ */
     public static $supported_algs = array(
         'HS256' => array('hash_hmac', 'SHA256'),
         'HS512' => array('hash_hmac', 'SHA512'),
@@ -366,7 +368,7 @@ class JWT
     /**
      * Get the number of bytes in cryptographic strings.
      *
-     * @param string
+     * @param string $str
      *
      * @return int
      */

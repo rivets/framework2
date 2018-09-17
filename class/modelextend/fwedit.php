@@ -17,7 +17,7 @@
 /**
  * Handle editing of beans
  * 
- * @param $object    $fdt  The formdata object from the context
+ * @param object    $fdt  The formdata object from the context
  */
         private function dofields($fdt)
         {

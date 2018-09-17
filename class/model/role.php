@@ -33,22 +33,22 @@
 	        return $this->bean->rolecontext;
         }
 /**
- *  Fixes up start values
+ * Fixes up start values
  *
- *  @param string   $start  The input value
+ * @param string   $start  The input value
  *
- *  @return string
+ * @return string
  */
         private function checkstart($start)
         {
             return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
 /**
- *  Fixes up end values
+ * Fixes up end values
  *
- *  @param string   $end  The input value
+ * @param string   $end  The input value
  *
- *  @return string
+ * @return string
  */
         private function checkend($end)
         {
