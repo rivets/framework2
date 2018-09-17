@@ -1,15 +1,15 @@
 <?php
-    namespace Framework\Pages;
-
-    use \Config\Config as Config;
-    use \Support\Context as Context;
 /**
  * A class that contains code to handle any /upload related requests.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015 Newcastle University
+ * @copyright 2015-2018 Newcastle University
  *
  */
+    namespace Framework\Pages;
+
+    use \Config\Config as Config;
+    use \Support\Context as Context;
 /**
  * Deal with a file upload URL
  */

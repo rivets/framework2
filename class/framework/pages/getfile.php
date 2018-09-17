@@ -1,7 +1,4 @@
 <?php
-    namespace Framework\Pages;
-
-    use \Support\Context as Context;
 /**
  * A class that contains code to handle file data fetching requests related requests.
  *
@@ -21,9 +18,12 @@
  * would not be hard to add.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2016 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  *
  */
+    namespace Framework\Pages;
+
+    use \Support\Context as Context;
 /**
  * The Getfile class
  *

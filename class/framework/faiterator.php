@@ -20,7 +20,7 @@
  *
  *  @param string    $name The name of the entry in the $_FILES array
  */
-        public function __construct(string $name)
+        public function __construct($name)
         {
 	    $this->far = $_FILES[$name];
 /*

@@ -24,7 +24,9 @@
         const ERROR     = 0;        # 'errmessage';
         const WARNING   = 1;        # 'warnmessage';
         const MESSAGE   = 2;        # 'message';
-
+/**
+ * @var array Contains string names for the message constants - used for Twig variables
+ */
         private  static $msgnames  = ['errmessage', 'warnmessage', 'message'];
 /**
  * @var	string		The absolute path to the site directory
@@ -87,7 +89,7 @@
  * @var array           Config values from database
  */
         private $fwconfig       = [];
-/**set
+/**
  * See if there are any messages and add them into the Twig values
  * and then clear the messages array.
  *

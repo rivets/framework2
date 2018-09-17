@@ -1,11 +1,4 @@
 <?php
-
-namespace Framework\Utility\JWT;
-use \DomainException;
-use \InvalidArgumentException;
-use \UnexpectedValueException;
-use \DateTime;
-
 /**
  * JSON Web Token implementation, based on this spec:
  * https://tools.ietf.org/html/rfc7519
@@ -18,6 +11,14 @@ use \DateTime;
  * @author   Anant Narayanan <anant@php.net>
  * @license  http://opensource.org/licenses/BSD-3-Clause 3-clause BSD
  * @link     https://github.com/firebase/php-jwt
+ */
+namespace Framework\Utility\JWT;
+use \DomainException;
+use \InvalidArgumentException;
+use \UnexpectedValueException;
+use \DateTime;
+/**
+ * The JWT Class
  */
 class JWT
 {

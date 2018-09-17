@@ -1,5 +1,4 @@
 <?php
-    namespace Framework\Utility;
 /**
  * This trait provides Singleton pattern (only one instance for the concrete class) to the classes that use it.
  * All the entire application can accept its only instance via the public static method getInstance(),
@@ -35,6 +34,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+    namespace Framework\Utility;
 /**
  * The singleton trait
  */
