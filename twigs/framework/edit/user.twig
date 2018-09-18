@@ -37,8 +37,8 @@
 
 {% block main %}
     <section class="row">
-        {% include '@util/message.twig' %}
         <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 {{bean.guard|raw}}
