@@ -153,7 +153,7 @@
                                 $lval->$k = $v;
                             }
                             \R::store($lval);
-                            $updated[$cname] = $cdata['value'];
+                            $updated[$cname] = $cdata->value;
                         }
                     }
                     $context->local()->addval('version', $upd->version);
