@@ -9,7 +9,7 @@
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script src="{{assets}}/js/bgfade-min.js" integrity="sha384-OZ82ALgTHP9CzBGSwr4Bk9tGOey9X7hAgfjZp8+QctHo93rb0o/Q6/g44MxeyxFZ" crossorigin="anonymous"></script>
+    <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
 
 {% block onload %}
