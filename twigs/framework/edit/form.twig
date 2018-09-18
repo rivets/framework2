@@ -109,8 +109,8 @@
 
 {% block main %}
     <section class="row">
-        {% include '@util/message.twig' %}
         <article class="col-md-12">
+            {% include '@util/message.twig' %}
             <form id="addform" action="#" method="post">
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 {{bean.guard|raw}}
