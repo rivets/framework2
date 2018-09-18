@@ -7,16 +7,16 @@
 
 {% block scripts %}
     {# <script {{h.urlattr(fwurls.parsley)}}></script> #}
-    <script src="{{assets}}/js/util.js"></script>
-    <script src="{{assets}}/js/bs4-editable-min.js"></script>
-    {# <script {{h.urlattr(fwurls.editable)}}></script> #}
+    <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
+    {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
+    <script {{h.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
+    {#<link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>#}
+    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
     {#
-    <link rel="stylesheet" {{s.urlattr(fwurls.editablecss)}}/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
     #}
 {% endblock css %}
 
