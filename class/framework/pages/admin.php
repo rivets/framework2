@@ -133,14 +133,22 @@
                         $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
                         if (is_object($lval))
                         {
-                            if ($lval->local == 0 && $lval->value != $cdata->value)
+                            if ($lval->local == 0)
                             { // update if not locally set and there is a new value
+                                $upd = FALSE;
                                 foreach ($cdata as $k => $v)
                                 {
-                                    $lval->$k = $v;
+                                    if ($lval->$k != $v)
+                                    {
+                                        $lval->$k = $v;
+                                        $upd = TRUE;
+                                    }
                                 }
-                                \R::store($lval);
-                                $updated[$cname] = $cdata->value;
+                                if ($upd)
+                                {
+                                    \R::store($lval);
+                                    $updated[$cname] = $cdata->value;
+                                }
                             }
                         }
                         else
