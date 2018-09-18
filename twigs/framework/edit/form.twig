@@ -2,19 +2,19 @@
 
 {% extends '@content/page.twig' %}
 
-{% import _self as h %}
 {% import '@util/formmacro.twig' as f %}
+{% import '@util/attrmacro.twig' as a %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
-    {#<script {{h.urlattr(fwurls.editablecss)}}></script>-->#}
-    <script src="{{assets}}/js/bs4-editable-min.js"></script>
+    <script {{a.urlattr(fwurls.editable)}}></script>-->
+    {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
 {% endblock scripts %}
 
 {% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>
-    {#<link rel="stylesheet" {{h.urlattr(fwurls.editable)}}/>#}
+    {#<link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>#}
+    <link rel="stylesheet" {{h.urlattr(fwurls.editable)}}/>
 {% endblock css %}
 
 {% set types = ['text', 'textarea', 'email', 'checkbox', 'radio', 'password', 'select', 'button', 'submit'] %}
