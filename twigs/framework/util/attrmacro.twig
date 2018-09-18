@@ -1,0 +1,4 @@
+{% macro vshow(name, value) %}{% if value != '' %} {{name}}="{{value}}"{% endif %}{% endmacro vshow %}
+
+{% macro urlattr(fwv) %}{% import _self as h %}{{fwv.type == 'js' ? 'src' : 'href'}}="{{fwv.value}}"{{h.vshow('integrity', fwv.integrity)}}{{h.vshow('crossorigin',fwv.crossorigin)}}{{fwv.defer ? ' defer'}}{{fwv.async ? ' async'}}{% endmacro urlattr %}
+

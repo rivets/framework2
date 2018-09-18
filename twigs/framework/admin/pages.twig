@@ -4,17 +4,18 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
+{% import '@util/attrmacro.twig' as a %}
 
 {% block scripts %}
-    {# <script {{h.urlattr(fwurls.parsley)}}></script> #}
+    {# <script {{s.urlattr(fwurls.parsley)}}></script> #}
     <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
     {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
-    <script {{h.urlattr(fwurls.editable)}}></script>
+    <script {{a.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
 
 {% block css %}
     {#<link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>#}
-    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
+    <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
     {#
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
     #}
