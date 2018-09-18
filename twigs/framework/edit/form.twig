@@ -6,7 +6,7 @@
 {% import '@util/attrmacro.twig' as a %}
 
 {% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
+    <script {{a.urlattr(fwurls.parsley)}}></script>
     <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
     <script {{a.urlattr(fwurls.editable)}}></script>-->
     {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
