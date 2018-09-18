@@ -4,9 +4,10 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
+{% import _self as h %}
 
 {% block scripts %}
-    <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
 {% endblock scripts %}
 
 {% block onload %}

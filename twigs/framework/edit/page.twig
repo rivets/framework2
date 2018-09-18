@@ -7,7 +7,7 @@
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script src="{{assets}}/js/util-min.js" integrity="sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/" crossorigin="anonymous"></script>
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
 {% endblock scripts %}
 
 {% block onload %}
