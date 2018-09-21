@@ -101,7 +101,7 @@
  *
  * @return array
  */
-        private function restcheck(Context $context, int $count) : array
+        protected function restcheck(Context $context, int $count) : array
         {
             $values = [];
             $rest = $context->rest();
