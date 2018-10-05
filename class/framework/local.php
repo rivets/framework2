@@ -324,7 +324,7 @@
  *
  * @return ?object
  */
-        public function config(string $name) : ?object
+        public function config(string $name)
         {
             return $this->fwconfig[$name] ?? NULL;
         }
