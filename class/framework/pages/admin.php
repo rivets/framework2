@@ -135,16 +135,16 @@
                         {
                             if ($lval->local == 0)
                             { // update if not locally set and there is a new value
-                                $upd = FALSE;
+                                $change = FALSE;
                                 foreach ($cdata as $k => $v)
                                 {
                                     if ($lval->$k != $v)
                                     {
                                         $lval->$k = $v;
-                                        $upd = TRUE;
+                                        $change = TRUE;
                                     }
                                 }
-                                if ($upd)
+                                if ($change)
                                 {
                                     \R::store($lval);
                                     $updated[$cname] = $cdata->value;
