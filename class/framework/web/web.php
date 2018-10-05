@@ -343,7 +343,7 @@
  */
         public function saveCSP(string $type, string $string) : string
         {
-            $hash = '\'sha256-'.base64_encode(hash('sha256', $string, TRUE))."'";
+            $hash = 'sha256-'.base64_encode(hash('sha256', $string, TRUE))."'";
             $this->addCSP($type, $hash);
             return $hash;
         }
