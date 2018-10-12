@@ -30,17 +30,21 @@
                 $rest = $context->rest();
                 switch ($rest[0])
                 {
-                        case 'hack': # execute some code.
-                            \R::freeze(FALSE); // turn off freezing so that you can fiddle with the database....
-                            include $context->local()->makebasepath('devel', 'hack.php');
-                            break;
+                case 'assert' : // failed assertion
+                    assert(TRUE == FALSE);
+                    break;
 
-                        case 'fail': # this lets you test error handling
-                            $x = 2 / 0;
-                            break;
+                case 'hack': # execute some code.
+                    \R::freeze(FALSE); // turn off freezing so that you can fiddle with the database....
+                    include $context->local()->makebasepath('devel', 'hack.php');
+                    break;
 
-                        case 'throw': # this lets you test exception handling
-                            throw new \Exception('Unhandled Exception Test');
+                case 'fail': # this lets you test error handling
+                    $x = 2 / 0;
+                    break;
+
+                case 'throw': # this lets you test exception handling
+                    throw new \Exception('Unhandled Exception Test');
 
                 case 'mail' : # this lets you test email sending
                     $foo = mail($context->user()->email, 'test', 'test');
