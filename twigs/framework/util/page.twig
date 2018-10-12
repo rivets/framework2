@@ -27,7 +27,7 @@
     {% block head %}
     {% endblock head %}
 </head>
-<body lang="en-GB">
+<body lang="{{deflang is defined ? deflang : 'en-GB'}}">
     {% block body %}
     {% endblock body %}
 
