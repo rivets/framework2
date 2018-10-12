@@ -383,6 +383,7 @@
         public function handle(Context $context)
         {
             $action = $context->action(); # the validity of the action value has been checked before we get here
+            assert(method_exists($this, $action));
             return $this->$action($context);
         }
     }
