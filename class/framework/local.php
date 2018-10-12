@@ -206,7 +206,7 @@
  *
  * @param Exception	$e
  */
-        public function exception_handler($e)
+        public function exceptionHandler($e)
         {
             if ($this->error)
             { // try and ignore errors within errors
@@ -236,7 +236,7 @@
  *
  * @return boolean
  */
-        public function error_handler(int $errno, string $errstr, string $errfile, int $errline)
+        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline)
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -265,6 +265,23 @@
  */
             return TRUE;
         }
+/**
+ * Handle an expectation failure
+ *
+ * @param string    $file    File name
+ * @param int       $line      Line number in file
+ * @param string    $message    Message
+ */
+            public function assertFail($file, $line, $message)
+            {
+                $ekey = $this->telladmin(
+                    $message,
+                    'Assertion Failure',
+                    $file,
+                    $line
+                );
+                $this->make500($ekey);
+            }
 /**
  * Allow system to ignore errors
  *
@@ -572,9 +589,16 @@
  /*
  * Set up all the system error handlers
  */
-            set_exception_handler([$this, 'exception_handler']);
-            set_error_handler([$this, 'error_handler']);
+            set_exception_handler([$this, 'exceptionHandler']);
+            set_error_handler([$this, 'errorHandler']);
             register_shutdown_function([$this, 'shutdown']);
+            if ($devel)
+            { // set up expectation handling if in developer mode
+                assert_options(ASSERT_ACTIVE, $devel);
+                assert_options(ASSERT_WARNING, 0);
+                assert_options(ASSERT_QUIET_EVAL, 1);
+                assert_options(ASSERT_CALLBACK, [$this, 'assertFail']);
+            }
 
             if ($loadtwig)
             { # we want twig - there are some autoloader issues out there that adding twig seems to fix....
