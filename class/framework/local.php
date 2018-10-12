@@ -119,6 +119,7 @@
             $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
             if (!isset($this->senterrors[$ekey]))
             {
+                $this->senterrors[$ekey] = TRUE;
                 if (isset($_GET['fwtrace']))
                 {
                     ob_start();
@@ -127,19 +128,26 @@
                 }
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
-                    $mail = new \Framework\Utility\FMailer;
-                    $mail->setFrom(Config::SITENOREPLY);
-                    $mail->addReplyTo(Config::SITENOREPLY);
-                    foreach ($this->sysadmin as $em)
+                    try
                     {
-                        $mail->addAddress($em);
+                        $mail = new \Framework\Utility\FMailer;
+                        $mail->setFrom(Config::SITENOREPLY);
+                        $mail->addReplyTo(Config::SITENOREPLY);
+                        foreach ($this->sysadmin as $em)
+                        {
+                            $mail->addAddress($em);
+                        }
+                        $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
+                        $mail->msgHTML('<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>');
+                        $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
+                        $mail->send();
                     }
-                    $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-                    $mail->msgHTML('<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>');
-                    $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
-                    $mail->send();
+                    catch (\PHPMailer\PHPMailer\Exception $e)
+                    {
+                        $ekey .= '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+                    }
                 }
-                $this->senterrors[$ekey] = TRUE;
+
             }
             return $ekey;
         }
