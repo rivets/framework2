@@ -128,6 +128,7 @@
                 $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
                 if (isset($upd->fwconfig))
                 { // now see if there are any config values that need updating.
+                    $base = $context->local()->base();
                     foreach ($upd->fwconfig as $cname => $cdata)
                     {
                         $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
@@ -138,6 +139,7 @@
                                 $change = FALSE;
                                 foreach ($cdata as $k => $v)
                                 {
+                                    $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                                     if ($lval->$k != $v)
                                     {
                                         $lval->$k = $v;
@@ -158,7 +160,7 @@
                             $lval->local = 0;
                             foreach ($cdata as $k => $v)
                             {
-                                $lval->$k = $v;
+                                $lval->$k = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                             }
                             \R::store($lval);
                             $updated[$cname] = $cdata->value;
