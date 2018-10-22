@@ -7,14 +7,11 @@
 {% import _self as h %}
 
 {% block scripts %}
-    {# <script {{s.urlattr(fwurls.parsley)}}></script> #}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
     <script {{h.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
 
 {% block css %}
-    {#<link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>#}
     <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
     {#
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
@@ -26,7 +23,7 @@
 {% block setup %}
     function editcall(params)
     {
-        var url = base+'/ajax/bean/page/'+params.pk+'/'+params.name+'/';
+        var url = base+'/ajax/bean/'+params.bean.+/'+params.pk+'/'+params.name+'/';
         return $.ajax(url,{
             method: 'PATCH',
             data: {
@@ -37,7 +34,6 @@
 
     function mkinline(type, name, msg, id, value)
     {
-//        return value;
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
     var kname = [];
