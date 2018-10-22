@@ -23,7 +23,7 @@
 {% block setup %}
     function editcall(params)
     {
-        var url = base+'/ajax/bean/'+params.bean.+/'+params.pk+'/'+params.name+'/';
+        var url = base+'/ajax/bean/'+params.bean+/'+params.pk+'/'+params.name+'/';
         return $.ajax(url,{
             method: 'PATCH',
             data: {
