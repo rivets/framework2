@@ -28,11 +28,11 @@
         m.before($('#example').clone());
         $('input[type="text"]', m.prev()).val(''); // clear the inputs
         $('option', m.prev()).prop('selected', false); // clear any selections
-        $('option', m.prev()).prop('checked', false); // clear any checking
+        $('input[type="checkbox"]', m.prev()).prop('checked', false); // clear any checking
         m.before($('#example').next().clone());
         $('input[type="text"]', m.prev()).val(''); // clear the inputs
         $('option', m.prev()).prop('selected', false); // clear any selections
-        $('option', m.prev()).prop('checked', false); // clear any checking
+        $('input[type="checkbox"]', m.prev()).prop('checked', false); // clear any checking
         $('#example').attr('id', '');
     }
     function editcall(params)
