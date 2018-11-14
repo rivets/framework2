@@ -541,7 +541,7 @@
             if (!$hasgah)
             {
                 fputs($fd, '
-        function getallheaders() 
+        function getallheaders() // code taken from PHP getallheaders manual page
         { // Apache only function so provide a definition of it. Used in \\Framework\\Context
             $headers = []; 
             foreach ($_SERVER as $name => $value) 
