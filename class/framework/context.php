@@ -366,8 +366,6 @@
 /**
  * Initialise the context and return self
  *
- * @param bool       	$local	The singleton local object
- *
  * @return object
  */
         public function setup()

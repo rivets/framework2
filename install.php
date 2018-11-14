@@ -276,6 +276,7 @@
  */
     $hasmb = function_exists('mb_strlen');
     $haspdo = in_array('mysql', \PDO::getAvailableDrivers());
+    $hasgah = function_exists('getallheaders'); // this is an Apache only function called in the setup of the system
 
     if (!$hasmb || !$haspdo)
     {
@@ -528,7 +529,7 @@
             'Vary'              => 'Accept-Encoding',
             ]);
         }".PHP_EOL.PHP_EOL);
-
+                  
             fputs($fd, '
         public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
@@ -536,7 +537,24 @@
                 fputs($fd, "                '".$key."' => [\"".implode('", "', $val).'"],'.PHP_EOL);
             }
             fputs($fd, '        ];'.PHP_EOL);
-            fputs($fd, '    }'.PHP_EOL.'?>');
+            fputs($fd, '    }'.PHP_EOL.PHP_EOL);
+            if (!$hasgah)
+            {
+                fputs($fd, '
+        function getallheaders() 
+        { // Apache only function so provide a definition of it. Used in \\Framework\\Context
+            $headers = []; 
+            foreach ($_SERVER as $name => $value) 
+            { 
+                if (substr($name, 0, 5) == \'HTTP_\')
+                { 
+                    $headers[str_replace(\' \', \'-\', ucwords(strtolower(str_replace(\'_\', \' \', substr($name, 5)))))] = $value;
+                } 
+            } 
+            return $headers; 
+         }'.PHP_EOL.PHP_EOL);
+            }
+            fputs('?>');
             fclose($fd);
     /*
      * Setup the .htaccess file
