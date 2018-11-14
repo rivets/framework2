@@ -104,6 +104,15 @@
             $this->clearmessages();
         }
 /**
+ * Rewrite error string
+ *
+ * @return string
+ */
+        private function eRewrite()
+        {
+            return '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+        }
+/**
  * Tell sysadmin there was an error
  *
  * @param string	$msg	An error messager
@@ -138,13 +147,13 @@
                             $mail->addAddress($em);
                         }
                         $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-                        $mail->msgHTML('<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>');
+                        $mail->msgHTML($this->eRewrite());
                         $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
                         $mail->send();
                     }
-                    catch (\PHPMailer\PHPMailer\Exception $e)
+                    catch (\PHPMailer\PHPMailer\Exception | \Exception $e)
                     {
-                        $ekey .= '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+                        $ekey .= $this->eRewrite();
                     }
                 }
 
@@ -164,9 +173,7 @@
             { # haven't generated any output yet.
                 if (!$this->ajax)
                 { # not in an ajax page so try and send a pretty error
-                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? '<pre>'.
-                        str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>' :
-                        'There has been an internal error');
+                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : 'There has been an internal error');
                     if (is_object($this->twig))
                     { # we have twig so render a nice page
                         Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
