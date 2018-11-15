@@ -554,7 +554,7 @@
             return $headers; 
          }'.PHP_EOL.PHP_EOL);
             }
-            fputs('?>');
+            fputs($fd, '?>');
             fclose($fd);
     /*
      * Setup the .htaccess file
