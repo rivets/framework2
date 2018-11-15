@@ -151,7 +151,7 @@
                         $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
                         $mail->send();
                     }
-                    catch (\PHPMailer\PHPMailer\Exception | \Exception $e)
+                    catch (\Exception $e)
                     {
                         $ekey .= $this->eRewrite();
                     }
