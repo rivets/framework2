@@ -102,7 +102,15 @@
                 $context->local()->bad();
                 /* NOT REACHED */
             }
-            $obj = $context->load($kind, $rest[2]);
+            if (($notmodel = in_array($kind, NOTMODEL)))
+            {
+                $class = '\\Support\\'.$kind;
+                $obj = new $class($kind);
+            }
+            else
+            {
+                $obj = $context->load($kind, $rest[2]);
+            }
             $obj->view(); // do any required set up
             $context->local()->addval('bean', $obj);
             return '@view/'.$kind.'.twig';
