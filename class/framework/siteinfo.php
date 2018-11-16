@@ -207,7 +207,7 @@
             {
                 if ($all || !in_array($tab, self::$fwtables))
                 {
-                    $beans[$tab] = \R::inspect($tab);
+                    $beans[] = new \Support\Bean($tab);
                 }
             }
             return $beans;
