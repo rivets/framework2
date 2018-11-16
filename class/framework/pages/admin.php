@@ -111,7 +111,7 @@
             {
                 $obj = $context->load($kind, $rest[2]);
             }
-            $obj->view(); // do any required set up
+            $obj->view($context, $rest); // do any required set up
             $context->local()->addval('bean', $obj);
             return '@view/'.$kind.'.twig';
         }

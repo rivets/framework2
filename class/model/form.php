@@ -136,7 +136,7 @@
  *
  * @return void
  */
-        public function view()
+        public function view(Context $context, array $rest)
         {
         }
 /**
