@@ -14,6 +14,151 @@
     <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
 {% endblock css %}
 
+{% block setup %}
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+        return $.ajax(url,{
+            method: 'PATCH',
+            data: {
+                value: params.value
+            }
+        })
+    }
+
+    function mkinline(type, name, msg, id, value)
+    {
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+    }
+    var kname = [];
+    function paramset(params)
+    {
+        params.id = params.pk
+        params.bean = 'page'
+        params.op = 'update'
+        return params
+    }
+    kname = [
+        {% for v in types %}
+            {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
+    ]
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['actb', dotoggle, 'active'],
+        ['logn', dotoggle, 'needlogin'],
+        ['mobo', dotoggle, 'mobileonly']
+    ]
+{% endblock setup %}
+
+{% block onload %}
+    $('.ppedit').editable({
+        ajaxOptions: { type: 'PUT' },
+        params: paramset,
+        source: kname,
+        onblur: 'cancel',
+        url: editcall
+    });
+    $('#npform').on('submit', false)
+    $('#addb').on('click', function(e){
+        e.preventDefault()
+        var pn = $('#npname').val().toLowerCase()
+        if (!pn.match(/^[a-z][a-z0-9.]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
+            return
+        }
+        var sp = null;
+        var error = false;
+        $('.pname').each(function(e){
+            var t = $(this).text();
+            if (t == pn)
+            {
+                error = true;
+                return false;
+            }
+            if (t > pn)
+            {
+                sp = $(this);
+                return false;
+            }
+        })
+        if (error)
+        {
+            bootbox.alert('That page already exists');
+            return;
+        }
+        var src = $('#npsrc').val()
+        if (src == '')
+        {
+            bootbox.alert('Please specify a source');
+            return;
+        }
+        var kind = $('#npkind').val();
+        if (kind == '')
+        {
+            bootbox.alert('Please pick template or object');
+            return;
+        }
+        var active = $('#npactive').is(':checked') ? 1 : 0;
+        var login = $('#nplogin').is(':checked') ? 1 : 0;
+        var mobile = $('#npmobile').is(':checked') ? 1 : 0;
+        $('#npage').modal('hide');
+        var fn = function(data){
+                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
+                '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
+                '<td>'+mktoggle('logn', login)+'</td>'+
+                '<td>'+mktoggle('mobo', mobile)+'</td>'+
+                '<td>'+mktoggle('actb', active)+'</td>'+
+                '<td><a href="/admin/edit/page/'+data+'"><i class="editb far fa-edit"></i></a></td>'+
+                '<td><i class="delb far fa-trash-alt"></i></td></tr>';
+                var nx
+                if (sp == null)
+                {
+                     nx = $(htm).appendTo($('#ptab tbody'));
+                }
+                else
+                {
+                    nx = $(htm).insertBefore(sp.parent());
+                }
+                nx.data('id', data);
+                //$('.ppedit', nx).editable({params: paramset, source: kname});
+            };
+        var dt = {
+                name : pn,
+                kind : kind,
+                source : src,
+                active : active,
+                login : login,
+                mobile: mobile
+            };
+        var sel = ['context', 'role'];
+        var inp = ['start', 'end', 'otherinfo'];
+        var f = $('#npform');
+        var inx = 0;
+        for (var n in inp)
+        {
+            inx = 0;
+            $('input[name^="'+inp[n]+'"]', f).each(function(){
+                dt[inp[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        for (var n in sel)
+        {
+            inx = 0;
+            $('select[name^="'+sel[n]+'"]', f).each(function(){
+                dt[sel[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(){
+            bootbox.alert('Failed to create new page');
+        });
+    })
+    $('#npage').on('show.bs.modal', function(e){
+        $('#npform input,select').val('')
+    })
+{% endblock onload %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
