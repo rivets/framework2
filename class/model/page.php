@@ -307,7 +307,7 @@
  * 
  * @return void
  */
-        public function startEdit(Context $context)
+        public function startEdit(Context $context, array $rest)
         {
         }
 /**
