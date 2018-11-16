@@ -2,6 +2,13 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.editable)}}></script>
+{% endblock scripts %}
+
 {% block header %}
     <section class="col-md-12 mt-5">
         <h1>Bean &ldquo;{{bean.name}}&rdquo;</h1>
@@ -23,7 +30,7 @@
                                     {% set xn = name|split('_') %}
                                     <td><a href="{{base}}/admin/view/bean/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
-                                    <td>{{x}}</td>
+                                    <td>{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{{x}}</td>
                                 {% endif %}
                             {% endif %}
                         </tr>
