@@ -1,0 +1,239 @@
+{% set ajax = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+{% import _self as h %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.editable)}}></script>
+{% endblock scripts %}
+
+{% block css %}
+    <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
+    {#
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
+    #}
+{% endblock css %}
+
+{% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
+
+{% block setup %}
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+        return $.ajax(url,{
+            method: 'PATCH',
+            data: {
+                value: params.value
+            }
+        })
+    }
+
+    function mkinline(type, name, msg, id, value)
+    {
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+    }
+    var kname = [];
+    function paramset(params)
+    {
+        params.id = params.pk
+        params.bean = 'page'
+        params.op = 'update'
+        return params
+    }
+    kname = [
+        {% for v in types %}
+            {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
+    ]
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['actb', dotoggle, 'active'],
+        ['logn', dotoggle, 'needlogin'],
+        ['mobo', dotoggle, 'mobileonly']
+    ]
+{% endblock setup %}
+
+{% block onload %}
+    $('.ppedit').editable({
+        ajaxOptions: { type: 'PUT' },
+        params: paramset,
+        source: kname,
+        onblur: 'cancel',
+        url: editcall
+    });
+    $('#npform').on('submit', false)
+    $('#addb').on('click', function(e){
+        e.preventDefault()
+        var pn = $('#npname').val().toLowerCase()
+        if (!pn.match(/^[a-z][a-z0-9.]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
+            return
+        }
+        var sp = null;
+        var error = false;
+        $('.pname').each(function(e){
+            var t = $(this).text();
+            if (t == pn)
+            {
+                error = true;
+                return false;
+            }
+            if (t > pn)
+            {
+                sp = $(this);
+                return false;
+            }
+        })
+        if (error)
+        {
+            bootbox.alert('That page already exists');
+            return;
+        }
+        var src = $('#npsrc').val()
+        if (src == '')
+        {
+            bootbox.alert('Please specify a source');
+            return;
+        }
+        var kind = $('#npkind').val();
+        if (kind == '')
+        {
+            bootbox.alert('Please pick template or object');
+            return;
+        }
+        var active = $('#npactive').is(':checked') ? 1 : 0;
+        var login = $('#nplogin').is(':checked') ? 1 : 0;
+        var mobile = $('#npmobile').is(':checked') ? 1 : 0;
+        $('#npage').modal('hide');
+        var fn = function(data){
+                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
+                '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
+                '<td>'+mktoggle('logn', login)+'</td>'+
+                '<td>'+mktoggle('mobo', mobile)+'</td>'+
+                '<td>'+mktoggle('actb', active)+'</td>'+
+                '<td><a href="/admin/edit/page/'+data+'"><i class="editb far fa-edit"></i></a></td>'+
+                '<td><i class="delb far fa-trash-alt"></i></td></tr>';
+                var nx
+                if (sp == null)
+                {
+                     nx = $(htm).appendTo($('#ptab tbody'));
+                }
+                else
+                {
+                    nx = $(htm).insertBefore(sp.parent());
+                }
+                nx.data('id', data);
+                //$('.ppedit', nx).editable({params: paramset, source: kname});
+            };
+        var dt = {
+                name : pn,
+                kind : kind,
+                source : src,
+                active : active,
+                login : login,
+                mobile: mobile
+            };
+        var sel = ['context', 'role'];
+        var inp = ['start', 'end', 'otherinfo'];
+        var f = $('#npform');
+        var inx = 0;
+        for (var n in inp)
+        {
+            inx = 0;
+            $('input[name^="'+inp[n]+'"]', f).each(function(){
+                dt[inp[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        for (var n in sel)
+        {
+            inx = 0;
+            $('select[name^="'+sel[n]+'"]', f).each(function(){
+                dt[sel[n]+'['+inx+']'] = $(this).val();
+            });
+        }
+        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(){
+            bootbox.alert('Failed to create new page');
+        });
+    })
+    $('#ptab').on('click', function(e){
+        var x = $(e.target)
+        for (var ix in clicks)
+        {
+            if (x.hasClass(clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, 'page', clicks[ix][2])
+            }
+        }
+    })
+    $('#npage').on('show.bs.modal', function(e){
+        $('#npform input,select').val('')
+    })
+    $('#more').on('click', function(e){
+        e.preventDefault()
+        $('#mrow').before($('#example').clone())
+        $('input', $('#mrow').prev()).val('') // clear the new inputs
+        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
+    })
+{% endblock onload %}
+
+{% if not page is defined %}
+    {% set page = 1 %}
+    {% set pagesize = 10 %}
+{% endif %}
+
+{% set pages = (siteinfo.count('page') + pagesize)/pagesize %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Beans</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            <table class="table table-responsive table-striped table-hover" id="ptab">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for name,data in siteinfo.beans(page, pagesize) %}
+                        <tr data-bean="{{p.name}}">
+                            <td>{{p.name}}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="4">No beans defined</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#npage" type="button">Add Bean</button></p>
+        </article>
+    </section>
+    <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                {{m.header({title: 'New Page'})}}
+                <div class="modal-body">
+                    <form action="#" method="POST" id="npform">
+                        {{f.text({label: 'Name', id: 'npname', ph: 'Bean Name', required: TRUE})}}
+                    </form>
+                </div>
+                {{m.footer({action: 'Add', id: 'addb'})}}
+            </div>
+        </div>
+    </div>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

@@ -180,5 +180,21 @@
                 [$rnid, $rcid]);
             return $res['user'];
         }
+/**
+ * Return bean data
+ *
+ * @param boolean    $all  If TRUE then return all beans, otehrwise just non-framework beans.
+ *
+ * @return array
+ */
+        public function beans($all = FALSE)
+        {
+            $beans = [];
+            foreach(\R::inspect() as $tab)
+            {
+                $benas[$tab] = \R::inspect($tab);
+            }
+            return $beans;
+        }
     }
 ?>
