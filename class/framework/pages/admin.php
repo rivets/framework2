@@ -17,8 +17,9 @@
  */
     class Admin extends \Framework\Siteaction
     {
-        const EDITABLE = ['form', 'fwconfig', 'page', 'user'];
-        const VIEWABLE = ['form'];
+        const EDITABLE = ['bean', 'form', 'fwconfig', 'page', 'user'];
+        const VIEWABLE = ['bean', 'form'];
+        const NOTMODEL = ['bean'];
 /**
  * Edit admin items
  *
@@ -40,12 +41,20 @@
                 {
                     throw new \Exception('Not Editable');
                 }
-                $obj = $context->load($kind, $rest[2]);
+                if (($notmodel = in_array($kind, NOTMODEL)))
+                {
+                    $class = '\\Support\\'.$kind;
+                    $obj = new $class($kind);
+                }
+                else
+                {
+                    $obj = $context->load($kind, $rest[2]);
+                }
                 $context->local()->addval('bean', $obj);
                 $obj->startEdit($context); // do any special setup that the edit requires
                 if (($bid = $context->formdata()->post('bean', '')) !== '')
                 { // this is a post
-                    if ($bid != $obj->getID())
+                    if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
                         throw new \Exception('Oddness');
                     }
@@ -206,12 +215,12 @@
                 $tpl = '@admin/roles.twig';
                 break;
 
-            case 'users': //show and add users
-                $tpl = '@admin/users.twig';
-                break;
-
             case 'update': // See if we need an update
                 $tpl = $this->update($context);
+                break;
+
+            case 'users': //show and add users
+                $tpl = '@admin/users.twig';
                 break;
 
             case 'view' : // view something - forms only at the moment

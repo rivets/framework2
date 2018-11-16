@@ -46,6 +46,16 @@
             return $this->bean;
         }
 /**
+ * Setup for an edit
+ *
+ * @param object    $context  The context object
+ *
+ * @return void
+ */
+        public function startEdit(Context $context)
+        {
+        }
+/**
  * Handle a bean edit
  *
  * @param object    $context  The context object
