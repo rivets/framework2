@@ -76,6 +76,10 @@
  */
         public function view(Context $context, array $rest)
         {
+            if (count($rest) >= 3)
+            {
+                $context->local()->addval('object', $context->load($rest[2], $rest[3]));
+            }
         }
     }
 ?>
