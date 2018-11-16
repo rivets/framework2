@@ -197,7 +197,7 @@
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
-                if ($all || !in_array($tab, self::fwtables))
+                if ($all || !in_array($tab, self::$fwtables))
                 {
                     $beans[$tab] = \R::inspect($tab);
                 }
