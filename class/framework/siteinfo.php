@@ -17,8 +17,14 @@
         use \Framework\Utility\Singleton;
 
         private static $fwtables = [
-            'confirm', 'fwconfig', 'page', 'pagerole', 'request',
-            'role', 'rolecontext', 'rolename', 'session', 'user'
+            'config',
+            'confirm',
+            'page',
+            'pagerole',
+            'role',
+            'rolecontext',
+            'rolename',
+            'user',
         ];
 /**
  * Get beans in chunks and turn them one by one using a generator
