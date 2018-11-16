@@ -15,7 +15,9 @@
     class SiteInfo
     {
         use \Framework\Utility\Singleton;
-
+/**
+ * @var array  Array of the names of the beans used by the framework
+ */
         private static $fwtables = [
             'fwconfig',
             'confirm',
