@@ -17,9 +17,8 @@
         use \Framework\Utility\Singleton;
 
         private static $fwtables = [
-            'config',
-            'confirm',
             'fwconfig',
+            'confirm',
             'page',
             'pagerole',
             'role',
