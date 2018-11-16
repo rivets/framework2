@@ -192,7 +192,7 @@
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
-                $benas[$tab] = \R::inspect($tab);
+                $beans[$tab] = \R::inspect($tab);
             }
             return $beans;
         }
