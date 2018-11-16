@@ -62,7 +62,7 @@
  *
  * @return void
  */
-        public function edit(Context $context)
+        public function edit(Context $context, array $rest)
         {
             $emess = [];
             return [!empty($emess), $emess];
@@ -74,7 +74,7 @@
  *
  * @return void
  */
-        public function view(Context $context)
+        public function view(Context $context, array $rest)
         {
         }
     }
