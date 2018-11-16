@@ -15,6 +15,11 @@
     class SiteInfo
     {
         use \Framework\Utility\Singleton;
+
+        private static $fwtables = [
+            'confirm', 'fwconfig', 'page', 'pagerole', 'request',
+            'role', 'rolecontext', 'rolename', 'session', 'user'
+        ];
 /**
  * Get beans in chunks and turn them one by one using a generator
  *
@@ -192,7 +197,10 @@
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
-                $beans[$tab] = \R::inspect($tab);
+                if ($all || !in_array($tab, self::fwtables))
+                {
+                    $beans[$tab] = \R::inspect($tab);
+                }
             }
             return $beans;
         }
