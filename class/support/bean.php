@@ -80,6 +80,7 @@
             {
                 $context->local()->addval('object', $context->load($rest[2], $rest[3]));
             }
+            $context->local()->addval(('view', TRUE);
         }
     }
 ?>
