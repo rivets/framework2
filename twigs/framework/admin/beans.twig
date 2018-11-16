@@ -209,7 +209,9 @@
                     {% for name,data in beans %}
                         <tr data-bean="{{name}}">
                             <td>{{name}}</td>
-                        </tr>
+                            <td><a href="{{base}}/admin/view/bean/{{name}}"><i class="editb far fa-eye"></i></a></td>
+                            <td><a href="{{base}}/admin/edit/bean/{{name}}"><i class="editb far fa-edit"></i></a></td>
+                        </td>
                     {% else %}
                         <tr><td colspan="4">No beans defined</td></tr>
                     {% endfor %}
