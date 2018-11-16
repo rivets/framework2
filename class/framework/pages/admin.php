@@ -51,7 +51,7 @@
                     $obj = $context->load($kind, $rest[2]);
                 }
                 $context->local()->addval('bean', $obj);
-                $obj->startEdit($context); // do any special setup that the edit requires
+                $obj->startEdit($context, $rest); // do any special setup that the edit requires
                 if (($bid = $context->formdata()->post('bean', '')) !== '')
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())

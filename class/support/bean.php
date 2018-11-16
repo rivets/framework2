@@ -52,8 +52,12 @@
  *
  * @return void
  */
-        public function startEdit(Context $context)
+        public function startEdit(Context $context, array $rest)
         {
+            if (count($rest) >= 4)
+            {
+                $context->local()->addval('object', $context->load($rest[2], $rest[3]));
+            }
         }
 /**
  * Handle a bean edit
@@ -76,10 +80,7 @@
  */
         public function view(Context $context, array $rest)
         {
-            if (count($rest) >= 4)
-            {
-                $context->local()->addval('object', $context->load($rest[2], $rest[3]));
-            }
+            $this->startEdit($context, $rest);
             $context->local()->addval('view', TRUE);
         }
     }
