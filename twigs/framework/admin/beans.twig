@@ -204,7 +204,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for name,data in siteinfo.beans(page, pagesize) %}
+                    {% for name,data in siteinfo.beans(FALSE, page, pagesize) %}
                         <tr data-bean="{{name}}">
                             <td>{{name}}</td>
                         </tr>
