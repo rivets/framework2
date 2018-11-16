@@ -17,7 +17,7 @@
 /**
  * @var string The name of the bean (i.e. table)
  */
-        private $bean;
+        private $table;
 
         use \ModelExtend\MakeGuard;
 /**
@@ -25,7 +25,7 @@
  */
         public function __construct(string $name)
         {
-            $this->bean = $name;
+            $this->table = $name;
         }
 /**
  * Return the fields
@@ -34,7 +34,7 @@
  */
         public function fields()
         {
-            return \R::inspect($this->bean);
+            return \R::inspect($this->table);
         }
 /**
  * Return the name
@@ -43,7 +43,7 @@
  */
         public function name()
         {
-            return $this->bean;
+            return $this->table;
         }
 /**
  * Setup for an edit
