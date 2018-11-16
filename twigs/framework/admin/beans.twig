@@ -18,12 +18,10 @@
     #}
 {% endblock css %}
 
-{% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
-
 {% block setup %}
     function editcall(params)
     {
-        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+        var url = base+'/ajax/table/'+params.bean+'/'+params.pk+'/'+params.name+'/';
         return $.ajax(url,{
             method: 'PATCH',
             data: {
@@ -207,8 +205,8 @@
                 </thead>
                 <tbody>
                     {% for name,data in siteinfo.beans(page, pagesize) %}
-                        <tr data-bean="{{p.name}}">
-                            <td>{{p.name}}</td>
+                        <tr data-bean="{{name}}">
+                            <td>{{name}}</td>
                         </tr>
                     {% else %}
                         <tr><td colspan="4">No beans defined</td></tr>
