@@ -18,7 +18,13 @@
                             <td>{{name}}</td>
                             <td>{{type}}</td>
                             {% if object is defined %}
-                                <td>{{attribute(object, name)}}</td>
+                                {% set x = attribute(object, name) %}
+                                {% if name ends with '_id' %}
+                                    {% set xn = x|split('_') %}
+                                    <td><a href="{{base}}/admin/view/bean/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
+                                {% else %}
+                                    <td>{{x}}</td>
+                                {% endif %}
                             {% endif %}
                         </tr>
                     {% endfor %}
