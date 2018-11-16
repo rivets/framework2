@@ -56,7 +56,15 @@
         {
             if (count($rest) >= 4)
             {
-                $context->local()->addval('object', $context->load($rest[2], $rest[3]));
+                $bn = $context->load($rest[2], $rest[3], \Framework\Context::RNULL);
+                if (is_object($bn))
+                {
+                    $context->local()->addval('object', $bn);
+                }
+                else
+                {
+                    $context->local->message(\Framework\Local::ERROR, 'Object does not exist');
+                }
             }
         }
 /**
