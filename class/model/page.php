@@ -19,6 +19,8 @@
  */
         private $roletype = 'pagerole';
 
+
+        use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
@@ -307,15 +309,6 @@
  */
         public function startEdit(Context $context)
         {
-        }
-/**
- * Return the CSRFGuard inputs for inclusion in a form;
- * 
- * @return string
- */
-        public function guard()
-        {
-            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle an edit form for this page

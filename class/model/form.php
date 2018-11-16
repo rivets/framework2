@@ -44,6 +44,7 @@
         ];
 
         use \ModelExtend\FWEdit;
+        use \ModelExtend\MakeGuard;
 /**
  * Return the form name
  *
@@ -95,15 +96,6 @@
         public function startEdit(Context $context)
         {
             $context->local()->addval('flags', self::$flags);
-        }
-/**
- * Return the CSRFGuard inputs for inclusion in a form;
- * 
- * @return string
- */
-        public function guard()
-        {
-            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle a form edit

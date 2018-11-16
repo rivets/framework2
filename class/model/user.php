@@ -27,6 +27,7 @@
 
         use \ModelExtend\User;
         use \ModelExtend\FWEdit;
+        use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
  * Is this user an admin?
@@ -119,15 +120,6 @@
  */
         public function startEdit(Context $context)
         {
-        }
-/**
- * Return the CSRFGuard inputs for inclusion in a form;
- * 
- * @return string
- */
-        public function guard()
-        {
-            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle an edit form for this user
