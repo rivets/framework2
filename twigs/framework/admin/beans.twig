@@ -169,8 +169,8 @@
             }
         }
     })
-    $('#npage').on('show.bs.modal', function(e){
-        $('#npform input,select').val('')
+    $('#nbean').on('show.bs.modal', function(e){
+        $('#nbform input,select').val('')
     })
     $('#more').on('click', function(e){
         e.preventDefault()
@@ -221,13 +221,20 @@
 	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#npage" type="button">Add Bean</button></p>
         </article>
     </section>
-    <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
+    <div class="modal fade" id="nbean" aria-labelledby="nbean" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                {{m.header({title: 'New Page'})}}
+                {{m.header({title: 'New Bean'})}}
                 <div class="modal-body">
-                    <form action="#" method="POST" id="npform">
-                        {{f.text({label: 'Name', id: 'npname', ph: 'Bean Name', required: TRUE})}}
+                    <form action="#" method="POST" id="nbform">
+                        {{f.text({label: 'Name', id: 'nbname', ph: 'Bean Name', required: TRUE})}}
+                        <fieldset id="examp">
+                            {{f.text({label: 'Field', id: '', ph: 'Field Name'})}}
+                            {{f.text({label: 'Value', id: '', ph: 'Field Sample Value'})}}
+                        </fieldset>
+                        <p id="mrow">
+                            <button class="btn btn-small" id="more">More</button>
+                        </p>
                     </form>
                 </div>
                 {{m.footer({action: 'Add', id: 'addb'})}}
