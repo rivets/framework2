@@ -31,7 +31,7 @@
                                     {% set xn = name|split('_') %}
                                     <td><a href="{{base}}/admin/view/bean/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
-                                    <td>{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{{x}}</td>
+                                    <td>{{f.inline('text', name, 'Enter '~name, object.getID, x)}}</td>
                                 {% endif %}
                             {% endif %}
                         </tr>
