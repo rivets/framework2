@@ -185,7 +185,9 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('page') + pagesize)/pagesize %}
+{% set beans = siteinfo.beans(FALSE) %}
+
+{% set pages = (beans|length + pagesize)/pagesize %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -204,7 +206,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for name,data in siteinfo.beans(FALSE, page, pagesize) %}
+                    {% for name,data in beans %}
                         <tr data-bean="{{name}}">
                             <td>{{name}}</td>
                         </tr>
