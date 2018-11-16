@@ -41,7 +41,7 @@
                 {
                     throw new \Exception('Not Editable');
                 }
-                if (($notmodel = in_array($kind, NOTMODEL)))
+                if (($notmodel = in_array($kind, self::NOTMODEL)))
                 {
                     $class = '\\Support\\'.$kind;
                     $obj = new $class($kind);
@@ -102,7 +102,7 @@
                 $context->local()->bad();
                 /* NOT REACHED */
             }
-            if (($notmodel = in_array($kind, NOTMODEL)))
+            if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Support\\'.$kind;
                 $obj = new $class($kind);
