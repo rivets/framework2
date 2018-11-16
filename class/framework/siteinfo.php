@@ -19,6 +19,7 @@
         private static $fwtables = [
             'config',
             'confirm',
+            'fwconfig',
             'page',
             'pagerole',
             'role',
