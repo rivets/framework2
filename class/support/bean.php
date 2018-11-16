@@ -63,7 +63,7 @@
                 }
                 else
                 {
-                    $context->local->message(\Framework\Local::ERROR, 'Object does not exist');
+                    $context->local()->message(\Framework\Local::ERROR, 'Object does not exist');
                 }
             }
         }
