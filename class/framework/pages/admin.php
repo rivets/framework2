@@ -210,7 +210,7 @@
                         {
                             if ($field !== '')
                             {
-                                $bn->{$val} = $fd->post(['sample', $ix], '');
+                                $bn->{$field} = $fd->post(['sample', $ix], '');
                             }
                         }
                         \R::store($bn);
