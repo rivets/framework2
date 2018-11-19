@@ -215,7 +215,7 @@
                         }
                         \R::store($bn);
                         \R::trash($bn); // delete it as we dont want it anymore
-                        $context->local()->message(\Framework\Local::Message, $name.' created');
+                        $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     }
                 }
                 $tpl = '@admin/beans.twig';
