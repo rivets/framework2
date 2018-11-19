@@ -11,9 +11,9 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#nbform').on('submit', false).parsley();
+    $('#nbform').parsley();
     $('#npform').on('submit', false)
-    $('#addb').on('click', function(e){
+    $('#addbx').on('click', function(e){
         e.preventDefault()
         var name = $('#npname').val()
         $('#npage').modal('hide');
