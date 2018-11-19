@@ -206,7 +206,7 @@
                     else
                     {
                         $bn = \R::dispense(strtolower($name));
-                        foreach ($fd->posta('field') as $ix => $val)
+                        foreach ($fd->posta('field') as $ix => $field)
                         {
                             if ($field !== '')
                             {
