@@ -99,7 +99,7 @@
                         data-parsley-trigger="blur"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/tablecheck/{value}"
                         data-parsley-remote-message="That bean already exists" data-parsley-type="alphanum"/>
                         <fieldset id="example">
-                            {{f.text({label: 'Field', id: '', name: 'field[]', ph: 'Field Name'})}}
+                            {{f.text({label: 'Field', id: '', name: 'field[]', ph: 'Field Name', parsley: {type: alphanum } })}}
                             {{f.text({label: 'Value', id: '', name: 'sample[]', ph: 'Field Sample Value'})}}
                         </fieldset>
                         <p id="mrow">
