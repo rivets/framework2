@@ -429,10 +429,16 @@
              $rest= $context->rest();
              if (isset($rest[1]) && $rest[1] !== '')
              {
-                if (empty(R::inspect($rest[1])))
+                try
                 {
-                    $context->web()->notfound(); // error if it exists....
-                    /* NOT REACHED */
+                    if (empty(R::inspect(strtolower($rest[1]))))
+                    {
+                        $context->web()->notfound(); // error if it exists....
+                        /* NOT REACHED */
+                    }
+                }
+                catch (\Exception $e)
+                { // if we get an exception if it doesn't exist....
                 }
             }
         }
