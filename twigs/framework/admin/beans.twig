@@ -54,7 +54,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set beans = siteinfo.beans(FALSE) %}
+{% set beans = siteinfo.tables(FALSE) %}
 
 {% set pages = (beans|length + pagesize)/pagesize %}
 
@@ -79,8 +79,8 @@
                     {% for nb in beans %}
                         <tr data-bean="{{nb.name}}">
                             <td class="bname">{{nb.name}}</td>
-                            <td><a href="{{base}}/admin/view/bean/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
-                            <td><a href="{{base}}/admin/edit/bean/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
+                            <td><a href="{{base}}/admin/view/table/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
+                            <td><a href="{{base}}/admin/edit/table/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
                         </td>
                     {% else %}
                         <tr><td colspan="4">No beans defined</td></tr>

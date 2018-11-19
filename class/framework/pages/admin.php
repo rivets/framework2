@@ -99,7 +99,7 @@
             }
             catch (\Exception $e)
             {
-                $context->local()->bad();
+                $context->web()->bad();
                 /* NOT REACHED */
             }
             if (($notmodel = in_array($kind, self::NOTMODEL)))
@@ -191,7 +191,13 @@
             switch ($rest[0])
             {
             case 'beans':
-                $fd = $context->formdata();
+                \Support\Table::add($context);
+                $tpl = '@admin/beans.twig';
+                break;
+
+            case 'config':  // show and add config items
+                $tpl = '@admin/config.twig';
+                break;                $fd = $context->formdata();
                 if ($fd->haspost('name'))
                 {
                     $name = strtolower($fd->mustpost('name'));
@@ -210,7 +216,14 @@
                         {
                             if ($field !== '')
                             {
-                                $bn->{$field} = $fd->post(['sample', $ix], '');
+                                if (!preg_match('/^[a-z][a-z0-9]*/', $field))
+                                {
+                                    $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
+                                }
+                                else
+                                {
+                                    $bn->{$field} = $fd->post(['sample', $ix], '');
+                                }
                             }
                         }
                         \R::store($bn);
@@ -218,12 +231,6 @@
                         $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     }
                 }
-                $tpl = '@admin/beans.twig';
-                break;
-
-            case 'config':  // show and add config items
-                $tpl = '@admin/config.twig';
-                break;
 
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';

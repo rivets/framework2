@@ -194,13 +194,13 @@
             return $res['user'];
         }
 /**
- * Return bean data
+ * Return bean table data
  *
  * @param boolean    $all  If TRUE then return all beans, otehrwise just non-framework beans.
  *
  * @return array
  */
-        public function beans($all = FALSE)
+        public function tables($all = FALSE)
         {
             $beans = [];
             foreach(\R::inspect() as $tab)

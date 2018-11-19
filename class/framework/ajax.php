@@ -33,8 +33,8 @@
             'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []],
-            'table'          => [TRUE,   [['Site', 'Admin']]],
-            'tablecheck'     => [TRUE,   [['Site', 'Admin']]],
+            'table'         => [TRUE,   [['Site', 'Admin']]],
+            'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
         ];
@@ -245,6 +245,64 @@
  * @return void
  */
         private function bean(Context $context)
+        {
+            $rest = $context->rest();
+            $bean = $rest[1];
+            switch ($_SERVER['REQUEST_METHOD'])
+            {
+            case 'POST': // make a new one /ajax/bean/KIND/
+                $class = REDBEAN_MODEL_PREFIX.$bean;
+                if (method_exists($class, 'add'))
+                {
+                    $class::add($context);
+                }
+                elseif (!method_exists($this, 'add'.$bean))
+                {
+                    $context->web()->bad();
+                }
+                else
+                {
+                    $this->{'add'.$bean}($context);
+                }
+                break;
+            case 'PATCH':
+            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
+                $id = $rest[2] ?? 0; // get the id from the URL
+                if ($id <= 0)
+                {
+                    $context->web()->bad();
+                }
+                $bn = $context->load($bean, $id);
+                $fields = R::inspect($bean); // gets all the fields
+                $field = $rest[3] ?? ''; // get the field name from the URL
+                if (!isset($fields[$field]))
+                {
+                    $context->web()->bad();
+                }
+                $bn->$field = $context->formdata()->mustput('value');
+                R::store($bn);
+                break;
+            case 'DELETE': // /ajax/bean/KIND/ID/
+                $id = $rest[2] ?? 0; // get the id from the URL
+                if ($id <= 0)
+                {
+                    $context->web()->bad();
+                }
+                R::trash($context->load($bean, $id));
+                break;
+            case 'GET':
+            default:
+                $context->web()->bad();
+            }
+        }
+/**
+ * Carry out operations on tables
+ *
+ * @param object    $context The context object
+ *
+ * @return void
+ */
+        private function table(Context $context)
         {
             $rest = $context->rest();
             $bean = $rest[1];
