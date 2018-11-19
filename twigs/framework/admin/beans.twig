@@ -99,7 +99,9 @@
                         data-parsley-trigger="blur"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/tablecheck/{value}"
                         data-parsley-remote-message="That bean already exists" data-parsley-type="alphanum"/>
                         <fieldset id="example">
-                            {{f.text({label: 'Field', id: '', name: 'field[]', ph: 'Field Name', parsley: {type: alphanum } })}}
+                            <label for="fn" class="control-label">User Name</label>
+                            <input type="text" id="fn" name="field[]" placeholder="Field name - alphanumeric characters only" class="form-control"
+                                data-parsley-trigger="blur" data-parsley-type="alphanum"/>
                             {{f.text({label: 'Value', id: '', name: 'sample[]', ph: 'Field Sample Value'})}}
                         </fieldset>
                         <p id="mrow">
