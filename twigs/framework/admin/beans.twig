@@ -12,13 +12,6 @@
 
 {% block onload %}
     $('#nbform').on('submit', false).parsley();
-    $('.ppedit').editable({
-        ajaxOptions: { type: 'PUT' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: editcall
-    });
     $('#npform').on('submit', false)
     $('#addb').on('click', function(e){
         e.preventDefault()
@@ -43,16 +36,6 @@
             bootbox.alert('Failed to create new bean');
         });
     })
-//    $('#ptab').on('click', function(e){
-//        var x = $(e.target)
-//        for (var ix in clicks)
-//        {
-//            if (x.hasClass(clicks[ix][0]))
-//            {
-//                clicks[ix][1](e, x, 'page', clicks[ix][2])
-//            }
-//        }
-//    })
     $('#nbean').on('show.bs.modal', function(e){
         $('#nbform input,select').val('')
     })
