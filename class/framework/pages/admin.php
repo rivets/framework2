@@ -194,7 +194,7 @@
                 $fd = $context->formdata();
                 if ($fd->haspost('name'))
                 {
-                    $name = strtolower($fd->mustpost($name));
+                    $name = strtolower($fd->mustpost('name'));
                     if ($name === '')
                     {
                         $context->local()->addmessage(\Framework\Local::ERROR, 'You must provide a bean name');
