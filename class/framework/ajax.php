@@ -431,14 +431,14 @@
              {
                 try
                 {
-                    if (empty(R::inspect(strtolower($rest[1]))))
+                    if (!empty(R::inspect(strtolower($rest[1]))))
                     {
                         $context->web()->notfound(); // error if it exists....
                         /* NOT REACHED */
                     }
                 }
                 catch (\Exception $e)
-                { // if we get an exception if it doesn't exist....
+                { // if we get an exception it doesn't exist which is OK
                 }
             }
         }
