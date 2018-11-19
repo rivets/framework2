@@ -207,7 +207,7 @@
             {
                 if ($all || !in_array($tab, self::$fwtables))
                 {
-                    $beans[] = new \Support\Bean($tab);
+                    $beans[] = new \Support\Table($tab);
                 }
             }
             return $beans;

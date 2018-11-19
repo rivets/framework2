@@ -1,6 +1,6 @@
 <?php
 /**
- * A class for the object Bean
+ * A class for the object Table
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018 Newcastle University
@@ -10,12 +10,12 @@
 
     use \Support\Context as Context;
 /**
- * A class Bean object
+ * A class Table object
  */
-    class Bean
+    class Table
     {
 /**
- * @var string The name of the bean (i.e. table)
+ * @var string The name of the table
  */
         private $table;
 
