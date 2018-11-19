@@ -12,8 +12,10 @@
 
 {% block onload %}
     $('#nbform').parsley();
-    $('#npform').on('submit', false)
-    $('#addbx').on('click', function(e){
+    $('#addb').on('click', function(e){
+        $('#nbform').submit();
+
+        return;
         e.preventDefault()
         var name = $('#npname').val()
         $('#npage').modal('hide');
