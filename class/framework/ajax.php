@@ -429,16 +429,10 @@
              $rest= $context->rest();
              if (isset($rest[1]) && $rest[1] !== '')
              {
-                try
+                if (AQueryWriter::tableExists(strtolower($rest[1])))
                 {
-                    if (!empty(R::inspect(strtolower($rest[1]))))
-                    {
-                        $context->web()->notfound(); // error if it exists....
-                        /* NOT REACHED */
-                    }
-                }
-                catch (\Exception $e)
-                { // if we get an exception it doesn't exist which is OK
+                    $context->web()->notfound(); // error if it exists....
+                    /* NOT REACHED */
                 }
             }
         }
