@@ -17,9 +17,9 @@
  */
     class Admin extends \Framework\Siteaction
     {
-        const EDITABLE = ['bean', 'form', 'fwconfig', 'page', 'user'];
-        const VIEWABLE = ['bean', 'form'];
-        const NOTMODEL = ['bean'];
+        const EDITABLE = ['table', 'form', 'fwconfig', 'page', 'user'];
+        const VIEWABLE = ['table', 'form'];
+        const NOTMODEL = ['table'];
 /**
  * Edit admin items
  *

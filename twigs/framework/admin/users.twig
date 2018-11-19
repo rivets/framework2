@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <label for="un" class="control-label">User Name</label>
                             <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
-                            data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/logincheck/"
+                            data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/logincheck/{value}"
                             data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"/>
                         </div>
                         <div class="form-group">
