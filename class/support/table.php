@@ -66,8 +66,8 @@
                     $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     return TRUE;
                 }
-                return FALSE;
             }
+            return FALSE;
         }
 /**
  * Return the fields
