@@ -67,6 +67,7 @@
 {% block main %}
     <section class="row">
         <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <table class="table table-responsive table-striped table-hover" id="ptab">
                 <thead class="thead-inverse">
