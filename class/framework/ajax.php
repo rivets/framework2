@@ -426,10 +426,10 @@
  */
         public function tablecheck(Context $context)
         {
-             $rest= $context->rest();
-             if (isset($rest[1]) && $rest[1] !== '')
-             {
-                if (\RedBeanPHP\QueryWriter\AQueryWriter::tableExists(strtolower($rest[1])))
+            $rest= $context->rest();
+            if (isset($rest[1]) && $rest[1] !== '')
+            {
+                if (\R::queryWriter()->tableExists(strtolower($rest[1])))
                 {
                     $context->web()->notfound(); // error if it exists....
                     /* NOT REACHED */
