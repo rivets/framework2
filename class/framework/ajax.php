@@ -429,7 +429,7 @@
              $rest= $context->rest();
              if (isset($rest[1]) && $rest[1] !== '')
              {
-                if (AQueryWriter::tableExists(strtolower($rest[1])))
+                if (\RedBeanPHP\QueryWriter\AQueryWriter::tableExists(strtolower($rest[1])))
                 {
                     $context->web()->notfound(); // error if it exists....
                     /* NOT REACHED */
