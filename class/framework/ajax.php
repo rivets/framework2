@@ -29,9 +29,12 @@
             'bean'          => [TRUE,   [['Site', 'Admin']]],
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
-            'logincheck'    => [FALSE,  []],
+            'logincheck'    => [FALSE,  []], // used by registration page
+            'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []],
+            'table'          => [TRUE,   [['Site', 'Admin']]],
+            'tablecheck'     => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
         ];
@@ -47,14 +50,14 @@
         private static $paging = [
             'page'  => [TRUE,   [['Site', 'Admin']]],
             'user'  => [TRUE,   [['Site', 'Admin']]],
-            // 'bean' => [TRUE, [['ContextName', 'RoleName']]]
+            // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * @var array   Values controlling whether or not search hint calls are allowed
  */
         private static $hints = [
-            // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]]
+            // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
@@ -372,6 +375,27 @@
             self::$hints = array_merge(self::$paging, $hints);
         }
 /**
+ * Do a database check for uniqueness
+ *
+ * @param object    $context  The Context object
+ * @param string    $bean     The kind of bean
+ * @param string    $name     The field to check
+ *
+ * @return void
+ */
+        protected function uniqCheck(Context $context, string $bean, string $field)
+        {
+            $rest= $context->rest();
+            if (isset($rest[1]) && $rest[1] !== '')
+            { 
+                if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$rest[1]]) > 0)
+                {
+                    $context->web()->notfound(); // error if it exists....
+                    /* NOT REACHED */
+                }
+            }
+        }
+/**
  * Do a parsley login check
  *
  * @param object    $context
@@ -380,9 +404,32 @@
  */
         public function logincheck(Context $context)
         {
-            if (($lg = $context->formdata()->get('login', '')) !== '')
-            { # this is a parsley generated username check call
-                if (R::count('user', 'login=?', [$lg]) > 0)
+            $this->uniqCheck($context, 'user', 'login');
+        }
+/**
+ * Do a parsley page check
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function pagecheck(Context $context)
+        {
+            $this->uniqCheck($context, 'page', 'name');
+        }
+/**
+ * Do a parsley table check
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function tablecheck(Context $context)
+        {
+             $rest= $context->rest();
+             if (isset($rest[1]) && $rest[1] !== '')
+             {
+                if (empty(R::inspect($rest[1])))
                 {
                     $context->web()->notfound(); // error if it exists....
                     /* NOT REACHED */
@@ -390,7 +437,7 @@
             }
         }
 /**
- * DO a password verification
+ * Do a password verification
  *
  * @param object    $context
  *
