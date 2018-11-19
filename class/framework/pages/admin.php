@@ -191,6 +191,33 @@
             switch ($rest[0])
             {
             case 'beans':
+                $fd = $context->formdata();
+                if ($fd->haspost('name'))
+                {
+                    $name = strtolower($fd->mustpost($name));
+                    if ($name === '')
+                    {
+                        $context->local()->addmessage(\Framework\Local::ERROR, 'You must provide a bean name');
+                    }
+                    elseif (!preg_match('/^[a-z][a-z0-9]*/', $name))
+                    {
+                        $context->local()->addmessage(\Framework\Local::ERROR, 'You must provide a bean name');
+                    }
+                    else
+                    {
+                        $bn = \R::dispense(strtolower($name));
+                        foreach ($fd->posta('field') as $ix => $val)
+                        {
+                            if ($field !== '')
+                            {
+                                $bn->{$val} = $fd->post(['sample', $ix], '');
+                            }
+                        }
+                        \R::store($bn);
+                        \R::trash($bn); // delete it as we dont want it anymore
+                        $context->local()->addmessage(\Framework\Local::Message, $name.' created');
+                    }
+                }
                 $tpl = '@admin/beans.twig';
                 break;
 
