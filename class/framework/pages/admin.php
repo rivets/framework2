@@ -197,11 +197,11 @@
                     $name = strtolower($fd->mustpost('name'));
                     if ($name === '')
                     {
-                        $context->local()->addmessage(\Framework\Local::ERROR, 'You must provide a bean name');
+                        $context->local()->essage(\Framework\Local::ERROR, 'You must provide a bean name');
                     }
                     elseif (!preg_match('/^[a-z][a-z0-9]*/', $name))
                     {
-                        $context->local()->addmessage(\Framework\Local::ERROR, 'You must provide a bean name');
+                        $context->local()->message(\Framework\Local::ERROR, 'You must provide a bean name');
                     }
                     else
                     {
@@ -215,7 +215,7 @@
                         }
                         \R::store($bn);
                         \R::trash($bn); // delete it as we dont want it anymore
-                        $context->local()->addmessage(\Framework\Local::Message, $name.' created');
+                        $context->local()->message(\Framework\Local::Message, $name.' created');
                     }
                 }
                 $tpl = '@admin/beans.twig';
