@@ -12,6 +12,9 @@
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
+    {% if allownew %}
+        <script {{h.urlattr(fwurls.parsley)}}></script>
+    {% endif %}
     {% if inline%}
         <script {{h.urlattr(fwurls.editable)}}></script>
     {% endif %}
@@ -59,14 +62,14 @@
         });
     {% endif %}
     {% if allownew %}
-        $('#nfform').on('submit', false)
+        $('#nfform').on('submit', false).parsley();
         $('#addb').on('click', function(e){
-            e.preventDefault()
-            var pn = $('#nfname').val().toLowerCase()
+            e.preventDefault();
+            var pn = $('#nfname').val().toLowerCase();
             if (!pn.match(/^[a-z][a-z0-9.]*$/))
             {
-                bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only')
-                return
+                bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only');
+                return;
             }
             var sp = null;
             var error = false;
@@ -90,7 +93,7 @@
             }
         })
         $('#nfield').on('show.bs.modal', function(e){
-            $('#nfform input,select').val('')
+            $('#nfform input,select').val('');
         })
     {% endif %}
 {% endblock onload %}
@@ -136,8 +139,8 @@
                     {{m.header({title: 'New Field'})}}
                     <div class="modal-body">
                         <form action="#" method="POST" id="nfform">
-                            {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE})}}
-                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
+                            {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
+                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value', parsley: {type: 'alphanum'} })}}
                         </form>
                     </div>
                     {{m.footer({action: 'Add', id: 'addb'})}}
