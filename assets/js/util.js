@@ -59,6 +59,17 @@
         });
     }
 
+    function editcall(params)
+    {
+        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+        return $.ajax(url,{
+            method: 'PATCH',
+            data: {
+                value: params.value
+            }
+        });
+    }
+
     function mkinline(type, name, msg, id, value)
     {
         return '<a href="#" class="ppedit" data-name="'+name+'" data-type="'+type+'" data-pk="'+id+'" data-url="'+base+'/ajax.php" data-title="'+msg+'">'+value+'</a>';
