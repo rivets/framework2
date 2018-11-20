@@ -44,7 +44,7 @@
                 if (($notmodel = in_array($kind, self::NOTMODEL)))
                 {
                     $class = '\\Support\\'.$kind;
-                    $obj = new $class($kind);
+                    $obj = new $class($rest[2]);
                 }
                 else
                 {
