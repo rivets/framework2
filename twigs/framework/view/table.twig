@@ -6,9 +6,14 @@
 {% import '@util/modalmacro.twig' as m %}
 {% import _self as h %}
 
+{% set nonew = view is not defined and object is not defined %}
+{% set inline = view is not defined and object is defined %}
+
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.editable)}}></script>
+    {% if inline%}
+        <script {{h.urlattr(fwurls.editable)}}></script>
+    {% endif %}
 {% endblock scripts %}
 
 {% block css %}
@@ -16,71 +21,77 @@
 {% endblock css %}
 
 {% block setup %}
-    function editcall(params)
-    {
-        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
-        return $.ajax(url,{
-            method: 'PATCH',
-            data: {
-                value: params.value
-            }
-        });
-    }
+    {%if inline %} {# only want this if we are doing inline edits  #}
+        function editcall(params)
+        {
+            var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+            return $.ajax(url,{
+                method: 'PATCH',
+                data: {
+                    value: params.value
+                }
+            });
+        }
 
-    function mkinline(type, name, msg, id, value)
-    {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
-    }
+        function mkinline(type, name, msg, id, value)
+        {
+            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+        }
 
-    function paramset(params)
-    {
-        params.id = params.pk
-        params.bean = '{{bean.name}}'
-        params.op = 'update'
-        return params
-    }
+        function paramset(params)
+        {
+            params.id = params.pk
+            params.bean = '{{bean.name}}'
+            params.op = 'update'
+            return params
+        }
+    {% endif %}
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({
-        ajaxOptions: { type: 'PUT' },
-        params: paramset,
-        onblur: 'cancel',
-        url: editcall
-    });
-    $('#nfform').on('submit', false)
-    $('#addb').on('click', function(e){
-        e.preventDefault()
-        var pn = $('#nfname').val().toLowerCase()
-        if (!pn.match(/^[a-z][a-z0-9.]*$/))
-        {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only')
-            return
-        }
-        var sp = null;
-        var error = false;
-        $('.fname').each(function(e){
-            var t = $(this).text();
-            if (t == pn)
+    {%if inline %}
+        $('.ppedit').editable({
+            ajaxOptions: { type: 'PUT' },
+            params: paramset,
+            onblur: 'cancel',
+            url: editcall
+        });
+    {% endif %}
+    {% if not nonew %}
+        $('#nfform').on('submit', false)
+        $('#addb').on('click', function(e){
+            e.preventDefault()
+            var pn = $('#nfname').val().toLowerCase()
+            if (!pn.match(/^[a-z][a-z0-9.]*$/))
             {
-                error = true;
-                return false;
+                bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only')
+                return
             }
-            if (t > pn)
+            var sp = null;
+            var error = false;
+            $('.fname').each(function(e){
+                var t = $(this).text();
+                if (t == pn)
+                {
+                    error = true;
+                    return false;
+                }
+                if (t > pn)
+                {
+                    sp = $(this);
+                    return false;
+                }
+            })
+            if (error)
             {
-                sp = $(this);
-                return false;
+                bootbox.alert('That field already exists');
+                return;
             }
         })
-        if (error)
-        {
-            bootbox.alert('That field already exists');
-            return;
-        }
-    })
-    $('#nfield').on('show.bs.modal', function(e){
-        $('#nfform input,select').val('')
-    })
+        $('#nfield').on('show.bs.modal', function(e){
+            $('#nfform input,select').val('')
+        })
+    {% endif %}
 {% endblock onload %}
 
 {% block header %}
@@ -112,12 +123,12 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% if view is not defined and object is not defined %}
+            {% if nonew %}
                 <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
             {% endif %}
         </article>
     </section>
-    {% if view is not defined and object is not defined %}
+    {% if nonew %}
         <div class="modal fade" id="nfield" aria-labelledby="nfield" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
