@@ -87,7 +87,7 @@
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
                                     {% set xn = name|split('_') %}
-                                    <td><a href="{{base}}/admin/view/bean/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
+                                    <td><a href="{{base}}/admin/view/table/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
                                     <td>{% if view is defined %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
                                 {% endif %}
