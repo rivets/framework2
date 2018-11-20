@@ -34,35 +34,23 @@
     function paramset(params)
     {
         params.id = params.pk
-        params.bean = 'page'
+        params.bean = '{{bean.name}}'
         params.op = 'update'
         return params
     }
-    kname = [
-        {% for v in types %}
-            {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
-        {% endfor %}
-    ]
-    var clicks = [
-        ['delb', dodelbean, ''],
-        ['actb', dotoggle, 'active'],
-        ['logn', dotoggle, 'needlogin'],
-        ['mobo', dotoggle, 'mobileonly']
-    ]
 {% endblock setup %}
 
 {% block onload %}
     $('.ppedit').editable({
         ajaxOptions: { type: 'PUT' },
         params: paramset,
-        source: kname,
         onblur: 'cancel',
         url: editcall
     });
-    $('#npform').on('submit', false)
+    $('#nfield').on('submit', false)
     $('#addb').on('click', function(e){
     })
-    $('#npage').on('show.bs.modal', function(e){
+    $('#nfield').on('show.bs.modal', function(e){
         $('#npform input,select').val('')
     })
 {% endblock onload %}
