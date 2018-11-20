@@ -21,17 +21,6 @@
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
 
 {% block setup %}
-    function editcall(params)
-    {
-        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
-        return $.ajax(url,{
-            method: 'PATCH',
-            data: {
-                value: params.value
-            }
-        })
-    }
-
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
