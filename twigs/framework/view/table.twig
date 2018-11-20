@@ -1,4 +1,5 @@
 {% set ajax = TRUE %}
+{% set x = context.web.addCSP('js', 'unsafe-inline') %}
 
 {% extends '@content/page.twig' %}
 
