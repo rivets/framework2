@@ -84,9 +84,24 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
         </article>
     </section>
-    {% if view is not defined %}
+    {% if view is not defined and object is not defined%}
+        <div class="modal fade" id="nfield" aria-labelledby="nfield" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    {{m.header({title: 'New Field'})}}
+                    <div class="modal-body">
+                        <form action="#" method="POST" id="npform">
+                            {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE})}}
+                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
+                        </form>
+                    </div>
+                    {{m.footer({action: 'Add', id: 'addb'})}}
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock main %}
 
