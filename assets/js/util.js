@@ -74,3 +74,8 @@
     {
         return '<a href="#" class="ppedit" data-name="'+name+'" data-type="'+type+'" data-pk="'+id+'" data-url="'+base+'/ajax.php" data-title="'+msg+'">'+value+'</a>';
     }
+
+    function dummy()
+    {
+        return 0;
+    }

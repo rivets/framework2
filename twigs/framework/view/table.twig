@@ -37,11 +37,38 @@
         onblur: 'cancel',
         url: editcall
     });
-    $('#nfield').on('submit', false)
+    $('#nfform').on('submit', false)
     $('#addb').on('click', function(e){
+        e.preventDefault()
+        var pn = $('#nfname').val().toLowerCase()
+        if (!pn.match(/^[a-z][a-z0-9.]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only')
+            return
+        }
+        var sp = null;
+        var error = false;
+        $('.fname').each(function(e){
+            var t = $(this).text();
+            if (t == pn)
+            {
+                error = true;
+                return false;
+            }
+            if (t > pn)
+            {
+                sp = $(this);
+                return false;
+            }
+        })
+        if (error)
+        {
+            bootbox.alert('That field already exists');
+            return;
+        }
     })
     $('#nfield').on('show.bs.modal', function(e){
-        $('#npform input,select').val('')
+        $('#nfform input,select').val('')
     })
 {% endblock onload %}
 
@@ -59,7 +86,7 @@
                 <tbody>
                     {% for name,type in bean.fields %}
                         <tr>
-                            <td>{{name}}</td>
+                            <td class="fname">{{name}}</td>
                             <td>{{type}}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
@@ -85,7 +112,7 @@
                 <div class="modal-content">
                     {{m.header({title: 'New Field'})}}
                     <div class="modal-body">
-                        <form action="#" method="POST" id="npform">
+                        <form action="#" method="POST" id="nfform">
                             {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE})}}
                             {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
                         </form>
