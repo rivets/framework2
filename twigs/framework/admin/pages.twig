@@ -12,7 +12,7 @@
 {% endblock scripts %}
 
 {% block css %}
-    <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
+    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
     {#
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
     #}
@@ -36,6 +36,7 @@
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
+
     var kname = [];
     function paramset(params)
     {
