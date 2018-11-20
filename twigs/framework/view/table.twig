@@ -7,7 +7,7 @@
 {% import '@util/modalmacro.twig' as m %}
 {% import _self as h %}
 
-{% set nonew = view is not defined and object is not defined %}
+{% set allownew = view is not defined and object is not defined %}
 {% set inline = view is not defined and object is defined %}
 
 {% block scripts %}
@@ -58,7 +58,7 @@
             url: editcall
         });
     {% endif %}
-    {% if not nonew %}
+    {% if allownew %}
         $('#nfform').on('submit', false)
         $('#addb').on('click', function(e){
             e.preventDefault()
@@ -124,12 +124,12 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% if nonew %}
+            {% if allownew %}
                 <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
             {% endif %}
         </article>
     </section>
-    {% if nonew %}
+    {% if allownew %}
         <div class="modal fade" id="nfield" aria-labelledby="nfield" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
