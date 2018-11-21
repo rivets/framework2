@@ -98,7 +98,7 @@
                 <div class="modal-body">
                     <form action="#" method="POST" id="nbform">
                         {{f.text({label: 'Bean Name', id: 'bn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                            parsley { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
                             'remote-message': 'That bean already exists'} })}}
 <!--                        <label for="bn" class="control-label">Bean Name</label>
                         <input type="text" id="bn" name="name" placeholder="Bean name - alphanumeric characters only" class="form-control" required="required"
