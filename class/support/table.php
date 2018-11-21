@@ -62,7 +62,7 @@
                         }
                     }
                     \R::store($bn);
-                    \R::trash($bn); // delete it as we dont want it anymore
+                    \R::trash($bn); // delete it as we don't want it anymore
                     $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     return TRUE;
                 }
