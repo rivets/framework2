@@ -106,7 +106,7 @@
                         data-parsley-remote-message="That bean already exists" data-parsley-type="alphanum"/>
 -->
                         <fieldset id="example">
-                            {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley { trigger: 'blur', type: 'alphanum'} })}}
+                            {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
                             {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
                         </fieldset>
                         <p id="mrow">
