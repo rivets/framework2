@@ -70,7 +70,7 @@
             }
             catch (\Exception $e)
             {
-                $context->web()->bad();
+                $context->web()->bad($e->getmessage());
                 /* NOT REACHED */
             }
             return '@edit/'.$kind.'.twig';
@@ -99,7 +99,7 @@
             }
             catch (\Exception $e)
             {
-                $context->web()->bad();
+                $context->web()->bad($e->getMessage());
                 /* NOT REACHED */
             }
             if (($notmodel = in_array($kind, self::NOTMODEL)))
