@@ -487,8 +487,8 @@
             $rest= $context->rest();
             if (isset($rest[1]) && $rest[1] !== '')
             {
-                $tb = \R::getExtractedToolbox();
-                if ($tb[2]->tableExists(strtolower($rest[1])))
+                $tb = \R::inspect();
+                if (isset($tb[strtolower($rest[1])]))
                 {
                     $context->web()->notfound(); // error if it exists....
                     /* NOT REACHED */
