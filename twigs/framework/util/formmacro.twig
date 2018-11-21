@@ -12,7 +12,7 @@
 
 {% macro data(opts) %}{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro data %}
 
-{% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro parsley %}
+{% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro parsley %}
 
 {% macro help(opts) %}{% if opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro help %}
 
