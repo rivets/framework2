@@ -97,15 +97,17 @@
                 {{m.header({title: 'New Bean'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="nbform">
-                        <label for="bn" class="control-label">User Name</label>
+                        {{f.text({label: 'Bean Name', id: 'bn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                            parsley { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                            'remote-message': 'That bean already exists'} })}}
+<!--                        <label for="bn" class="control-label">Bean Name</label>
                         <input type="text" id="bn" name="name" placeholder="Bean name - alphanumeric characters only" class="form-control" required="required"
                         data-parsley-trigger="blur"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/tablecheck/{value}"
                         data-parsley-remote-message="That bean already exists" data-parsley-type="alphanum"/>
+-->
                         <fieldset id="example">
-                            <label for="fn" class="control-label">User Name</label>
-                            <input type="text" id="fn" name="field[]" placeholder="Field name - alphanumeric characters only" class="form-control"
-                                data-parsley-trigger="blur" data-parsley-type="alphanum"/>
-                            {{f.text({label: 'Value', id: '', name: 'sample[]', ph: 'Field Sample Value'})}}
+                            {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley { trigger: 'blur', type: 'alphanum'} })}}
+                            {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
                         </fieldset>
                         <p id="mrow">
                             <button class="btn btn-small" id="more">More</button>
