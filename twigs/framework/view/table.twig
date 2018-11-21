@@ -140,7 +140,7 @@
                     <div class="modal-body">
                         <form action="#" method="POST" id="nfform">
                             {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
-                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value', parsley: {type: 'alphanum'} })}}
+                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
                         </form>
                     </div>
                     {{m.footer({action: 'Add', id: 'addb'})}}
