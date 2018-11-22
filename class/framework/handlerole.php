@@ -3,7 +3,7 @@
  * A trait supporting classess that use roles
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017 Newcastle University
+ * @copyright 2017-2018 Newcastle University
  */
     namespace Framework;
 
@@ -117,8 +117,8 @@
             $r->rolecontext = $rolecontext;
             $r->rolename = $rolename;
             $r->otherinfo = $otherinfo;
-            $r->start = $start; // $this->checkstart($start);
-            $r->end = $end; //$this->checkend($end);
+            $r->start = $start;
+            $r->end = $end;
             \R::store($r);
             return $r;
         }
@@ -156,26 +156,13 @@
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);
-                    //if (strtolower($start) == 'now' || $start === '')
-                    //{
-                    //    $rl->start = $context->utcnow();
-                    //}
-                    //else
                     if ($start != $rl->start)
                     {
-                        $rl->start = $start; //$context->utcdate($start);
+                        $rl->start = $start;
                     }
-                    //if (strtolower($end) == 'never' || $end === '')
-                    //{
-                    //    if ($rl->end !== '')
-                    //    {
-                    //        $rl->end = NULL;
-                    //    }
-                    //}
-                    //else
                     if ($end != $rl->end)
                     {
-                         $rl->end = $end; // $context->utcdate($end);
+                         $rl->end = $end;
                     }
                     if ($other != $rl->otherinfo)
                     {
@@ -198,8 +185,6 @@
                     $info = $fdt->post(['otherinfo', $ix]);
                     if (is_object($prole))
                     { # exists already...
-                        //$start = $this->checkstart($start);
-                        //$end = $this->checkstart($end);
                         if ($prole->start != $start)
                         {
                             $prole->start = $start;
@@ -212,7 +197,7 @@
                         {
                             $prole->otherinfo = $info;
                         }
-                        \R::store($prole); // will only talk to DB if anyhting has changed...
+                        \R::store($prole); // will only talk to DB if anything has changed...
                     }
                     else
                     {
