@@ -307,7 +307,7 @@
 
     $fwcsp = [
         'default-src'   => ["'self'"],
-        'font-src'      => ["'self'", 'use.fontawesome.com'],
+        'font-src'      => ["'self'", 'data:', 'use.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
         'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com'],
         'style-src'     => ["'self'", 'use.fontawesome.com', 'stackpath.bootstrapcdn.com'],
