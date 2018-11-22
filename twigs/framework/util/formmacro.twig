@@ -10,7 +10,7 @@
 
 {% macro fv(opts)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{fx.cd(opts[v], v, v)}}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
 
-{% macro numopts(type, opts) %}{% if type == 'number' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{% endif %}{% endmacro numopts %}
+{% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
 {% macro data(opts) %}{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro data %}
 
@@ -43,6 +43,8 @@
 {% macro password(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('password', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
 {% macro number(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
+
+{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
