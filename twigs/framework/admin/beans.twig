@@ -97,14 +97,13 @@
                 {{m.header({title: 'New Bean'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="nbform">
-                        {{f.text({label: 'Bean Name', id: 'bn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                        {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
                             parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
                             'remote-message': 'That bean already exists'} })}}
-<!--                        <label for="bn" class="control-label">Bean Name</label>
+                        <label for="bn" class="control-label">Bean Name</label>
                         <input type="text" id="bn" name="name" placeholder="Bean name - alphanumeric characters only" class="form-control" required="required"
                         data-parsley-trigger="blur"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/tablecheck/{value}"
                         data-parsley-remote-message="That bean already exists" data-parsley-type="alphanum"/>
--->
                         <fieldset id="example">
                             {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
                             {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
