@@ -407,7 +407,6 @@
  */
         protected function uniqCheck(Context $context, string $bean, string $field)
         {
-            $rest= $context->rest();
             list($name) = $this->restcheck($context, 1);
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
             {
@@ -446,10 +445,9 @@
  */
         public function tablecheck(Context $context)
         {
-            $rest= $context->rest();
             list($name) = $this->restcheck($context, 1);
             $tb = \R::inspect();
-            if (isset($tb[strtolower($rest[1])]))
+            if (isset($tb[strtolower($name)]))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
