@@ -78,7 +78,7 @@
  */
         public static function head(string $str)
         {
-            \Framework\Web::getinstance()->addheader('X-DEBUG-INFO', $str);
+            Web\Web::getinstance()->addheader('X-DEBUG-INFO', $str);
         }
 
     }
