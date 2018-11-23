@@ -242,6 +242,7 @@
                     <form action="#" method="POST" id="npform">
                         {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
                             parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
+                            'remote-message': 'That page already exists'} })}}
                         {# {f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})} #}
                         {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                                 {value: '', text: '&mdash; Pick a Type &mdash;'},
