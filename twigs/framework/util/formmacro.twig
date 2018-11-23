@@ -12,7 +12,7 @@
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
-{% macro data(opts) %}{% for k,v in opts %} data-{{k}}{{v != '' ? '="'~v~'"'}}{% endfor %}{% endmacro data %}
+{% macro data(opts) %}{% for k,v in opts %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
 
 {% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro parsley %}
 
