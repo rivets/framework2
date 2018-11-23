@@ -26,6 +26,24 @@
         }
  */
 /**
+ * If you are using the pagination or search hinting features of the framework then you need to
+ * add some appropriate vaues into these arrays.
+ *
+ * The key to both the array fields is the name of the bean type you are working with.
+ */
+/**
+ * @var array   Values controlling whether or not pagination calls are allowed
+ */
+        private static $allowPaging = [
+            // 'bean' => [TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
+ * @var array   Values controlling whether or not search hint calls are allowed
+ */
+        private static $allowHints = [
+            // 'bean' => [TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
  * Handle AJAX operations
  *
  * @param object	$context	The context object for the site
@@ -34,7 +52,9 @@
  */
         public function handle(Context $context)
         {
-            //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]); // TRUE if login needed, array is a list of roles required  in form ['context name', 'role name']
+            //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]);
+            // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+            $this->pageOrHint(self::$allowPaging, self::$allowHints);
             parent::handle($context);
         }
     }
