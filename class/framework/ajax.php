@@ -447,7 +447,7 @@
         {
             list($name) = $this->restcheck($context, 1);
             $tb = \R::inspect();
-            if (isset($tb[strtolower($name)]))
+            if (in_array(strtolower($name), $tb))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
