@@ -637,7 +637,8 @@
                 $this->fwconfig = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
-                    $this->fwconfig[$cnf->name] = preg_replace('/%BASE%/', $this->basedname, $cnf);
+                    $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
+                    $this->fwconfig[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {
