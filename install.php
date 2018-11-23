@@ -248,7 +248,7 @@
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, 'sha384-/lvU+ClL4s1GKVBbT2Ba3GAw2MVWch2EFalr3wsmDC2/rwuWYGcUMSANYEChU4eS', 'anonymous', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
-        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, 'sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/', 'anonymous', 0, 0, 'js'],
+        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
     ];
 /**
  *  RedBean needs an alias to use namespaces
