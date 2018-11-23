@@ -3,7 +3,7 @@
  * A model class for the RedBean object Role
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015 Newcastle University
+ * @copyright 2015-2018 Newcastle University
  *
  */
     namespace Model;
