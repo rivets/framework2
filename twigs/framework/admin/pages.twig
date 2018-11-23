@@ -6,17 +6,18 @@
 {% import '@util/modalmacro.twig' as m %}
 {% import _self as h %}
 
-{% block scripts %}
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.editable)}}></script>
-{% endblock scripts %}
-
 {% block css %}
-    <link rel="stylesheet" {{a.urlattr(fwurls.editablecss)}}/>
+    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
     {#
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
     #}
 {% endblock css %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.parsley)}}></script>
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.editable)}}></script>
+{% endblock scripts %}
 
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
 
@@ -29,13 +30,14 @@
             data: {
                 value: params.value
             }
-        })
+        });
     }
 
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
+
     var kname = [];
     function paramset(params)
     {
@@ -65,14 +67,29 @@
         onblur: 'cancel',
         url: editcall
     });
-    $('#npform').on('submit', false)
+    $('#npform').on('submit', false).parsley();
+    $('#npkind').on('change', function(e) {
+        var pn = $('#npname').val().toLowerCase();
+        if (pn != '')
+        {
+            switch ($(this).val())
+            {
+            case '1':
+                $('#npsrc').val('\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1));
+                break;
+            case '2':
+                $('#npsrc').val('@content/'+pn+'.twig');
+                break;
+            }
+        }
+    })
     $('#addb').on('click', function(e){
-        e.preventDefault()
-        var pn = $('#npname').val().toLowerCase()
+        e.preventDefault();
+        var pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
-            return
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
+            return;
         }
         var sp = null;
         var error = false;
@@ -103,7 +120,7 @@
         var kind = $('#npkind').val();
         if (kind == '')
         {
-            bootbox.alert('Please pick template or object');
+            bootbox.alert('Please pick a page type');
             return;
         }
         var active = $('#npactive').is(':checked') ? 1 : 0;
@@ -238,7 +255,9 @@
                 {{m.header({title: 'New Page'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="npform">
-                        {{f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})}}
+                        {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
+                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
+                            'remote-message': 'That page already exists'} })}}
                         {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                                 {value: '', text: '&mdash; Pick a Type &mdash;'},
                                 {value: 1,  text: 'Object'},
