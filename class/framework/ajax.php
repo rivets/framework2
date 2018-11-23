@@ -444,13 +444,11 @@
         protected function uniqCheck(Context $context, string $bean, string $field)
         {
             $rest= $context->rest();
-            if (isset($rest[1]) && $rest[1] !== '')
-            { 
-                if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$rest[1]]) > 0)
-                {
-                    $context->web()->notfound(); // error if it exists....
-                    /* NOT REACHED */
-                }
+            list($name) = $this->restcheck($context, 1);
+            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
+            {
+                $context->web()->notfound(); // error if it exists....
+                /* NOT REACHED */
             }
         }
 /**
@@ -485,14 +483,12 @@
         public function tablecheck(Context $context)
         {
             $rest= $context->rest();
-            if (isset($rest[1]) && $rest[1] !== '')
+            list($name) = $this->restcheck($context, 1);
+            $tb = \R::inspect();
+            if (isset($tb[strtolower($rest[1])]))
             {
-                $tb = \R::inspect();
-                if (isset($tb[strtolower($rest[1])]))
-                {
-                    $context->web()->notfound(); // error if it exists....
-                    /* NOT REACHED */
-                }
+                $context->web()->notfound(); // error if it exists....
+                /* NOT REACHED */
             }
         }
 /**
