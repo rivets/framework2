@@ -7,6 +7,7 @@
 {% import _self as h %}
 
 {% block scripts %}
+    <script {{h.urlattr(fwurls.parsley)}}></script>
     <script {{h.urlattr(fwurls.utiljs)}}></script>
     <script {{h.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
@@ -66,14 +67,14 @@
         onblur: 'cancel',
         url: editcall
     });
-    $('#npform').on('submit', false)
+    $('#npform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
-        e.preventDefault()
-        var pn = $('#npname').val().toLowerCase()
+        e.preventDefault();
+        var pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only')
-            return
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
+            return;
         }
         var sp = null;
         var error = false;
@@ -239,7 +240,9 @@
                 {{m.header({title: 'New Page'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="npform">
-                        {{f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})}}
+                        {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
+                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
+                        {# {f.text({label: 'Name', id: 'npname', ph: 'Page Name', required: TRUE})} #}
                         {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                                 {value: '', text: '&mdash; Pick a Type &mdash;'},
                                 {value: 1,  text: 'Object'},
