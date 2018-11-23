@@ -6,18 +6,18 @@
 {% import '@util/modalmacro.twig' as m %}
 {% import _self as h %}
 
-{% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.editable)}}></script>
-{% endblock scripts %}
-
 {% block css %}
     <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
     {#
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tether-tooltip/1.2.0/css/tooltip-theme-arrows.min.css"/>
     #}
 {% endblock css %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.parsley)}}></script>
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.editable)}}></script>
+{% endblock scripts %}
 
 {% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
 
