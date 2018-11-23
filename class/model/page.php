@@ -277,7 +277,11 @@
                     self::maketwig($context, $p->name, '@content/'.$lbase.'.twig');
                     break;
                 case SiteAction::TEMPLATE:
-                    if (!preg_match('@', $p->source))
+                    if (!preg_match('/\.twig$/', $p->source))
+                    { # add .twig to name
+                        $p->source .= '.twig';
+                    }
+                    if (!preg_match('/^@/', $p->source))
                     { # no namespace so put it in @content
                         $p->source = '@content/'.$p->source;
                         \R::store($p);
