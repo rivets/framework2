@@ -629,7 +629,6 @@
 /*
  * Initialise database access
  */
-//	    require_once('rb.php'); # RedBean interface
             class_alias('\RedBeanPHP\R','\R');
             if (Config::DBHOST !== '' && $loadrb)
             { # looks like there is a database configured
@@ -638,7 +637,7 @@
                 $this->fwconfig = [];
                 foreach (\R::findAll('fwconfig') as $cnf)
                 {
-                    $this->fwconfig[$cnf->name] = $cnf;
+                    $this->fwconfig[$cnf->name] = preg_replace('/%BASE%/', $base, $cnf);
                 }
                 if ($loadtwig)
                 {
