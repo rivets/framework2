@@ -68,6 +68,21 @@
         url: editcall
     });
     $('#npform').on('submit', false).parsley();
+    $('#npkind').on('change', function(e) {
+        var pn = $('#npname').val().toLowerCase();
+        if (pn != '')
+        {
+            switch ($(this).val())
+            {
+            case '1':
+                $('#npsrc').val('\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1););
+                break;
+            case '2':
+                $('#npsrc').val('@content/'+pn'.twig');
+                break;
+            }
+        }
+    }
     $('#addb').on('click', function(e){
         e.preventDefault();
         var pn = $('#npname').val().toLowerCase();
@@ -105,7 +120,7 @@
         var kind = $('#npkind').val();
         if (kind == '')
         {
-            bootbox.alert('Please pick template or object');
+            bootbox.alert('Please pick a page type');
             return;
         }
         var active = $('#npactive').is(':checked') ? 1 : 0;
