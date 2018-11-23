@@ -28,9 +28,37 @@
         private static $restops = [
             'bean'          => [TRUE,   [['Site', 'Admin']]],
             'config'        => [TRUE,   [['Site', 'Admin']]],
-            'logincheck'    => [FALSE,  []],
+            'hints'         => [FALSE,  []], // permission checks are done in the hints function
+            'logincheck'    => [FALSE,  []], // used by registration page
+            'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
+            'paging'        => [FALSE,  []], // permission checks are done in the paging function
+            'pwcheck'       => [TRUE,   []],
+            'table'         => [TRUE,   [['Site', 'Admin']]],
+            'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
+        ];
+/**
+ * If you are using the pagination or search hinting features of the framework then you need to
+ * add some appropriate vaues into these arrays.
+ *
+ * The key to both the array fields is the name of the bean type you are working with.
+ */
+/**
+ * @var array   Values controlling whether or not pagination calls are allowed
+ */
+        private static $paging = [
+            'page'  => [TRUE,   [['Site', 'Admin']]],
+            'user'  => [TRUE,   [['Site', 'Admin']]],
+            // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
+            // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
+ * @var array   Values controlling whether or not search hint calls are allowed
+ */
+        private static $hints = [
+            // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
+            // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * Add a User
@@ -268,6 +296,82 @@
             }
         }
 /**
+ * Carry out operations on tables
+ *
+ * @param object    $context The context object
+ *
+ * @return void
+ */
+        private function table(Context $context)
+        {
+            $rest = $context->rest();
+            $bean = $rest[1];
+            switch ($_SERVER['REQUEST_METHOD'])
+            {
+            case 'POST': // make a new one
+            case 'PATCH':
+            case 'PUT': // add a field
+            case 'DELETE':
+            case 'GET':
+            default:
+                $context->web()->bad();
+            }
+        }
+/**
+ * Get a page of bean values
+ *
+ * @param object	$context	The context object for the site
+ *
+ * @return void
+ */
+        private function paging(Context $context)
+        {
+            $fdt = $context->formdata();
+            $bean = $fdt->mustget('bean');
+            if (isset(self::$paging[$bean]))
+            { // pagination is allowed for this bean
+                $this->checkPerms($context, self::$paging[$bean][0], self::$paging[$bean][1]); // make sure we are allowed
+                $order = $fdt->get('order', '');
+                $page = $fdt->mustget('page');
+                $pagesize = $fdt->mustget('pagesize');
+                $res = \Support\Siteinfo::getinstance()->fetch($bean, ($order !== '' ? ('order bye '.$order) : ''), [], $page, $pagesize);
+                $context->web()->sendJSON($res);
+            }
+            else
+            {
+                $context->web()->noaccess();
+            }
+        }
+/**
+ * Get serach hints for a bean
+ *
+ * @param object	$context	The context object for the site
+ *
+ * @return void
+ */
+        private function hints(Context $context)
+        {
+            $fdt = $context->formdata();
+            $bean = $fdt->mustget('bean');
+            if (isset(self::$hints[$bean]))
+            { // hinting is allowed for this bean
+                $this->checkPerms($context, self::$hints[$bean][1], self::$hints[$bean][2]); // make sure we are allowed
+                $field = self::$hints[$bean][0];
+                if ($field == '*')
+                { # the call must specify the field
+                    $field = $fdt->mustget('field');
+                }
+                $order = $fdt->get('order', '');
+                $search = $fdt->mustget('search');
+                $res = \Support\Siteinfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
+                $context->web()->sendJSON($res);
+            }
+            else
+            {
+                $context->web()->noaccess();
+            }
+        }
+/**
  * Add an operation
  *
  * @param string    $function   The name of a function
@@ -280,6 +384,38 @@
             self::$restops[$function] = $perms;
         }
 /**
+ * Add pagination or searching tables
+ *
+ * @param array     $paging     Values for pagination - see above for format
+ * @param array     $hints      Values for hints - see above for format
+ *
+ * @return void
+ */
+        public function pageOrHint(array $paging, array $hints)
+        {
+            self::$paging = array_merge(self::$paging, $paging);
+            self::$hints = array_merge(self::$paging, $hints);
+        }
+/**
+ * Do a database check for uniqueness
+ *
+ * @param object    $context  The Context object
+ * @param string    $bean     The kind of bean
+ * @param string    $name     The field to check
+ *
+ * @return void
+ */
+        protected function uniqCheck(Context $context, string $bean, string $field)
+        {
+            $rest= $context->rest();
+            list($name) = $this->restcheck($context, 1);
+            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
+            {
+                $context->web()->notfound(); // error if it exists....
+                /* NOT REACHED */
+            }
+        }
+/**
  * Do a parsley login check
  *
  * @param object    $context
@@ -288,12 +424,96 @@
  */
         public function logincheck(Context $context)
         {
-            if (($lg = $context->formdata()->get('login', '')) !== '')
-            { # this is a parsley generated username check call
-                if (R::count('user', 'login=?', [$lg]) > 0)
+            $this->uniqCheck($context, 'user', 'login');
+        }
+/**
+ * Do a parsley page check
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function pagecheck(Context $context)
+        {
+            $this->uniqCheck($context, 'page', 'name');
+        }
+/**
+ * Do a parsley table check
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function tablecheck(Context $context)
+        {
+            $rest= $context->rest();
+            list($name) = $this->restcheck($context, 1);
+            $tb = \R::inspect();
+            if (isset($tb[strtolower($rest[1])]))
+            {
+                $context->web()->notfound(); // error if it exists....
+                /* NOT REACHED */
+            }
+        }
+/**
+ * Do a password verification
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function pwcheck(Context $context)
+        {
+            if (($pw = $context->formdata()->get('pw', '')) !== '')
+            {
+                if ($context->user()->pwok($pw))
                 {
-                    $context->web()->notfound(); // error if it exists....
-                    /* NOT REACHED */
+                    return;
+                }
+            }
+            $context->web()->noaccess();
+        }
+/**
+ * Check that the caller is allowed to perform the operation.
+ *
+ * @param object   $context  The Context Object
+ * @param boolean  $login    If TRUE Then user must be logged in.
+ * @param array    $perms    As specified for the various arrays defined above
+ *
+ * @return void  Does not return if user is not allowed.
+ */
+        private function checkPerms(Context $context, bool $login, array $perms)
+        {
+            if ($login)
+            { # this operation requires a logged in user
+                $context->mustbeuser(); // will not return if there is no user
+            }
+            foreach ($perms as $rcs)
+            {
+                if (is_array($rcs[0]))
+                { // this is an OR
+                    $ok = FALSE;
+                    foreach ($rcs as $orv)
+                    {
+                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                        {
+                            $ok = TRUE;
+                            break;
+                        }
+                    }
+                    if (!$ok)
+                    {
+                        $context->web()->noaccess();
+                        /* NOT REACHED */
+                    }
+                }
+                else
+                {
+                    if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                    {
+                        $context->web()->noaccess();
+                        /* NOT REACHED */
+                    }
                 }
             }
         }
@@ -312,39 +532,7 @@
                 $op = $rest[0];
                 if (isset(self::$restops[$op]))
                 { # a valid operation
-                    $curop = self::$restops[$op];
-                    if ($curop[0])
-                    { # this operation requires a logged in user
-                        $context->mustbeuser(); // will not return if there is no user
-                    }
-                    foreach ($curop[1] as $rcs)
-                    {
-                        if (is_array($rcs[0]))
-                        { // this is an OR
-                            $ok = FALSE;
-                            foreach ($rcs as $orv)
-                            {
-                                if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
-                                {
-                                    $ok = TRUE;
-                                    break;
-                                }
-                            }
-                            if (!$ok)
-                            {
-                                $context->web()->noaccess();
-                                /* NOT REACHED */
-                            }
-                        }
-                        else
-                        {
-                            if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
-                            {
-                                $context->web()->noaccess();
-                                /* NOT REACHED */
-                            }
-                        }
-                    }
+                    $this->checkPerms($context, self::$restops[$op][0], self::$restops[$op][1]);
                     $this->{$op}($context);
                 }
                 else
