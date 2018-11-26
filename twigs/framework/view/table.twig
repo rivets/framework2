@@ -104,6 +104,7 @@
     </section>
 {% endblock header %}
 
+{% set foptions = [] %}
 {% block main %}
     <section class="row">
         {% include '@util/message.twig' %}
@@ -111,6 +112,7 @@
             <table class="table table-responsive table-striped">
                 <tbody>
                     {% for name,type in bean.fields %}
+                        {% set foptions[] = {value: name, text: name} %}
                         <tr>
                             <td class="fname">{{name}}</td>
                             <td>{{type}}</td>
@@ -129,6 +131,8 @@
             </table>
             {% if allownew %}
                 <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
+            {% else %}
+                <p><button class="btn btn-primary" data-toggle="modal" data-target="#tsearch" type="button">Search</button></p>
             {% endif %}
         </article>
     </section>
@@ -147,6 +151,32 @@
                 </div>
             </div>
         </div>
+    {% else %}
+         <div class="modal fade" id="tsearch" aria-labelledby="tsearch" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    {{m.header({title: 'Search'})}}
+                    <div class="modal-body">
+                        <form action="#" method="POST" id="sform">
+                            {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
+                            {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
+                               {value: '=', 'text: '=' },
+                               {value: '!=', 'text: '!=' },
+                               {value: 'like', 'text: 'like' },
+                               {value: 'contains', 'text: 'contains' },
+                               {value: '>', 'text: '>' },
+                               {value: '>=', 'text: '>=' },
+                               {value: '<', 'text: '<' },
+                               {value: '<=', 'text: '<=' },
+                               {value: 'regexp', 'text: 'regexp' },
+                            ]})}}
+                            {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
+                        </form>
+                    </div>
+                    {{m.footer({action: 'Add', id: 'addb'})}}
+                </div>
+            </div>
+        </div>       
     {% endif %}
 {% endblock main %}
 
