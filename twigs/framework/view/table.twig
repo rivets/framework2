@@ -112,7 +112,7 @@
             <table class="table table-responsive table-striped">
                 <tbody>
                     {% for name,type in bean.fields %}
-                        {% set foptions = foptions|merge([{value: name, text: name}]) %}
+                        {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
                             <td class="fname">{{name}}</td>
                             <td>{{type}}</td>
@@ -160,15 +160,15 @@
                         <form action="#" method="POST" id="sform">
                             {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
                             {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
-                               {value: '=', text: '=' },
-                               {value: '!=', text: '!=' },
-                               {value: 'like', text: 'like' },
-                               {value: 'contains', text: 'contains' },
-                               {value: '>', text: '>' },
-                               {value: '>=', text: '>=' },
-                               {value: '<', text: '<' },
-                               {value: '<=', text: '<=' },
-                               {value: 'regexp', text: 'regexp' },
+                               {value: '=' },
+                               {value: '!=' },
+                               {value: 'like' },
+                               {value: 'contains' },
+                               {value: '>' },
+                               {value: '>=' },
+                               {value: '<' },
+                               {value: '<=' },
+                               {value: 'regexp' },
                             ]})}}
                             {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
                         </form>
