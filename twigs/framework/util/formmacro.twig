@@ -82,7 +82,7 @@
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
     <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}>
         {% for ov in opts.options %}
-            <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text|raw}}</option>
+            <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
     </select>{{fx.bse(opts)}}{% endmacro select %}
 
