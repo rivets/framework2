@@ -112,7 +112,7 @@
             <table class="table table-responsive table-striped">
                 <tbody>
                     {% for name,type in bean.fields %}
-                        {% set foptions[] = {value: name, text: name} %}
+                        {% set foptions = foptions|merge([{value: name, text: name}]) %}
                         <tr>
                             <td class="fname">{{name}}</td>
                             <td>{{type}}</td>
