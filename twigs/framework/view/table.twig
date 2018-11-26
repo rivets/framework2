@@ -160,15 +160,15 @@
                         <form action="#" method="POST" id="sform">
                             {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
                             {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
-                               {value: '=', 'text: '=' },
-                               {value: '!=', 'text: '!=' },
-                               {value: 'like', 'text: 'like' },
-                               {value: 'contains', 'text: 'contains' },
-                               {value: '>', 'text: '>' },
-                               {value: '>=', 'text: '>=' },
-                               {value: '<', 'text: '<' },
-                               {value: '<=', 'text: '<=' },
-                               {value: 'regexp', 'text: 'regexp' },
+                               {value: '=', text: '=' },
+                               {value: '!=', text: '!=' },
+                               {value: 'like', text: 'like' },
+                               {value: 'contains', text: 'contains' },
+                               {value: '>', text: '>' },
+                               {value: '>=', text: '>=' },
+                               {value: '<', text: '<' },
+                               {value: '<=', text: '<=' },
+                               {value: 'regexp', text: 'regexp' },
                             ]})}}
                             {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
                         </form>
