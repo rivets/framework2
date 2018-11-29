@@ -528,6 +528,7 @@
             'X-Frame-Options'	=> 'DENY',      # deframes things
             'Content-Language'	=> 'en',
             'Vary'              => 'Accept-Encoding',
+            'X-XSS-Protection'  => ' 1; mode=block',
             ]);
         }".PHP_EOL.PHP_EOL);
                   
