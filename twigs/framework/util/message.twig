@@ -1,15 +1,15 @@
-    {%if errmessage is defined %}
-        {% for msg in _fwerrmessage %}
+    {%if fwerrmessage is defined %}
+        {% for msg in fwerrmessage %}
             <div class="alert alert-danger">{{eraw is defined ? msg|raw : msg}}</div>
         {% endfor %}
     {% endif %}
-    {%if warnmessage is defined %}
-        {% for msg in _fwwarnmessage %}
-            <div class="alert alert-warn">{{wraw is defined ? msg|raw : msg}}</div>
+    {%if fwwarnmessage is defined %}
+        {% for msg in fwwarnmessage %}
+            <div class="alert alert-warning">{{wraw is defined ? msg|raw : msg}}</div>
         {% endfor %}
     {% endif %}
-    {%if message is defined %}
-        {% for msg in _fwmessage %}
+    {%if fwmessage is defined %}
+        {% for msg in fwmessage %}
             <div class="alert alert-info">{{mraw is defined ? msg|raw : msg}}</div>
         {% endfor %}
     {% endif %}
