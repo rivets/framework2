@@ -27,7 +27,7 @@
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
-        private  static $msgnames  = ['errmessage', 'warnmessage', 'message'];
+        private  static $msgnames  = ['_fwerrmessage', '_fwwarnmessage', '_fwmessage'];
 /**
  * @var	string		The absolute path to the site directory
  */
