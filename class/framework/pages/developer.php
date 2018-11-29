@@ -39,6 +39,13 @@
                     include $context->local()->makebasepath('devel', 'hack.php');
                     break;
 
+                case 'test': # generate a test page
+                    $context->local()->message(\Framework\Local::ERROR, 'Error');
+                    $context->local()->message(\Framework\Local::WARNING, 'Warning');
+                    $context->local()->message(\Framework\Local::MESSAGE, 'Message');
+                    $tpl = '@devel/test.twig';
+                    break;
+
                 case 'fail': # this lets you test error handling
                     $x = 2 / 0;
                     break;
