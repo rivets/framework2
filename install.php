@@ -523,12 +523,13 @@
         public static function setup()
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
-            'Date'              => gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-target'     => '_top',      # deframes things
-            'X-Frame-Options'	=> 'DENY',      # deframes things
-            'Content-Language'	=> 'en',
-            'Vary'              => 'Accept-Encoding',
-            'X-XSS-Protection'  => ' 1; mode=block',
+            'Date'                   => gmstrftime('%b %d %Y %H:%M:%S', time()),
+            'Window-Target'          => '_top',      # deframes things
+            'X-Frame-Options'	     => 'DENY',      # deframes things: SAMEORIGIN would allow this site to use frames
+            'Content-Language'	     => 'en',
+            'Vary'                   => 'Accept-Encoding',
+            'X-Content-Type-Options' => 'nosniff',
+            'X-XSS-Protection'       => '1; mode=block',
             ]);
         }".PHP_EOL.PHP_EOL);
                   
