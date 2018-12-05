@@ -86,7 +86,7 @@
         {% endfor %}
     </select>{{fx.bse(opts)}}{% endmacro select %}
 
-{% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.style != '' ?: 'btn-primary'}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}/>{% endmacro submit %}
+{% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}/>{% endmacro submit %}
 
 {% macro recaptcha(key, label, callback, opts) %}
 {% import _self as fx %}
