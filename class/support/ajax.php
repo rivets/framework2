@@ -15,9 +15,8 @@
     class Ajax extends \Framework\Ajax
     {
 /**
- * Any Ajax for your system goes in here.
- *
- *********  Make sure that you call the parent handle method for anything you are not handling yourself!! ***********
+ * Add functions that implement your AJAX operations here and register them
+ * in the handle method below.
  */
 /*
         public function yourop(Context $context)
@@ -54,6 +53,9 @@
         {
             //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+/**
+ * Don't change anything below here
+ */
             $this->pageOrHint(self::$allowPaging, self::$allowHints);
             parent::handle($context);
         }
