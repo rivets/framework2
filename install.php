@@ -245,7 +245,7 @@
         'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 1, 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', 'anonymous', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
-        'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, 'sha384-/lvU+ClL4s1GKVBbT2Ba3GAw2MVWch2EFalr3wsmDC2/rwuWYGcUMSANYEChU4eS', 'anonymous', 0, 0, 'js'],
+        'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
