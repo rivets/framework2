@@ -256,11 +256,11 @@
 	    $rqm = $web->method();
 	    if ($rqm != 'GET' && $rqm != 'HEAD')
 	    { # fail if not a GET or HEAD - see W3C specification
-		$web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+            $web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
 	    }
 	    else
 	    {
-		$web->send304($this->makeetag(), $this->makemaxage());
+            $web->send304($this->makeetag(), $this->makemaxage());
 	    }
 	    exit;
 	}
