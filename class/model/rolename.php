@@ -23,10 +23,10 @@
  */
         public static function add(Context $context)
         {
-            $p = R::dispense('rolename');
+            $p = \R::dispense('rolename');
             $p->name = $context->formdata()->mustpost('name');
             $p->fixed = 0;
-            R::store($p);
+            \R::store($p);
             echo $p->getID();
         }
     }
