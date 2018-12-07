@@ -39,7 +39,7 @@
                 case 'js':
                     if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
                     {
-                        $fname = explode('/', $fwc->value);
+                        $fname = array_filter(explode('/', $fwc->value));
                         if ($base != '/' || $base !== '')
                         { // if there is a sub directory then we need to remove it as we are there already...
                             array_shift($fname);
