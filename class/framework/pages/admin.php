@@ -49,7 +49,7 @@
                             }
                             else
                             {
-                                $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname);
+                                $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname.' ('.$base.')');
                                 break;
                             }
                         }
