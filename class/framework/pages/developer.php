@@ -40,9 +40,12 @@
                     break;
 
                 case 'test': # generate a test page
-                    $context->local()->message(\Framework\Local::ERROR, 'Error');
-                    $context->local()->message(\Framework\Local::WARNING, 'Warning');
-                    $context->local()->message(\Framework\Local::MESSAGE, 'Message');
+                    $context->local()->message(\Framework\Local::ERROR, 'Error 1');
+                    $context->local()->message(\Framework\Local::ERROR, 'Error 2');
+                    $context->local()->message(\Framework\Local::WARNING, 'Warning 1');
+                    $context->local()->message(\Framework\Local::WARNING, 'Warning 2');
+                    $context->local()->message(\Framework\Local::MESSAGE, 'Message 1');
+                    $context->local()->message(\Framework\Local::MESSAGE, 'Message 2');
                     $tpl = '@devel/test.twig';
                     break;
 
