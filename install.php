@@ -530,6 +530,7 @@
             'Vary'                   => 'Accept-Encoding',
             'X-Content-Type-Options' => 'nosniff',
             'X-XSS-Protection'       => '1; mode=block',
+            //'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
             ]);
         }".PHP_EOL.PHP_EOL);
                   
