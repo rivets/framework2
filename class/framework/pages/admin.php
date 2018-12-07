@@ -20,6 +20,7 @@
         const EDITABLE = ['table', 'form', 'fwconfig', 'page', 'user'];
         const VIEWABLE = ['table', 'form'];
         const NOTMODEL = ['table'];
+        const HASH     = 'sha384';
 /**
  * Calculate integrity checksums for local js and css files
  *
@@ -39,13 +40,21 @@
                 case 'js':
                     if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
                     {
-                        $fname = array_filter(explode('/', $fwc->value));
+                        $fname = $fwc->value;
                         if ($base != '/' || $base !== '')
-                        { // if there is a sub directory then we need to remove it as we are there already...
-                            array_shift($fname);
+                        { // if there are sub directories then we need to remove them as we are there already...
+                            if (preg_match('#^'.$base.'(.*)#', $fname, $m))
+                            {
+                                $fname = $m[1];
+                            }
+                            else
+                            {
+                                $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname);
+                                break;
+                            }
                         }
-                        $hash = hash('sha384', file_get_contents(implode('/', $fname)), TRUE);
-                        $fwc->integrity = 'sha384-'.base64_encode($hash);
+                        $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
+                        $fwc->integrity = self::HASH.'-'.base64_encode($hash);
                         $fwc->crossorigin = 'anonymous';
                         \R::store($fwc);
                     }
