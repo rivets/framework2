@@ -42,7 +42,7 @@
                         $fname = explode('/', $fwc->value);
                         if ($base != '/' || $base !== '')
                         { // if there is a sub directory then we need to remove it as we are there already...
-                            array_unshift($fname);
+                            array_shift($fname);
                         }
                         $hash = hash('sha256', file_get_contents(implode('/', $fname)), TRUE);
                         $fwc->integrity = 'sha256-'.base64_encode($hash);
