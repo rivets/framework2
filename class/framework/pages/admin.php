@@ -46,6 +46,7 @@
                             if (preg_match('#^'.$base.'(.*)#', $fname, $m))
                             {
                                 $fname = $m[1];
+                                $fv = '%BASE%'.$fname;
                             }
                             else
                             {
@@ -54,6 +55,7 @@
                             }
                         }
                         $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
+                        $fwc->value = $fv;
                         $fwc->integrity = self::HASH.'-'.base64_encode($hash);
                         $fwc->crossorigin = 'anonymous';
                         \R::store($fwc);
