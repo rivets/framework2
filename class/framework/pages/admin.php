@@ -21,6 +21,39 @@
         const VIEWABLE = ['table', 'form'];
         const NOTMODEL = ['table'];
 /**
+ * Calculate integrity checksums for local js and css files
+ *
+ * @param string    $citem    The config item to check and update
+ *
+ * @return string
+ */
+        private function checksum(Context $context)
+        {
+            chdir($context->local()->basedir()); // make sure we are in the root of the site
+            $base = $context->local()->base();
+            foreach ($context->local()->allconfig() as $fwc)
+            {
+                switch ($fwc->type)
+                {
+                case 'css':
+                case 'js':
+                    if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
+                    {
+                        $fname = explode('/', $fwc->value);
+                        if ($base != '/' || $base !== '')
+                        { // if there is a sub directory then we need to remove it as we are there already...
+                            array_unshift($fname);
+                        }
+                        $hash = hash('sha256', file_get_contents(implode('/', $fname)), TRUE);
+                        $fwc->integrity = 'sha256-'.base64_encode($hash);
+                        $fwc->crossorigin = 'anonymous';
+                        \R::store($fwc);
+                    }
+                    break;
+                }
+            }
+        }
+/**
  * Edit admin items
  *
  * @param object    $context  The Context object
@@ -194,7 +227,10 @@
                 \Support\Table::add($context);
                 $tpl = '@admin/beans.twig';
                 break;
-
+            case 'checksum':
+                $this->checksum($context);
+                $context->local()->message(\Framework\Local::MESSAGE, 'Done');
+                break;
             case 'config':  // show and add config items
                 $tpl = '@admin/config.twig';
                 break;                $fd = $context->formdata();

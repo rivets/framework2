@@ -361,6 +361,15 @@
             return $this->fwconfig[$name] ?? NULL;
         }
 /**
+ * Return aall the config values
+ *
+ * @return array
+ */
+        public function allconfig()
+        {
+            return $this->fwconfig;
+        }
+/**
  * Initialise twig template engine
  *
  * @param bool       	$cache	if TRUE then enable the TWIG cache
