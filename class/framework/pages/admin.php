@@ -44,8 +44,8 @@
                         { // if there is a sub directory then we need to remove it as we are there already...
                             array_shift($fname);
                         }
-                        $hash = hash('sha256', file_get_contents(implode('/', $fname)), TRUE);
-                        $fwc->integrity = 'sha256-'.base64_encode($hash);
+                        $hash = hash('sha384', file_get_contents(implode('/', $fname)), TRUE);
+                        $fwc->integrity = 'sha384-'.base64_encode($hash);
                         $fwc->crossorigin = 'anonymous';
                         \R::store($fwc);
                     }
