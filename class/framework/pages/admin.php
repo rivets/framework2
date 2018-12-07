@@ -230,6 +230,7 @@
             case 'checksum':
                 $this->checksum($context);
                 $context->local()->message(\Framework\Local::MESSAGE, 'Done');
+                $tpl = '@admin/admin.twig';
                 break;
             case 'config':  // show and add config items
                 $tpl = '@admin/config.twig';
