@@ -44,7 +44,7 @@
 
 {% macro number(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('range', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
