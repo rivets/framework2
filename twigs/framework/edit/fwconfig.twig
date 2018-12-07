@@ -12,6 +12,8 @@
 
 {% block onload %}
     $('#more').on('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
         var mrow = $('#mrow');
         mrow.before($('#example').clone());
         var pr = $mrow.prev();
