@@ -30,6 +30,44 @@
         use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
+ * Add a User from a form - invoked by the AJAX bean operation
+ *
+ * @param object	$context	The context object for the site
+ *
+ * @return void
+ */
+        public static function add(Context $context)
+        {
+            $now = $context->utcnow(); # make sure time is in UTC
+            $fdt = $context->formdata();
+            $pw = $fdt->mustpost('password'); // make sure we have a password...
+            if (self::checkpw($pw))
+            {
+                $u = R::dispense('user');
+                $u->login = $fdt->mustpost('login');
+                $u->email = $fdt->mustpost('email');
+                $u->active = 1;
+                $u->confirm = 1;
+                $u->joined = $now;
+                R::store($u);
+                $u->setpw($pw); // set the password
+                if ($fdt->post('admin', 0) == 1)
+                {
+                    $u->addrole('Site', 'Admin', '', $now);
+                }
+                if ($fdt->post('devel', 0) == 1)
+                {
+                    $u->addrole('Site', 'Developer', '', $now);
+                }
+                echo $u->getID();
+            }
+            else
+            {
+                // bad password return
+                echo '-';
+            }
+        }
+/**
  * Is this user an admin?
  *
  * @return boolean

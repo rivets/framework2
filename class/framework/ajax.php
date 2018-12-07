@@ -61,65 +61,6 @@
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * Add a User
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function adduser(Context $context)
-        {
-            $now = $context->utcnow(); # make sure time is in UTC
-            $fdt = $context->formdata();
-            $u = R::dispense('user');
-            $u->login = $fdt->mustpost('login');
-            $u->email = $fdt->mustpost('email');
-            $u->active = 1;
-            $u->confirm = 1;
-            $u->joined = $now;
-            R::store($u);
-            $u->setpw($fdt->mustpost('password'));
-            if ($fdt->post('admin', 0) == 1)
-            {
-                $u->addrole('Site', 'Admin', '', $now);
-            }
-            if ($fdt->post('devel', 0) == 1)
-            {
-                $u->addrole('Site', 'Developer', '', $now);
-            }
-            echo $u->getID();
-        }
-/**
- * Add a Rolename
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function addrolename(Context $context)
-        {
-            $p = R::dispense('rolename');
-            $p->name = $context->formdata()->mustpost('name');
-            $p->fixed = 0;
-            R::store($p);
-            echo $p->getID();
-        }
-/**
- * Add a Rolecontext
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function addrolecontext(Context $context)
-        {
-            $p = R::dispense('rolecontext');
-            $p->name = $context->formdata()->mustpost('name');
-            $p->fixed = 0;
-            R::store($p);
-            echo $p->getID();
-        }
-/**
  * Check URL string for n values and pull them out
  *
  * The value in $rest[0] is the opcode so we always start at $rest[1]
@@ -256,13 +197,9 @@
                 {
                     $class::add($context);
                 }
-                elseif (!method_exists($this, 'add'.$bean))
-                {
-                    $context->web()->bad();
-                }
                 else
-                {
-                    $this->{'add'.$bean}($context);
+                { // operation not supported
+                    $context->web()->bad();
                 }
                 break;
             case 'PATCH':
