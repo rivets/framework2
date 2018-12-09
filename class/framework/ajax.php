@@ -153,7 +153,7 @@
  */
         private function findrow(Context $context, $perms)
         {
-            foreach (self::$toggleperms as $bpd)
+            foreach (self::$perms as $bpd)
             {
                 if ($this->checkPerms($context, $bpd[0], Context::RNULL)) // make sure we are allowed
                 {
@@ -175,11 +175,21 @@
         private function toggle(Context $context)
         {
             $beans = $this->findRow($context, self::$toggleperms);
-            $fdt = $context->formdata();
-            $type = $fdt->mustpost('bean');
-            $field = $fdt->mustpost('field');
+            $rest = $context->rest();
+            if (count($rest) > 1)
+            {
+                list($dum, $type, $bid, $fld) = $rest;
+            }
+            else
+            {
+                $bean = $rest[1];
+                $fdt = $context->formdata();
+                $type = $fdt->mustpost('bean');
+                $field = $fdt->mustpost('field');
+                $bid = $fdt->mustpost('id');
+            }
 
-            $bn = $context->load($type, $fdt->mustpost('id'), Context::R400);
+            $bn = $context->load($type, $bid, Context::R400);
             if ($type === 'user' && ctype_upper($field[0]) && $context->isadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole('Site', $field)))
