@@ -30,13 +30,7 @@
         else
         { // toggle at the other end
             var tr = x.parent().parent();
-            $.post(base+'/ajax/toggle/', {
-                field : fld,
-                bean : bean,
-                id : tr.data('id')
-            }, function(data){
-                toggle(x);
-            });
+	    $.post(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+fld, {}, function(data){ toggle(x);});
         }
     }
 
