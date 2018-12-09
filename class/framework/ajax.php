@@ -26,7 +26,7 @@
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
-            'bean'          => [TRUE,   [['Site', 'Admin']]],
+            'bean'          => [TRUE,   []], // permission checks are done in the bean function
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'logincheck'    => [FALSE,  []], // used by registration page
@@ -35,8 +35,22 @@
             'pwcheck'       => [TRUE,   []],
             'table'         => [TRUE,   [['Site', 'Admin']]],
             'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
-            'toggle'        => [TRUE,   [['Site', 'Admin']]],
+            'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'update'        => [TRUE,   [['Site', 'Admin']]],
+        ];
+/**
+ * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $beanperms = [
+            [ [['Site', 'Admin']], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $toggleperms = [
+            [ [['Site', 'Admin']], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -129,6 +143,26 @@
             }
         }
 /**
+ * Check down an array with permissions in the first field and return the first
+ * row that is OK
+ *
+ * @param object  $context  The context object
+ * @param array   $perms    The array wiht permissions in the first element
+ *
+ * @return array
+ */
+        private function findrow(Context $context, $perms)
+        {
+            foreach (self::$toggleperms as $bpd)
+            {
+                if ($this->checkPerms($context, $bpd[0], Context::RNULL)) // make sure we are allowed
+                {
+                    return $bpd[1];
+                }
+            }
+            $context->web()->noaccess();
+        }
+/**
  * Toggle a flag field in a bean
  *
  * Note that for Roles the toggling is more complex and involves role removal/addition rather than
@@ -140,13 +174,14 @@
  */
         private function toggle(Context $context)
         {
+            $beans = $this->findRow($context, self::$toggleperms);
             $fdt = $context->formdata();
             $type = $fdt->mustpost('bean');
             $field = $fdt->mustpost('field');
 
             $bn = $context->load($type, $fdt->mustpost('id'), Context::R400);
-            if ($type === 'user' && ctype_upper($field[0]))
-            { # not simple toggling...
+            if ($type === 'user' && ctype_upper($field[0]) && $context->isadmin())
+            { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole('Site', $field)))
                 {
                     $bn->delrole('Site', $field);
@@ -187,9 +222,10 @@
  */
         private function bean(Context $context)
         {
+            $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
-            switch ($_SERVER['REQUEST_METHOD'])
+            switch ($context->web()->method())
             {
             case 'POST': // make a new one /ajax/bean/KIND/
                 $class = REDBEAN_MODEL_PREFIX.$bean;
@@ -334,6 +370,19 @@
             self::$hints = array_merge(self::$paging, $hints);
         }
 /**
+ * Add bean permissions to allow non site/admins to use the functions
+ *
+ * @param array     $paging     Values for pagination - see above for format
+ * @param array     $hints      Values for hints - see above for format
+ *
+ * @return void
+ */
+        public function beanAccess(array $bean, array $toggle)
+        {
+            self::$beanperms = array_merge(self::$beanperms, $bean);
+            self::$toggleperms = array_merge(self::$toggleperms, $toggle);
+        }
+/**
  * Do a database check for uniqueness
  *
  * @param object    $context  The Context object
@@ -409,48 +458,71 @@
             $context->web()->noaccess();
         }
 /**
+ * Check that user has the permissions specified in an array
+ *
+ * @param object    $context  The Context bject
+ * @param array     $perms    The permission array
+ * @param integer   $fail     What to do if access is forbidden
+ *
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return boolean or may not return at all
+ */
+        private function checkPerms(Context $context, array $perms, int $fail = Context::R400) : bool
+        {
+            $ok = TRUE;
+            foreach ($perms as $rcs)
+            {
+                if (is_array($rcs[0]))
+                { // this is an OR
+                    foreach ($rcs as $orv)
+                    {
+                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                        {
+                            continue 2;
+                        }
+                    }
+                    $ok = FALSE; // none TRUE so forbidden
+                    break;
+                }
+                elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                {
+                    $ok = FALSE; // not TRUE so forbidden
+                    break;
+                }
+            }
+            if (!$ok)
+            {
+                switch ($fail)
+                {
+                case Context::R400:
+                    $context->web()->noaccess();
+                    /* NOT REACHED */
+                case Context::RTHROW:
+                   throw new \Framework\Exception\Forbidden();
+                   /* NOT REACHED */
+                default:
+                    return FALSE;
+                }
+            }
+            return TRUE;
+        }
+/**
  * Check that the caller is allowed to perform the operation.
  *
  * @param object   $context  The Context Object
  * @param boolean  $login    If TRUE Then user must be logged in.
  * @param array    $perms    As specified for the various arrays defined above
  *
- * @return void  Does not return if user is not allowed.
+ * @return boolean  Does not return if user is not allowed.
  */
-        private function checkPerms(Context $context, bool $login, array $perms)
+        private function checkLogin(Context $context, bool $login, array $perms) : bool
         {
             if ($login)
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            foreach ($perms as $rcs)
-            {
-                if (is_array($rcs[0]))
-                { // this is an OR
-                    $ok = FALSE;
-                    foreach ($rcs as $orv)
-                    {
-                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
-                        {
-                            $ok = TRUE;
-                            break;
-                        }
-                    }
-                    if (!$ok)
-                    {
-                        $context->web()->noaccess();
-                        /* NOT REACHED */
-                    }
-                }
-                else
-                {
-                    if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
-                    {
-                        $context->web()->noaccess();
-                        /* NOT REACHED */
-                    }
-                }
-            }
+            return $this->checkPerms($context, $perms, Context::RFAIL);
         }
 /**
  * Handle AJAX operations
@@ -467,7 +539,7 @@
                 $op = $rest[0];
                 if (isset(self::$restops[$op]))
                 { # a valid operation
-                    $this->checkPerms($context, self::$restops[$op][0], self::$restops[$op][1]);
+                    $this->checkLogin($context, self::$restops[$op][0], self::$restops[$op][1]);
                     $this->{$op}($context);
                 }
                 else
