@@ -176,11 +176,15 @@
         {
             $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
-            if (count($rest) > 1)
+            if (($l = count($rest)) > 1)
             {
+                if ($l != 4)
+                { // wrong number of parameters
+                    $context->web()->bad();
+                }
                 list($dum, $type, $bid, $fld) = $rest;
             }
-            else
+            else // this is legacy
             {
                 $bean = $rest[1];
                 $fdt = $context->formdata();
