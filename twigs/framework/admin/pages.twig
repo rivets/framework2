@@ -246,79 +246,75 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#npage" type="button">Add Page</button></p>
+	    <p>{{m.invoke('npage', 'Add Page')}}</p>
         </article>
     </section>
-    <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                {{m.header({title: 'New Page'})}}
-                <div class="modal-body">
-                    <form action="#" method="POST" id="npform">
-                        {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
-                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
-                            'remote-message': 'That page already exists'} })}}
-                        {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
-                                {value: '', text: '&mdash; Pick a Type &mdash;'},
-                                {value: 1,  text: 'Object'},
-                                {value: 2,  text: 'Template'},
-                                {value: 3,  text: 'In-site Temporary Redirect'},
-                                {value: 4,  text: 'In-site Permanent Redirect'},
-                                {value: 5,  text: 'External Temporary Redirect'},
-                                {value: 6,  text: 'External Permanent Rehome'},
-                        ]})}}
-                        {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
-                        {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
-                        {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
-                        {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
-                        <fieldset>
-                            <legend>Roles</legend>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Context</th>
-                                        <th>Role</th>
-                                        <th>Start</th>
-                                        <th>End</th>
-                                        <th>Other Info</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr id="example">
-                                        <td>
-                                           <select name="context[]">
-                                                <option value="">&mdash; Context &mdash;</option>
-                                                {% for sr in siteinfo.contexts %}
-                                                    <option value="{{sr.getID}}">{{sr.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                         <td>
-                                            <select name="role[]">
-                                                <option value="">&mdash; Role &mdash;</option>
-                                                {% for sr in siteinfo.roles %}
-                                                    <option value="{{sr.getID}}">{{sr.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="start[]" value="" placeholder="Start Date or Now" class="form-control"/></td>
-                                        <td><input type="text" name="end[]" value="" placeholder="End Date or Never" class="form-control"/></td>
-                                        <td><input type="text" name="otherinfo[]" value="" placeholder="Other Info" class="form-control"/></td>
-                                    </tr>
-                                    <tr id="mrow">
-                                        <td colspan="4">&nbsp;</td>
-                                        <td><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </fieldset>
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.start('npage')}}
+    {{m.header({title: 'New Page'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="npform">
+            {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
+                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
+                'remote-message': 'That page already exists'} })}}
+            {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
+                    {value: '', text: '&mdash; Pick a Type &mdash;'},
+                    {value: 1,  text: 'Object'},
+                    {value: 2,  text: 'Template'},
+                    {value: 3,  text: 'In-site Temporary Redirect'},
+                    {value: 4,  text: 'In-site Permanent Redirect'},
+                    {value: 5,  text: 'External Temporary Redirect'},
+                    {value: 6,  text: 'External Permanent Rehome'},
+            ]})}}
+            {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
+            {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
+            {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
+            {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
+            <fieldset>
+                <legend>Roles</legend>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Context</th>
+                            <th>Role</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Other Info</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="example">
+                            <td>
+                               <select name="context[]">
+                                    <option value="">&mdash; Context &mdash;</option>
+                                    {% for sr in siteinfo.contexts %}
+                                        <option value="{{sr.getID}}">{{sr.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                             <td>
+                                <select name="role[]">
+                                    <option value="">&mdash; Role &mdash;</option>
+                                    {% for sr in siteinfo.roles %}
+                                        <option value="{{sr.getID}}">{{sr.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="text" name="start[]" value="" placeholder="Start Date or Now" class="form-control"/></td>
+                            <td><input type="text" name="end[]" value="" placeholder="End Date or Never" class="form-control"/></td>
+                            <td><input type="text" name="otherinfo[]" value="" placeholder="Other Info" class="form-control"/></td>
+                        </tr>
+                        <tr id="mrow">
+                            <td colspan="4">&nbsp;</td>
+                            <td><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
     </div>
+    {{m.footer({action: 'Add', id: 'addb'})}}
+    {{m.end()}}
 {% endblock main %}
 
 {% block pagefooter %}
