@@ -6,7 +6,14 @@
 {% block onload %}
     $('#tform').on('submit', false);
     $('#nopu').on('click', function(e){
-        $(this).removeClass('btn-primary').addClass('btn-info');
+        if ($this.hasClass('btn-primary'))
+        {
+            $(this).removeClass('btn-primary').addClass('btn-warning');
+        }
+        else
+        {
+            $(this).removeClass('btn-warning').addClass('btn-primary');
+        }
     })
 {% endblock onload %}
 
