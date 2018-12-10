@@ -29,7 +29,7 @@
                 {{f.number({label: 'Number', id : 'nmid', name: 'nm', value: 42, min: 30, step: 2, max: 50})}}
                 {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
                 {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
-                {{f.file({label: 'File', id : 'flid', name: 'fl', ph: 'file type'})}}
+                {{f.file({label: 'File', id : 'flid', name: 'fl', accept: 'image/png'})}}
                 {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Text area', required: TRUE})}}
                 {{f.select({label: 'Select Multiple', is: 'slid1', name: 'sl1', size: 3, multiple: TRUE, selected: [1, 4], options: [
                     {text: '&mdash;Select&mdash;', value: ''},
