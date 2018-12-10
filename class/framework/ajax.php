@@ -136,7 +136,7 @@
  */
         private function findrow(Context $context, $perms)
         {
-            foreach (self::$perms as $bpd)
+            foreach ($perms as $bpd)
             {
                 if ($this->checkPerms($context, $bpd[0], Context::RBOOL)) // make sure we are allowed
                 {
