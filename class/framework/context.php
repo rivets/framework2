@@ -107,14 +107,13 @@
  * @param integer           $count      The number to check for
  * @param integer           $onerror    What to do on failure
  *
- * @return array
+ * @return array The parameters values in an array indexed from 0
  */
         public function restcheck(int $count, int $onerror = self::R400) : array
         {
-            $values = [];
             foreach (range(1, $count) as $ix)
             {
-                if (($val = $this->reqrest[$ix] ?? '') === '')
+                if (($this->reqrest[$ix] ?? '') === '')
                 {
                     switch ($onerror)
                     {
@@ -127,9 +126,8 @@
                         throw new \InvalidArgumentException('Onerror value');
                     }
                 }
-                $values[] = $val;
             }
-            return $values;
+            return array_slice($this->reqrest, 1, $count);
         }
 /**
  ***************************************
