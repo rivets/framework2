@@ -5,6 +5,9 @@
 
 {% block onload %}
     $('#tform').on('submit', false);
+    $('#nopu').on('click', function(e){
+        $(this).removeClass('btn-primary').addClass('btn-info');
+    })
 {% endblock onload %}
 
 {% block header %}
