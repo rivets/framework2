@@ -36,9 +36,7 @@
 </div>
 {% endmacro bse%}
 
-{% macro slct(opts) %}
-{% if (opts.multiple and opts.value in opts.selected) or opts.selected == ov.value %} selected="selected"{% endif %}
-{% endmacro slct %}
+{% macro slct(opts) %}{% if (opts.multiple and opts.value in opts.selected) %} selected="selected"{% elseif opts.selected == ov.value %} selected="selected"{% endif %}{% endmacro slct %}
 
 {% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
@@ -86,7 +84,7 @@
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
     <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{{fx.hv('size', opts.size)}}>
         {% for ov in opts.options %}
-            <option value="{{ov.value}}"{{fx.slct(opts)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
+            <option value="{{ov.value is defined ? ov.value : ov.text}}"{{fx.slct(opts)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
     </select>{{fx.bse(opts)}}{% endmacro select %}
 
