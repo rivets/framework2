@@ -155,7 +155,7 @@
         {
             foreach (self::$perms as $bpd)
             {
-                if ($this->checkPerms($context, $bpd[0], Context::RNULL)) // make sure we are allowed
+                if ($this->checkPerms($context, $bpd[0], Context::RBOOL)) // make sure we are allowed
                 {
                     return $bpd[1];
                 }
@@ -515,8 +515,10 @@
                 case Context::RTHROW:
                    throw new \Framework\Exception\Forbidden();
                    /* NOT REACHED */
-                default:
+                case Context::RBOOL:
                     return FALSE;
+                default:
+                    throw new Exception('Weird error');
                 }
             }
             return TRUE;
