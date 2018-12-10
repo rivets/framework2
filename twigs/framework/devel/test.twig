@@ -30,11 +30,13 @@
                 {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
                 {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
                 {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Text area', required: TRUE})}}
-                <div>
-                {{f.checkbox({label: 'Checkbox', ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
+                <div class="form-group">
+                <label>Checkbox</label>
+                {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
                 </div>
-                <div>
-                {{f.radio({label: 'Radio', ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE]})}}
+                <div class="form-group">
+                <label>Radio</label>
+                {{f.radio({ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE]})}}
                 </div>
                 {{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}
             </form>
