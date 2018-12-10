@@ -55,9 +55,9 @@
                 <label>Radio</label>
                 {{f.radio({ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE]})}}
                 </div>
-                {{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}
+                <p>{{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}</p>
             </form>
-            <p>{{m.invoke('npage', 'Modal Pop-up')}}</p>
+            <p>{{m.invoke('modal', 'Modal Pop-up')}}</p>
         </article>
     </section>
     {{m.start('modal')}}
