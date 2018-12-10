@@ -161,7 +161,7 @@
             $rest = $context->rest();
             if (count($rest) > 2)
             {
-                list($type, $bid, $fld) = $context->restcheck(3);
+                list($type, $bid, $field) = $context->restcheck(3);
             }
             else // this is legacy
             {
