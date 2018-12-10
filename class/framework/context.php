@@ -109,7 +109,7 @@
  *
  * @return array
  */
-        public function restcheck(int $count, int $onerror = self::RFAIL) : array
+        public function restcheck(int $count, int $onerror = self::R400) : array
         {
             $values = [];
             foreach (range(1, $count) as $ix)
