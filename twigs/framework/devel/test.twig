@@ -46,9 +46,7 @@
                                 {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', value: 'with value readonly', readonly: TRUE})}}
                                 {{f.password({label: 'Password', id : 'pwid', name: 'pw', ph: 'password type'})}}
                                 {{f.email({label: 'Email', id : 'emid', name: 'em', ph: 'email type'})}}
-                                {{f.number({label: 'Number', id : 'nmid', name: 'nm', value: 42, min: 30, step: 2, max: 50})}}
-                                {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
-                                {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
+                                {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Textarea', required: TRUE})}}
                         </div>
                     </div>
                 </div>
@@ -61,7 +59,10 @@
                     <div id="colforms2" class="collapse" aria-labelledby="forms2" data-parent="#acc1">
                         <div class="card-body">
                             <form id="tform">
-                                {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Text area', required: TRUE})}}
+                                {{f.number({label: 'Number', id : 'nmid', name: 'nm', value: 42, min: 30, step: 2, max: 50})}}
+                                {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
+                                {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
+
                                 {{f.file({label: 'File', id : 'flid', name: 'fl', accept: 'image/png'})}}
                                 {{f.select({label: 'Select Multiple', is: 'slid1', name: 'sl1', size: 3, multiple: TRUE, selected: [1, 4], options: [
                                     {text: '&mdash;Select&mdash;', value: ''},
