@@ -96,6 +96,17 @@
             return $this->reqrest;
         }
 /**
+ * TRUE if the rest of the URL contains at least $len components
+ *
+ *@param integer    $len  The number length
+ *
+ * @return boolean
+ */
+        public function restcheck(int $len) : boolean
+        {
+            return count($this->reqrest) >= $len;
+        }
+/**
  ***************************************
  * User related functions
  ***************************************
