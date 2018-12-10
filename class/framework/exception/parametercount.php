@@ -1,15 +1,15 @@
 <?php
 /**
- * Exception Class for when access violations are detected
+ * Exception Class for when a RESTful parameter count is wrong
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018 Newcastle University
  */
     namespace Framework\Exception;
 /**
- * Access violation exception class
+ * RESTful parameter count exception class
  */
-    class Forbidden extends \Exception
+    class ParameterCount extends \Exception
     {
     }
 ?>

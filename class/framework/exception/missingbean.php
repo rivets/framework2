@@ -1,15 +1,15 @@
 <?php
 /**
- * Exception Class for when access violations are detected
+ * Exception Class for when a bean is missing
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018 Newcastle University
  */
     namespace Framework\Exception;
 /**
- * Access violation exception class
+ * Missing Bean exception class
  */
-    class Forbidden extends \Exception
+    class MissingBean extends \Exception
     {
     }
 ?>
