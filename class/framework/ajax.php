@@ -532,7 +532,7 @@
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            return $this->checkPerms($context, $perms, Context::RFAIL);
+            return $this->checkPerms($context, $perms, Context::R400);
         }
 /**
  * Handle AJAX operations
