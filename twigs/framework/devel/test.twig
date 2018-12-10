@@ -1,5 +1,7 @@
 {% extends '@content/page.twig' %}
 
+{% import '@util/accmacro.twig' as a %}
+
 {% block onload %}
     $('#tform,#tform2').on('submit', false);
     $('#nopu').on('click', function(e){
@@ -23,6 +25,12 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10">
+            {{a.accordion('acc1', [
+                {id: 'message', title: 'Messaging', file: '@util/message.twig'},
+                {id: 'form1', title: 'Form Text Macros', file: '@util/formtext.twig'},
+                {id: 'form2', title: 'Form Other Macros', file: '@util/formother.twig'},
+                {id: 'modal', title: 'Modals', file: '@util/modal.twig'},
+            ])}}
             <div class="accordion" id="acc1">
                 <div class="card">
                     <div class="card-header" id="message">
