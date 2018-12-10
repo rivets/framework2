@@ -27,60 +27,10 @@
         <article class="ml-auto col-md-10">
             {{a.accordion('acc1', [
                 {id: 'message', title: 'Messaging', file: '@util/message.twig'},
-                {id: 'form1', title: 'Form Text Macros', file: '@util/formtext.twig'},
-                {id: 'form2', title: 'Form Other Macros', file: '@util/formother.twig'},
-                {id: 'modal', title: 'Modals', file: '@util/modal.twig'},
+                {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
+                {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},
+                {id: 'modal', title: 'Modals', file: '@devel/tests/modal.twig'},
             ])}}
-            <div class="accordion" id="acc1">
-                <div class="card">
-                    <div class="card-header" id="message">
-                        <h4 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#colmessage" aria-expanded="true" aria-controls="colmessage">Messaging</button>
-                        </h4>
-                    </div>
-                    <div id="colmessage" class="collapse" aria-labelledby="message" data-parent="#acc1">
-                        <div class="card-body">
-                            {% include '@util/message.twig' %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="forms">
-                        <h4 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#colforms" aria-expanded="true" aria-controls="colforms">Form text Macros</button>
-                        </h4>
-                    </div>
-                    <div id="colforms" class="collapse" aria-labelledby="forms" data-parent="#acc1">
-                        <div class="card-body">
-                            {% include '@devel/tests/formtext.twig' %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="forms2">
-                        <h4 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#colforms2" aria-expanded="true" aria-controls="colforms2">Form Other Macros</button>
-                        </h4>
-                    </div>
-                    <div id="colforms2" class="collapse" aria-labelledby="forms2" data-parent="#acc1">
-                        <div class="card-body">
-                            {% include '@devel/tests/formother.twig' %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header" id="modal">
-                        <h4 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#colmodal" aria-expanded="true" aria-controls="colmodal">Modals</button>
-                        </h4>
-                    </div>
-                    <div id="colmodal" class="collapse" aria-labelledby="modal" data-parent="#acc1">
-                        <div class="card-body">
-                            {% include '@devel/tests/modal.twig' %}
-                        </div>
-                    </div>
-                </div>
-            </div>
         </article>
     </section>
     {% include '@devel/tests/modalbody.twig' %}
