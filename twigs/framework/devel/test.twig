@@ -21,13 +21,15 @@
                 {{f.text({label: 'Text', id : 'textid1', name: 'text1', ph: 'text type required', required: TRUE, data: {test: 'test'}})}}
                 {{f.text({label: 'Text', id : 'textid2', name: 'text2', ph: 'text type required', value: 'with value', required: TRUE})}}
                 {{f.text({label: 'Text', id : 'textid3', name: 'text3', ph: 'text type disabled', disabled: TRUE})}}
-                {{f.text({label: 'Text', id : 'textid4', name: 'text4', ph: 'text type disabled', value: 'with value', disabled: TRUE})}}
-                {{f.text({label: 'Text', id : 'textid5', name: 'text5', ph: 'text type readonly', value: 'with value', readonly: TRUE})}}
-                {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', readonly: TRUE})}}
+                {{f.text({label: 'Text', id : 'textid4', name: 'text4', ph: 'text type disabled', value: 'with value disabled', disabled: TRUE})}}
+                {{f.text({label: 'Text', id : 'textid5', name: 'text5', ph: 'text type readonly', readonly: TRUE})}}
+                {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', value: 'with value readonly', readonly: TRUE})}}
                 {{f.password({label: 'Password', id : 'pwid', name: 'pw', ph: 'password type'})}}
                 {{f.email({label: 'Email', id : 'emid', name: 'em', ph: 'email type'})}}
                 {{f.number({label: 'Number', id : 'nmid', name: 'nm', ph: '42'})}}
+                {{f.number({label: 'Range', id : 'rnid', name: 'rn', ph: '42'})}}
                 {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
+                {{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}
             </form>
         </article>
     </section>
