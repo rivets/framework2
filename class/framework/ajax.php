@@ -32,8 +32,8 @@
             'logincheck'    => [FALSE,  []], // used by registration page
             'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
-            'pwcheck'       => [TRUE,   []],
-            'table'         => [TRUE,   [['Site', 'Admin']]],
+            'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
+            'table'         => [TRUE,   []],
             'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'update'        => [TRUE,   [['Site', 'Admin']]],
@@ -50,6 +50,13 @@
  */
         private static $toggleperms = [
             [ [['Site', 'Admin']], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $tableperms = [
+            [ [['Site', 'Admin']], ['page', 'user', 'fwconfig', 'form', 'formfield', 'rolecontext', 'rolename', 'table'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -211,6 +218,10 @@
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
+            if (!isset($beans[$bean]))
+            {
+                $context->web()->noaccess();
+            }
             switch ($context->web()->method())
             {
             case 'POST': // make a new one /ajax/bean/KIND/
@@ -235,8 +246,12 @@
                 $fields = R::inspect($bean); // gets all the fields
                 $field = $rest[3] ?? ''; // get the field name from the URL
                 if (!isset($fields[$field]))
-                {
+                { // no such field
                     $context->web()->bad();
+                }
+                if (!empty($beans[$bean]) && !in_array($field, $beans[$bean]))
+                { // no permission to update this field
+                    $context->web()->noaccess();
                 }
                 $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
@@ -263,8 +278,13 @@
  */
         private function table(Context $context)
         {
+            $tables = $this->findRow($context, self::$tableperms);
             $rest = $context->rest();
-            $bean = $rest[1];
+            $table = $rest[1];
+            if (!in_array($table, $tables))
+            {
+                $context->web()->noaccess();
+            }
             switch ($_SERVER['REQUEST_METHOD'])
             {
             case 'POST': // make a new one
