@@ -399,6 +399,10 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
+            foreach (self::$msgnames as $mn)
+            {
+                $this->twig->addGlobal($mn, []);
+            }
             $this->tvals = [];
         }
 /**
