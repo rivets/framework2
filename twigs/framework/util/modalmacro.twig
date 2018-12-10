@@ -2,6 +2,22 @@
 {% if value != '' %} {{attr}}="{{value}}"{% endif %}
 {% endmacro hv %}
 
+{% macro invoke(id, label, bstyle = 'btn-primary') %}
+<button class="btn {{bstyle}}" data-toggle="modal" data-target="#{{id}}" type="button">{{label}}</button>
+{% endmacro invoke %}
+
+{% macro start(id) %}
+    <div class="modal fade" id="{{id}}" aria-labelledby="{{id}}" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+{% endmacro start %}
+
+{% macro end %}
+            </div>
+        </div>
+    </div>
+{% endmacro end %}
+
 {% macro header(opts) %}
 {% import _self as h %}
     <div class="modal-header">
