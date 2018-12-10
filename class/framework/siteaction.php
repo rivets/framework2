@@ -138,25 +138,25 @@
 			$match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
 		    }
 		}
-		if (!$match)
-		{ # nothing matched or did not exist
-		    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-		    exit;
-		}
-	    }
-	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
-	    {
-		$ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
-		if (preg_match('/^(.*);(.*)$/', $ifus, $m))
-		{
-		    $ifus = $m[1];
-		}
-		$st = strtotime($ifus); # ignore if not a valid time
-		if ($st !== FALSE && $st < $this->lastmodified())
-		{
-		    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-		    exit;
-		}
+                if (!$match)
+                { # nothing matched or did not exist
+                    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                    exit;
+                }
+            }
+            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
+            {
+            $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
+            if (preg_match('/^(.*);(.*)$/', $ifus, $m))
+            {
+                $ifus = $m[1];
+            }
+            $st = strtotime($ifus); # ignore if not a valid time
+            if ($st !== FALSE && $st < $this->lastmodified())
+            {
+                Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                exit;
+            }
 	    }
 	}
 /**
@@ -166,10 +166,10 @@
  *
  * @return string
  */
-	public function makeetag() : string
-	{
-	    return '';
-	}
+        public function makeetag() : string
+        {
+            return '';
+        }
 /**
  * Make a max age value for an item
  *
@@ -177,10 +177,10 @@
  *
  * @return mixed
  */
-	public function makemaxage()
-	{
-	    return '';
-	}
+        public function makemaxage()
+        {
+            return '';
+        }
 /**
  * Returns true of the request would generate a page.
  *
@@ -189,10 +189,10 @@
  *
  * @return boolean
  */
-	public function exists() : bool
-	{
-	    return TRUE;
-	}
+        public function exists() : bool
+        {
+            return TRUE;
+        }
 /**
  * Get a last modified time for the page
  *
@@ -201,10 +201,10 @@
  *
  * @return integer
  */
-	public function lastmodified() : int
-	{
-	    return time();
-	}
+        public function lastmodified() : int
+        {
+            return time();
+        }
 /**
  * Format a time suitable for Last-Modified header
  *
@@ -212,10 +212,10 @@
  *
  * @return string
  */
-	public function makemod(int $time) : string
-	{
-	    return gmdate('D, d M Y H:i:s', $time).' GMT';
-	}
+        public function makemod(int $time) : string
+        {
+            return gmdate('D, d M Y H:i:s', $time).' GMT';
+        }
 /**
  * Check a timestamp to see if we need to send the page again or not.
  *
@@ -227,10 +227,10 @@
  *
  * @return boolean
  */
-	public function checkmodtime(string $time) : bool
-	{
-	    return FALSE;
-	}
+        public function checkmodtime(string $time) : bool
+        {
+            return FALSE;
+        }
 /**
  * Check an etag to see if we need to send the page again or not.
  *
@@ -238,10 +238,10 @@
  *
  * @return boolean
  */
-	public function checketag(string $tag) : bool
-	{
-	    return $tag === $this->makeetag();
-	}
+        public function checketag(string $tag) : bool
+        {
+            return $tag === $this->makeetag();
+        }
 /**
  * We have a matched etag - check request method and send the appropriate header.
  * Does not return
@@ -250,19 +250,19 @@
  *
  * @return void
  */
-	private function etagmatched()
-	{
-	    $web = Web::getinstance();
-	    $rqm = $web->method();
-	    if ($rqm != 'GET' && $rqm != 'HEAD')
-	    { # fail if not a GET or HEAD - see W3C specification
-		$web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-	    }
-	    else
-	    {
-		$web->send304($this->makeetag(), $this->makemaxage());
-	    }
-	    exit;
-	}
+        private function etagmatched()
+        {
+            $web = Web::getinstance();
+            $rqm = $web->method();
+            if ($rqm != 'GET' && $rqm != 'HEAD')
+            { # fail if not a GET or HEAD - see W3C specification
+            $web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+            }
+            else
+            {
+            $web->send304($this->makeetag(), $this->makemaxage());
+            }
+            exit;
+        }
     }
 ?>
