@@ -57,6 +57,7 @@
                 {
                     $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                     exit;
+                    /* NOT REACHED */
                 }
            }
         }
