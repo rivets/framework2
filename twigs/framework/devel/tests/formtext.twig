@@ -1,3 +1,5 @@
+{% import '@util/formmacro.twig' as f %}
+
     <form id="tform">
         {{f.text({label: 'Text', id : 'textid1', name: 'text1', ph: 'text type required', required: TRUE, data: {test: 'test'}})}}
         {{f.text({label: 'Text', id : 'textid2', name: 'text2', ph: 'text type required', value: 'with value', required: TRUE})}}

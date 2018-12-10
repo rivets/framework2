@@ -1,8 +1,5 @@
 {% extends '@content/page.twig' %}
 
-{% import '@util/formmacro.twig' as f %}
-{% import '@util/modalmacro.twig' as m %}
-
 {% block onload %}
     $('#tform,#tform2').on('submit', false);
     $('#nopu').on('click', function(e){
