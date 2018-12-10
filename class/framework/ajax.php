@@ -378,15 +378,17 @@
 /**
  * Add bean permissions to allow non site/admins to use the functions
  *
- * @param array     $paging     Values for pagination - see above for format
- * @param array     $hints      Values for hints - see above for format
+ * @param array     $bean      
+ * @param array     $toggle      
+ * @param array     $table     
  *
  * @return void
  */
-        public function beanAccess(array $bean, array $toggle)
+        public function beanAccess(array $bean, array $toggle, array $table)
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
+            self::$tableperms = array_merge(self::$tableperms, $table);
         }
 /**
  * Do a database check for uniqueness

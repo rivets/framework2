@@ -56,6 +56,12 @@
             // 'bean' => [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
+ * @var array   Values controlling whether or not calls on the table operation are allowerd
+ */
+        private static $allowTable = [
+            // 'bean' => [[['ContextName', 'RoleName']], [ 'bean', ....] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
  * Handle AJAX operations
  *
  * @param object	$context	The context object for the site
@@ -67,7 +73,7 @@
             //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
             $this->pageOrHint(self::$allowPaging, self::$allowHints);
-            $this->pageOrHint(self::$allowBean, self::$allowToggle);
+            $this->pageOrHint(self::$allowBean, self::$allowToggle, $allowTable);
             parent::handle($context);
         }
     }
