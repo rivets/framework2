@@ -29,7 +29,24 @@
                 {{f.number({label: 'Number', id : 'nmid', name: 'nm', value: 42, min: 30, step: 2, max: 50})}}
                 {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
                 {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
+                {{f.file({label: 'File', id : 'flid', name: 'fl', ph: 'file type'})}}
                 {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Text area', required: TRUE})}}
+                {{f.select({label: 'Select', is: 'slid1', name: 'sl1', size: 3, multiple: TRUE, options: [
+                    {text: '&mdash;Select Multiple$mdash;', value: ''},
+                    {text: 'Value 1', value: 1},
+                    {text: 'Value 2', value: 2},
+                    {text: 'Value 3', value: 3},
+                    {text: 'Value 4', value: 4},
+                    {text: 'Value 5', value: 5},
+                ]})}}
+                {{f.select({label: 'Select', is: 'slid2', name: 'sl2', value: 1, options: [
+                    {text: '&mdash;Select$mdash;', value: ''},
+                    {text: 'Value 1', value: 1},
+                    {text: 'Value 2', value: 2},
+                    {text: 'Value 3', value: 3},
+                    {text: 'Value 4', value: 4},
+                    {text: 'Value 5', value: 5},
+                ]})}}
                 <div class="form-group">
                 <label>Checkbox</label>
                 {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}

@@ -80,7 +80,7 @@
 {% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
-    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}>
+    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{{fx.hv('size', opts.size)}}>
         {% for ov in opts.options %}
             <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
