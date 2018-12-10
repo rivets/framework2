@@ -73,7 +73,7 @@
             //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
             $this->pageOrHint(self::$allowPaging, self::$allowHints);
-            $this->pageOrHint(self::$allowBean, self::$allowToggle, $allowTable);
+            $this->pageOrHint(self::$allowBean, self::$allowToggle, self::$allowTable);
             parent::handle($context);
         }
     }
