@@ -6,7 +6,7 @@
 {% block onload %}
     $('#tform').on('submit', false);
     $('#nopu').on('click', function(e){
-        if ($this.hasClass('btn-primary'))
+        if ($(this).hasClass('btn-primary'))
         {
             $(this).removeClass('btn-primary').addClass('btn-warning');
         }
