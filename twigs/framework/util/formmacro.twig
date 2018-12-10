@@ -36,7 +36,7 @@
 </div>
 {% endmacro bse%}
 
-{% macro slct(opts, ov) %}{% if (opts.multiple and opts.value in opts.selected) or opts.selected == ov.value %} selected="selected"{% endif %}{% endmacro slct %}
+{% macro slct(opts, ov) %}{% if (opts.multiple and ov.value in opts.selected) or opts.selected == ov.value %} selected="selected"{% endif %}{% endmacro slct %}
 
 {% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
