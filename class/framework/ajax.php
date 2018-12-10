@@ -237,16 +237,11 @@
                 break;
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
-                $id = $rest[2] ?? 0; // get the id from the URL
-                if ($id <= 0)
-                {
-                    $context->web()->bad();
-                }
+                list($bean, $id, $field) = $context->restcheck(3);
                 $bn = $context->load($bean, $id);
                 $fields = R::inspect($bean); // gets all the fields
-                $field = $rest[3] ?? ''; // get the field name from the URL
-                if (!isset($fields[$field]))
-                { // no such field
+                if ($field == 'id' || !isset($fields[$field]))
+                { // no such field or trying to change the id field
                     $context->web()->bad();
                 }
                 if (!empty($beans[$bean]) && !in_array($field, $beans[$bean]))
