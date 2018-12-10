@@ -4,7 +4,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% block onload %}
-    $('#tform').on('submit', false);
+    $('#tform,#tform2').on('submit', false);
     $('#nopu').on('click', function(e){
         if ($(this).hasClass('btn-primary'))
         {
@@ -47,16 +47,7 @@
                     </div>
                     <div id="colforms" class="collapse" aria-labelledby="forms" data-parent="#acc1">
                         <div class="card-body">
-                            <form id="tform">
-                                {{f.text({label: 'Text', id : 'textid1', name: 'text1', ph: 'text type required', required: TRUE, data: {test: 'test'}})}}
-                                {{f.text({label: 'Text', id : 'textid2', name: 'text2', ph: 'text type required', value: 'with value', required: TRUE})}}
-                                {{f.text({label: 'Text', id : 'textid3', name: 'text3', ph: 'text type disabled', disabled: TRUE})}}
-                                {{f.text({label: 'Text', id : 'textid4', name: 'text4', ph: 'text type disabled', value: 'with value disabled', disabled: TRUE})}}
-                                {{f.text({label: 'Text', id : 'textid5', name: 'text5', ph: 'text type readonly', readonly: TRUE})}}
-                                {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', value: 'with value readonly', readonly: TRUE})}}
-                                {{f.password({label: 'Password', id : 'pwid', name: 'pw', ph: 'password type'})}}
-                                {{f.email({label: 'Email', id : 'emid', name: 'em', ph: 'email type'})}}
-                                {{f.textarea({label: 'Textarea', id : 'taid', name: 'ta', ph: 'Textarea', required: TRUE})}}
+                            {% include '@devel/tests/formtext.twig' %}
                         </div>
                     </div>
                 </div>
@@ -68,38 +59,7 @@
                     </div>
                     <div id="colforms2" class="collapse" aria-labelledby="forms2" data-parent="#acc1">
                         <div class="card-body">
-                            <form id="tform">
-                                {{f.number({label: 'Number', id : 'nmid', name: 'nm', value: 42, min: 30, step: 2, max: 50})}}
-                                {{f.range({label: 'Range', id : 'rnid', name: 'rn', dvalue: 15, min:10, step: 1, max: 20})}}
-                                {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
-
-                                {{f.file({label: 'File', id : 'flid', name: 'fl', accept: 'image/png'})}}
-                                {{f.select({label: 'Select Multiple', is: 'slid1', name: 'sl1', size: 3, multiple: TRUE, selected: [1, 4], options: [
-                                    {text: '&mdash;Select&mdash;', value: ''},
-                                    {text: 'Value 1', value: 1},
-                                    {text: 'Value 2', value: 2},
-                                    {text: 'Value 3', value: 3},
-                                    {text: 'Value 4', value: 4},
-                                    {text: 'Value 5', value: 5},
-                                ]})}}
-                                {{f.select({label: 'Select', is: 'slid2', name: 'sl2', selected: 1, options: [
-                                    {text: '&mdash;Select&mdash;', value: ''},
-                                    {text: 'Value 1', value: 1},
-                                    {text: 'Value 2', value: 2},
-                                    {text: 'Value 3', value: 3},
-                                    {text: 'Value 4', value: 4},
-                                    {text: 'Value 5', value: 5},
-                                ]})}}
-                                <div class="form-group">
-                                <label>Checkbox</label>
-                                {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
-                                </div>
-                                <div class="form-group">
-                                <label>Radio</label>
-                                {{f.radio({ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE]})}}
-                                </div>
-                                <p>{{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}</p>
-                            </form>
+                            {% include '@devel/tests/formother.twig' %}
                         </div>
                     </div>
                 </div>
@@ -111,20 +71,14 @@
                     </div>
                     <div id="colmodal" class="collapse" aria-labelledby="modal" data-parent="#acc1">
                         <div class="card-body">
-                            <p>{{m.invoke('modald', 'Modal Pop-up')}}</p>
+                            {% include '@devel/tests/modal.twig' %}
                         </div>
                     </div>
                 </div>
             </div>
         </article>
     </section>
-    {{m.start('modald')}}
-    {{m.header({title: 'Modal Pop-up'})}}
-    <div class="modal-body">
-        <h2>This is a modal</h2>
-    </div>
-    {{m.footer({action: 'None', id: 'nopu'})}}
-    {{m.end()}}
+    {% include '@devel/tests/modalbody.twig' %}
 {% endblock main %}
 
 {% block pagefooter %}
