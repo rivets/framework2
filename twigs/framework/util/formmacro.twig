@@ -12,7 +12,7 @@
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
-{% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{% endif %}{% endmacro numopts %}
+{% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{% endif %}{% endmacro fileopts %}
 
 {% macro data(opts) %}{% for k,v in opts %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
 
