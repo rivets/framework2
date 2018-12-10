@@ -448,13 +448,14 @@
  *
  * @param object    $context  The Context bject
  * @param array     $perms    The permission array
- * @param integer   $fail     What to do if access is forbidden
+ * @param integer   $onerror  What to do if access is forbidden
  *
  * @throws \Framework\Exception\Forbidden
+ * @throws \InvalidArgumentException
  *
  * @return boolean or may not return at all
  */
-        private function checkPerms(Context $context, array $perms, int $fail = Context::R400) : bool
+        private function checkPerms(Context $context, array $perms, int $onerror = Context::R400) : bool
         {
             $ok = TRUE;
             foreach ($perms as $rcs)
@@ -479,18 +480,17 @@
             }
             if (!$ok)
             {
-                switch ($fail)
+                switch ($onerror)
                 {
                 case Context::R400:
                     $context->web()->noaccess();
                     /* NOT REACHED */
                 case Context::RTHROW:
                    throw new \Framework\Exception\Forbidden();
-                   /* NOT REACHED */
                 case Context::RBOOL:
                     return FALSE;
                 default:
-                    throw new Exception('Weird error');
+                    throw new \InvalidArgumentException('Onerror value');
                 }
             }
             return TRUE;
