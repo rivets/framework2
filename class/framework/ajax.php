@@ -75,30 +75,6 @@
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * Check URL string for n values and pull them out
- *
- * The value in $rest[0] is the opcode so we always start at $rest[1]
- *
- * @param object        $context    The context object
- * @param int           $count      The number to check for
- *
- * @return array
- */
-        protected function restcheck(Context $context, int $count) : array
-        {
-            $values = [];
-            $rest = $context->rest();
-            foreach (range(1, $count) as $ix)
-            {
-                if (($val = $rest[$ix] ?? '') === '')
-                {
-                    $context->web()->bad();
-                }
-                $values[] = $val;
-            }
-            return $values;
-        }
-/**
  * Config value operation
  *
  * @param object	$context	The context object for the site
@@ -108,7 +84,7 @@
         private function config(Context $context)
         {
             $rest = $context->rest();
-            list($name) = $this->restcheck($context, 1);
+            list($name) = $context->restcheck(1);
             $v = R::findOne('fwconfig', 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($_SERVER['REQUEST_METHOD'])
@@ -176,13 +152,9 @@
         {
             $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
-            if (($l = count($rest)) > 1)
+            if (count($rest) > 2)
             {
-                if ($l != 4)
-                { // wrong number of parameters
-                    $context->web()->bad();
-                }
-                list($dum, $type, $bid, $fld) = $rest;
+                list($dum, $type, $bid, $fld) = $context->restcheck(4);
             }
             else // this is legacy
             {
@@ -407,7 +379,7 @@
  */
         protected function uniqCheck(Context $context, string $bean, string $field)
         {
-            list($name) = $this->restcheck($context, 1);
+            list($name) = $context->restcheck(1);
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
@@ -445,7 +417,7 @@
  */
         public function tablecheck(Context $context)
         {
-            list($name) = $this->restcheck($context, 1);
+            list($name) = $context->restcheck(1);
             $tb = \R::inspect();
             if (in_array(strtolower($name), $tb))
             {
