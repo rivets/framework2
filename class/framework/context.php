@@ -24,21 +24,25 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * Value indicating to generate a 400 output from function when id or name does not exist
+ * Value indicating to generate a 400 output from function when value does not exist
  */
         const R400              = 0;
 /**
- * Value indicating to generate a NULL return from function when id or name does not exist
+ * Value indicating to generate a NULL return from function when value does not exist
  */
         const RNULL             = 1;
 /**
- * Value indicating to throw an error from function when id or name does not exist
+ * Value indicating to throw an error from function when value does not exist
  */
         const RTHROW            = 2;
 /**
- * Value indicating to return default value from function when id or name does not exist
+ * Value indicating to return default value from function when value does not exist
  */
         const RDEFAULT          =  3;
+/**
+ * Value indicating to return a boolean value from function, FALSE if value does not exist
+ */
+        const RBOOL             =  4;
 /**
  * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
  */
@@ -94,6 +98,29 @@
         public function rest() : array
         {
             return $this->reqrest;
+        }
+/**
+ * Check URL string for n parameter values and pull them out
+ *
+ * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
+ *
+ * @param object        $context    The context object
+ * @param int           $count      The number to check for
+ *
+ * @return array
+ */
+        public function restcheck(int $count) : array
+        {
+            $values = [];
+            foreach (range(1, $count) as $ix)
+            {
+                if (($val = $this->reqrest[$ix] ?? '') === '')
+                {
+                    $this->web()->bad();
+                }
+                $values[] = $val;
+            }
+            return $values;
         }
 /**
  ***************************************
