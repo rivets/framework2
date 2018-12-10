@@ -24,21 +24,25 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * Value indicating to generate a 400 output from function when id or name does not exist
+ * Value indicating to generate a 400 output from function when value does not exist
  */
         const R400              = 0;
 /**
- * Value indicating to generate a NULL return from function when id or name does not exist
+ * Value indicating to generate a NULL return from function when value does not exist
  */
         const RNULL             = 1;
 /**
- * Value indicating to throw an error from function when id or name does not exist
+ * Value indicating to throw an error from function when value does not exist
  */
         const RTHROW            = 2;
 /**
- * Value indicating to return default value from function when id or name does not exist
+ * Value indicating to return default value from function when value does not exist
  */
         const RDEFAULT          =  3;
+/**
+ * Value indicating to return a boolean value from function, FALSE if value does not exist
+ */
+        const RBOOL             =  4;
 /**
  * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
  */
@@ -94,6 +98,36 @@
         public function rest() : array
         {
             return $this->reqrest;
+        }
+/**
+ * Check URL string for n parameter values and pull them out
+ *
+ * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
+ *
+ * @param integer           $count      The number to check for
+ * @param integer           $onerror    What to do on failure
+ *
+ * @return array The parameters values in an array indexed from 0
+ */
+        public function restcheck(int $count, int $onerror = self::R400) : array
+        {
+            foreach (range(1, $count) as $ix)
+            {
+                if (($this->reqrest[$ix] ?? '') === '')
+                {
+                    switch ($onerror)
+                    {
+                    case self::R400:
+                        $this->web()->bad('parameter count');
+                        /* NOT REACHED */
+                    case self::RTHROW:
+                        throw new \Framework\Exception\ParameterCount();
+                    default:
+                        throw new \InvalidArgumentException('Onerror value');
+                    }
+                }
+            }
+            return array_slice($this->reqrest, 1, $count);
         }
 /**
  ***************************************
@@ -298,15 +332,13 @@
                 {
                 case self::R400:
                     $this->web()->bad($bean.' '.$id);
-
+                    /* NOT REACHED */
                 case self::RNULL:
                     return NULL;
-
                 case self::RTHROW:
-                    throw new Exception('No such bean');
-
+                    throw new \Framework\Exception\MissingBean();
                 default:
-                    throw new Exception('Weird error');
+                    throw new \InvalidArgumentException('Onerror value');
                 }
             }
             return $foo;
@@ -365,8 +397,6 @@
  */
 /**
  * Initialise the context and return self
- *
- * @param bool       	$local	The singleton local object
  *
  * @return object
  */
