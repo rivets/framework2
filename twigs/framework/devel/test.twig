@@ -57,8 +57,16 @@
                 </div>
                 {{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}
             </form>
+            <p>{{m.invoke('npage', 'Modal Pop-up')}}</p>
         </article>
     </section>
+    {{m.start('modal')}}
+    {{m.header({title: 'Modal Pop-up'})}}
+    <div class="modal-body">
+        <h2>This is a modal</h2>
+    </div>
+    {{m.footer({action: 'None', id: 'nopu'})}}
+    {{m.end()}}
 {% endblock main %}
 
 {% block pagefooter %}
