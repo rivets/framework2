@@ -104,19 +104,28 @@
  *
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param object        $context    The context object
- * @param int           $count      The number to check for
+ * @param integer           $count      The number to check for
+ * @param integer           $onerror    What to do on failure
  *
  * @return array
  */
-        public function restcheck(int $count) : array
+        public function restcheck(int $count, int $onerror = self::RFAIL) : array
         {
             $values = [];
             foreach (range(1, $count) as $ix)
             {
                 if (($val = $this->reqrest[$ix] ?? '') === '')
                 {
-                    $this->web()->bad();
+                    switch ($onerror)
+                    {
+                    case self::R400:
+                        $this->web()->bad('parameter count');
+                        /* NOT REACHED */
+                    case self::RTHROW:
+                        throw new \Framework\Exception\ParameterCount();
+                    default:
+                        throw new \InvalidArgumentException('Onerror value');
+                    }
                 }
                 $values[] = $val;
             }
@@ -325,15 +334,13 @@
                 {
                 case self::R400:
                     $this->web()->bad($bean.' '.$id);
-
+                    /* NOT REACHED */
                 case self::RNULL:
                     return NULL;
-
                 case self::RTHROW:
-                    throw new Exception('No such bean');
-
+                    throw new \Framework\Exception\MissingBean();
                 default:
-                    throw new Exception('Weird error');
+                    throw new \InvalidArgumentException('Onerror value');
                 }
             }
             return $foo;
