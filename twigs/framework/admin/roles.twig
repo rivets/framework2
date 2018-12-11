@@ -12,7 +12,7 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#nrform').on('submit', false)
+    $('#nrform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         e.preventDefault();
         var pn = $('#nrname').val();
