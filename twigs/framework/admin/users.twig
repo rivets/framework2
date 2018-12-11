@@ -39,7 +39,7 @@
         }).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new user</h3>'+jqXHR.responseText);
         });
-    );
+    });
     $('#utab').on('click', function(e){
         var x = $(e.target);
         if (x.hasClass('delb'))
