@@ -174,8 +174,8 @@
                 dt[sel[n]+'['+inx+']'] = $(this).val();
             });
         }
-        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(){
-            bootbox.alert('Failed to create new page');
+        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(jqXHR, textStatus, errorThrown){
+            bootbox.alert('Failed to create new page : '.errorThrown);
         });
     })
     $('#ptab').on('click', function(e){
