@@ -43,8 +43,8 @@
  */
         public function update()
         {
-            $this->bean->$name = strtolower($this->bean->$name);
-            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->$name))
+            $this->bean->name = strtolower($this->bean->name);
+            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
                 throw new \Framework\Exception\BadValue('Invalid page name');
             }
