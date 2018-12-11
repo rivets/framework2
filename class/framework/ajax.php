@@ -29,14 +29,13 @@
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
-            'logincheck'    => [FALSE,  []], // used by registration page
             'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
             'table'         => [TRUE,   []],
             'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
-            'unique'        => [TRUE,   [['Site', 'Admin']]],
+            'unique'        => [TRUE,   []],
             'update'        => [TRUE,   [['Site', 'Admin']]],
         ];
 /**
@@ -405,6 +404,10 @@
             {
                 list($name) = $context->restcheck(1);
             }
+            if ($bean != 'user' && !$context->hasuser())
+            {
+                $context->web()->bad();
+            }
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
@@ -421,17 +424,6 @@
         public function unique(Context $context)
         {
             $this->uniqCheck($context, '', '');
-        }
-/**
- * Do a parsley login check
- *
- * @param object    $context
- *
- * @return void
- */
-        public function logincheck(Context $context)
-        {
-            $this->uniqCheck($context, 'user', 'login');
         }
 /**
  * Do a parsley page check
