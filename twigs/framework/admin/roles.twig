@@ -13,66 +13,66 @@
 {% block onload %}
     $('#nrform').on('submit', false)
     $('#addb').on('click', function(e){
-        e.preventDefault()
-        var pn = $('#nrname').val()
-	if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
-	{
-	    bootbox.alert('&quot;'+pn+'&quot; is not a valid role name. Letters and numbers only')
-	    return
-	}
-	var sp = null
-	var error = false
-	$('.rname').each(function(e){
-	    var t = $(this).text()
-	    if (t == pn)
-	    {
-	        error = true
-	        return false
-	    }
-	    if (t > pn)
-	    {
-		sp = $(this)
-		return false
-	    }
-	})
-	if (error)
-	{
-	    bootbox.alert('That role already exists')
-	    return
-	}
-	$('#nrole').modal('hide')
-	var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>'
-	var nx
-	if (sp == null)
-	{
-	    nx = $(htm).appendTo($('#rtab tbody'))
-	}
-	else
-	{
-	    nx = $(htm).insertBefore(sp.parent())
-	}
-	$.post('{{base}}/ajax/bean/rolename/', {
-		name : pn,
-	}).done(function(data){
-	       nx.data('id', data)
-	}).fail(function(){
-            bootbox.alert('Creation of new RoleName failed');
+        e.preventDefault();
+        var pn = $('#nrname').val();
+        if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid role name. Letters and numbers only');
+            return;
+        }
+        var sp = null;
+        var error = false;
+        $('.rname').each(function(e){
+            var t = $(this).text();
+            if (t == pn)
+            {
+                error = true;
+                return false;
+            }
+            if (t > pn)
+            {
+                sp = $(this);
+                return false;
+            }
         });
-    })
+        if (error)
+        {
+            bootbox.alert('That role already exists');
+            return;
+        }
+        $('#nrole').modal('hide');
+        var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
+        var nx;
+        if (sp == null)
+        {
+            nx = $(htm).appendTo($('#rtab tbody'));
+        }
+        else
+        {
+            nx = $(htm).insertBefore(sp.parent());
+        }
+        $.post('{{base}}/ajax/bean/rolename/', {
+            name : pn,
+        }).done(function(data){
+               nx.data('id', data)
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            bootbox.alert('<h3>Failed to create new role</h3>'+jqXHR.responseText);
+        });
+    });
     $('#rtab').on('click', function(e){
-        var x = $(e.target)
-	if (x.hasClass('delb'))
-	{
-            dodelbean(e, x, 'rolename');
-	}
-	else if (x.hasClass('fixed'))
-	{
-	    dotoggle(e, x, 'rolename', 'fixed');
-	}
-    })
+            var x = $(e.target)
+        if (x.hasClass('delb'))
+        {
+                dodelbean(e, x, 'rolename');
+        }
+        else if (x.hasClass('fixed'))
+        {
+            dotoggle(e, x, 'rolename', 'fixed');
+        }
+    });
     $('#nrole').on('show.bs.modal', function(e){
-	$('#nrform input').val('');
-    })
+        $('#nrform input').val('');
+    });
 {% endblock onload %}
 
 {% if not page is defined %}
