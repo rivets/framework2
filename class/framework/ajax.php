@@ -398,14 +398,14 @@
         protected function uniqCheck(Context $context, string $bean, string $field)
         {
             if ($bean === '')
-            { // call has bean and name type in it
-                list($bean, $name, $field) = $context->restcheck(3);
+            { // call has /bean /bean/field/value in it
+                list($bean, $field, $value) = $context->restcheck(3);
             }
             else
             {
                 list($name) = $context->restcheck(1);
             }
-            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
+            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
