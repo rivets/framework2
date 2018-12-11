@@ -251,7 +251,15 @@
             $p->active = $fdt->mustpost('active');
             $p->needlogin = $fdt->mustpost('login');
             $p->mobileonly = $fdt->mustpost('mobile');
-            \R::store($p);
+            try
+            {
+                \R::store($p);
+            }
+            catch (\Framework\Exception\BadValue $e)
+            {
+                $context->web()->bad($e->getmessage());
+                /* NOT REACHED */
+            }
 
             try
             {
@@ -343,6 +351,7 @@
             { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
                 \R::trash($p);
                 $context->web()->bad($e->getmessage());
+                /* NOT REACHED */
             }
         }
 /**
