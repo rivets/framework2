@@ -124,7 +124,9 @@
                     <div class="modal-body">
                         <form action="#" method="POST" id="nrform">
                             <div class="form-group">
-                                {{f.text({id: 'nrname', label: 'Name', ph: 'Role Name', required: TRUE})}}
+                                {{f.text({id: 'nrname', label: 'Name', ph: 'Role Name', required: TRUE, parsley: { trigger: 'change',
+                                'remote-reverse': 'false', remote: base~'/ajax/unique/rolename/name/{value}',
+                                'remote-message': 'That role name is not available', type: 'alphanum'} })}}
                             </div>
                        </form>
                     </div>

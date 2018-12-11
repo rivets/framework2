@@ -36,6 +36,7 @@
             'table'         => [TRUE,   []],
             'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
+            'unique'        => [TRUE,   [['Site', 'Admin']]],
             'update'        => [TRUE,   [['Site', 'Admin']]],
         ];
 /**
@@ -396,12 +397,30 @@
  */
         protected function uniqCheck(Context $context, string $bean, string $field)
         {
-            list($name) = $context->restcheck(1);
+            if ($bean === '')
+            { // call has bean and name type in it
+                list($bean, $name, $field) = $context->restcheck(3);
+            }
+            else
+            {
+                list($name) = $context->restcheck(1);
+            }
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
             }
+        }
+/**
+ * Do a parsley uniqueness check
+ *
+ * @param object    $context
+ *
+ * @return void
+ */
+        public function unique(Context $context)
+        {
+            $this->uniqCheck($context, '', '');
         }
 /**
  * Do a parsley login check
