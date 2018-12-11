@@ -175,7 +175,7 @@
             });
         }
         $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('Failed to create new page : '.errorThrown);
+            bootbox.alert('<h3>Failed to create new page</h3>'+jqXHR.responseText);
         });
     })
     $('#ptab').on('click', function(e){
