@@ -29,13 +29,13 @@
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
             'config'        => [TRUE,   [['Site', 'Admin']]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
-            'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
             'table'         => [TRUE,   []],
             'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
-            'unique'        => [TRUE,   []],
+            'unique'        => [TRUE,   []], // test if a bean field value is unique
+            'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
             'update'        => [TRUE,   [['Site', 'Admin']]],
         ];
 /**
@@ -58,6 +58,19 @@
         private static $tableperms = [
             [ [['Site', 'Admin']], ['page', 'user', 'fwconfig', 'form', 'formfield', 'rolecontext', 'rolename', 'table'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ */
+        private static $uniqueperms = [
+            [ [['Site', 'Admin']], ['page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ */
+        private static $uniquenlperms = [
+            ['user' => ['login'] ],
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -207,6 +220,23 @@
             R::store($bn);
         }
 /**
+ * Check if a bean field combination is allowed
+ *
+ * @param array   $beans
+ * @param string  $bean
+ * @param string  $field
+ *
+ * @return boolean or error out
+ */
+        private function beanCheck($beans, $bean, $field)
+        {
+            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
+            { // no permission to update this field
+                $context->web()->noaccess();
+            }
+            return TRUE;
+        }
+/**
  * Carry out operations on beans
  *
  * @param object    $context The context object
@@ -244,10 +274,7 @@
                 { // no such field or trying to change the id field
                     $context->web()->bad();
                 }
-                if (!empty($beans[$bean]) && !in_array($field, $beans[$bean]))
-                { // no permission to update this field
-                    $context->web()->noaccess();
-                }
+                $this->beanCheck($beans, $bean, $field);
                 $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
                 break;
@@ -390,24 +417,13 @@
  *
  * @param object    $context  The Context object
  * @param string    $bean     The kind of bean
- * @param string    $name     The field to check
+ * @param string    $field    The field to check
+ * @param string    $value    The value to check
  *
  * @return void
  */
-        protected function uniqCheck(Context $context, string $bean, string $field)
+        protected function uniqCheck(Context $context, string $bean, string $field, string $value)
         {
-            if ($bean === '')
-            { // call has /bean /bean/field/value in it
-                list($bean, $field, $value) = $context->restcheck(3);
-            }
-            else
-            {
-                list($name) = $context->restcheck(1);
-            }
-            if ($bean != 'user' && !$context->hasuser())
-            {
-                $context->web()->bad();
-            }
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
@@ -423,18 +439,23 @@
  */
         public function unique(Context $context)
         {
-            $this->uniqCheck($context, '', '');
+            $beans = $this->findrow($context, self::$uniqueperms);
+            list($bean, $field, $value) = $context->restcheck(3);
+            $this->beanCheck($beans, $bean, $field);
+            $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
- * Do a parsley page check
+ * Do a parsley uniqueness check
  *
  * @param object    $context
  *
  * @return void
  */
-        public function pagecheck(Context $context)
+        public function uniquenl(Context $context)
         {
-            $this->uniqCheck($context, 'page', 'name');
+            list($bean, $field, $value) = $context->restcheck(3);
+            $this->beanCheck(self::$uniquenlcheck, $bean, $field);
+            $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
  * Do a parsley table check
