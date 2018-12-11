@@ -36,6 +36,46 @@
 
         use \ModelExtend\FWEdit;
 /**
+ * Function called when a page bean is updated - do error checking in here
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        public function update()
+        {
+            $this->bean->$name = strtolower($this->bean->$name);
+            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->$name))
+            {
+                throw new \Framework\Exception\BadValue('Invalid page name');
+            }
+            switch ($this->bean->kind)
+            {
+            case \Framework\SiteAction::OBJECT:
+                if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $this->bean->source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name)');
+                }
+                break;
+            case \Framework\SiteAction::TEMPLATE:
+                if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $this->bean->source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                }
+                break;
+            case \Framework\SiteAction::REDIRECT: // all of these need a URL to be valid
+            case \Framework\SiteAction::REHOME:
+            case \Framework\SiteAction::XREDIRECT:
+            case \Framework\SiteAction::XREHOME:
+                if (!filter_var($this->bean->source, FILTER_VALIDATE_URL))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
+                }
+                break;
+            default:
+                throw new \Framework\Exception\BadValue('Invalid page type');
+            }
+        }
+/**
  * Check user can access the page
  *
  * @param object    $context    The context object
