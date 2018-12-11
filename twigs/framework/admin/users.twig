@@ -17,57 +17,57 @@
     $('#adduform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         var data = {admin : 0, devel : 0};
-	var frm = $('#adduform');
-	$('input:checked', frm).each(function(index, element){
-	     data[$(this).attr('name')] = 1;
-	});
-	$('input:text,input:password,input[type="email"]', frm).each(function(index, element){
-	     data[$(this).attr('name')] = $(this).val();
-	});
-	$.post('{{base}}/ajax/bean/user/', data).done(function(ret){
-	    $('#addu').modal('hide');
-	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
-		'<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
-		'<td>'+mktoggle('confirm', data.confirm)+'</td>'+
-		'<td>'+mktoggle('active', data.active)+'</td>'+
-		'<td>'+mktoggle('admb', data.admin)+'</td>'+
-		'<td>'+mktoggle('devb', data.devel)+'</td>'+
-		'<td><i class="editb far fa-edit"></i></td>' +
-		'<td><i class="delb far fa-trash-alt"></i></td></tr>'
-	    );
-	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
-	}).fail(function(){
-            bootbox.alert('Creation of new User failed');
+        var frm = $('#adduform');
+        $('input:checked', frm).each(function(index, element){
+             data[$(this).attr('name')] = 1;
         });
-    })
+        $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
+             data[$(this).attr('name')] = $(this).val();
+        });
+        $.post('{{base}}/ajax/bean/user/', data).done(function(ret){
+            $('#addu').modal('hide');
+            $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
+            '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
+            '<td>'+mktoggle('confirm', data.confirm)+'</td>'+
+            '<td>'+mktoggle('active', data.active)+'</td>'+
+            '<td>'+mktoggle('admb', data.admin)+'</td>'+
+            '<td>'+mktoggle('devb', data.devel)+'</td>'+
+            '<td><i class="editb far fa-edit"></i></td>' +
+            '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+            );
+            doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            bootbox.alert('<h3>Failed to create new user</h3>'+jqXHR.responseText);
+        });
+    );
     $('#utab').on('click', function(e){
         var x = $(e.target);
-	if (x.hasClass('delb'))
-	{
+        if (x.hasClass('delb'))
+        {
             dodelbean(e, x, 'user');
-	}
-	else if (x.hasClass('editb'))
-	{
-	    var tr = x.parent().parent();
-	    window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';
-	}
-	else if (x.hasClass('admb'))
-	{
-	    dotoggle(e, x, 'user', 'Admin');
-	}
-	else if (x.hasClass('confirm'))
-	{
-	    dotoggle(e, x, 'user', 'confirm');
-	}
-	else if (x.hasClass('active'))
-	{
-	    dotoggle(e, x, 'user', 'active');
-	}
-	else if (x.hasClass('devb'))
-	{
-	    dotoggle(e, x, 'user', 'Developer');
-	}
-    })
+        }
+        else if (x.hasClass('editb'))
+        {
+            var tr = x.parent().parent();
+            window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';
+        }
+        else if (x.hasClass('admb'))
+        {
+            dotoggle(e, x, 'user', 'Admin');
+        }
+        else if (x.hasClass('confirm'))
+        {
+            dotoggle(e, x, 'user', 'confirm');
+        }
+        else if (x.hasClass('active'))
+        {
+            dotoggle(e, x, 'user', 'active');
+        }
+        else if (x.hasClass('devb'))
+        {
+            dotoggle(e, x, 'user', 'Developer');
+        }
+    });
 {% endblock onload %}
 
 {% if not page is defined %}

@@ -30,6 +30,30 @@
         use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
+ * Function called when a user bean is updated - do error checking in here
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        public function update()
+        {
+            if (!preg_match('/^[a-z0-9]+/i', $this->bean->login))
+            {
+                throw new \Framework\Exception\BadValue('Invalid login name');
+            }
+            if (!is_object(\R::findOne('user', 'name=?', [$this->bean->login])))
+            {
+                throw new \Framework\Exception\BadValue('Login name already exists');
+            }
+            if (!filter_var($this->bean->email, FILTER_VALIDATE_EMAIL))
+            {
+                throw new \Framework\Exception\BadValue('Invalid email address');
+            }
+/**
+ * @todo Validate the joined field. Correct date, not in the future
+ */
+        }
+/**
  * Add a User from a form - invoked by the AJAX bean operation
  *
  * @param object	$context	The context object for the site
