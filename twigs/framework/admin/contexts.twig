@@ -8,10 +8,11 @@
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
 {% endblock scripts %}
 
 {% block onload %}
-    $('#ncform').on('submit', false)
+    $('#ncform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         e.preventDefault();
         var pn = $('#ncname').val();
@@ -123,7 +124,9 @@
                 {{m.header({title: 'New Context'})}}
                 <div class="modal-body">
                     <form action="#" method="POST" id="nrform">
-                        {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE})}}
+                        {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE, parsley: { trigger: 'change',
+                        'remote-reverse': 'false', remote: base~'/ajax/unique/rolecontext/name/{value}',
+                        'remote-message': 'That context name is not available', type: 'alphanum'} })}}
                     </form>
                 </div>
                 {{m.footer({action: 'Add', id: 'addb'})}}
