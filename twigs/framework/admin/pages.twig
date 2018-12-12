@@ -128,7 +128,7 @@
         var mobile = $('#npmobile').is(':checked') ? 1 : 0;
         $('#npage').modal('hide');
         var fn = function(data){
-                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                var htm = '<tr data-id="'+data+'"><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
                 '<td>'+mktoggle('logn', login)+'</td>'+
