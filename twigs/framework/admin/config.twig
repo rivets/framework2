@@ -46,7 +46,7 @@
             data: {
                 value: t.val()
             }
-        }).fail(function(){
+        }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
@@ -55,7 +55,7 @@
             data: {
                 value: ''
             }
-        }).fail(function(){
+        }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
         $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/crossorigin/', {
@@ -63,8 +63,8 @@
             data: {
                 value: ''
             }
-        }).fail(function(){
-            bootbox.alert('Update failed');
+        }).fail(function(jx){
+            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     });
     $('.nname').on('blur', function(e){
@@ -115,11 +115,11 @@
             );
             $('.ndelb').on('click', delbean).removeClass('ndelb')
             $('.nlval').on('change', setlocal).removeClass('nlval')
-	    $('.nname').val('');
-	    t.val('');
-	    $('#inval').hide();
-        }).fail(function(){
-            bootbox.alert('Failed to add new configuration item');
+            $('.nname').val('');
+            t.val('');
+            $('#inval').hide();
+        }).fail(function(jx){
+            bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });
     });
 {% endblock onload %}
