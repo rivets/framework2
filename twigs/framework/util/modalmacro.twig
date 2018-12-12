@@ -40,6 +40,6 @@
 {% endmacro open %}
 
 {% macro close(opts) %}{% import _self as h %}
-{{h.footer()}}
+{{h.footer(opts)}}
 {{h.end()}}
 {% endmacro close %}
