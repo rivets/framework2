@@ -162,7 +162,7 @@
         {
             if (!headers_sent())
             { # haven't generated any output yet.
-                if (!$this->ajax)
+                if ($this->devel || !$this->ajax)
                 { # not in an ajax page so try and send a pretty error
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? '<pre>'.
                         str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>' :
