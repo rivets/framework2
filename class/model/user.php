@@ -9,6 +9,7 @@
     namespace Model;
 
     use Support\Context as Context;
+    use Config\Config as Config;
 /**
  * A class implementing a RedBean model for User beans
  */
