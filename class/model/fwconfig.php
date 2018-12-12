@@ -27,6 +27,52 @@
 
         use \ModelExtend\FWEdit;
 /**
+ * Function called when a page bean is updated - do error checking in here
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        public function update()
+        {
+            $this->bean->name = strtolower($this->bean->name);
+            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
+            {
+                throw new \Framework\Exception\BadValue('Invalid config item name');
+            }
+            switch (strtolower($this->bean->type))
+            {
+            case 'boolean':
+                if (($x = filter_var($this->bean->value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) === NULL)
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for boolean item');
+                }
+                $this->bean->value = $x ? 1 : 0;
+                break;
+            case 'css':
+                if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for CSS item');
+                }
+                break;
+            case 'integer':
+                if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for CSS item');
+                }
+                break;
+            case 'js':
+                if (!filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for JavaScript item');
+                }
+                break;
+            case 'string':
+                break;
+            default:
+                throw new \Framework\Exception\BadValue('Invalid config item type');
+            }
+        }
+/**
  * Add a new FWConfig bean
  *
  * @param object    $context    The context object

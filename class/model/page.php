@@ -66,7 +66,7 @@
             case \Framework\SiteAction::REHOME:
             case \Framework\SiteAction::XREDIRECT:
             case \Framework\SiteAction::XREHOME:
-                if (!filter_var($this->bean->source, FILTER_VALIDATE_URL))
+                if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
                 }
