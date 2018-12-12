@@ -310,7 +310,6 @@
                 break;
 
             case 'users': //show and add users
-                $context->local()->addval(['adminrole'=> Config::ADMINROLE, 'develrole' => Config::DEVELROLE]);
                 $tpl = '@admin/users.twig';
                 break;
 

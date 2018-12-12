@@ -53,7 +53,7 @@
         }
         else if (x.hasClass('admb'))
         {
-            dotoggle(e, x, 'user', '{{adminrole}}');
+            dotoggle(e, x, 'user', '{{constant('\\Config\\Config::ADMINROLE')}}');
         }
         else if (x.hasClass('confirm'))
         {
@@ -65,7 +65,7 @@
         }
         else if (x.hasClass('devb'))
         {
-            dotoggle(e, x, 'user', '{{develrole}}');
+            dotoggle(e, x, 'user', '{{constant('\\Config\\Config::DEVELROLE')}}');
         }
     });
 {% endblock onload %}
