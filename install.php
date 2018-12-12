@@ -8,6 +8,11 @@
     global $cwd, $verbose;
 
     define('DBPREFIX', 'fw');
+    define('FWCONTEXT', 'Site');
+    define('TESTCONTEXT', 'Test');
+    define('ADMINROLE', 'Admin');
+    define('DEVELROLE', 'Developer');
+    define('TESTROLE', 'Tester');
 /**
  * Function to cleanup after errors
  *
@@ -484,6 +489,11 @@
             fputs($fd, "        const BASEDNAME\t= '".$dir."';".PHP_EOL);
             fputs($fd, "        const SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', $cvalue['sitename'])."';".PHP_EOL);
             fputs($fd, "        const DBPREFIX\t= '".DBPREFIX."';".PHP_EOL);
+            fputs($fd, "        const FWCONTEXT\t= '".FWCONTEXT."';".PHP_EOL);
+            fputs($fd, "        const TESTCONTEXT\t= '".TESTCONTEXT."';".PHP_EOL);
+            fputs($fd, "        const ADMNROLE\t= '".ADMINROLE."';".PHP_EOL);
+            fputs($fd, "        const DEVELROLE\t= '".DEVELROLE."';".PHP_EOL);
+            fputs($fd, "        const TESTROLE\t= '".TESTROLE."';".PHP_EOL);
             foreach ($cvars as $fld => $pars)
             {
                 if ($pars[0] !== '')
@@ -650,12 +660,12 @@
      * These are both granted to the admin user.
      */
                 $cname = \R::dispense('rolecontext');
-                $cname->name = 'Site';
+                $cname->name = FWCONTEXT;
                 $cname->fixed = 1;
                 \R::store($cname);
     // Admin role name
                 $arname = \R::dispense('rolename');
-                $arname->name = 'Admin';
+                $arname->name = ADMINROLE;
                 $arname->fixed = 1;
                 \R::store($arname);
 
@@ -672,7 +682,7 @@
                 \R::store($arname);
     // Developer Role name
                 $drname = \R::dispense('rolename');
-                $drname->name = 'Developer';
+                $drname->name = DEVELROLE;
                 \R::store($drname);
 
                 $role = \R::dispense('role');
@@ -686,6 +696,15 @@
                 \R::store($user);
                 \R::store($cname);
                 \R::store($drname);
+    // Testing role and context
+                $cname = \R::dispense('rolecontext');
+                $cname->name = TESTCONTEXT;
+                $cname->fixed = 1;
+                \R::store($cname);
+                $arname = \R::dispense('rolename');
+                $arname->name = TESTROLE;
+                $arname->fixed = 1;
+                \R::store($arname);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
      *
