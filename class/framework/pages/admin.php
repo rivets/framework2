@@ -245,41 +245,7 @@
                 break;
             case 'config':  // show and add config items
                 $tpl = '@admin/config.twig';
-                break;                $fd = $context->formdata();
-                if ($fd->haspost('name'))
-                {
-                    $name = strtolower($fd->mustpost('name'));
-                    if ($name === '')
-                    {
-                        $context->local()->essage(\Framework\Local::ERROR, 'You must provide a bean name');
-                    }
-                    elseif (!preg_match('/^[a-z][a-z0-9]*/', $name))
-                    {
-                        $context->local()->message(\Framework\Local::ERROR, 'You must provide a bean name');
-                    }
-                    else
-                    {
-                        $bn = \R::dispense(strtolower($name));
-                        foreach ($fd->posta('field') as $ix => $field)
-                        {
-                            if ($field !== '')
-                            {
-                                if (!preg_match('/^[a-z][a-z0-9]*/', $field))
-                                {
-                                    $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
-                                }
-                                else
-                                {
-                                    $bn->{$field} = $fd->post(['sample', $ix], '');
-                                }
-                            }
-                        }
-                        \R::store($bn);
-                        \R::trash($bn); // delete it as we dont want it anymore
-                        $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
-                    }
-                }
-
+                break;
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';
                 break;
