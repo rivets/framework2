@@ -368,7 +368,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
+        'forcessl', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
     ];
     $cvalue = [];
     $options = [];
@@ -411,6 +411,7 @@
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
             'usecsp'        => ['USECSP', TRUE, FALSE, 'bool'],
             'reportcsp'     => ['REPORTCSP', TRUE, FALSE, 'bool'],
+            'forcessl'      => ['', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -540,8 +541,8 @@
             'Vary'                   => 'Accept-Encoding',
             'X-Content-Type-Options' => 'nosniff',
             'X-XSS-Protection'       => '1; mode=block',
-            //'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
-            ]);
+            ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
+            " : '')."]);
         }".PHP_EOL.PHP_EOL);
                   
             fputs($fd, '
