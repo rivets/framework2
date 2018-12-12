@@ -188,7 +188,7 @@
             }
 
             $bn = $context->load($type, $bid, Context::R400);
-            if ($type === 'user' && ctype_upper($field[0]) && $context->isadmin())
+            if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(Config::FWCONTEXT, $field)))
                 {
