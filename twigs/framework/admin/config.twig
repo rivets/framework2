@@ -21,8 +21,8 @@
             data: {
                 value: t.is(':checked') ? 1 : 0
             }
-        }).fail(function(){
-            bootbox.alert('Update failed');
+        }).fail(function(jx){
+            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     }
 
@@ -47,16 +47,16 @@
                 value: t.val()
             }
         }).fail(function(){
-            bootbox.alert('Update failed');
+            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-// clear out integrity and crossorigin - they ight be diferent
+// clear out integrity and crossorigin - they might be diferent
         $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/integrity/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: ''
             }
         }).fail(function(){
-            bootbox.alert('Update failed');
+            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
         $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/crossorigin/', {
             method: 'PATCH', // because we are updating an item

@@ -46,8 +46,8 @@
                     method: 'DELETE',
                 }).done(function(){
                     tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
-                }).fail(function(){
-                    bootbox.alert('Delete failed');
+                }).fail(function(jx){
+                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
                 });
             }
         });
