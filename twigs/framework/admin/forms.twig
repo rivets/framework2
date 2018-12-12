@@ -16,26 +16,26 @@
     $('#addfform').on('submit', false).parsley()
     $('#addb').on('click', function(e){
         var data = {}
-	var frm = $('#addfform')
-	$('input:checked', frm).each(function(index, element){
-	     data[$(this).attr('name')] = 1
-	})
-	$('input:text', frm).each(function(index, element){
-	     data[$(this).attr('name')] = $(this).val()
-	})
-	$.post('{{base}}/ajax/bean/form/', data).done(function(ret){
-	    $('#addf').modal('hide')
-	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
-	        '<td>' + data.action + '</td>' +
-	        '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
-	        '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
-		'<td title="View"><i class="viewb far fa-eye"></i></td>' +
-		'<td title="Edit"><i class="editb far fa-edit"></i></td>' +
-		'<td><i class="delb far fa-trash-alt"></i></td></tr>'
-	    )
-	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
-	}).fail(function(){
-            bootbox.alert('Creation of new Form failed');
+        var frm = $('#addfform')
+        $('input:checked', frm).each(function(index, element){
+             data[$(this).attr('name')] = 1
+        })
+        $('input:text', frm).each(function(index, element){
+             data[$(this).attr('name')] = $(this).val()
+        })
+        $.post('{{base}}/ajax/bean/form/', data).done(function(ret){
+            $('#addf').modal('hide')
+            $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
+                '<td>' + data.action + '</td>' +
+                '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
+                '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
+            '<td title="View"><i class="viewb far fa-eye"></i></td>' +
+            '<td title="Edit"><i class="editb far fa-edit"></i></td>' +
+            '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+            )
+            doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
+        }).fail(function(jx){
+            bootbox.alert('<h3>Creation of new Form failed<h3>'+jx.responseText);
         });
     })
     $('#utab').on('click', function(e){
