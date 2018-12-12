@@ -67,13 +67,13 @@
             $pw = $fdt->mustpost('password'); // make sure we have a password...
             if (self::checkpw($pw))
             {
-                $u = R::dispense('user');
+                $u = \R::dispense('user');
                 $u->login = $fdt->mustpost('login');
                 $u->email = $fdt->mustpost('email');
                 $u->active = 1;
                 $u->confirm = 1;
                 $u->joined = $now;
-                R::store($u);
+                \R::store($u);
                 $u->setpw($pw); // set the password
                 if ($fdt->post('admin', 0) == 1)
                 {
