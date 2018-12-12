@@ -22,6 +22,8 @@
  *
  * @param $string    $pw  The password
  *
+ * @throws \Framework\Exception\BadValue If a bad password is detected this could be thrown
+ *
  * @return boolean
  */
         public static function checkpw($pw)
