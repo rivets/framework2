@@ -73,22 +73,30 @@
                 $u->active = 1;
                 $u->confirm = 1;
                 $u->joined = $now;
-                \R::store($u);
-                $u->setpw($pw); // set the password
-                if ($fdt->post('admin', 0) == 1)
+                try
                 {
-                    $u->addrole('Site', 'Admin', '', $now);
+                    \R::store($u);
+                    $u->setpw($pw); // set the password
+                    if ($fdt->post('admin', 0) == 1)
+                    {
+                        $u->addrole('Site', 'Admin', '', $now);
+                    }
+                    if ($fdt->post('devel', 0) == 1)
+                    {
+                        $u->addrole('Site', 'Developer', '', $now);
+                    }
                 }
-                if ($fdt->post('devel', 0) == 1)
+                catch (\Framework\Exception\BadValue $e)
                 {
-                    $u->addrole('Site', 'Developer', '', $now);
+                    \R::trash($u); // get rid of the user bean
+                    $context->web()->bad($e->getMessage);
                 }
                 echo $u->getID();
             }
             else
             {
                 // bad password return
-                echo '-';
+                $context->web()->bad('Invalid Password');
             }
         }
 /**
