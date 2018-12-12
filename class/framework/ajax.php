@@ -56,7 +56,7 @@
  * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $tableperms = [
-            [ [['Site', 'Admin']], ['page', 'user', 'fwconfig', 'form', 'formfield', 'rolecontext', 'rolename', 'table'] ],
+            [ [['Site', 'Admin']], ['fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -74,7 +74,7 @@
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
- * add some appropriate vaues into these arrays.
+ * add some appropriate vaues into these arrays. You do this in support/ajax.php. Not her.
  *
  * The key to both the array fields is the name of the bean type you are working with.
  */
@@ -107,7 +107,7 @@
             list($name) = $context->restcheck(1);
             $v = R::findOne('fwconfig', 'name=?', [$name]);
             $fdt = $context->formdata();
-            switch ($_SERVER['REQUEST_METHOD'])
+            switch ($context->web()->method())
             {
             case 'POST':
                 if (is_object($v))
@@ -117,6 +117,7 @@
                 $v = R::dispense('fwconfig');
                 $v->name = $name;
                 $v->value = $fdt->mustpost('value');
+                $v->type = $fdt->mustpost('type');
                 R::store($v);
                 break;
             case 'PATCH':
@@ -303,11 +304,12 @@
             $tables = $this->findRow($context, self::$tableperms);
             $rest = $context->rest();
             $table = $rest[1];
-            if (!in_array($table, $tables))
+            $method = $context->web()->method();
+            if ($method != 'POST' && !in_array($table, $tables))
             {
                 $context->web()->noaccess();
             }
-            switch ($_SERVER['REQUEST_METHOD'])
+            switch ($method)
             {
             case 'POST': // make a new one
             case 'PATCH':
@@ -454,7 +456,7 @@
         public function uniquenl(Context $context)
         {
             list($bean, $field, $value) = $context->restcheck(3);
-            $this->beanCheck(self::$uniquenlcheck, $bean, $field);
+            $this->beanCheck(self::$uniquenlperms, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
