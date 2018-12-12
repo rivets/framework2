@@ -30,7 +30,10 @@
         else
         { // toggle at the other end
             var tr = x.parent().parent();
-	    $.post(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+fld, {}, function(data){ toggle(x);});
+            $.post(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+fld, {}).done(function(data){ toggle(x);}).
+                fail(function(jx){
+                    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                });
         }
     }
 
@@ -53,8 +56,4 @@
         });
     }
 
-    function mkinline(type, name, msg, id, value)
-    {
-        return '<a href="#" class="ppedit" data-name="'+name+'" data-type="'+type+'" data-pk="'+id+'" data-url="'+base+'/ajax.php" data-title="'+msg+'">'+value+'</a>';
-    }
 
