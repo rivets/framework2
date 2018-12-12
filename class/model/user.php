@@ -90,7 +90,7 @@
                 catch (\Framework\Exception\BadValue $e)
                 {
                     \R::trash($u); // get rid of the user bean
-                    $context->web()->bad($e->getMessage);
+                    $context->web()->bad($e->getMessage());
                 }
                 echo $u->getID();
             }
