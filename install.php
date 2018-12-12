@@ -683,6 +683,7 @@
     // Developer Role name
                 $drname = \R::dispense('rolename');
                 $drname->name = DEVELROLE;
+                $cname->fixed = 1;
                 \R::store($drname);
 
                 $role = \R::dispense('role');
