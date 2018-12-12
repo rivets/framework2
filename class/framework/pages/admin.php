@@ -258,8 +258,8 @@
             case 'info': // generate phpinfo page
                 $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
                 phpinfo();
-                exit;
-            case 'pages': // show and add pages
+                exit; // phpinfo display is all we need
+            case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
                 break;
             case 'roles': // show and add roles
