@@ -91,27 +91,21 @@
 	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nbean" type="button">Add Bean</button></p>
         </article>
     </section>
-    <div class="modal fade" id="nbean" aria-labelledby="nbean" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                {{m.header({title: 'New Bean'})}}
-                <div class="modal-body">
-                    <form action="#" method="POST" id="nbform">
-                        {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
-                            'remote-message': 'That bean already exists'} })}}
-                            {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
-                            {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
-                        </fieldset>
-                        <p id="mrow">
-                            <button class="btn btn-small" id="more">More</button>
-                        </p>
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.open({id: 'nbean', title: 'New Bean'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="nbform">
+            {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                'remote-message': 'That bean already exists'} })}}
+                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
+                {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
+            </fieldset>
+            <p id="mrow">
+                <button class="btn btn-small" id="more">More</button>
+            </p>
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

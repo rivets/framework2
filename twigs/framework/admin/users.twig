@@ -121,45 +121,39 @@
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#addu" type="button">Add User</button></p>
         </article>
     </section>
-    <div class="modal fade" id="addu" tabindex="-1" role="dialog" aria-labelledby="Add User" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                {{m.header({title: 'Add A New User'})}}
-                <div class="modal-body">
-                    <form id="adduform" action="#" method="post">
-                        <div class="form-group">
-                            <label for="un" class="control-label">User Name</label>
-                            <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
-                            data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/uniquenl/user/login/{value}"
-                            data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="pw" class="control-label">Password</label>
-                            <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required"/>
-                        </div>
-                        <div class="form-group">
-                             <label for="rpw" class="control-label">Repeat Password</label>
-                            <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
-                                data-parsley-trigger="change" data-parsley-equalto="#pw"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="em" class="control-label">Email Adress</label>
-                            <input type="email" id="em" name="email" placeholder="pat@smith.com" data-parsley-trigger="change" class="form-control" required="required"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="admin" value="1"> Admin
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="devel" value="1"> Developer
-                            </label>
-                        </div>
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
+    {{m.open({id: 'addu', title: 'Add A New User'})}}
+    <div class="modal-body">
+        <form id="adduform" action="#" method="post">
+            <div class="form-group">
+                <label for="un" class="control-label">User Name</label>
+                <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
+                data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/uniquenl/user/login/{value}"
+                data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"/>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="pw" class="control-label">Password</label>
+                <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required"/>
+            </div>
+            <div class="form-group">
+                 <label for="rpw" class="control-label">Repeat Password</label>
+                <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
+                    data-parsley-trigger="change" data-parsley-equalto="#pw"/>
+            </div>
+            <div class="form-group">
+                <label for="em" class="control-label">Email Adress</label>
+                <input type="email" id="em" name="email" placeholder="pat@smith.com" data-parsley-trigger="change" class="form-control" required="required"/>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="admin" value="1"> Admin
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="devel" value="1"> Developer
+                </label>
+            </div>
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

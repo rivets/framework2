@@ -104,11 +104,11 @@
                 </thead>
                 <tbody>
                     {% for c in siteinfo.contexts(page, pagesize) %}
-                    <tr data-id="{{c.id}}">
-                        <td class="cname">{{c.name}}</td>
-                        <td>{{f.tick(c.fixed, 'fixed')}}</td>
-                        <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
-                    </tr>
+                        <tr data-id="{{c.id}}">
+                            <td class="cname">{{c.name}}</td>
+                            <td>{{f.tick(c.fixed, 'fixed')}}</td>
+                            <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
+                        </tr>
                     {% else %}
                         <tr><td colspan="3">No contexts defined</td></tr>
                     {% endfor %}
@@ -118,21 +118,15 @@
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#ncontext" type="button">Add Context</button></p>
         </article>
     </section>
-    <div class="modal fade" id="ncontext" aria-labelledby="ncontext" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                {{m.header({title: 'New Context'})}}
-                <div class="modal-body">
-                    <form action="#" method="POST" id="nrform">
-                        {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE, parsley: { trigger: 'change',
-                        'remote-reverse': 'false', remote: base~'/ajax/unique/rolecontext/name/{value}',
-                        'remote-message': 'That context name is not available', type: 'alphanum'} })}}
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.open({id: 'ncontext', title: 'New Context'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="nrform">
+            {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE, parsley: { trigger: 'change',
+            'remote-reverse': 'false', remote: base~'/ajax/unique/rolecontext/name/{value}',
+            'remote-message': 'That context name is not available', type: 'alphanum'} })}}
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

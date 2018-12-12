@@ -110,31 +110,25 @@
                             <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
                         </tr>
                     {% else %}
-                    <tr><td colspan="3">No roles defined</td></tr>
-                {% endfor %}
-            </tbody>
+                        <tr><td colspan="3">No roles defined</td></tr>
+                    {% endfor %}
+                </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#nrole" type="button">Add Role</button></p>
         </article>
     </section>
-    <div class="modal fade" id="nrole" aria-labelledby="nrole" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    {{m.header({title: 'New Role Name'})}}
-                    <div class="modal-body">
-                        <form action="#" method="POST" id="nrform">
-                            <div class="form-group">
-                                {{f.text({id: 'nrname', label: 'Name', ph: 'Role Name', required: TRUE, parsley: { trigger: 'change',
-                                'remote-reverse': 'false', remote: base~'/ajax/unique/rolename/name/{value}',
-                                'remote-message': 'That role name is not available', type: 'alphanum'} })}}
-                            </div>
-                       </form>
-                    </div>
-                    {{m.footer({action: 'Add', id: 'addb'})}}
-                </div>
-        </div>
+    {{m.open({id: 'nrole', title: 'New Role Name'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="nrform">
+            <div class="form-group">
+                {{f.text({id: 'nrname', label: 'Name', ph: 'Role Name', required: TRUE, parsley: { trigger: 'change',
+                'remote-reverse': 'false', remote: base~'/ajax/unique/rolename/name/{value}',
+                'remote-message': 'That role name is not available', type: 'alphanum'} })}}
+            </div>
+       </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

@@ -137,48 +137,36 @@
         </article>
     </section>
     {% if allownew %}
-        <div class="modal fade" id="nfield" aria-labelledby="nfield" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    {{m.header({title: 'New Field'})}}
-                    <div class="modal-body">
-                        <form action="#" method="POST" id="nfform">
-                            {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
-                            {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
-                        </form>
-                    </div>
-                    {{m.footer({action: 'Add', id: 'addb'})}}
-                </div>
-            </div>
+        {{m.open({is: 'nfield', title: 'New Field'})}}
+        <div class="modal-body">
+            <form action="#" method="POST" id="nfform">
+                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
+                {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
+            </form>
         </div>
+        {{m.close({action: 'Add', id: 'addb'})}}
     {% else %}
-         <div class="modal fade" id="tsearch" aria-labelledby="tsearch" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    {{m.header({title: 'Search'})}}
-                    <div class="modal-body">
-                        <form action="#" method="POST" id="sform">
-                            {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
-                            {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
-                               {value: '=' },
-                               {value: '!=' },
-                               {value: 'like' },
-                               {value: 'contains' },
-                               {value: '>' },
-                               {value: '>=' },
-                               {value: '<' },
-                               {value: '<=' },
-                               {value: 'regexp' },
-                               {value: 'is NULL' },
-                               {value: 'is not NULL' },
-                            ]})}}
-                            {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
-                        </form>
-                    </div>
-                    {{m.footer({action: 'Add', id: 'Search'})}}
-                </div>
-            </div>
-        </div>       
+        {{m.open({id: 'tsearch', title: 'Search'})}}
+        <div class="modal-body">
+            <form action="#" method="POST" id="sform">
+                {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
+                {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
+                   {value: '=' },
+                   {value: '!=' },
+                   {value: 'like' },
+                   {value: 'contains' },
+                   {value: '>' },
+                   {value: '>=' },
+                   {value: '<' },
+                   {value: '<=' },
+                   {value: 'regexp' },
+                   {value: 'is NULL' },
+                   {value: 'is not NULL' },
+                ]})}}
+                {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
+            </form>
+        </div>
+        {{m.close({action: 'Add', id: 'Search'})}}  
     {% endif %}
 {% endblock main %}
 

@@ -7,6 +7,7 @@
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
 {% endblock scripts %}
 
 {% block setup %}
@@ -142,16 +143,16 @@
             <form id="cfr" action="#" method="post">
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
-                    <div class="row mb-2" data-id="{{p.id}}">
-                        <label class="col-md-1 col-form-label" for="X{{p.name}}">{{p.name}}</label>
+                    <div class="row mb-2" data-id="{{p.getID}}">
+                        <label class="col-md-1 col-form-label" for="X{{p.getID}}">{{p.name}}</label>
                         <div class="col-md-9">
-                            <input type="text" id="X{{p.name}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
+                            <input type="text" id="X{{p.getID}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
                         </div>
                         <div class="col-md-2">
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                             </div>
-                            <a href="{{base}}/admin/edit/fwconfig/{{p.id}}"><i class="editb far fa-edit"></i></a>
+                            <a href="{{base}}/admin/edit/fwconfig/{{p.getID}}"><i class="editb far fa-edit"></i></a>
                             {% if not p.fixed %}
                                 <i class="delb far fa-trash-alt"></i>
                             {% endif %}
@@ -164,6 +165,16 @@
                     {{f.text({label: 'New Config Item', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                        {{f.select({label : 'Type', name: 'type',
+                        options: [
+                            { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                            { value: 'boolean', text: 'boolean' },
+                            { value: 'css', text: 'css' },
+                            { value: 'integer', text: 'integer' },
+                            { value: 'js', text: 'js' },
+                            { value: 'string', text: 'string' },
+                        ]
+                    })}}
                     </div>
                 </div>
             </form>

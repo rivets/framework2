@@ -99,25 +99,19 @@
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#addf" type="button">Add a Form</button></p>
         </article>
     </section>
-    <div class="modal fade" id="addf" tabindex="-1" role="dialog" aria-labelledby="Add a Form" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                {{m.header({title: 'Add a Form'})}}
-                <div class="modal-body">
-                    <form id="addfform" action="#" method="post">
-                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
-                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
-                        {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
-                        <br/>
-                        {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.open({id: 'addf', title: 'Add a Form'})}}
+    <div class="modal-body">
+        <form id="addfform" action="#" method="post">
+            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
+            {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
+            {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
+            <br/>
+            {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}
