@@ -229,7 +229,7 @@
  *
  * @return boolean or error out
  */
-        private function beanCheck($beans, $bean, $field)
+        private function beanCheck($context, $beans, $bean, $field)
         {
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field
@@ -275,7 +275,7 @@
                 { // no such field or trying to change the id field
                     $context->web()->bad();
                 }
-                $this->beanCheck($beans, $bean, $field);
+                $this->beanCheck($context, $beans, $bean, $field);
                 $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
                 break;
@@ -443,7 +443,7 @@
         {
             $beans = $this->findrow($context, self::$uniqueperms);
             list($bean, $field, $value) = $context->restcheck(3);
-            $this->beanCheck($beans, $bean, $field);
+            $this->beanCheck($context, $beans, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
@@ -456,7 +456,7 @@
         public function uniquenl(Context $context)
         {
             list($bean, $field, $value) = $context->restcheck(3);
-            $this->beanCheck(self::$uniquenlperms, $bean, $field);
+            $this->beanCheck($context, self::$uniquenlperms, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
