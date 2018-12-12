@@ -34,8 +34,8 @@
                 }
                 nx.data('id', data);
             };
-        $.post('{{base}}/ajax/table', dt).done(fn).fail(function(){
-            bootbox.alert('Failed to create new bean');
+        $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
+            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         });
     })
     $('#nbean').on('show.bs.modal', function(e){
