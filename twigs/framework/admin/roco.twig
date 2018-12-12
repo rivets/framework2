@@ -106,7 +106,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for r in attribute(siteinfo, fcall, page, pagesize) %}
+                    {% for r in attribute(siteinfo, fcall, [page, pagesize]) %}
                         <tr data-id="{{r.id}}">
                             <td class="rname">{{r.name}}</td>
                             <td>{{f.tick(r.fixed, 'fixed')}}</td>
