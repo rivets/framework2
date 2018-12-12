@@ -30,10 +30,13 @@
         else
         { // toggle at the other end
             var tr = x.parent().parent();
-            $.post(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+fld, {}).done(function(data){ toggle(x);}).
-                fail(function(jx){
-                    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
-                });
+            $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
+                method: 'PATCH',
+            }).done(function(){
+               toggle(x);
+            }).fail(function(jx){
+                bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+            });
         }
     }
 
