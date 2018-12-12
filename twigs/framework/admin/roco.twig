@@ -126,7 +126,7 @@
         <form action="#" method="POST" id="nrform">
             <div class="form-group">
                 {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, parsley: { trigger: 'change',
-                'remote-reverse': 'false', remote: base~'/ajax/unique/rolename' ~ beantype ~ '/name/{value}',
+                'remote-reverse': 'false', remote: base~'/ajax/unique/' ~ beantype ~ '/name/{value}',
                 'remote-message': 'That ' ~ type ~ ' name is not available', type: 'alphanum'} })}}
             </div>
        </form>
