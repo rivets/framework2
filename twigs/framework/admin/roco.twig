@@ -1,7 +1,5 @@
-{% include '@admin/roco.twig' with {type: 'context', beantype: 'rolecontext', fcall: 'contexts'} %}
-
-{#
 {% set ajax = TRUE %}
+{# Role names and Context names pages are identical apart from the typology #}
 
 {% extends '@content/page.twig' %}
 
@@ -14,19 +12,21 @@
     <script {{h.urlattr(fwurls.parsley)}}></script>
 {% endblock scripts %}
 
+{% set ctype = type|capitalize %}
+
 {% block onload %}
-    $('#ncform').on('submit', false).parsley();
+    $('#nrform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         e.preventDefault();
-        var pn = $('#ncname').val();
+        var pn = $('#nrname').val();
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid context name. Letters and numbers only');
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid {{type}} name. Letters and numbers only');
             return;
         }
         var sp = null;
         var error = false;
-        $('.cname').each(function(e){
+        $('.rname').each(function(e){
             var t = $(this).text();
             if (t == pn)
             {
@@ -37,45 +37,45 @@
             {
                 sp = $(this);
                 return false;
-            };
-        })
+            }
+        });
         if (error)
         {
-            bootbox.alert('That context already exists');
+            bootbox.alert('That {{type}} name already exists');
             return;
         }
-        $('#ncontext').modal('hide');
+        $('#nrole').modal('hide');
         var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
         var nx;
         if (sp == null)
         {
-            nx = $(htm).appendTo($('#ctab tbody'));
+            nx = $(htm).appendTo($('#rtab tbody'));
         }
         else
         {
             nx = $(htm).insertBefore(sp.parent());
         }
-        $.post('{{base}}/ajax/bean/rolecontext/', {
+        $.post('{{base}}/ajax/bean/{{beantype}}/', {
             name : pn,
         }).done(function(data){
-	       nx.data('id', data);
+               nx.data('id', data)
         }).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('<h3>Failed to create new context</h3>'+jqXHR.responseText);
+            bootbox.alert('<h3>Failed to create new {{type}} name</h3>'+jqXHR.responseText);
         });
-    })
-    $('#ctab').on('click', function(e){
-        var x = $(e.target);
+    });
+    $('#rtab').on('click', function(e){
+            var x = $(e.target)
         if (x.hasClass('delb'))
         {
-                dodelbean(e, x, 'rolecontext');
+                dodelbean(e, x, '{{beantype}}');
         }
         else if (x.hasClass('fixed'))
         {
-            dotoggle(e, x, 'rolecontext', 'fixed');
+            dotoggle(e, x, '{{beantype}}', 'fixed');
         }
-    })
-    $('#ncontext').on('show.bs.modal', function(e){
-        $('#ncform input').val('');
+    });
+    $('#nrole').on('show.bs.modal', function(e){
+        $('#nrform input').val('');
     });
 {% endblock onload %}
 
@@ -84,11 +84,11 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('rolecontext') + pagesize)/pagesize %}
+{% set pages = (siteinfo.count(beantype) + pagesize)/pagesize %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
-	<h1>Role Contexts</h1>
+	<h1>{{ctype}} Names</h1>
     </section>
 {% endblock header %}
 
@@ -97,7 +97,7 @@
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <table class="table table-striped table-hover" id="ctab">
+            <table class="table table-striped table-hover" id="rtab">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -106,28 +106,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for c in siteinfo.contexts(page, pagesize) %}
-                        <tr data-id="{{c.id}}">
-                            <td class="cname">{{c.name}}</td>
-                            <td>{{f.tick(c.fixed, 'fixed')}}</td>
-                            <td>{% if c.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
+                    {% for r in siteinfo.{{fcall}}(page, pagesize) %}
+                        <tr data-id="{{r.id}}">
+                            <td class="rname">{{r.name}}</td>
+                            <td>{{f.tick(r.fixed, 'fixed')}}</td>
+                            <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
                         </tr>
                     {% else %}
-                        <tr><td colspan="3">No contexts defined</td></tr>
+                        <tr><td colspan="3">No {{type}} names defined</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <p><button class="btn btn-primary" data-toggle="modal" data-target="#ncontext" type="button">Add Context</button></p>
+            {{m.invoke('nroco', 'Add ' ~ ctype ~ ' Name')}}
         </article>
     </section>
-    {{m.open({id: 'ncontext', title: 'New Context'})}}
+    {{m.open({id: 'nroco', title: 'New ' ~ ctype ~ ' Name'})}}
     <div class="modal-body">
         <form action="#" method="POST" id="nrform">
-            {{f.text({id: 'ncname', label: 'Name', ph: 'Context Name', required: TRUE, parsley: { trigger: 'change',
-            'remote-reverse': 'false', remote: base~'/ajax/unique/rolecontext/name/{value}',
-            'remote-message': 'That context name is not available', type: 'alphanum'} })}}
-        </form>
+            <div class="form-group">
+                {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, parsley: { trigger: 'change',
+                'remote-reverse': 'false', remote: base~'/ajax/unique/rolename' ~ beantype ~ '/name/{value}',
+                'remote-message': 'That ' ~ type ~ ' name is not available', type: 'alphanum'} })}}
+            </div>
+       </form>
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
