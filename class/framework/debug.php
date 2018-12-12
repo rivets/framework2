@@ -16,6 +16,10 @@
  */
         private static $fd = NULL;
 /**
+ * @var integer     header count
+ */
+        private static $hcount = 0;
+/**
  * Set up the file
  */
         private static function setup()
@@ -78,7 +82,8 @@
  */
         public static function head(string $str)
         {
-            \Framework\Web::getinstance()->addheader('X-DEBUG-INFO', $str);
+            self::$hcount += 1;
+            header('X-DEBUG-INFO'.$hcount.': '.$str);
         }
 
     }
