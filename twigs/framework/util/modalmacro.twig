@@ -33,3 +33,13 @@
         <button type="button" class="btn btn-primary"{{h.hv('id', opts.id)}}>{{opts.action}}</button>
     </div>
 {% endmacro footer %}
+
+{% macro open(opts) %}{% import _self as h %}
+{{h.start(opts.id)}}
+{{h.header(opts)}}
+{% endmacro open %}
+
+{% macro close(opts) %}{% import _self as h %}
+{{h.footer()}}
+{{h.end()}}
+{% endmacro close %}
