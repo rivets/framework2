@@ -90,12 +90,12 @@
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             if (!is_object($cname))
             {
-                Web::getinstance()->bad();
+                throw new \Framework\Exception\BadValue('No such context');
             }
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);
             if (!is_object($rname))
             {
-                Web::getinstance()->bad();
+                throw new \Framework\Exception\BadValue('No such context');
             }
             return $this->addrolebybean($cname, $rname, $otherinfo, $start, $end);
         }
