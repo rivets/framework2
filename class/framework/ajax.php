@@ -16,6 +16,7 @@
 
     use \R as R;
     use \Support\Context as Context;
+    use \Config\Config as Config;
 /**
  * Handle Ajax operations in this class
  */
@@ -27,43 +28,43 @@
  */
         private static $restops = [
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
-            'config'        => [TRUE,   [['Site', 'Admin']]],
+            'config'        => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
             'table'         => [TRUE,   []],
-            'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
+            'tablecheck'    => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
             'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
-            'update'        => [TRUE,   [['Site', 'Admin']]],
+            'update'        => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
         ];
 /**
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [['Site', 'Admin']], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [['Site', 'Admin']], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $tableperms = [
-            [ [['Site', 'Admin']], ['fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
-            [ [['Site', 'Admin']], ['page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -82,8 +83,8 @@
  * @var array   Values controlling whether or not pagination calls are allowed
  */
         private static $paging = [
-            'page'  => [TRUE,   [['Site', 'Admin']]],
-            'user'  => [TRUE,   [['Site', 'Admin']]],
+            'page'  => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
+            'user'  => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
             // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
@@ -189,13 +190,13 @@
             $bn = $context->load($type, $bid, Context::R400);
             if ($type === 'user' && ctype_upper($field[0]) && $context->isadmin())
             { # not simple toggling... and can only be done by the Site Administrator
-                if (is_object($bn->hasrole('Site', $field)))
+                if (is_object($bn->hasrole(Config::FWCONTEXT, $field)))
                 {
-                    $bn->delrole('Site', $field);
+                    $bn->delrole(Config::FWCONTEXT, $field);
                 }
                 else
                 {
-                    $bn->addrole('Site', $field, '', $context->utcnow());
+                    $bn->addrole(Config::FWCONTEXT, $field, '', $context->utcnow());
                 }
             }
             else

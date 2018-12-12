@@ -377,10 +377,10 @@
             $emess = $this->dofields($fdt);
 
             $this->editroles($context);
-            $admin = $this->hasrole('Site', 'Admin');
-            if (is_object($devel = $this->hasrole('Site', 'Developer')) && !is_object($admin))
+            $admin = $this->hasrole(Config::FWCONTEXT, Config::ADMINROLE);
+            if (is_object($devel = $this->hasrole(Config::FWCONTEXT, Config::DEVELROLE)) && !is_object($admin))
             { // if we need developer then we also need admin
-                $admin = $this->addrole('Site', 'Admin', '-', $devel->start, $devel->end);
+                $admin = $this->addrole(Config::FWCONTEXT, Config::ADMINROLE, '-', $devel->start, $devel->end);
             }
             if (is_object($admin) && !$this->bean->needlogin)
             { // if we need admin then we also need login!

@@ -79,11 +79,11 @@
                     $u->setpw($pw); // set the password
                     if ($fdt->post('admin', 0) == 1)
                     {
-                        $u->addrole('Site', 'Admin', '', $now);
+                        $u->addrole(Config::FWCONTEXT, Config::ADMINROLE, '', $now);
                     }
                     if ($fdt->post('devel', 0) == 1)
                     {
-                        $u->addrole('Site', 'Developer', '', $now);
+                        $u->addrole(Config::FWCONTEXT, Config::DEVELROLE, '', $now);
                     }
                 }
                 catch (\Framework\Exception\BadValue $e)
@@ -106,7 +106,7 @@
  */
         public function isadmin()
         {
-            return is_object($this->hasrole('Site', 'Admin'));
+            return is_object($this->hasrole(Config::FWCONTEXT, Config::ADMINROLE));
         }
 /**
  * Is this user active?
@@ -133,7 +133,7 @@
  */
         public function isdeveloper()
         {
-            return is_object($this->hasrole('Site', 'Developer'));
+            return is_object($this->hasrole(Config::FWCONTEXT, Config::DEVELROLE));
         }
 /**
  * Set the user's password
