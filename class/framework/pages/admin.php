@@ -249,40 +249,31 @@
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';
                 break;
-
             case 'edit' : // Edit something - forms, user, pages...
                 $tpl = $this->edit($context, $rest);
                 break;
-
             case 'forms': // show and add forms
                 $tpl = '@admin/forms.twig';
                 break;
-
             case 'info': // generate phpinfo page
                 $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
                 phpinfo();
                 exit;
-
             case 'pages': // show and add pages
                 $tpl = '@admin/pages.twig';
                 break;
-
             case 'roles': // show and add roles
                 $tpl = '@admin/roles.twig';
                 break;
-
             case 'update': // See if we need an update
                 $tpl = $this->update($context);
                 break;
-
             case 'users': //show and add users
                 $tpl = '@admin/users.twig';
                 break;
-
             case 'view' : // view something - forms only at the moment
                 $tpl = $this->view($context, $rest);
                 break;
-
             default :
                 $tpl = '@admin/admin.twig';
                 break;
