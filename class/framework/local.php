@@ -131,6 +131,7 @@
                 $this->senterrors[$ekey] = TRUE;
                 if (isset($_GET['fwtrace']))
                 {
+                    $this->debug = TRUE;
                     ob_start();
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back = ob_get_clean(); # will get used later in make500
