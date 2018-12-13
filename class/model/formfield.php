@@ -56,8 +56,8 @@
 /**
  * Render a field's attributes
  *
- * @param string    $class  The class name
- * @param bool          $doValue  If TRUE Then add a value attribute
+ * @param string    $class    The class name
+ * @param bool      $doValue  If TRUE Then add a value attribute
  *
  * @return string
  */
@@ -90,6 +90,10 @@
                 {
                     $res[] = $atr[0].'="'.$atr[0].'"';
                 }
+            }
+            if ($this->bean->other !== '')
+            {
+                $res[] = $this->bean->other;
             }
             return implode(' ', $res);
         }
