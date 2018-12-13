@@ -27,6 +27,20 @@
 
         use \ModelExtend\FWEdit;
 /**
+ * Check for a URL or // URL or a local filename - return value or throw
+ *
+ * @throws \Framework\Exception\BadValue
+ *
+ * @return string
+ */
+        public function checkURL()
+        {
+            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL || !preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
+            { // not a canonical URL
+                throw new \Framework\Exception\BadValue('Invalid value for boolean item');
+            }
+        }
+/**
  * Function called when a page bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
@@ -49,10 +63,7 @@
                 $this->bean->value = $x ? 1 : 0;
                 break;
             case 'css':
-                if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
-                {
-                    throw new \Framework\Exception\BadValue('Invalid value for CSS item');
-                }
+                $this->checkURL();
                 break;
             case 'integer':
                 if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
@@ -61,10 +72,7 @@
                 }
                 break;
             case 'js':
-                if (!filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
-                {
-                    throw new \Framework\Exception\BadValue('Invalid value for JavaScript item');
-                }
+                $this->checkURL();
                 break;
             case 'string':
                 break;
