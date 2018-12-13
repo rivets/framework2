@@ -10,6 +10,7 @@
     use \Framework\SiteAction as SiteAction;
     use \Support\Context as Context;
     use \Config\Config as Config;
+    use \Framework\Exception\BadValue as BadValue;
 /**
  * A class implementing a RedBean model for Page beans
  */
@@ -47,38 +48,38 @@
             $this->bean->name = strtolower($this->bean->name);
             if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
-                throw new \Framework\Exception\BadValue('Invalid page name');
+                throw new BadValue('Invalid page name');
             }
             switch ($this->bean->kind)
             {
-            case \Framework\SiteAction::OBJECT:
+            case SiteAction::OBJECT:
                 if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $this->bean->source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name)');
+                    throw new BadValue('Invalid source for page type (class name)');
                 }
                 break;
-            case \Framework\SiteAction::TEMPLATE:
+            case SiteAction::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $this->bean->source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                    throw new BadValue('Invalid source for page type(twig)');
                 }
                 break;
-            case \Framework\SiteAction::REDIRECT: // these need a local URL, i.e. no http
-            case \Framework\SiteAction::REHOME:
+            case SiteAction::REDIRECT: // these need a local URL, i.e. no http
+            case SiteAction::REHOME:
                 if (!preg_match('#^(/.*?)+#i', $this->bean->source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                    throw new BadValue('Invalid source for page type(twig)');
                 }
                 break;
-            case \Framework\SiteAction::XREDIRECT: // these need a URL to be valid
-            case \Framework\SiteAction::XREHOME:
+            case SiteAction::XREDIRECT: // these need a URL to be valid
+            case SiteAction::XREHOME:
                 if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
+                    throw new BadValue('Invalid source for page type (URL)');
                 }
                 break;
             default:
-                throw new \Framework\Exception\BadValue('Invalid page type');
+                throw new BadValue('Invalid page type');
             }
         }
 /**
