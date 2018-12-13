@@ -255,25 +255,16 @@
             try
             {
                 \R::store($p);
-            }
-            catch (\Framework\Exception\BadValue $e)
-            {
-                $context->web()->bad($e->getmessage());
-                /* NOT REACHED */
-            }
-
-            try
-            {
                 foreach ($fdt->posta('context') as $ix => $cid)
                 { // context, role, start, end, otherinfo
                     if ($cid !== '')
                     {
                         $p->addrolebybean(
-                            $context->load('rolecontext', $cid, Context::RTHROW),
-                            $context->load('rolename', $fdt->mustpost(['role', $ix], Context::RTHROW)),
-                            $fdt->mustpost(['otherinfo', $ix], Context::RTHROW),
-                            $fdt->mustpost(['start', $ix], Context::RTHROW),
-                            $fdt->mustpost(['end', $ix], Context::RTHROW)
+                            $context->load('rolecontext', $cid),
+                            $fdt->mustpostbean(['role', $ix], 'rolename'),
+                            $fdt->mustpost(['otherinfo', $ix]),
+                            $fdt->mustpost(['start', $ix]),
+                            $fdt->mustpost(['end', $ix])
                         );
                     }
                 }
@@ -348,11 +339,10 @@
                 }
                 echo $p->getID();
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
                 \R::trash($p);
-                $context->web()->bad($e->getmessage());
-                /* NOT REACHED */
+                throw $e; // throw it up to the handlers above
             }
         }
 /**
