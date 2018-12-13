@@ -174,7 +174,7 @@
                 if ($this->devel || !$this->ajax)
                 { # not in an ajax page so try and send a pretty error
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : 'There has been an internal error');
-                    if (is_object($this->twig))
+                    if (!$this->ajax && is_object($this->twig))
                     { # we have twig so render a nice page
                         Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
