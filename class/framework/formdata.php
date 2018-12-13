@@ -83,9 +83,21 @@
             return isset($_FILES[$name]);
         }
 /**
+ * Is the key in the PUT/PATCH data
+ *
+ * @param string	$name	The key
+ *
+ * @return boolean
+ */
+        public function hasput($name)
+        {
+            $this->setput();
+            return isset($this->putdata[$name]);
+        }
+/**
  * Utility function to dig out an element from a possibly multi-dimensional array
  *
- * @interna
+ * @internal
  * @see \Framework\Context for failure action constants
  *
  * @param array     $porg       The array
@@ -136,13 +148,16 @@
                 Web::getinstance()->bad($message);
 
             case Context::RTHROW:
-                throw new Exception($message);
+                throw new \Framework\Exception\BadValue($message);
 
             case Context::RNULL:
                 return NULL;
 
             case Context::RDEFAULT:
                 return $dflt;
+
+            case Context::RBOOL:
+                return FALSE;
             }
             Web::getinstance()->internal(); // should never get here
         }
@@ -212,6 +227,21 @@
         public function get($name, $dflt = '')
         {
             return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, Context::RDEFAULT);
+        }
+/**
+ * Look in the $_GET array for a key that is an id for a bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string        $bean   The bean type
+ * @param int    	$fail	What to do if not defined - constant defined in Context
+ *
+ * @return ?object
+ */
+        public function mustgetbean($name, $bean, int $fail = Context::R400)
+        {
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail), $fail);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -291,6 +321,21 @@
             return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, Context::RDEFAULT);
         }
 /**
+ * Look in the $_POST array for a key that is an id for a bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string        $bean   The bean type
+ * @param int    	$fail	What to do if not defined - constant defined in Context
+ *
+ * @return ?object
+ */
+        public function mustpostbean($name, $bean, int $fail = Context::R400)
+        {
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, $fail), $fail);
+        }
+/**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
@@ -364,7 +409,21 @@
             }
             return $this->failure($fail, 'Missing put/patch item');
        }
-
+/**
+ * Get php://input data, check array for an id and return its bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string        $bean   The bean type
+ * @param int    	$fail	What to do if not defined - constant defined in Context
+ *
+ * @return ?object
+ */
+        public function mustputbean($name, $bean, int $fail = Context::R400)
+        {
+            return Context::getinstance()->load($bean, $this->mustput($name, NULL, $fail), $fail);
+        }
 /**
  * Get php://input data, check arrayfor a key and return its trimmed value or a default value
  *
