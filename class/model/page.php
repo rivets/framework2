@@ -63,9 +63,14 @@
                     throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
                 }
                 break;
-            case \Framework\SiteAction::REDIRECT: // all of these need a URL to be valid
+            case \Framework\SiteAction::REDIRECT: // these need a local URL, i.e. no http
             case \Framework\SiteAction::REHOME:
-            case \Framework\SiteAction::XREDIRECT:
+                if (!preg_match('#^(/.*?)+#i', $this->bean->source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                }
+                break;
+            case \Framework\SiteAction::XREDIRECT: // these need a URL to be valid
             case \Framework\SiteAction::XREHOME:
                 if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
                 {
