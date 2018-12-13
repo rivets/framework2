@@ -29,15 +29,17 @@
 /**
  * Check for a URL or // URL or a local filename - return value or throw
  *
+ * @param string   $type   For error message
+ *
  * @throws \Framework\Exception\BadValue
  *
  * @return string
  */
-        public function checkURL()
+        public function checkURL($type)
         {
             if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL || !preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
             { // not a canonical URL
-                throw new \Framework\Exception\BadValue('Invalid value for boolean item');
+                throw new \Framework\Exception\BadValue('Invalid value for '.$type.' item');
             }
         }
 /**
@@ -63,16 +65,16 @@
                 $this->bean->value = $x ? 1 : 0;
                 break;
             case 'css':
-                $this->checkURL();
+                $this->checkURL('CSS');
                 break;
             case 'integer':
                 if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
                 {
-                    throw new \Framework\Exception\BadValue('Invalid value for CSS item');
+                    throw new \Framework\Exception\BadValue('Invalid value for integer item');
                 }
                 break;
             case 'js':
-                $this->checkURL();
+                $this->checkURL('JavaScript');
                 break;
             case 'string':
                 break;
