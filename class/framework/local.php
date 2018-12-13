@@ -180,7 +180,7 @@
                         Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
-                    { # no twig so just dump
+                    { # no twig or ajax so just dump
                         Web::getinstance()->internal($str);
                     }
                 }
