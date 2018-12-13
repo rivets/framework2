@@ -195,7 +195,7 @@
                 $bid = $fdt->mustpost('id');
             }
 
-            $bn = $context->load($type, $bid, Context::R400);
+            $bn = $context->load($type, $bid, Context::RTHROW);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(Config::FWCONTEXT, $field)))
@@ -225,7 +225,7 @@
         {
             $fdt = $context->formdata();
 
-            $bn = $context->load($fdt->mustpost('bean'), $fdt->mustpost('id'), Context::R400);
+            $bn = $fdt->mustpostbean('id', $fdt->mustpost('bean'));
             $field = $fdt->mustpost('name');
             $bn->$field = $fdt->mustpost('value');
             R::store($bn);
@@ -538,7 +538,7 @@
  *
  * @return boolean or may not return at all
  */
-        protected final function checkPerms(Context $context, array $perms, int $onerror = Context::R400) : bool
+        protected final function checkPerms(Context $context, array $perms, int $onerror = Context::RTHROW) : bool
         {
             $ok = TRUE;
             foreach ($perms as $rcs)
@@ -594,7 +594,7 @@
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            return $this->checkPerms($context, $perms, Context::R400);
+            return $this->checkPerms($context, $perms, Context::RTHROW);
         }
 /**
  * Handle AJAX operations

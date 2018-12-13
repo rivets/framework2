@@ -175,7 +175,7 @@
  * @throws Exception
  * @return mixed
  */
-        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = Context::R400)
+        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = Context::RTHROW)
         {
             if (is_array($name))
             {
@@ -210,7 +210,7 @@
  *
  * @return mixed
  */
-        public function mustget($name, int $fail = Context::R400)
+        public function mustget($name, int $fail = Context::RTHROW)
         {
             return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
         }
@@ -239,7 +239,7 @@
  *
  * @return ?object
  */
-        public function mustgetbean($name, $bean, int $fail = Context::R400)
+        public function mustgetbean($name, $bean, int $fail = Context::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail), $fail);
         }
@@ -251,7 +251,7 @@
  *
  * @return \ArrayIterator
  */
-        public function mustgeta($name, int $fail = Context::R400)
+        public function mustgeta($name, int $fail = Context::RTHROW)
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
@@ -301,7 +301,7 @@
  *
  * @return mixed
  */
-        public function mustpost(string $name, int $fail = Context::R400)
+        public function mustpost(string $name, int $fail = Context::RTHROW)
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
         }
@@ -331,7 +331,7 @@
  *
  * @return ?object
  */
-        public function mustpostbean($name, $bean, int $fail = Context::R400)
+        public function mustpostbean($name, $bean, int $fail = Context::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, $fail), $fail);
         }
@@ -343,7 +343,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta(string $name, int $fail = Context::R400) : \ArrayIterator
+        public function mustposta(string $name, int $fail = Context::RTHROW) : \ArrayIterator
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
@@ -392,7 +392,7 @@
  *
  * @return mixed
  */
-        public function mustput($name, int $fail = Context::R400)
+        public function mustput($name, int $fail = Context::RTHROW)
         {
             $this->setput();
             if (is_array($name))
@@ -420,7 +420,7 @@
  *
  * @return ?object
  */
-        public function mustputbean($name, $bean, int $fail = Context::R400)
+        public function mustputbean($name, $bean, int $fail = Context::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->mustput($name, NULL, $fail), $fail);
         }
@@ -461,7 +461,7 @@
  *
  * @return mixed
  */
-        public function mustcookie(string $name, int $fail = Context::R400)
+        public function mustcookie(string $name, int $fail = Context::RTHROW)
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
         }
@@ -485,7 +485,7 @@
  *
  * @return \ArrayIterator
  */
-        public function mustcookiea(string $name, int $fail = Context::R400) : \ArrayIterator
+        public function mustcookiea(string $name, int $fail = Context::RTHROW) : \ArrayIterator
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {

@@ -321,7 +321,7 @@
             elseif ($rest[0] === 'reset')
             {
                 $tpl = '@users/pwreset.twig';
-                $user = $context->load('user', $fdt->mustpost('uid'));
+                $user = $fdt->mustpostbean('uid', 'user');
                 $code = $fdt->mustpost('code');
                 $xc = R::findOne('confirm', 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
