@@ -75,7 +75,25 @@
     case SiteAction::OBJECT: // fire up the object to handle the request
         $pageObj = new $page->source;
         $csp = $pageObj;
-        $tpl = $pageObj->handle($context);
+        try
+        {
+            $tpl = $pageObj->handle($context);
+        }
+        catch(\Framework\Exception\Forbidden $e)
+        {
+            $context->web()->noaccess($e->getMessage());
+        }
+        catch(\Framework\Exception\BadValue |
+              \Framework\Exception\BadOperation |
+              \Framework\Exception\MissingBean |
+              \Framework\Exception\ParameterCount $e)
+        {
+            $context->web()->bad($e->getMessage());
+        }
+        catch(\Exception $e)
+        { // any other exception - this will be a framework internal error
+            $context->web()->internal($e->getMessage());
+        }
         if (is_array($tpl))
         { // page is returning more than just a template filename
             list($tpl, $mime, $code) = $tpl;

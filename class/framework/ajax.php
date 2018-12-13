@@ -43,35 +43,35 @@
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $tableperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], ['page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
-            ['user' => ['login'] ],
+            [ 'user' => ['login'] ],
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -98,11 +98,15 @@
 /**
  * Config value operation
  *
+ * @internal
  * @param object	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
  *
  * @return void
  */
-        private function config(Context $context)
+        private final function config(Context $context)
         {
             $rest = $context->rest();
             list($name) = $context->restcheck(1);
@@ -125,7 +129,7 @@
             case 'PUT':
                 if (!is_object($v))
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('No such item');
                 }
                 $v->value = $fdt->mustput('value');
                 R::store($v);
@@ -137,19 +141,22 @@
                 echo $v->value;
                 break;
             default:
-                $context->web()->bad();
+                throw new \Framework\Exception\BadOperation($context->web()->method().' is not supported');
             }
         }
 /**
  * Check down an array with permissions in the first field and return the first
  * row that is OK
  *
+ * @internal
  * @param object  $context  The context object
- * @param array   $perms    The array wiht permissions in the first element
+ * @param array   $perms    The array with permissions in the first element
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return array
  */
-        private function findrow(Context $context, $perms)
+        protected final function findrow(Context $context, $perms)
         {
             foreach ($perms as $bpd)
             {
@@ -158,7 +165,7 @@
                     return $bpd[1];
                 }
             }
-            $context->web()->noaccess();
+            throw new \Framework\Exception\Forbidden('Permission Denied');
         }
 /**
  * Toggle a flag field in a bean
@@ -166,11 +173,12 @@
  * Note that for Roles the toggling is more complex and involves role removal/addition rather than
  * simply changing a value.
  *
+ * @internal
  * @param object	$context	The context object for the site
  *
  * @return void
  */
-        private function toggle(Context $context)
+        private final function toggle(Context $context)
         {
             $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
@@ -208,11 +216,12 @@
 /**
  * Update a field in a bean
  *
+ * @internal
  * @param object	$context	The context object for the site
  *
  * @return void
  */
-        private function update(Context $context)
+        private final function update(Context $context)
         {
             $fdt = $context->formdata();
 
@@ -224,35 +233,44 @@
 /**
  * Check if a bean field combination is allowed
  *
+ * @internal
  * @param array   $beans
  * @param string  $bean
  * @param string  $field
  *
+ * @throws \Framework\Exception\Forbidden
+ *
  * @return boolean or error out
  */
-        private function beanCheck($context, $beans, $bean, $field)
+        protected function beanCheck($beans, $bean, $field)
         {
+            
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field
-                $context->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
             return TRUE;
         }
 /**
  * Carry out operations on beans
  *
+ * @internal
  * @param object    $context The context object
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        private function bean(Context $context)
+        private final function bean(Context $context)
         {
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
             if (!isset($beans[$bean]))
             {
-                $context->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
             switch ($context->web()->method())
             {
@@ -264,7 +282,7 @@
                 }
                 else
                 { // operation not supported
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadOperation('Cannot add a '.$bean);
                 }
                 break;
             case 'PATCH':
@@ -274,9 +292,9 @@
                 $fields = R::inspect($bean); // gets all the fields
                 if ($field == 'id' || !isset($fields[$field]))
                 { // no such field or trying to change the id field
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadOperation('Cannot update '.$bean.'.'.$field);
                 }
-                $this->beanCheck($context, $beans, $bean, $field);
+                $this->beanCheck($beans, $bean, $field);
                 $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
                 break;
@@ -284,31 +302,35 @@
                 $id = $rest[2] ?? 0; // get the id from the URL
                 if ($id <= 0)
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('Missing value');
                 }
                 R::trash($context->load($bean, $id));
                 break;
             case 'GET':
             default:
-                $context->web()->bad();
+                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
             }
         }
 /**
  * Carry out operations on tables
  *
+ * @internal
  * @param object    $context The context object
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\BadOperation
  *
  * @return void
  */
-        private function table(Context $context)
+        private final function table(Context $context)
         {
             $tables = $this->findRow($context, self::$tableperms);
             $rest = $context->rest();
             $table = $rest[1];
             $method = $context->web()->method();
-            if ($method != 'POST' && !in_array($table, $tables))
+            if (!in_array($table, $tables))
             {
-                $context->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
             switch ($method)
             {
@@ -318,17 +340,20 @@
             case 'DELETE':
             case 'GET':
             default:
-                $context->web()->bad();
+                throw new \Framework\Exception\BadOperation('Operation not supported');
             }
         }
 /**
  * Get a page of bean values
  *
+ * @internal
  * @param object	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        private function paging(Context $context)
+        private final function paging(Context $context)
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -343,17 +368,20 @@
             }
             else
             {
-                $context->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
         }
 /**
  * Get serach hints for a bean
  *
+ * @internal
  * @param object	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        private function hints(Context $context)
+        private final function hints(Context $context)
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -372,7 +400,7 @@
             }
             else
             {
-                $context->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
         }
 /**
@@ -383,7 +411,7 @@
  *
  * @return void
  */
-        public function operation(string $function, array $perms)
+        public final function operation(string $function, array $perms)
         {
             self::$restops[$function] = $perms;
         }
@@ -395,7 +423,7 @@
  *
  * @return void
  */
-        public function pageOrHint(array $paging, array $hints)
+        public final function pageOrHint(array $paging, array $hints)
         {
             self::$paging = array_merge(self::$paging, $paging);
             self::$hints = array_merge(self::$paging, $hints);
@@ -409,7 +437,7 @@
  *
  * @return void
  */
-        public function beanAccess(array $bean, array $toggle, array $table)
+        public final function beanAccess(array $bean, array $toggle, array $table)
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
@@ -425,7 +453,7 @@
  *
  * @return void
  */
-        protected function uniqCheck(Context $context, string $bean, string $field, string $value)
+        protected final function uniqCheck(Context $context, string $bean, string $field, string $value)
         {
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
@@ -436,38 +464,41 @@
 /**
  * Do a parsley uniqueness check
  *
+ * @internal
  * @param object    $context
  *
  * @return void
  */
-        public function unique(Context $context)
+        private function unique(Context $context)
         {
             $beans = $this->findrow($context, self::$uniqueperms);
             list($bean, $field, $value) = $context->restcheck(3);
-            $this->beanCheck($context, $beans, $bean, $field);
+            $this->beanCheck($beans, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
  * Do a parsley uniqueness check
  *
+ * @internal
  * @param object    $context
  *
  * @return void
  */
-        public function uniquenl(Context $context)
+        private function uniquenl(Context $context)
         {
             list($bean, $field, $value) = $context->restcheck(3);
-            $this->beanCheck($context, self::$uniquenlperms, $bean, $field);
+            $this->beanCheck(self::$uniquenlperms, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
  * Do a parsley table check
  *
+ * @internal
  * @param object    $context
  *
  * @return void
  */
-        public function tablecheck(Context $context)
+        private function tablecheck(Context $context)
         {
             list($name) = $context->restcheck(1);
             $tb = \R::inspect();
@@ -480,24 +511,24 @@
 /**
  * Do a password verification
  *
+ * @internal
  * @param object    $context
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        public function pwcheck(Context $context)
+        private function pwcheck(Context $context)
         {
-            if (($pw = $context->formdata()->get('pw', '')) !== '')
+            if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
             {
-                if ($context->user()->pwok($pw))
-                {
-                    return;
-                }
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
-            $context->web()->noaccess();
         }
 /**
  * Check that user has the permissions specified in an array
  *
+ * @internal
  * @param object    $context  The Context bject
  * @param array     $perms    The permission array
  * @param integer   $onerror  What to do if access is forbidden
@@ -507,7 +538,7 @@
  *
  * @return boolean or may not return at all
  */
-        private function checkPerms(Context $context, array $perms, int $onerror = Context::R400) : bool
+        protected final function checkPerms(Context $context, array $perms, int $onerror = Context::R400) : bool
         {
             $ok = TRUE;
             foreach ($perms as $rcs)
@@ -538,7 +569,7 @@
                     $context->web()->noaccess();
                     /* NOT REACHED */
                 case Context::RTHROW:
-                   throw new \Framework\Exception\Forbidden();
+                   throw new \Framework\Exception\Forbidden('Permission denied');
                 case Context::RBOOL:
                     return FALSE;
                 default:
@@ -550,6 +581,7 @@
 /**
  * Check that the caller is allowed to perform the operation.
  *
+ * @internal
  * @param object   $context  The Context Object
  * @param boolean  $login    If TRUE Then user must be logged in.
  * @param array    $perms    As specified for the various arrays defined above
@@ -579,20 +611,31 @@
                 $op = $rest[0];
                 if (isset(self::$restops[$op]))
                 { # a valid operation
-                    $this->checkLogin($context, self::$restops[$op][0], self::$restops[$op][1]);
-                    $this->{$op}($context);
-                }
-                else
-                { # return a 400
-                    $context->web()->bad();
-                    /* NOT REACHED */
+                    try
+                    {
+                        $this->checkLogin($context, self::$restops[$op][0], self::$restops[$op][1]);
+                        $this->{$op}($context);
+                        return;
+                    }
+                    catch(\Framework\Exception\Forbidden $e)
+                    {
+                        $context->web()->noaccess($e->getMessage());
+                    }
+                    catch(\Framework\Exception\BadValue |
+                          \Framework\Exception\BadOperation |
+                          \Framework\Exception\MissingBean |
+                          \Framework\Exception\ParameterCount $e)
+                    {
+                        $context->web()->bad($e->getMessage());
+                    }
+                    catch(\Exception $e)
+                    { // any other exception - this will be a framework internal error
+                        $context->web()->internal($e->getMessage());
+                    }
                 }
             }
-            else
-            { // for the moment no other options
-                $context->web()->bad();
-                /* NOT REACHED */
-            }
+            $context->web()->bad('No such operation');
+            /* NOT REACHED */
         }
     }
 ?>

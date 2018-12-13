@@ -70,52 +70,47 @@
  * @param object    $context  The Context object
  * @param array     $rest     The rest of the URL
  *
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\ParameterCount
+ *
  * @return string
  */
         private function edit(Context $context, array $rest)
         {
-            try
+            if (count($rest) < 3)
             {
-                if (count($rest) < 3)
-                {
-                    throw new \Exception('Too Few');
-                }
-                $kind = $rest[1];
-                if (!in_array($kind, self::EDITABLE))
-                {
-                    throw new \Exception('Not Editable');
-                }
-                if (($notmodel = in_array($kind, self::NOTMODEL)))
-                {
-                    $class = '\\Support\\'.$kind;
-                    $obj = new $class($rest[2]);
-                }
-                else
-                {
-                    $obj = $context->load($kind, $rest[2]);
-                }
-                $context->local()->addval('bean', $obj);
-                $obj->startEdit($context, $rest); // do any special setup that the edit requires
-                if (($bid = $context->formdata()->post('bean', '')) !== '')
-                { // this is a post
-                    if (($notmodel && $bid != $kind) || $bid != $obj->getID())
-                    { # something odd...
-                        throw new \Exception('Oddness');
-                    }
-                    \Framework\Utility\CSRFGuard::getinstance()->check();
-                    list($error, $emess) = $obj->edit($context); // handle the edit result
-                    if ($error)
-                    {
-                        $context->local()->message(\Framework\Local::ERROR, $emess);
-                    }
-                    // The edit call might divert to somewhere else so sometimes we may not get here.
-                    $context->local()->message(\Framework\Local::MESSAGE, 'Saved');
-                }
+                throw new \Framework\Exception\ParameterCount('Too few parameters');
             }
-            catch (\Exception $e)
+            $kind = $rest[1];
+            if (!in_array($kind, self::EDITABLE))
             {
-                $context->web()->bad($e->getmessage());
-                /* NOT REACHED */
+                throw new \Framework\Exception\Forbidden('Not editable');
+            }
+            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            {
+                $class = '\\Support\\'.$kind;
+                $obj = new $class($rest[2]);
+            }
+            else
+            {
+                $obj = $context->load($kind, $rest[2]);
+            }
+            $context->local()->addval('bean', $obj);
+            $obj->startEdit($context, $rest); // do any special setup that the edit requires
+            if (($bid = $context->formdata()->post('bean', '')) !== '')
+            { // this is a post
+                if (($notmodel && $bid != $kind) || $bid != $obj->getID())
+                { # something odd...
+                    throw new \Exception('Oddness');
+                }
+                \Framework\Utility\CSRFGuard::getinstance()->check();
+                list($error, $emess) = $obj->edit($context); // handle the edit result
+                if ($error)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $emess);
+                }
+                // The edit call might divert to somewhere else so sometimes we may not get here.
+                $context->local()->message(\Framework\Local::MESSAGE, 'Saved');
             }
             return '@edit/'.$kind.'.twig';
         }
@@ -129,22 +124,14 @@
  */
         private function view(Context $context, array $rest)
         {
-            try
+            if (count($rest) < 3)
             {
-                if (count($rest) < 3)
-                {
-                    throw new \Exception('Too few');
-                }
-                $kind = $rest[1];
-                if (!in_array($kind, self::VIEWABLE))
-                {
-                    throw new \Exception('Not Viewable');
-                }
+                throw new \Framework\Exception\ParameterCount('Too few parameters');
             }
-            catch (\Exception $e)
+            $kind = $rest[1];
+            if (!in_array($kind, self::VIEWABLE))
             {
-                $context->web()->bad($e->getMessage());
-                /* NOT REACHED */
+                throw new \Framework\Exception\Forbidden('Not Viewable');
             }
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {

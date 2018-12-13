@@ -47,6 +47,9 @@
  * @param object	$context	The context object for the site
  * @param object	$local		The local object for the site
  *
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
+ *
  * @return string	A template name
  */
         public function handle(Context $context)
@@ -61,8 +64,7 @@
                 $file = \R::load('upload', $fpt[1]);
                 if ($file->getID() == 0)
                 {
-                    $web->notfound();
-                    /* NOT REACHED */
+                    throw new \Framework\Exception\BadValue('No such file');
                 }
                 $this->file = substr($file->fname, 1); // drop the separator at the start....
             }
@@ -81,8 +83,7 @@
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
                 { # filename constructed is not the right format
-                    $web->bad();
-                    /* NOT REACHED */
+                    throw new \Framework\Exception\BadValue('Illegal filename');
                 }
 
         # Now do an access control check
@@ -96,8 +97,7 @@
             }
             if (!$file->canaccess($context->user()))
             { # caurrent user cannot access the file
-                $web->noaccess();
-                /* NOT REACHED */
+                throw new \Framework\Exception\Forbidden('No access');
             }
 
             if (($this->mtime = filemtime($this->file)) === FALSE)

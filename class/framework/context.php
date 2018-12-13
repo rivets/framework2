@@ -192,18 +192,22 @@
 	}
 /**
  * Check for logged in and 403 if not
-  *
-  * @return void
-  */
+ *
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
         public function mustbeuser()
         {
             if (!$this->hasuser())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be logged in');
             }
         }
 /**
  * Check for an admin and 403 if not
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
@@ -211,11 +215,13 @@
         {
             if (!$this->hasadmin())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be an admin');
             }
         }
 /**
  * Check for an developer and 403 if not
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
@@ -223,7 +229,7 @@
         {
             if (!$this->hasdeveloper())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be a developer');;
             }
         }
 /*
@@ -319,11 +325,12 @@
  * @param int    	$id	    A bean id
  * @param int           $onerror    A flag indicating what to do on error (see constants above)
  *
- * @throws  Exception when asked to by the "onerror" value
+ * @throws  \Framework\Exception\MissingBean
+ * @throws  \InvalidArgumentException - this would be an internal error
  *
  * @return object
  */
-        public function load(string $bean, int $id, int $onerror = self::R400)
+        public function load(string $bean, int $id, int $onerror = self::RTHROW)
         {
             $foo = \R::load($bean, $id);
             if ($foo->getID() == 0)
@@ -336,7 +343,7 @@
                 case self::RNULL:
                     return NULL;
                 case self::RTHROW:
-                    throw new \Framework\Exception\MissingBean();
+                    throw new \Framework\Exception\MissingBean('Missing '.$bean);
                 default:
                     throw new \InvalidArgumentException('Onerror value');
                 }

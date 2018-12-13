@@ -52,7 +52,7 @@
  */
         public static function getinstance()
         {
-            if (!(static::$_instance instanceof static)) // cannot get this to work with namespaces for some re
+            if (!(static::$_instance instanceof static)) // cannot get this to work with namespaces for some reason
             {
                 static::$_instance = new static();
             }
@@ -66,12 +66,12 @@
             //void
         }
 /**
- * Prevents oblect cloning
+ * Prevents object cloning
  * @throws Exception
  */
         public function __clone()
         {
-            throw new Exception('Cannot clone Singleton objects');
+            throw new \Exception('Cannot clone Singleton objects');
         }
 /**
  * Prevents object serialization
@@ -79,7 +79,7 @@
  */
         public function __sleep()
         {
-            throw new Exception('Cannot serialize Singleton objects');
+            throw new \Exception('Cannot serialize Singleton objects');
         }
 /**
  * Returns the only instance if is called as a function

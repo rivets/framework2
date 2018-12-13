@@ -27,13 +27,13 @@
         $.post('{{base}}/ajax/bean/user/', data).done(function(ret){
             $('#addu').modal('hide');
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
-            '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
-            '<td>'+mktoggle('confirm', data.confirm)+'</td>'+
-            '<td>'+mktoggle('active', data.active)+'</td>'+
-            '<td>'+mktoggle('admb', data.admin)+'</td>'+
-            '<td>'+mktoggle('devb', data.devel)+'</td>'+
-            '<td><i class="editb far fa-edit"></i></td>' +
-            '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+                '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
+                '<td>'+mktoggle('confirm', data.confirm)+'</td>'+
+                '<td>'+mktoggle('active', data.active)+'</td>'+
+                '<td>'+mktoggle('admb', data.admin)+'</td>'+
+                '<td>'+mktoggle('devb', data.devel)+'</td>'+
+                '<td><i class="editb far fa-edit"></i></td>' +
+                '<td><i class="delb far fa-trash-alt"></i></td></tr>'
             );
             doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }).fail(function(jqXHR, textStatus, errorThrown){

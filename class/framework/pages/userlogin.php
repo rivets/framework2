@@ -60,9 +60,9 @@
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
-            "Please use this link to confirm your email address\n\n\n".
-            Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-            'From: '.Config::SITENOREPLY
+                "Please use this link to confirm your email address\n\n\n".
+                Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+                'From: '.Config::SITENOREPLY
             );
         }
 /**
@@ -77,9 +77,9 @@
         {
             $code = $this->makecode($context, $bn, 'P');
             mail($bn->email, 'Reset your '.Config::SITENAME.' password',
-            "Please use this link to reset your password\n\n\n".
-            Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-            'From: '.Config::SITENOREPLY
+                "Please use this link to reset your password\n\n\n".
+                Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+                'From: '.Config::SITENOREPLY
             );
         }
 /**
@@ -231,7 +231,7 @@
             { # logged in, so this stupid....
             $context->divert('/');
             }
-                $local = $context->local();
+            $local = $context->local();
             $tpl = 'index.twig';
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
@@ -288,13 +288,13 @@
  */
         public function forgot(Context $context) : string
         {
+            $local = $context->local();
             if ($context->hasuser())
             { # logged in, so this stupid....
-                $context->local()->addval('done', TRUE);
-                $context->local()->message(Local::WARNING, 'You are already logged in');
+                $local->addval('done', TRUE);
+                $local->message(Local::WARNING, 'You are already logged in');
                 return '@users/reset.twig';
             }
-            $local = $context->local();
             $fdt = $context->formdata();
             $tpl = 'index.twig';
             $rest = $context->rest();
@@ -346,7 +346,6 @@
                     {
                         $local->message(Local::ERROR, 'Sorry, that code has expired!');
                     }
-
                 }
                 else
                 {
