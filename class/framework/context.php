@@ -24,10 +24,6 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * Value indicating to generate a 400 output from function when value does not exist
- */
-        const R400              = 0;
-/**
  * Value indicating to generate a NULL return from function when value does not exist
  */
         const RNULL             = 1;
@@ -62,7 +58,7 @@
 /**
  * @var boolean		True if authenticated by token
  */
-	protected $tokauth	= FALSE;
+        protected $tokauth	= FALSE;
  /**
  * @var array		A cache for rolename beans
  */
@@ -109,7 +105,7 @@
  *
  * @return array The parameters values in an array indexed from 0
  */
-        public function restcheck(int $count, int $onerror = self::THROW) : array
+        public function restcheck(int $count, int $onerror = self::THROW ) : array
         {
             foreach (range(1, $count) as $ix)
             {
@@ -117,9 +113,6 @@
                 {
                     switch ($onerror)
                     {
-                    case self::R400:
-                        $this->web()->bad('parameter count');
-                        /* NOT REACHED */
                     case self::RTHROW:
                         throw new \Framework\Exception\ParameterCount();
                     default:
@@ -238,6 +231,42 @@
  ***************************************
  */
 /**
+ * Method to handle error returning
+ *
+ * @internal
+ * @see \Framework\Context for failure action constants
+ *
+ * May not actually return;
+ *
+ * @param int       $option     The action to take (constants defined in Context)
+ * @param string    $message    Error message
+ * @param mixed     $dflt       Default value to return
+ *
+ * If the option is throw then $dflt contains the Framework Exception to throw
+ *
+ * @throws Exception
+ * @return NULL
+ */
+        public function failure(int $option, string $message, $dflt = NULL)
+        {
+            switch($option)
+            {
+            case Context::RTHROW:
+                $exc = '\\Framework\\Exception\\'.$dflt;
+                throw new $exc($message);
+
+            case Context::RNULL:
+                return NULL;
+
+            case Context::RDEFAULT:
+                return $dflt;
+
+            case Context::RBOOL:
+                return FALSE;
+            }
+            Web::getinstance()->internal('Bad failure option'); // should never get here
+        }
+/**
  * Generates a new, unique, sequential id value
  *
  * @param string	$str The prefix for the id
@@ -319,11 +348,13 @@
         }
 
 /**
- * Load a bean or fail with a 400 error
+ * Load a bean
  *
  * @param string	$bean	    A bean type name
- * @param int    	$id	    A bean id
- * @param int           $onerror    A flag indicating what to do on error (see constants above)
+ * @param int    	$id	        A bean id
+ * @param int       $onerror    A flag indicating what to do on error (see constants above)
+ *
+ * R::load returns a new bean with id 0 if the given id does not exist.
  *
  * @throws  \Framework\Exception\MissingBean
  * @throws  \InvalidArgumentException - this would be an internal error
@@ -333,22 +364,7 @@
         public function load(string $bean, int $id, int $onerror = self::RTHROW)
         {
             $foo = \R::load($bean, $id);
-            if ($foo->getID() == 0)
-            { # a bean with that id does not exist
-                switch ($onerror)
-                {
-                case self::R400:
-                    $this->web()->bad($bean.' '.$id);
-                    /* NOT REACHED */
-                case self::RNULL:
-                    return NULL;
-                case self::RTHROW:
-                    throw new \Framework\Exception\MissingBean('Missing '.$bean);
-                default:
-                    throw new \InvalidArgumentException('Onerror value');
-                }
-            }
-            return $foo;
+            return $foo->getID() == 0 ? $this->failure($onerror, 'Missing '.$bean, 'MissingBean') : $foo;
         }
 /**
  * Return the local object

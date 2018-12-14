@@ -144,9 +144,6 @@
         {
             switch($option)
             {
-            case Context::R400:
-                Web::getinstance()->bad($message);
-
             case Context::RTHROW:
                 throw new \Framework\Exception\BadValue($message);
 

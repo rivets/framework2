@@ -564,9 +564,6 @@
             {
                 switch ($onerror)
                 {
-                case Context::R400:
-                    $context->web()->noaccess();
-                    /* NOT REACHED */
                 case Context::RTHROW:
                    throw new \Framework\Exception\Forbidden('Permission denied');
                 case Context::RBOOL:
