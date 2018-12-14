@@ -122,6 +122,16 @@
                     <fieldset>
                         <legend>Database Information</legend>
                         <div class="form-group">
+                            <label for="dt" class="control-label">Database Type</label>
+                            <select is="dt" name="dbtype" class="form-control" required="required">
+                                <option value="mysql">MySQL</option>
+                                <option value="mysql">MariaDB</option>
+                                <option value="pgsql">PostgresSQL</option>
+                                <option disabled="disabled">CUBRID</option>
+                                <option disabled="disabled">SQLite</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="dh" class="control-label">Host</label>
                             <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
                         </div>

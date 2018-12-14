@@ -646,7 +646,7 @@
             class_alias('\RedBeanPHP\R','\R');
             if (Config::DBHOST !== '' && $loadrb)
             { # looks like there is a database configured
-                \R::setup('mysql:host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
+                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
                 $this->fwconfig = [];
                 foreach (\R::findAll('fwconfig') as $cnf)

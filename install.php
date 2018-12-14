@@ -157,6 +157,49 @@
  */
         return TRUE;
     }
+/**
+ * Make a new role or context name
+ *
+ * @param string $type
+ * @param string $name
+ *
+ * @ return object
+ */
+    function makerc($type, $name)
+    {
+        $drname = \R::dispense($type);
+        $drname->name = $name;
+        $cname->fixed = 1;
+        \R::store($drname);
+        return $drname;
+    }
+/**
+ * Make a role
+ *
+ * @param string   $now    Now timestamp
+ * @param object   $owner  The owner bean (could be a user or a page for example)
+ * @param object   $cname  The context name
+ *
+ * @return object
+ */
+    function makerole($type, $now, $user, $cname, $rname)
+    {
+        $role = \R::dispense($type);
+        $role->otherinfo = '-';
+        $role->start = $now;
+        $role->end =   $now; # this makes RedBean make it a datetime field
+        \R::store($role);
+        $role->end = NULL; # clear end date as we don't want to time limit admin
+        \R::store($role);
+        $xown = 'xown'.ucfirst($type);
+        $owner->{$xown}[] = $role;
+        $cname->{$xown}[] = $role;
+        $rname->{$xown}[] = $role;
+        \R::store($owner);
+        \R::store($cname);
+        \R::store($rname);
+        return $role;
+    }
     $verbose = isset($_GET['verbose']);
 /*
  * Remember where we are in the file system
@@ -394,6 +437,7 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],
             'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, non-optional, type
             'dbname'        => ['DB', FALSE, TRUE, 'string'],
             'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
@@ -602,11 +646,12 @@
      */
             try
             {
-                $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a weird problem with some XAMPP installations)
+                $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
+                $vals['dbtype'] = $cvalue['dbtype'];
                 $vals['dbhost'] = $cvalue['dbhost'];
                 $vals['dbname'] = $cvalue['dbname'];
                 $vals['dbuser'] = $cvalue['dbuser'];
-                \R::setup('mysql:host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
+                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
                 $user = R::dispense('user');
@@ -628,14 +673,6 @@
                 $user->xownConfirm[] = $conf;
                 \R::store($user);
                 \R::trash($conf);
-    ///**
-    // * Check that timezone setting for PHP has not made the date into the future...
-    // */
-    //            $dt = \R::findOne('user', 'joined > NOW()');
-    //            if (is_object($dt))
-    //            {
-    //                $vals['timezone'] = TRUE;
-    //            }
     /**
      * Save some framework configuration information into the database
      * This will make it easier to remote updating of the system once
@@ -660,53 +697,16 @@
      *
      * These are both granted to the admin user.
      */
-                $cname = \R::dispense('rolecontext');
-                $cname->name = FWCONTEXT;
-                $cname->fixed = 1;
-                \R::store($cname);
+                $cname = makerc('rolecontext', FWCONTEXT);
     // Admin role name
-                $arname = \R::dispense('rolename');
-                $arname->name = ADMINROLE;
-                $arname->fixed = 1;
-                \R::store($arname);
-
-                $role = \R::dispense('role');
-                $role->otherinfo = '-';
-                $role->start = $now;
-                $role->end =   $now; # this makes RedBean make it a datetime field
-                \R::store($role);
-                $role->end = NULL; # clear end date as we don't want to time limit admin
-                \R::store($role);
-                $user->xownRole[] = $role;
-                $cname->xownRole[] = $role;
-                $arname->xownRole[] = $role;
-                \R::store($arname);
+                $arname = makerc('rolename', ADMINROLE);
+                makerole('role', $now, $user, $cname, $arname);
     // Developer Role name
-                $drname = \R::dispense('rolename');
-                $drname->name = DEVELROLE;
-                $cname->fixed = 1;
-                \R::store($drname);
-
-                $role = \R::dispense('role');
-                $role->otherinfo = '-';
-                $role->start = $now;
-                $role->end = NULL; # no end date
-                \R::store($role);
-                $user->xownRole[] = $role;
-                $cname->xownRole[] = $role;
-                $drname->xownRole[] = $role;
-                \R::store($user);
-                \R::store($cname);
-                \R::store($drname);
+                $drname = makerc('rolename', DEVELROLE);    
+                makerole('role', $now, $user, $cname, $drname);
     // Testing role and context
-                $cname = \R::dispense('rolecontext');
-                $cname->name = TESTCONTEXT;
-                $cname->fixed = 1;
-                \R::store($cname);
-                $arname = \R::dispense('rolename');
-                $arname->name = TESTROLE;
-                $arname->fixed = 1;
-                \R::store($arname);
+                $cname = makerc('rolecontext', TESTCONTEXT);
+                $trname = makerc('rolename', TESTROLE);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
      *
@@ -741,33 +741,12 @@
                     \R::store($page);
                     if ($data[2])
                     { // must be an admin
-                        $pagerole = \R::dispense('pagerole');
-                        $pagerole->start = $now;
-                        $pagerole->end = NULL;
-                        $pagerole->otherinfo = '';
-                        \R::store($pagerole);
-                        $page->xownPageRole[] = $pagerole;
-                        $cname->xownPageRole[] = $pagerole;
-                        $arname->xownPageRole[] = $pagerole;
-                        \R::store($page);
-                        \R::store($cname);
-                        \R::store($arname);
+                        makerole('pagerole', $now, $page, $cname, $arname);
                     }
                     if ($data[4])
                     { // must be a developer
-                        $pagerole = \R::dispense('pagerole');
-                        $pagerole->start = $now;
-                        $pagerole->end = NULL;
-                        $pagerole->otherinfo = '';
-                        \R::store($pagerole);
-                        $page->xownPageRole[] = $pagerole;
-                        $cname->xownPageRole[] = $pagerole;
-                        $drname->xownPageRole[] = $pagerole;
-                        \R::store($page);
-                        \R::store($cname);
-                        \R::store($drname);
+                        makerole('pagerole', $now, $page, $cname, $drname);
                     }
-
                 }
                 $tpl = 'success.twig';
             }
