@@ -87,6 +87,8 @@
  *
  * @param object    $context    The context object
  *
+ * @throws \Framework\Exception\BadValue
+ *
  * @return void
  */
         public static function add(Context $context)
@@ -96,7 +98,7 @@
             $bn = \R::findOne('fwconfig', 'name=?', [$name]);
             if (is_object($bn))
             {
-                $context->web()->bad();
+                throw new \Framework\Exception\BadValue('Config item exists');
             }
             $bn = \R::dispense('fwconfig');
             $bn->name = $name;

@@ -59,6 +59,8 @@
  *
  * @param object	$context	The context object for the site
  *
+ * @throws \Framework\Exception\BadValue
+ *
  * @return void
  */
         public static function add(Context $context)
@@ -74,30 +76,22 @@
                 $u->active = 1;
                 $u->confirm = 1;
                 $u->joined = $now;
-                try
+                \R::store($u);
+                $u->setpw($pw); // set the password
+                if ($fdt->post('admin', 0) == 1)
                 {
-                    \R::store($u);
-                    $u->setpw($pw); // set the password
-                    if ($fdt->post('admin', 0) == 1)
-                    {
-                        $u->addrole(Config::FWCONTEXT, Config::ADMINROLE, '', $now);
-                    }
-                    if ($fdt->post('devel', 0) == 1)
-                    {
-                        $u->addrole(Config::FWCONTEXT, Config::DEVELROLE, '', $now);
-                    }
+                    $u->addrole(Config::FWCONTEXT, Config::ADMINROLE, '', $now);
                 }
-                catch (\Framework\Exception\BadValue $e)
+                if ($fdt->post('devel', 0) == 1)
                 {
-                    \R::trash($u); // get rid of the user bean
-                    $context->web()->bad($e->getMessage());
+                    $u->addrole(Config::FWCONTEXT, Config::DEVELROLE, '', $now);
                 }
                 echo $u->getID();
             }
             else
             {
                 // bad password return
-                $context->web()->bad('Invalid Password');
+                throw new \Framework\Exception\BadValue('Invalid Password');
             }
         }
 /**

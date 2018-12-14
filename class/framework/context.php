@@ -260,6 +260,17 @@
             Web::getinstance()->internal('Bad failure option'); // should never get here
         }
 /**
+ * Set up pagination data
+ */
+        public function setpages()
+        {
+            $form = $this->formdata();
+            $this->local()->addval([
+                'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
+                'pagesize'  => $form->filterget('pagesize', 10, FILTER_VALIDATE_INT)
+            ]);
+        }
+/**
  * Generates a new, unique, sequential id value
  *
  * @param string	$str The prefix for the id
@@ -309,7 +320,7 @@
  *
  * @return mixed
  */
-        public function sessioncheck(string $var, bool $fail = TRUE)
+        public function sessioncheck(string $var)
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
@@ -318,10 +329,6 @@
                 {
                     return $_SESSION[$var];
                 }
-            }
-            if ($fail)
-            {
-                $this->web()->noaccess();
             }
             return NULL;
         }
@@ -418,7 +425,7 @@
  */
         public function setup()
         {
-            $this->luser = $this->sessioncheck('user', FALSE); # see if there is a user variable in the session....
+            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
             foreach (getallheaders() as $k => $v)
             {
                 if (self::TOKEN === strtoupper($k))

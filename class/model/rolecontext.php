@@ -39,15 +39,7 @@
             $p = \R::dispense('rolecontext');
             $p->name = $context->formdata()->mustpost('name');
             $p->fixed = 0;
-            try
-            {
-                \R::store($p);
-            }
-            catch (\Framework\Exception\BadValue $e)
-            {
-                $context->web()->bad($e->getmessage());
-                /* NOT REACHED */
-            }
+            \R::store($p);
             echo $p->getID();
         }
     }
