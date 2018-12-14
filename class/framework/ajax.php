@@ -117,7 +117,7 @@
             case 'POST':
                 if (is_object($v))
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('Item already exists');
                 }
                 $v = R::dispense('fwconfig');
                 $v->name = $name;

@@ -109,7 +109,7 @@
  *
  * @return array The parameters values in an array indexed from 0
  */
-        public function restcheck(int $count, int $onerror = self::R400) : array
+        public function restcheck(int $count, int $onerror = self::THROW) : array
         {
             foreach (range(1, $count) as $ix)
             {
