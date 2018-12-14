@@ -101,23 +101,16 @@
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
  * @param integer           $count      The number to check for
- * @param integer           $onerror    What to do on failure
  *
  * @return array The parameters values in an array indexed from 0
  */
-        public function restcheck(int $count, int $onerror = self::THROW ) : array
+        public function restcheck(int $count) : array
         {
             foreach (range(1, $count) as $ix)
             {
                 if (($this->reqrest[$ix] ?? '') === '')
                 {
-                    switch ($onerror)
-                    {
-                    case self::RTHROW:
-                        throw new \Framework\Exception\ParameterCount();
-                    default:
-                        throw new \InvalidArgumentException('Onerror value');
-                    }
+                    throw new \Framework\Exception\ParameterCount();
                 }
             }
             return array_slice($this->reqrest, 1, $count);
@@ -433,7 +426,7 @@
                     try
                     {
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                        $this->luser = $this->load('user', $tok->sub, self::RTHROW);
+                        $this->luser = $this->load('user', $tok->sub);
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.
