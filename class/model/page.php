@@ -54,7 +54,6 @@
                     $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from user as u inner join role as r on u.id = r.user_id inner join '.
                         '(select * from pagerole where page_id=?) as p on p.rolename_id = r.rolename_id and p.rolecontext_id = r.rolecontext_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
-                    \R::debug(FALSE);
                     if (!$match ||                                          // User does not have all the required roles
                         ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
                     {
