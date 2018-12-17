@@ -97,17 +97,17 @@
                 { # not logged in
                     $context->divert('/login?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])));
                     /* NOT REACHED */
-                    if (\R::count('pagerole', 'page_id=?', [$this->bean->getID()]) > 0)
-                    { // there are roles to check
-                        $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from user as u inner join role as r on u.id = r.user_id inner join '.
-                            '(select * from pagerole where page_id=?) as p on p.rolename_id = r.rolename_id and p.rolecontext_id = r.rolecontext_id where u.id=?',
-                            [$this->bean->getID(), $context->user()->getID()]);
-                        if (!$match ||                                          // User does not have all the required roles
-                            ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
-                        {
-                            $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
-                            exit;
-                        }
+                }
+                if (\R::count('pagerole', 'page_id=?', [$this->bean->getID()]) > 0)
+                { // there are roles to check
+                    $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from user as u inner join role as r on u.id = r.user_id inner join '.
+                        '(select * from pagerole where page_id=?) as p on p.rolename_id = r.rolename_id and p.rolecontext_id = r.rolecontext_id where u.id=?',
+                        [$this->bean->getID(), $context->user()->getID()]);
+                    if (!$match ||                                          // User does not have all the required roles
+                        ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
+                    {
+                        $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
+                        exit;
                     }
                 }
             }
