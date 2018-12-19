@@ -26,10 +26,6 @@
  * Value indicating to return default value from function when value does not exist
  */
         const RDEFAULT          =  3;
-/**
- * Value indicating to return a boolean value from function, FALSE if value does not exist
- */
-        const RBOOL             =  4;
 
         use \Framework\Utility\Singleton;
 /**
@@ -167,9 +163,6 @@
 
             case self::RDEFAULT:
                 return $dflt;
-
-            case self::RBOOL:
-                return FALSE;
             }
             Web::getinstance()->internal(); // should never get here
         }
@@ -218,13 +211,12 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int    	$fail	What to do if not defined - constant defined in Context
  *
  * @return mixed
  */
-        public function mustget($name, int $fail = self::RTHROW)
+        public function mustget($name)
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
+            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, self::RTHROW);
         }
 /**
  * Look in the $_GET array for a key and return its trimmed value or a default value
@@ -247,29 +239,27 @@
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
- * @param int    	$fail	What to do if not defined - constant defined in Context
  *
  * @return ?object
  */
-        public function mustgetbean($name, $bean, int $fail = self::RTHROW)
+        public function mustgetbean($name, $bean)
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail), $fail);
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, self::RTHROW), $fail);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int   	$fail	if the key does not exist - see Context::load
  *
  * @return \ArrayIterator
  */
-        public function mustgeta($name, int $fail = self::RTHROW)
+        public function mustgeta($name)
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            return $this->failure($fail, 'Missing get array');
+            return $this->failure(self::RTHROW, 'Missing get array');
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -309,13 +299,12 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int 	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
  */
-        public function mustpost(string $name, int $fail = self::RTHROW)
+        public function mustpost(string $name)
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
+            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, self::RTHROW);
         }
 
 /**
@@ -339,13 +328,12 @@
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
- * @param int    	$fail	What to do if not defined - constant defined in Context
  *
  * @return ?object
  */
-        public function mustpostbean($name, $bean, int $fail = self::RTHROW)
+        public function mustpostbean($name, $bean)
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, $fail), $fail);
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, self::RTHROW));
         }
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
@@ -355,13 +343,13 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta(string $name, int $fail = self::RTHROW) : \ArrayIterator
+        public function mustposta(string $name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure($fail, 'Missing post array');
+            return $this->failure(self::RTHROW, 'Missing post array');
         }
 /**
  * Look in the $_POST array for a key that is an array and return an
@@ -400,11 +388,10 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int	$fail	Fail if the key does not exist in the array - see Context::load
  *
  * @return mixed
  */
-        public function mustput($name, int $fail = self::RTHROW)
+        public function mustput($name)
         {
             $this->setput();
             if (is_array($name))
@@ -412,14 +399,14 @@
                 if (isset($this->putdata[$name[0]]))
                 {
                     $n = array_shift($name);
-                    return $this->getval($this->putdata[$n], $name, NULL, $fail);
+                    return $this->getval($this->putdata[$n], $name, NULL, self::RTHROW);
                 }
             }
             elseif (isset($this->putdata[$name]))
             {
                 return trim($this->putdata[$name]);
             }
-            return $this->failure($fail, 'Missing put/patch item');
+            return $this->failure(self::RTHROW, 'Missing put/patch item');
        }
 /**
  * Get php://input data, check array for an id and return its bean
@@ -428,13 +415,12 @@
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
- * @param int    	$fail	What to do if not defined - constant defined in Context
  *
  * @return ?object
  */
-        public function mustputbean($name, $bean, int $fail = self::RTHROW)
+        public function mustputbean($name, $bean)
         {
-            return Context::getinstance()->load($bean, $this->mustput($name, NULL, $fail), $fail);
+            return Context::getinstance()->load($bean, $this->mustput($name, NULL));
         }
 /**
  * Get php://input data, check arrayfor a key and return its trimmed value or a default value
@@ -473,9 +459,9 @@
  *
  * @return mixed
  */
-        public function mustcookie(string $name, int $fail = self::RTHROW)
+        public function mustcookie(string $name)
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, self::RTHROW);
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
