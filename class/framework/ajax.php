@@ -203,7 +203,7 @@
             $type = $fdt->mustpost('bean');
             $field = $fdt->mustpost('field');
 
-            $bn = $context->load($type, $fdt->mustpost('id'), Context::R400);
+            $bn = $context->load($type, $fdt->mustpost('id'));
             if ($type === 'user' && ctype_upper($field[0]))
             { # not simple toggling...
                 if (is_object($bn->hasrole('Site', $field)))
