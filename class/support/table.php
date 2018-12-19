@@ -98,12 +98,12 @@
         {
             if (count($rest) >= 4)
             {
-                $bn = $context->load($rest[2], $rest[3], \Framework\Context::RNULL);
-                if (is_object($bn))
+                try
                 {
+                    $bn = $context->load($rest[2], $rest[3]);
                     $context->local()->addval('object', $bn);
                 }
-                else
+                catch (\Framework\Exception\MissingBean $e)
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'Object does not exist');
                 }
