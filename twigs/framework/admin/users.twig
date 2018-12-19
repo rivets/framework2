@@ -13,9 +13,27 @@
     <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
 
+{% block setup %}
+    function goedit(e, x, t)
+    {
+        var tr = x.parent().parent();
+        window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';    
+    }
+    var btype = 'user';
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['admb', dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],
+        ['confirm', dotoggle, 'confirm'],
+        ['active', dotoggle, 'active'],
+        ['devb', '{{constant('\\Config\\Config::DEVELROLE')}}'],
+        ['editb', goedit]
+    ];
+{% endblock setup %}
+
 {% block onload %}
     $('#adduform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
+        e.preventDefault();
         var data = {admin : 0, devel : 0};
         var frm = $('#adduform');
         $('input:checked', frm).each(function(index, element){
@@ -41,31 +59,14 @@
         });
     });
     $('#utab').on('click', function(e){
+        e.preventDefault();
         var x = $(e.target);
-        if (x.hasClass('delb'))
+        for (var ix in clicks)
         {
-            dodelbean(e, x, 'user');
-        }
-        else if (x.hasClass('editb'))
-        {
-            var tr = x.parent().parent();
-            window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';
-        }
-        else if (x.hasClass('admb'))
-        {
-            dotoggle(e, x, 'user', '{{constant('\\Config\\Config::ADMINROLE')}}');
-        }
-        else if (x.hasClass('confirm'))
-        {
-            dotoggle(e, x, 'user', 'confirm');
-        }
-        else if (x.hasClass('active'))
-        {
-            dotoggle(e, x, 'user', 'active');
-        }
-        else if (x.hasClass('devb'))
-        {
-            dotoggle(e, x, 'user', '{{constant('\\Config\\Config::DEVELROLE')}}');
+            if (x.hasClass(clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, btype, clicks[ix][2]);
+            }
         }
     });
 {% endblock onload %}
