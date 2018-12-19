@@ -28,7 +28,7 @@
             $rest = $context->rest();
             switch ($rest[0])
             {
-            case 'assert' : // failed assertion
+            case 'assert': // failed assertion
                 assert(TRUE == FALSE);
                 break;
 
@@ -58,16 +58,6 @@
                 $foo = mail($context->user()->email, 'test', 'test');
                 $context->local()->message(\Framework\Local::MESSAGE, 'sent');
                 break;
-/*
-            case 'errlog' : # this will show you the contents of the PHP error log file.
-                $context->local()->addval('errlog', file_get_contents(Config::PHPLOG));
-                exit;
-
-            case 'clearlog' :
-                fclose(fopen(Config::PHPLOG, 'w'));
-                $context->local()->message(Local::MESSAGE, 'Log Cleared');
-                break;
-*/
             }
             return $tpl;
         }
