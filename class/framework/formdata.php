@@ -14,19 +14,6 @@
  */
     class Formdata
     {
-/**
- * Value indicating to generate a NULL return from function when value does not exist
- */
-        const RNULL             = 1;
-/**
- * Value indicating to throw an error from function when value does not exist
- */
-        const RTHROW            = 2;
-/**
- * Value indicating to return default value from function when value does not exist
- */
-        const RDEFAULT          =  3;
-
         use \Framework\Utility\Singleton;
 /**
  * @var string    Holds data read from php://input
@@ -116,18 +103,23 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
+ * @param boolean   $throw      If TRUE Then throw an exception
  *
  * @throws Exception
  * @return string
  */
-        private function getval(array $porg, array $keys, $default = NULL, $onerror = self::RDEFAULT) : string
+        private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
         {
-            while (TRUE)
+            while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
                 if (!isset($porg[$key]))
                 {
-                    return $this->failure($onerror, 'Missing form array item', $default);
+                    if ($throw)
+                    {
+                        throw new \Framework\Exception\BadValue('Missing form array item');
+                    }
+                    return $default;
                 }
                 $val = $porg[$key];
                 if (empty($keys))
@@ -135,36 +127,6 @@
                     return trim($val);
                 }
             }
-        }
-/**
- * Method to handle error returning
- *
- * @internal
- * @see \Framework\Context for failure action constants
- *
- * May not actually return;
- *
- * @param int       $option     The action to take (constants defined in Context)
- * @param string    $message    Error message
- * @param mixed     $dflt       Default value to return
- *
- * @throws Exception
- * @return NULL
- */
-        private function failure(int $option, string $message, $dflt = NULL)
-        {
-            switch($option)
-            {
-            case self::RTHROW:
-                throw new \Framework\Exception\BadValue($message);
-
-            case self::RNULL:
-                return NULL;
-
-            case self::RDEFAULT:
-                return $dflt;
-            }
-            Web::getinstance()->internal(); // should never get here
         }
 /**
  * Pick out and treat a value
@@ -175,12 +137,12 @@
  * @param array     $arr        The array to pick value from
  * @param mixed     $name       The string name of the entry or [name, selector,...]
  * @param mixed     $dflt       A default value to return
- * @param int       $fail       What to do if not defined - constant defined in Context
+ * @param boolean   $throw      What to do if not defined - constant defined in Context
  *
  * @throws Exception
  * @return mixed
  */
-        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = self::RTHROW)
+        private function fetchit(int $filter, array $arr, $name, $dflt = '', bool $throw = TRUE)
         {
             if (is_array($name))
             {
@@ -189,16 +151,27 @@
                 { // the entry is there
                     return $this->getval($arr[$n], $name, NULL, $fail);
                 }
+                if ($throw)
+                {
+                    throw new \Framework\Exception\BadValue('Missing form item '.$n.'['.$name[0].']');
+                }
             }
             elseif (filter_has_var($filter, $name))
             {
-                if (is_array($arr[$name]))
+                if (!is_array($arr[$name]))
                 {
-                    return $this->failure($fail, $name.' is array', $dflt);
+                    return trim($arr[$name]);
                 }
-                return trim($arr[$name]);
+                if ($throw)
+                {
+                    throw new \Framework\Exception\BadValue($name.' is array');
+                }
             }
-            return $this->failure($fail, 'Missing form item '.(is_array($name) ? ($n.'['.$name[0].']') : $name), $dflt);
+            elseif ($throw)
+            {
+                throw new \Framework\Exception\BadValue('Missing form item '.$n);
+            }
+            return $dflt;
         }
 /*
  ***************************************
@@ -216,7 +189,7 @@
  */
         public function mustget($name)
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, self::RTHROW);
+            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE);
         }
 /**
  * Look in the $_GET array for a key and return its trimmed value or a default value
@@ -230,7 +203,7 @@
  */
         public function get($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, self::RDEFAULT);
+            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, FALSE);
         }
 /**
  * Look in the $_GET array for a key that is an id for a bean
@@ -244,7 +217,7 @@
  */
         public function mustgetbean($name, $bean)
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, self::RTHROW), $fail);
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE));
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -259,7 +232,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            return $this->failure(self::RTHROW, 'Missing get array');
+            throw new \Framework\Excetion\BadValue('Missing get array');
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -304,7 +277,7 @@
  */
         public function mustpost(string $name)
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, self::RTHROW);
+            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, TRUE);
         }
 
 /**
@@ -319,7 +292,7 @@
  */
         public function post($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, self::RDEFAULT);
+            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, FALSE);
         }
 /**
  * Look in the $_POST array for a key that is an id for a bean
@@ -333,7 +306,7 @@
  */
         public function mustpostbean($name, $bean)
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, self::RTHROW));
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, TRUE));
         }
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
@@ -349,7 +322,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure(self::RTHROW, 'Missing post array');
+            throw new \Framework\Exception\BadValue('Missing post array');
         }
 /**
  * Look in the $_POST array for a key that is an array and return an
@@ -399,14 +372,14 @@
                 if (isset($this->putdata[$name[0]]))
                 {
                     $n = array_shift($name);
-                    return $this->getval($this->putdata[$n], $name, NULL, self::RTHROW);
+                    return $this->getval($this->putdata[$n], $name, NULL, TRUE);
                 }
             }
             elseif (isset($this->putdata[$name]))
             {
                 return trim($this->putdata[$name]);
             }
-            return $this->failure(self::RTHROW, 'Missing put/patch item');
+            throw new \Framework\Exception\BadValue('Missing put/patch item');
        }
 /**
  * Get php://input data, check array for an id and return its bean
@@ -455,13 +428,12 @@
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
  * @param string     $name The cookie name
- * @param int        $fail Action to take on failure
  *
  * @return mixed
  */
         public function mustcookie(string $name)
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, self::RTHROW);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, TRUE);
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
@@ -473,23 +445,22 @@
  */
         public function cookie(string $name, $dflt = '')
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, self::RDEFAULT);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param int   	$fail	What to do if not defined - constant defined in Context
  *
  * @return \ArrayIterator
  */
-        public function mustcookiea(string $name, int $fail = self::RTHROW) : \ArrayIterator
+        public function mustcookiea(string $name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure($fail, 'Missing cookie array');
+            throw new \Framework\Exception\BadValue('Missing cookie array item '.$name);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
