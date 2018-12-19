@@ -177,26 +177,26 @@
         $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new page</h3>'+jqXHR.responseText);
         });
-    })
+    });
     $('#ptab').on('click', function(e){
-        var x = $(e.target)
+        var x = $(e.target);
         for (var ix in clicks)
         {
             if (x.hasClass(clicks[ix][0]))
             {
-                clicks[ix][1](e, x, 'page', clicks[ix][2])
+                clicks[ix][1](e, x, 'page', clicks[ix][2]);
             }
         }
-    })
+    });
     $('#npage').on('show.bs.modal', function(e){
-        $('#npform input,select').val('')
-    })
+        $('#npform input,select').val('');
+    });
     $('#more').on('click', function(e){
-        e.preventDefault()
-        $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the new inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+        e.preventDefault();
+        $('#mrow').before($('#example').clone());
+        $('input,textarea,select', $('#mrow').prev()).val(''); // clear the new inputs
+        $('option', $('#mrow').prev()).prop('selected', false); // clear any selections
+    });
 {% endblock onload %}
 
 {% if not page is defined %}
