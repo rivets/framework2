@@ -81,10 +81,7 @@
         {
             $context->web()->bad($e->getMessage());
         }
-        catch(\Exception $e)
-        { // any other exception - this will be a framework internal error
-            $context->web()->internal($e->getMessage());
-        }
+
         if (is_array($tpl))
         { // page is returning more than just a template filename
             list($tpl, $mime, $code) = $tpl;
