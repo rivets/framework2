@@ -153,7 +153,7 @@
                 }
                 if ($throw)
                 {
-                    throw new \Framework\Exception\BadValue('Missing form item '.$n.'['.$name[0].']');
+                    throw new \Framework\Exception\BadValue('Missing item '.$n.'['.$name[0].']');
                 }
             }
             elseif (filter_has_var($filter, $name))
@@ -169,7 +169,7 @@
             }
             elseif ($throw)
             {
-                throw new \Framework\Exception\BadValue('Missing form item '.$n);
+                throw new \Framework\Exception\BadValue('Missing item '.$n);
             }
             return $dflt;
         }
