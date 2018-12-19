@@ -197,15 +197,15 @@
                         $updated[$cname] = $cdata->value;
                     }
                 }
+                if (isset($upd->message))
+                { // there is a message about the update
+                    $context->local()->message(\Framework\Local::MESSAGE, $upd->message);
+                }
                 $context->local()->addval([
                     'version'   => $upd->version,
                     'updated'   => $updated,
-                    'current'   => trim(file_get_contents($context->local()->makebasepath('version.txt')))
+                    'current'   => trim(file_get_contents($context->local()->makebasepath('version.txt'))),
                 ]);
-            }
-            else
-            {
-                $context->local()->addval('nozip', TRUE);
             }
             return '@admin/update.twig';
         }
@@ -219,6 +219,7 @@
         public function handle(Context $context)
         {
             $rest = $context->rest();
+            $context->setpages(); // most of hte pages use pagination so get values if any
             switch ($rest[0])
             {
             case 'beans':
@@ -226,7 +227,6 @@
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum':
-                $this->checksum($context);
                 $context->local()->message(\Framework\Local::MESSAGE, 'Done');
                 $tpl = '@admin/admin.twig';
                 break;
