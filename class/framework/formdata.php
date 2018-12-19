@@ -105,7 +105,8 @@
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param boolean   $throw      If TRUE Then throw an exception
  *
- * @throws Exception
+ * @throws \Framework\Exception\BadValue
+ *
  * @return string
  */
         private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
@@ -139,7 +140,7 @@
  * @param mixed     $dflt       A default value to return
  * @param boolean   $throw      What to do if not defined - constant defined in Context
  *
- * @throws Exception
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         private function fetchit(int $filter, array $arr, $name, $dflt = '', bool $throw = TRUE)
@@ -185,6 +186,7 @@
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustget($name)
@@ -199,6 +201,7 @@
  * @param mixed	    $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param mixed	    $dflt	Returned if the key does not exist
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function get($name, $dflt = '')
@@ -213,6 +216,7 @@
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
  *
+ * @throws \Framework\Exception\BadValue
  * @return ?object
  */
         public function mustgetbean($name, $bean)
@@ -224,6 +228,7 @@
  *
  * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
+ * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
  */
         public function mustgeta($name)
@@ -273,6 +278,7 @@
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustpost(string $name)
@@ -302,6 +308,7 @@
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
  *
+ * @throws \Framework\Exception\BadValue
  * @return ?object
  */
         public function mustpostbean($name, $bean)
@@ -314,6 +321,7 @@
  * @param string	$name	The key
  * @param int   	$fail	What to do if not defined - constant defined in Context
  *
+ * @throws \Framework\Exception\BadValue
  * @return ArrayIterator
  */
         public function mustposta(string $name) : \ArrayIterator
@@ -362,6 +370,7 @@
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustput($name)
@@ -389,6 +398,7 @@
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string        $bean   The bean type
  *
+ * @throws \Framework\Exception\BadValue
  * @return ?object
  */
         public function mustputbean($name, $bean)
@@ -429,6 +439,7 @@
  *
  * @param string     $name The cookie name
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustcookie(string $name)
@@ -452,6 +463,7 @@
  *
  * @param string	$name	The key
  *
+ * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
  */
         public function mustcookiea(string $name) : \ArrayIterator
