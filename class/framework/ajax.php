@@ -161,9 +161,14 @@
         {
             foreach ($perms as $bpd)
             {
-                if ($this->checkPerms($context, $bpd[0], FormData::RBOOL)) // make sure we are allowed
+                try
                 {
+                    $this->checkPerms($context, $bpd[0]); // make sure we are allowed
                     return $bpd[1];
+                }
+                catch (\Framework\Exception\Forbidden $e)
+                {
+                    // void go round and try the next item in the array
                 }
             }
             throw new \Framework\Exception\Forbidden('Permission Denied');
@@ -531,16 +536,13 @@
  * @internal
  * @param object    $context  The Context bject
  * @param array     $perms    The permission array
- * @param integer   $onerror  What to do if access is forbidden
  *
  * @throws \Framework\Exception\Forbidden
- * @throws \InvalidArgumentException
  *
- * @return boolean or may not return at all
+ * @return void
  */
-        protected final function checkPerms(Context $context, array $perms, int $onerror = FormData::RTHROW) : bool
+        protected final function checkPerms(Context $context, array $perms)
         {
-            $ok = TRUE;
             foreach ($perms as $rcs)
             {
                 if (is_array($rcs[0]))
@@ -552,28 +554,13 @@
                             continue 2;
                         }
                     }
-                    $ok = FALSE; // none TRUE so forbidden
-                    break;
+                    throw new \Framework\Exception\Forbidden('Permission denied');
                 }
                 elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
                 {
-                    $ok = FALSE; // not TRUE so forbidden
-                    break;
+                    throw new \Framework\Exception\Forbidden('Permission denied');
                 }
             }
-            if (!$ok)
-            {
-                switch ($onerror)
-                {
-                case FormData::RTHROW:
-                   throw new \Framework\Exception\Forbidden('Permission denied');
-                case FormData::RBOOL:
-                    return FALSE;
-                default:
-                    throw new \InvalidArgumentException('Onerror value');
-                }
-            }
-            return TRUE;
         }
 /**
  * Check that the caller is allowed to perform the operation.
@@ -591,7 +578,7 @@
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            return $this->checkPerms($context, $perms, FormData::RTHROW);
+            return $this->checkPerms($context, $perms);
         }
 /**
  * Handle AJAX operations
