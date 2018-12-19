@@ -17,6 +17,7 @@
     use \R as R;
     use \Support\Context as Context;
     use \Config\Config as Config;
+    use \Framework\Formdata as FormData;
 /**
  * Handle Ajax operations in this class
  */
@@ -160,7 +161,7 @@
         {
             foreach ($perms as $bpd)
             {
-                if ($this->checkPerms($context, $bpd[0], Context::RBOOL)) // make sure we are allowed
+                if ($this->checkPerms($context, $bpd[0], FormData::RBOOL)) // make sure we are allowed
                 {
                     return $bpd[1];
                 }
@@ -195,7 +196,7 @@
                 $bid = $fdt->mustpost('id');
             }
 
-            $bn = $context->load($type, $bid, Context::RTHROW);
+            $bn = $context->load($type, $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(Config::FWCONTEXT, $field)))
@@ -537,7 +538,7 @@
  *
  * @return boolean or may not return at all
  */
-        protected final function checkPerms(Context $context, array $perms, int $onerror = Context::RTHROW) : bool
+        protected final function checkPerms(Context $context, array $perms, int $onerror = FormData::RTHROW) : bool
         {
             $ok = TRUE;
             foreach ($perms as $rcs)
@@ -564,9 +565,9 @@
             {
                 switch ($onerror)
                 {
-                case Context::RTHROW:
+                case FormData::RTHROW:
                    throw new \Framework\Exception\Forbidden('Permission denied');
-                case Context::RBOOL:
+                case FormData::RBOOL:
                     return FALSE;
                 default:
                     throw new \InvalidArgumentException('Onerror value');
@@ -590,7 +591,7 @@
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            return $this->checkPerms($context, $perms, Context::RTHROW);
+            return $this->checkPerms($context, $perms, FormData::RTHROW);
         }
 /**
  * Handle AJAX operations

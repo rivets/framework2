@@ -14,6 +14,23 @@
  */
     class Formdata
     {
+/**
+ * Value indicating to generate a NULL return from function when value does not exist
+ */
+        const RNULL             = 1;
+/**
+ * Value indicating to throw an error from function when value does not exist
+ */
+        const RTHROW            = 2;
+/**
+ * Value indicating to return default value from function when value does not exist
+ */
+        const RDEFAULT          =  3;
+/**
+ * Value indicating to return a boolean value from function, FALSE if value does not exist
+ */
+        const RBOOL             =  4;
+
         use \Framework\Utility\Singleton;
 /**
  * @var string    Holds data read from php://input
@@ -103,19 +120,18 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param int       $fail       Failure action
  *
  * @throws Exception
  * @return string
  */
-        private function getval(array $porg, array $keys, $default = NULL, int $fail = Context::RDEFAULT) : string
+        private function getval(array $porg, array $keys, $default = NULL, $onerror = self::RDEFAULT) : string
         {
             while (TRUE)
             {
                 $key = array_shift($keys);
                 if (!isset($porg[$key]))
                 {
-                    break;
+                    return $this->failure($onerror, 'Missing form array item', $default);
                 }
                 $val = $porg[$key];
                 if (empty($keys))
@@ -123,7 +139,6 @@
                     return trim($val);
                 }
             }
-            return $this->failure($fail, 'Missing form array item', $default);
         }
 /**
  * Method to handle error returning
@@ -144,16 +159,16 @@
         {
             switch($option)
             {
-            case Context::RTHROW:
+            case self::RTHROW:
                 throw new \Framework\Exception\BadValue($message);
 
-            case Context::RNULL:
+            case self::RNULL:
                 return NULL;
 
-            case Context::RDEFAULT:
+            case self::RDEFAULT:
                 return $dflt;
 
-            case Context::RBOOL:
+            case self::RBOOL:
                 return FALSE;
             }
             Web::getinstance()->internal(); // should never get here
@@ -172,7 +187,7 @@
  * @throws Exception
  * @return mixed
  */
-        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = Context::RTHROW)
+        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = self::RTHROW)
         {
             if (is_array($name))
             {
@@ -207,7 +222,7 @@
  *
  * @return mixed
  */
-        public function mustget($name, int $fail = Context::RTHROW)
+        public function mustget($name, int $fail = self::RTHROW)
         {
             return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
         }
@@ -223,7 +238,7 @@
  */
         public function get($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, self::RDEFAULT);
         }
 /**
  * Look in the $_GET array for a key that is an id for a bean
@@ -236,7 +251,7 @@
  *
  * @return ?object
  */
-        public function mustgetbean($name, $bean, int $fail = Context::RTHROW)
+        public function mustgetbean($name, $bean, int $fail = self::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail), $fail);
         }
@@ -248,7 +263,7 @@
  *
  * @return \ArrayIterator
  */
-        public function mustgeta($name, int $fail = Context::RTHROW)
+        public function mustgeta($name, int $fail = self::RTHROW)
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
@@ -298,7 +313,7 @@
  *
  * @return mixed
  */
-        public function mustpost(string $name, int $fail = Context::RTHROW)
+        public function mustpost(string $name, int $fail = self::RTHROW)
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
         }
@@ -315,7 +330,7 @@
  */
         public function post($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, self::RDEFAULT);
         }
 /**
  * Look in the $_POST array for a key that is an id for a bean
@@ -328,7 +343,7 @@
  *
  * @return ?object
  */
-        public function mustpostbean($name, $bean, int $fail = Context::RTHROW)
+        public function mustpostbean($name, $bean, int $fail = self::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, $fail), $fail);
         }
@@ -340,7 +355,7 @@
  *
  * @return ArrayIterator
  */
-        public function mustposta(string $name, int $fail = Context::RTHROW) : \ArrayIterator
+        public function mustposta(string $name, int $fail = self::RTHROW) : \ArrayIterator
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
@@ -389,7 +404,7 @@
  *
  * @return mixed
  */
-        public function mustput($name, int $fail = Context::RTHROW)
+        public function mustput($name, int $fail = self::RTHROW)
         {
             $this->setput();
             if (is_array($name))
@@ -417,7 +432,7 @@
  *
  * @return ?object
  */
-        public function mustputbean($name, $bean, int $fail = Context::RTHROW)
+        public function mustputbean($name, $bean, int $fail = self::RTHROW)
         {
             return Context::getinstance()->load($bean, $this->mustput($name, NULL, $fail), $fail);
         }
@@ -458,7 +473,7 @@
  *
  * @return mixed
  */
-        public function mustcookie(string $name, int $fail = Context::RTHROW)
+        public function mustcookie(string $name, int $fail = self::RTHROW)
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
         }
@@ -472,7 +487,7 @@
  */
         public function cookie(string $name, $dflt = '')
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, self::RDEFAULT);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
@@ -482,7 +497,7 @@
  *
  * @return \ArrayIterator
  */
-        public function mustcookiea(string $name, int $fail = Context::RTHROW) : \ArrayIterator
+        public function mustcookiea(string $name, int $fail = self::RTHROW) : \ArrayIterator
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {

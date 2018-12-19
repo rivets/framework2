@@ -24,22 +24,6 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * Value indicating to generate a NULL return from function when value does not exist
- */
-        const RNULL             = 1;
-/**
- * Value indicating to throw an error from function when value does not exist
- */
-        const RTHROW            = 2;
-/**
- * Value indicating to return default value from function when value does not exist
- */
-        const RDEFAULT          =  3;
-/**
- * Value indicating to return a boolean value from function, FALSE if value does not exist
- */
-        const RBOOL             =  4;
-/**
  * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
  */
         protected $luser	= NULL;
@@ -224,42 +208,6 @@
  ***************************************
  */
 /**
- * Method to handle error returning
- *
- * @internal
- * @see \Framework\Context for failure action constants
- *
- * May not actually return;
- *
- * @param int       $option     The action to take (constants defined in Context)
- * @param string    $message    Error message
- * @param mixed     $dflt       Default value to return
- *
- * If the option is throw then $dflt contains the Framework Exception to throw
- *
- * @throws Exception
- * @return NULL
- */
-        public function failure(int $option, string $message, $dflt = NULL)
-        {
-            switch($option)
-            {
-            case Context::RTHROW:
-                $exc = '\\Framework\\Exception\\'.$dflt;
-                throw new $exc($message);
-
-            case Context::RNULL:
-                return NULL;
-
-            case Context::RDEFAULT:
-                return $dflt;
-
-            case Context::RBOOL:
-                return FALSE;
-            }
-            Web::getinstance()->internal('Bad failure option'); // should never get here
-        }
-/**
  * Set up pagination data
  */
         public function setpages()
@@ -352,7 +300,6 @@
  *
  * @param string	$bean	    A bean type name
  * @param int    	$id	        A bean id
- * @param int       $onerror    A flag indicating what to do on error (see constants above)
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *
@@ -361,10 +308,15 @@
  *
  * @return object
  */
-        public function load(string $bean, int $id, int $onerror = self::RTHROW)
+        public function load(string $bean, int $id)
         {
             $foo = \R::load($bean, $id);
-            return $foo->getID() == 0 ? $this->failure($onerror, 'Missing '.$bean, 'MissingBean') : $foo;
+            if ($foo->getID() == 0)
+            {
+                $exc = '\\Framework\\Exception\\'.$dflt;
+                throw new \Framework\Exception\MissingBean('Missing '.$bean);                
+            }
+            return $foo;
         }
 /**
  * Return the local object
