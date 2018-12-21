@@ -59,15 +59,15 @@
         });
     }
 
-    function tableClick(e)
+    function tableClick(event)
     {
-        e.preventDefault();
-        var x = $(e.target);
-        for (var ix in e.data.clicks)
+        event.preventDefault();
+        var x = $(event.target);
+        for (var ix in event.data.clicks)
         {
-            if (x.hasClass(e.data.clicks[ix][0]))
+            if (x.hasClass(event.data.clicks[ix][0]))
             {
-                clicks[ix][1](e, x, e.data.bean, e.data.clicks[ix][2]);
+                event.data.clicks[ix][1](event, x, event.data.bean, event.data.clicks[ix][2]);
             }
         }
     }
