@@ -184,14 +184,9 @@
     });
     $('#ptab').on('click', {bean: 'page', clicks: clicks}, tableClick);
     $('#npage').on('show.bs.modal', function(e){
-        $('#npform input,select').val('');
+        $('#npform option').attr('selected', false)
     });
-    $('#more').on('click', function(e){
-        e.preventDefault();
-        $('#mrow').before($('#example').clone());
-        $('input,textarea,select', $('#mrow').prev()).val(''); // clear the new inputs
-        $('option', $('#mrow').prev()).prop('selected', false); // clear any selections
-    });
+    $('#more').on('click', addMore);
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -244,8 +239,7 @@
             <p>{{m.invoke('npage', 'Add Page')}}</p>
         </article>
     </section>
-    {{m.start('npage')}}
-    {{m.header({title: 'New Page'})}}
+    {{m.open({id: 'npage', title: 'New Page'})}}
     <div class="modal-body">
         <form action="#" method="POST" id="npform">
             {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
@@ -308,8 +302,7 @@
             </fieldset>
         </form>
     </div>
-    {{m.footer({action: 'Add', id: 'addb'})}}
-    {{m.end()}}
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}
