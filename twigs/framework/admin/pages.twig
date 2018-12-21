@@ -87,7 +87,7 @@
     })
     $('#addb').on('click', function(e){
         e.preventDefault();
-        $(this).attr('disabled', true);
+        $(this).attr('disabled', true); // disable submit button
         var pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
@@ -180,11 +180,7 @@
                 dt[sel[n]+'['+inx+']'] = $(this).val();
             });
         }
-        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('<h3>Failed to create new page</h3>'+jqXHR.responseText);
-        }).always(function(e){
-            $('#addb').attr('disabled', false);
-        });
+        beanCreate('page', fn, '#addb');
     });
     $('#ptab').on('click', {bean: 'page', clicks: clicks}, tableClick);
     $('#npage').on('show.bs.modal', function(e){

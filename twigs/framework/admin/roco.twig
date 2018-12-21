@@ -14,14 +14,22 @@
 
 {% set ctype = type|capitalize %}
 
+{% block setup %}
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['fixed', dotoggle, 'fixed'],
+    ]
+{% endblock setup %}
+
 {% block onload %}
     $('#nrform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         e.preventDefault();
+        $(this).attr('disabled', true);
         var pn = $('#nrname').val();
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid {{type}} name. Letters and numbers only');
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
             return;
         }
         var sp = null;
@@ -41,7 +49,8 @@
         });
         if (error)
         {
-            bootbox.alert('That {{type}} name already exists');
+            bootbox.alert('That {{beantype}} name already exists');
+            $(this).attr('disabled', false);
             return;
         }
         $('#nroco').modal('hide');
@@ -60,20 +69,13 @@
         }).done(function(data){
                nx.data('id', data)
         }).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('<h3>Failed to create new {{type}} name</h3>'+jqXHR.responseText);
+            bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
+        }).always(function(e){
+            $('#addb').attr('disabled', false);
         });
     });
-    $('#rtab').on('click', function(e){
-            var x = $(e.target)
-        if (x.hasClass('delb'))
-        {
-                dodelbean(e, x, '{{beantype}}');
-        }
-        else if (x.hasClass('fixed'))
-        {
-            dotoggle(e, x, '{{beantype}}', 'fixed');
-        }
-    });
+    $('#rtab').on('click', {bean: '{{beantype}}', clicks: clicks}, tableClick);
+
     $('#nroco').on('show.bs.modal', function(e){
         $('#nrform input').val('');
     });

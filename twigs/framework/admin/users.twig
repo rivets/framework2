@@ -37,7 +37,7 @@
         $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val();
         });
-        $.post('{{base}}/ajax/bean/user/', data).done(function(ret){
+        beanCreate('user', function(ret){
             $('#addu').modal('hide');
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
@@ -49,11 +49,7 @@
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>'
             );
             doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
-        }).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('<h3>Failed to create new user</h3>'+jqXHR.responseText);
-        }).always(function(e){
-            $('#addb').attr('disabled', false);
-        });
+        }, '#addb');
     });
     $('#utab').on('click', {bean: 'user', clicks: clicks}, tableClick);
 {% endblock onload %}

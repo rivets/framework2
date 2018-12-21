@@ -77,4 +77,17 @@
         window.location.href = base+'/admin/edit/'+t+'/' + x.parent().parent().data('id') + '/';
     }
 
+    function goview(e, x, t)
+    {
+        window.location.href = base+'/admin/view/'+t+'/' + x.parent().parent().data('id') + '/';
+    }
+
+    function beanCreate(bean, fn, button)
+    {
+        $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
+            bootbox.alert('<h3>Failed to create new '+bean+' failed<h3>'+jx.responseText);
+        }).always(function(e){
+            $(button).attr('disabled', false);
+        });
+    }
 

@@ -12,9 +12,19 @@
     <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
 
+{% block setup %}
+    var clicks = [
+        ['delb', dodelbean, ''],
+        ['editb', goedit],
+        ['viewb', goview],
+    ]
+{% endblock setup %}
+
 {% block onload %}
     $('#addfform').on('submit', false).parsley()
     $('#addb').on('click', function(e){
+        e.preventDefault();
+        $(this).attr('disabled', true); // disable submit button
         var data = {}
         var frm = $('#addfform')
         $('input:checked', frm).each(function(index, element){
@@ -23,7 +33,7 @@
         $('input:text', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val()
         })
-        $.post('{{base}}/ajax/bean/form/', data).done(function(ret){
+        beanCreate('form', function(ret){
             $('#addf').modal('hide')
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
                 '<td>' + data.action + '</td>' +
@@ -34,27 +44,9 @@
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>'
             )
             doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
-        }).fail(function(jx){
-            bootbox.alert('<h3>Creation of new Form failed<h3>'+jx.responseText);
-        });
+        }, '#addb');
     })
-    $('#utab').on('click', function(e){
-        var x = $(e.target)
-	if (x.hasClass('delb'))
-	{
-            dodelbean(e, x, 'form');
-	}
-	else if (x.hasClass('editb'))
-	{
-	    var tr = x.parent().parent()
-	    window.location.href = '{{base}}/admin/edit/form/' + tr.data('id');
-	}
-	else if (x.hasClass('viewb'))
-	{
-	    var tr = x.parent().parent()
-	    window.location.href = '{{base}}/admin/view/form/' + tr.data('id');
-	}
-    })
+    $('#utab').on('click', {bean: 'form', clicks: clicks}, tableClick);
 {% endblock onload %}
 
 {% block header %}
