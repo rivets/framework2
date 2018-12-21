@@ -14,12 +14,6 @@
 {% endblock scripts %}
 
 {% block setup %}
-    function goedit(e, x, t)
-    {
-        var tr = x.parent().parent();
-        window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';
-    }
-
     var clicks = [
         ['delb', dodelbean, ''],
         ['admb', dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],

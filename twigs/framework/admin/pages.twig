@@ -38,12 +38,6 @@
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
-    function goedit(e, x, t)
-    {
-        var tr = x.parent().parent();
-        window.location.href = '{{base}}/admin/edit/page/user/' + tr.data('id') + '/';
-    }
-
     var kname = [];
     function paramset(params)
     {

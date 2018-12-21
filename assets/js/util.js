@@ -72,4 +72,9 @@
         });
     }
 
+    function goedit(e, x, t)
+    {
+        window.location.href = base+'/admin/edit/'+t+'/' + x.parent().parent().data('id') + '/';
+    }
+
 
