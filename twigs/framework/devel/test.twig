@@ -27,7 +27,7 @@
         <article class="ml-auto col-md-10">
             {% include '@util/message.twig' %}
             {{a.accordion('acc1', [
-                {id: 'form0', title: 'Messaging', file: '@util/message.twig'},
+                {id: 'form0', title: 'Messaging', file: '@util/message.twig' with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
                 {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},
                 {id: 'modal', title: 'Modals', file: '@devel/tests/modal.twig'},

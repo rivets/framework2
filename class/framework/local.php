@@ -21,9 +21,9 @@
     {
         use \Framework\Utility\Singleton;
 
-        const ERROR     = 0;        # 'errmessage';
-        const WARNING   = 1;        # 'warnmessage';
-        const MESSAGE   = 2;        # 'message';
+        const ERROR     = 0;        # 'fwerrmessage';
+        const WARNING   = 1;        # 'fwwarnmessage';
+        const MESSAGE   = 2;        # 'fwmessage';
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
