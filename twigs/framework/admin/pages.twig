@@ -85,7 +85,7 @@
     })
     $('#addb').on('click', function(e){
         e.preventDefault();
-        $(this).prop('disabled', true);
+        $(this).attr('disabled', true);
         var pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
@@ -110,21 +110,21 @@
         if (error)
         {
             bootbox.alert('That page already exists');
-            $(this).prop('disabled', false);
+            $(this).attr('disabled', false);
             return;
         }
         var src = $('#npsrc').val()
         if (src == '')
         {
             bootbox.alert('Please specify a source');
-            $(this).prop('disabled', false);
+            $(this).attr('disabled', false);
             return;
         }
         var kind = $('#npkind').val();
         if (kind == '')
         {
             bootbox.alert('Please pick a page type');
-            $(this).prop('disabled', false);
+            $(this).attr('disabled', false);
             return;
         }
         var active = $('#npactive').is(':checked') ? 1 : 0;
@@ -150,7 +150,6 @@
                     nx = $(htm).insertBefore(sp.parent());
                 }
                 nx.data('id', data);
-                $('#addb').prop('disabled', FALSE);
                 //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
         var dt = {
@@ -182,7 +181,7 @@
         $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new page</h3>'+jqXHR.responseText);
         }).always(function(e){
-            $(this).prop('disabled', false);
+            $(this).attr('disabled', false);
         });
     });
     $('#ptab').on('click', function(e){
