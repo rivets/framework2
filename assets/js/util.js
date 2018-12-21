@@ -63,13 +63,13 @@
     {
         event.preventDefault();
         var x = $(event.target);
-        for (var ix in event.data.clicks)
-        {
-            if (x.hasClass(event.data.clicks[ix][0]))
+        event.data.clicks.forEach(function(value){
+
+            if (x.hasClass(value[0]))
             {
-                event.data.clicks[ix][1](event, x, event.data.bean, event.data.clicks[ix][2]);
+                value[1](event, x, event.data.bean, value[2]);
             }
-        }
+        });
     }
 
 
