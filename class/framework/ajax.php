@@ -578,7 +578,15 @@
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            return $this->checkPerms($context, $perms);
+            try
+            {
+                $this->checkPerms($context, $perms);
+                return TRUE;
+            }
+            catch (\Framework\Exception\Forbidden $e)
+            {
+                return FALSE;
+            }
         }
 /**
  * Handle AJAX operations
