@@ -61,7 +61,7 @@
             $('#addb').attr('disabled', false);
         });
     });
-    $('#utab').on('click', tableClick, {bean: 'user', clicks: clicks});
+    $('#utab').on('click', {bean: 'user', clicks: clicks}, tableClick);
 {% endblock onload %}
 
 {% if not page is defined %}

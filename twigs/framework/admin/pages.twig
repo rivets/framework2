@@ -185,7 +185,7 @@
             $('#addb').attr('disabled', false);
         });
     });
-    $('#ptab').on('click', tableClick, {bean: 'page', clicks: clicks});
+    $('#ptab').on('click', {bean: 'page', clicks: clicks}, tableClick);
     $('#npage').on('show.bs.modal', function(e){
         $('#npform input,select').val('');
     });
