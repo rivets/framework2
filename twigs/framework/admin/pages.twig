@@ -51,6 +51,7 @@
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
         {% endfor %}
     ]
+    var beanType = 'page';
     var clicks = [
         ['delb', dodelbean, ''],
         ['actb', dotoggle, 'active'],
@@ -184,16 +185,7 @@
             $('#addb').attr('disabled', false);
         });
     });
-    $('#ptab').on('click', function(e){
-        var x = $(e.target);
-        for (var ix in clicks)
-        {
-            if (x.hasClass(clicks[ix][0]))
-            {
-                clicks[ix][1](e, x, 'page', clicks[ix][2]);
-            }
-        }
-    });
+    $('#ptab').on('click', tableClick, {bean: 'page', clicks: clicks});
     $('#npage').on('show.bs.modal', function(e){
         $('#npform input,select').val('');
     });

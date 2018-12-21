@@ -19,7 +19,7 @@
         var tr = x.parent().parent();
         window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';    
     }
-    var btype = 'user';
+    var beanType = 'user';
     var clicks = [
         ['delb', dodelbean, ''],
         ['admb', dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],
@@ -34,6 +34,7 @@
     $('#adduform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         e.preventDefault();
+        $(this).attr('disabled', true);
         var data = {admin : 0, devel : 0};
         var frm = $('#adduform');
         $('input:checked', frm).each(function(index, element){
@@ -56,19 +57,11 @@
             doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new user</h3>'+jqXHR.responseText);
+        }).always(function(e){
+            $('#addb').attr('disabled', false);
         });
     });
-    $('#utab').on('click', function(e){
-        e.preventDefault();
-        var x = $(e.target);
-        for (var ix in clicks)
-        {
-            if (x.hasClass(clicks[ix][0]))
-            {
-                clicks[ix][1](e, x, btype, clicks[ix][2]);
-            }
-        }
-    });
+    $('#utab').on('click', tableClick, {bean: 'user', clicks: clicks});
 {% endblock onload %}
 
 {% if not page is defined %}

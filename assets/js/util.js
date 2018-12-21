@@ -59,4 +59,17 @@
         });
     }
 
+    function tableClick(e)
+    {
+        e.preventDefault();
+        var x = $(e.target);
+        for (var ix in e.data.clicks)
+        {
+            if (x.hasClass(e.data.clicks[ix][0]))
+            {
+                clicks[ix][1](e, x, e.data.bean, e.data.clicks[ix][2]);
+            }
+        }
+    }
+
 
