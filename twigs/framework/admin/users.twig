@@ -19,7 +19,7 @@
         var tr = x.parent().parent();
         window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';    
     }
-    var beanType = 'user';
+
     var clicks = [
         ['delb', dodelbean, ''],
         ['admb', dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],

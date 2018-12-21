@@ -38,6 +38,12 @@
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
+    function goedit(e, x, t)
+    {
+        var tr = x.parent().parent();
+        window.location.href = '{{base}}/admin/page/user/' + tr.data('id') + '/';
+    }
+
     var kname = [];
     function paramset(params)
     {
@@ -51,12 +57,13 @@
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
         {% endfor %}
     ]
-    var beanType = 'page';
+
     var clicks = [
         ['delb', dodelbean, ''],
         ['actb', dotoggle, 'active'],
         ['logn', dotoggle, 'needlogin'],
-        ['mobo', dotoggle, 'mobileonly']
+        ['mobo', dotoggle, 'mobileonly'],
+        ['editb', goedit]
     ]
 {% endblock setup %}
 
@@ -139,7 +146,7 @@
                 '<td>'+mktoggle('logn', login)+'</td>'+
                 '<td>'+mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+mktoggle('actb', active)+'</td>'+
-                '<td><a href="/admin/edit/page/'+data+'"><i class="editb far fa-edit"></i></a></td>'+
+                '<td><i class="editb far fa-edit"></i></td>'+
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>';
                 var nx
                 if (sp == null)
@@ -235,7 +242,7 @@
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
-                            <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb far fa-edit"></i></a></td>
+                            <td><i class="editb far fa-edit"></a></td>
                             <td><i class="delb far fa-trash-alt"></i></td>
                         </tr>
                     {% else %}
