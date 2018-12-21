@@ -150,7 +150,7 @@
                 $n = array_shift($name); // shift off the variable name
                 if (filter_has_var($filter, $n))
                 { // the entry is there
-                    return $this->getval($arr[$n], $name, NULL, $fail);
+                    return $this->getval($arr[$n], $name, NULL, $throw);
                 }
                 if ($throw)
                 {
@@ -319,7 +319,6 @@
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param int   	$fail	What to do if not defined - constant defined in Context
  *
  * @throws \Framework\Exception\BadValue
  * @return ArrayIterator
