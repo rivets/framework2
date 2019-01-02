@@ -234,7 +234,7 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css', 1, 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', 'anonymous', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', 1, 'sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
         'facss'         => ['https://use.fontawesome.com/releases/v5.3.1/css/all.css', 1, 'sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU', 'anonymous', 0, 0, 'css'],
@@ -242,12 +242,12 @@
         'jquery'        => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, 'sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', 'anonymous', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'anonymous', 0, 0, 'js'],
         'bgfadejs'      => [$dir.'/assets/js/bgfade-min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js', 1, 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', 'anonymous', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js', 1, 'sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k', 'anonymous', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js', 1, 'sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut', 'anonymous', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
     ];
 /**
