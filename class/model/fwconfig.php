@@ -37,9 +37,12 @@
  */
         public function checkURL($type)
         {
-            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL || !preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
-            { // not a canonical URL
-                throw new \Framework\Exception\BadValue('Invalid value for '.$type.' item');
+            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL)
+            { # not a straightforward URL
+                if (!preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
+                { // not a canonical URL
+                    throw new \Framework\Exception\BadValue('Invalid value for '.$type.' item');
+                }
             }
         }
 /**
