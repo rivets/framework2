@@ -104,7 +104,15 @@
                     throw new \Exception('Oddness');
                 }
                 \Framework\Utility\CSRFGuard::getinstance()->check();
-                list($error, $emess) = $obj->edit($context); // handle the edit result
+                try
+                {
+                    list($error, $emess) = $obj->edit($context); // handle the edit result
+                }
+                catch (Exception $e)
+                {
+                    $error = TRUE;
+                    $emess = $e->getMessage();
+                }
                 if ($error)
                 {
                     $context->local()->message(\Framework\Local::ERROR, $emess);
