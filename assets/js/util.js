@@ -97,5 +97,5 @@
         $('#mrow').before($('#example').clone())
         $('input,textarea', $('#mrow').prev()).val('') // clear the new inputs
         $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+    }
 
