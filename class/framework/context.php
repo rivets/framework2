@@ -310,7 +310,7 @@
  */
         public function load(string $bean, int $id, bool $forupdate = FALSE)
         {
-            $foo = ($forupdate ? \R::loadforupdate : \R::load)($bean, $id);
+            $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
                 throw new \Framework\Exception\MissingBean('Missing '.$bean);                
