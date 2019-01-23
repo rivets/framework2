@@ -37,7 +37,7 @@
         $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val();
         });
-        beanCreate('user', function(ret){
+        beanCreate('user', data, function(ret){
             $('#addu').modal('hide');
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
