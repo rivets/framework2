@@ -82,7 +82,7 @@
         window.location.href = base+'/admin/view/'+t+'/' + x.parent().parent().data('id') + '/';
     }
 
-    function beanCreate(bean, fn, button)
+    function beanCreate(bean, data, fn, button)
     {
         $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new '+bean+' failed<h3>'+jx.responseText);
