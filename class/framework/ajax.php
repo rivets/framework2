@@ -17,7 +17,7 @@
     use \R as R;
     use \Support\Context as Context;
     use \Config\Config as Config;
-    use \Framework\Formdata as FormData;
+    use \Support\Formdata as FormData;
 /**
  * Handle Ajax operations in this class
  */

@@ -213,15 +213,16 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param string        $bean   The bean type
+ * @param mixed 	$name	    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string    $bean       The bean type
+ * @param boolean   $forupdate  If TRUE then load for update
  *
  * @throws \Framework\Exception\BadValue
  * @return ?object
  */
-        public function mustgetbean($name, $bean)
+        public function mustgetbean($name, $bean, $forupdate = FALSE)
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE));
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE), $forupdate);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -237,7 +238,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            throw new \Framework\Excetion\BadValue('Missing get array');
+            throw new \Framework\Excetion\BadValue('Missing get array '.$name);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -255,16 +256,40 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string        $default    A default value
+ * @param mixed     $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterget(string $name, string $default, int $filter, $options = '')
+        public function filterget(string $name, $default, int $filter, $options = '')
         {
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the $_GET array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param string    $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfilterget(string $name, int $filter, $options = '')
+        {
+            $res = filter_input(INPUT_GET, $name, $filter, $options);
+            if ($res === NULL)
+            { # no such variable
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            if ($res === FALSE)
+            { # filter error
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+            }
+            return $res;
         }
 /*
  ***************************************
@@ -329,7 +354,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            throw new \Framework\Exception\BadValue('Missing post array');
+            throw new \Framework\Exception\BadValue('Missing post array '.$name);
         }
 /**
  * Look in the $_POST array for a key that is an array and return an
@@ -345,17 +370,43 @@
             return new \ArrayIterator(filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]) ? $_POST[$name] : $dflt);
         }
 /**
- * Look in the $_POST array for a key and  apply filters
+ * Look in the $_POST array for a key and apply filters
  *
- * @param string 	$name		The key
- * @param int    	$filter		Filter values - see PHP manual
+ * @param string	$name		The key
+ * @param mixed     $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterpost(string $name, int $filter, $options = '')
+        public function filterpost(string $name, $default, int $filter, $options = '')
         {
-            return filter_input(INPUT_POST, $name, $filter, $options);
+            $res = filter_input(INPUT_POST, $name, $filter, $options);
+            return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the $_GET array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param string    $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfilterpost(string $name, int $filter, $options = '')
+        {
+            $res = filter_input(INPUT_POST, $name, $filter, $options);
+            if ($res === NULL)
+            {
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            if ($res === FALSE)
+            {
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+            }
+            return $res;
         }
 /*
  ***************************************

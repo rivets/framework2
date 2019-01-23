@@ -294,12 +294,12 @@
         {
             $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange);
         }
-
 /**
  * Load a bean
  *
  * @param string	$bean	    A bean type name
  * @param int    	$id	        A bean id
+ * @param boolean   $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *
@@ -308,12 +308,11 @@
  *
  * @return object
  */
-        public function load(string $bean, int $id)
+        public function load(string $bean, int $id, bool $forupdate = FALSE)
         {
-            $foo = \R::load($bean, $id);
+            $foo = ($forupdate ? \R::loadforupdate : \R::load)($bean, $id);
             if ($foo->getID() == 0)
             {
-                $exc = '\\Framework\\Exception\\'.$dflt;
                 throw new \Framework\Exception\MissingBean('Missing '.$bean);                
             }
             return $foo;
@@ -334,7 +333,7 @@
  */
         public function formdata()
         {
-            return Formdata::getinstance();
+            return \Support\Formdata::getinstance();
         }
 /**
  * Return the Web object
