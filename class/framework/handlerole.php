@@ -58,20 +58,26 @@
  * @param string	$contextname    The name of a context...
  * @param string	$rolename       The name of a role....
  *
+ * @throws \Framework\Exception\BadValue
  * @return void
  */
         public function delrole(string $contextname, string $rolename)
         {
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
-            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
-            if (is_object($cname) && is_object($rname))
+            if (!is_object($cname))
             {
-                $bn = \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                    [$cname->getID(), $rname->getID(), $this->bean->getID()]);
-                if (is_object($bn))
-                {
-                    \R::trash($bn);
-                }
+                throw new \Framework\Exception\BadValue('No such context: '.$contextname);
+            }
+            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
+            if (!is_object($rname))
+            {
+                throw new \Framework\Exception\BadValue('No such role: '.$rolename);
+            }
+            $bn = \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                [$cname->getID(), $rname->getID(), $this->bean->getID()]);
+            if (is_object($bn))
+            {
+                \R::trash($bn);
             }
         }
 /**
@@ -83,6 +89,7 @@
  * @param string	$start		A datetime
  * @param string	$end		A datetime or ''
  *
+ * @throws \Framework\Exception\BadValue
  * @return object
  */
         public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '')
@@ -90,12 +97,12 @@
             $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
             if (!is_object($cname))
             {
-                throw new \Framework\Exception\BadValue('No such context');
+                throw new \Framework\Exception\BadValue('No such context: '.$contextname);
             }
             $rname = \R::findOne('rolename', 'name=?', [$rolename]);
             if (!is_object($rname))
             {
-                throw new \Framework\Exception\BadValue('No such context');
+                throw new \Framework\Exception\BadValue('No such context: '.$rolename);
             }
             return $this->addrolebybean($cname, $rname, $otherinfo, $start, $end);
         }
@@ -152,7 +159,7 @@
             {
                 foreach ($fdt->posta('exist') as $ix => $rid)
                 {
-                    $rl = $context->load($this->roletype, $rid);
+                    $rl = $context->load($this->roletype, $rid, TRUE);
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);

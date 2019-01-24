@@ -182,6 +182,7 @@
  * @internal
  * @param object	$context	The context object for the site
  *
+ * @throws \Framework\Exception\BadValue
  * @return void
  */
         private final function toggle(Context $context)
@@ -215,6 +216,11 @@
             }
             else
             {
+                $fds = \R::inspect($type);
+                if (!isset($fds[$field]))
+                {
+                    throw new \Framework\Exception\BadValue('Bad field: '.$field);
+                }
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
                 R::store($bn);
             }
