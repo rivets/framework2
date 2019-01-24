@@ -180,7 +180,7 @@
                 dt[sel[n]+'['+inx+']'] = $(this).val();
             });
         }
-        beanCreate('page', data, fn, '#addb');
+        beanCreate('page', dt, fn, '#addb');
     });
     $('#ptab').on('click', {bean: 'page', clicks: clicks}, tableClick);
     $('#npage').on('show.bs.modal', function(e){
