@@ -5,14 +5,7 @@
 {% block onload %}
     $('#tform,#tform2').on('submit', false);
     $('#nopu').on('click', function(e){
-        if ($(this).hasClass('btn-primary'))
-        {
-            $(this).removeClass('btn-primary').addClass('btn-warning');
-        }
-        else
-        {
-            $(this).removeClass('btn-warning').addClass('btn-primary');
-        }
+        $(this).toggleClass('btn-primary').toggleClass('btn-warning');
     })
 {% endblock onload %}
 

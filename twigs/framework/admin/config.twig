@@ -28,14 +28,14 @@
 
     function delbean(e)
     {
-        dodelbean(e, this, 'fwconfig');
+        framework.dodelbean(e, this, 'fwconfig');
     }
 {% endblock setup %}
 
 {% block onload %}
     $('#inval').hide();
     $('#cfr').on('submit', false);
-    $('.delb').on('click', delbean)
+    $('.delb').on('click', framework.delbean)
     $('.lval').on('change', setlocal)
     $('.cval').on('blur', function(e){
         e.preventDefault();
@@ -71,22 +71,22 @@
         e.preventDefault()
         var t = $(this)
         var name = t.val()
-	if (name != '')
+        if (name != '')
         {
 	    if (!name.match(/^[a-z][a-z0-9]*$/i))
-	    {
-	        bootbox.alert('Invalid name format')
+            {
+                bootbox.alert('Invalid name format')
                 t.val('')
-	    }
-	    else if ($('input[name="'+name+'"]').length != 0)
-	    {
-	        bootbox.alert('That item already exists');
-	    }
-	    else
-	    {
-	        $('#inval').show();
-		$('#Xnewval').focus();
-	    }
+            }
+            else if ($('input[name="'+name+'"]').length != 0)
+            {
+                bootbox.alert('That item already exists');
+            }
+            else
+            {
+                $('#inval').show();
+                $('#Xnewval').focus();
+            }
         }
     })
     $('.nval').on('blur', function(e){
@@ -113,7 +113,7 @@
                             '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
                         '</div><i class="delb ndelb far fa-trash-alt"></i></div></div>'
             );
-            $('.ndelb').on('click', delbean).removeClass('ndelb')
+            $('.ndelb').on('click', framework.framework.delbean).removeClass('ndelb')
             $('.nlval').on('change', setlocal).removeClass('nlval')
             $('.nname').val('');
             t.val('');

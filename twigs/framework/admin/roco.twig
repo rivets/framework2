@@ -16,8 +16,8 @@
 
 {% block setup %}
     var clicks = [
-        ['delb', dodelbean, ''],
-        ['fixed', dotoggle, 'fixed'],
+        ['delb', framework.dodelbean, ''],
+        ['fixed', framework.dotoggle, 'fixed'],
     ]
 {% endblock setup %}
 
@@ -54,7 +54,7 @@
             return;
         }
         $('#nroco').modal('hide');
-        var htm = '<tr><td>'+pn+'</td><td>'+mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
+        var htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
         var nx;
         if (sp == null)
         {
@@ -74,7 +74,7 @@
             $('#addb').attr('disabled', false);
         });
     });
-    $('#rtab').on('click', {bean: '{{beantype}}', clicks: clicks}, tableClick);
+    $('#rtab').on('click', {bean: '{{beantype}}', clicks: clicks}, framework.tableClick);
 
     $('#nroco').on('show.bs.modal', function(e){
         $('#nrform input').val('');

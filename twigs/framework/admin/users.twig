@@ -10,17 +10,16 @@
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
 
 {% block setup %}
     var clicks = [
-        ['delb', dodelbean, ''],
-        ['admb', dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],
-        ['confirm', dotoggle, 'confirm'],
-        ['active', dotoggle, 'active'],
+        ['delb', framework.dodelbean, ''],
+        ['admb', framework.dotoggle, '{{constant('\\Config\\Config::ADMINROLE')}}'],
+        ['confirm', framework.dotoggle, 'confirm'],
+        ['active', framework.dotoggle, 'active'],
         ['devb', '{{constant('\\Config\\Config::DEVELROLE')}}'],
-        ['editb', goedit]
+        ['editb', framework.goedit]
     ];
 {% endblock setup %}
 
@@ -37,21 +36,21 @@
         $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val();
         });
-        beanCreate('user', data, function(ret){
+        framework.beanCreate('user', data, function(ret){
             $('#addu').modal('hide');
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
-                '<td>'+mktoggle('confirm', data.confirm)+'</td>'+
-                '<td>'+mktoggle('active', data.active)+'</td>'+
-                '<td>'+mktoggle('admb', data.admin)+'</td>'+
-                '<td>'+mktoggle('devb', data.devel)+'</td>'+
+                '<td>'+framework.mktoggle('confirm', data.confirm)+'</td>'+
+                '<td>'+framework.ktoggle('active', data.active)+'</td>'+
+                '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
+                '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
                 '<td><i class="editb far fa-edit"></i></td>' +
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>'
             );
-            doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
+            framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, '#addb');
     });
-    $('#utab').on('click', {bean: 'user', clicks: clicks}, tableClick);
+    $('#utab').on('click', {bean: 'user', clicks: clicks}, framework.tableClick);
 {% endblock onload %}
 
 {% if not page is defined %}
