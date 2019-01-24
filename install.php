@@ -297,6 +297,7 @@
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, 'sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/', 'anonymous', 0, 0, 'js'],
+        'vuejs'         => ['https://unpkg.com/vue', 1, '', '', 0, 0, 'js'],
     ];
 /**
  *  RedBean needs an alias to use namespaces
