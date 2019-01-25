@@ -146,6 +146,23 @@
             }
         }
 /**
+ * Check that a bean has a field. Do not allow id field to be manipulated.
+ *
+ * @param string    $type    The type of bean
+ * @param string    $field   The field name
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return boolean
+ */
+        private function fieldExists(string $type, string $field)
+        {
+            $fds = \R::inspect($type);
+            if ($field == 'is' || !isset($fds[$field]))
+            {
+                throw new \Framework\Exception\BadValue('Bad field: '.$field);
+            }
+        }
+/**
  * Check down an array with permissions in the first field and return the first
  * row that is OK
  *
@@ -216,11 +233,7 @@
             }
             else
             {
-                $fds = \R::inspect($type);
-                if (!isset($fds[$field]))
-                {
-                    throw new \Framework\Exception\BadValue('Bad field: '.$field);
-                }
+                $this->fieldExists($type, $field); // make sure the bean has this field....
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
                 R::store($bn);
             }
@@ -237,13 +250,15 @@
         {
             $fdt = $context->formdata();
 
-            $bn = $fdt->mustpostbean('id', $fdt->mustpost('bean'));
+            $type = $fdt->mustpost('bean');
             $field = $fdt->mustpost('name');
+            $this->fieldExists($type, $field);
+            $bn = $fdt->mustpostbean('id', $type);
             $bn->$field = $fdt->mustpost('value');
             R::store($bn);
         }
 /**
- * Check if a bean field combination is allowed
+ * Check if a bean/field combination is allowed and the field exists and is not id
  *
  * @internal
  * @param array   $beans
@@ -256,6 +271,7 @@
  */
         protected function beanCheck($beans, $bean, $field)
         {
+            $this->fieldExists($bean, $field);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field
                 throw new \Framework\Exception\Forbidden('Permission denied');
@@ -299,13 +315,8 @@
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
                 list($bean, $id, $field) = $context->restcheck(3);
-                $bn = $context->load($bean, $id);
-                $fields = R::inspect($bean); // gets all the fields
-                if ($field == 'id' || !isset($fields[$field]))
-                { // no such field or trying to change the id field
-                    throw new \Framework\Exception\BadOperation('Cannot update '.$bean.'.'.$field);
-                }
                 $this->beanCheck($beans, $bean, $field);
+                $bn = $context->load($bean, $id, TRUE);
                 $bn->$field = $context->formdata()->mustput('value');
                 R::store($bn);
                 break;
@@ -404,6 +415,7 @@
                 { # the call must specify the field
                     $field = $fdt->mustget('field');
                 }
+                $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $order = $fdt->get('order', '');
                 $search = $fdt->mustget('search');
                 $res = \Support\Siteinfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
