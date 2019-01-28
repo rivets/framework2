@@ -141,7 +141,7 @@
         {
             $this->addheader([
             'Etag'	=> '"'.$etag.'"',
-            'Cache-Control'	=> 'maxage='.$maxage
+            'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
             ]);
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
