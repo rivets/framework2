@@ -76,10 +76,10 @@
 	    $mag = $this->makemaxage();
 	    $web = $context->web();
 	    $web->addheader([
-		'Last-Modified'	=> $this->makemod($this->mtime),
-		'Etag'		=> '"'.$this->makeetag().'"',
-		'Expires'	=> $this->makemod(time()+$mag),
-		'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
+//            'Last-Modified'	=> $this->makemod($this->mtime),
+            'Etag'		=> '"'.$this->makeetag().'"',
+            'Expires'	=> $this->makemod(time()+$mag),
+            'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
 	    ]);
 	    $this->ifmodcheck();
 	    $web->sendfile($this->file, $fname, $mime);
