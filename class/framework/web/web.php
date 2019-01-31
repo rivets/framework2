@@ -140,8 +140,8 @@
         public function send304(string $etag, int $maxage)
         {
             $this->addheader([
-            'Etag'	=> '"'.$etag.'"',
-            'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
+                'Etag'	=> '"'.$etag.'"',
+                'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
             ]);
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }

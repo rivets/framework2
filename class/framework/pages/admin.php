@@ -275,5 +275,19 @@
             }
             return $tpl;
         }
+/**
+ * Make it so that none of the admin pages get cached
+ *
+ * @param object    $context The context object
+ *
+ * @return void;
+ */
+        public function setcache(Context $context)
+        {
+            $context->web()->addheader([
+                'cache-control' => 'no-cache, no-store, must-revalidate, private',
+                'Expires'       => '0',
+            ]);
+        }
     }
 ?>

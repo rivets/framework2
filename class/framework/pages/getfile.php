@@ -31,15 +31,15 @@
  */
     class Getfile extends \Framework\Siteaction
     {
-	const DATADIR	= 'private';
+        const DATADIR	= 'private';
 /**
  * @var string	The name of the file we are working on
  */
-	private $file;
+        private $file;
 /**
  * @var string	The last modified time for the file
  */
-	private $mtime;
+        private $mtime;
 
 /**
  * Return data files as requested
@@ -109,7 +109,7 @@
             $this->ifmodcheck(); # check to see if we actually need to send anything
 
             $web->addheader([
-                'Last-Modified'	=> $this->mtime,
+//                'Last-Modified'	=> $this->mtime,
                 'Etag'		=> '"'.$this->makeetag().'"',
             ]);
             $web->sendfile($this->file, $file->filename);

@@ -88,77 +88,90 @@
 	    $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
 	    {
-		$ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
-		if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
-		{
-		    $ifmod = $m[1];
-		}
-		$st = strtotime($ifmod);
-		$ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
+            $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
+            if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
+            {
+                $ifmod = $m[1];
+            }
+            $st = strtotime($ifmod);
+            $ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
 	    {
-		if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
-		{
-		    if ($this->exists())
-		    { # this request would generate a page and has not been modified
-			$this->etagmatched();
-			/* NOT REACHED */
-		    }
-		}
-		else
-		{
-		    foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
-		    {
-			if ($this->checketag(str_replace('"', '', $etag))) # extract the ETag from its surrounding quotes
-			{ # We have matched the etag and file has not been modified
-			    $this->etagmatched();
-			    /* NOT REACHED */
-			}
-		    }
-		}
-		$ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
+            if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
+            {
+                if ($this->exists())
+                { # this request would generate a page and has not been modified
+                    $this->etagmatched();
+                    /* NOT REACHED */
+                }
+            }
+            else
+            {
+                foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
+                {
+                    if ($this->checketag(str_replace('"', '', $etag))) # extract the ETag from its surrounding quotes
+                    { # We have matched the etag and file has not been modified
+                        $this->etagmatched();
+                        /* NOT REACHED */
+                    }
+                }
+            }
+            $ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
 	    }
 	    if (!$ifms)
 	    { # we dont need to send the page
-		$this->etagmatched();
-		/* NOT REACHED */
+            $this->etagmatched();
+            /* NOT REACHED */
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
 	    {
-		$match = FALSE;
-		if ($_SERVER['HTTP_IF_MATCH'] == '*')
-		{
-		    $match = $this->exists();
-		}
-		else
-		{
-		    foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
-		    {
-			$match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
-		    }
-		}
-		if (!$match)
-		{ # nothing matched or did not exist
-		    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-		    exit;
-		}
+            $match = FALSE;
+            if ($_SERVER['HTTP_IF_MATCH'] == '*')
+            {
+                $match = $this->exists();
+            }
+            else
+            {
+                foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
+                {
+                $match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
+                }
+            }
+            if (!$match)
+            { # nothing matched or did not exist
+                Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                exit;
+            }
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
 	    {
-		$ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
-		if (preg_match('/^(.*);(.*)$/', $ifus, $m))
-		{
-		    $ifus = $m[1];
-		}
-		$st = strtotime($ifus); # ignore if not a valid time
-		if ($st !== FALSE && $st < $this->lastmodified())
-		{
-		    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-		    exit;
-		}
+            $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
+            if (preg_match('/^(.*);(.*)$/', $ifus, $m))
+            {
+                $ifus = $m[1];
+            }
+            $st = strtotime($ifus); # ignore if not a valid time
+            if ($st !== FALSE && $st < $this->lastmodified())
+            {
+                Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                exit;
+            }
 	    }
 	}
+/**
+ * Set any cache headers that are wanted
+ *
+ * This needs to be overridden if it is to do anything
+ *
+ * @param object    $context The context object
+ *
+ * @return void
+ */
+        public function setcache(Context $context)
+        {
+            // void
+        }
 /**
  * Make an etag for an item
  *
@@ -166,10 +179,10 @@
  *
  * @return string
  */
-	public function makeetag() : string
-	{
-	    return '';
-	}
+        public function makeetag() : string
+        {
+            return '';
+        }
 /**
  * Make a max age value for an item
  *
@@ -177,10 +190,10 @@
  *
  * @return mixed
  */
-	public function makemaxage()
-	{
-	    return '';
-	}
+        public function makemaxage()
+        {
+            return '';
+        }
 /**
  * Returns true of the request would generate a page.
  *
@@ -189,10 +202,10 @@
  *
  * @return boolean
  */
-	public function exists() : bool
-	{
-	    return TRUE;
-	}
+        public function exists() : bool
+        {
+            return TRUE;
+        }
 /**
  * Get a last modified time for the page
  *
@@ -201,10 +214,10 @@
  *
  * @return integer
  */
-	public function lastmodified() : int
-	{
-	    return time();
-	}
+        public function lastmodified() : int
+        {
+            return time();
+        }
 /**
  * Format a time suitable for Last-Modified header
  *
@@ -212,10 +225,10 @@
  *
  * @return string
  */
-	public function makemod(int $time) : string
-	{
-	    return gmdate('D, d M Y H:i:s', $time).' GMT';
-	}
+        public function makemod(int $time) : string
+        {
+            return gmdate('D, d M Y H:i:s', $time).' GMT';
+        }
 /**
  * Check a timestamp to see if we need to send the page again or not.
  *
@@ -227,10 +240,10 @@
  *
  * @return boolean
  */
-	public function checkmodtime(string $time) : bool
-	{
-	    return FALSE;
-	}
+        public function checkmodtime(string $time) : bool
+        {
+            return FALSE;
+        }
 /**
  * Check an etag to see if we need to send the page again or not.
  *
@@ -238,10 +251,10 @@
  *
  * @return boolean
  */
-	public function checketag(string $tag) : bool
-	{
-	    return $tag === $this->makeetag();
-	}
+        public function checketag(string $tag) : bool
+        {
+            return $tag === $this->makeetag();
+        }
 /**
  * We have a matched etag - check request method and send the appropriate header.
  * Does not return
@@ -250,19 +263,19 @@
  *
  * @return void
  */
-	private function etagmatched()
-	{
-	    $web = Web::getinstance();
-	    $rqm = $web->method();
-	    if ($rqm != 'GET' && $rqm != 'HEAD')
-	    { # fail if not a GET or HEAD - see W3C specification
-            $web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-	    }
-	    else
-	    {
-            $web->send304($this->makeetag(), $this->makemaxage());
-	    }
-	    exit;
-	}
+        private function etagmatched()
+        {
+            $web = Web::getinstance();
+            $rqm = $web->method();
+            if ($rqm != 'GET' && $rqm != 'HEAD')
+            { # fail if not a GET or HEAD - see W3C specification
+                $web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+            }
+            else
+            {
+                $web->send304($this->makeetag(), $this->makemaxage());
+            }
+            exit;
+        }
     }
 ?>
