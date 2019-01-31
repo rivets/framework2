@@ -69,7 +69,7 @@
         try
         {
             $tpl = $pageObj->handle($context);
-            $page->setCache($context);
+            $pageObj->setCache($context);
         }
         catch(\Framework\Exception\Forbidden $e)
         {
