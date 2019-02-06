@@ -50,37 +50,7 @@
             {
                 throw new BadValue('Invalid page name');
             }
-            switch ($this->bean->kind)
-            {
-            case SiteAction::OBJECT:
-                if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $this->bean->source))
-                {
-                    throw new BadValue('Invalid source for page type (class name)');
-                }
-                break;
-            case SiteAction::TEMPLATE:
-                if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $this->bean->source))
-                {
-                    throw new BadValue('Invalid source for page type(twig)');
-                }
-                break;
-            case SiteAction::REDIRECT: // these need a local URL, i.e. no http
-            case SiteAction::REHOME:
-                if (!preg_match('#^(/.*?)+#i', $this->bean->source))
-                {
-                    throw new BadValue('Invalid source for page type(twig)');
-                }
-                break;
-            case SiteAction::XREDIRECT: // these need a URL to be valid
-            case SiteAction::XREHOME:
-                if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
-                {
-                    throw new BadValue('Invalid source for page type (URL)');
-                }
-                break;
-            default:
-                throw new BadValue('Invalid page type');
-            }
+            \Framework\Dispatch::check($this->bean->kind, $this->bean->source);
         }
 /**
  * Check user can access the page

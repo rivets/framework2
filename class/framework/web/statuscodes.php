@@ -31,13 +31,14 @@
 
 	// [Redirection 3xx]
 	const HTTP_MULTIPLE_CHOICES			= 300;
-	const HTTP_MOVED_PERMANENTLY			= 301;
-	const HTTP_FOUND				= 302;
+	const HTTP_MOVED_PERMANENTLY		= 301;
+	const HTTP_FOUND				    = 302;
 	const HTTP_SEE_OTHER				= 303;
 	const HTTP_NOT_MODIFIED				= 304;
 	const HTTP_USE_PROXY				= 305;
-	const HTTP_UNUSED				= 306;
-	const HTTP_TEMPORARY_REDIRECT			= 307;
+	const HTTP_UNUSED				    = 306;
+	const HTTP_TEMPORARY_REDIRECT		= 307;
+	const HTTP_PERMANENT_REDIRECT		= 308;
 
 	// [Client Error 4xx]
 	const errorCodesBeginAt				= 400;
@@ -46,7 +47,7 @@
 	const HTTP_PAYMENT_REQUIRED			= 402;
 	const HTTP_FORBIDDEN				= 403;
 	const HTTP_NOT_FOUND				= 404;
-	const HTTP_METHOD_NOT_ALLOWED			= 405;
+	const HTTP_METHOD_NOT_ALLOWED		= 405;
 	const HTTP_NOT_ACCEPTABLE			= 406;
 	const HTTP_PROXY_AUTHENTICATION_REQUIRED	= 407;
 	const HTTP_REQUEST_TIMEOUT			= 408;

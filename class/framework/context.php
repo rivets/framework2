@@ -287,12 +287,13 @@
  * @param bool       		$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
  * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
  *
  * @return void NEVER returns
  */
-        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
-            $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange);
+            $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange, $use303);
         }
 /**
  * Load a bean

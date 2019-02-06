@@ -31,23 +31,26 @@
 /**
  * Generate a Location header
  *
+ * These codes are a mess and are handled by brtowsers incorrectly....
+ *
  * @param string		$where		The URL to divert to
- * @param bool       		$temporary	TRUE if this is a temporary redirect
+ * @param bool       	$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
- * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       	$use303    If TRUE then use 303 rather than 302
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
             if ($temporary)
             {
-                $code = $nochange ? StatusCodes::HTTP_TEMPORARY_REDIRECT : StatusCodes::HTTP_FOUND;
+                $code = $nochange ? StatusCodes::HTTP_TEMPORARY_REDIRECT : ($use303 ? StatusCodes::HTTP_SEE_OTHER : StatusCodes::HTTP_FOUND);
             }
             else
             {
 /**
- * @todo Check status of 308 code which should be used if nochage is TRUE. May not yet be official.
+ * @todo Check status of 308 code which should be used if nochange is TRUE. May not yet be official.
  */
-                $code = StatusCodes::HTTP_MOVED_PERMANENTLY;
+                $code = $nochange ? StatusCodes::HTTP_PERMANENT_REDIRECT : StatusCodes::HTTP_MOVED_PERMANENTLY;
             }
             $this->addheader('Location', $where);
             $this->sendstring($msg, self::HTMLMIME);

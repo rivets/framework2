@@ -94,20 +94,43 @@
         $tpl = $page->source;
         break;
 
-    case SiteAction::REDIRECT: // redirect to somewhere else on the this site (temporary)
+    case SiteAction::REDIRECT: // redirect to somewhere else on the this site (temporary) 302
         $context->divert($page->source, TRUE);
         /* NOT REACHED */
 
-    case SiteAction::REHOME: // redirect to somewhere else on the this site (permanent)
+    case SiteAction::REHOME: // redirect to somewhere else on the this site (permanent) 301
         $context->divert($page->source, FALSE);
         /* NOT REACHED */
 
-    case SiteAction::XREDIRECT: // redirect to an external URL (temporary)
+    case SiteAction::XREDIRECT: // redirect to an external URL (temporary) 302
         $context->web()->relocate($page->source, TRUE);
         /* NOT REACHED */
 
-    case SiteAction::XREHOME: // redirect to an external URL (permanent)
+    case SiteAction::XREHOME: // redirect to an external URL (permanent) 301
         $context->web()->relocate($page->source, FALSE);
+        /* NOT REACHED */
+
+    case SiteAction::YREDIRECT: // redirect to an internal URL (temporary) 303
+        $context->divert($page->source, TRUE, '', FALSE, TRUE);
+        /* NOT REACHED */
+
+    case SiteAction::YREHOME: // redirect to an external URL (temporary) 303
+        $context->web()->relocate($page->source, TRUE, '', FALSE, TRUE);
+        /* NOT REACHED */
+
+    case SiteAction::ZREDIRECT: // redirect to an internal URL (temporary) 307
+        $context->divert($page->source, TRUE, '', TRUE);
+        /* NOT REACHED */
+
+    case SiteAction::ZREHOME: // redirect to an external URL (temporary) 307
+        $context->web()->relocate($page->source, TRUE, '', TRUE);
+        /* NOT REACHED */
+    case SiteAction::ZREDIRECT: // redirect to an internal URL (temporary) 308
+        $context->divert($page->source, TRUE, '', TRUE);
+        /* NOT REACHED */
+
+    case SiteAction::ZREHOME: // redirect to an external URL (temporary) 308
+        $context->web()->relocate($page->source, TRUE, '', TRUE);
         /* NOT REACHED */
 
     default :

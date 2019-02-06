@@ -19,7 +19,10 @@
     <script {{h.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
 
-{% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
+{% set types = ['Object', 'Template', 'In-site 302', 'In-site 301',
+    'External 302',  'External 301', 'In-site 303', 'External 303',
+    'In-site 307', 'External 307']
+    'In-site 308', 'External 308'] %}
 
 {% block setup %}
     function editcall(params)
@@ -249,10 +252,16 @@
                     {value: '', text: '&mdash; Pick a Type &mdash;'},
                     {value: 1,  text: 'Object'},
                     {value: 2,  text: 'Template'},
-                    {value: 3,  text: 'In-site Temporary Redirect'},
-                    {value: 4,  text: 'In-site Permanent Redirect'},
-                    {value: 5,  text: 'External Temporary Redirect'},
-                    {value: 6,  text: 'External Permanent Rehome'},
+                    {value: 4,  text: 'In-site 301'},
+                    {value: 6,  text: 'External 301'},
+                    {value: 3,  text: 'In-site 302'},
+                    {value: 5,  text: 'External 302'},
+                    {value: 7,  text: 'In-site 303'},
+                    {value: 8,  text: 'External 303'},
+                    {value: 9,  text: 'In-site 307'},
+                    {value: 10,  text: 'External 307'},
+                    {value: 11,  text: 'Internal 308'},
+                    {value: 12,  text: 'External 308'},                   
             ]})}}
             {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
             {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}

@@ -21,27 +21,51 @@
 /*
  * Indicates that there is an Object that handles the call
  */
-	const OBJECT	= 1;
+        const OBJECT	= 1;
 /*
  * Indicates that there is only a template for this URL.
  */
-	const TEMPLATE	= 2;
+        const TEMPLATE	= 2;
 /*
- * Indicates that the URL should be temporarily redirected
+ * Indicates that the URL should be temporarily redirected - 32
  */
-	const REDIRECT	= 3;
+        const REDIRECT	= 3;
 /*
- * Indicates that the URL should be permanently redirected
+ * Indicates that the URL should be permanent redirected - 301
  */
-	const REHOME	= 4;
+        const REHOME	= 4;
 /*
- * Indicates that the URL should be temporarily redirected
+ * Indicates that the URL should be permanently redirected - 302
  */
-	const XREDIRECT	= 5;
+        const XREDIRECT	= 5;
 /*
- * Indicates that the URL should be permanently redirected
+ * Indicates that the URL should be temporarily redirected -301
  */
-	const XREHOME	= 6;
+        const XREHOME	= 6;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        const YREDIRECT	= 7;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        const YREHOME	= 8;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const ZREDIRECT	= 9;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const ZREHOME	= 10;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const AREDIRECT	= 11;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const AREHOME	= 12;
 /**
  * Handle an action
  *
@@ -49,11 +73,11 @@
  *
  * @return mixed	A template name or an array [template name, mimetype, HTTP code]
  */
-	public function handle(Context $context)
-	{ # should never get called really
-	    $context->divert('/');
-	    /* NOT REACHED */
-	}
+        public function handle(Context $context)
+        { # should never get called really
+            $context->divert('/');
+            /* NOT REACHED */
+        }
 /**
  * Set up any CSP headers for a page
  *
