@@ -196,7 +196,7 @@
             case SiteAction::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig) "'.$source.'"');
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (twig) "'.$source.'"');
                 }
                 break;
             case SiteAction::REDIRECT: // these need a local URL, i.e. no http
@@ -206,7 +206,7 @@
             case SiteAction::REHOME8:
                 if (!preg_match('#^(/.*?)+#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (local path)');
                 }
                 break;
             case SiteAction::XREDIRECT: // these need a URL
