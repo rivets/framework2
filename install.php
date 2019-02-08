@@ -163,9 +163,9 @@
  * @param string $type
  * @param string $name
  *
- * @ return object
+ * @return object
  */
-    function makerc($type, $name)
+    function makerc(string $type, string $name)
     {
         $drname = \R::dispense($type);
         $drname->name = $name;
@@ -176,18 +176,20 @@
 /**
  * Make a role
  *
+ * @param string   $type   Type of role
  * @param string   $now    Now timestamp
  * @param object   $owner  The owner bean (could be a user or a page for example)
  * @param object   $cname  The context name
+ * @param object   $cname  The role name
  *
  * @return object
  */
-    function makerole($type, $now, $user, $cname, $rname)
+    function makerole(string $type, string $now, $owner, $cname, $rname)
     {
         $role = \R::dispense($type);
         $role->otherinfo = '-';
         $role->start = $now;
-        $role->end =   $now; # this makes RedBean make it a datetime field
+        $role->end = $now; # this makes RedBean make it a datetime field
         \R::store($role);
         $role->end = NULL; # clear end date as we don't want to time limit admin
         \R::store($role);
