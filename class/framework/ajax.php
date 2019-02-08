@@ -44,14 +44,16 @@
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [],
+                'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [], 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => []] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [],
+                'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -69,7 +71,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
             [ 'user' => ['login'] ],
