@@ -42,10 +42,6 @@
             {
                 throw new \Framework\Exception\BadValue('Invalid login name');
             }
-            if (is_object(\R::findOne('user', 'login=?', [$this->bean->login])))
-            {
-                throw new \Framework\Exception\BadValue('Login name already exists');
-            }
             if (!filter_var($this->bean->email, FILTER_VALIDATE_EMAIL))
             {
                 throw new \Framework\Exception\BadValue('Invalid email address');
@@ -70,8 +66,13 @@
             $pw = $fdt->mustpost('password'); // make sure we have a password...
             if (self::checkpw($pw))
             {
+                $login = $fdt->mustpost('login');
+                if (is_object(\R::findOne('user', 'login=?', [$login])))
+                {
+                    throw new \Framework\Exception\BadValue('Login name already exists');
+                }
                 $u = \R::dispense('user');
-                $u->login = $fdt->mustpost('login');
+                $u->login = $login;
                 $u->email = $fdt->mustpost('email');
                 $u->active = 1;
                 $u->confirm = 1;
