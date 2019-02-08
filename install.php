@@ -169,7 +169,7 @@
     {
         $drname = \R::dispense($type);
         $drname->name = $name;
-        $cname->fixed = 1;
+        $drname->fixed = 1;
         \R::store($drname);
         return $drname;
     }
