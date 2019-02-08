@@ -85,7 +85,7 @@
         beanCreate: function(bean, data, fn, button)
         {
             $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
-                bootbox.alert('<h3>Failed to create new '+bean+' failed<h3>'+jx.responseText);
+                bootbox.alert('<h3>Failed to create new '+bean+'<h3>'+jx.responseText);
             }).always(function(){
                 $(button).attr('disabled', false);
             });
