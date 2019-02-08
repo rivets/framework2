@@ -99,7 +99,7 @@
             $page = \R::findOne('page', 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             if (!is_object($page))
             { # No such page or it is marked as inactive
-               $page = new stdClass;
+               $page = new \stdClass;
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
             }
