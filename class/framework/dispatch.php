@@ -190,13 +190,13 @@
             case SiteAction::OBJECT:
                 if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name)');
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) '.$source);
                 }
                 break;
             case SiteAction::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig)');
+                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig) '.$source);
                 }
                 break;
             case SiteAction::REDIRECT: // these need a local URL, i.e. no http
