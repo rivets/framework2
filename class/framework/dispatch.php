@@ -178,7 +178,7 @@
             //}
         }
 /**
- * Check if a value is apporpriate for the dispatch kind
+ * Check if a value is appropriate for the dispatch kind
  *
  * @throws \Framework\Exception\BadValue
  * @return void
@@ -190,13 +190,13 @@
             case SiteAction::OBJECT:
                 if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) '.$source);
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
                 }
                 break;
             case SiteAction::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig) '.$source);
+                    throw new \Framework\Exception\BadValue('Invalid source for page type(twig) "'.$source.'"');
                 }
                 break;
             case SiteAction::REDIRECT: // these need a local URL, i.e. no http
