@@ -188,7 +188,7 @@
             switch ($kind)
             {
             case SiteAction::OBJECT:
-                if (!preg_match('/^(\\[a-z][a-z0-9]*)+$/i', $source))
+                if (!preg_match('/^(\\?[a-z][a-z0-9]*)+$/i', $source))
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
                 }
