@@ -42,7 +42,7 @@
             {
                 throw new \Framework\Exception\BadValue('Invalid login name');
             }
-            if (!is_object(\R::findOne('user', 'login=?', [$this->bean->login])))
+            if (is_object(\R::findOne('user', 'login=?', [$this->bean->login])))
             {
                 throw new \Framework\Exception\BadValue('Login name already exists');
             }
