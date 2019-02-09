@@ -28,7 +28,7 @@
         var data = {}
         var frm = $('#addfform')
         $('input:checked', frm).each(function(index, element){
-             data[$(this).attr('name')] = 1
+             data[$(this).attr('name')] = $(this).val();
         })
         $('input:text', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val()
@@ -37,6 +37,7 @@
             $('#addf').modal('hide')
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
                 '<td>' + data.action + '</td>' +
+                '<td>' + data.idval + '</td>' +
                 '<td>' + mname[data.method] + '</td>' +
                 '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
                 '<td title="View"><i class="viewb far fa-eye"></i></td>' +
