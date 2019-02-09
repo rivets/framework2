@@ -9,8 +9,8 @@
                 </div>
                 <div id="col{{t.id}}" class="collapse" aria-labelledby="{{t.id}}" data-parent="#{{id}}">
                     <div class="card-body">
-                        {% if tabs.with is defined %}
-                            {% include t.file with tabs.with%}
+                        {% if t.with is defined %}
+                            {% include t.file with t.with%}
                         {% else %}
                             {% include t.file%}
                         {% endif %}
