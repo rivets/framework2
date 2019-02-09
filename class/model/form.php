@@ -171,7 +171,7 @@
  */
         public function render($values = [], $noform = FALSE)
         {
-            if (!$noform)
+            if (!$noform || $this->bean->method == 0)
             {
                 $form = '<form action="'.
                     ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
@@ -277,7 +277,7 @@
                 }
                 $form .= PHP_EOL;
             }
-            return $noform ? $form : ($form.'</form>');
+            return ($noform || $this->bean->method == 0) ? $form : ($form.'</form>');
         }
 /**
  * Add a form

@@ -120,7 +120,7 @@
                         {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
                         {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
-                        {{f.radio({group: TRUE, name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [bean.method == 1, bean.method == 2]})}}
+                        {{f.radio({group: TRUE, name: 'method', values:[1, 2, 0], labels: ['GET', 'POST', 'PARTIAL'], check: [bean.method == 1, bean.method == 2, bean.method == 0]})}}
                         {{f.checkbox({group: TRUE, names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
                 </fieldset>
                 <fieldset>

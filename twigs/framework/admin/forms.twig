@@ -97,7 +97,7 @@
             {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
             {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
             {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
-            {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
+            {{f.radio({name: 'method', values:[1, 2, 0], labels: ['GET', 'POST', 'PARTIAL'], check: [TRUE, FALSE, FALSE]})}}
             <br/>
             {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
         </form>
