@@ -17,6 +17,7 @@
         ['editb', framework.goedit],
         ['viewb', framework.goview],
     ]
+    var mname = ['PARTIAL', 'GET', 'POST'];
 {% endblock setup %}
 
 {% block onload %}
@@ -36,7 +37,7 @@
             $('#addf').modal('hide')
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
                 '<td>' + data.action + '</td>' +
-                '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
+                '<td>' + mname[data.method] + '</td>' +
                 '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
                 '<td title="View"><i class="viewb far fa-eye"></i></td>' +
                 '<td title="Edit"><i class="editb far fa-edit"></i></td>' +
