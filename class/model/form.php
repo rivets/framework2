@@ -75,6 +75,8 @@
 /**
  * Return the form's fields by sequence
  *
+ * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
+ *
  * @return object
  */
         public function sequence()
@@ -85,6 +87,26 @@
                 $res[$fld->seqn][] = $fld;
             }
 	    return $res;
+        }
+/**
+ * Resequence the fields so that they are all multiples of 10
+ *
+ * Remember that some items deliberatley share sequence numbers!
+ *
+ * @return void
+ */
+        public function resequence()
+        {
+            $seqn = 10;
+            foreach ($this->bean->sequence() as $flds)
+            {
+                foreach ($flds as $fld)
+                {
+                    $fld->seqn = $seqn;
+                    \R::store($fld);
+                }
+                $seqn += 10;
+            }
         }
 /**
  * Setup for an edit
@@ -143,18 +165,26 @@
  * Render a form
  *
  * @param array    $values Values to enter into form
+ * @param boolean  $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
  *
  * @return string
  */
-        public function render($values = [])
+        public function render($values = [], $noform = FALSE)
         {
-            $form = '<form action="'.
-                ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
-                ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').'" '.
-                ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').'" '.
-                'method="'.self::$methods[$this->bean->method].'"'.
-                ($this->multipart ? ' enctype="multipart/form-data"' : '').
-                ' role="form">'.PHP_EOL;
+            if (!$noform)
+            {
+                $form = '<form action="'.
+                    ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
+                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').'" '.
+                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').'" '.
+                    'method="'.self::$methods[$this->bean->method].'"'.
+                    ($this->multipart ? ' enctype="multipart/form-data"' : '').
+                    ' role="form">'.PHP_EOL;
+            }
+            else
+            {
+                $form = '';
+            }
             foreach ($this->sequence() as $flds)
             {
                 $fld = reset($flds);
@@ -247,7 +277,7 @@
                 }
                 $form .= PHP_EOL;
             }
-            return $form.'</form>';
+            return $noform ? $form : ($form.'</form>');
         }
 /**
  * Add a form
