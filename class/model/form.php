@@ -84,7 +84,15 @@
             $res = [];
             foreach ($this->bean->fields() as $fld)
             {
-                $res[$fld->seqn][] = $fld;
+                $sqn = explode('/', $fld->seqn);
+                if (count($sqn) > 1)
+                { // there are sub orderings in here
+                    $res[$sqn[0]][$sqn[1]] = $fld;
+                }
+                else
+                {
+                    $res[$sqn[0]][] = $fld;
+                }
             }
 	    return $res;
         }
@@ -203,6 +211,7 @@
                         $fset = FALSE;
                     }
                     break;
+
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = $fld->doLabel(FALSE); // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
