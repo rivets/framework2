@@ -42,9 +42,7 @@
         var url = base+'/ajax/bean/formfield/'+params.pk+'/'+params.name+'/';
         return $.ajax(url,{
             method: 'PATCH',
-            data: {
-                value: params.value
-            }
+            data: { value: params.value }
         })
     }
 
