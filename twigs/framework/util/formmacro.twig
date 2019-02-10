@@ -101,7 +101,7 @@
     {% endif %}
 {% endmacro recaptcha %}
 
-{% macro tick(val, class, label = '', disabled = FALSE) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}">{{label}}</i>{% endmacro tick %}
+{% macro tick(val, class, label = '', disabled = FALSE) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i> {{label}}{% endmacro tick %}
 
 {% macro htick(val, class, name, disabled, label = '') %}
 {% import _self as fx %}
