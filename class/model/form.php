@@ -205,7 +205,7 @@
                 switch ($fld->type)
                 {
                 case 'fieldset':
-                    $form .= ($fset ? '</fieldset>' : '').'<fieldset'.$fld->fieldAttr('', FALSE).'>'.($fld->label !== '' ? '<legend>'.$fld->label.'</legend>' : '');
+                    $form .= ($fset ? '</fieldset>' : '').'<fieldset'.$fld->fieldAttr('', TRUE).'>'.($fld->label !== '' ? '<legend>'.$fld->label.'</legend>' : '');
                     $fset = TRUE;
                     break;
                 case 'endfset':
@@ -217,12 +217,11 @@
                     break;
 
                 case 'label': // labelling for checkbox and radio groupings
-                    $crlabel = '<label'.$fld->attr('', FALSE).'>'.$fld->label.'</label>'; // make the label
+                    $crlabel = '<label'.$fld->attr('', TRUE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
                 case 'checkbox':
                 case 'radio':
-                    
-                    $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
+                    $form .= '<div class="form-group"><div class="form-check form-check-inline">'.$crlabel;
                     foreach ($flds as $fld)
                     {
                         if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
