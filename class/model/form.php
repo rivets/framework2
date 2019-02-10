@@ -221,7 +221,7 @@
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
                 case 'checkbox':
                 case 'radio':
-                    $form .= '<div class="form-group"><div class="form-check form-check-inline">'.$crlabel;
+                    $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
                     foreach ($flds as $fld)
                     {
                         if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
