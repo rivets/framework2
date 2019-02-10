@@ -11,6 +11,8 @@
     <script {{h.urlattr(fwurls.utiljs)}}></script>
 {% endblock scripts %}
 
+{% set methods = ['PARTIAL', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'] %}
+
 {% block setup %}
     var clicks = [
         ['delb', framework.dodelbean, ''],
@@ -78,7 +80,7 @@
                         <td>{{u.action}}</td>
                         <td>{{u.idval}}</td>
                         <td>{{u.class}}</td>
-                        <td>{{u.method == 1 ? 'GET' : 'POST'}}</td>
+                        <td>{{methods[u.method]}}</td>
                         <td>{{f.tick(u.multipart)}}</td>
                         <td title="View"><i class="viewb far fa-eye"></i></td>
                         <td title="Edit"><i class="editb far fa-edit"></i></td>
