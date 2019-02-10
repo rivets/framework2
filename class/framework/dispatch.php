@@ -123,6 +123,7 @@
                 $csp = $pageObj;
                 try
                 {
+                    \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context);
                 }
@@ -145,6 +146,7 @@
                 break;
 
             case SiteAction::TEMPLATE: // render a template
+                \Support\Setup::preliminary($context, $page); // any user setup code
                 $csp = $context->web();
                 $tpl = $page->source;
                 break;
