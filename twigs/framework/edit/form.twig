@@ -163,7 +163,7 @@
                                 </tr>
                                 <tr>
                                     {% for fn,fv in flags %}
-                                        <td>{{f.htick(fld.flags b-and fv.2, 'chkb', fn~'[]', fld.type != 'checkbox' and fld.type != 'radio')}}</td>
+                                        <td>{{f.htick(fld.flags b-and fv.2, 'chkb', fn~'[]', fld.type != 'checkbox' and fld.type != 'radio', fv.0)}}</td>
                                     {% endfor %}
                                 </tr>
                             {% endfor %}

@@ -101,11 +101,11 @@
     {% endif %}
 {% endmacro recaptcha %}
 
-{% macro tick(val, class, label = '') %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}">{{label}}</i>{% endmacro tick %}
+{% macro tick(val, class, label = '', disabled = FALSE) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}">{{label}}</i>{% endmacro tick %}
 
-{% macro htick(val, class, name, disabled) %}
+{% macro htick(val, class, name, disabled, label = '') %}
 {% import _self as fx %}
-{{fx.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
+{{fx.tick(val, class ~ ' htick', label, disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
 {% macro inline(type, name, msg, id, value, empty = '----') %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}
