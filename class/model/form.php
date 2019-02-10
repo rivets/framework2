@@ -197,7 +197,7 @@
             {
                 $form = '';
             }
-            $FSET = FALSE;
+            $fset = FALSE;
             foreach ($this->sequence() as $flds)
             {
                 $fld = reset($flds);
