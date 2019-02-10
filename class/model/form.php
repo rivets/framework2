@@ -217,7 +217,7 @@
                     break;
 
                 case 'label': // labelling for checkbox and radio groupings
-                    $crlabel = $fld->doLabel(FALSE); // make the label
+                    $crlabel = '<label'.$fld->attr('', TRUE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
                 case 'checkbox':
                 case 'radio':
