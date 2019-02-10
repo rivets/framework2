@@ -185,14 +185,31 @@
             {
                 $form = '';
             }
+            $FSET = FALSE;
             foreach ($this->sequence() as $flds)
             {
                 $fld = reset($flds);
+                $crlabel = '';
                 switch ($fld->type)
                 {
+                case 'fieldset':
+                    $form .= ($fset ? '</fieldset>' : '').'<fieldset'.$fld->fieldAttr('', TRUE).'>'.($fld->label !== '' ? '<legend>'.$fld->label.'</legend>' : '');
+                    $fset = TRUE;
+                    break;
+                case 'endfset':
+                    if ($fset)
+                    {
+                        $form .= '</fieldset>';
+                        $fset = FALSE;
+                    }
+                    break;
+                case 'label': // labelling for checkbox and radio groupings
+                    $crlabel = $fld->doLabel(FALSE); // make the label
+                    array_shift($flds); // pop off the label- the rest will be checkboxes or radios
                 case 'checkbox':
                 case 'radio':
-                    $form .= '<div class="form-group"><div class="form-check form-check-inline">';
+                    
+                    $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
                     foreach ($flds as $fld)
                     {
                         if (isset($values[$fld->name]) && $fld->value == $values[$fld->name])
@@ -276,6 +293,10 @@
                     break;
                 }
                 $form .= PHP_EOL;
+            }
+            if ($fset)
+            {
+                $form .= '</fieldset>';
             }
             return ($noform || $this->bean->method == 0) ? $form : ($form.'</form>');
         }

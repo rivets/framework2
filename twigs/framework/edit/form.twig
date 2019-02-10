@@ -17,7 +17,9 @@
     <link rel="stylesheet" {{a.urlattr(fwurls.editable)}}/>
 {% endblock css %}
 
-{% set types = ['text', 'textarea', 'email', 'password', 'checkbox', 'radio', 'select', 'file', 'range', 'number', 'button', 'submit'] %}
+{% set types = ['text', 'textarea', 'email', 'password', 'checkbox',
+    'radio', 'select', 'file', 'range', 'number', 'button', 'submit',
+    'label', 'fieldset', 'endfset'] %}
 
 {% block setup %}
     function addmore(e)

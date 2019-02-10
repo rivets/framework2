@@ -40,7 +40,6 @@
  */
         public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '')
         {
-            $label = '';
             if ($this->bean->label !== '')
             {
                 if ($makefor && $this->bean->idval === '')

@@ -172,6 +172,17 @@
             return $this->{$collect ? 'collect' : 'fetch'}('form', $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
+ * Get a specific form
+ *
+ * @param string       $name     The name of the form
+ *
+ * @return object
+ */
+        public function form(string $name)
+        {
+            return \R::find('form', 'name=?' [$name]);
+        }
+/**
  * Get all users with a particular context/role
  * @param mixed     $rolecontext
  * @param mixed     $rolename
