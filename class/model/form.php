@@ -101,6 +101,8 @@
  *
  * Remember that some items deliberatley share sequence numbers!
  *
+ * @todo support resequencing of sub-orderings
+ *
  * @return void
  */
         public function resequence()
@@ -110,7 +112,9 @@
             {
                 foreach ($flds as $fld)
                 {
-                    $fld->seqn = $seqn;
+                    $sqn = explode('/', $fld->seqn);
+                    $sqn[0] = $seqn;
+                    $fld->seqn = implode('/', $sqn);
                     \R::store($fld);
                 }
                 $seqn += 10;
