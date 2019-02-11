@@ -36,6 +36,7 @@
 		{% endfor %}
                 {% if end != pages %}
                     <li class="disabled page-item"><a class="noclick page-link">&hellip;</a></li>
+                    <li class="page-item"><a href="{{url}}?page={{end}}&amp;pagesize={{pagesize}}" class="page-link" title="Page {{end}}" aria-label="Page {{end}}">{{end}}</a></li>
                 {% endif %}
 		{% if page < pages %}
 		    <li class="page-item"><a href="{{url}}?page={{page+1}}&amp;pagesize={{pagesize}}" class="page-link" title="Next" aria-label="Next"><i class="fas fa-forward" aria-hidden="true"></i><span class="sr-only">Next</span></a></li>
