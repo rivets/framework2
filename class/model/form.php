@@ -285,7 +285,6 @@
  */
         private function doOption($option) : string
         {
-
             if (is_object($option))
             {
                 if (isset($option->optgroup))
@@ -302,7 +301,7 @@
                 }
                 else
                 {
-                    $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
+                    return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
                 }
             }
             elseif (is_array($option))
@@ -321,7 +320,7 @@
                 }
                 else
                 {
-                    $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
+                    return $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
                 }
             }
             return $this->mkoption($option, $option, FALSE, FALSE);
