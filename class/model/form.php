@@ -350,7 +350,7 @@
                 }
                 else
                 {
-                    $this->mkoption($option[1], $option[2], isset($option[3]), isset($option[4]));
+                    $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
                 }
             }
             return $this->mkoption($option, $option, FALSE, FALSE);
