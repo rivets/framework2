@@ -180,7 +180,7 @@
  */
         public function form(string $name)
         {
-            return \R::findOne('form', 'name=?' [$name]);
+            return \R::findOne('form', 'name=?', [$name]);
         }
 /**
  * Get all users with a particular context/role
