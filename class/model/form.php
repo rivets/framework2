@@ -353,7 +353,7 @@
                     $this->mkoption($option[1], $option[2], isset($option[3]), isset($option[4]));
                 }
             }
-            return $this->mkoption($option);
+            return $this->mkoption($option, $option, FALSE, FALSE);
         }
 /**
  * Make an option tag
