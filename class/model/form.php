@@ -245,48 +245,33 @@
                     {
                         foreach ($options as $option)
                         {
-                            if (is_object($option))
+                            if (is_object($option) && isset($option->optgroup))
                             {
-                                if (isset($option->optgroup))
-                                {
-                                    if ($this->optgroup)
-                                    { # one open already so close it
-                                        $form .= '</optgroup>';
-                                    }
-                                    if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
-                                    {
-                                        $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
-                                        $this->optgroup == TRUE;
-                                    }
+                                if ($this->optgroup)
+                                { # one open already so close it
+                                    $form .= '</optgroup>';
                                 }
-                                else
+                                if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
                                 {
-                                    $form .= '<option value="'.$option->value.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>'.$option->text.'</option>';
+                                    $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
+                                    $this->optgroup == TRUE;
                                 }
+                                continue;
                             }
-                            elseif (is_array($option))
+                            elseif (is_array($option) && $option[0] === NULL)
                             {
-                                if ($option[0] === NULL)
-                                {
-                                    if ($this->optgroup)
-                                    { # one open already so close it
-                                        $form .= '</optgroup>';
-                                    }
-                                    if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
-                                    {
-                                        $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
-                                        $this->optgroup == TRUE;
-                                    }
+                                if ($this->optgroup)
+                                { # one open already so close it
+                                    $form .= '</optgroup>';
                                 }
-                                else
+                                if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
                                 {
-                                    $form .= '<option value="'.$option[1].'"'.(isset($option[3]) ? ' disabled="disabled"' : '').'>'.$option[2].'</option>';
+                                    $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
+                                    $this->optgroup == TRUE;
                                 }
+                                continue;
                             }
-                            else
-                            {
-                                $form .= '<option value="'.$option.'">'.$option.'</option>';
-                            }
+                            $form .= $this->doOption($option);
                         }
                     }
                     if ($this->optgroup)
