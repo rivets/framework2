@@ -52,7 +52,7 @@
  */
         public function name()
         {
-	    return $this->bean->name;
+            return $this->bean->name;
         }
 /**
  * Return the form's method
@@ -61,7 +61,7 @@
  */
         public function method()
         {
-	    return $this->bean->method;
+            return $this->bean->method;
         }
 /**
  * Return the form's fields
@@ -70,7 +70,7 @@
  */
         public function fields()
         {
-	    return $this->bean->with('order by seqn,name')->ownFormfield;
+            return $this->bean->with('order by seqn,name')->ownFormfield;
         }
 /**
  * Return the form's fields by sequence
@@ -94,7 +94,7 @@
                     $res[$sqn[0]][] = $fld;
                 }
             }
-	    return $res;
+            return $res;
         }
 /**
  * Resequence the fields so that they are all multiples of 10
@@ -273,7 +273,7 @@
                             }
                             else
                             {
-                                $form .= '<option value="'.$option[0].'">'.$option[1].'</option>';
+                                $form .= '<option value="'.$option[1].'">'.$option[2].'</option>';
                             }
                         }
                         else
