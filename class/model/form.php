@@ -42,6 +42,11 @@
             'readonly'      => ['Readonly', FALSE, 0x08],
             'required'      => ['Required', FALSE, 0x10],
         ];
+/**
+ * @var flag to indicate inside optgroup.
+ * @todo can we have nested optgroups? Maybe this needs to be a count rather than a flag.
+ */
+        private $optgroup = FALSE;
 
         use \ModelExtend\FWEdit;
         use \ModelExtend\MakeGuard;
@@ -235,7 +240,7 @@
                     break;
                 case 'select':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<select'.$fld->fieldAttr('form-control', FALSE).'>';
-                    $optgroup = FALSE;
+                    $this->optgroup = FALSE;
                     foreach ($values[$fld->name] as $options)
                     {
                         foreach ($options as $option)
@@ -244,38 +249,38 @@
                             {
                                 if (isset($option->optgroup))
                                 {
-                                    if ($optgroup)
+                                    if ($this->optgroup)
                                     { # one open already so close it
                                         $form .= '</optgroup>';
                                     }
                                     if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
                                     {
                                         $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
-                                        $optgroup == TRUE;
+                                        $this->optgroup == TRUE;
                                     }
                                 }
                                 else
                                 {
-                                    $form .= '<option value="'.$option->value.'">'.$option->text.'</option>';
+                                    $form .= '<option value="'.$option->value.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>'.$option->text.'</option>';
                                 }
                             }
                             elseif (is_array($option))
                             {
                                 if ($option[0] === NULL)
                                 {
-                                    if ($optgroup)
+                                    if ($this->optgroup)
                                     { # one open already so close it
                                         $form .= '</optgroup>';
                                     }
                                     if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
                                     {
                                         $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
-                                        $optgroup == TRUE;
+                                        $this->optgroup == TRUE;
                                     }
                                 }
                                 else
                                 {
-                                    $form .= '<option value="'.$option[1].'">'.$option[2].'</option>';
+                                    $form .= '<option value="'.$option[1].'"'.(isset($option[3]) ? ' disabled="disabled"' : '').'>'.$option[2].'</option>';
                                 }
                             }
                             else
@@ -284,7 +289,7 @@
                             }
                         }
                     }
-                    if ($optgroup)
+                    if ($this->optgroup)
                     { # close any open optgroup
                         $form .= '</optgroup>';
                     }
@@ -316,7 +321,71 @@
             return ($noform || $this->bean->method == 0) ? $form : ($form.'</form>');
         }
 /**
- * Add a form
+ * handle an option
+ *
+ * @param mixed $option
+ *
+ * @return string
+ */
+        private function doOption($option) : string
+        {
+
+            if (is_object($option))
+            {
+                if (isset($option->optgroup))
+                {
+                    if ($this->optgroup)
+                    { # one open already so close it
+                        $form .= '</optgroup>';
+                    }
+                    if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
+                    {
+                        $this->optgroup == TRUE;
+                        return '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
+                    }
+                }
+                else
+                {
+                    $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
+                }
+            }
+            elseif (is_array($option))
+            {
+                if ($option[0] === NULL)
+                {
+                    if ($this->optgroup)
+                    { # one open already so close it
+                        $form .= '</optgroup>';
+                    }
+                    if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
+                    {
+                        $this->optgroup == TRUE;
+                        return '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
+                    }
+                }
+                else
+                {
+                    $this->mkoption($option[1], $option[2], isset($option[3]), isset($option[4]));
+                }
+            }
+            return $this->mkoption($option);
+        }
+/**
+ * Make an option tag
+ *
+ * @param string $value
+ * @param string $text
+ * @param boolean $selected
+ * @param boolean $disabled
+ *
+ * @return string
+ */
+        private function mkOption($value, $text, $selected, $disabled) : string
+        {
+            return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected? ' selected="selected"' : '').'>'.$text.'</option>';
+        }
+/**
+ * Add a new form
  *
  * @param object    $context  The context object
  *
