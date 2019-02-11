@@ -236,49 +236,52 @@
                 case 'select':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<select'.$fld->fieldAttr('form-control', FALSE).'>';
                     $optgroup = FALSE;
-                    foreach ($values[$fld->name] as $option)
+                    foreach ($values[$fld->name] as $options)
                     {
-                        if (is_object($option))
+                        foreach ($options as $option)
                         {
-                            if (isset($option->optgroup))
+                            if (is_object($option))
                             {
-                                if ($optgroup)
-                                { # one open already so close it
-                                    $form .= '</optgroup>';
+                                if (isset($option->optgroup))
+                                {
+                                    if ($optgroup)
+                                    { # one open already so close it
+                                        $form .= '</optgroup>';
+                                    }
+                                    if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
+                                    {
+                                        $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
+                                        $optgroup == TRUE;
+                                    }
                                 }
-                                if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
-                                { 
-                                    $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
-                                    $optgroup == TRUE;
+                                else
+                                {
+                                    $form .= '<option value="'.$option->value.'">'.$option->text.'</option>';
+                                }
+                            }
+                            elseif (is_array($option))
+                            {
+                                if ($option[0] === NULL)
+                                {
+                                    if ($optgroup)
+                                    { # one open already so close it
+                                        $form .= '</optgroup>';
+                                    }
+                                    if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
+                                    {
+                                        $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
+                                        $optgroup == TRUE;
+                                    }
+                                }
+                                else
+                                {
+                                    $form .= '<option value="'.$option[1].'">'.$option[2].'</option>';
                                 }
                             }
                             else
                             {
-                                $form .= '<option value="'.$option->value.'">'.$option->text.'</option>';
+                                $form .= '<option value="'.$option.'">'.$option.'</option>';
                             }
-                        }
-                        elseif (is_array($option))
-                        {
-                            if ($option[0] === NULL)
-                            {
-                                if ($optgroup)
-                                { # one open already so close it
-                                    $form .= '</optgroup>';
-                                }
-                                if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
-                                { 
-                                    $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
-                                    $optgroup == TRUE;
-                                }
-                            }
-                            else
-                            {
-                                $form .= '<option value="'.$option[1].'">'.$option[2].'</option>';
-                            }
-                        }
-                        else
-                        {
-                            $form .= '<option value="'.$option.'">'.$option.'</option>';
                         }
                     }
                     if ($optgroup)
