@@ -241,38 +241,9 @@
                 case 'select':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<select'.$fld->fieldAttr('form-control', FALSE).'>';
                     $this->optgroup = FALSE;
-                    foreach ($values[$fld->name] as $options)
+                    foreach ($values[$fld->name] as $option)
                     {
-                        foreach ($options as $option)
-                        {
-                            if (is_object($option) && isset($option->optgroup))
-                            {
-                                if ($this->optgroup)
-                                { # one open already so close it
-                                    $form .= '</optgroup>';
-                                }
-                                if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
-                                {
-                                    $form .= '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
-                                    $this->optgroup == TRUE;
-                                }
-                                continue;
-                            }
-                            elseif (is_array($option) && $option[0] === NULL)
-                            {
-                                if ($this->optgroup)
-                                { # one open already so close it
-                                    $form .= '</optgroup>';
-                                }
-                                if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
-                                {
-                                    $form .= '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
-                                    $this->optgroup == TRUE;
-                                }
-                                continue;
-                            }
-                            $form .= $this->doOption($option);
-                        }
+                        $form .= $this->doOption($option);
                     }
                     if ($this->optgroup)
                     { # close any open optgroup
