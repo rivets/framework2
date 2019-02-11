@@ -38,7 +38,7 @@
                     <li class="disabled page-item"><a class="noclick page-link">&hellip;</a></li>
                     <li class="page-item"><a href="{{url}}?page={{pages}}&amp;pagesize={{pagesize}}" class="page-link" title="Page {{pages}}" aria-label="Page {{pages}}">{{pages}}</a></li>
                 {% endif %}
-		{% if page < pages - 1%}
+		{% if page < pages %}
 		    <li class="page-item"><a href="{{url}}?page={{page+1}}&amp;pagesize={{pagesize}}" class="page-link" title="Next" aria-label="Next"><i class="fas fa-forward" aria-hidden="true"></i><span class="sr-only">Next</span></a></li>
                     <li class="page-item"><a href="{{url}}?page={{pages}}&amp;pagesize={{pagesize}}" class="page-link" title="Page {{pages}}" aria-label="Page {{pages}}"><i class="fas fa-fast-forward" aria-hidden="true"></i><span class="sr-only">Page {{pages}}</span></a></li>
 		{% else %}
