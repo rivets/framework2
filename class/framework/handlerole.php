@@ -17,9 +17,33 @@
     trait HandleRole
     {
 /**
+ * Check that user has one of a set of roles
+ *
+ * @todo support nested AND/OR
+ *
+ * @param array   $roles  [['context', 'role'],...]]
+ * @param boolean $or     If TRUE then the condition is OR
+ *
+ * @return array
+ */
+        public function checkrole(array $roles, bool $or = TRUE) : array
+        {
+            $res = [];
+            foreach ($roles as $rc)
+            {
+                $res[] = $this->hasrole(...$rc);
+            }
+            $res = array_filter($res); // get rid of any null entries
+            if ($or)
+            {
+                return $res;
+            }
+            return count($res) == count($roles) ? $res : []; // for an and you have to have all of them.
+        }
+/**
  * Check for a role
  *
- * @param string        $rolecontextname    The name of a context...
+ * @param string    $rolecontextname    The name of a context...
  * @param string	$rolename           The name of a role....
  *
  * @return object
