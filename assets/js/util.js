@@ -41,23 +41,30 @@
             }
         },
 
-        dodelbean: function(e, x, bean)
+        deletebean: function(e, x, bean, id, yes)
         {
             e.preventDefault();
             e.stopPropagation();
             bootbox.confirm('Are you sure you you want to delete this '+bean+'?', function(r){
                 if (r)
                 { // user picked OK
-                    var tr = $(x).parent().parent();
-                    $.ajax(base+'/ajax/bean/'+bean+'/'+tr.data('id')+'/', {
+                    $.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
                         method: 'DELETE',
-                    }).done(function(){
-                        tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
-                    }).fail(function(jx){
+                    }).done(yes).fail(function(jx){
                         bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
                     });
                 }
             });
+        },
+
+        fadetodel: function(tr){
+               tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
+        },
+
+        dodelbean: function(e, x, bean)
+        {
+            var tr = $(x).parent().parent();
+            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);});
         },
 
         tableClick: function(event)
