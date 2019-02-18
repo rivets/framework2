@@ -33,6 +33,7 @@
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
+            'shared'        => [TRUE,   []], // permission checks are done in the table function
             'table'         => [TRUE,   []],
             'tablecheck'    => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
@@ -46,6 +47,13 @@
         private static $beanperms = [
             [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [],
                 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $sharedperms = [
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -330,6 +338,41 @@
                 }
                 R::trash($context->load($bean, $id));
                 break;
+            case 'GET':
+            default:
+                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
+            }
+        }
+/**
+ * Carry out operations on RB shared lists
+ *
+ * @internal
+ * @param object    $context The context object
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
+        private final function shared(Context $context)
+        {
+//            $beans = $this->findRow($context, self::$sharedperms);
+            list($b1, $id1, $b2, $id2) = $context->restcheck(4);
+            $bn1 = $context->load($b1, $id1);
+            $bn2 = $context->load($b2, $id2);
+            switch ($context->web()->method())
+            {
+            case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
+                $bn1->{'shared'.ucfirst($b2).'List'}[] = $bn2;
+                \R::store($bn1);
+                break;
+            case 'DELETE': // /ajax/shared/KIND1/id1/KIND2/id2
+                unset($bn1->{'shared'.ucfirst($b2).'List'}[$bn2->getID()]);
+                \R::store($bn1);
+                break;
+            case'PUT':
+            case 'PATCH':
             case 'GET':
             default:
                 throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
