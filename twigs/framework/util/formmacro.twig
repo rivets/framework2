@@ -29,6 +29,9 @@
     {% if opts.label != '' %}
         <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
     {% endif %}
+    {% if opts.rlabel != '' %}
+        <label{{fx.hv('for', opts.id)}}>{{opts.rlabel|raw}}</label>
+    {% endif %}
 {% endmacro bsl %}
 
 {% macro xsl(opts, cls) %}{% import _self as fx %}<div class="{{cls}}">{% if opts.label != '' %}    <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}{% endmacro xsl %}

@@ -6,9 +6,13 @@
 <button class="btn {{bstyle}}" data-toggle="modal" data-target="#{{id}}" type="button">{{label}}</button>
 {% endmacro invoke %}
 
-{% macro start(id) %}
-    <div class="modal fade" id="{{id}}" aria-labelledby="{{id}}" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+{% macro rinvoke(id, label, bstyle = 'btn-primary', title='') %}{% import _self as h %}
+<button class="btn {{bstyle}}" data-toggle="modal" data-target="#{{id}}" type="button"{{h.hv('title', title)}}>{{label|raw}}</button>
+{% endmacro rinvoke %}
+
+{% macro start(opts) %}
+    <div class="modal fade" id="{{opts.id}}" aria-labelledby="{{opts.id}}" aria-hidden="true">
+        <div class="modal-dialog modal-{{opts.size is defined ? opts.size : 'lg'}}" role="document">
             <div class="modal-content">
 {% endmacro start %}
 
@@ -18,16 +22,14 @@
     </div>
 {% endmacro end %}
 
-{% macro header(opts) %}
-{% import _self as h %}
+{% macro header(opts) %}{% import _self as h %}
     <div class="modal-header">
         <h4 class="modal-title"{{h.hv('id', opts.id)}}>{{opts.title}}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     </div>
 {% endmacro header %}
 
-{% macro footer(opts) %}
-{% import _self as h %}
+{% macro footer(opts) %}{% import _self as h %}
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary"{{h.hv('id', opts.id)}}>{{opts.action}}</button>
@@ -35,11 +37,11 @@
 {% endmacro footer %}
 
 {% macro open(opts) %}{% import _self as h %}
-{{h.start(opts.id)}}
+{{h.start(opts)}}
 {{h.header(opts)}}
 {% endmacro open %}
 
 {% macro close(opts) %}{% import _self as h %}
-{{h.footer(opts)}}
+{% if not opts.nofooter is defined %}{{h.footer(opts)}}{% endif %}
 {{h.end()}}
 {% endmacro close %}
