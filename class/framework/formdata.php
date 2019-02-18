@@ -170,7 +170,7 @@
             }
             elseif ($throw)
             {
-                throw new \Framework\Exception\BadValue('Missing item '.$n);
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
             }
             return $dflt;
         }
