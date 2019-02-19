@@ -167,7 +167,7 @@
         private function fieldExists(string $type, string $field)
         {
             $fds = \R::inspect($type);
-            if ($field == 'is' || !isset($fds[$field]))
+            if ($field == 'id' || !isset($fds[$field]))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
             }
@@ -184,21 +184,58 @@
  *
  * @return array
  */
-        protected final function findrow(Context $context, $perms)
+        protected final function findRow(Context $context, $perms)
         {
+            $tables = [];
             foreach ($perms as $bpd)
             {
                 try
                 {
                     $this->checkPerms($context, $bpd[0]); // make sure we are allowed
-                    return $bpd[1];
+                    $tables[] = $bpd[1];
                 }
                 catch (\Framework\Exception\Forbidden $e)
                 {
                     // void go round and try the next item in the array
                 }
             }
-            throw new \Framework\Exception\Forbidden('Permission Denied');
+            if (empty($tables))
+            {
+                throw new \Framework\Exception\Forbidden('Permission Denied');
+            }
+/**
+ * Need to merge all the tables together. We can't use array_merge
+ * since empty elements imply all fields and array_merge would overwrite empties.
+ *
+ * @todo Revisit the table design to be able to use some of the array functions
+ *
+ */
+            $merged = [];
+            foreach ($tables as $t)
+            {
+                foreach ($t as $k => $v)
+                {
+                    if (isset($merged[$k]))
+                    {
+                        if (!empty($merged[$k]))
+                        {
+                            if (empty($v))
+                            {
+                                $merged[$k] = [];
+                            }
+                            else
+                            {
+                                $merged[$k] = array_merge($merged[$k], $v);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $merged[$k] = $v;
+                    }
+                }
+            }
+            return $merged;
         }
 /**
  * Toggle a flag field in a bean
@@ -499,9 +536,9 @@
 /**
  * Add bean permissions to allow non site/admins to use the functions
  *
- * @param array     $bean      
- * @param array     $toggle      
- * @param array     $table     
+ * @param array     $bean
+ * @param array     $toggle
+ * @param array     $table
  *
  * @return void
  */
@@ -539,7 +576,7 @@
  */
         private function unique(Context $context)
         {
-            $beans = $this->findrow($context, self::$uniqueperms);
+            $beans = $this->findRow($context, self::$uniqueperms);
             list($bean, $field, $value) = $context->restcheck(3);
             $this->beanCheck($beans, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
