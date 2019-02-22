@@ -70,16 +70,16 @@
  * @var $action Values for determining handling of above codes
  */
         public static $actions = [
-            REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
-            REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
-            XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
-            XREHOME     => [FALSE, [FALSE, '', FALSE, FALSE]],
-            REDIRECT3   => [TRUE,  [TRUE, '', FALSE, TRUE]],
-            XREDIRECT3  => [FALSE, [TRUE, '', FALSE, TRUE]],
-            REDIRECT7   => [TRUE,  [TRUE, '', TRUE, FALSE]],
-            XREDIRECT7  => [FALSE, [TRUE, '', TRUE, FALSE]],
-            REHOME8     => [TRUE,  [FALSE, '', TRUE, FALSE]],
-            XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
+            self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
+            self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
+            self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
+            self::XREHOME     => [FALSE, [FALSE, '', FALSE, FALSE]],
+            self::REDIRECT3   => [TRUE,  [TRUE, '', FALSE, TRUE]],
+            self::XREDIRECT3  => [FALSE, [TRUE, '', FALSE, TRUE]],
+            self::REDIRECT7   => [TRUE,  [TRUE, '', TRUE, FALSE]],
+            self::XREDIRECT7  => [FALSE, [TRUE, '', TRUE, FALSE]],
+            self::REHOME8     => [TRUE,  [FALSE, '', TRUE, FALSE]],
+            self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
         ];
 /**
  * Handle dispatch of a page.
@@ -118,7 +118,7 @@
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
-            case SiteAction::OBJECT: // fire up the object to handle the request
+            case self::OBJECT: // fire up the object to handle the request
                 $pageObj = new $page->source;
                 $csp = $pageObj;
                 try
@@ -138,14 +138,14 @@
                 {
                     $context->web()->bad($e->getMessage());
                 }
-        
+
                 if (is_array($tpl))
                 { // page is returning more than just a template filename
                     list($tpl, $mime, $code) = $tpl;
                 }
                 break;
 
-            case SiteAction::TEMPLATE: // render a template
+            case self::TEMPLATE: // render a template
                 \Support\Setup::preliminary($context, $page); // any user setup code
                 $csp = $context->web();
                 $tpl = $page->source;
@@ -189,33 +189,33 @@
         {
             switch ($kind)
             {
-            case SiteAction::OBJECT:
+            case self::OBJECT:
                 if (!preg_match('/^(\\?[a-z][a-z0-9]*)+$/i', $source))
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
                 }
                 break;
-            case SiteAction::TEMPLATE:
+            case self::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (twig) "'.$source.'"');
                 }
                 break;
-            case SiteAction::REDIRECT: // these need a local URL, i.e. no http
-            case SiteAction::REDIRECT3:
-            case SiteAction::RDIRECT7:
-            case SiteAction::REHOME:
-            case SiteAction::REHOME8:
+            case self::REDIRECT: // these need a local URL, i.e. no http
+            case self::REDIRECT3:
+            case self::RDIRECT7:
+            case self::REHOME:
+            case self::REHOME8:
                 if (!preg_match('#^(/.*?)+#i', $source))
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (local path)');
                 }
                 break;
-            case SiteAction::XREDIRECT: // these need a URL
-            case SiteAction::XREDIRECT3:
-            case SiteAction::XRDIRECT7:
-            case SiteAction::XREHOME:
-            case SiteAction::XREHOME8:
+            case self::XREDIRECT: // these need a URL
+            case self::XREDIRECT3:
+            case self::XRDIRECT7:
+            case self::XREHOME:
+            case self::XREHOME8:
                 if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
