@@ -186,7 +186,18 @@
  */
         protected final function findRow(Context $context, $perms)
         {
-            $tables = [];
+            $tables = array_filter($perms, function($value){
+                try
+                {
+                    $this->checkPerms($context, $bpd[0]); // make sure we are allowed
+                }
+                catch (\Framework\Exception\Forbidden $e)
+                {
+                    return FALSE;
+                }
+                return TRUE;
+            });
+/*
             foreach ($perms as $bpd)
             {
                 try
@@ -199,6 +210,7 @@
                     // void go round and try the next item in the array
                 }
             }
+*/
             if (empty($tables))
             {
                 throw new \Framework\Exception\Forbidden('Permission Denied');
@@ -210,10 +222,26 @@
  * @todo Revisit the table design to be able to use some of the array functions
  *
  */
-            $merged = [];
-            foreach ($tables as $t)
+            $merged = array_reduce($tables, function($carry, $item){
+                foreach ($item[1] as $k => $v)
+                {
+                    if (isset($carry[$k]))
+                    {
+                        if (!empty($carry[$k]))
+                        {
+                            $carry[$k] =  empty($v) ? [] : array_merge(carry[$k], $v);
+                        }
+                    }
+                    else
+                    {
+                        $carry[$k] = $v;
+                    }
+                }
+                return $carry;
+            }, [[], []]);
+  /*          foreach ($tables as $t)
             {
-                foreach ($t as $k => $v)
+                foreach ($t[1] as $k => $v)
                 {
                     if (isset($merged[$k]))
                     {
@@ -235,7 +263,8 @@
                     }
                 }
             }
-            return $merged;
+*/
+            return $merged[1];
         }
 /**
  * Toggle a flag field in a bean
