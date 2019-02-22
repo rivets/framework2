@@ -203,7 +203,7 @@
                 break;
             case self::REDIRECT: // these need a local URL, i.e. no http
             case self::REDIRECT3:
-            case self::RDIRECT7:
+            case self::REDIRECT7:
             case self::REHOME:
             case self::REHOME8:
                 if (!preg_match('#^(/.*?)+#i', $source))
@@ -213,7 +213,7 @@
                 break;
             case self::XREDIRECT: // these need a URL
             case self::XREDIRECT3:
-            case self::XRDIRECT7:
+            case self::XREDIRECT7:
             case self::XREHOME:
             case self::XREHOME8:
                 if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
