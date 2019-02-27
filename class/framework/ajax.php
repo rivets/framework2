@@ -511,12 +511,12 @@
 /**
  * Add an operation
  *
- * @param string    $function   The name of a function
+ * @param mixed     $function   The name of a function or an array of names
  * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
  */
-        public final function operation(string $function, array $perms) : void
+        public final function operation($function, array $perms) : void
         {
             if (is_array($function))
             {
