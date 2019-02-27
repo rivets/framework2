@@ -649,7 +649,7 @@
                 \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
                 $this->fwconfig = [];
-                foreach (\R::findAll(Config::FWCONFIG) as $cnf)
+                foreach (\R::findAll(Config::CONFIG) as $cnf)
                 {
                     $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
                     $this->fwconfig[$cnf->name] = $cnf;

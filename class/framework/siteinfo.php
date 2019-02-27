@@ -20,7 +20,7 @@
  * @var array  Array of the names of the beans used by the framework
  */
         private static $fwtables = [
-            Config::FWCONFIG,
+            Config::CONFIG,
             'confirm',
             'page',
             'pagerole',
@@ -156,7 +156,7 @@
  */
         public function siteconfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}(Config::FWCONFIG, $order, [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(Config::CONFIG, $order, [], $start, $count);
         }
 /**
  * Get all the form beans
