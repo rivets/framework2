@@ -9,6 +9,7 @@
     namespace Framework;
 
     use \Support\Context as Context;
+    use \Config\Config as Config;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -19,7 +20,7 @@
  * @var array  Array of the names of the beans used by the framework
  */
         private static $fwtables = [
-            'fwconfig',
+            Config::FWCONFIG,
             'confirm',
             'page',
             'pagerole',
@@ -155,7 +156,7 @@
  */
         public function siteconfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('fwconfig', $order, [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(Config::FWCONFIG, $order, [], $start, $count);
         }
 /**
  * Get all the form beans

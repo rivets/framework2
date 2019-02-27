@@ -98,12 +98,12 @@
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');
-            $bn = \R::findOne('fwconfig', 'name=?', [$name]);
+            $bn = \R::findOne(Config::FWCONFIG, 'name=?', [$name]);
             if (is_object($bn))
             {
                 throw new \Framework\Exception\BadValue('Config item exists');
             }
-            $bn = \R::dispense('fwconfig');
+            $bn = \R::dispense(Config::FWCONFIG);
             $bn->name = $name;
             $bn->value = $fdt->mustpost('value');
             $bn->local = $fdt->post('local', 0);

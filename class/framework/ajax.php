@@ -121,7 +121,7 @@
         {
             $rest = $context->rest();
             list($name) = $context->restcheck(1);
-            $v = R::findOne('fwconfig', 'name=?', [$name]);
+            $v = R::findOne(Config::FWCONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($context->web()->method())
             {
@@ -130,7 +130,7 @@
                 {
                     throw new \Framework\Exception\BadValue('Item already exists');
                 }
-                $v = R::dispense('fwconfig');
+                $v = R::dispense(Config::FWCONFIG);
                 $v->name = $name;
                 $v->value = $fdt->mustpost('value');
                 $v->type = $fdt->mustpost('type');
