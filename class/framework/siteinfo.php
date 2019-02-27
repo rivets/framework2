@@ -224,5 +224,17 @@
             }
             return $beans;
         }
+/**
+ * Do a page count calculation for a table
+ *
+ * @param string    $table
+ * @param int       $pagesize
+ *
+ * @return int
+ */
+        public function pagecount($table, $pagesize)
+        {
+            return (int) floor((\R::count($table) + $pagesize) / $pagesize);
+        }
     }
 ?>
