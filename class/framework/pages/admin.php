@@ -17,7 +17,7 @@
  */
     class Admin extends \Framework\Siteaction
     {
-        const EDITABLE = ['table', 'form', 'fwconfig', 'page', 'user'];
+        const EDITABLE = ['table', 'form', Config::FWCONFIG, 'page', 'user'];
         const VIEWABLE = ['table', 'form'];
         const NOTMODEL = ['table'];
         const HASH     = 'sha384';
@@ -170,7 +170,7 @@
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
-                    $lval = \R::findOne('fwconfig', 'name=?', [$cname]);
+                    $lval = \R::findOne(Config::FWCONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
                         if ($lval->local == 0)
@@ -194,7 +194,7 @@
                     }
                     else
                     {
-                        $lval = \R::dispense('fwconfig');
+                        $lval = \R::dispense(Config::FWCONFIG);
                         $lval->name = $cname;
                         $lval->local = 0;
                         foreach ($cdata as $k => $v)
