@@ -28,7 +28,7 @@
 
     function delbean(e)
     {
-        framework.dodelbean(e, this, 'fwconfig');
+        framework.dodelbean(e, this, {{constant('Config\\Config::FWCONFIG')}});
     }
 {% endblock setup %}
 
@@ -41,7 +41,7 @@
         e.preventDefault();
         var t = $(this);
         var id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/value/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::FWCONFIG')}}'+id+'/value/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: t.val()
@@ -50,7 +50,7 @@
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
-        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/integrity/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::FWCONFIG')}}/'+id+'/integrity/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: ''
@@ -58,7 +58,7 @@
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-        $.ajax('{{base}}/ajax/bean/fwconfig/'+id+'/crossorigin/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::FWCONFIG')}}/'+id+'/crossorigin/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: ''
@@ -95,7 +95,7 @@
         var name = $('.nname').val();
         var value = t.val();
         var local = $('#Xnewlocal').is(':checked') ? 1 : 0;
-        $.ajax('{{base}}/ajax/bean/fwconfig/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::FWCONFIG')}}/', {
             method: 'POST', // because we are creating a new item
             data: {
                 name: name,
@@ -129,7 +129,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('fwconfig')/pagesize)|round(0, 'ceil') %}
+{% set pages = (siteinfo.count({{constant('Config\\Config::FWCONFIG')}})/pagesize)|round(0, 'ceil') %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -152,7 +152,7 @@
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                             </div>
-                            <a href="{{base}}/admin/edit/fwconfig/{{p.getID}}"><i class="editb far fa-edit"></i></a>
+                            <a href="{{base}}/admin/edit/{{constant('Config\\Config::FWCONFIG')}}/{{p.getID}}"><i class="editb far fa-edit"></i></a>
                             {% if not p.fixed %}
                                 <i class="delb far fa-trash-alt"></i>
                             {% endif %}
