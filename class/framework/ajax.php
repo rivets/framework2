@@ -117,7 +117,7 @@
  *
  * @return void
  */
-        private final function config(Context $context)
+        private final function config(Context $context) : void
         {
             $rest = $context->rest();
             list($name) = $context->restcheck(1);
@@ -164,7 +164,7 @@
  * @throws \Framework\Exception\BadValue
  * @return boolean
  */
-        private function fieldExists(string $type, string $field)
+        private function fieldExists(string $type, string $field) : void
         {
             $fds = \R::inspect($type);
             if ($field == 'id' || !isset($fds[$field]))
@@ -184,7 +184,7 @@
  *
  * @return array
  */
-        protected final function findRow(Context $context, $perms)
+        protected final function findRow(Context $context, $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
@@ -249,7 +249,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        private final function toggle(Context $context)
+        private final function toggle(Context $context) : void
         {
             $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
@@ -293,7 +293,7 @@
  *
  * @return void
  */
-        private final function update(Context $context)
+        private final function update(Context $context) : void
         {
             $fdt = $context->formdata();
 
@@ -316,7 +316,7 @@
  *
  * @return boolean or error out
  */
-        protected function beanCheck($beans, $bean, $field)
+        protected function beanCheck($beans, $bean, $field) : bool
         {
             $this->fieldExists($bean, $field);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
@@ -337,7 +337,7 @@
  *
  * @return void
  */
-        private final function bean(Context $context)
+        private final function bean(Context $context) : void
         {
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
@@ -392,7 +392,7 @@
  *
  * @return void
  */
-        private final function shared(Context $context)
+        private final function shared(Context $context) : void
         {
 //            $beans = $this->findRow($context, self::$sharedperms);
             list($b1, $id1, $b2, $id2) = $context->restcheck(4);
@@ -426,7 +426,7 @@
  *
  * @return void
  */
-        private final function table(Context $context)
+        private final function table(Context $context) : void
         {
             $tables = $this->findRow($context, self::$tableperms);
             $rest = $context->rest();
@@ -457,7 +457,7 @@
  *
  * @return void
  */
-        private final function paging(Context $context)
+        private final function paging(Context $context) : void
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -485,7 +485,7 @@
  *
  * @return void
  */
-        private final function hints(Context $context)
+        private final function hints(Context $context) : void
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -516,9 +516,16 @@
  *
  * @return void
  */
-        public final function operation(string $function, array $perms)
+        public final function operation(string $function, array $perms) : void
         {
-            self::$restops[$function] = $perms;
+            if (is_array($function))
+            {
+                $function = [$function];
+            }
+            foreach ($function as $f)
+            {
+                self::$restops[$f] = $perms;
+            }
         }
 /**
  * Add pagination or searching tables
@@ -528,7 +535,7 @@
  *
  * @return void
  */
-        public final function pageOrHint(array $paging, array $hints)
+        public final function pageOrHint(array $paging, array $hints) : void
         {
             self::$paging = array_merge(self::$paging, $paging);
             self::$hints = array_merge(self::$paging, $hints);
@@ -542,7 +549,7 @@
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table)
+        public final function beanAccess(array $bean, array $toggle, array $table) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
@@ -558,7 +565,7 @@
  *
  * @return void
  */
-        protected final function uniqCheck(Context $context, string $bean, string $field, string $value)
+        protected final function uniqCheck(Context $context, string $bean, string $field, string $value) : void
         {
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
@@ -574,7 +581,7 @@
  *
  * @return void
  */
-        private function unique(Context $context)
+        private function unique(Context $context) : void
         {
             $beans = $this->findRow($context, self::$uniqueperms);
             list($bean, $field, $value) = $context->restcheck(3);
@@ -589,7 +596,7 @@
  *
  * @return void
  */
-        private function uniquenl(Context $context)
+        private function uniquenl(Context $context) : void
         {
             list($bean, $field, $value) = $context->restcheck(3);
             $this->beanCheck(self::$uniquenlperms, $bean, $field);
@@ -603,7 +610,7 @@
  *
  * @return void
  */
-        private function tablecheck(Context $context)
+        private function tablecheck(Context $context) : void
         {
             list($name) = $context->restcheck(1);
             $tb = \R::inspect();
@@ -623,7 +630,7 @@
  *
  * @return void
  */
-        private function pwcheck(Context $context)
+        private function pwcheck(Context $context) : void
         {
             if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
             {
@@ -641,7 +648,7 @@
  *
  * @return void
  */
-        protected final function checkPerms(Context $context, array $perms)
+        protected final function checkPerms(Context $context, array $perms) : void
         {
             foreach ($perms as $rcs)
             {
@@ -695,7 +702,7 @@
  *
  * @return void
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : void
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call
