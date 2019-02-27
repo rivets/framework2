@@ -197,7 +197,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('page') + pagesize)/pagesize %}
+{% set pages = siteinfo.pagecount('page',  pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
