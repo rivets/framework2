@@ -518,7 +518,7 @@
  */
         public final function operation($function, array $perms) : void
         {
-            if (is_array($function))
+            if (!is_array($function))
             {
                 $function = [$function];
             }
