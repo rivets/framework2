@@ -70,7 +70,7 @@
  */
         public function handle(Context $context) : void
         {
-            //$this->operation('yourop', [TRUE, [['ContextName', 'RoleName']]]);
+            //$this->operation(['yourop', ...], [TRUE, [['ContextName', 'RoleName'],...]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
             $this->pageOrHint(self::$allowPaging, self::$allowHints);
             $this->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable);
