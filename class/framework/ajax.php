@@ -45,7 +45,7 @@
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], Config::CONFIG => [], 'form' => [],
                 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -60,7 +60,7 @@
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], 'fwconfig' => [], 'form' => [],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], Config::CONFIG => [], 'form' => [],
                 'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -68,7 +68,7 @@
  * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $tableperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'fwconfig', 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
+            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ Config::CONFIG, 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -121,7 +121,7 @@
         {
             $rest = $context->rest();
             list($name) = $context->restcheck(1);
-            $v = R::findOne(Config::FWCONFIG, 'name=?', [$name]);
+            $v = R::findOne(Config::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($context->web()->method())
             {
@@ -130,7 +130,7 @@
                 {
                     throw new \Framework\Exception\BadValue('Item already exists');
                 }
-                $v = R::dispense(Config::FWCONFIG);
+                $v = R::dispense(Config::CONFIG);
                 $v->name = $name;
                 $v->value = $fdt->mustpost('value');
                 $v->type = $fdt->mustpost('type');
