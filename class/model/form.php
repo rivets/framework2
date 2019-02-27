@@ -53,27 +53,27 @@
 /**
  * Return the form name
  *
- * @return object
+ * @return string
  */
-        public function name()
+        public function name() : string
         {
             return $this->bean->name;
         }
 /**
  * Return the form's method
  *
- * @return object
+ * @return string
  */
-        public function method()
+        public function method() : string
         {
             return $this->bean->method;
         }
 /**
  * Return the form's fields
  *
- * @return object
+ * @return array
  */
-        public function fields()
+        public function fields() : array
         {
             return $this->bean->with('order by seqn,name')->ownFormfield;
         }
@@ -82,9 +82,9 @@
  *
  * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
  *
- * @return object
+ * @return array
  */
-        public function sequence()
+        public function sequence() : array
         {
             $res = [];
             foreach ($this->bean->fields() as $fld)
@@ -110,7 +110,7 @@
  *
  * @return void
  */
-        public function resequence()
+        public function resequence() : void
         {
             $seqn = 10;
             foreach ($this->bean->sequence() as $flds)
@@ -129,21 +129,24 @@
  * Setup for an edit
  *
  * @param object    $context The context object
+ * @param array    $rest     Not used here at the moment
  * 
  * @return void
  */
-        public function startEdit(Context $context, array $rest)
+        public function startEdit(Context $context, array $rest) : void
         {
             $context->local()->addval('flags', self::$flags);
         }
 /**
  * Handle a form edit
  *
+ * @see Framework\Pages\Admin
+ *
  * @param object    $context  The context object
  *
- * @return void
+ * @return array
  */
-        public function edit(Context $context)
+        public function edit(Context $context) : array
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);
@@ -175,7 +178,7 @@
  *
  * @return void
  */
-        public function view(Context $context, array $rest)
+        public function view(Context $context, array $rest) : void
         {
         }
 /**
@@ -186,7 +189,7 @@
  *
  * @return string
  */
-        public function render($values = [], $noform = FALSE)
+        public function render($values = [], $noform = FALSE) : string
         {
             if (!$noform || $this->bean->method == 0)
             {
@@ -340,13 +343,15 @@
             return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected? ' selected="selected"' : '').'>'.$text.'</option>';
         }
 /**
- * Add a new form
+ * Add a new form, called when adding a new form via ajax
+ *
+ * @see Framework\Ajax
  *
  * @param object    $context  The context object
  *
  * @return void
  */
-        public static function add(Context $context)
+        public static function add(Context $context) : void
         {
             $fdt = $context->formdata();
             $p = \R::dispense('form');
