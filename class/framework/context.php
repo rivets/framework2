@@ -90,14 +90,13 @@
  */
         public function restcheck(int $count) : array
         {
-            foreach (range(1, $count) as $ix)
+            if (($cnt = count($this->reqrest[$ix])) <= $count)
             {
-                if (($this->reqrest[$ix] ?? '') === '')
-                {
-                    throw new \Framework\Exception\ParameterCount();
-                }
+                throw new \Framework\Exception\ParameterCount();
             }
-            return array_slice($this->reqrest, 1, $count);
+            $res = array_slice($this->reqrest, 1, $count);
+            $res[] = array_slice($this->reqrest, $count+1); // return anything left - there might be optional parameters.
+            return $res;
         }
 /**
  ***************************************
