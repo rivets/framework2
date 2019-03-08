@@ -90,7 +90,7 @@
  */
         public function restcheck(int $count) : array
         {
-            if (($cnt = count($this->reqrest[$ix])) <= $count)
+            if (($cnt = count($this->reqrest)) <= $count)
             {
                 throw new \Framework\Exception\ParameterCount();
             }
