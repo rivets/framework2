@@ -55,7 +55,7 @@
 {% block onload %}
     {%if inline %}
         $('.ppedit').editable({
-            ajaxOptions: { type: 'PUT' },
+            ajaxOptions: { type: 'PATCH' },
             params: paramset,
             onblur: 'cancel',
             url: editcall

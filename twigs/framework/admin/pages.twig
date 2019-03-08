@@ -66,7 +66,7 @@
 
 {% block onload %}
     $('.ppedit').editable({
-        ajaxOptions: { type: 'PUT' },
+        ajaxOptions: { type: 'PATCH' },
         params: paramset,
         source: kname,
         onblur: 'cancel',
