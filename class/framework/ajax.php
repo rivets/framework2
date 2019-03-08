@@ -360,11 +360,11 @@
                 }
                 break;
             case 'PATCH':
-            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
-                list($bean, $id, $field) = $context->restcheck(3);
+            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
+                list($bean, $id, $field, $more) = $context->restcheck(3);
                 $this->beanCheck($beans, $bean, $field);
                 $bn = $context->load($bean, $id, TRUE);
-                $bn->$field = $context->formdata()->mustput('value');
+                $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
                 R::store($bn);
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
