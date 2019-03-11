@@ -352,7 +352,7 @@
                 $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {
-                    $class::add($context);
+                    echo $class::add($context)->getID();
                 }
                 else
                 { // operation not supported

@@ -51,15 +51,17 @@
  */
         }
 /**
- * Add a User from a form - invoked by the AJAX bean operation
+ * Add a User from a form
+ *
+ * @see Framework\Ajax::bean
  *
  * @param object	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  *
- * @return void
+ * @return object
  */
-        public static function add(Context $context)
+        public static function add(Context $context) : object
         {
             $now = $context->utcnow(); # make sure time is in UTC
             $fdt = $context->formdata();
@@ -87,7 +89,7 @@
                 {
                     $u->addrole(Config::FWCONTEXT, Config::DEVELROLE, '', $now);
                 }
-                echo $u->getID();
+                return $u;
             }
             else
             {

@@ -214,13 +214,13 @@
 /**
  * Add a Page
  *
- * This will be called from ajax.php
+ * @see Framework\Ajax::bean
  *
- * @param object	$context	The context object for the site
+ * @param object	$context	The Context object for the site
  *
- * @return void
+ * @return object
  */
-        public static function add(Context $context)
+        public static function add(Context $context) : object
         {
             $fdt = $context->formdata();
             $p = \R::dispense('page');
@@ -315,10 +315,10 @@
                 case SiteAction::XREHOME:
                     break;
                 }
-                echo $p->getID();
+                return $p;
             }
             catch (\Exception $e)
-            { // clean up the page we made above. This will cascade deleete any pageroles that might have been created
+            { // clean up the page we made above. This will cascade delete any pageroles that might have been created
                 \R::trash($p);
                 throw $e; // throw it up to the handlers above
             }

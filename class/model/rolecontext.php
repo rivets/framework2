@@ -28,19 +28,21 @@
             }
         }
 /**
- * Add a RoleContext from a form - invoked by the AJAX bean operation
+ * Add a RoleContext from a form
+ *
+ * @see Framework\Ajax::bean
  *
  * @param object	$context	The context object for the site
  *
- * @return void
+ * @return object
  */
-        public static function add(Context $context)
+        public static function add(Context $context) : object
         {
             $p = \R::dispense('rolecontext');
             $p->name = $context->formdata()->mustpost('name');
             $p->fixed = 0;
             \R::store($p);
-            echo $p->getID();
+            return $p->getID();
         }
     }
 ?>

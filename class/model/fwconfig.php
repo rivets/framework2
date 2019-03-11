@@ -88,13 +88,14 @@
 /**
  * Add a new FWConfig bean
  *
+ * @see Framework\Ajax::bean
+ *
  * @param object    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- *
- * @return void
+ * @return object
  */
-        public static function add(Context $context)
+        public static function add(Context $context) : object
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');
@@ -110,7 +111,7 @@
             $bn->fixed = 0;
             $bn->integrity = '';
             $bn->defer = 0;
-            echo \R::store($bn);
+            return \R::store($bn);
         }
 /**
  * Setup for an edit

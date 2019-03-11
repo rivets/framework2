@@ -345,13 +345,13 @@
 /**
  * Add a new form, called when adding a new form via ajax
  *
- * @see Framework\Ajax
+ * @see Framework\Ajax::bean
  *
  * @param object    $context  The context object
  *
- * @return void
+ * @return object
  */
-        public static function add(Context $context) : void
+        public static function add(Context $context) : object
         {
             $fdt = $context->formdata();
             $p = \R::dispense('form');
@@ -361,7 +361,8 @@
             $p->idval = $fdt->mustpost('idval');
             $p->method = $fdt->mustpost('method');
             $p->multipart = $fdt->post('multipart', 0);
-            echo \R::store($p);
+            \R::store($p);
+            return $p;
         }
     }
 ?>

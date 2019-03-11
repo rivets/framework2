@@ -28,7 +28,11 @@
             $this->table = $name;
         }
 /**
- * add a new table
+ * Add a new table
+ *
+ * @param object    $context  The context object
+ *
+ * @return bool
  */
         public static function add(Context $context) : bool
         {
