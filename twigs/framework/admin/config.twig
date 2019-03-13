@@ -28,7 +28,7 @@
 
     function delbean(e)
     {
-        framework.dodelbean(e, this, {{constant('Config\\Config::CONFIG')}});
+        framework.dodelbean(e, this, '{{constant('Config\\Config::CONFIG')}}');
     }
 {% endblock setup %}
 
@@ -41,7 +41,7 @@
         e.preventDefault();
         var t = $(this);
         var id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}'+id+'/value/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/'+id+'/value/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: t.val()
@@ -152,7 +152,7 @@
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                             </div>
-                            <a href="{{base}}/admin/edit/{{constant('Config\\Config::CONFIG')}}/{{p.getID}}"><i class="editb far fa-edit"></i></a>
+                            <a href="{{base}}/admin/edit/{{constant('Config\\Config::CONFIG')}}/{{p.getID}}/"><i class="editb far fa-edit"></i></a>
                             {% if not p.fixed %}
                                 <i class="delb far fa-trash-alt"></i>
                             {% endif %}
