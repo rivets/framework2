@@ -365,7 +365,7 @@
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
-            $log = isset(self::$audit['bean']);
+            $log = in_array($bean, self::$audit);
             if (!isset($beans[$bean]))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
