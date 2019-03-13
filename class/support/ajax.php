@@ -50,16 +50,22 @@
             // 'bean' => [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array   Values controlling whether or not calls on the toggle operation are allowerd
+ * @var array   Values controlling whether or not calls on the toggle operation are allowed
  */
         private static $allowToggle = [
             // 'bean' => [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array   Values controlling whether or not calls on the table operation are allowerd
+ * @var array   Values controlling whether or not calls on the table operation are allowed
  */
         private static $allowTable = [
             // 'bean' => [[['ContextName', 'RoleName']], [ 'bean', ....] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
+ * @var array   Values controlling whether or not bean operations are logged for certain beans
+ */
+        private static $audit = [
+            // 'bean'..... A list of bean names
         ];
 /**
  * Handle AJAX operations
@@ -73,7 +79,7 @@
             //$this->operation(['yourop', ...], [TRUE, [['ContextName', 'RoleName'],...]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
             $this->pageOrHint(self::$allowPaging, self::$allowHints);
-            $this->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable);
+            $this->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable, self::$audit);
             parent::handle($context);
         }
     }

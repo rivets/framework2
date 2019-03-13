@@ -50,6 +50,12 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
+ * Permissions array for creating an audit log.
+ */
+        private static $audit = [
+//          ['BeanName'...]]
+        ];
+/**
  * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
@@ -326,6 +332,23 @@
             return TRUE;
         }
 /**
+ * make log entry
+ *
+ * @return void
+ */
+        private function mklog($context, $op, $bean, $id, $field, $value)
+        {
+            $lg = \R::dispense('beanlog');
+            $lg->user = $context->user();
+            $lg->updated = $context->utcnow();
+            $lg->op = $op;
+            $lg->bean = $bean;
+            $lg->bid = $id;
+            $lg->field = $field;
+            $lg->value = $value;
+            \R::store($lg);
+        }
+/**
  * Carry out operations on beans
  *
  * @internal
@@ -342,6 +365,7 @@
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
+            $log = isset(self::$audit['bean']);
             if (!isset($beans[$bean]))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
@@ -352,7 +376,12 @@
                 $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {
-                    echo $class::add($context)->getID();
+                    $id = $class::add($context)->getID();
+                    if ($log)
+                    {
+                        $this->mklog($context, 0, $bean, $id, '*', NULL);
+                    }
+                    echo $id;
                 }
                 else
                 { // operation not supported
@@ -364,8 +393,13 @@
                 list($bean, $id, $field, $more) = $context->restcheck(3);
                 $this->beanCheck($beans, $bean, $field);
                 $bn = $context->load($bean, $id, TRUE);
+                $old = $bn->$field;
                 $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
                 R::store($bn);
+                if ($log)
+                {
+                    $this->mklog($context, 1, $bean, $bn->getID(), $field, $old);
+                }
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
                 $id = $rest[2] ?? 0; // get the id from the URL
@@ -373,7 +407,12 @@
                 {
                     throw new \Framework\Exception\BadValue('Missing value');
                 }
-                R::trash($context->load($bean, $id));
+                $bn = $context->load($bean, $id);
+                if ($log)
+                {
+                    $this->mklog($context, 2, $bean, $id, '*', json_encode($bn->export()));
+                }
+                R::trash($bn);
                 break;
             case 'GET':
             default:
@@ -546,14 +585,16 @@
  * @param array     $bean
  * @param array     $toggle
  * @param array     $table
+ * @param array     $audit
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table) : void
+        public final function beanAccess(array $bean, array $toggle, array $table, array $audit) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
             self::$tableperms = array_merge(self::$tableperms, $table);
+            self::$audit = array_merge(self::$audit, $audit);
         }
 /**
  * Do a database check for uniqueness
