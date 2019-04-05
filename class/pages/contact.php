@@ -34,6 +34,7 @@
                 $mail->addAddress(Config::SYSADMIN);
 
                 $mail->Subject = $fd->post('subject', 'No Subject');
+                $mail->Body= $msg;
                 $mail->AltBody= $msg;
                 $mail->send();
 
