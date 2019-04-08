@@ -389,7 +389,7 @@
             {
                 $loader->addPath($twigdir.'/'.$tns, $tns);
             }
-            $this->twig = new \Twig_Environment(
+            $this->twig = new \Twig\Environment(
                 $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
             );
