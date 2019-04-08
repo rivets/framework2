@@ -35,6 +35,7 @@
 
                 $mail->Subject = $fd->post('subject', 'No Subject');
                 $mail->AltBody= $msg;
+                $mail->Body= $msg;
                 $mail->send();
 
                 //mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
