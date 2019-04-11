@@ -3,10 +3,11 @@
  * Definition of Userlogin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework\Pages;
 
+    use \Config\Framework as FW;
     use \Config\Config as Config;
     use \Framework\Local as Local;
     use \Support\Context as Context;
@@ -38,9 +39,9 @@
  */
         private function makecode(Context $context, $bn, string $kind) : string
         {
-            R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
+            R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
-            $conf = R::dispense('confirm');
+            $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
             $conf->issued = $context->utcnow();
             $conf->kind = $kind;
@@ -125,7 +126,7 @@
         public function login(Context $context) : string
         {
             $local = $context->local();
-            $local->addval('register', \Config\Config::REGISTER);
+            $local->addval('register', Config::REGISTER);
             if ($context->hasuser())
             { # already logged in
                 $local->message(Local::MESSAGE, 'Please log out before trying to login');
@@ -229,7 +230,7 @@
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
-            $context->divert('/');
+                $context->divert('/');
             }
             $local = $context->local();
             $tpl = 'index.twig';
@@ -261,7 +262,7 @@
             }
             else
             { # confirming the email
-                $x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'C']);
+                $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
                 if (is_object($x))
                 {
                     $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
@@ -323,7 +324,7 @@
                 $tpl = '@users/pwreset.twig';
                 $user = $fdt->mustpostbean('uid', 'user');
                 $code = $fdt->mustpost('code');
-                $xc = R::findOne('confirm', 'code=? and kind=?', [$code, 'P']);
+                $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
                 {
                     $interval = (new DateTime($context->utcnow()))->diff(new DateTime($xc->issued));
@@ -354,7 +355,7 @@
             }
             else
             {
-                $x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'P']);
+                $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'P']);
                 if (is_object($x))
                 {
                     $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
