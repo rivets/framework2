@@ -18,26 +18,25 @@
         {
             e.preventDefault();
             e.stopPropagation();
-            if (x.hasClass('fadis'))
+            if (!x.hasClass('fadis'))
             {
-                return;
-            }
-            if (x.hasClass('htick'))
-            { // this is not yet created so tick the hidden box
-                var n = x.next();
-                n.val(n.val() == 1 ? 0 : 1);
-                framework.toggle(x);
-            }
-            else
-            { // toggle at the other end
-                var tr = x.parent().parent();
-                $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
-                    method: 'PATCH',
-                }).done(function(){
-                   framework.toggle(x);
-                }).fail(function(jx){
-                    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
-                });
+                if (x.hasClass('htick'))
+                { // this is not yet created so tick the hidden box
+                    const n = x.next();
+                    n.val(n.val() == 1 ? 0 : 1);
+                    framework.toggle(x);
+                }
+                else
+                { // toggle at the other end
+                    const tr = x.parent().parent();
+                    $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
+                        method: 'PATCH',
+                    }).done(function(){
+                       framework.toggle(x);
+                    }).fail(function(jx){
+                        bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                    });
+                }
             }
         },
 
@@ -57,24 +56,33 @@
             });
         },
 
+        editcall: function(params) {
+            const url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+            return $.ajax(url, {
+                method: 'PATCH',
+                data: { value: params.value }
+            });
+        },
+
         fadetodel: function(tr){
                tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
         },
 
         dodelbean: function(e, x, bean)
         {
-            var tr = $(x).parent().parent();
+            let tr = $(x).parent().parent();
             framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);});
         },
 
         tableClick: function(event)
         {
             event.preventDefault();
-            var x = $(event.target);
+            const x = $(event.target);
             event.data.clicks.forEach(function(value){
-                if (x.hasClass(value[0]))
+                let [cls, fn, par] = value;
+                if (x.hasClass(cls))
                 {
-                    value[1](event, x, event.data.bean, value[2]);
+                    fn(event, x, event.data.bean, par);
                 }
             });
         },
@@ -117,17 +125,18 @@
             {
                 window.clearInterval(elem.bgFadeInt);
             }
-            var actStep = 0;
+
+            let actStep = 0;
             elem.bgFadeInt = window.setInterval(
                 function() {
-                    elem.css('backgroundColor', 'rgb(' +
+                    elem.css('backgroundcolor', 'rgb(' +
                         framework.easeInOut(startRGB[0], endRGB[0], steps, actStep, powr) + ',' +
                         framework.easeInOut(startRGB[1], endRGB[1], steps, actStep, powr) + ',' +
                         framework.easeInOut(startRGB[2], endRGB[2], steps, actStep, powr) + ')'
                     );
                     actStep += 1;
                     if (actStep > steps)
-                            {
+                    {
                         elem.css('backgroundcolor', finalColor);
                         window.clearInterval(elem.bgFadeInt);
                     }
@@ -136,6 +145,3 @@
             );
         },
     };
-
-
-
