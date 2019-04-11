@@ -25,37 +25,25 @@
     'In-site 308', 'External 308'] %}
 
 {% block setup %}
-    function editcall(params)
-    {
-        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
-        return $.ajax(url,{
-            method: 'PATCH',
-            data: {
-                value: params.value
-            }
-        });
-    }
-
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
-    var kname = [];
     function paramset(params)
     {
         params.id = params.pk
-        params.bean = 'page'
+        params.bean = '{{constant('Config\\Framework::PAGE')}}'
         params.op = 'update'
         return params
     }
-    kname = [
+    const kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
         {% endfor %}
-    ]
+    ];
 
-    var clicks = [
+    const clicks = [
         ['delb', framework.dodelbean, ''],
         ['actb', framework.dotoggle, 'active'],
         ['logn', framework.dotoggle, 'needlogin'],
@@ -70,7 +58,7 @@
         params: paramset,
         source: kname,
         onblur: 'cancel',
-        url: editcall
+        url: framework.editcall
     });
     $('#npform').on('submit', false).parsley();
     $('#npkind').on('change', function(e) {
@@ -91,16 +79,16 @@
     $('#addb').on('click', function(e){
         e.preventDefault();
         $(this).attr('disabled', true); // disable submit button
-        var pn = $('#npname').val().toLowerCase();
+        const pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
             return;
         }
-        var sp = null;
-        var error = false;
+        let sp = null;
+        let error = false;
         $('.pname').each(function(e){
-            var t = $(this).text();
+            const t = $(this).text();
             if (t == pn)
             {
                 error = true;
@@ -118,26 +106,26 @@
             $(this).attr('disabled', false);
             return;
         }
-        var src = $('#npsrc').val()
+        const src = $('#npsrc').val()
         if (src == '')
         {
             bootbox.alert('Please specify a source');
             $(this).attr('disabled', false);
             return;
         }
-        var kind = $('#npkind').val();
+        const kind = $('#npkind').val();
         if (kind == '')
         {
             bootbox.alert('Please pick a page type');
             $(this).attr('disabled', false);
             return;
         }
-        var active = $('#npactive').is(':checked') ? 1 : 0;
-        var login = $('#nplogin').is(':checked') ? 1 : 0;
-        var mobile = $('#npmobile').is(':checked') ? 1 : 0;
+        const active = $('#npactive').is(':checked') ? 1 : 0;
+        const login = $('#nplogin').is(':checked') ? 1 : 0;
+        const mobile = $('#npmobile').is(':checked') ? 1 : 0;
         $('#npage').modal('hide');
         var fn = function(data){
-                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                const htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
@@ -145,7 +133,7 @@
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
                 '<td><i class="editb far fa-edit"></i></td>'+
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>';
-                var nx
+                let nx
                 if (sp == null)
                 {
                      nx = $(htm).appendTo($('#ptab tbody'));
@@ -157,7 +145,7 @@
                 nx.data('id', data);
                 //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
-        var dt = {
+        let dt = {
                 name : pn,
                 kind : kind,
                 source : src,
@@ -165,27 +153,27 @@
                 login : login,
                 mobile: mobile
             };
-        var sel = ['context', 'role'];
-        var inp = ['start', 'end', 'otherinfo'];
-        var f = $('#npform');
+        const sel = ['context', 'role'];
+        const inp = ['start', 'end', 'otherinfo'];
+        const f = $('#npform');
         var inx = 0;
-        for (var n in inp)
+        for (let nv of inp)
         {
             inx = 0;
-            $('input[name^="'+inp[n]+'"]', f).each(function(){
-                dt[inp[n]+'['+inx+']'] = $(this).val();
+            $('input[name^="'+nv+'"]', f).each(function(){
+                dt[nv+'['+inx+']'] = $(this).val();
             });
         }
-        for (var n in sel)
+        for (let sv of sel)
         {
             inx = 0;
-            $('select[name^="'+sel[n]+'"]', f).each(function(){
-                dt[sel[n]+'['+inx+']'] = $(this).val();
+            $('select[name^="'+sv+'"]', f).each(function(){
+                dt[sv+'['+inx+']'] = $(this).val();
             });
         }
-        framework.beanCreate('page', dt, fn, '#addb');
+        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, '#addb');
     });
-    $('#ptab').on('click', {bean: 'page', clicks: clicks}, framework.tableClick);
+    $('#ptab').on('click', {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}, framework.tableClick);
     $('#npage').on('show.bs.modal', function(e){
         $('#npform option').attr('selected', false)
     });
@@ -246,7 +234,7 @@
     <div class="modal-body">
         <form action="#" method="POST" id="npform">
             {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
-                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/unique/page/name/{value}',
+                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/unique/' ~ constant('Config\\Framework::PAGE') ~ '/name/{value}',
                 'remote-message': 'That page already exists'} })}}
             {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                     {value: '', text: '&mdash; Pick a Type &mdash;'},

@@ -15,7 +15,7 @@
 {% set ctype = type|capitalize %}
 
 {% block setup %}
-    var clicks = [
+    const clicks = [
         ['delb', framework.dodelbean, ''],
         ['fixed', framework.dotoggle, 'fixed'],
     ]
@@ -26,14 +26,14 @@
     $('#addb').on('click', function(e){
         e.preventDefault();
         $(this).attr('disabled', true);
-        var pn = $('#nrname').val();
+        const pn = $('#nrname').val();
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
             return;
         }
-        var sp = null;
-        var error = false;
+        let sp = null;
+        let error = false;
         $('.rname').each(function(e){
             var t = $(this).text();
             if (t == pn)
@@ -54,8 +54,8 @@
             return;
         }
         $('#nroco').modal('hide');
-        var htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
-        var nx;
+        const htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
+        let nx;
         if (sp == null)
         {
             nx = $(htm).appendTo($('#rtab tbody'));

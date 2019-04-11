@@ -14,20 +14,20 @@
     $('#more').on('click', function(e){
         e.preventDefault();
         e.stopPropagation();
-        var mrow = $('#mrow');
+        const mrow = $('#mrow');
         mrow.before($('#example').clone());
-        var pr = $mrow.prev();
+        const pr = $mrow.prev();
         $('input', pr).val(''); // clear the inputs
         $('option', pr).prop('selected', false); // clear any selections
         $('.delb', pr).on('click', function(e){
-            framework.dodelbean(e, this, 'role');
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::role')}}');
         });
     });
     $('#uform').on('submit', function(e){
         return $(this).parsley().validate();
     });
     $('.delb').on('click', function(e){
-        framework.dodelbean(e, this, 'role');
+        framework.dodelbean(e, this, '{{constant('Config\\Framework::role')}}');
     });
 {% endblock onload %}
 

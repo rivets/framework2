@@ -26,7 +26,7 @@
     {
         e.preventDefault();
         e.stopPropagation();
-        var m = $('#mrow');
+        const m = $('#mrow');
         m.before($('#example').clone());
         $('input[type="text"]', m.prev()).val(''); // clear the inputs
         $('option', m.prev()).prop('selected', false); // clear any selections
@@ -37,34 +37,25 @@
         $('input[type="checkbox"]', m.prev()).prop('checked', false); // clear any checking
         $('#example').attr('id', '');
     }
-    function editcall(params)
-    {
-        var url = base+'/ajax/bean/formfield/'+params.pk+'/'+params.name+'/';
-        return $.ajax(url,{
-            method: 'PATCH',
-            data: { value: params.value }
-        })
-    }
 
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
-    var kname = []
     function paramset(params)
     {
         params.id = params.pk
-        params.bean = 'formfield'
+        params.bean = '{{constant('Config\\Framework::FORMFIELD')}}'
         params.op = 'update'
         return params
     }
-    kname = [
+    let kname = [
         {% for v in types %}
             {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
         {% endfor %}
     ]
-    var clicks = [
+    const clicks = [
         ['delb', framework.dodelbean, ''],
         ['more', framework.addmore, ''],
         ['chkb', framework.dotoggle, 'checked'],
@@ -80,22 +71,23 @@
         params: paramset,
         source: kname,
         onblur: 'cancel',
-        url: editcall
+        url: framework.editcall
     });
 
     $('#ptab').on('click', function(e){
-        var x = $(e.target);
-        for (var ix in clicks)
+        const x = $(e.target);
+        for (let cl of clicks)
         {
-            if (x.hasClass(clicks[ix][0]))
+            let [cls, fn, par] = cl;
+            if (x.hasClass(cls))
             {
-                clicks[ix][1](e, x, 'formfield', clicks[ix][2]);
+                fn(e, x, '{{constant('Config\\Framework::FORMFIELD')}}', par);
                 break;
             }
         }
     });
     $('#example .typesel').on('change', function(e){
-        var val = $(this).val();
+        const val = $(this).val();
         $('#example .flagsel input[name="fldchecked"]').prop('checked', false).prop('disabled', !(val == 'checkbox' || val == 'radio'))
         $('#example .flagsel input[name="fldmultiple"]').prop('checked', false).prop('disabled', val != 'select')
     })

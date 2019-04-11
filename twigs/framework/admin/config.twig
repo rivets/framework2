@@ -14,9 +14,9 @@
     function setlocal(e)
     {
         e.preventDefault();
-        var t = $(this);
-        var id = t.parent().parent().parent().parent().data('id');
-         $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/'+id+'/local/', {
+        const t = $(this);
+        const id = t.parent().parent().parent().parent().data('id');
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/local/', {
             method: 'PATCH', // because we are updating an item
             data: {
                 value: t.is(':checked') ? 1 : 0
@@ -28,7 +28,7 @@
 
     function delbean(e)
     {
-        framework.dodelbean(e, this, '{{constant('Config\\Config::CONFIG')}}');
+        framework.dodelbean(e, this, '{{constant('Config\\Framework::CONFIG')}}');
     }
 {% endblock setup %}
 
@@ -39,41 +39,35 @@
     $('.lval').on('change', setlocal)
     $('.cval').on('blur', function(e){
         e.preventDefault();
-        var t = $(this);
-        var id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/'+id+'/value/', {
+        const t = $(this);
+        const id = t.parent().parent().data('id');
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/value/', {
             method: 'PATCH', // because we are updating an item
-            data: {
-                value: t.val()
-            }
+            data: { value: t.val() }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/'+id+'/integrity/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/integrity/', {
             method: 'PATCH', // because we are updating an item
-            data: {
-                value: ''
-            }
+            data: { value: '' }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/'+id+'/crossorigin/', {
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/crossorigin/', {
             method: 'PATCH', // because we are updating an item
-            data: {
-                value: ''
-            }
+            data: { value: '' }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     });
     $('.nname').on('blur', function(e){
         e.preventDefault()
-        var t = $(this)
-        var name = t.val()
+        const t = $(this)
+        const name = t.val()
         if (name != '')
         {
-	    if (!name.match(/^[a-z][a-z0-9]*$/i))
+            if (!name.match(/^[a-z][a-z0-9]*$/i))
             {
                 bootbox.alert('Invalid name format')
                 t.val('')
@@ -91,11 +85,11 @@
     })
     $('.nval').on('blur', function(e){
         e.preventDefault();
-        var t = $(this);
-        var name = $('.nname').val();
-        var value = t.val();
-        var local = $('#Xnewlocal').is(':checked') ? 1 : 0;
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Config::CONFIG')}}/', {
+        const t = $(this);
+        const name = $('.nname').val();
+        const value = t.val();
+        const local = $('#Xnewlocal').is(':checked') ? 1 : 0;
+        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/', {
             method: 'POST', // because we are creating a new item
             data: {
                 name: name,
@@ -129,7 +123,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = siteinfo.pagecount(constant('Config\\Config::CONFIG'), pagesize) %}
+{% set pages = siteinfo.pagecount('{{constant('Config\\Framework::CONFIG')}}', pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -152,7 +146,7 @@
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
                             </div>
-                            <a href="{{base}}/admin/edit/{{constant('Config\\Config::CONFIG')}}/{{p.getID}}/"><i class="editb far fa-edit"></i></a>
+                            <a href="{{base}}/admin/edit/{{constant('Config\\Framework::CONFIG')}}/{{p.getID}}/"><i class="editb far fa-edit"></i></a>
                             {% if not p.fixed %}
                                 <i class="delb far fa-trash-alt"></i>
                             {% endif %}

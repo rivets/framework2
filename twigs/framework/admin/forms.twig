@@ -27,15 +27,15 @@
     $('#addb').on('click', function(e){
         e.preventDefault();
         $(this).attr('disabled', true); // disable submit button
-        var data = {}
-        var frm = $('#addfform')
+        let data = {}
+        const frm = $('#addfform')
         $('input:checked', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val();
         })
         $('input:text', frm).each(function(index, element){
              data[$(this).attr('name')] = $(this).val()
         })
-        framework.beanCreate('form', data, function(ret){
+        framework.beanCreate('{{constant('Config\\Framework::FORM')}}', data, function(ret){
             $('#addf').modal('hide')
             $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
                 '<td>' + data.action + '</td>' +
@@ -49,7 +49,7 @@
             framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
         }, '#addb');
     })
-    $('#utab').on('click', {bean: 'form', clicks: clicks}, framework.tableClick);
+    $('#utab').on('click', {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}, framework.tableClick);
 {% endblock onload %}
 
 {% block header %}

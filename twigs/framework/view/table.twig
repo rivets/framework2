@@ -26,17 +26,6 @@
 
 {% block setup %}
     {%if inline %} {# only want this if we are doing inline edits  #}
-        function editcall(params)
-        {
-            var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
-            return $.ajax(url,{
-                method: 'PATCH',
-                data: {
-                    value: params.value
-                }
-            });
-        }
-
         function mkinline(type, name, msg, id, value)
         {
             return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
@@ -55,26 +44,26 @@
 {% block onload %}
     {%if inline %}
         $('.ppedit').editable({
-            ajaxOptions: { type: 'PATCH' },
+            ajaxOptions: { type: 'PUT' },
             params: paramset,
             onblur: 'cancel',
-            url: editcall
+            url: framework.editcall
         });
     {% endif %}
     {% if allownew %}
         $('#nfform').on('submit', false).parsley();
         $('#addb').on('click', function(e){
             e.preventDefault();
-            var pn = $('#nfname').val().toLowerCase();
+            const pn = $('#nfname').val().toLowerCase();
             if (!pn.match(/^[a-z][a-z0-9.]*$/))
             {
                 bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only');
                 return;
             }
-            var sp = null;
-            var error = false;
+            let sp = null;
+            let error = false;
             $('.fname').each(function(e){
-                var t = $(this).text();
+                const t = $(this).text();
                 if (t == pn)
                 {
                     error = true;

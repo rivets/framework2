@@ -14,20 +14,20 @@
      $('#more').on('click', function(e){
         e.preventDefault();
         e.stopPropagation();
-        var mrow = $('#mrow');
+        const mrow = $('#mrow');
         mrow.before($('#example').clone());
-        var pr = $mrow.prev();
+        const pr = $mrow.prev();
         $('input', pr).val(''); // clear the inputs
         $('option', pr).prop('selected', false); // clear any selections
         $('.delb', pr).on('click', function(e){
-            framework.dodelbean(e, this, 'pagerole');
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
         });
     });
     $('#uform').on('submit', function(e){
         return $(this).parsley().validate()
     });
     $('.delb').on('click', function(e){
-        framework.dodelbean(e, this, 'pagerole');
+        framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
     });
 {% endblock onload %}
 
@@ -53,16 +53,26 @@
                     <div class="form-group">
                         {{f.select({id: 'npkind', label : 'Kind', name: 'kind', required: TRUE, selected: bean.kind,
                             options: [
-                                { value: '',  text: '&mdash; Pick a Type &mdash;' },
-                                { value: '1', text: 'Object' },
-                                { value: '2', text: 'Template' },
-                                { value: '3', text: 'In-site Temporary Redirect' },
-                                { value: '4', text: 'In-site Permanent Redirect' },
-                                { value: '5', text: 'External Temporary Redirect' },
-                                { value: '6', text: 'External Permanent Redirect' },
+                                {value: '', text: '&mdash; Pick a Type &mdash;'},
+                                {value: 1,  text: 'Object'},
+                                {value: 2,  text: 'Template'},
+                                {value: 4,  text: 'In-site 301'},
+                                {value: 6,  text: 'External 301'},
+                                {value: 3,  text: 'In-site 302'},
+                                {value: 5,  text: 'External 302'},
+                                {value: 7,  text: 'In-site 303'},
+                                {value: 8,  text: 'External 303'},
+                                {value: 9,  text: 'In-site 307'},
+                                {value: 10,  text: 'External 307'},
+                                {value: 11,  text: 'Internal 308'},
+                                {value: 12,  text: 'External 308'},
                             ]
                         })}}
                     </div>
+                    <fieldset>
+                        <legend>Parameter Spec</legend>
+                        {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params})}}
+                    </fieldset>
                     <div class="form-group">
                         <label for="npsrc">Source</label>
                         <input type="text" class="form-control" id="npsrc" name="source" value="{{bean.source}}" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
