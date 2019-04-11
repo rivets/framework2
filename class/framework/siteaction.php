@@ -3,7 +3,7 @@
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2015 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework;
 
@@ -88,7 +88,7 @@
  *
  * @return void
  */
-        public function setCSP(Context $context)
+        public function setCSP(Context $context) : void
         {
             \Support\Context::getinstance()->web()->setCSP($context);
         }
@@ -107,7 +107,7 @@
  *
  * @return void
  */
-	public function ifmodcheck()
+	public function ifmodcheck() : void
 	{
 	    $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
@@ -192,7 +192,7 @@
  *
  * @return void
  */
-        public function setcache(Context $context)
+        public function setcache(Context $context) : void
         {
             // void
         }
@@ -287,7 +287,7 @@
  *
  * @return void
  */
-        private function etagmatched()
+        private function etagmatched() : void
         {
             $web = Web::getinstance();
             $rqm = $web->method();
