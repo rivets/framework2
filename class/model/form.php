@@ -8,6 +8,7 @@
  */
     namespace Model;
     use Support\Context as Context;
+    use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for Form beans
  */
@@ -155,7 +156,7 @@
             {
                 if (($type = $fdt->post(['type', $ix], '')) !== '')
                 {
-                    $fld = \R::dispense('formfield');
+                    $fld = \R::dispense(FW::FORMFIELD);
                     $fld->type = $type;
                     foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other', 'seqn'] as $fname)
                     {
@@ -354,7 +355,7 @@
         public static function add(Context $context) : object
         {
             $fdt = $context->formdata();
-            $p = \R::dispense('form');
+            $p = \R::dispense(FW::FORM);
             $p->name = $fdt->mustpost('name');
             $p->action = $fdt->mustpost('action');
             $p->class = $fdt->mustpost('class');
