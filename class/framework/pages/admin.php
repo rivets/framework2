@@ -3,13 +3,13 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2015 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework\Pages;
 
     use \Framework\Web\Web as Web;
     use \Support\Context as Context;
-    use \Config\Config as Config;
+    use \Config\Framework as FW;
 /**
  * A class that contains code to handle any /admin related requests.
  *
@@ -17,9 +17,9 @@
  */
     class Admin extends \Framework\Siteaction
     {
-        const EDITABLE = ['table', 'form', Config::CONFIG, 'page', 'user'];
-        const VIEWABLE = ['table', 'form'];
-        const NOTMODEL = ['table'];
+        const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
+        const VIEWABLE = [FW::TABLE, FW::FORM];
+        const NOTMODEL = [FW::TABLE];
         const HASH     = 'sha384';
 /**
  * Calculate integrity checksums for local js and css files
@@ -28,7 +28,7 @@
  *
  * @return string
  */
-        private function checksum(Context $context)
+        private function checksum(Context $context) : void
         {
             chdir($context->local()->basedir()); // make sure we are in the root of the site
             $base = $context->local()->base();
@@ -75,7 +75,7 @@
  *
  * @return string
  */
-        private function edit(Context $context, array $rest)
+        private function edit(Context $context, array $rest) : string
         {
             if (count($rest) < 3)
             {
@@ -130,7 +130,7 @@
  *
  * @return string
  */
-        private function view(Context $context, array $rest)
+        private function view(Context $context, array $rest) : string
         {
             if (count($rest) < 3)
             {
@@ -161,7 +161,7 @@
  *
  * @return string
  */
-        private function update(Context $context)
+        private function update(Context $context) : string
         {
             $updated = [];
             $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
@@ -170,7 +170,7 @@
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
-                    $lval = \R::findOne(Config::CONFIG, 'name=?', [$cname]);
+                    $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
                         if ($lval->local == 0)
@@ -194,7 +194,7 @@
                     }
                     else
                     {
-                        $lval = \R::dispense(Config::CONFIG);
+                        $lval = \R::dispense(FW::CONFIG);
                         $lval->name = $cname;
                         $lval->local = 0;
                         foreach ($cdata as $k => $v)
@@ -282,7 +282,7 @@
  *
  * @return void;
  */
-        public function setcache(Context $context)
+        public function setcache(Context $context) : void
         {
             $context->web()->addheader([
                 'cache-control' => 'no-cache, no-store, must-revalidate, private',
