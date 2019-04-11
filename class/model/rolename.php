@@ -3,12 +3,13 @@
  * A model class for the RedBean object RoleName
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace Model;
 
     use Support\Context as Context;
+    use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for RoleName beans
  */
@@ -20,7 +21,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public function update()
+        public function update() : void
         {
             if (!preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
@@ -38,7 +39,7 @@
  */
         public static function add(Context $context) : object
         {
-            $p = \R::dispense('rolename');
+            $p = \R::dispense(FW::ROLENAME);
             $p->name = $context->formdata()->mustpost('name');
             $p->fixed = 0;
             \R::store($p);
