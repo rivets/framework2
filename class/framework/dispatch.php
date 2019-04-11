@@ -8,6 +8,7 @@
     namespace Framework;
 
     use \Config\Config as Config;
+    use \Config\Framework as FW;
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
@@ -89,14 +90,14 @@
  *
  * @return void
  */
-        static public function handle(Context $context, string $action)
+        static public function handle(Context $context, string $action) : void
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
 /*
  * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
  */
-            $page = \R::findOne('page', 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
+            $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             if (!is_object($page))
             { # No such page or it is marked as inactive
                $page = new \stdClass;
@@ -185,7 +186,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public static function check($kind, $source)
+        public static function check($kind, $source) : void
         {
             switch ($kind)
             {
