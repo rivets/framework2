@@ -7,7 +7,8 @@
  */
     namespace Framework;
 
-    use \Framework\Web\Web as Web;
+    use Framework\Web\Web as Web;
+    use Config\Framework as FW;
     use Support\Context as Context;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
@@ -46,21 +47,21 @@
  * @param string    $rolecontextname    The name of a context...
  * @param string	$rolename           The name of a role....
  *
- * @return object
+ * @return ?object
  */
-        public function hasrole(string $rolecontextname, string $rolename)
+        public function hasrole(string $rolecontextname, string $rolename) : ?object
         {
-            $cname = \R::findOne('rolecontext', 'name=?', [$rolecontextname]);
+            $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$rolecontextname]);
             if (!is_object($cname))
             {
                 return FALSE;
             }
-            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
+            $rname = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
             if (!is_object($rname))
             {
                 return FALSE;
             }
-            return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+            return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$cname->getID(), $rname->getID(), $this->bean->getID()]);
         }
 /**
@@ -69,11 +70,11 @@
  * @param object    $rolecontext    A rolecontext
  * @param object    $rolename       A rolename
  *
- * @return object
+ * @return ?object
  */
-        public function hasrolebybean($rolecontext, $rolename)
+        public function hasrolebybean($rolecontext, $rolename) : ?object
         {
-            return \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+            return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$rolecontext->getID(), $rolename->getID(), $this->bean->getID()]);
         }
 /**
@@ -85,19 +86,19 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public function delrole(string $contextname, string $rolename)
+        public function delrole(string $contextname, string $rolename) : void
         {
-            $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
+            $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$contextname]);
             if (!is_object($cname))
             {
                 throw new \Framework\Exception\BadValue('No such context: '.$contextname);
             }
-            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
+            $rname = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
             if (!is_object($rname))
             {
                 throw new \Framework\Exception\BadValue('No such role: '.$rolename);
             }
-            $bn = \R::findOne($this->roletype, 'rolecontext_id=? and rolename_id=? and user_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+            $bn = \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$cname->getID(), $rname->getID(), $this->bean->getID()]);
             if (is_object($bn))
             {
@@ -116,14 +117,14 @@
  * @throws \Framework\Exception\BadValue
  * @return object
  */
-        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '')
+        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : object
         {
-            $cname = \R::findOne('rolecontext', 'name=?', [$contextname]);
+            $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$contextname]);
             if (!is_object($cname))
             {
                 throw new \Framework\Exception\BadValue('No such context: '.$contextname);
             }
-            $rname = \R::findOne('rolename', 'name=?', [$rolename]);
+            $rname = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
             if (!is_object($rname))
             {
                 throw new \Framework\Exception\BadValue('No such context: '.$rolename);
@@ -141,7 +142,7 @@
  *
  * @return object
  */
-        public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '')
+        public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '') : object
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
@@ -160,7 +161,7 @@
  *
  * @return array
  */
-        public function roles(bool $all = FALSE)
+        public function roles(bool $all = FALSE) : array
         {
             if ($all)
             {
@@ -175,7 +176,7 @@
  *
  * @return void
  */
-        public function editroles(Context $context)
+        public function editroles(Context $context) : void
         {
             $fdt = $context->formdata();
             $uroles = $this->roles();
@@ -207,8 +208,8 @@
                 $rn = $fdt->post(['role', $ix]);
                 if ($rn !== '' && $cn !== '')
                 {
-                    $rcb = $context->load('rolecontext', $cn);
-                    $rnb = $context->load('rolename', $rn);
+                    $rcb = $context->load(FW::ROLECONTEXT, $cn);
+                    $rnb = $context->load(FW::ROLENAME, $rn);
                     $prole = $this->hasrolebybean($rcb, $rnb);
 
                     $end = $fdt->post(['end', $ix]);
