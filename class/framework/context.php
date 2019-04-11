@@ -3,11 +3,12 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework;
 
     use Config\Config as Config;
+    use Config\Framework as FW;
     use Framework\Web\Web as Web;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
@@ -18,7 +19,7 @@
 /**
  * The name of the authentication token field.
  */
-        const TOKEN 	        = 'X-APPNAME-TOKEN';
+        const TOKEN 	    = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
@@ -108,7 +109,7 @@
  *
  * @return object
  */
-        public function user()
+        public function user() : ?object
         {
             return $this->luser;
         }
@@ -166,7 +167,7 @@
  *
  * @return void
  */
-        public function mustbeuser()
+        public function mustbeuser() : void
         {
             if (!$this->hasuser())
             {
@@ -180,7 +181,7 @@
  *
  * @return void
  */
-        public function mustbeadmin()
+        public function mustbeadmin() : void
         {
             if (!$this->hasadmin())
             {
@@ -194,7 +195,7 @@
  *
  * @return void
  */
-        public function mustbedeveloper()
+        public function mustbedeveloper() : void
         {
             if (!$this->hasdeveloper())
             {
@@ -209,7 +210,7 @@
 /**
  * Set up pagination data
  */
-        public function setpages()
+        public function setpages() : void
         {
             $form = $this->formdata();
             $this->local()->addval([
@@ -236,11 +237,11 @@
  *
  * @return object
  */
-        public function rolename(string $name)
+        public function rolename(string $name) : object
         {
             if (!isset($this->roles[$name]))
             {
-                $this->roles[$name] = \R::findOne('rolename', 'name=?', [$name]);
+                $this->roles[$name] = \R::findOne(FW::ROLENAME, 'name=?', [$name]);
             }
             return $this->roles[$name];
         }
@@ -251,11 +252,11 @@
  *
  * @return object
  */
-        public function rolecontext(string $name)
+        public function rolecontext(string $name) : object
         {
             if (!isset($this->roles[$name]))
             {
-                $this->contexts[$name] = \R::findOne('rolecontext', 'name=?', [$name]);
+                $this->contexts[$name] = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name]);
             }
             return $this->contexts[$name];
         }
@@ -290,9 +291,10 @@
  *
  * @return void NEVER returns
  */
-        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {
             $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange, $use303);
+            /* NOT REACHED */
         }
 /**
  * Load a bean
@@ -308,7 +310,7 @@
  *
  * @return object
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE)
+        public function load(string $bean, int $id, bool $forupdate = FALSE) : object
         {
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
@@ -322,7 +324,7 @@
  *
  * @return object
  */
-        public function local()
+        public function local() : Local
         {
             return Local::getinstance();
         }
@@ -331,7 +333,7 @@
  *
  * @return object
  */
-        public function formdata()
+        public function formdata() : \Support\Formdata
         {
             return \Support\Formdata::getinstance();
         }
@@ -340,7 +342,7 @@
  *
  * @return object
  */
-        public function web()
+        public function web() : Web
         {
             return Web::getinstance();
         }
@@ -374,7 +376,7 @@
  *
  * @return object
  */
-        public function setup()
+        public function setup() : object
         {
             $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
             foreach (getallheaders() as $k => $v)
