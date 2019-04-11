@@ -19,22 +19,22 @@
     class Framework
     {
         const DBPREFIX	    = '';
-        const FWCONTEXT	    = DBPREFIX.'Site';
-        const TESTCONTEXT	= DBPREFIX.'Test';
-        const ADMINROLE	    = DBPREFIX.'Admin';
-        const DEVELROLE	    = DBPREFIX.'Developer';
-        const TESTROLE	    = DBPREFIX.'Tester';
-        const CONFIG	    = DBPREFIX.'fwconfig';
-        const CONFIRM	    = DBPREFIX.'confirm';
-        const FORM	        = DBPREFIX.'form';
-        const FORMFIELD	    = DBPREFIX.'formfield';
-        const PAGE	        = DBPREFIX.'page';
-        const PAGEROLE      = DBPREFIX.'pagerole';
-        const ROLE	        = DBPREFIX.'role';
-        const ROLECONTEXT	= DBPREFIX.'rolecontext';
-        const ROLENAME	    = DBPREFIX.'rolename';
-        const TABLE	        = DBPREFIX.'table';
-        const USER	        = DBPREFIX.'user';
+        const FWCONTEXT	    = self::DBPREFIX.'Site';
+        const TESTCONTEXT	= self::DBPREFIX.'Test';
+        const ADMINROLE	    = self::DBPREFIX.'Admin';
+        const DEVELROLE	    = self::DBPREFIX.'Developer';
+        const TESTROLE	    = self::DBPREFIX.'Tester';
+        const CONFIG	    = self::DBPREFIX.'fwconfig';
+        const CONFIRM	    = self::DBPREFIX.'confirm';
+        const FORM	        = self::DBPREFIX.'form';
+        const FORMFIELD	    = self::DBPREFIX.'formfield';
+        const PAGE	        = self::DBPREFIX.'page';
+        const PAGEROLE      = self::DBPREFIX.'pagerole';
+        const ROLE	        = self::DBPREFIX.'role';
+        const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
+        const ROLENAME	    = self::DBPREFIX.'rolename';
+        const TABLE	        = self::DBPREFIX.'table';
+        const USER	        = self::DBPREFIX.'user';
 
 /**
  * Initialise some standard things for any invocation of a page
