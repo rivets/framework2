@@ -10,7 +10,7 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  */
     namespace Config;
 /**
@@ -18,6 +18,24 @@
  */
     class Framework
     {
+        const DBPREFIX	    = '';
+        const FWCONTEXT	    = DBPREFIX.'Site';
+        const TESTCONTEXT	= DBPREFIX.'Test';
+        const ADMINROLE	    = DBPREFIX.'Admin';
+        const DEVELROLE	    = DBPREFIX.'Developer';
+        const TESTROLE	    = DBPREFIX.'Tester';
+        const CONFIG	    = DBPREFIX.'fwconfig';
+        const CONFIRM	    = DBPREFIX.'confirm';
+        const FORM	        = DBPREFIX.'form';
+        const FORMFIELD	    = DBPREFIX.'formfield';
+        const PAGE	        = DBPREFIX.'page';
+        const PAGEROLE      = DBPREFIX.'pagerole';
+        const ROLE	        = DBPREFIX.'role';
+        const ROLECONTEXT	= DBPREFIX.'rolecontext';
+        const ROLENAME	    = DBPREFIX.'rolename';
+        const TABLE	        = DBPREFIX.'table';
+        const USER	        = DBPREFIX.'user';
+
 /**
  * Initialise some standard things for any invocation of a page
  *
