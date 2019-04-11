@@ -3,7 +3,7 @@
  * A model class for the RedBean object FormField
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2018 Newcastle University
+ * @copyright 2016-2019 Newcastle University
  */
     namespace Model;
 /**
@@ -38,7 +38,7 @@
  *
  * @return string   The field idval might be updated also
  */
-        public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '')
+        public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '') : string
         {
             if ($this->bean->label !== '')
             {
@@ -60,7 +60,7 @@
  *
  * @return string
  */
-        public function fieldAttr(string $class, bool $doValue = TRUE)
+        public function fieldAttr(string $class, bool $doValue = TRUE) : string
         {
             $attrs = self::$attributes;
             if ($doValue)
