@@ -9,7 +9,7 @@
     
     use \Framework\SiteAction as SiteAction;
     use \Support\Context as Context;
-    use \Config\Config as Config;
+    use \Config\Framework as FW;
     use \Framework\Exception\BadValue as BadValue;
 /**
  * A class implementing a RedBean model for Page beans
@@ -19,7 +19,7 @@
 /**
  * @var string   The type of the bean that stores roles for this page
  */
-        private $roletype = 'pagerole';
+        private $roletype = FW::PAGEROLE;
 
 
         use \ModelExtend\MakeGuard;
@@ -43,7 +43,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public function update()
+        public function update() : void
         {
             $this->bean->name = strtolower($this->bean->name);
             if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
@@ -53,13 +53,13 @@
             \Framework\Dispatch::check($this->bean->kind, $this->bean->source);
         }
 /**
- * Check user can access the page
+ * Check user can access the page - does not return if they cannot
  *
  * @param object    $context    The context object
  *
- * @return boolean
+ * @return void
  */
-        public function check(Context $context)
+        public function check(Context $context) : void
         {
             if ($this->bean->needlogin)
             {
@@ -68,10 +68,11 @@
                     $context->divert('/login?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])));
                     /* NOT REACHED */
                 }
-                if (\R::count('pagerole', 'page_id=?', [$this->bean->getID()]) > 0)
+                if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
                 { // there are roles to check
-                    $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from user as u inner join role as r on u.id = r.user_id inner join '.
-                        '(select * from pagerole where page_id=?) as p on p.rolename_id = r.rolename_id and p.rolecontext_id = r.rolecontext_id where u.id=?',
+                    $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from '.FW::USER.' as u inner join role as r on u.id = r.'.FW::USER.'_id inner join '.
+                        '(select * from '.FW::PAGEROLE.' where '.FW::PAGE.'_id=?) as p on p.'.FW::ROLENAME.'_id = r.'.FW::ROLENAME.
+                        '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
                     if (!$match ||                                          // User does not have all the required roles
                         ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
@@ -91,7 +92,7 @@
  *
  * @return void
  */
-        private static function maketwig(Context $context, string $page, string $name)
+        private static function maketwig(Context $context, string $page, string $name) : void
         {
             if (preg_match('%@content/(.*)%', $name, $m))
             {
@@ -214,9 +215,9 @@
 /**
  * Add a Page
  *
- * @see Framework\Ajax::bean
+ * This will be called from ajax.php
  *
- * @param object	$context	The Context object for the site
+ * @param object	$context	The context object for the site
  *
  * @return object
  */
@@ -238,8 +239,8 @@
                     if ($cid !== '')
                     {
                         $p->addrolebybean(
-                            $context->load('rolecontext', $cid),
-                            $fdt->mustpostbean(['role', $ix], 'rolename'),
+                            $context->load(FW::ROLECONTEXT, $cid),
+                            $fdt->mustpostbean(['role', $ix], FW::ROLENAME),
                             $fdt->mustpost(['otherinfo', $ix]),
                             $fdt->mustpost(['start', $ix]),
                             $fdt->mustpost(['end', $ix])
@@ -274,6 +275,7 @@
      namespace '.$namespace.';
 
      use \\Support\\Context as Context;
+     use \\Config\\Config as Config;
 /**
  * Support /'.$p->name.'/
  */
@@ -330,7 +332,7 @@
  * 
  * @return void
  */
-        public function startEdit(Context $context, array $rest)
+        public function startEdit(Context $context, array $rest) : void
         {
         }
 /**
@@ -340,16 +342,16 @@
  *
  * @return array [TRUE if error, [error messages]]
  */
-        public function edit(Context $context)
+        public function edit(Context $context) : array
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);
 
             $this->editroles($context);
-            $admin = $this->hasrole(Config::FWCONTEXT, Config::ADMINROLE);
-            if (is_object($devel = $this->hasrole(Config::FWCONTEXT, Config::DEVELROLE)) && !is_object($admin))
+            $admin = $this->hasrole(FW::FWCONTEXT, FW::ADMINROLE);
+            if (is_object($devel = $this->hasrole(FW::FWCONTEXT, FW::DEVELROLE)) && !is_object($admin))
             { // if we need developer then we also need admin
-                $admin = $this->addrole(Config::FWCONTEXT, Config::ADMINROLE, '-', $devel->start, $devel->end);
+                $admin = $this->addrole(FW::FWCONTEXT, FW::ADMINROLE, '-', $devel->start, $devel->end);
             }
             if (is_object($admin) && !$this->bean->needlogin)
             { // if we need admin then we also need login!
