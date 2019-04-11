@@ -17,6 +17,7 @@
     use \R as R;
     use \Support\Context as Context;
     use \Config\Config as Config;
+    use \Config\Framework as Framework;
     use \Support\Formdata as FormData;
 /**
  * Handle Ajax operations in this class
@@ -29,24 +30,24 @@
  */
         private static $restops = [
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
-            'config'        => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
+            'config'        => [TRUE,   [[Framework::FWCONTEXT, Framework::ADMINROLE]]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
             'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
             'shared'        => [TRUE,   []], // permission checks are done in the table function
             'table'         => [TRUE,   []],
-            'tablecheck'    => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
+            'tablecheck'    => [TRUE,   [[Framework::FWCONTEXT, Framework::ADMINROLE]]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
             'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
-            'update'        => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
+            'update'        => [TRUE,   [[Framework::FWCONTEXT, Framework::ADMINROLE]]],
         ];
 /**
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], Config::CONFIG => [], 'form' => [],
-                'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
+            [ [[Framework::FWCONTEXT, Framework::ADMINROLE]], [ Framework::PAGE => [], Framework::USER => [], Framework::CONFIG => [], Framework::FORM => [],
+                Framework::FORMFIELD => [], Framework::ROLECONTEXT => [], Framework::ROLENAME => [], Framework::TABLE => [], Framework::USER => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -59,36 +60,37 @@
  * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [] ],
+            [ [[Framework::FWCONTEXT, Framework::ADMINROLE]], [] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => [], 'user' => [], Config::CONFIG => [], 'form' => [],
-                'formfield' => [], 'rolecontext' => [], 'rolename' => [], 'table' => [], 'user' => []] ],
+            [ [[Framework::FWCONTEXT, Framework::ADMINROLE]], [ Framework::PAGE => [], Framework::USER => [], Framework::CONFIG => [], Framework::FORM => [],
+                Framework::FORMFIELD => [], Framework::ROLECONTEXT => [], Framework::ROLENAME => [], Framework::TABLE => [], Framework::USER => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $tableperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ Config::CONFIG, 'form', 'formfield', 'page', 'rolecontext', 'rolename', 'table', 'user'] ],
+            [ [[Framework::FWCONTEXT, Framework::ADMINROLE]], [ Framework::CONFIG, Framework::FORM, Framework::FORMFIELD,
+                Framework::PAGE, Framework::ROLECONTEXT, Framework::ROLENAME, Framework::TABLE, Framework::USER] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
-            [ [[Config::FWCONTEXT, Config::ADMINROLE]], [ 'page' => ['name'], 'user' => ['login'], 'rolecontext' => ['name'], 'rolename' => ['name']] ],
+            [ [[Framework::FWCONTEXT, Framework::ADMINROLE]], [ Framework::PAGE => ['name'], Framework::USER => ['login'], Framework::ROLECONTEXT => ['name'], Framework::ROLENAME => ['name']] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
-            [ 'user' => ['login'] ],
+            [ Framework::USER => ['login'] ],
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -100,8 +102,8 @@
  * @var array   Values controlling whether or not pagination calls are allowed
  */
         private static $paging = [
-            'page'  => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
-            'user'  => [TRUE,   [[Config::FWCONTEXT, Config::ADMINROLE]]],
+            Framework::PAGE  => [TRUE,   [[Framework::FWCONTEXT, Framework::ADMINROLE]]],
+            Framework::USER  => [TRUE,   [[Framework::FWCONTEXT, Framework::ADMINROLE]]],
             // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
@@ -127,7 +129,7 @@
         {
             $rest = $context->rest();
             list($name) = $context->restcheck(1);
-            $v = R::findOne(Config::CONFIG, 'name=?', [$name]);
+            $v = R::findOne(Framework::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($context->web()->method())
             {
@@ -136,7 +138,7 @@
                 {
                     throw new \Framework\Exception\BadValue('Item already exists');
                 }
-                $v = R::dispense(Config::CONFIG);
+                $v = R::dispense(Framework::CONFIG);
                 $v->name = $name;
                 $v->value = $fdt->mustpost('value');
                 $v->type = $fdt->mustpost('type');
@@ -275,13 +277,13 @@
             $bn = $context->load($type, $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
-                if (is_object($bn->hasrole(Config::FWCONTEXT, $field)))
+                if (is_object($bn->hasrole(Framework::FWCONTEXT, $field)))
                 {
-                    $bn->delrole(Config::FWCONTEXT, $field);
+                    $bn->delrole(Framework::FWCONTEXT, $field);
                 }
                 else
                 {
-                    $bn->addrole(Config::FWCONTEXT, $field, '', $context->utcnow());
+                    $bn->addrole(Framework::FWCONTEXT, $field, '', $context->utcnow());
                 }
             }
             else
