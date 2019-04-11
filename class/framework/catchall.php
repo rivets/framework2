@@ -27,7 +27,7 @@
  *
  * @param object	$context	The context object for the site
  *
- * @return string	A template name
+ * @return mixed	A template name  or an array of values
  */
 	public function handle(Context $context)
 	{
