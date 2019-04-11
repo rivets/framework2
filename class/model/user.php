@@ -3,13 +3,13 @@
  * A model class for the RedBean object User
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2013-2018 Newcastle University
+ * @copyright 2013-2019 Newcastle University
  *
  */
     namespace Model;
 
     use \Support\Context as Context;
-    use \Config\Config as Config;
+    use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for User beans
  */
@@ -18,7 +18,7 @@
 /**
  * @var string   The type of the bean that stores roles for this page
  */
-        private $roletype = 'role';
+        private $roletype = FW::ROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  */
@@ -36,7 +36,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public function update()
+        public function update() : void
         {
             if (!preg_match('/^[a-z0-9]+/i', $this->bean->login))
             {
@@ -51,9 +51,7 @@
  */
         }
 /**
- * Add a User from a form
- *
- * @see Framework\Ajax::bean
+ * Add a User from a form - invoked by the AJAX bean operation
  *
  * @param object	$context	The context object for the site
  *
@@ -83,11 +81,11 @@
                 $u->setpw($pw); // set the password
                 if ($fdt->post('admin', 0) == 1)
                 {
-                    $u->addrole(Config::FWCONTEXT, Config::ADMINROLE, '', $now);
+                    $u->addrole(FW::FWCONTEXT, FW::ADMINROLE, '', $now);
                 }
                 if ($fdt->post('devel', 0) == 1)
                 {
-                    $u->addrole(Config::FWCONTEXT, Config::DEVELROLE, '', $now);
+                    $u->addrole(FW::FWCONTEXT, FW::DEVELROLE, '', $now);
                 }
                 return $u;
             }
@@ -100,38 +98,38 @@
 /**
  * Is this user an admin?
  *
- * @return boolean
+ * @return bool
  */
-        public function isadmin()
+        public function isadmin() : bool
         {
-            return is_object($this->hasrole(Config::FWCONTEXT, Config::ADMINROLE));
+            return is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
         }
 /**
  * Is this user active?
  *
- * @return boolean
+ * @return bool
  */
-        public function isactive()
+        public function isactive() : bool
         {
             return $this->bean->active;
         }
 /**
  * Is this user confirmed?
  *
- * @return boolean
+ * @return bool
  */
-        public function isconfirmed()
+        public function isconfirmed() : bool
         {
             return $this->bean->confirm;
         }
 /**
  * Is this user a developer?
  *
- * @return boolean
+ * @return bool
  */
-        public function isdeveloper()
+        public function isdeveloper() : bool
         {
-            return is_object($this->hasrole(Config::FWCONTEXT, Config::DEVELROLE));
+            return is_object($this->hasrole(FW::FWCONTEXT, FW::DEVELROLE));
         }
 /**
  * Set the user's password
@@ -140,7 +138,7 @@
  *
  * @return void
  */
-        public function setpw(string $pw)
+        public function setpw(string $pw) : void
         {
             $this->bean->password = password_hash($pw, PASSWORD_DEFAULT);
             \R::store($this->bean);
@@ -150,9 +148,9 @@
  *
  * @param string	$pw The password
  *
- * @return boolean
+ * @return bool
  */
-        public function pwok(string $pw)
+        public function pwok(string $pw) : bool
         {
             return password_verify($pw, $this->bean->password);
         }
@@ -161,7 +159,7 @@
  *
  * @return void
  */
-        public function doconfirm()
+        public function doconfirm() : void
         {
             $this->bean->active = 1;
             $this->bean->confirm = 1;
@@ -174,7 +172,7 @@
  *
  * @return string
  */
-	public function maketoken(string $device = '')
+	public function maketoken(string $device = '') : string
 	{
 	    $token = (object)['iss' => \Config\Config::SITEURL, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
 	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
@@ -186,7 +184,7 @@
  * 
  * @return void
  */
-        public function startEdit(Context $context, array $rest)
+        public function startEdit(Context $context, array $rest) : void
         {
         }
 /**
@@ -196,7 +194,7 @@
  *
  * @return  array   [TRUE if error, [error messages]]
  */
-        public function edit(Context $context)
+        public function edit(Context $context) : array
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);
