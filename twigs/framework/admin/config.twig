@@ -123,7 +123,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = siteinfo.pagecount('{{constant('Config\\Framework::CONFIG')}}', pagesize) %}
+{% set pages = siteinfo.pagecount(constant('Config\\Framework::CONFIG'), pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
