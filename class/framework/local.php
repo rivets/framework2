@@ -95,7 +95,7 @@
  *
  * @return void
  */
-        private function addmessages()
+        private function addmessages() : void
         {
             foreach ($this->messages as $ix => $vals)
             {
@@ -108,7 +108,7 @@
  *
  * @return string
  */
-        private function eRewrite()
+        private function eRewrite() : string
         {
             return '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
         }
@@ -120,9 +120,9 @@
  * @param string 	$file	file in which error happened
  * @param string	$line	Line at which it happened
  *
- * @return void
+ * @return string
  */
-        private function telladmin($msg, $type, $file, $line)
+        private function telladmin($msg, $type, $file, $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
@@ -168,7 +168,7 @@
  *
  * @return void
  */
-        private function make500(string $ekey)
+        private function make500(string $ekey) : void
         {
             if (!headers_sent())
             { # haven't generated any output yet.
@@ -196,7 +196,7 @@
  *
  * It also closes the RedBean connection
  */
-        public function shutdown()
+        public function shutdown() : void
         {
             if ($error = error_get_last())
             { # are we terminating with an error?
@@ -222,7 +222,7 @@
  *
  * @param Exception	$e
  */
-        public function exceptionHandler($e)
+        public function exceptionHandler($e) : void
         {
             if ($this->error)
             { // try and ignore errors within errors
@@ -252,7 +252,7 @@
  *
  * @return boolean
  */
-        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline)
+        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -288,7 +288,7 @@
  * @param int       $line      Line number in file
  * @param string    $message    Message
  */
-            public function assertFail($file, $line, $message)
+            public function assertFail($file, $line, $message) : void
             {
                 $ekey = $this->telladmin(
                     $message,
@@ -357,7 +357,7 @@
  *
  * @return ?object
  */
-        public function config(string $name)
+        public function config(string $name) : ?object
         {
             return $this->fwconfig[$name] ?? NULL;
         }
@@ -366,7 +366,7 @@
  *
  * @return array
  */
-        public function allconfig()
+        public function allconfig() : array
         {
             return $this->fwconfig;
         }
@@ -377,7 +377,7 @@
  *
  * @return void
  */
-        public function setuptwig(bool $cache = FALSE)
+        public function setuptwig(bool $cache = FALSE) : void
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
@@ -414,7 +414,7 @@
  *
  * @return void
  */
-        public function extendtwig(callable $fn)
+        public function extendtwig(callable $fn) : void
         {
             $fn($this->twig);
         }
@@ -453,7 +453,7 @@
  *
  * @return void
  */
-        public function render(string $tpl, array $vals = [])
+        public function render(string $tpl, array $vals = []) : void
         {
             if ($tpl !== '')
             {
@@ -468,7 +468,7 @@
  *
  * @return void
  */
-        public function addval($vname, $value = "")
+        public function addval($vname, $value = '') : void
         {
             if (is_array($vname))
             {
@@ -502,7 +502,7 @@
  *
  * @return void
  */
-        public function message(int $kind, $value)
+        public function message(int $kind, $value) : void
         {
             if (is_array($value))
             {
@@ -520,7 +520,7 @@
  *
  * @return void
  */
-        public function clearmessages(string $kind = '')
+        public function clearmessages(string $kind = '') : void
         {
             if ($kind === '')
             {
@@ -572,7 +572,7 @@
  *
  * @return void
  */
-        public function enabledebug()
+        public function enabledebug() : void
         {
             $this->debug = TRUE;
             if ($this->hastwig())
@@ -594,7 +594,7 @@
  *
  * @return object
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE)
+        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : Local
         {
             $this->devel = $devel;
             $this->basepath = $basedir;
@@ -658,7 +658,7 @@
                 {
                     $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
                 }
-	    }
+            }
             return $this;
         }
     }
