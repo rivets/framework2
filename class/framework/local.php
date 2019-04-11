@@ -7,9 +7,10 @@
  */
     namespace Framework;
 
-    use Config\Config as Config;
-    use Framework\Web\Web as Web;
-    use Framework\Web\StatusCodes as StatusCodes;
+    use \Config\Config as Config;
+    use \Config\Framework as FW;
+    use \Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes as StatusCodes;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -649,7 +650,7 @@
                 \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
                 $this->fwconfig = [];
-                foreach (\R::findAll(Config::CONFIG) as $cnf)
+                foreach (\R::findAll(FW::CONFIG) as $cnf)
                 {
                     $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
                     $this->fwconfig[$cnf->name] = $cnf;
