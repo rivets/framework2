@@ -3,7 +3,7 @@
  * A trait providing CSRF guard function
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -17,7 +17,7 @@
  *
  * @return string
  */
-        public function guard()
+        public function guard() : string
         {
             return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }

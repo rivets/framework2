@@ -5,7 +5,7 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -21,7 +21,7 @@
  *
  * @return array
  */
-        private function dofields($fdt)
+        private function dofields($fdt) : array
         {
             $emess = [];
             foreach (self::$editfields as $fld => $flags)

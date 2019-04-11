@@ -5,7 +5,7 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -24,9 +24,9 @@
  *
  * @throws \Framework\Exception\BadValue If a bad password is detected this could be thrown
  *
- * @return boolean
+ * @return bool
  */
-        public static function checkpw($pw)
+        public static function pwValid($pw) : bool
         {
             return $pw !== '';
         }
