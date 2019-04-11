@@ -53,7 +53,7 @@
  */
     function addfwconfig($name, $value, $local)
     {
-        $fwc = \R::dispense(DBPREFIX.'config');
+        $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
         $fwc->local = $local ? 1 : 0;
         if (is_array($value))
@@ -346,7 +346,7 @@
     }
 
     $beans = [
-        'config',
+        'fwconfig',
         'confirm',
         'form',
         'formfield',
