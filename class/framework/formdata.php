@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  */
     namespace Framework;
 
@@ -24,7 +24,7 @@
  *
  * @return void
  */
-        private function setput()
+        private function setput() : void
         {
             if (!is_array($this->putdata))
             {
@@ -89,7 +89,7 @@
  *
  * @return boolean
  */
-        public function hasput($name)
+        public function hasput($name) : bool
         {
             $this->setput();
             return isset($this->putdata[$name]);
@@ -218,9 +218,9 @@
  * @param boolean   $forupdate  If TRUE then load for update
  *
  * @throws \Framework\Exception\BadValue
- * @return ?object
+ * @return object
  */
-        public function mustgetbean($name, $bean, $forupdate = FALSE)
+        public function mustgetbean($name, $bean, $forupdate = FALSE) : object
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE), $forupdate);
         }
@@ -232,7 +232,7 @@
  * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
  */
-        public function mustgeta($name)
+        public function mustgeta($name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
@@ -334,9 +334,9 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * @return ?object
+ * @return object
  */
-        public function mustpostbean($name, $bean)
+        public function mustpostbean($name, $bean) : object
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, TRUE));
         }
@@ -449,9 +449,9 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * @return ?object
+ * @return object
  */
-        public function mustputbean($name, $bean)
+        public function mustputbean($name, $bean) : object
         {
             return Context::getinstance()->load($bean, $this->mustput($name, NULL));
         }
@@ -490,9 +490,9 @@
  * @param string     $name The cookie name
  *
  * @throws \Framework\Exception\BadValue
- * @return mixed
+ * @return string
  */
-        public function mustcookie(string $name)
+        public function mustcookie(string $name) : string
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, TRUE);
         }
@@ -502,9 +502,9 @@
  * @param string	$name	The key
  * @param mixed		$dflt	Returned if the key does not exist
  *
- * @return mixed
+ * @return string
  */
-        public function cookie(string $name, $dflt = '')
+        public function cookie(string $name, $dflt = '') : string
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
