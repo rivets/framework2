@@ -312,8 +312,8 @@
 
     try
     {
-        $twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem('./install/twigs'),
+        $twig = new \Twig\Environment(
+            new \Twig\Loader\FilesystemLoader('./install/twigs'),
             ['cache' => FALSE, 'debug' => TRUE]
         );
     }
