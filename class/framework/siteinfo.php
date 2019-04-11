@@ -3,13 +3,13 @@
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2018 Newcastle University
+ * @copyright 2016-2019 Newcastle University
  *
  */
     namespace Framework;
 
     use \Support\Context as Context;
-    use \Config\Config as Config;
+    use \Config\Framework as FW;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -20,14 +20,16 @@
  * @var array  Array of the names of the beans used by the framework
  */
         private static $fwtables = [
-            Config::CONFIG,
-            'confirm',
-            'page',
-            'pagerole',
-            'role',
-            'rolecontext',
-            'rolename',
-            'user',
+            FW::CONFIG,
+            FW::CONFIRM,
+            FW::FORM,
+            FW::FORMFIELD,
+            FW::PAGE,
+            FW::PAGEROLE,
+            FW::ROLE,
+            FW::ROLECONTEXT,
+            FW::ROLENAME,
+            FW::USER,
         ];
 /**
  * Get beans in chunks and turn them one by one using a generator
@@ -100,7 +102,7 @@
  */
         public function users(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('user', $order !== '' ? $order : ' order by login', [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::USER, $order !== '' ? $order : ' order by login', [], $start, $count);
         }
 /**
  * Get all the page beans
@@ -114,7 +116,7 @@
  */
         public function pages(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('page', $order !== '' ? $order : ' order by name', [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::PAGE, $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
  * Get all the Rolename beans
@@ -128,7 +130,7 @@
  */
         public function roles(int $start = -1, int $count = -1, string $order = '', $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('rolename', $order !== '' ? $order : ' order by name', [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::ROLENAME, $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
  * Get all the Rolecontext beans
@@ -142,7 +144,7 @@
  */
         public function contexts(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('rolecontext', $order !== '' ? $order : ' order by name', [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::ROLECONTEXT, $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
  * Get all the site config information
@@ -156,7 +158,7 @@
  */
         public function siteconfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}(Config::CONFIG, $order, [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::CONFIG, $order, [], $start, $count);
         }
 /**
  * Get all the form beans
@@ -170,18 +172,18 @@
  */
         public function forms(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            return $this->{$collect ? 'collect' : 'fetch'}('form', $order !== '' ? $order : ' order by name', [], $start, $count);
+            return $this->{$collect ? 'collect' : 'fetch'}(FW::FORM, $order !== '' ? $order : ' order by name', [], $start, $count);
         }
 /**
  * Get a specific form
  *
  * @param string       $name     The name of the form
  *
- * @return object
+ * @return ?object
  */
-        public function form(string $name)
+        public function form(string $name) : ?object
         {
-            return \R::findOne('form', 'name=?', [$name]);
+            return \R::findOne(FW::FORM, 'name=?', [$name]);
         }
 /**
  * Get all users with a particular context/role
@@ -200,7 +202,8 @@
             $context = Context::getinstance();
             $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();
             $rcid = is_object($rolecontext) ? $rolecontext->getID() : $context->rolecontext($rolecontext)->getID();
-            $res = \R::findMulti('user', 'select user.* from user join role on (role.user_id = user.id) where rolename_id=? and rolecontext_id = ?'.
+            $res = \R::findMulti(FW::USER, 'select '.FW::USER.'.* from '.FW::USER.' join '.FW::ROLE.' on ('.FW::ROLE.
+                '.'.FW::USER.'_id = '.FW::USER.'.id) where '.FW::ROLENAME.'_id=? and '.FW::ROLECONTEXT.'_id = ?'.
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
                 [$rnid, $rcid]);
             return $res['user'];
@@ -212,7 +215,7 @@
  *
  * @return array
  */
-        public function tables($all = FALSE)
+        public function tables($all = FALSE) : array
         {
             $beans = [];
             foreach(\R::inspect() as $tab)
@@ -232,7 +235,7 @@
  *
  * @return int
  */
-        public function pagecount($table, $pagesize)
+        public function pagecount($table, $pagesize) : int
         {
             return (int) floor((\R::count($table) + $pagesize) / $pagesize);
         }
