@@ -129,7 +129,7 @@
             $local->addval('register', Config::REGISTER);
             if ($context->hasuser())
             { # already logged in
-                $local->message(Local::MESSAGE, 'Please log out before trying to login');
+                $local->message(Local::WARNING, 'Please log out before trying to login');
             }
             else
             {
