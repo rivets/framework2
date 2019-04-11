@@ -3,11 +3,12 @@
  * A model class for the RedBean object FWConfig
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace Model;
     use Support\Context as Context;
+    use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for Page beans
  */
@@ -35,7 +36,7 @@
  *
  * @return string
  */
-        public function checkURL($type)
+        public function checkURL($type) : void
         {
             if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL)
             { # not a straightforward URL
@@ -51,7 +52,7 @@
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        public function update()
+        public function update() : void
         {
             $this->bean->name = strtolower($this->bean->name);
             if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
@@ -99,12 +100,12 @@
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');
-            $bn = \R::findOne(Config::CONFIG, 'name=?', [$name]);
+            $bn = \R::findOne(FW::CONFIG, 'name=?', [$name]);
             if (is_object($bn))
             {
                 throw new \Framework\Exception\BadValue('Config item exists');
             }
-            $bn = \R::dispense(Config::CONFIG);
+            $bn = \R::dispense(FW::CONFIG);
             $bn->name = $name;
             $bn->value = $fdt->mustpost('value');
             $bn->local = $fdt->post('local', 0);
@@ -120,7 +121,7 @@
  * 
  * @return void
  */
-        public function startEdit(Context $context)
+        public function startEdit(Context $context) : void
         {
         }
 /**
@@ -128,7 +129,7 @@
  * 
  * @return string
  */
-        public function guard()
+        public function guard() :string
         {
             return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
@@ -139,7 +140,7 @@
  *
  * @return  array   [TRUE if error, [error messages]]
  */
-        public function edit(Context $context)
+        public function edit(Context $context) : array
         {
             $emess = $this->dofields($context->formdata());
             return [!empty($emess), $emess];
