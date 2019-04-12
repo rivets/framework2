@@ -50,7 +50,7 @@
  *
  * @return string
  */
-        private function checkend(string $end) : string
+        private function checkend(string $end) : ?string
         {
             return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
         }
