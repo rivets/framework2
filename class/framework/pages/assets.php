@@ -14,28 +14,28 @@
 /**
  * Handle all the cacheing stuff and maybe return a file
  */
-    Class Assets extends \Framework\Siteaction
+    class Assets extends \Framework\Siteaction
     {
 /**
  * @var string	The file name
  */
-	private $file;
+        private $file;
 /**
  * @var integer	Last modified time for the file
  */
-	private $mtime;
+        private $mtime;
 /**
  * @var array Mime type values
  */
-	static private $mtypes = [
-	    'css'	=> 'text/css',
-	    'js'	=> 'text/javascript',
-	    'png'	=> 'image/png',
-	    'jpg'	=> 'image/jpeg',
-	    'jpeg'	=> 'image/jpeg',
-	    'gif'	=> 'image/gif',
-	    'ico'	=> 'image/x-icon',
-	];
+        static private $mtypes = [
+            'css'	=> 'text/css',
+            'js'	=> 'text/javascript',
+            'png'	=> 'image/png',
+            'jpg'	=> 'image/jpeg',
+            'jpeg'	=> 'image/jpeg',
+            'gif'	=> 'image/gif',
+            'ico'	=> 'image/x-icon',
+        ];
 /**
  * Handle access to things in assets
  *
@@ -47,53 +47,53 @@
  *
  * @return string	A template name
  */
-	public function handle(Context $context)
-	{
-	    chdir($context->local()->assetsdir());
-
-	    $rest = $context->rest();
-	    $this->file = implode(DIRECTORY_SEPARATOR, $rest);
-	    $this->mtime = filemtime($this->file);
+        public function handle(Context $context)
+        {
+            chdir($context->local()->assetsdir());
+    
+            $rest = $context->rest();
+            $this->file = implode(DIRECTORY_SEPARATOR, $rest);
+            $this->mtime = filemtime($this->file);
 /**
  * PHP file info does not give the correct mime type for compressed css files
  * so we need to do it ourselves which is a pain
  */
-	    $fname = array_pop($rest);
-	    $ext = strtolower(substr(strrchr($fname, "."), 1));
-	    if (isset(self::$mtypes[$ext]))
-	    {
-		$mime = self::$mtypes[$ext];
-	    }
-	    else
-	    {
+            $fname = array_pop($rest);
+            $ext = strtolower(substr(strrchr($fname, "."), 1));
+            if (isset(self::$mtypes[$ext]))
+            {
+                $mime = self::$mtypes[$ext];
+            }
+            else
+            {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
-		if (($mime = finfo_file($finfo, $this->file)) === FALSE)
+                if (($mime = finfo_file($finfo, $this->file)) === FALSE)
                 { # there was an error of some kind.
                     $mime = '';
                 }
                 finfo_close($finfo);
-	    }
-	    $mag = $this->makemaxage();
-	    $web = $context->web();
-	    $web->addheader([
-//            'Last-Modified'	=> $this->makemod($this->mtime),
-            'Etag'		=> '"'.$this->makeetag().'"',
-            'Expires'	=> $this->makemod(time()+$mag),
-            'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
-	    ]);
-	    $this->ifmodcheck();
-	    $web->sendfile($this->file, $fname, $mime);
-	    return '';
-	}
+            }
+            $mag = $this->makemaxage();
+            $web = $context->web();
+            $web->addheader([
+//              'Last-Modified'	=> $this->makemod($this->mtime),
+                'Etag'		=> '"'.$this->makeetag().'"',
+                'Expires'	=> $this->makemod(time()+$mag),
+                'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
+            ]);
+            $this->ifmodcheck();
+            $web->sendfile($this->file, $fname, $mime);
+            return '';
+        }
 /**
  * Make an etag - overrides the function in SiteAction
  *
  * @return string
  */
-	public function makeetag() : string
-	{
-	    return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.(Web::getinstance()->acceptgzip() ? 1 : 0);
-	}
+        public function makeetag() : string
+        {
+            return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.(Web::getinstance()->acceptgzip() ? 1 : 0);
+        }
 /**
  * Make a maximum age - overrides function in SiteAction
  *
@@ -101,10 +101,10 @@
  *
  * @return integer
  */
-	public function makemaxage() : int
-	{
-	    return 3600*24*365; # make it a year
-	}
+        public function makemaxage() : int
+        {
+            return 3600*24*365; # make it a year
+        }
 /**
  * Check a timestamp to see if we need to send the page again or not - overriding method in SiteAction
  *
@@ -112,9 +112,9 @@
  *
  * @return boolean
  */
-	public function checkmodtime(string $time) : bool
-	{
-	    return $this->mtime > $time;
-	}
+        public function checkmodtime(string $time) : bool
+        {
+            return $this->mtime > $time;
+        }
     }
 ?>
