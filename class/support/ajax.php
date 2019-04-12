@@ -41,25 +41,25 @@
  * @var array   Values controlling whether or not search hint calls are allowed
  */
         private static $allowHints = [
-            // 'bean' => [TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+            // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * @var array   Values controlling whether or not calls on the bean operation are allowed
  */
         private static $allowBean = [
-            // 'bean' => [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * @var array   Values controlling whether or not calls on the toggle operation are allowed
  */
         private static $allowToggle = [
-            // 'bean' => [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * @var array   Values controlling whether or not calls on the table operation are allowed
  */
         private static $allowTable = [
-            // 'bean' => [[['ContextName', 'RoleName']], [ 'bean', ....] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            // [[['ContextName', 'RoleName']], [ 'bean', ....] // an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
  * @var array   Values controlling whether or not bean operations are logged for certain beans
