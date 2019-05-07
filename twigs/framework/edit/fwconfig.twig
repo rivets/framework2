@@ -20,7 +20,7 @@
         $('input', pr).val(''); // clear the inputs
         $('option', pr).prop('selected', false); // clear any selections
         $('.delb', pr).on('click', function(e){
-            framework.dodelbean(e, this, '{{constant('Config\\Framework::role')}}');
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
         });
     });
     $('#uform').on('submit', function(e){
