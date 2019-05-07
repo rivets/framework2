@@ -361,10 +361,10 @@
 
     $fwcsp = [
         'default-src'   => ["'self'"],
-        'font-src'      => ["'self'", 'data:', 'use.fontawesome.com'], // fontawesome uses data: internally
+        'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
         'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com'],
-        'style-src'     => ["'self'", 'use.fontawesome.com', 'stackpath.bootstrapcdn.com'],
+        'style-src'     => ["'self'", '*.fontawesome.com', 'stackpath.bootstrapcdn.com'],
     ];
 /*
  * See if we have a sendmail setting in the php.ini file
