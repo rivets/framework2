@@ -118,7 +118,7 @@
  *
  * @param object    $user
  *
- * @return boolean
+ * @return bool
  */
         public function sameuser($user) : bool
         {
@@ -127,7 +127,7 @@
 /**
  * Do we have a logged in user?
  *
- * @return boolean
+ * @return bool
  */
         public function hasuser() : bool
         {

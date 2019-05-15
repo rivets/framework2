@@ -118,10 +118,10 @@
  * Config value operation
  *
  * @internal
- * @param \Framework\Support\Context	$context	The context object for the site
+ * @param Framework\Support\Context	$context	The context object for the site
  *
- * @throws \Framework\Exception\BadOperation
- * @throws \Framework\Exception\BadValue
+ * @throws Framework\Exception\BadOperation
+ * @throws Framework\Exception\BadValue
  *
  * @return void
  */
@@ -169,7 +169,7 @@
  * @param string    $type    The type of bean
  * @param string    $field   The field name
  *
- * @throws \Framework\Exception\BadValue
+ * @throws Framework\Exception\BadValue
  * @return void
  */
         private function fieldExists(string $type, string $field) : void
@@ -188,7 +188,7 @@
  * @param Support\Context  $context  The context object
  * @param array   $perms    The array with permissions in the first element
  *
- * @throws \Framework\Exception\Forbidden
+ * @throws Framework\Exception\Forbidden
  *
  * @return array
  */
@@ -254,7 +254,7 @@
  * @internal
  * @param Support\Context	$context	The context object for the site
  *
- * @throws \Framework\Exception\BadValue
+ * @throws Framework\Exception\BadValue
  * @return void
  */
         private final function toggle(Context $context) : void
@@ -297,7 +297,7 @@
  * Update a field in a bean
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param Framework\Support\Context	$context	The context object for the site
  *
  * @return void
  */
@@ -320,7 +320,7 @@
  * @param string  $bean
  * @param string  $field
  *
- * @throws \Framework\Exception\Forbidden
+ * @throws Framework\Exception\Forbidden
  *
  * @return boolean or error out
  */
@@ -336,7 +336,7 @@
 /**
  * make log entry
  *
- * @param Support\Context	$context	The context object for the site
+ * @param Framework\Support\Context	$context	The context object for the site
  * @param string $op
  * @param string $bean
  * @param int $id
