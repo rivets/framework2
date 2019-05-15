@@ -336,9 +336,16 @@
 /**
  * make log entry
  *
+ * @param Framework\Support\Context	$context	The context object for the site
+ * @param string $op
+ * @param string $bean
+ * @param int $id
+ * @param string $field
+ * @param string $value
+ *
  * @return void
  */
-        private function mklog($context, $op, $bean, $id, $field, $value)
+        private function mklog(Context $context, $op, $bean, $id, $field, $value)
         {
             $lg = \R::dispense('beanlog');
             $lg->user = $context->user();
