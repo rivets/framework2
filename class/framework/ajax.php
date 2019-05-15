@@ -118,7 +118,7 @@
  * Config value operation
  *
  * @internal
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -185,7 +185,7 @@
  * row that is OK
  *
  * @internal
- * @param object  $context  The context object
+ * @param Support\Context  $context  The context object
  * @param array   $perms    The array with permissions in the first element
  *
  * @throws \Framework\Exception\Forbidden
@@ -252,7 +252,7 @@
  * simply changing a value.
  *
  * @internal
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  * @return void
@@ -297,7 +297,7 @@
  * Update a field in a bean
  *
  * @internal
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @return void
  */
@@ -354,7 +354,7 @@
  * Carry out operations on beans
  *
  * @internal
- * @param object    $context The context object
+ * @param Support\Context    $context The context object
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -425,7 +425,7 @@
  * Carry out operations on RB shared lists
  *
  * @internal
- * @param object    $context The context object
+ * @param Support\Context    $context The context object
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -460,7 +460,7 @@
  * Carry out operations on tables
  *
  * @internal
- * @param object    $context The context object
+ * @param Support\Context   $context The context object
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\BadOperation
@@ -492,7 +492,7 @@
  * Get a page of bean values
  *
  * @internal
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -520,7 +520,7 @@
  * Get serach hints for a bean
  *
  * @internal
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -601,7 +601,7 @@
 /**
  * Do a database check for uniqueness
  *
- * @param object    $context  The Context object
+ * @param Support\Context    $context  The Context object
  * @param string    $bean     The kind of bean
  * @param string    $field    The field to check
  * @param string    $value    The value to check
@@ -620,7 +620,7 @@
  * Do a parsley uniqueness check
  *
  * @internal
- * @param object    $context
+ * @param Support\Context   $context
  *
  * @return void
  */
@@ -635,7 +635,7 @@
  * Do a parsley uniqueness check
  *
  * @internal
- * @param object    $context
+ * @param Support\Context    $context
  *
  * @return void
  */
@@ -649,7 +649,7 @@
  * Do a parsley table check
  *
  * @internal
- * @param object    $context
+ * @param Support\Context    $context
  *
  * @return void
  */
@@ -667,7 +667,7 @@
  * Do a password verification
  *
  * @internal
- * @param object    $context
+ * @param Support\Context    $context
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -684,7 +684,7 @@
  * Check that user has the permissions specified in an array
  *
  * @internal
- * @param object    $context  The Context bject
+ * @param Support\Context    $context  The Context bject
  * @param array     $perms    The permission array
  *
  * @throws \Framework\Exception\Forbidden
@@ -716,7 +716,7 @@
  * Check that the caller is allowed to perform the operation.
  *
  * @internal
- * @param object   $context  The Context Object
+ * @param Support\Context   $context  The Context Object
  * @param boolean  $login    If TRUE Then user must be logged in.
  * @param array    $perms    As specified for the various arrays defined above
  *
@@ -741,7 +741,7 @@
 /**
  * Handle AJAX operations
  *
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @return void
  */
