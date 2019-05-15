@@ -336,7 +336,7 @@
 /**
  * make log entry
  *
- * @param Framework\Support\Context	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  * @param string $op
  * @param string $bean
  * @param int $id

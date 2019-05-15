@@ -107,7 +107,7 @@
 /**
  * Return the current logged in user if any
  *
- * @return object
+ * @return ?object
  */
         public function user() : ?object
         {
@@ -322,7 +322,7 @@
 /**
  * Return the local object
  *
- * @return object
+ * @return Framework\Local
  */
         public function local() : Local
         {
@@ -331,7 +331,7 @@
 /**
  * Return the Formdata object
  *
- * @return object
+ * @return Support\FormData
  */
         public function formdata() : \Support\Formdata
         {
