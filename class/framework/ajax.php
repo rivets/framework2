@@ -118,7 +118,7 @@
  * Config value operation
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Framework\Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -170,7 +170,7 @@
  * @param string    $field   The field name
  *
  * @throws \Framework\Exception\BadValue
- * @return boolean
+ * @return void
  */
         private function fieldExists(string $type, string $field) : void
         {
