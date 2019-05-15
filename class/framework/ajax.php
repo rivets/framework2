@@ -47,7 +47,7 @@
  */
         private static $beanperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []] ],
+                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -68,7 +68,7 @@
  */
         private static $toggleperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []] ],
+                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
