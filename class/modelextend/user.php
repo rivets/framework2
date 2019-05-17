@@ -20,13 +20,13 @@
  * you want to implement particular password rules. (Length is really the
  * only thing you should be testing though!)
  *
- * @param $string    $pw  The password
+ * @param string    $pw  The password
  *
  * @throws \Framework\Exception\BadValue If a bad password is detected this could be thrown
  *
  * @return bool
  */
-        public static function pwValid($pw) : bool
+        public static function pwValid(string $pw) : bool
         {
             return $pw !== '';
         }
