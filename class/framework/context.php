@@ -25,7 +25,7 @@
  */
         const KEY	        = 'Some string of text.....';
 /**
- * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
+ * @var ?object		NULL or an object decribing the current logged in User (if we have logins at all)
  */
         protected $luser	= NULL;
 /**

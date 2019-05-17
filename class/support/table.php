@@ -30,7 +30,7 @@
 /**
  * Add a new table
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
  * @return bool
  */
@@ -76,7 +76,7 @@
 /**
  * Return the fields
  *
- * @return array
+ * @return string[]
  */
         public function fields() : array
         {
@@ -94,7 +94,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
  * @return void
  */
@@ -116,9 +116,9 @@
 /**
  * Handle a bean edit
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
- * @return void
+ * @return array
  */
         public function edit(Context $context, array $rest) : array
         {
@@ -128,7 +128,7 @@
 /**
  * View a Bean
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
  * @return void
  */
