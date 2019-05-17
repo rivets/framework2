@@ -120,8 +120,8 @@
  * @internal
  * @param \Support\Context	$context	The context object for the site
  *
- * @throws Framework\Exception\BadOperation
- * @throws Framework\Exception\BadValue
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
  *
  * @return void
  */
@@ -169,7 +169,7 @@
  * @param string    $type    The type of bean
  * @param string    $field   The field name
  *
- * @throws Framework\Exception\BadValue
+ * @throws \Framework\Exception\BadValue
  * @return void
  */
         private function fieldExists(string $type, string $field) : void
@@ -185,10 +185,10 @@
  * row that is OK
  *
  * @internal
- * @param Support\Context  $context  The context object
+ * @param \Support\Context  $context  The context object
  * @param array   $perms    The array with permissions in the first element
  *
- * @throws Framework\Exception\Forbidden
+ * @throws \Framework\Exception\Forbidden
  * @return array
  */
         protected final function findRow(Context $context, $perms) : array
