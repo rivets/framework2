@@ -100,7 +100,7 @@
             }
             elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
             {
-                $name = 'framework/'.$m[1]/$m[2];
+                $name = 'framework/'.$m[1].'/'.$m[2];
             }
             if (!preg_match('/\.twig$/', $name))
             {
