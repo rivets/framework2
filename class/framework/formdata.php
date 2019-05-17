@@ -12,7 +12,7 @@
 /**
  * A class that provides helpers for accessing form data
  */
-    class Formdata
+    class FormData
     {
         use \Framework\Utility\Singleton;
 /**

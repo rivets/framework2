@@ -16,7 +16,7 @@
 /**
  * For user code
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  * @param object    $page     An object about the page about to be rendered
  *
  * @return void

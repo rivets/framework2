@@ -333,9 +333,9 @@
  *
  * @return \Support\FormData
  */
-        public function formdata() : \Support\Formdata
+        public function formdata() : \Support\FormData
         {
-            return \Support\Formdata::getinstance();
+            return \Support\FormData::getinstance();
         }
 /**
  * Return the Web object
