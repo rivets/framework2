@@ -55,7 +55,7 @@
 /**
  * Check user can access the page - does not return if they cannot
  *
- * @param object    $context    The context object
+ * @param \Support\Context    $context    The context object
  *
  * @return void
  */
@@ -86,7 +86,7 @@
 /**
  * Make a twig file if we have permission
  *
- * @param object    $context    The Context object
+ * @param \Support\Context    $context    The Context object
  * @param string    $page       The name of the page
  * @param string    $name       The name of the twig
  *
@@ -217,7 +217,7 @@
  *
  * This will be called from ajax.php
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return object
  */
@@ -328,7 +328,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  * 
  * @return void
  */
@@ -338,7 +338,7 @@
 /**
  * Handle an edit form for this page
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return array [TRUE if error, [error messages]]
  */

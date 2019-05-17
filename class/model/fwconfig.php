@@ -34,7 +34,7 @@
  *
  * @throws \Framework\Exception\BadValue
  *
- * @return string
+ * @return void
  */
         public function checkURL($type) : void
         {
@@ -91,7 +91,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param object    $context    The context object
+ * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
  * @return object
@@ -117,7 +117,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context   The context object
+ * @param \Support\Context    $context   The context object
  * 
  * @return void
  */
@@ -136,7 +136,7 @@
 /**
  * Handle an edit form for this fwconfig item
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return  array   [TRUE if error, [error messages]]
  */
