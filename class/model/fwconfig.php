@@ -15,7 +15,7 @@
     class FWConfig extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var Array   Key is name of field and the array contains flags for checks
+ * @var array   Key is name of field and the array contains flags for checks
  */
         private static $editfields = [
             'value'       => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
@@ -36,7 +36,7 @@
  *
  * @return void
  */
-        public function checkURL($type) : void
+        public function checkURL(string $type) : void
         {
             if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL)
             { # not a straightforward URL
