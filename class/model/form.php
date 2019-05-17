@@ -44,7 +44,7 @@
             'required'      => ['Required', FALSE, 0x10],
         ];
 /**
- * @var flag to indicate inside optgroup.
+ * @var bool flag to indicate inside optgroup.
  * @todo can we have nested optgroups? Maybe this needs to be a count rather than a flag.
  */
         private $optgroup = FALSE;
