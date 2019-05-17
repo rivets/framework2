@@ -42,7 +42,7 @@
                 $name = strtolower($fd->mustpost('name'));
                 if ($name === '')
                 {
-                    $context->local()->essage(\Framework\Local::ERROR, 'You must provide a bean name');
+                    $context->local()->message(\Framework\Local::ERROR, 'You must provide a bean name');
                 }
                 elseif (!preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
@@ -85,7 +85,7 @@
 /**
  * Return the name
  *
- * @return sting
+ * @return string
  */
         public function name() : string
         {
