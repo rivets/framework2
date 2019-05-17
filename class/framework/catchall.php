@@ -25,9 +25,9 @@
  * This just diverts to a /error page but it could also just render a 404 template here.
  * Which might be better. Needs thought.
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
- * @return mixed	A template name  or an array of values
+ * @return <string></string>    A template name  or an array of values
  */
 	public function handle(Context $context)
 	{
