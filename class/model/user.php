@@ -53,7 +53,7 @@
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -190,7 +190,7 @@
 /**
  * Handle an edit form for this user
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return  array   [TRUE if error, [error messages]]
  */
