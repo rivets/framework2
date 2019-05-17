@@ -129,7 +129,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context The context object
+ * @param \Support\Context    $context The context object
  * @param array    $rest     Not used here at the moment
  * 
  * @return void
@@ -143,7 +143,7 @@
  *
  * @see Framework\Pages\Admin
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
  * @return array
  */
@@ -177,6 +177,9 @@
 /**
  * View a form
  *
+ * @param \Support\Context $context
+ * @param array $rest
+ *
  * @return void
  */
         public function view(Context $context, array $rest) : void
@@ -186,11 +189,11 @@
  * Render a form
  *
  * @param array    $values Values to enter into form
- * @param boolean  $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
+ * @param bool  $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
  *
  * @return string
  */
-        public function render($values = [], $noform = FALSE) : string
+        public function render($values = [], bool $noform = FALSE) : string
         {
             if (!$noform || $this->bean->method == 0)
             {
@@ -348,7 +351,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param object    $context  The context object
+ * @param \Support\Context    $context  The context object
  *
  * @return object
  */
