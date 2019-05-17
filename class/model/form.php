@@ -299,7 +299,7 @@
                 {
                     if ($this->optgroup)
                     { # one open already so close it
-                        $form .= '</optgroup>';
+                        $form = '</optgroup>';
                     }
                     if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
                     {
@@ -318,7 +318,7 @@
                 {
                     if ($this->optgroup)
                     { # one open already so close it
-                        $form .= '</optgroup>';
+                        $form = '</optgroup>';
                     }
                     if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
                     {
