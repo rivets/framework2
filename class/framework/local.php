@@ -360,6 +360,7 @@
  */
         public function config(string $name) : ?object
         {
+            if (!isset(
             return $this->fwconfig[$name] ?? NULL;
         }
 /**
@@ -464,8 +465,8 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string	$vname		The name to be used inside the twig or an array of value pairs
- * @param mixed		$value		The value to be stored or "" if an array in param 1
+ * @param string	            $vname		The name to be used inside the twig or an array of value pairs
+ * @param string|string[]		$value		The value to be stored or "" if an array in param 1
  *
  * @return void
  */
