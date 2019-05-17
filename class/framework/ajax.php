@@ -118,7 +118,7 @@
  * Config value operation
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws Framework\Exception\BadOperation
  * @throws Framework\Exception\BadValue
@@ -189,7 +189,6 @@
  * @param array   $perms    The array with permissions in the first element
  *
  * @throws Framework\Exception\Forbidden
- *
  * @return array
  */
         protected final function findRow(Context $context, $perms) : array
@@ -252,7 +251,7 @@
  * simply changing a value.
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws Framework\Exception\BadValue
  * @return void
@@ -297,7 +296,7 @@
  * Update a field in a bean
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return void
  */
@@ -336,7 +335,7 @@
 /**
  * make log entry
  *
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  * @param string $op
  * @param string $bean
  * @param int $id
@@ -361,7 +360,7 @@
  * Carry out operations on beans
  *
  * @internal
- * @param Support\Context    $context The context object
+ * @param \Support\Context    $context The context object
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -432,7 +431,7 @@
  * Carry out operations on RB shared lists
  *
  * @internal
- * @param Support\Context    $context The context object
+ * @param \Support\Context    $context The context object
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -467,7 +466,7 @@
  * Carry out operations on tables
  *
  * @internal
- * @param Support\Context   $context The context object
+ * @param \Support\Context   $context The context object
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\BadOperation
@@ -499,7 +498,7 @@
  * Get a page of bean values
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -527,10 +526,9 @@
  * Get serach hints for a bean
  *
  * @internal
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
- *
  * @return void
  */
         private final function hints(Context $context) : void
@@ -608,7 +606,7 @@
 /**
  * Do a database check for uniqueness
  *
- * @param Support\Context    $context  The Context object
+ * @param \Support\Context    $context  The Context object
  * @param string    $bean     The kind of bean
  * @param string    $field    The field to check
  * @param string    $value    The value to check
@@ -627,7 +625,7 @@
  * Do a parsley uniqueness check
  *
  * @internal
- * @param Support\Context   $context
+ * @param \Support\Context   $context
  *
  * @return void
  */
@@ -642,7 +640,7 @@
  * Do a parsley uniqueness check
  *
  * @internal
- * @param Support\Context    $context
+ * @param \Support\Context    $context
  *
  * @return void
  */
@@ -656,7 +654,7 @@
  * Do a parsley table check
  *
  * @internal
- * @param Support\Context    $context
+ * @param \Support\Context    $context
  *
  * @return void
  */
@@ -674,7 +672,7 @@
  * Do a password verification
  *
  * @internal
- * @param Support\Context    $context
+ * @param \Support\Context    $context
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -691,7 +689,7 @@
  * Check that user has the permissions specified in an array
  *
  * @internal
- * @param Support\Context    $context  The Context bject
+ * @param \Support\Context    $context  The Context bject
  * @param array     $perms    The permission array
  *
  * @throws \Framework\Exception\Forbidden
@@ -723,7 +721,7 @@
  * Check that the caller is allowed to perform the operation.
  *
  * @internal
- * @param Support\Context   $context  The Context Object
+ * @param \Support\Context   $context  The Context Object
  * @param boolean  $login    If TRUE Then user must be logged in.
  * @param array    $perms    As specified for the various arrays defined above
  *
@@ -748,7 +746,7 @@
 /**
  * Handle AJAX operations
  *
- * @param Support\Context	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return void
  */
