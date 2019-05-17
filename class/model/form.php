@@ -292,6 +292,7 @@
  */
         private function doOption($option) : string
         {
+            $form = '';
             if (is_object($option))
             {
                 if (isset($option->optgroup))
@@ -303,7 +304,7 @@
                     if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
                     {
                         $this->optgroup == TRUE;
-                        return '<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
+                        return $form.'<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
                     }
                 }
                 else
@@ -322,7 +323,7 @@
                     if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
                     {
                         $this->optgroup == TRUE;
-                        return '<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
+                        return $form.'<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
                     }
                 }
                 else
