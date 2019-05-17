@@ -64,7 +64,7 @@
             $now = $context->utcnow(); # make sure time is in UTC
             $fdt = $context->formdata();
             $pw = $fdt->mustpost('password'); // make sure we have a password...
-            if (self::checkpw($pw))
+            if (self::pwValid($pw))
             {
                 $login = $fdt->mustpost('login');
                 if (is_object(\R::findOne('user', 'login=?', [$login])))
@@ -180,7 +180,7 @@
 /**
  * Setup for an edit
  *
- * @param object    $context   The context object
+ * @param \Support\Context    $context   The context object
  * 
  * @return void
  */
