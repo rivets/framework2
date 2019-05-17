@@ -69,9 +69,9 @@
 /**
  * Handle an action
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
- * @return mixed	A template name or an array [template name, mimetype, HTTP code]
+ * @return string|array	A template name or an array [template name, mimetype, HTTP code]
  */
         public function handle(Context $context)
         { # should never get called really
