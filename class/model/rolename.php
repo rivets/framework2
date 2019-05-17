@@ -33,7 +33,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param object	$context	The Context object for the site
+ * @param \Support\Context	$context	The Context object for the site
  *
  * @return object
  */

@@ -43,8 +43,7 @@
 	    {
             if (!$context->hasuser())
             { # no logged in user! This should never happen...
-                @chdir($dir);
-                throw new Exception('No user');
+                throw new \Exception('No user');
             }
             $owner = $context->user();
 	    }
@@ -59,7 +58,7 @@
 	    if (!@move_uploaded_file($da['tmp_name'], $fname))
         {
             @chdir($dir);
-            throw new Exception('Cannot move uploaded file to '.$fname);
+            throw new \Exception('Cannot move uploaded file to '.$fname);
         }
 	    $this->bean->added = \R::isodatetime();
 	    $pname[] = $fname;

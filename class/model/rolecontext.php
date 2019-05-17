@@ -31,7 +31,7 @@
 /**
  * Add a RoleContext from a form - invoked by the AJAX bean operation
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return object
  */
