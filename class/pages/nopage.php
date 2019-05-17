@@ -6,7 +6,7 @@
  * Note that 
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2018 Newcastle University
+ * @copyright 2016-2019 Newcastle University
  *
  */
     namespace Pages;
@@ -23,7 +23,7 @@
  * This just diverts to a /error page but it could also just render a 404 template here.
  * Which might be better. Needs thought.
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

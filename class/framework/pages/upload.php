@@ -3,7 +3,7 @@
  * A class that contains code to handle any /upload related requests.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  *
  */
     namespace Framework\Pages;
@@ -18,7 +18,7 @@
  /**
  * Handle various admin operations /upload
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

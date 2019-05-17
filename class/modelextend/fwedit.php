@@ -17,11 +17,11 @@
 /**
  * Handle editing of beans
  * 
- * @param object    $fdt  The formdata object from the context
+ * @param \Support\FormData    $fdt  The formdata object from the context
  *
- * @return array
+ * @return string[]
  */
-        private function dofields($fdt) : array
+        private function dofields(\Support\FormData $fdt) : array
         {
             $emess = [];
             foreach (self::$editfields as $fld => $flags)
