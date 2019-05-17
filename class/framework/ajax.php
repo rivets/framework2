@@ -336,11 +336,11 @@
  * make log entry
  *
  * @param \Support\Context	$context	The context object for the site
- * @param string $op
+ * @param int $op
  * @param string $bean
  * @param int $id
  * @param string $field
- * @param string $value
+ * @param mixed $value
  *
  * @return void
  */
