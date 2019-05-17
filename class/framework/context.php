@@ -331,7 +331,7 @@
 /**
  * Return the Formdata object
  *
- * @return Support\FormData
+ * @return \Support\FormData
  */
         public function formdata() : \Support\Formdata
         {
@@ -374,9 +374,9 @@
 /**
  * Initialise the context and return self
  *
- * @return object
+ * @return \Framework\Context
  */
-        public function setup() : object
+        public function setup() : \Framework\Context
         {
             $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
             foreach (getallheaders() as $k => $v)

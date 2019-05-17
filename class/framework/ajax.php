@@ -253,7 +253,7 @@
  * @internal
  * @param \Support\Context	$context	The context object for the site
  *
- * @throws Framework\Exception\BadValue
+ * @throws \Framework\Exception\BadValue
  * @return void
  */
         private final function toggle(Context $context) : void
