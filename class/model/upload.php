@@ -69,7 +69,7 @@
 	    \R::store($this->bean);
 	    if (!@chdir($dir))
         { # go back to where we were in the file system
-            throw new \Exception('Cannot chdir ', $dir);
+            throw new \Exception('Cannot chdir to '.$dir);
         }
 	    return TRUE;
 	}
@@ -89,12 +89,12 @@
             {
                 if (!@mkdir($dir, 0770))
                 {
-                    throw new \Exception('Cannot mkdir ', $dir);
+                    throw new \Exception('Cannot mkdir '.$dir);
                 }
             }
             if (!@chdir($dir))
             {
-                throw new \Exception('Cannot chdir ', $dir);
+                throw new \Exception('Cannot chdir '.$dir);
             }
         }
     }
