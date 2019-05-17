@@ -25,11 +25,11 @@
  *
  * @param \Support\Context	$context	The context object for the site
  *
- * @return string	A template name
+ * @return string|string[]	A template name
  */
-	public function handle(Context $context)
-	{
-	    return parent::handle($context);
-	}
+        public function handle(Context $context)
+        {
+            return parent::handle($context);
+        }
     }
 ?>
