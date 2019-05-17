@@ -15,11 +15,11 @@
     class Form extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var METHOD options for forms
+ * @var string[] METHOD options for forms
  */
         private static $methods     = ['', 'GET', 'POST'];
 /**
- * @var Attributes for inputs
+ * @var string[] Attributes for inputs
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
 /**
