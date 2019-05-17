@@ -510,11 +510,11 @@
             $bean = $fdt->mustget('bean');
             if (isset(self::$paging[$bean]))
             { // pagination is allowed for this bean
-                $this->checkPerms($context, self::$paging[$bean][0], self::$paging[$bean][1]); // make sure we are allowed
+                $this->checkPerms($context, self::$paging[$bean][1]); // make sure we are allowed
                 $order = $fdt->get('order', '');
                 $page = $fdt->mustget('page');
                 $pagesize = $fdt->mustget('pagesize');
-                $res = \Support\Siteinfo::getinstance()->fetch($bean, ($order !== '' ? ('order bye '.$order) : ''), [], $page, $pagesize);
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order bye '.$order) : ''), [], $page, $pagesize);
                 $context->web()->sendJSON($res);
             }
             else
@@ -537,7 +537,7 @@
             $bean = $fdt->mustget('bean');
             if (isset(self::$hints[$bean]))
             { // hinting is allowed for this bean
-                $this->checkPerms($context, self::$hints[$bean][1], self::$hints[$bean][2]); // make sure we are allowed
+                $this->checkPerms($context, self::$hints[$bean][2]); // make sure we are allowed
                 $field = self::$hints[$bean][0];
                 if ($field == '*')
                 { # the call must specify the field
@@ -546,7 +546,7 @@
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $order = $fdt->get('order', '');
                 $search = $fdt->mustget('search');
-                $res = \Support\Siteinfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
                 $context->web()->sendJSON($res);
             }
             else
@@ -680,6 +680,9 @@
  */
         private function pwcheck(Context $context) : void
         {
+/**
+ * @psalm-suppress PossiblyNullReference
+ */
             if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
@@ -704,6 +707,9 @@
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
+/**
+ * @psalm-suppress PossiblyNullReference
+ */
                         if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
                         {
                             continue 2;
