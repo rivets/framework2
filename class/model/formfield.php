@@ -12,11 +12,11 @@
     class FormField extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var array Atributes that this supports
+ * @var string[] Attributes that this supports
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
  /**
-  * @var integer Counter used for generating new IDs
+  * @var int Counter used for generating new IDs
   */
         private static $lcount             = 1;
 /**
@@ -32,7 +32,7 @@
 /**
  * Handle a label
  *
- * @param bool           $makefor    If TRUE then make a for attribute
+ * @param bool       $makefor    If TRUE then make a for attribute
  * @param string     $class      The class name
  * @param string     $inp        The input HTML
  *
