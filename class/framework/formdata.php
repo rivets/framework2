@@ -346,7 +346,7 @@
  * @param string	$name	The key
  *
  * @throws \Framework\Exception\BadValue
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
         public function mustposta(string $name) : \ArrayIterator
         {
@@ -357,13 +357,12 @@
             throw new \Framework\Exception\BadValue('Missing post array '.$name);
         }
 /**
- * Look in the $_POST array for a key that is an array and return an
- ArrayIterator over it
+ * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string 	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
         public function posta(string $name, array $dflt = []) :\ArrayIterator
         {
