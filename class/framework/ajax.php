@@ -118,7 +118,7 @@
  * Config value operation
  *
  * @internal
- * @param Framework\Support\Context	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @throws Framework\Exception\BadOperation
  * @throws Framework\Exception\BadValue
@@ -297,7 +297,7 @@
  * Update a field in a bean
  *
  * @internal
- * @param Framework\Support\Context	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @return void
  */
@@ -336,7 +336,7 @@
 /**
  * make log entry
  *
- * @param Framework\Support\Context	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  * @param string $op
  * @param string $bean
  * @param int $id

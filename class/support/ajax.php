@@ -70,7 +70,7 @@
 /**
  * Handle AJAX operations
  *
- * @param object	$context	The context object for the site
+ * @param Support\Context	$context	The context object for the site
  *
  * @return void
  */
