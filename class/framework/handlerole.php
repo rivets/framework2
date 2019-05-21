@@ -54,12 +54,12 @@
             $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$rolecontextname]);
             if (!is_object($cname))
             {
-                return FALSE;
+                return NULL;
             }
             $rname = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
             if (!is_object($rname))
             {
-                return FALSE;
+                return NULL;
             }
             return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$cname->getID(), $rname->getID(), $this->bean->getID()]);
