@@ -108,6 +108,7 @@
 
         <RedundantCondition errorLevel="info" />
 <UndefinedPropertyAssignment errorLevel="info" />
+<UndefinedPropertyFetch errorLevel="info" />
         <DocblockTypeContradiction errorLevel="info" />
         <RedundantConditionGivenDocblockType errorLevel="info" />
 
