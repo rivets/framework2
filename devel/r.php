@@ -32,6 +32,12 @@ class R
         return self::$dummy;
     }
 /**
+ * @return void
+ */
+    public static function close() : void
+    {
+    }
+/**
  * @param string $b
  * @return \RedBeanPHP\OODBBean
  */
