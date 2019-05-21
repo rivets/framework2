@@ -1,8 +1,5 @@
 <?php
 
-// namespace RedBeanPHP;
-namespace \ ;
-
 /**
  * R-Facade (for Composer)
  *
