@@ -187,6 +187,8 @@ class JWT
      * @return string An encrypted message
      *
      * @throws DomainException Unsupported algorithm was specified
+     *
+     * @psalm-suppress InvalidNullableReturnType
      */
     public static function sign(string $msg, $key, string $alg = 'HS256')
     {
@@ -196,6 +198,7 @@ class JWT
         list($function, $algorithm) = static::$supported_algs[$alg];
         switch($function) {
             case 'hash_hmac':
+                /** @psalm-suppress PossiblyInvalidArgument */
                 return hash_hmac($algorithm, $msg, $key, true);
             case 'openssl':
                 $signature = '';
@@ -242,6 +245,7 @@ class JWT
                 );
             case 'hash_hmac':
             default:
+                /** @psalm-suppress PossiblyInvalidArgument */
                 $hash = hash_hmac($algorithm, $msg, $key, true);
                 if (function_exists('hash_equals')) {
                     return hash_equals($signature, $hash);

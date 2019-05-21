@@ -60,6 +60,7 @@
             }
             else
             {
+                /** @psalm-suppress InvalidScalarArgument */
                 $res = json_decode($json, TRUE);
                 $res['block'] = FALSE;
                 $res['reason'] = '';

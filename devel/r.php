@@ -40,7 +40,7 @@ class R
 /**
  * @param string $b
  * @param int $id
- * @return object
+ * @return \RedBeanPHP\OODBBean
  */
     public static function load(string $b, int $id) : \RedBeanPHP\OODBBean
     {
@@ -85,6 +85,26 @@ class R
     public static function count(string $b, string $x = '', array $y = []) : int
     {
         return 0;
+    }
+/**
+ * @param string $b
+ * @param string $x
+ * @param array $y
+ * @return array
+ */
+    public static function findCollection(string $b, string $x = '', array $y = []) : array
+    {
+        return [];
+    }
+/**
+ * @param string $b
+ * @param string $x
+ * @param array $y
+ * @return array
+ */
+    public static function findMulti(string $b, string $x = '', array $y = []) : array
+    {
+        return [];
     }
 /**
  * @param string $b

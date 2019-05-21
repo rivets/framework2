@@ -24,6 +24,7 @@
         public function __construct(bool $exceptions = TRUE)
         {
             parent::__construct($exceptions);
+            /** @psalm-suppress TypeDoesNotContainType */
             if (Config::USEPHPM)
             {
                 $this->isSMTP();

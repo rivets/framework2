@@ -40,7 +40,7 @@
  * @param int       $start  The start position
  * @param int       $count  The number wanted.
  *
- * @return void     But this yields beans
+ * @return Generator<mixed, mixed, mixed, void>    But this yields beans
  */
         public function collect(string $bean, string $where, array $params, int $start, int $count)
         {
@@ -48,7 +48,7 @@
             {
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
-            $collection = R::findCollection($bean, $where, $params);
+            $collection = \R::findCollection($bean, $where, $params);
             while( $item = $collection->next() )
             {
                 yield $item;
@@ -189,11 +189,11 @@
  * Get all users with a particular context/role
  * @param mixed     $rolecontext
  * @param mixed     $rolename
- * @param bool          $all            If TRUE do not check if role is currentyl active
+ * @param bool      $all            If TRUE do not check if role is currentyl active
  * @param int       $start      Start position - used for pagination
  * @param int       $count      The number to be fetched - used for pagination
  * @param string    $order      An order clause
- * @param bool          $collect    If TRUE then use collect not fetch
+ * @param bool      $collect    If TRUE then use collect not fetch
  *
  * @return array
  */

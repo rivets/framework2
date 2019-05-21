@@ -106,11 +106,11 @@
             }
             if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
             {
-                throw \Exception('No CSRF Name found, probable invalid request.');
+                throw new \Exception('No CSRF Name found, probable invalid request.');
             }
             if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
             {
-                throw \Exception('Invalid CSRF token');
+                throw new \Exception('Invalid CSRF token');
             }
         }
     }
