@@ -94,7 +94,7 @@
  * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- * @return object
+ * @return int
  */
         public static function add(Context $context) : object
         {
