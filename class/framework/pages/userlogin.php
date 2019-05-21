@@ -15,8 +15,9 @@
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
-    class Userlogin extends \Framework\SiteAction
+    class UserLogin extends \Framework\SiteAction
     {
+        use \Support\Login;
 /**
  * Find a user based on either a login or an email address
  *
@@ -24,9 +25,9 @@
  *
  * @return object	The user or NULL
  */
-        private function eorl(string $lg)
+        private static function eorl(string $lg)
         {
-            return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
+            return R::findOne(FW::USER, (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
 /**
  * Make a confirmation code and store it in the database
@@ -84,39 +85,6 @@
             );
         }
 /**
- * Handle a logout
- *
- * Clear all the session material if any and then divert to the /login page
- *
- * Code taken directly from the PHP session_destroy manual page
- *
- * @link	http://php.net/manual/en/function.session-destroy.php
- *
- * @param \Support\Context	$context	The context object for the site
- *
- * @return void
- */
-        public function logout(Context $context)
-        {
-            $_SESSION = []; # Unset all the session variables.
-
-            # If it's desired to kill the session, also delete the session cookie.
-            # Note: This will destroy the session, and not just the session data!
-            if (ini_get('session.use_cookies'))
-            {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
-                );
-            }
-            if (session_status() == PHP_SESSION_ACTIVE)
-            { # no session started yet
-                session_destroy(); # Finally, destroy the -session.
-            }
-            $context->divert('/');
-        }
-/**
  * Handle a login
  *
  * @param \Support\Context	$context	The context object for the site
@@ -133,31 +101,7 @@
             }
             else
             {
-                $fdt = $context->formdata();
-                if (($lg = $fdt->post('login', '')) !== '')
-                {
-                    $page = $fdt->post('page', '');
-                    $pw = $fdt->post('password', '');
-                    if ($pw !== '')
-                    {
-                        $user = $this->eorl($lg);
-                        if (is_object($user) && $user->pwok($pw) && $user->confirm)
-                        {
-                            if (session_status() != PHP_SESSION_ACTIVE)
-                            { # no session started yet
-                                session_start(['name' => Config::SESSIONNAME, 'cookie_path' => $local->base().'/']);
-                            }
-                            $_SESSION['user'] = $user;
-                            $context->divert($page === '' ? '/' : $page); # success - divert to home page
-                        }
-                    }
-                    $local->message(Local::MESSAGE, 'Please try again.');
-                }
-                else
-                {
-                    $page = $fdt->get('page', '');
-                }
-                $local->addval('page', $page);
+                $this->checkLogin($context);
             }
             return '@content/login.twig';
         }
@@ -243,7 +187,7 @@
                 }
                 else
                 { # handle the form
-                    $user = $this->eorl($lg);
+                    $user = self::eorl($lg);
                     if (!is_object($user))
                     {
                         $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
@@ -304,7 +248,7 @@
                 $tpl = '@users/reset.twig';
                 if ($lg !== '')
                 {
-                    $user = $this->eorl($lg);
+                    $user = self::eorl($lg);
                     $tpl = '@users/reset.twig';
                     if (is_object($user))
                     {
