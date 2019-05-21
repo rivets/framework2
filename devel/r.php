@@ -77,6 +77,16 @@ class R
         return self::$dummy;
     }
 /**
+ * @param string $b
+ * @param string $x
+ * @param array $y
+ * @return mixed
+ */
+    public static function getCell(string $b, string $x = '', array $y = [])
+    {
+        return '';
+    }
+/**
  * @param object $b
  * @return void
  */
