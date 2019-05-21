@@ -44,8 +44,7 @@
 /**
  * Return data files as requested
  *
- * @param object	$context	The context object for the site
- * @param object	$local		The local object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
@@ -118,7 +117,8 @@
 /**
  * Make an etag for an item
  *
- * This needs to be overridden by pages that can generate etags
+ * This needs to be overridden by pages that can generate etag. Defaults
+ * to the mtime value.
  *
  * @return string
  */
@@ -132,7 +132,7 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function needs to be overridden.
  *
- * @return integer
+ * @return int
  */
         public function lastmodified() : int
         {
@@ -145,9 +145,9 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param int 	$time	The time value to check
+ * @param string 	$time	The time value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checkmodtime(string $time) : bool
         {
@@ -156,13 +156,13 @@
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * This always returns FALSE, indicating that we need to send the page again.
+ * This tests against the mtime (see above), indicating that we need to send the page again if not equal.
  * The assumption is that pages that implement etags will override this function
- * appropriately to do actual value checking.
+ * appropriately to do different value checking.
  *
  * @param string	$tag	The etag value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checketag(string $tag) : bool
         {
