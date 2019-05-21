@@ -412,7 +412,7 @@
  * Calls a user defined function with the twig object as a parameter.
  * The user can then add extensions, filters etc.
  *
- * @param function     $fn      A user defined function
+ * @param callable     $fn      A user defined function
  *
  * @return void
  */
