@@ -14,6 +14,13 @@
  * @license BSD/GPLv2
  *
  */
+
+ namespace RedBean {
+    class OODBBean
+    {
+
+    }
+ }
 class R
 {
 /**
@@ -24,7 +31,7 @@ class R
  * @param string $b
  * @return object
  */
-    public static function dispense(string $b) : object
+    public static function dispense(string $b) : \RedBeanPHP\OODBBean
     {
         return self::$dummy;
     }
@@ -41,7 +48,7 @@ class R
  * @param int $id
  * @return object
  */
-    public static function load(string $b, int $id) : object
+    public static function load(string $b, int $id) : \RedBeanPHP\OODBBean
     {
         return self::$dummy;
     }
@@ -71,7 +78,7 @@ class R
  * @param array $y
  * @return object
  */
-    public static function findOne(string $b, string $x = '', array $y = []) : object
+    public static function findOne(string $b, string $x = '', array $y = []) : \RedBeanPHP\OODBBean
     {
         return self::$dummy;
     }
