@@ -54,6 +54,10 @@
                                 break;
                             }
                         }
+                        else
+                        {
+                            $fv = $fname;
+                        }
                         $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
                         $fwc->value = $fv;
                         $fwc->integrity = self::HASH.'-'.base64_encode($hash);
@@ -108,7 +112,7 @@
                 {
                     list($error, $emess) = $obj->edit($context); // handle the edit result
                 }
-                catch (Exception $e)
+                catch (\Exception $e)
                 {
                     $error = TRUE;
                     $emess = $e->getMessage();

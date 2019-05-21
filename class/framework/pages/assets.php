@@ -28,6 +28,7 @@
  * @var array Mime type values
  */
         private static $mtypes = [
+            ''      => 'text/plain',
             'css'	=> 'text/css',
             'js'	=> 'text/javascript',
             'png'	=> 'image/png',
@@ -59,7 +60,16 @@
  * so we need to do it ourselves which is a pain
  */
             $fname = array_pop($rest);
-            $ext = strtolower(substr(strrchr($fname, "."), 1));
+            /** @psalm-suppress PossiblyFalseArgument */
+            $dotp = strrchr($fname, '.');
+            if ($dotp !== FALSE)
+            {
+                $ext = strtolower(substr($dotp, 1));
+            }
+            else
+            {
+                $ext = '';
+            }
             if (isset(self::$mtypes[$ext]))
             {
                 $mime = self::$mtypes[$ext];
