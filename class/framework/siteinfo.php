@@ -40,7 +40,7 @@
  * @param int       $start  The start position
  * @param int       $count  The number wanted.
  *
- * @return Generator<mixed, mixed, mixed, void>    But this yields beans
+ * @return \Generator<mixed, mixed, mixed, void>    But this yields beans
  */
         public function collect(string $bean, string $where, array $params, int $start, int $count)
         {

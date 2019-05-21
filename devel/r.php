@@ -18,7 +18,7 @@
 class R
 {
 /**
- * @var object
+ * @var \RedBeanPHP\OODBBean
  */
     public static $dummy;
 /**
