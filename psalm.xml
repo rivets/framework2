@@ -6,6 +6,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
+<file name="devel/r.php" />
 <file name="class/config/config.php" />
 <file name="class/config/framework.php" />
 <file name="class/framework/ajax.php" />
@@ -28,7 +29,6 @@
 <file name="class/framework/pages/cspreport.php" />
 <file name="class/framework/pages/developer.php" />
 <file name="class/framework/pages/getfile.php" />
-<file name="class/framework/pages/upload.php" />
 <file name="class/framework/pages/userlogin.php" />
 <file name="class/framework/siteaction.php" />
 <file name="class/framework/siteinfo.php" />
@@ -62,7 +62,6 @@
 <file name="class/pages/multi.php" />
 <file name="class/pages/nopage.php" />
 <file name="class/pages/update.php" />
-<file name="class/pages/upload.php" />
 <file name="class/pages/view.php" />
 <file name="class/support/ajax.php" />
 <file name="class/support/context.php" />
