@@ -6,6 +6,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
+<file name="devel/redmock.php" />
 <file name="devel/r.php" />
 <file name="class/config/config.php" />
 <file name="class/config/framework.php" />
