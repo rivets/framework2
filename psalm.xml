@@ -58,12 +58,9 @@
 <file name="class/modelextend/upload.php" />
 <file name="class/modelextend/user.php" />
 <file name="class/pages/contact.php" />
-<file name="class/pages/docs.php" />
 <file name="class/pages/home.php" />
 <file name="class/pages/multi.php" />
 <file name="class/pages/nopage.php" />
-<file name="class/pages/update.php" />
-<file name="class/pages/view.php" />
 <file name="class/support/ajax.php" />
 <file name="class/support/context.php" />
 <file name="class/support/formdata.php" />
