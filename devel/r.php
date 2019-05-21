@@ -78,6 +78,16 @@ class R
     }
 /**
  * @param string $b
+ * @param string $x
+ * @param array $y
+ * @return int
+ */
+    public static function count(string $b, string $x = '', array $y = []) : int
+    {
+        return 0;
+    }
+/**
+ * @param string $b
  * @param array $y
  * @return mixed
  */
