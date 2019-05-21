@@ -16,7 +16,7 @@
  *
  * The constants are used in index.php to indicate how a particular URL should be handled
  */
-    abstract class Siteaction
+    abstract class SiteAction
     {
 /*
  * Indicates that there is an Object that handles the call
