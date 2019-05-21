@@ -14,7 +14,7 @@
 /**
  * A class that contains code to implement a contact page
  */
-    class Contact extends \Framework\Siteaction
+    class Contact extends \Framework\SiteAction
     {
 /**
  * Handle various contact operations /contact

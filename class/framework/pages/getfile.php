@@ -29,7 +29,7 @@
  *
  * This returns a file requested from the upload area
  */
-    class Getfile extends \Framework\Siteaction
+    class Getfile extends \Framework\SiteAction
     {
         const DATADIR	= 'private';
 /**

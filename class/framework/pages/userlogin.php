@@ -15,7 +15,7 @@
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
-    class Userlogin extends \Framework\Siteaction
+    class Userlogin extends \Framework\SiteAction
     {
 /**
  * Find a user based on either a login or an email address

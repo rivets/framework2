@@ -18,7 +18,7 @@
 /**
  * The default behaviour when a page does not exist.
  */
-    class CatchAll extends \Framework\Siteaction
+    class CatchAll extends \Framework\SiteAction
     {
 /**
  * Handle non-object or template page requests

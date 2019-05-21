@@ -13,7 +13,7 @@
 /**
  * Deal with a file upload URL
  */
-    class Upload extends \Framework\Siteaction
+    class Upload extends \Framework\SiteAction
     {
  /**
  * Handle various admin operations /upload

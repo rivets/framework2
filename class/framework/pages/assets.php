@@ -14,7 +14,7 @@
 /**
  * Handle all the cacheing stuff and maybe return a file
  */
-    class Assets extends \Framework\Siteaction
+    class Assets extends \Framework\SiteAction
     {
 /**
  * @var string	The file name

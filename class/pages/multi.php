@@ -12,7 +12,7 @@
 /**
  * Provide support for a nested static page structure
  */
-    class Multi extends \Framework\Siteaction
+    class Multi extends \Framework\SiteAction
     {
 /**
  * Handles static pages that are nested in depth /multi/level/page

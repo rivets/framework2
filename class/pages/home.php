@@ -11,7 +11,7 @@
 /**
  * A class that contains code to implement a home page
  */
-    class Home extends \Framework\Siteaction
+    class Home extends \Framework\SiteAction
     {
 /**
  * Handle various contact operations /
