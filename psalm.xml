@@ -64,6 +64,7 @@
 <file name="class/support/ajax.php" />
 <file name="class/support/context.php" />
 <file name="class/support/formdata.php" />
+<file name="class/support/login.php" />
 <file name="class/support/setup.php" />
 <file name="class/support/siteinfo.php" />
 <file name="class/support/table.php" />
