@@ -84,6 +84,20 @@ class R
     {
     }
 /**
+ * @return string
+ */
+    public static function isodatetime(): string
+    {
+        return '';
+    }
+/**
+ * @return string
+ */
+    public static function isodate(): string
+    {
+        return '';
+    }
+/**
  * @param string $x
  * @return array
  */
