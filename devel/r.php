@@ -78,11 +78,10 @@ class R
     }
 /**
  * @param string $b
- * @param string $x
  * @param array $y
  * @return mixed
  */
-    public static function getCell(string $b, string $x = '', array $y = [])
+    public static function getCell(string $b,  array $y = [])
     {
         return '';
     }
