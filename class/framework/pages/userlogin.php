@@ -208,7 +208,7 @@
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
                 if (is_object($x))
                 {
-                    $interval = (new \DateTime($context->utcnow()))->diff(new DateTime($x->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 3)
                     {
                         $x->user->doconfirm();
@@ -270,7 +270,7 @@
                 $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($xc->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($xc->issued));
                     if ($interval->days <= 1)
                     {
                         $pw = $fdt->mustpost('password');
@@ -301,7 +301,7 @@
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'P']);
                 if (is_object($x))
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 1)
                     {
                         $local->addval('pwuser', $x->user);
