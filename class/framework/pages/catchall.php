@@ -26,31 +26,31 @@
  * This just diverts to a /error page but it could also just render a 404 template here.
  * Which might be better. Needs thought.
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
-	public function handle(Context $context)
-	{
-	    $tpl = '';
-	    switch ($context->action())
-	    {
-	    case 'favicon.ico':
-		$context->web()->sendfile($context->local()->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
-		break;
+        public function handle(Context $context)
+        {
+            $tpl = '';
+            switch ($context->action())
+            {
+            case 'favicon.ico':
+                $context->web()->sendfile($context->local()->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
+                break;
 
-	    case 'robots.txt':
-		return ['robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
+            case 'robots.txt':
+                return ['robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
 
-	    case 'sitemap.xml':
-		$context->local()->addval('url', Config::SITEURL);
-		return ['sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
+            case 'sitemap.xml':
+                $context->local()->addval('url', Config::SITEURL);
+                return ['sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
-	    default:
-		$context->local()->addval('page', $_SERVER['REQUEST_URI']);
-		return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
-	    }
-	    return $tpl;
+            default:
+                $context->local()->addval('page', $_SERVER['REQUEST_URI']);
+                return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
+            }
+            return $tpl;
         }
     }
 ?>
