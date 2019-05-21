@@ -83,6 +83,7 @@
  *
  * @psalm-suppress InvalidOperand
  * @psalm-suppress PossiblyInvalidOperand
+ * @psalm-suppress InvalidNullableReturnType
  */
         public function hasrange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
@@ -390,6 +391,7 @@
         public function setCSP(Context $context) : void
         {
             $local = $context->local();
+            /** @psalm-suppress PossiblyNullPropertyFetch */
             if ($local->config('usecsp')->value)
             {
                 $csp = '';

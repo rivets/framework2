@@ -12,7 +12,7 @@
         }
 /**
  * @param string $x
- * @return \RedBeanPHP\OODBean
+ * @return \RedBeanPHP\OODBBean
  */
         public function with(string $x) : \RedBeanPHP\OODBBean
         {
