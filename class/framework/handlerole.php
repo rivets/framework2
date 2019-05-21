@@ -172,7 +172,7 @@
 /**
  * Deal with the role selecting part of a form
  *
- * @param object    $context    The context object
+ * @param \Support\Context    $context    The context object
  *
  * @return void
  */
