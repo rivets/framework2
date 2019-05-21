@@ -15,12 +15,6 @@
  *
  */
 
- namespace RedBean {
-    class OODBBean
-    {
-
-    }
- }
 class R
 {
 /**
