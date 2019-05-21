@@ -265,7 +265,7 @@
  *
  * @param string	$time	The time value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checkmodtime(string $time) : bool
         {
@@ -276,7 +276,7 @@
  *
  * @param string	$tag	The etag value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checketag(string $tag) : bool
         {
