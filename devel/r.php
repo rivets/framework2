@@ -28,7 +28,7 @@ class R
  * @param object $b
  * @return int
  */
-    public static function store(object $b) : int
+    public static function store($b) : int
     {
         return 56;
     }
@@ -44,7 +44,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string $y
+ * @param array $y
  * @return array
  */
     public static function find(string $b, string $x = '', array $y = []) : array
@@ -54,7 +54,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string $y
+ * @param array $y
  * @return array
  */
     public static function findAll(string $b, string $x = '', array $y = []) : array
@@ -64,7 +64,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string $y
+ * @param array $y
  * @return object
  */
     public static function findOne(string $b, string $x = '', array $y = []) : object
@@ -75,7 +75,7 @@ class R
  * @param object $b
  * @return void
  */
-    public static function trash(object $b) : void
+    public static function trash($b) : void
     {
     }
 /**
