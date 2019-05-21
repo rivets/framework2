@@ -38,7 +38,7 @@
  */
         public function checkURL(string $type) : void
         {
-            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === NULL)
+            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
             { # not a straightforward URL
                 if (!preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
                 { // not a canonical URL
