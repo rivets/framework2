@@ -107,7 +107,7 @@
         <MissingParamType errorLevel="info" />
 
         <RedundantCondition errorLevel="info" />
-
+<UndefinedPropertyAssignment errorLevel="info" />
         <DocblockTypeContradiction errorLevel="info" />
         <RedundantConditionGivenDocblockType errorLevel="info" />
 
