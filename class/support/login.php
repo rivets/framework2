@@ -52,7 +52,7 @@
             {
                 $page = $fdt->get('page', '');
             }
-            $local->addval('page', $page);
+            $context->local()->addval('page', $page);
             return TRUE;
         }
 /**
