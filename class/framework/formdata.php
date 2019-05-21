@@ -16,7 +16,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var string    Holds data read from php://input
+ * @var ?array    Holds data read from php://input
  */
         private $putdata    = NULL;
 /**
