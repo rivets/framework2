@@ -238,7 +238,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            throw new \Framework\Excetion\BadValue('Missing get array '.$name);
+            throw new \Framework\Exception\BadValue('Missing get array '.$name);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
