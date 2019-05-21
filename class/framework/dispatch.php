@@ -217,7 +217,7 @@
             case self::XREDIRECT7:
             case self::XREHOME:
             case self::XREHOME8:
-                if (filter_var($this->bean->source, FILTER_VALIDATE_URL) === FALSE)
+                if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
                 {
                     throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
                 }
