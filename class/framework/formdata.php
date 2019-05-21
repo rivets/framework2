@@ -452,7 +452,7 @@
  */
         public function mustputbean($name, $bean) : object
         {
-            return Context::getinstance()->load($bean, $this->mustput($name, NULL));
+            return Context::getinstance()->load($bean, $this->mustput($name));
         }
 /**
  * Get php://input data, check arrayfor a key and return its trimmed value or a default value
