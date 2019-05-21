@@ -322,11 +322,11 @@
 /**
  * Return the local object
  *
- * @return Framework\Local
+ * @return \Framework\Local
  */
-        public function local() : Local
+        public function local() : \Framework\Local
         {
-            return Local::getinstance();
+            return \Framework\Local::getinstance();
         }
 /**
  * Return the Formdata object
@@ -340,11 +340,11 @@
 /**
  * Return the Web object
  *
- * @return object
+ * @return \Framework\Web\Web
  */
-        public function web() : Web
+        public function web() : \Framework\Web\Web
         {
-            return Web::getinstance();
+            return \Framework\Web\Web::getinstance();
         }
 /**
  * Return an iso formatted time for NOW  in UTC
