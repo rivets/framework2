@@ -14,7 +14,7 @@
  * @param string $x
  * @return \RedBeanPHP\OODBean
  */
-        public function with(string $x) : \RedBeanPHP\OODBean
+        public function with(string $x) : \RedBeanPHP\OODBBean
         {
              return self::$dummy;
         }
