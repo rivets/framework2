@@ -132,9 +132,9 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function needs to be overridden.
  *
- * @return int
+ * @return string
  */
-        public function lastmodified() : int
+        public function lastmodified() : string
         {
             return $this->mtime;
         }

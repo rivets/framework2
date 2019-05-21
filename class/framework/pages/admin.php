@@ -67,7 +67,7 @@
 /**
  * Edit admin items
  *
- * @param object    $context  The Context object
+ * @param \Support\Context    $context  The Context object
  * @param array     $rest     The rest of the URL
  *
  * @throws \Framework\Exception\Forbidden
@@ -125,7 +125,7 @@
 /**
  * View admin items
  *
- * @param object    $context  The Context object
+ * @param \Support\Context    $context  The Context object
  * @param array     $rest     The rest of the URL
  *
  * @return string
@@ -157,7 +157,7 @@
 /**
  * Check for version updates and update config info
  *
- * @param object    $context  The Context object
+ * @param \Support\Context    $context  The Context object
  *
  * @return string
  */
@@ -220,7 +220,7 @@
 /**
  * Handle various admin operations /admin/xxxx
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -278,7 +278,7 @@
 /**
  * Make it so that none of the admin pages get cached
  *
- * @param object    $context The context object
+ * @param \Support\Context    $context The context object
  *
  * @return void;
  */

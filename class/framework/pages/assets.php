@@ -27,7 +27,7 @@
 /**
  * @var array Mime type values
  */
-        static private $mtypes = [
+        private static $mtypes = [
             'css'	=> 'text/css',
             'js'	=> 'text/javascript',
             'png'	=> 'image/png',
@@ -43,7 +43,7 @@
  * you really want to get cacheability to be complete you either have to go through hoops
  * in the Apache config or you code it in here!
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

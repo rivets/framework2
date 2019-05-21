@@ -18,7 +18,7 @@
  *
  * The test for developer status is done in index.php so deos not need to be repeated here.
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
