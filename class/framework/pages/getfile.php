@@ -76,7 +76,7 @@
  * the regexp test following makes sense.
  * This all depends on your application and how you want to treat files and filenames and access of course!
  *
- * ALways be careful that filenames do not have .. in them of course.
+ * Always be careful that filenames do not have .. in them of course.
  *
  */
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
