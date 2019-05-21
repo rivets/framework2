@@ -28,7 +28,7 @@
  *
  * @param \Support\Context	$context	The context object for the site
  *
- * @return string	A template name
+ * @return string|array	A template name or array
  */
         public function handle(Context $context)
         {
