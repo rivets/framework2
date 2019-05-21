@@ -45,7 +45,7 @@
                         /* NOT REACHED */
                     }
                 }
-                $local->message(Local::MESSAGE, 'Please try again.');
+                $context->local()->message(Local::MESSAGE, 'Please try again.');
                 return FALSE;
             }
             else
