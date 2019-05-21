@@ -22,8 +22,18 @@ class R
  */
     public static $dummy;
 /**
+ * @param string $a
  * @param string $b
- * @return object
+ * @param string $c
+ * @return \RedBeanPHP\OODBBean
+ */
+    public static function setup(string $a, string $b, string $c) : \RedBeanPHP\OODBBean
+    {
+        return self::$dummy;
+    }
+/**
+ * @param string $b
+ * @return \RedBeanPHP\OODBBean
  */
     public static function dispense(string $b) : \RedBeanPHP\OODBBean
     {
