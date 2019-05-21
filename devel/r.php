@@ -146,16 +146,18 @@ class R
     {
     }
 /**
+ * @param int|string $x
  * @return string
  */
-    public static function isodatetime(): string
+    public static function isodatetime($x = ''): string
     {
         return '';
     }
 /**
+ * @param int|string $x
  * @return string
  */
-    public static function isodate(): string
+    public static function isodate($x = ''): string
     {
         return '';
     }
