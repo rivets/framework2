@@ -31,7 +31,7 @@
 /**
  * Make a confirmation code and store it in the database
  *
- * @param object	$context The context bean
+ * @param \Support\Context	$context The context bean
  * @param object	$bn	 A User bean
  * @param string	$kind
  *
@@ -52,7 +52,7 @@
 /**
  * Mail a confirmation code
  *
- * @param object	$context The context object
+ * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
  *
  * @return string
@@ -69,7 +69,7 @@
 /**
  * Mail a password reset code
  *
- * @param object	$context The context object
+ * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
  *
  * @return string
@@ -92,7 +92,7 @@
  *
  * @link	http://php.net/manual/en/function.session-destroy.php
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return void
  */
@@ -119,7 +119,7 @@
 /**
  * Handle a login
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -164,8 +164,7 @@
 /**
  * handle a registration
  *
- *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -184,15 +183,15 @@
                     $email = $fdt->mustpost('email');
                     if ($pw != $rpw)
                     {
-                    $errmess[] = 'The passwords do not match';
+                        $errmess[] = 'The passwords do not match';
                     }
                     if (preg_match('/[^a-z0-9]/i', $login))
                     {
-                    $errmess[] = 'Your username can only contain letters and numbers';
+                        $errmess[] = 'Your username can only contain letters and numbers';
                     }
                     if (!filter_var($email, FILTER_VALIDATE_EMAIL))
                     {
-                    $errmess[] = 'Please provide a valid email address';
+                        $errmess[] = 'Please provide a valid email address';
                     }
                     if (empty($errmess))
                     {
@@ -222,7 +221,7 @@
 /**
  * Handle things to do with email address confirmation
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -283,7 +282,7 @@
 /**
  * Handle things to do with password reset
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -376,7 +375,7 @@
 /**
  * Handle /login /logout /register /forgot /confirm
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

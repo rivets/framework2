@@ -72,6 +72,8 @@
  * @param \Support\Context	$context	The context object for the site
  *
  * @return string|array	A template name or an array [template name, mimetype, HTTP code]
+ *
+ * @psalm-suppress InvalidReturnType
  */
         public function handle(Context $context)
         { # should never get called really
@@ -84,7 +86,7 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return void
  */
@@ -118,6 +120,7 @@
                 $ifmod = $m[1];
             }
             $st = strtotime($ifmod);
+            /** @psalm-suppress InvalidScalarArgument */
             $ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
@@ -188,7 +191,7 @@
  *
  * This needs to be overridden if it is to do anything
  *
- * @param object    $context The context object
+ * @param \Support\Context    $context The context object
  *
  * @return void
  */
