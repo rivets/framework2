@@ -123,6 +123,13 @@ class R
     {
     }
 /**
+ * @param object[] $b
+ * @return void
+ */
+    public static function trashAll(array $b) : void
+    {
+    }
+/**
  * @return string
  */
     public static function isodatetime(): string
