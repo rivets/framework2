@@ -12,7 +12,7 @@
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
-    use Support\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * This class dispatches pages to the appropriate places
@@ -68,7 +68,7 @@
  */
         const XREHOME8	= 12;
 /**
- * @var $action Values for determining handling of above codes
+ * @var array $actions Values for determining handling of above codes
  */
         public static $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
@@ -85,12 +85,12 @@
 /**
  * Handle dispatch of a page.
  *
- * @param object    $context
+ * @param \Support\Context    $context
  * @param string    $action
  *
  * @return void
  */
-        static public function handle(Context $context, string $action) : void
+        public static function handle(Context $context, string $action) : void
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
