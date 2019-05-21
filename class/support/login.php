@@ -38,7 +38,7 @@
                     {
                         if (session_status() != PHP_SESSION_ACTIVE)
                         { # no session started yet
-                            session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $local->base().'/']);
+                            session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
                         }
                         $_SESSION['user'] = $user;
                         $context->divert($page === '' ? '/' : $page); # success - divert to home page
