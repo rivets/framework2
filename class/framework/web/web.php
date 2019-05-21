@@ -80,6 +80,9 @@
  * @param mixed		$code	The HTTP return code or ''
  *
  * @return array
+ *
+ * @psalm-suppress InvalidOperand
+ * @psalm-suppress PossiblyInvalidOperand
  */
         public function hasrange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
@@ -298,7 +301,7 @@
 /**
  * Check to see if the client accepts gzip encoding
  *
- * @return boolean
+ * @return bool
  */
         public function acceptgzip() : bool
         {
@@ -317,7 +320,7 @@
 /**
  * Is this a POST?
  *
- * @return boolean
+ * @return bool
  */
         public function ispost() : bool
         {
@@ -380,11 +383,11 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return void
  */
-        public function setCSP(Context $context)
+        public function setCSP(Context $context) : void
         {
             $local = $context->local();
             if ($local->config('usecsp')->value)
@@ -422,7 +425,7 @@
  *
  * @param string    $secret  The recaptcha secret for this site
  *
- * @return boolean
+ * @return bool
  */
         public function recaptcha(string $secret) : bool
         {
