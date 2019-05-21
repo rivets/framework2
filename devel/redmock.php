@@ -1,5 +1,5 @@
 <?php
- namespace RedBean;
+ namespace RedBeanPHP;
     class OODBBean
     {
 
