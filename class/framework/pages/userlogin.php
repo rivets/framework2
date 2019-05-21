@@ -56,9 +56,9 @@
  * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
  *
- * @return string
+ * @return void
  */
-        private function sendconfirm(Context $context, $bn) : string
+        private function sendconfirm(Context $context, $bn) : void
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
@@ -73,9 +73,9 @@
  * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
  *
- * @return string
+ * @return void
  */
-        private function sendreset(Context $context, $bn) : string
+        private function sendreset(Context $context, $bn) : void
         {
             $code = $this->makecode($context, $bn, 'P');
             mail($bn->email, 'Reset your '.Config::SITENAME.' password',
@@ -208,7 +208,7 @@
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
                 if (is_object($x))
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new DateTime($x->issued));
                     if ($interval->days <= 3)
                     {
                         $x->user->doconfirm();
