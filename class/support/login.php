@@ -6,6 +6,7 @@
  * @copyright 2019 Newcastle University
  *
  */
+    namespace Support;
 /**
  * Allows developers to change the way logins and logouts are handled.
  */
