@@ -17,12 +17,16 @@
 class R
 {
 /**
+ * @var object
+ */
+    public static $dummy;
+/**
  * @param string $b
  * @return object
  */
     public static function dispense(string $b) : object
     {
-        return new stdClass;
+        return self::$dummy;
     }
 /**
  * @param object $b
@@ -39,7 +43,7 @@ class R
  */
     public static function load(string $b, int $id) : object
     {
-        return new stdClass;
+        return self::$dummy;
     }
 /**
  * @param string $b
@@ -69,7 +73,7 @@ class R
  */
     public static function findOne(string $b, string $x = '', array $y = []) : object
     {
-        return new stdClass;
+        return self::$dummy;
     }
 /**
  * @param object $b
