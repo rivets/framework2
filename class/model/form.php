@@ -252,7 +252,7 @@
                     {
                         $form .= $this->doOption($option);
                     }
-                    /** @psalm-suppress: TypeDoesNotContainType */
+                    /** @psalm-suppress TypeDoesNotContainType */
                     if ($this->optgroup)
                     { # close any open optgroup
                         $form .= '</optgroup>';
