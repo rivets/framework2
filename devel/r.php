@@ -16,40 +16,72 @@
  */
 class R
 {
+/**
+ * @param string $b
+ * @return object
+ */
     public static function dispense(string $b) : object
     {
         return new stdClass;
     }
-
+/**
+ * @param object $b
+ * @return int
+ */
     public static function store(object $b) : int
     {
         return 56;
     }
-
+/**
+ * @param string $b
+ * @param int $id
+ * @return object
+ */
     public static function load(string $b, int $id) : object
     {
         return new stdClass;
     }
-
+/**
+ * @param string $b
+ * @param string $x
+ * @param string $y
+ * @return array
+ */
     public static function find(string $b, string $x = '', array $y = []) : array
     {
         return [];
     }
-
+/**
+ * @param string $b
+ * @param string $x
+ * @param string $y
+ * @return array
+ */
     public static function findAll(string $b, string $x = '', array $y = []) : array
     {
         return [];
     }
-
+/**
+ * @param string $b
+ * @param string $x
+ * @param string $y
+ * @return object
+ */
     public static function findOne(string $b, string $x = '', array $y = []) : object
     {
         return new stdClass;
     }
-
-    public static function trash(object) : void
+/**
+ * @param object $b
+ * @return void
+ */
+    public static function trash(object $b) : void
     {
     }
-
+/**
+ * @param string $x
+ * @return array
+ */
     public static function inspect(string $x = '') : array
     {
         return [];
