@@ -360,7 +360,6 @@
  */
         public function config(string $name) : ?object
         {
-            if (!isset(
             return $this->fwconfig[$name] ?? NULL;
         }
 /**
