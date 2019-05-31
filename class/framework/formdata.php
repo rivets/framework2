@@ -128,6 +128,7 @@
                     return trim($val);
                 }
             }
+            /* NOT REACHED */
         }
 /**
  * Pick out and treat a value

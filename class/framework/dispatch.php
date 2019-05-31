@@ -97,6 +97,7 @@
 /*
  * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
  */
+            /** @psalm-suppress TypeDoesNotContainType  */
             $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             if (!is_object($page))
             { # No such page or it is marked as inactive
@@ -112,7 +113,7 @@
             $local->addval([
                 'context'   => $context,
                 'action'    => $action,
-                'siteinfo'  => \Support\Siteinfo::getinstance(), // make sure we get the derived version not the Framework version
+                'siteinfo'  => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
                 'ajax'      => FALSE,                            // Mark pages as not using AJAX by default
             ]);
 
@@ -131,6 +132,7 @@
                 catch(\Framework\Exception\Forbidden $e)
                 {
                     $context->web()->noaccess($e->getMessage());
+                    /* NOT REACHED */
                 }
                 catch(\Framework\Exception\BadValue |
                       \Framework\Exception\BadOperation |
@@ -138,6 +140,7 @@
                       \Framework\Exception\ParameterCount $e)
                 {
                     $context->web()->bad($e->getMessage());
+                    /* NOT REACHED */
                 }
 
                 if (is_array($tpl))
@@ -161,11 +164,14 @@
                 if (self::$actions[$page->kind][0])
                 { # local
                     $context->divert($page->source, ...self::$actions[$page->kind][1]);
+                    /* NOT REACHED */
                 }
                 else
                 {
                     $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]);
+                    /* NOT REACHED */
                 }
+                /* NOT REACHED */
                 break;
             }
 

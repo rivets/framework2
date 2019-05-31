@@ -115,7 +115,8 @@
  * @param string	$end		A datetime or ''
  *
  * @throws \Framework\Exception\BadValue
- * @return object
+ *
+ * @return \RedBeanPHP\OODBBean
  */
         public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : object
         {

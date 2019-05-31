@@ -56,6 +56,7 @@
         {
             self::setup();
             ob_start();
+            /** @psalm-suppress ForbiddenCode */
             var_dump(...$vars);
             fputs(self::$fd, ob_get_clean());
         }
