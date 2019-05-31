@@ -98,7 +98,7 @@
             { # caurrent user cannot access the file
                 throw new \Framework\Exception\Forbidden('No access');
             }
-            /** @psalm-supress InvalidPropertyAssignmentValue */
+            /** @psalm-suppress InvalidPropertyAssignmentValue */
             if (($this->mtime = filemtime($this->file)) === FALSE)
             {
                 $web->internal('Lost File: '.$this->file);
