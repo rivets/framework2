@@ -243,7 +243,7 @@
  */
         public function lastmodified() : string
         {
-            return string(time());
+            return (string) time();
         }
 /**
  * Format a time suitable for Last-Modified header
