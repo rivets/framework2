@@ -19,6 +19,8 @@
 /**
  * The constructor
  *
+ * @psalm-suppress UndefinedConstant Some of the constants are not defined in some installations.
+ *
  * @param bool          $exceptions    Passed to the PHPMailer constructor
  */
         public function __construct(bool $exceptions = TRUE)
