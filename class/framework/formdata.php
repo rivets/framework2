@@ -41,7 +41,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hasget(string $name) : bool
         {
@@ -52,7 +52,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function haspost(string $name) : bool
         {
@@ -63,7 +63,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hascookie(string $name) : bool
         {
@@ -76,7 +76,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hasfile(string $name) : bool
         {
@@ -87,7 +87,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hasput($name) : bool
         {
@@ -103,7 +103,7 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param boolean   $throw      If TRUE Then throw an exception
+ * @param bool   $throw      If TRUE Then throw an exception
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -138,7 +138,7 @@
  * @param array     $arr        The array to pick value from
  * @param mixed     $name       The string name of the entry or [name, selector,...]
  * @param mixed     $dflt       A default value to return
- * @param boolean   $throw      What to do if not defined - constant defined in Context
+ * @param bool   $throw      What to do if not defined - constant defined in Context
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -215,7 +215,7 @@
  *
  * @param mixed 	$name	    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string    $bean       The bean type
- * @param boolean   $forupdate  If TRUE then load for update
+ * @param bool   $forupdate  If TRUE then load for update
  *
  * @throws \Framework\Exception\BadValue
  * @return object

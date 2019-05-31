@@ -140,7 +140,7 @@
  * @param string	$start		A datetime
  * @param string	$end		A datetime or ''
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
  */
         public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '') : object
         {
@@ -173,6 +173,8 @@
  * Deal with the role selecting part of a form
  *
  * @param \Support\Context    $context    The context object
+ *
+ * @psalm-suppress UndefinedClass
  *
  * @return void
  */

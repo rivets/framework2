@@ -445,6 +445,7 @@
             }
             $this->addmessages(); # add in any messages
             $this->addval($vals); # set up any values that have been passed
+            /** @psalm-suppress PossiblyNullReference */
             return $this->twig->render($tpl, $this->tvals);
         }
 /**
@@ -572,13 +573,15 @@
 /**
  * Put the system into debugging mode
  *
+ * @psalm-suppress PossiblyNullReference
+ *
  * @return void
  */
         public function enabledebug() : void
         {
             $this->debug = TRUE;
             if ($this->hastwig())
-            {
+            { // now we know we have twig - hence suppress above
                 $this->twig->addExtension(new \Twig\Extension\DebugExtension());
                 $this->twig->enableDebug();
             }
@@ -623,6 +626,7 @@
             set_exception_handler([$this, 'exceptionHandler']);
             set_error_handler([$this, 'errorHandler']);
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
+            /** @psalm-suppress ArgumentTypeCoercion */
             register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
