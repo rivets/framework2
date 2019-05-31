@@ -17,7 +17,7 @@
 /**
  * The default behaviour when a page does not exist.
  */
-    class CatchAll extends Siteaction
+    class CatchAll extends SiteAction
     {
 /**
  * Handle non-object or template page requests

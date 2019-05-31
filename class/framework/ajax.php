@@ -381,6 +381,7 @@
             switch ($context->web()->method())
             {
             case 'POST': // make a new one /ajax/bean/KIND/
+                /** @psalm-suppress UndefinedConstant */
                 $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {

@@ -64,6 +64,15 @@ class R
     }
 /**
  * @param string $b
+ * @param int $id
+ * @return \RedBeanPHP\OODBBean
+ */
+    public static function loadforupdate(string $b, int $id) : \RedBeanPHP\OODBBean
+    {
+        return self::$dummy;
+    }
+/**
+ * @param string $b
  * @param string $x
  * @param array $y
  * @return array
