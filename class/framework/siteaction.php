@@ -239,11 +239,11 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function needs to be overridden.
  *
- * @return integer
+ * @return string
  */
-        public function lastmodified() : int
+        public function lastmodified() : string
         {
-            return time();
+            return string(time());
         }
 /**
  * Format a time suitable for Last-Modified header

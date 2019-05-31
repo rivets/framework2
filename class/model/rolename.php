@@ -35,7 +35,7 @@
  *
  * @param \Support\Context	$context	The Context object for the site
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : object
         {
