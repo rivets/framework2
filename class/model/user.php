@@ -57,7 +57,7 @@
  *
  * @throws \Framework\Exception\BadValue
  *
- * @return object
+ * @return RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : object
         {
