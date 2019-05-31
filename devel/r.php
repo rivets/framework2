@@ -169,4 +169,11 @@ class R
     {
         return [];
     }
+/**
+ * @param bool $x
+ * @return void
+ */
+    public static function freeze(bool $x) : void
+    {
+    }
 }

@@ -39,11 +39,11 @@
         private $basedname	= '';
 
 /**
- * @var	boolean		If TRUE then ignore trapped errors
+ * @var	bool		If TRUE then ignore trapped errors
  */
         private $errignore	= FALSE;	# needed for checking preg expressions....
 /**
- * @var	boolean		Set to TRUE if an error was trapped and ignored
+ * @var	bool		Set to TRUE if an error was trapped and ignored
  */
         private $wasignored	= FALSE;
 /**
@@ -51,19 +51,19 @@
  */
         private $senterrors	= [];
 /**
- * @var	boolean		If TRUE then we are doing debugging
+ * @var	bool		If TRUE then we are doing debugging
  */
         private $debug		= FALSE;
 /**
- * @var boolean         If TRUE then we are handling an error
+ * @var bool         If TRUE then we are handling an error
  */
         private $error          = FALSE;
 /**
- * @var	boolean		If TRUE then we are in developer mode
+ * @var	bool		If TRUE then we are in developer mode
  */
         private $devel		= FALSE;
 /**
- * @var	boolean		If TRUE then we are in ajax code and so error reporting is different
+ * @var	bool		If TRUE then we are in ajax code and so error reporting is different
  */
         private $ajax		= FALSE;
 /**
@@ -71,7 +71,7 @@
  */
         private $sysadmin	= [Config::SYSADMIN];
 /**
- * @var	object		the Twig renderer
+ * @var	?object		the Twig renderer
  */
         private $twig		= NULL;
 /**
@@ -221,7 +221,7 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @param Exception	$e
+ * @param \Exception	$e
  */
         public function exceptionHandler($e) : void
         {
@@ -237,6 +237,7 @@
             );
             $this->make500($ekey);
             exit;
+            /* NOT REACHED */
         }
 /**
  * Called when a PHP error is detected - see PHP documentation for details
@@ -251,7 +252,7 @@
  * @param string	$errfile
  * @param int   	$errline
  *
- * @return boolean
+ * @return bool
  */
         public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
         {
@@ -306,7 +307,7 @@
  *
  * @param bool       	$ignore	If TRUE then ignore the error otherwise stop ignoring
  *
- * @return boolean	The last value of the wasignored flag
+ * @return bool	The last value of the wasignored flag
  */
         public function eignore(bool $ignore) : bool
         {
@@ -422,7 +423,7 @@
 /**
  * Return TRUE if Twig is enabled
  *
- * @return boolean
+ * @return bool
  */
         public function hastwig() : bool
         {
@@ -621,6 +622,7 @@
  */
             set_exception_handler([$this, 'exceptionHandler']);
             set_error_handler([$this, 'errorHandler']);
+            /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
             register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
