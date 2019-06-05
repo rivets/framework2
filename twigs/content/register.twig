@@ -2,6 +2,8 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@util/attrmacro.twig' as h %}
+
 {% block scripts %}
      <script {{h.urlattr(fwurls.parsley)}}></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.3.11/parsley.remote.js"></script>
