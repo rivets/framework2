@@ -4,8 +4,7 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
@@ -67,7 +66,6 @@
 {% endblock header %}
 
 {% block main %}
-    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}

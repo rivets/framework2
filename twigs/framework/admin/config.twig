@@ -3,7 +3,7 @@
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
