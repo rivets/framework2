@@ -3,6 +3,7 @@
     class SimpleModel
     {
         /** @var \RedBeanPHP\OODBBean */
+        /** @psalm-suppress MissingConstructor  */
         public $bean;
     }
 
@@ -14,9 +15,9 @@
         public function __get(string $name)
         {
         }
-
+        /** @psalm-suppress MissingParamType */
         public function __set(string $name, $value): void {}
-
+        /** @psalm-suppress MissingParamType */
         public function __call($function, $args)
         {
         }
