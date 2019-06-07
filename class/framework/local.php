@@ -116,10 +116,10 @@
 /**
  * Tell sysadmin there was an error
  *
- * @param string	$msg	An error messager
- * @param int	    $type	An error type
- * @param string 	$file	file in which error happened
- * @param int    	$line	Line at which it happened
+ * @param string	 $msg	An error messager
+ * @param int $type	An error type
+ * @param string 	 $file	file in which error happened
+ * @param int    	 $line	Line at which it happened
  *
  * @return string
  */
@@ -230,8 +230,8 @@
                 return;
             }
             $ekey = $this->telladmin(
-                $e->getMessage().' ',
-                get_class($e),
+                get_class($e).': '.$e->getMessage(),
+                0,
                 $e->getFile(),
                 $e->getLine()
             );
@@ -266,8 +266,8 @@
                 return TRUE;
             }
             $ekey = $this->telladmin(
-                $errno.' '.$errstr,
-                'Error',
+                'Error '.$errno.' '.$errstr,
+                $errno,
                 $errfile,
                 $errline
             );
@@ -293,8 +293,8 @@
             public function assertFail($file, $line, $message) : void
             {
                 $ekey = $this->telladmin(
-                    $message,
-                    'Assertion Failure',
+                    'Assertion Failure: '.$message,
+                    0,
                     $file,
                     $line
                 );
