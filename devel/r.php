@@ -95,9 +95,9 @@ class R
  * @param string $b
  * @param string $x
  * @param array $y
- * @return object
+ * @return ?\RedBeanPHP\OODBBean
  */
-    public static function findOne(string $b, string $x = '', array $y = []) : \RedBeanPHP\OODBBean
+    public static function findOne(string $b, string $x = '', array $y = []) : ?\RedBeanPHP\OODBBean
     {
         return self::$dummy;
     }
