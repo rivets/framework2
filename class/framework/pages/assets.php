@@ -3,7 +3,7 @@
  * Handle assets access if that is what is wanted
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
+ * @copyright 2016-2019 Newcastle University
  *
  */
     namespace Framework\Pages;
@@ -19,7 +19,7 @@
 /**
  * @var string	The file name
  */
-        private $file;
+        private $file = '';
 /**
  * @var integer	Last modified time for the file
  */

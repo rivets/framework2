@@ -94,6 +94,7 @@
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Support\\'.$kind;
+                /** @psalm-suppress InvalidStringClass */
                 $obj = new $class($rest[2]);
             }
             else
@@ -149,6 +150,7 @@
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Support\\'.$kind;
+                /** @psalm-suppress InvalidStringClass */
                 $obj = new $class($rest[2]);
             }
             else
