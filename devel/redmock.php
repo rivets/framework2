@@ -1,5 +1,11 @@
 <?php
     namespace RedBeanPHP;
+    class SimpleModel
+    {
+        /** @var \RedBeanPH\OODBBean */
+        public $bean;
+    }
+
     class OODBBean
     {
         private static $dummy;
