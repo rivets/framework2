@@ -93,10 +93,11 @@
  *
  * @param \Support\Context    $context    The context object
  *
- * @throws \Framework\Exception\BadValue
- * @return int
+ * @throws \Framework\Exception\BadValue\
+ *
+ * @return \RedBeanPHP\OODBBean
  */
-        public static function add(Context $context) : object
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata();
             $name = $fdt->mustpost('name');

@@ -35,7 +35,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public static function add(Context $context) : object
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $p = \R::dispense(FW::ROLECONTEXT);
             $p->name = $context->formdata()->mustpost('name');
