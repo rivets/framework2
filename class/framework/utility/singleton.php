@@ -50,7 +50,7 @@
  *
  * @return object
  */
-        public static function getinstance()
+        public static function getinstance() : object
         {
             if (!(static::$_instance instanceof static)) // cannot get this to work with namespaces for some reason
             {

@@ -311,9 +311,9 @@
  * @throws  \Framework\Exception\MissingBean
  * @throws  \InvalidArgumentException - this would be an internal error
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE) : object
+        public function load(string $bean, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
