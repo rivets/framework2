@@ -5,30 +5,30 @@
 */
     class Config
     {
-	const BASEDNAME	= '/xxx';
-	const SESSIONNAME	= 'PSIxx';
-	const DBTYPE	= 'mysql';
-	const DBHOST	= 'xx';
-	const DB	= 'xx';
-	const DBUSER	= 'xxx';
-	const DBPW	= 'xxx';
-	const SITENAME	= 'xxx';
-	const SITEURL	= 'http://site.com';
-	const SITENOREPLY	= 'noreply@y.z';
-	const SYSADMIN	= 'x@y.z';
-	const DBRX	= FALSE;
-	const REGISTER  = FALSE;
-	const UPUBLIC	= FALSE;
-	const UPRIVATE	= FALSE;
-	const USECSP	= TRUE;
-    const REPORTCSP = FALSE;
-	const USEPHPM	= FALSE;
+        const BASEDNAME	= '/xxx';
+        const SESSIONNAME	= 'PSIxx';
+        const DBTYPE	= 'mysql';
+        const DBHOST	= 'xx';
+        const DB	= 'xx';
+        const DBUSER	= 'xxx';
+        const DBPW	= 'xxx';
+        const SITENAME	= 'xxx';
+        const SITEURL	= 'http://site.com';
+        const SITENOREPLY	= 'noreply@y.z';
+        const SYSADMIN	= 'x@y.z';
+        const DBRX	= FALSE;
+        const REGISTER  = FALSE;
+        const UPUBLIC	= FALSE;
+        const UPRIVATE	= FALSE;
+        const USECSP	= TRUE;
+        const REPORTCSP = FALSE;
+        const USEPHPM	= FALSE;
         const SMTPHOST = 'xxx';
-    const FWCONTEXT = 'Site';
-    const TESTCONTEXT = 'Test';
-    const ADMINROLE = 'Admin';
-    const DEVELROLE = 'Developer';
-    const TESTROLE = 'Tester';
+        const FWCONTEXT = 'Site';
+        const TESTCONTEXT = 'Test';
+        const ADMINROLE = 'Admin';
+        const DEVELROLE = 'Developer';
+        const TESTROLE = 'Tester';
         const CONFIG = 'fwconfig';
 
         public static function setup() : void
@@ -48,10 +48,10 @@
 /** @var array */
         public static $defaultCSP = [
                 'default-src' => ["'self'"],
-                'font-src' => ["'self'", 'pro.fontawesome.com'],
+                'font-src' => ["'self'", '*.fontawesome.com'],
                 'img-src' => ["'self'", "data:", "*.amuniversal.com"],
                 'script-src' => ["'self'", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"],
-                'style-src' => ["'self'", "pro.fontawesome.com", "stackpath.bootstrapcdn.com"],
+                'style-src' => ["'self'", "*.fontawesome.com", "stackpath.bootstrapcdn.com"],
         ];
     }
 ?>
