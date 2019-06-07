@@ -131,6 +131,7 @@
                 }
             }
             /* NOT REACHED */
+            /** @psalm-suppress InvalidReturnType */
         }
 /**
  * Pick out and treat a value
