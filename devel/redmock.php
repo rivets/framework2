@@ -5,13 +5,21 @@
         /** @var \RedBeanPHP\OODBBean */
         public $bean;
     }
-/**
- * @psalm-seal-properties
- */
+
     class OODBBean
     {
         /** @var \RedBeanPHP\OODBBean */
         private static $dummy;
+
+        public function __get(string $name)
+        {
+        }
+
+        public function __set(string $name, $value): void {}
+
+        public function __call($function, $args)
+        {
+        }
 /**
  * @return int
  */
