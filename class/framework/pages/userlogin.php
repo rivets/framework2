@@ -23,9 +23,9 @@
  *
  * @param string	$lg     A username or email address
  *
- * @return object	The user or NULL
+ * @return ?\RedBeanPHP\OODBBean	The user or NULL
  */
-        private static function eorl(string $lg)
+        private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
             return R::findOne(FW::USER, (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
