@@ -18,7 +18,7 @@
  * Copyright (C) 2015 Kiril Savchev
  *
  * Minor mods by Lindsay Marshall to re-namespace and reformat code into suitable
- * style for the Framework.
+ * style for the Framework. Also added some psalm comments
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,9 +44,12 @@
  * The only instance of using class
  * @var object
  */
-        protected static $_instance = null;
+        protected static $_instance = NULL;
 /**
  * Checks, instantiates and returns the only instance of the using class.
+ *
+ * @template T
+ * @psalm-return T
  *
  * @return object
  */
@@ -63,7 +66,7 @@
  */
         protected function __construct()
         {
-            //void
+            // void
         }
 /**
  * Prevents object cloning
@@ -83,6 +86,10 @@
         }
 /**
  * Returns the only instance if is called as a function
+ * 
+ * @template T
+ * @psalm-return T
+ * 
  * @return object
  */
         public function __invoke()
