@@ -32,7 +32,7 @@
 /**
  * @var	string		The absolute path to the site directory
  */
-        private $basepath;
+        private $basepath = '';
 /**
  * @var	string		The name of the site directory
  */
@@ -85,7 +85,7 @@
 /**
  * @var string          Backtrace info - only used with errors
  */
-        private $back;
+        private $back       = '';
 /**
  * @var array           Config values from database
  */

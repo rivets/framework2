@@ -118,7 +118,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : object
+        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$contextname]);
             if (!is_object($cname))
@@ -143,7 +143,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '') : object
+        public function addrolebybean($rolecontext, $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
