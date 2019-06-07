@@ -154,9 +154,17 @@
                 R::store($v);
                 break;
             case 'DELETE':
+                if (!is_object($v))
+                {
+                    throw new \Framework\Exception\BadValue('No such item');
+                }
                 R::trash($v);
                 break;
             case 'GET':
+                if (!is_object($v))
+                {
+                    throw new \Framework\Exception\BadValue('No such item');
+                }
                 echo $v->value;
                 break;
             default:
