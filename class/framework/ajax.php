@@ -393,6 +393,7 @@
                 $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {
+                    /** @psalm-suppress InvalidStringClass */
                     $id = $class::add($context)->getID();
                     if ($log)
                     {

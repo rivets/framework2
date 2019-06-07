@@ -238,9 +238,9 @@
  *
  * @param string    $name   A Role name
  *
- * @return object
+ * @return ?\RedBean\OODBBean
  */
-        public function rolename(string $name) : object
+        public function rolename(string $name) : ?\RedBean\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -253,9 +253,9 @@
  *
  * @param string    $name   A Role Context
  *
- * @return object
+ * @return ?\RedBean\OODBBean
  */
-        public function rolecontext(string $name) : object
+        public function rolecontext(string $name) : ?\RedBean\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
