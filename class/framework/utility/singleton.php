@@ -52,6 +52,7 @@
  * @psalm-return T
  *
  * @psalm-suppress MismatchingDocblockReturnType
+ * @psalm-suppress ReservedWord
  *
  * @return object
  */
