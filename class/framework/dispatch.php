@@ -193,10 +193,14 @@
 /**
  * Check if a value is appropriate for the dispatch kind
  *
+ * @param int $kind
+ * @param string $source
+ *
  * @throws \Framework\Exception\BadValue
+ *
  * @return void
  */
-        public static function check($kind, $source) : void
+        public static function check(int $kind, string $source) : void
         {
             switch ($kind)
             {
