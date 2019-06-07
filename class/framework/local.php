@@ -597,9 +597,9 @@
  * @param bool       	$loadtwig	if TRUE then load in Twig.
  * @param bool       	$loadrb		if TRUE then load in RedBean
  *
- * @return object
+ * @return \Framework\Local
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : Local
+        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : \Framework\Local
         {
             $this->devel = $devel;
             $this->basepath = $basedir;
