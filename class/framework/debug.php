@@ -12,7 +12,7 @@
     class Debug
     {
 /**
- * @var Resource    The file descriptor
+ * @var ?Resource    The file descriptor
  */
         private static $fd = NULL;
 /**
@@ -46,7 +46,7 @@
 /**
  * Dump a variable - uses buffering to grab the output.
  *
- * @param mixed    $var
+ * @param mixed $vars
  *
  * @todo use the new ... stuff in PHP 5.6 to allow many parameters
  *
