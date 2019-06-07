@@ -1,8 +1,8 @@
 {
     "require": {
-	"twig/twig": "~2.5",
+        "twig/twig": "~2.11",
         "gabordemooij/redbean": "dev-master",
-	"phpmailer/phpmailer": "~6.0"		
+        "phpmailer/phpmailer": "~6.0"
     }
 
 }
