@@ -2,7 +2,7 @@
     namespace RedBeanPHP;
     class SimpleModel
     {
-        /** @var \RedBeanPH\OODBBean */
+        /** @var \RedBeanPHP\OODBBean */
         public $bean;
     }
 
