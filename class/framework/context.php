@@ -122,6 +122,7 @@
  */
         public function sameuser($user) : bool
         {
+             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
         }
 /**
@@ -140,6 +141,7 @@
  */
         public function hasadmin() : bool
         {
+            /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isadmin();
         }
 /**
@@ -149,6 +151,7 @@
  */
         public function hasdeveloper() : bool
         {
+            /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isdeveloper();
         }
 /**

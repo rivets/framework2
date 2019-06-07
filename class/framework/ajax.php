@@ -681,9 +681,7 @@
  */
         private function pwcheck(Context $context) : void
         {
-/**
- * @psalm-suppress PossiblyNullReference
- */
+            /** @psalm-suppress PossiblyNullReference */
             if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
@@ -698,6 +696,8 @@
  *
  * @throws \Framework\Exception\Forbidden
  *
+ * @psalm-suppress PossiblyNullReference
+ *
  * @return void
  */
         protected final function checkPerms(Context $context, array $perms) : void
@@ -708,14 +708,13 @@
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        /** @psalm-suppress PossiblyNullReference */
                         if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
                         {
                             continue 2;
                         }
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
-                } /** @psalm-suppress PossiblyNullReference */
+                }
                 elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');

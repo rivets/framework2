@@ -663,6 +663,7 @@
                 }
                 if ($loadtwig)
                 {
+                    /* @psalm-suppress PossiblyNullReference */
                     $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
                 }
             }

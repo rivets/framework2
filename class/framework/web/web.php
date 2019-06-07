@@ -38,6 +38,8 @@
  * @param string		$msg		A message to send
  * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  * @param bool       	$use303    If TRUE then use 303 rather than 302
+ *
+ * @return never-return
  */
         public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
@@ -61,6 +63,8 @@
  *
  * @param int    	$code	The return code
  * @param string	$msg	The message (or '')
+ *
+ * @return never-return
  */
         private function sendhead(int $code, string $msg)
         {
@@ -156,6 +160,8 @@
  * Generate a 400 Bad Request error return
  *
  * @param string		$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function bad(string $msg = '')
         {
@@ -165,6 +171,8 @@
  * Generate a 403 Access Denied error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function noaccess(string $msg = '')
         {
@@ -174,6 +182,8 @@
  * Generate a 404 Not Found error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function notfound(string $msg = '')
         {
@@ -183,6 +193,8 @@
  * Generate a 416 Not Satisfiable error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function notsatisfiable(string $msg = '')
         {
@@ -192,6 +204,8 @@
  * Generate a 500 Internal Error error return
  *
  * @param string		$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function internal(string $msg = '')
         {
