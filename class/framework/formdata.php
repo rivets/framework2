@@ -107,8 +107,6 @@
  *
  * @throws \Framework\Exception\BadValue
  *
- * @psalm-suppress InvalidReturnType
- *
  * @return string
  */
         private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
@@ -122,7 +120,6 @@
                     {
                         throw new \Framework\Exception\BadValue('Missing form array item');
                     }
-                    /** @psalm-suppress InvalidReturnType */
                     return $default;
                 }
                 $val = $porg[$key];
@@ -132,6 +129,7 @@
                 }
             }
             /* NOT REACHED */
+            return ''; // to shut psalm up!!
         }
 /**
  * Pick out and treat a value
