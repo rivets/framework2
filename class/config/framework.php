@@ -58,7 +58,7 @@
             );
             spl_autoload_extensions('.php');
             spl_autoload_register();
-
+            /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php';
         }
     }

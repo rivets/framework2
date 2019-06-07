@@ -88,6 +88,8 @@
  * @param \Support\Context    $context
  * @param string    $action
  *
+ * @psalm-suppress PossiblyUndefinedMethod
+ *
  * @return void
  */
         public static function handle(Context $context, string $action) : void
@@ -163,7 +165,7 @@
                 { # check value is OK
                     $context->web()->internal('Bad page kind');
                     /* NOT REACHED */
-                                                                               }
+                }
                 if (self::$actions[$page->kind][0])
                 { # local
                     $context->divert($page->source, ...self::$actions[$page->kind][1]);
