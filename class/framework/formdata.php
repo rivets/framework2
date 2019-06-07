@@ -27,7 +27,7 @@
         private function setput() : void
         {
             if (!is_array($this->putdata))
-            { /** @psalm-supress NullArgument */
+            { /** @psalm-suppress NullArgument */
                 parse_str(file_get_contents('php://input'), $this->putdata);
             }
         }
