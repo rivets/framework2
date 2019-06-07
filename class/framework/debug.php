@@ -41,6 +41,7 @@
         public static function show(string $str) : void
         {
             self::setup();
+            /** @psalm-suppress PossiblyNullArgument  */
             fputs(self::$fd, $str."\n");
         }
 /**
@@ -58,6 +59,7 @@
             ob_start();
             /** @psalm-suppress ForbiddenCode */
             var_dump(...$vars);
+            /** @psalm-suppress PossiblyNullArgument  */
             fputs(self::$fd, ob_get_clean());
         }
 /**
