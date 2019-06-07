@@ -113,7 +113,8 @@
             $bn->fixed = 0;
             $bn->integrity = '';
             $bn->defer = 0;
-            return \R::store($bn);
+            \R::store($bn);
+            return $bn;
         }
 /**
  * Setup for an edit
