@@ -357,7 +357,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public static function add(Context $context) : object
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata();
             $p = \R::dispense(FW::FORM);
