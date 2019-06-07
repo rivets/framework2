@@ -325,6 +325,8 @@
 /**
  * Return the local object
  *
+ * @psalm-suppress MoreSpecificReturnType
+ *
  * @return \Framework\Local
  */
         public function local() : \Framework\Local
