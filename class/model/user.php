@@ -59,7 +59,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public static function add(Context $context) : object
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $now = $context->utcnow(); # make sure time is in UTC
             $fdt = $context->formdata();
