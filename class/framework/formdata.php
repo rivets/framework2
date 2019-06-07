@@ -220,9 +220,10 @@
  * @param bool   $forupdate  If TRUE then load for update
  *
  * @throws \Framework\Exception\BadValue
- * @return object
+ *
+ * @return \RedBeanPHP\OODBBean
  */
-        public function mustgetbean($name, $bean, $forupdate = FALSE) : object
+        public function mustgetbean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE), $forupdate);
         }
@@ -336,9 +337,10 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * @return object
+ * 
+ * @return \RedBeanPHP\OODBBean
  */
-        public function mustpostbean($name, $bean) : object
+        public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
         {
             return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, TRUE));
         }
@@ -450,9 +452,10 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * @return object
+ * 
+ * @return \RedBeanPHP\OODBBean
  */
-        public function mustputbean($name, $bean) : object
+        public function mustputbean($name, $bean) : \RedBeanPHP\OODBBean
         {
             return Context::getinstance()->load($bean, $this->mustput($name));
         }
