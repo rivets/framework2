@@ -51,6 +51,8 @@
  * @template T
  * @psalm-return T
  *
+ * @psalm-suppress MismatchingDocblockReturnType
+ *
  * @return object
  */
         public static function getinstance() : object
