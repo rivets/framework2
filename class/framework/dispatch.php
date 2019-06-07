@@ -172,9 +172,8 @@
                     /* NOT REACHED */
                 }
                 /* NOT REACHED */
-                break;
             }
-
+            /** @psalm-suppress PossiblyUndefinedVariable */
             if ($tpl !== '')
             { # an empty template string means generate no output here...
                 $html = $local->getrender($tpl);

@@ -357,7 +357,7 @@
  * @return string
  */
         public function utcnow() : string
-        {
+        { /** @psalm-suppress InvalidOperand */
             return \R::isodatetime(time() - date('Z'));
         }
 /**
@@ -368,7 +368,7 @@
  * @return string
  */
         public function utcdate(string $datetime) : string
-        {
+        { /** @psalm-suppress InvalidOperand */
             return \R::isodatetime(strtotime($datetime) - date('Z'));
         }
 /*

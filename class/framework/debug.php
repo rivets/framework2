@@ -84,7 +84,7 @@
         public static function head(string $str) : void
         {
             self::$hcount += 1;
-            header('X-DEBUG-INFO'.$hcount.': '.$str);
+            header('X-DEBUG-INFO'.self::$hcount.': '.$str);
         }
     }
 ?>

@@ -5,7 +5,9 @@
         /** @var \RedBeanPHP\OODBBean */
         public $bean;
     }
-
+/**
+ * @psalm-seal-properties
+ */
     class OODBBean
     {
         private static $dummy;
