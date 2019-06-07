@@ -88,7 +88,7 @@
         public function sequence() : array
         {
             $res = [];
-            foreach ($this->bean->fields() as $fld)
+            foreach ($this->fields() as $fld)
             {
                 $sqn = explode('/', $fld->seqn);
                 if (count($sqn) > 1)
@@ -114,7 +114,7 @@
         public function resequence() : void
         {
             $seqn = 10;
-            foreach ($this->bean->sequence() as $flds)
+            foreach ($this->sequence() as $flds)
             {
                 foreach ($flds as $fld)
                 {
@@ -202,7 +202,7 @@
                     ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').'" '.
                     ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').'" '.
                     'method="'.self::$methods[$this->bean->method].'"'.
-                    ($this->multipart ? ' enctype="multipart/form-data"' : '').
+                    ($this->bean->multipart ? ' enctype="multipart/form-data"' : '').
                     ' role="form">'.PHP_EOL;
             }
             else
@@ -260,7 +260,7 @@
                     $form .= '</select></div>';
                     break;
                 case 'textarea':
-                    $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $this->value).'</textarea></div>';
+                    $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
                 case 'submit' :
                     $form .= '<div class="form-group"><button type="submit"'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
