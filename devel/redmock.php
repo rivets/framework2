@@ -40,5 +40,12 @@
         {
              return self::$dummy;
         }
+/**
+ * @return string
+ */
+        public function export() : string
+        {
+             return '';
+        }
     }
 ?>
