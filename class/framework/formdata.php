@@ -122,6 +122,7 @@
                     {
                         throw new \Framework\Exception\BadValue('Missing form array item');
                     }
+                    /** @psalm-suppress InvalidReturnType */
                     return $default;
                 }
                 $val = $porg[$key];
@@ -131,7 +132,6 @@
                 }
             }
             /* NOT REACHED */
-            /** @psalm-suppress InvalidReturnType */
         }
 /**
  * Pick out and treat a value
