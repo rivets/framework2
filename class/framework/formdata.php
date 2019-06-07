@@ -27,7 +27,7 @@
         private function setput() : void
         {
             if (!is_array($this->putdata))
-            {
+            { /** @psalm-supress NullArgument */
                 parse_str(file_get_contents('php://input'), $this->putdata);
             }
         }
@@ -106,6 +106,8 @@
  * @param bool   $throw      If TRUE Then throw an exception
  *
  * @throws \Framework\Exception\BadValue
+ *
+ * @psalm-suppress InvalidReturnType
  *
  * @return string
  */

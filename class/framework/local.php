@@ -117,13 +117,13 @@
  * Tell sysadmin there was an error
  *
  * @param string	$msg	An error messager
- * @param string	$type	An error type
+ * @param int	    $type	An error type
  * @param string 	$file	file in which error happened
- * @param string	$line	Line at which it happened
+ * @param int    	$line	Line at which it happened
  *
  * @return string
  */
-        private function telladmin($msg, $type, $file, $line) : string
+        private function telladmin(string $msg, int $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
@@ -204,10 +204,10 @@
                 if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
                 { # tell the developers about this
                     $ekey = $this->telladmin(
-                	$error['message'],
+                        $error['message'],
                         $error['type'],
                         $error['file'],
-                	$error['line']
+                        $error['line']
                     );
                     $this->make500($ekey);
                 }
@@ -623,6 +623,7 @@
  /*
  * Set up all the system error handlers
  */
+            /** @psalm-suppress ArgumentTypeCoercion */
             set_exception_handler([$this, 'exceptionHandler']);
             set_error_handler([$this, 'errorHandler']);
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
@@ -663,7 +664,7 @@
                 }
                 if ($loadtwig)
                 {
-                    /* @psalm-suppress PossiblyNullReference */
+                    /** @psalm-suppress PossiblyNullReference */
                     $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
                 }
             }
