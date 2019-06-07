@@ -10,6 +10,7 @@
  */
     class OODBBean
     {
+        /** @var \RedBeanPHP\OODBBean */
         private static $dummy;
 /**
  * @return int
