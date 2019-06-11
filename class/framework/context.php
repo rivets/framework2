@@ -24,33 +24,20 @@
  * The key used to encode the token validation
  */
         const KEY	        = 'Some string of text.....';
-/**
- * @var ?object		NULL or an object decribing the current logged in User (if we have logins at all)
- */
+
+/** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
-/**
- * @var integer		Counter used for generating unique ids
- */
+/** @var integer	Counter used for generating unique ids */
         protected $idgen        = 0;
-/**
- * @var string		The first component of the current URL
- */
+/** @var string		The first component of the current URL */
         protected $reqaction	= 'home';
-/**
- * @var array		The rest of the current URL exploded at /
- */
+/** @var array		The rest of the current URL exploded at / */
         protected $reqrest	= [];
-/**
- * @var boolean		True if authenticated by token
- */
+/** @var boolean    True if authenticated by token */
         protected $tokauth	= FALSE;
- /**
- * @var array		A cache for rolename beans
- */
+/** @var array		A cache for rolename beans */
         protected $roles        = [];
- /**
- * @var array		A cache for rolecontext beans
- */
+/** @var array		A cache for rolecontext beans */
         protected $contexts     = [];
 /*
  ***************************************
@@ -390,6 +377,7 @@
                 { // we have mobile authentication in use
                     try
                     {
+                        /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
                         $this->luser = $this->load('user', $tok->sub);
                     }

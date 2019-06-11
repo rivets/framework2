@@ -123,6 +123,7 @@
             ]);
 
             $code = StatusCodes::HTTP_OK;
+            $tpl = ''; // this is just to shut palm up - it isn't actually required
             switch ($page->kind)
             {
             case self::OBJECT: // fire up the object to handle the request
@@ -178,7 +179,6 @@
                 }
                 /* NOT REACHED */
             }
-            /** @psalm-suppress PossiblyUndefinedVariable */
             if ($tpl !== '')
             { # an empty template string means generate no output here...
                 $html = $local->getrender($tpl);

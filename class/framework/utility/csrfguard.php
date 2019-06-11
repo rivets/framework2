@@ -32,6 +32,7 @@
         private function maketoken($uname)
         {
             $token = bin2hex(random_bytes(self::STRENGTH));
+            /** @psalm-suppress RedundantCondition - not sure why psalm complains about this */
             if (isset($_SESSION))
             {
                 $_SESSION[$uname] = $token;

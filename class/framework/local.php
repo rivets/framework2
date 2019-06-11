@@ -117,13 +117,13 @@
  * Tell sysadmin there was an error
  *
  * @param string	 $msg	An error messager
- * @param int $type	An error type
+ * @param int|string $type	An error type
  * @param string 	 $file	file in which error happened
  * @param int    	 $line	Line at which it happened
  *
  * @return string
  */
-        private function telladmin(string $msg, int $type, string $file, int $line) : string
+        private function telladmin(string $msg, $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
@@ -652,6 +652,7 @@
  * Initialise database access
  */
             class_alias('\RedBeanPHP\R','\R');
+            /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { # looks like there is a database configured
                 \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser

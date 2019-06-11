@@ -7,6 +7,7 @@
 >
     <projectFiles>
 <file name="devel/configmock.php" />
+<file name="devel/phpmmock.php" />
 <file name="devel/redmock.php" />
 <file name="devel/r.php" />
 <file name="class/config/framework.php" />

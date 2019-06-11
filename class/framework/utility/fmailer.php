@@ -4,7 +4,7 @@
  * or using the SMTP part so f PHPMailer
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2018 Newcastle University
+ * @copyright 2017-2019 Newcastle University
  */
     namespace Framework\Utility;
 

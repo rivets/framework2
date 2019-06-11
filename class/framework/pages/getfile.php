@@ -31,15 +31,15 @@
  */
     class Getfile extends \Framework\SiteAction
     {
+/*
+ * The name of the directory where files are kept
+ */
         const DATADIR	= 'private';
-/**
- * @var string	The name of the file we are working on
- */
-        private $file;
-/**
- * @var string	The last modified time for the file
- */
-        private $mtime;
+
+/** @var string	The name of the file we are working on */
+        private $file = '';
+/** @var string	The last modified time for the file */
+        private $mtime = 0;
 
 /**
  * Return data files as requested
@@ -49,9 +49,9 @@
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
  *
- * @return string	A template name
+ * @return string	- Always return empty string as the all the file sending is done internally.
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string
         {
             $web = $context->web(); # it's used all over the place so grab it once
 
@@ -84,10 +84,10 @@
                 { # filename constructed is not the right format
                     throw new \Framework\Exception\BadValue('Illegal filename');
                 }
-
-        # Now do an access control check
-             $file = \R::findOne('upload', 'fname=?',
-                    [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
+/*
+ * Now do an access control check
+ */
+                $file = \R::findOne('upload', 'fname=?', [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
                 if (!is_object($file))
                 { # not recorded in the database so 404 it
                     $web->notfound();

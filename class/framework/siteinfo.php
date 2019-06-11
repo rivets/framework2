@@ -49,7 +49,8 @@
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
             $collection = \R::findCollection($bean, $where, $params);
-            while( $item = $collection->next() )
+            /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
+            while ($item = $collection->next())
             {
                 yield $item;
             }

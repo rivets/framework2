@@ -16,17 +16,11 @@
  */
     class Assets extends \Framework\SiteAction
     {
-/**
- * @var string	The file name
- */
+/** @var string	The file name */
         private $file = '';
-/**
- * @var integer	Last modified time for the file
- */
-        private $mtime;
-/**
- * @var array Mime type values
- */
+/** @var int	Last modified time for the file */
+        private $mtime = 0;
+/** @var array Mime type values */
         private static $mtypes = [
             ''      => 'text/plain',
             'css'	=> 'text/css',

@@ -41,8 +41,7 @@
                     if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
                     {
                         $fname = $fwc->value;
-                        /** @psalm-suppress TypeDoesNotContainType - not sure why t gives this error */
-                        if ($base != '/' || $base !== '')
+                        if ($base != '/' && $base !== '')
                         { // if there are sub directories then we need to remove them as we are there already...
                             if (preg_match('#^'.$base.'(.*)#', $fname, $m))
                             {
