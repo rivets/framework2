@@ -124,17 +124,17 @@
  */
         public function makeetag() : string
         {
-            return $this->mtime;
+            return (string) $this->mtime;
         }
 /**
  * Get a last modified time for the page
  *
  * By default this returns the current time. For pages that need to use this in anger,
- * then this function needs to be overridden.
+ * then this function may need to be overridden.
  *
- * @return string
+ * @return int
  */
-        public function lastmodified() : string
+        public function lastmodified() : int
         {
             return $this->mtime;
         }
