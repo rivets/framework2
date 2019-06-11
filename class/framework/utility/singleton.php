@@ -66,6 +66,7 @@
         }
 /**
  * Class constructor. The concrete class using this trait can override it.
+ * @internal
  */
         protected function __construct()
         {
@@ -73,6 +74,7 @@
         }
 /**
  * Prevents object cloning
+ * @internal
  * @throws Exception
  */
         public function __clone()
@@ -81,6 +83,7 @@
         }
 /**
  * Prevents object serialization
+ * @internal
  * @throws Exception
  */
         public function __sleep()
@@ -89,6 +92,8 @@
         }
 /**
  * Returns the only instance if is called as a function
+ *
+ * @internal
  * 
  * @template T
  * @psalm-return T
