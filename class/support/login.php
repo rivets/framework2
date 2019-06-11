@@ -66,6 +66,8 @@
  *
  * @param \Support\Context	$context	The context object for the site
  *
+ * @used-by \Framework\Pages\UserLogin
+ *
  * @return void
  */
         public function logout(Context $context) : void
