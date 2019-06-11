@@ -123,7 +123,6 @@
             ]);
 
             $code = StatusCodes::HTTP_OK;
-            $tpl = ''; // this is just to shut palm up - it isn't actually required
             switch ($page->kind)
             {
             case self::OBJECT: // fire up the object to handle the request
@@ -179,9 +178,11 @@
                 }
                 /* NOT REACHED */
             }
+            /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
             if ($tpl !== '')
             { # an empty template string means generate no output here...
                 $html = $local->getrender($tpl);
+                /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
                 $csp->setCSP($context); // set up CSP Header in use : rendering the page may have generated new hashcodes.
                 $context->web()->sendstring($html, $mime, $code);
             }

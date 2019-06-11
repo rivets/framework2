@@ -20,7 +20,7 @@
 /** @var string */
         public $AltBody = '';
 
-        public function __construct($x)
+        public function __construct(bool $x)
         {
         }
 /**
@@ -39,6 +39,9 @@
         {
         }
 
+        public function setFrom(string $x) : void
+        {
+        }
         public function msgHTML(string $x) : void
         {
         }
