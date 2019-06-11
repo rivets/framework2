@@ -21,6 +21,7 @@
     <ignore>vendor</ignore>
     <ignore>twigs</ignore>
     <ignore>install</ignore>
+    <ignore>assets</ignore>
     <ignore>install.php</ignore>
   </files>
 </phpdoc>
