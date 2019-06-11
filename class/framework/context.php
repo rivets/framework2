@@ -279,7 +279,8 @@
  * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
  *
- * @return never-return
+ * @psalm-return never-return
+ * @return void
  */
         public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
