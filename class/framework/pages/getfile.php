@@ -38,7 +38,7 @@
 
 /** @var string	The name of the file we are working on */
         private $file = '';
-/** @var string	The last modified time for the file */
+/** @var int	The last modified time for the file */
         private $mtime = 0;
 
 /**

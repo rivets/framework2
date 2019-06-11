@@ -4,23 +4,47 @@
     class PHPMailer
     {
 /** @var string */
-        public  $Host = '';
+        public $Host = '';
 /** @var string */
-        public  $Port = '';
+        public $Port = '';
 /** @var string */
         public $SMTPSecure = '';
-/** @var string */
-        public $SMTPAuth = TRUE;
 /** @var bool */
-        public $Username = Config::SMTPUSER;
+        public $SMTPAuth = TRUE;
+/** @var string */
+        public $Username = '';
 /** @var string */
         public $Password = '';
+/** @var string */
+        public $Subject = '';
+/** @var string */
+        public $AltBody = '';
+
+        public function __construct($x)
+        {
+        }
 /**
  * @return bool
  */
-        public function isSMTP() : boolval
+        public function isSMTP() : bool
         {
             return TRUE;
+        }
+
+        public function addAddress(string $x) : void
+        {
+        }
+
+        public function addReplyTo(string $x) : void
+        {
+        }
+
+        public function msgHTML(string $x) : void
+        {
+        }
+
+        public function send() : void
+        {
         }
     }
 ?>
