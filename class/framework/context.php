@@ -19,11 +19,11 @@
 /**
  * The name of the authentication token field.
  */
-        const TOKEN 	    = 'X-APPNAME-TOKEN';
+        private const TOKEN 	    = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-        const KEY	        = 'Some string of text.....';
+        private const KEY	        = 'Some string of text.....';
 
 /** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
