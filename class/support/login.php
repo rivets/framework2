@@ -18,7 +18,7 @@
  * Different kinds of logins might be required. This is the default
  * that uses the local database table.
  *
- * @see \Framework\Pages\UserLogin
+ * @used-by \Framework\Pages\UserLogin
  *
  * @param \Support\Context $context
  *
