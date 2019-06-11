@@ -10,13 +10,7 @@
   <files>
     <file>ajax.php</file>
     <file>index.php</file>
-    <directory>class/</directory>
-    <directory>class/config</directory>
-    <directory>class/framework</directory>
-    <directory>class/model</directory>
-    <directory>class/modelextend</directory>
-    <directory>class/pages</directory>
-    <directory>class/support</directory>
+    <directory>class/*</directory>
     <ignore>devel/*</ignore>
     <ignore>tests/*</ignore>
     <ignore>vendor/*</ignore>
