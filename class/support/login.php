@@ -7,6 +7,8 @@
  *
  */
     namespace Support;
+
+    use Support\Context as Context;
 /**
  * Allows developers to change the way logins and logouts are handled.
  */
@@ -24,7 +26,7 @@
  *
  * @return bool
  */
-        public function checkLogin(\Support\Context $context) : bool
+        public function checkLogin(Context $context) : bool
         {
             $fdt = $context->formdata();
             if (($lg = $fdt->post('login', '')) !== '')
@@ -68,7 +70,7 @@
  *
  * @return void
  */
-        public function logout(Context $context)
+        public function logout(Context $context) : void
         {
             $_SESSION = []; # Unset all the session variables.
 
