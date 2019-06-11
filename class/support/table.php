@@ -3,7 +3,7 @@
  * A class for the object Table
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace Support;
@@ -14,14 +14,14 @@
  */
     class Table
     {
-/**
- * @var string The name of the table
- */
+/** @var string The name of the table */
         private $table;
 
         use \ModelExtend\MakeGuard;
 /**
  * Constructor
+ *
+ * @param string $name The name of the table
  */
         public function __construct(string $name)
         {
@@ -95,10 +95,11 @@
  * Setup for an edit
  *
  * @param \Support\Context    $context  The context object
+ * @param array               $rest
  *
  * @return void
  */
-        public function startEdit(Context $context, array $rest)
+        public function startEdit(Context $context, array $rest) : void
         {
             if (count($rest) >= 4)
             {
@@ -117,6 +118,7 @@
  * Handle a bean edit
  *
  * @param \Support\Context    $context  The context object
+ * @param array               $rest
  *
  * @return array
  */
@@ -129,10 +131,11 @@
  * View a Bean
  *
  * @param \Support\Context    $context  The context object
+ * @param array               $rest
  *
  * @return void
  */
-        public function view(Context $context, array $rest)
+        public function view(Context $context, array $rest) : void
         {
             $this->startEdit($context, $rest);
             $context->local()->addval('view', TRUE);

@@ -140,7 +140,7 @@
  * @param array     $arr        The array to pick value from
  * @param mixed     $name       The string name of the entry or [name, selector,...]
  * @param mixed     $dflt       A default value to return
- * @param bool   $throw      What to do if not defined - constant defined in Context
+ * @param bool      $throw      What to do if not defined - constant defined in Context
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -274,11 +274,11 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string    $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @throws \Framework\Exception\BadValue
+ *
  * @return mixed
  */
         public function mustfilterget(string $name, int $filter, $options = '')
@@ -376,7 +376,6 @@
  * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
- * @param mixed     $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
