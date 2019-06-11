@@ -376,6 +376,7 @@
  * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
+ * @param string    $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -390,7 +391,6 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string    $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
