@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
+<phpdocumentor>
   <parser>
     <default-package-name>the-framework2</default-package-name>
     <target>../api</target>
@@ -25,4 +25,4 @@
     <transformations>
         <template name="clean" />
     </transformations>
-</phpdoc>
+</phpdocumentor>
