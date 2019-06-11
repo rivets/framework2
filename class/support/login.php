@@ -7,8 +7,6 @@
  *
  */
     namespace Support;
-
-    use Support\Context as Context;
 /**
  * Allows developers to change the way logins and logouts are handled.
  */
