@@ -25,7 +25,7 @@
  */
         const KEY	        = 'Some string of text.....';
 
-/** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var object|null		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
 /** @var integer	Counter used for generating unique ids */
         protected $idgen        = 0;
@@ -94,7 +94,7 @@
 /**
  * Return the current logged in user if any
  *
- * @return ?object
+ * @return object|null
  */
         public function user() : ?object
         {
