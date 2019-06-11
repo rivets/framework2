@@ -15,10 +15,10 @@
 /**
  * Process the login form
  *
- * Diifferent kinds of logins might be required. This is the default
+ * Different kinds of logins might be required. This is the default
  * that uses the local database table.
  *
- * @see class/framework/pages/userlogin.php
+ * Called from class/framework/pages/userlogin.php
  *
  * @param \Support\Context $context
  *
