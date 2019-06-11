@@ -3,7 +3,7 @@
  * A model class for the RedBean object FormField
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2018 Newcastle University
+ * @copyright 2016-2019 Newcastle University
  */
     namespace Model;
 /**
@@ -12,11 +12,11 @@
     class FormField extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var array Atributes that this supports
+ * @var string[] Attributes that this supports
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
  /**
-  * @var integer Counter used for generating new IDs
+  * @var int Counter used for generating new IDs
   */
         private static $lcount             = 1;
 /**
@@ -32,15 +32,14 @@
 /**
  * Handle a label
  *
- * @param bool           $makefor    If TRUE then make a for attribute
+ * @param bool       $makefor    If TRUE then make a for attribute
  * @param string     $class      The class name
  * @param string     $inp        The input HTML
  *
  * @return string   The field idval might be updated also
  */
-        public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '')
+        public function doLabel(bool $makefor = TRUE, string $class = '', string $inp = '') : string
         {
-            $label = '';
             if ($this->bean->label !== '')
             {
                 if ($makefor && $this->bean->idval === '')
@@ -56,12 +55,12 @@
 /**
  * Render a field's attributes
  *
- * @param string    $class  The class name
- * @param bool          $doValue  If TRUE Then add a value attribute
+ * @param string    $class    The class name
+ * @param bool      $doValue  If TRUE Then add a value attribute
  *
  * @return string
  */
-        public function fieldAttr(string $class, bool $doValue = TRUE)
+        public function fieldAttr(string $class, bool $doValue = TRUE) : string
         {
             $attrs = self::$attributes;
             if ($doValue)
@@ -90,6 +89,10 @@
                 {
                     $res[] = $atr[0].'="'.$atr[0].'"';
                 }
+            }
+            if ($this->bean->other !== '')
+            {
+                $res[] = $this->bean->other;
             }
             return implode(' ', $res);
         }

@@ -17,7 +17,7 @@
 /**
  * The default behaviour when a page does not exist.
  */
-    class CatchAll extends Siteaction
+    class CatchAll extends SiteAction
     {
 /**
  * Handle non-object or template page requests
@@ -25,9 +25,9 @@
  * This just diverts to a /error page but it could also just render a 404 template here.
  * Which might be better. Needs thought.
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
- * @return string	A template name
+ * @return string|array    A template name  or an array of values
  */
 	public function handle(Context $context)
 	{

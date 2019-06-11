@@ -29,27 +29,29 @@
  *
  * This returns a file requested from the upload area
  */
-    class Getfile extends \Framework\Siteaction
+    class Getfile extends \Framework\SiteAction
     {
-	const DATADIR	= 'private';
-/**
- * @var string	The name of the file we are working on
+/*
+ * The name of the directory where files are kept
  */
-	private $file;
-/**
- * @var string	The last modified time for the file
- */
-	private $mtime;
+        const DATADIR	= 'private';
+
+/** @var string	The name of the file we are working on */
+        private $file = '';
+/** @var int	The last modified time for the file */
+        private $mtime = 0;
 
 /**
  * Return data files as requested
  *
- * @param object	$context	The context object for the site
- * @param object	$local		The local object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
- * @return string	A template name
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return string	- Always return empty string as the all the file sending is done internally.
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string
         {
             $web = $context->web(); # it's used all over the place so grab it once
 
@@ -61,8 +63,7 @@
                 $file = \R::load('upload', $fpt[1]);
                 if ($file->getID() == 0)
                 {
-                    $web->notfound();
-                    /* NOT REACHED */
+                    throw new \Framework\Exception\BadValue('No such file');
                 }
                 $this->file = substr($file->fname, 1); // drop the separator at the start....
             }
@@ -75,19 +76,18 @@
  * the regexp test following makes sense.
  * This all depends on your application and how you want to treat files and filenames and access of course!
  *
- * ALways be careful that filenames do not have .. in them of course.
+ * Always be careful that filenames do not have .. in them of course.
  *
  */
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
                 { # filename constructed is not the right format
-                    $web->bad();
-                    /* NOT REACHED */
+                    throw new \Framework\Exception\BadValue('Illegal filename');
                 }
-
-        # Now do an access control check
-             $file = \R::findOne('upload', 'fname=?',
-                    [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
+/*
+ * Now do an access control check
+ */
+                $file = \R::findOne('upload', 'fname=?', [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
                 if (!is_object($file))
                 { # not recorded in the database so 404 it
                     $web->notfound();
@@ -96,10 +96,9 @@
             }
             if (!$file->canaccess($context->user()))
             { # caurrent user cannot access the file
-                $web->noaccess();
-                /* NOT REACHED */
+                throw new \Framework\Exception\Forbidden('No access');
             }
-
+            /** @psalm-suppress InvalidPropertyAssignmentValue */
             if (($this->mtime = filemtime($this->file)) === FALSE)
             {
                 $web->internal('Lost File: '.$this->file);
@@ -109,7 +108,7 @@
             $this->ifmodcheck(); # check to see if we actually need to send anything
 
             $web->addheader([
-                'Last-Modified'	=> $this->mtime,
+//                'Last-Modified'	=> $this->mtime,
                 'Etag'		=> '"'.$this->makeetag().'"',
             ]);
             $web->sendfile($this->file, $file->filename);
@@ -118,21 +117,22 @@
 /**
  * Make an etag for an item
  *
- * This needs to be overridden by pages that can generate etags
+ * This needs to be overridden by pages that can generate etag. Defaults
+ * to the mtime value.
  *
  * @return string
  */
         public function makeetag() : string
         {
-            return $this->mtime;
+            return (string) $this->mtime;
         }
 /**
  * Get a last modified time for the page
  *
  * By default this returns the current time. For pages that need to use this in anger,
- * then this function needs to be overridden.
+ * then this function may need to be overridden.
  *
- * @return integer
+ * @return int
  */
         public function lastmodified() : int
         {
@@ -145,9 +145,9 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param int 	$time	The time value to check
+ * @param string 	$time	The time value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checkmodtime(string $time) : bool
         {
@@ -156,13 +156,13 @@
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * This always returns FALSE, indicating that we need to send the page again.
+ * This tests against the mtime (see above), indicating that we need to send the page again if not equal.
  * The assumption is that pages that implement etags will override this function
- * appropriately to do actual value checking.
+ * appropriately to do different value checking.
  *
  * @param string	$tag	The etag value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checketag(string $tag) : bool
         {

@@ -1,0 +1,7 @@
+{% import '@util/modalmacro.twig' as m %}
+
+    {{m.open({id: 'modald', title: 'Modal Pop-up'})}}
+    <div class="modal-body">
+        <h2>This is a modal</h2>
+    </div>
+    {{m.close({action: 'None', id: 'nopu'})}}

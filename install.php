@@ -3,11 +3,16 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2018 Newcastle University
+ * @copyright 2014-2019 Newcastle University
  */
     global $cwd, $verbose;
 
-    define('DBPREFIX', 'fw');
+    define('DBPREFIX', '');
+    define('FWCONTEXT', 'Site');
+    define('TESTCONTEXT', 'Test');
+    define('ADMINROLE', 'Admin');
+    define('DEVELROLE', 'Developer');
+    define('TESTROLE', 'Tester');
 /**
  * Function to cleanup after errors
  *
@@ -48,7 +53,7 @@
  */
     function addfwconfig($name, $value, $local)
     {
-        $fwc = \R::dispense(DBPREFIX.'config');
+        $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
         $fwc->local = $local ? 1 : 0;
         if (is_array($value))
@@ -137,7 +142,8 @@
     {
         echo '<h2>There has been an installer system error : '.$errno.'</h2>';
         echo '<pre>';
-        var_dump($errno, $errstr, $errfile, $errline);
+        echo 'Errno: '.$errno.' Error: '.$errstr.PHP_EOL;
+        echo 'File: '.$errfile.' Line: '.$errline.PHP_EOL;
         echo '</pre>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
@@ -151,6 +157,51 @@
  * Change this to an exit if you don't want to continue on any errors
  */
         return TRUE;
+    }
+/**
+ * Make a new role or context name
+ *
+ * @param string $type
+ * @param string $name
+ *
+ * @return object
+ */
+    function makerc(string $type, string $name)
+    {
+        $drname = \R::dispense($type);
+        $drname->name = $name;
+        $drname->fixed = 1;
+        \R::store($drname);
+        return $drname;
+    }
+/**
+ * Make a role
+ *
+ * @param string   $type   Type of role
+ * @param string   $now    Now timestamp
+ * @param object   $owner  The owner bean (could be a user or a page for example)
+ * @param object   $cname  The context name
+ * @param object   $cname  The role name
+ *
+ * @return object
+ */
+    function makerole(string $type, string $now, $owner, $cname, $rname)
+    {
+        $role = \R::dispense($type);
+        $role->otherinfo = '-';
+        $role->start = $now;
+        $role->end = $now; # this makes RedBean make it a datetime field
+        \R::store($role);
+        $role->end = NULL; # clear end date as we don't want to time limit admin
+        \R::store($role);
+        $xown = 'xown'.ucfirst($type);
+        $owner->{$xown}[] = $role;
+        $cname->{$xown}[] = $role;
+        $rname->{$xown}[] = $role;
+        \R::store($owner);
+        \R::store($cname);
+        \R::store($rname);
+        return $role;
     }
     $verbose = isset($_GET['verbose']);
 /*
@@ -234,21 +285,21 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css', 1, 'sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS', 'anonymous', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
-        'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.6.3/css/all.css', 1, 'sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/', 'anonymous', 0, 0, 'css'],
+        'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, 'sha384-lASoplRCh9raTlvIKvrhqO3avLn7BFQyvIOBEl2orbulYLy3fRL73IyCvt+FRy3K', 'anonymous', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.8.1/css/all.css', 1, 'sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU', 'anonymous', 0, 0, 'css'],
 // JS
-        'jquery'        => ['https://code.jquery.com/jquery-3.3.1.min.js', 1, 'sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', 'anonymous', 0, 0, 'js'],
-        'jqueryslim'    => ['https://code.jquery.com/jquery-3.3.1.slim.min.js', 1, 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'anonymous', 0, 0, 'js'],
-        'bgfadejs'      => [$dir.'/assets/js/bgfade-min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js', 1, 'sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k', 'anonymous', 0, 0, 'js'],
+        'jquery'        => ['https://code.jquery.com/jquery-3.4.0.min.js', 1, 'sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', 'anonymous', 0, 0, 'js'],
+        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.0.slim.min.js', 1, 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'anonymous', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', 'anonymous', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js', 1, 'sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut', 'anonymous', 0, 0, 'js'],
-        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, 'sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/', 'anonymous', 0, 0, 'js'],
+        'vuejs'         => ['https://unpkg.com/vue', 1, '', '', 0, 0, 'js'],
     ];
 /**
  *  RedBean needs an alias to use namespaces
@@ -261,8 +312,8 @@
 
     try
     {
-        $twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem('./install/twigs'),
+        $twig = new \Twig\Environment(
+            new \Twig\Loader\FilesystemLoader('./install/twigs'),
             ['cache' => FALSE, 'debug' => TRUE]
         );
     }
@@ -276,6 +327,7 @@
  */
     $hasmb = function_exists('mb_strlen');
     $haspdo = in_array('mysql', \PDO::getAvailableDrivers());
+    $hasgah = function_exists('getallheaders'); // this is an Apache only function called in the setup of the system
 
     if (!$hasmb || !$haspdo)
     {
@@ -294,22 +346,25 @@
     }
 
     $beans = [
-        'config',
+        'fwconfig',
         'confirm',
+        'form',
+        'formfield',
         'page',
         'pagerole',
         'role',
         'rolecontext',
         'rolename',
+        'table',
         'user',
     ];
 
     $fwcsp = [
         'default-src'   => ["'self'"],
-        'font-src'      => ["'self'", 'data:', 'use.fontawesome.com'], // fontawesome uses data: internally
+        'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
         'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com'],
-        'style-src'     => ["'self'", 'use.fontawesome.com', 'stackpath.bootstrapcdn.com'],
+        'style-src'     => ["'self'", '*.fontawesome.com', 'stackpath.bootstrapcdn.com'],
     ];
 /*
  * See if we have a sendmail setting in the php.ini file
@@ -335,7 +390,7 @@
     { // names with # in them will break the regexp in Local debase()
         $fail = $vals['hashname'] = TRUE;
     }
-    elseif (version_compare(phpversion(), '7.1.0', '<')) {
+    elseif (version_compare(phpversion(), '7.2.0', '<')) {
         $fail = $vals['phpversion'] = TRUE;
     }
     elseif (!function_exists('password_hash'))
@@ -362,7 +417,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
+        'forcessl', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
     ];
     $cvalue = [];
     $options = [];
@@ -388,6 +443,7 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],
             'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, non-optional, type
             'dbname'        => ['DB', FALSE, TRUE, 'string'],
             'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
@@ -405,6 +461,7 @@
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
             'usecsp'        => ['USECSP', TRUE, FALSE, 'bool'],
             'reportcsp'     => ['REPORTCSP', TRUE, FALSE, 'bool'],
+            'forcessl'      => ['', FALSE, FALSE, 'bool'],
             'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
             'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
             'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
@@ -482,6 +539,7 @@
             fputs($fd, '/**'.PHP_EOL.' * Generated by framework installer - '.date('r').PHP_EOL.'*/'.PHP_EOL.'    class Config'.PHP_EOL.'    {'.PHP_EOL);
             fputs($fd, "        const BASEDNAME\t= '".$dir."';".PHP_EOL);
             fputs($fd, "        const SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', $cvalue['sitename'])."';".PHP_EOL);
+
             foreach ($cvars as $fld => $pars)
             {
                 if ($pars[0] !== '')
@@ -512,23 +570,22 @@
                 }
             }
             //fputs($fd, "\tconst DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
-            foreach ($beans as $b)
-            {
-                fputs($fd, "        const ".strtoupper($b)."\t= '".DBPREFIX.$b."';".PHP_EOL);
-            }
 
             fputs($fd, "
         public static function setup()
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
-            'Date'              => gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-target'     => '_top',      # deframes things
-            'X-Frame-Options'	=> 'DENY',      # deframes things
-            'Content-Language'	=> 'en',
-            'Vary'              => 'Accept-Encoding',
-            ]);
+            'Date'                   => gmstrftime('%b %d %Y %H:%M:%S', time()),
+            'Window-Target'          => '_top',      # deframes things
+            'X-Frame-Options'	     => 'DENY',      # deframes things: SAMEORIGIN would allow this site to use frames
+            'Content-Language'	     => 'en',
+            'Vary'                   => 'Accept-Encoding',
+            'X-Content-Type-Options' => 'nosniff',
+            'X-XSS-Protection'       => '1; mode=block',
+            ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
+            " : '')."]);
         }".PHP_EOL.PHP_EOL);
-
+                  
             fputs($fd, '
         public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
@@ -536,7 +593,24 @@
                 fputs($fd, "                '".$key."' => [\"".implode('", "', $val).'"],'.PHP_EOL);
             }
             fputs($fd, '        ];'.PHP_EOL);
-            fputs($fd, '    }'.PHP_EOL.'?>');
+            fputs($fd, '    }'.PHP_EOL.PHP_EOL);
+            if (!$hasgah)
+            {
+                fputs($fd, '
+        function getallheaders() // code taken from PHP getallheaders manual page
+        { // Apache only function so provide a definition of it. Used in \\Framework\\Context
+            $headers = []; 
+            foreach ($_SERVER as $name => $value) 
+            { 
+                if (substr($name, 0, 5) == \'HTTP_\')
+                { 
+                    $headers[str_replace(\' \', \'-\', ucwords(strtolower(str_replace(\'_\', \' \', substr($name, 5)))))] = $value;
+                } 
+            } 
+            return $headers; 
+         }'.PHP_EOL.PHP_EOL);
+            }
+            fputs($fd, '?>');
             fclose($fd);
     /*
      * Setup the .htaccess file
@@ -569,14 +643,15 @@
      */
             try
             {
-                $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a weird problem with some XAMPP installations)
+                $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
+                $vals['dbtype'] = $cvalue['dbtype'];
                 $vals['dbhost'] = $cvalue['dbhost'];
                 $vals['dbname'] = $cvalue['dbname'];
                 $vals['dbuser'] = $cvalue['dbuser'];
-                \R::setup('mysql:host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
+                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
-                $user = R::dispense('user');
+                $user = R::dispense(DBPREFIX.'user');
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
                 $user->password = password_hash($cvalue['adminpw'], PASSWORD_DEFAULT);
@@ -587,7 +662,7 @@
     /**
      * Now initialise the confirmation code table
      */
-                $conf = R::dispense('confirm');
+                $conf = R::dispense(DBPREFIX.'confirm');
                 $conf->code = 'this is a rubbish code';
                 $conf->issued = $now;
                 $conf->kind = 'C';
@@ -619,43 +694,16 @@
      *
      * These are both granted to the admin user.
      */
-                $cname = \R::dispense('rolecontext');
-                $cname->name = 'Site';
-                $cname->fixed = 1;
-                \R::store($cname);
+                $cname = makerc(DBPREFIX.'rolecontext', FWCONTEXT);
     // Admin role name
-                $arname = \R::dispense('rolename');
-                $arname->name = 'Admin';
-                $arname->fixed = 1;
-                \R::store($arname);
-
-                $role = \R::dispense('role');
-                $role->otherinfo = '-';
-                $role->start = $now;
-                $role->end =   $now; # this makes RedBean make it a datetime field
-                \R::store($role);
-                $role->end = NULL; # clear end date as we don't want to time limit admin
-                \R::store($role);
-                $user->xownRole[] = $role;
-                $cname->xownRole[] = $role;
-                $arname->xownRole[] = $role;
-                \R::store($arname);
+                $arname = makerc(DBPREFIX.'rolename', ADMINROLE);
+                makerole(DBPREFIX.'role', $now, $user, $cname, $arname);
     // Developer Role name
-                $drname = \R::dispense('rolename');
-                $drname->name = 'Developer';
-                \R::store($drname);
-
-                $role = \R::dispense('role');
-                $role->otherinfo = '-';
-                $role->start = $now;
-                $role->end = NULL; # no end date
-                \R::store($role);
-                $user->xownRole[] = $role;
-                $cname->xownRole[] = $role;
-                $drname->xownRole[] = $role;
-                \R::store($user);
-                \R::store($cname);
-                \R::store($drname);
+                $drname = makerc(DBPREFIX.'rolename', DEVELROLE);
+                makerole(DBPREFIX.'role', $now, $user, $cname, $drname);
+    // Testing role and context
+                $cname = makerc(DBPREFIX.'rolecontext', TESTCONTEXT);
+                $trname = makerc(DBPREFIX.'rolename', TESTROLE);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
      *
@@ -664,7 +712,7 @@
                 $pages = [
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
-                    'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', TRUE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
+                    'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
@@ -680,7 +728,7 @@
                 ];
                 foreach ($pages as $pname => $data)
                 {
-                    $page = \R::dispense('page');
+                    $page = \R::dispense(DBPREFIX.'page');
                     $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
                     $page->source = $data[1];
@@ -690,33 +738,12 @@
                     \R::store($page);
                     if ($data[2])
                     { // must be an admin
-                        $pagerole = \R::dispense('pagerole');
-                        $pagerole->start = $now;
-                        $pagerole->end = NULL;
-                        $pagerole->otherinfo = '';
-                        \R::store($pagerole);
-                        $page->xownPageRole[] = $pagerole;
-                        $cname->xownPageRole[] = $pagerole;
-                        $arname->xownPageRole[] = $pagerole;
-                        \R::store($page);
-                        \R::store($cname);
-                        \R::store($arname);
+                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $arname);
                     }
                     if ($data[4])
                     { // must be a developer
-                        $pagerole = \R::dispense('pagerole');
-                        $pagerole->start = $now;
-                        $pagerole->end = NULL;
-                        $pagerole->otherinfo = '';
-                        \R::store($pagerole);
-                        $page->xownPageRole[] = $pagerole;
-                        $cname->xownPageRole[] = $pagerole;
-                        $drname->xownPageRole[] = $pagerole;
-                        \R::store($page);
-                        \R::store($cname);
-                        \R::store($drname);
+                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $drname);
                     }
-
                 }
                 $tpl = 'success.twig';
             }

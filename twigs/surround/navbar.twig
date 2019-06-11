@@ -24,7 +24,10 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{base}}/admin/forms/">Forms</a>
                                 <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{base}}/admin/beans/">Beans</a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{base}}/admin/config/">Config</a>
+                                <a class="dropdown-item" href="{{base}}/admin/checksum/">Checksum</a>
                                 <a class="dropdown-item" href="{{base}}/admin/update/">Update</a>
                             </div>
                         </li>
@@ -35,16 +38,19 @@
                             <div class="dropdown-menu" aria-labelledby="dddevel">
                                 <a class="dropdown-item" href="{{base}}/devel/hack/">Run Code</a>
                                 <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{base}}/admin/info/">PHP Info</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown{{action == 'test' ? ' active'}}">
+                            <a href="#" class="nav-link dropdown-toggle" id="ddtest" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
+                            <div class="dropdown-menu" aria-labelledby="ddtest">
+                                <a class="dropdown-item" href="{{base}}/devel/test/">Test Page</a>
+                                <a class="dropdown-item" href="{{base}}/test/">Access Check Test</a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{base}}/devel/fail/">Fail</a>
                                 <a class="dropdown-item" href="{{base}}/devel/throw/">Throw</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{base}}/devel/mail/">Test mail</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{base}}/admin/info/">PHP Info</a>
-{#
-                                <a class="dropdown-item" href="{{base}}/devel/errlog">View Error Log</a>
-                                <a class="dropdown-item" href="{{base}}/devel/clearlog">Clear Error Log</a>
-#}
                             </div>
                         </li>
                     {% endif %}

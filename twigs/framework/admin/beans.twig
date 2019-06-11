@@ -1,0 +1,110 @@
+{% set ajax = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+{% import '@util/attrmacro.twig' as h %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.parsley)}}></script>
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+{% endblock scripts %}
+
+{% block onload %}
+    $('#nbform').parsley();
+    $('#addb').on('click', function(e){
+        $('#nbform').submit();
+
+        return;
+        e.preventDefault()
+        const name = $('#npname').val()
+        $('#npage').modal('hide');
+        const fn = function(data){
+            var htm = '<tr><td>'+name+'</td>'+
+            '<td><a href="/admin/view/table/'+data+'"><i class="editb far fa-eye"></i></a></td>'+
+            '<td><a href="/admin/edit/table/'+data+'"><i class="editb far fa-edit"></i></a></td></tr>';
+            var nx
+            if (sp == null)
+            {
+                 nx = $(htm).appendTo($('#ptab tbody'));
+            }
+            else
+            {
+                nx = $(htm).insertBefore(sp.parent());
+            }
+            nx.data('id', data);
+        };
+        $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
+            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+        });
+    })
+    $('#nbean').on('show.bs.modal', function(e){
+        $('#nbform input,select').val('')
+    })
+    $('#more').on('click', framework.addMore)
+{% endblock onload %}
+
+{% if not page is defined %}
+    {% set page = 1 %}
+    {% set pagesize = 10 %}
+{% endif %}
+
+{% set beans = siteinfo.tables(FALSE) %}
+
+{% set pages = (beans|length + pagesize)/pagesize %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Beans</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            <table class="table table-responsive table-striped table-hover" id="ptab">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nb in beans %}
+                        <tr data-bean="{{nb.name}}">
+                            <td class="bname">{{nb.name}}</td>
+                            <td><a href="{{base}}/admin/view/table/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
+                            <td><a href="{{base}}/admin/edit/table/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
+                        </td>
+                    {% else %}
+                        <tr><td colspan="4">No beans defined</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nbean" type="button">Add Bean</button></p>
+        </article>
+    </section>
+    {{m.open({id: 'nbean', title: 'New Bean'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="nbform">
+            <fieldset>
+                {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                    parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                    'remote-message': 'That bean already exists'} })}}
+                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
+                {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
+            </fieldset>
+            <p id="mrow">
+                <button class="btn btn-small" id="more">More</button>
+            </p>
+        </form>
+    </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

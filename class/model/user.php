@@ -3,12 +3,13 @@
  * A model class for the RedBean object User
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2013-2018 Newcastle University
+ * @copyright 2013-2019 Newcastle University
  *
  */
     namespace Model;
 
-    use Support\Context as Context;
+    use \Support\Context as Context;
+    use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for User beans
  */
@@ -17,7 +18,7 @@
 /**
  * @var string   The type of the bean that stores roles for this page
  */
-        private $roletype = 'role';
+        private $roletype = FW::ROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  */
@@ -27,42 +28,108 @@
 
         use \ModelExtend\User;
         use \ModelExtend\FWEdit;
+        use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
+/**
+ * Function called when a user bean is updated - do error checking in here
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        public function update() : void
+        {
+            if (!preg_match('/^[a-z0-9]+/i', $this->bean->login))
+            {
+                throw new \Framework\Exception\BadValue('Invalid login name');
+            }
+            if (!filter_var($this->bean->email, FILTER_VALIDATE_EMAIL))
+            {
+                throw new \Framework\Exception\BadValue('Invalid email address');
+            }
+/**
+ * @todo Validate the joined field. Correct date, not in the future
+ */
+        }
+/**
+ * Add a User from a form - invoked by the AJAX bean operation
+ *
+ * @param \Support\Context	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\BadValue
+ *
+ * @return \RedBeanPHP\OODBBean
+ */
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
+        {
+            $now = $context->utcnow(); # make sure time is in UTC
+            $fdt = $context->formdata();
+            $pw = $fdt->mustpost('password'); // make sure we have a password...
+            if (self::pwValid($pw))
+            {
+                $login = $fdt->mustpost('login');
+                if (is_object(\R::findOne('user', 'login=?', [$login])))
+                {
+                    throw new \Framework\Exception\BadValue('Login name already exists');
+                }
+                $u = \R::dispense('user');
+                $u->login = $login;
+                $u->email = $fdt->mustpost('email');
+                $u->active = 1;
+                $u->confirm = 1;
+                $u->joined = $now;
+                \R::store($u);
+                $u->setpw($pw); // set the password
+                if ($fdt->post('admin', 0) == 1)
+                {
+                    $u->addrole(FW::FWCONTEXT, FW::ADMINROLE, '', $now);
+                }
+                if ($fdt->post('devel', 0) == 1)
+                {
+                    $u->addrole(FW::FWCONTEXT, FW::DEVELROLE, '', $now);
+                }
+                return $u;
+            }
+            else
+            {
+                // bad password return
+                throw new \Framework\Exception\BadValue('Invalid Password');
+            }
+        }
 /**
  * Is this user an admin?
  *
- * @return boolean
+ * @return bool
  */
-        public function isadmin()
+        public function isadmin() : bool
         {
-            return is_object($this->hasrole('Site', 'Admin'));
+            return is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
         }
 /**
  * Is this user active?
  *
- * @return boolean
+ * @return bool
  */
-        public function isactive()
+        public function isactive() : bool
         {
             return $this->bean->active;
         }
 /**
  * Is this user confirmed?
  *
- * @return boolean
+ * @return bool
  */
-        public function isconfirmed()
+        public function isconfirmed() : bool
         {
             return $this->bean->confirm;
         }
 /**
  * Is this user a developer?
  *
- * @return boolean
+ * @return bool
  */
-        public function isdeveloper()
+        public function isdeveloper() : bool
         {
-            return is_object($this->hasrole('Site', 'Developer'));
+            return is_object($this->hasrole(FW::FWCONTEXT, FW::DEVELROLE));
         }
 /**
  * Set the user's password
@@ -71,7 +138,7 @@
  *
  * @return void
  */
-        public function setpw(string $pw)
+        public function setpw(string $pw) : void
         {
             $this->bean->password = password_hash($pw, PASSWORD_DEFAULT);
             \R::store($this->bean);
@@ -81,9 +148,9 @@
  *
  * @param string	$pw The password
  *
- * @return boolean
+ * @return bool
  */
-        public function pwok(string $pw)
+        public function pwok(string $pw) : bool
         {
             return password_verify($pw, $this->bean->password);
         }
@@ -92,7 +159,7 @@
  *
  * @return void
  */
-        public function doconfirm()
+        public function doconfirm() : void
         {
             $this->bean->active = 1;
             $this->bean->confirm = 1;
@@ -105,38 +172,30 @@
  *
  * @return string
  */
-	public function maketoken(string $device = '')
+	public function maketoken(string $device = '') : string
 	{
 	    $token = (object)['iss' => \Config\Config::SITEURL, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
+        /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
 	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
 	}
 /**
  * Setup for an edit
  *
- * @param object    $context   The context object
+ * @param \Support\Context    $context   The context object
  * 
  * @return void
  */
-        public function startEdit(Context $context)
+        public function startEdit(Context $context, array $rest) : void
         {
-        }
-/**
- * Return the CSRFGuard inputs for inclusion in a form;
- * 
- * @return string
- */
-        public function guard()
-        {
-            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle an edit form for this user
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return  array   [TRUE if error, [error messages]]
  */
-        public function edit(Context $context)
+        public function edit(Context $context) : array
         {
             $fdt = $context->formdata();
             $emess = $this->dofields($fdt);

@@ -1,0 +1,18 @@
+{#
+    There are many useful favicon generators on the web. Most of them will generate a zip file
+    containing the necessary images and a file with the relevant HTML to use them.
+
+    Unzip the file in assets/favicons and copy the HTML into theis twig.
+
+    *** Remember to update the file names to reflect their proper location (see below) ***
+#}
+
+<link rel="shortcut icon" href="{{assets}}/favicons/favicon.ico"/>
+<link rel="icon" href="{{assets}}/favicons/favicon.ico" type="image/x-icon"/>
+
+{#
+    <link rel="icon" type="image/png" href="{{assets}}/favicons/favicon.png"/>
+    <link rel="apple-touch-icon" href="{{assets}}/favicons/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="{{assets}}/favicons/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="{{assets}}/favicons/apple-touch-icon-114x114.png"/>
+#}

@@ -1,0 +1,163 @@
+{% set ajax = TRUE %}
+{% set x = context.web.addCSP('js', 'unsafe-inline') %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+{% import '@util/attrmacro.twig' as h %}
+
+{% set allownew = view is not defined and object is not defined %}
+{% set inline = view is not defined and object is defined %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    {% if allownew %}
+        <script {{h.urlattr(fwurls.parsley)}}></script>
+    {% endif %}
+    {% if inline%}
+        <script {{h.urlattr(fwurls.editable)}}></script>
+    {% endif %}
+{% endblock scripts %}
+
+{% block css %}
+    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
+{% endblock css %}
+
+{% block setup %}
+    {%if inline %} {# only want this if we are doing inline edits  #}
+        function mkinline(type, name, msg, id, value)
+        {
+            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+        }
+
+        function paramset(params)
+        {
+            params.id = params.pk
+            params.bean = '{{bean.name}}'
+            params.op = 'update'
+            return params
+        }
+    {% endif %}
+{% endblock setup %}
+
+{% block onload %}
+    {%if inline %}
+        $('.ppedit').editable({
+            ajaxOptions: { type: 'PUT' },
+            params: paramset,
+            onblur: 'cancel',
+            url: framework.editcall
+        });
+    {% endif %}
+    {% if allownew %}
+        $('#nfform').on('submit', false).parsley();
+        $('#addb').on('click', function(e){
+            e.preventDefault();
+            const pn = $('#nfname').val().toLowerCase();
+            if (!pn.match(/^[a-z][a-z0-9.]*$/))
+            {
+                bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only');
+                return;
+            }
+            let sp = null;
+            let error = false;
+            $('.fname').each(function(e){
+                const t = $(this).text();
+                if (t == pn)
+                {
+                    error = true;
+                    return false;
+                }
+                if (t > pn)
+                {
+                    sp = $(this);
+                    return false;
+                }
+            })
+            if (error)
+            {
+                bootbox.alert('That field already exists');
+                return;
+            }
+        })
+        $('#nfield').on('show.bs.modal', function(e){
+            $('#nfform input,select').val('');
+        })
+    {% endif %}
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Bean &ldquo;{{bean.name}}&rdquo;</h1>
+    </section>
+{% endblock header %}
+
+{% set foptions = [] %}
+{% block main %}
+    <section class="row">
+        {% include '@util/message.twig' %}
+        <article class="ml-auto col-md-10 mr-auto">
+            <table class="table table-responsive table-striped">
+                <tbody>
+                    {% for name,type in bean.fields %}
+                        {% set foptions = foptions|merge([{value: name}]) %}
+                        <tr>
+                            <td class="fname">{{name}}</td>
+                            <td>{{type}}</td>
+                            {% if object is defined %}
+                                {% set x = attribute(object, name) %}
+                                {% if name ends with '_id' %}
+                                    {% set xn = name|split('_') %}
+                                    <td><a href="{{base}}/admin/{{ view is defined ? 'view' : 'edit'}}/table/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
+                                {% else %}
+                                    <td>{% if view is defined %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if allownew %}
+                <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
+            {% else %}
+                <p><button class="btn btn-primary" data-toggle="modal" data-target="#tsearch" type="button">Search</button></p>
+            {% endif %}
+        </article>
+    </section>
+    {% if allownew %}
+        {{m.open({is: 'nfield', title: 'New Field'})}}
+        <div class="modal-body">
+            <form action="#" method="POST" id="nfform">
+                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
+                {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
+            </form>
+        </div>
+        {{m.close({action: 'Add', id: 'addb'})}}
+    {% else %}
+        {{m.open({id: 'tsearch', title: 'Search'})}}
+        <div class="modal-body">
+            <form action="#" method="POST" id="sform">
+                {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
+                {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
+                   {value: '=' },
+                   {value: '!=' },
+                   {value: 'like' },
+                   {value: 'contains' },
+                   {value: '>' },
+                   {value: '>=' },
+                   {value: '<' },
+                   {value: '<=' },
+                   {value: 'regexp' },
+                   {value: 'is NULL' },
+                   {value: 'is not NULL' },
+                ]})}}
+                {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
+            </form>
+        </div>
+        {{m.close({action: 'Add', id: 'Search'})}}  
+    {% endif %}
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

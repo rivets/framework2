@@ -3,7 +3,7 @@
  * Contains definition of the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2015 Newcastle University
+ * @copyright 2012-2018 Newcastle University
  */
     namespace Framework\Web;
     use Support\Context as Context;
@@ -31,23 +31,28 @@
 /**
  * Generate a Location header
  *
+ * These codes are a mess and are handled by brtowsers incorrectly....
+ *
  * @param string		$where		The URL to divert to
- * @param bool       		$temporary	TRUE if this is a temporary redirect
+ * @param bool       	$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
- * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       	$use303    If TRUE then use 303 rather than 302
+ *
+ * @return never-return
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
             if ($temporary)
             {
-                $code = $nochange ? StatusCodes::HTTP_TEMPORARY_REDIRECT : StatusCodes::HTTP_FOUND;
+                $code = $nochange ? StatusCodes::HTTP_TEMPORARY_REDIRECT : ($use303 ? StatusCodes::HTTP_SEE_OTHER : StatusCodes::HTTP_FOUND);
             }
             else
             {
 /**
- * @todo Check status of 308 code which should be used if nochage is TRUE. May not yet be official.
+ * @todo Check status of 308 code which should be used if nochange is TRUE. May not yet be official.
  */
-                $code = StatusCodes::HTTP_MOVED_PERMANENTLY;
+                $code = $nochange ? StatusCodes::HTTP_PERMANENT_REDIRECT : StatusCodes::HTTP_MOVED_PERMANENTLY;
             }
             $this->addheader('Location', $where);
             $this->sendstring($msg, self::HTMLMIME);
@@ -58,6 +63,8 @@
  *
  * @param int    	$code	The return code
  * @param string	$msg	The message (or '')
+ *
+ * @return never-return
  */
         private function sendhead(int $code, string $msg)
         {
@@ -77,6 +84,10 @@
  * @param mixed		$code	The HTTP return code or ''
  *
  * @return array
+ *
+ * @psalm-suppress InvalidOperand
+ * @psalm-suppress PossiblyInvalidOperand
+ * @psalm-suppress InvalidNullableReturnType
  */
         public function hasrange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
@@ -140,8 +151,8 @@
         public function send304(string $etag, int $maxage)
         {
             $this->addheader([
-            'Etag'	=> '"'.$etag.'"',
-            'Cache-Control'	=> 'maxage='.$maxage
+                'Etag'	=> '"'.$etag.'"',
+                'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
             ]);
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
@@ -149,6 +160,8 @@
  * Generate a 400 Bad Request error return
  *
  * @param string		$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function bad(string $msg = '')
         {
@@ -158,6 +171,8 @@
  * Generate a 403 Access Denied error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function noaccess(string $msg = '')
         {
@@ -167,6 +182,8 @@
  * Generate a 404 Not Found error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function notfound(string $msg = '')
         {
@@ -176,6 +193,8 @@
  * Generate a 416 Not Satisfiable error return
  *
  * @param string	$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function notsatisfiable(string $msg = '')
         {
@@ -185,6 +204,8 @@
  * Generate a 500 Internal Error error return
  *
  * @param string		$msg	A message to be sent
+ *
+ * @return never-return
  */
         public function internal(string $msg = '')
         {
@@ -295,7 +316,7 @@
 /**
  * Check to see if the client accepts gzip encoding
  *
- * @return boolean
+ * @return bool
  */
         public function acceptgzip() : bool
         {
@@ -314,7 +335,7 @@
 /**
  * Is this a POST?
  *
- * @return boolean
+ * @return bool
  */
         public function ispost() : bool
         {
@@ -377,13 +398,14 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @param object   $context    The context object
+ * @param \Support\Context   $context    The context object
  *
  * @return void
  */
-        public function setCSP(Context $context)
+        public function setCSP(Context $context) : void
         {
             $local = $context->local();
+            /** @psalm-suppress PossiblyNullPropertyFetch */
             if ($local->config('usecsp')->value)
             {
                 $csp = '';
@@ -400,7 +422,12 @@
                 }
                 if ($local->config('reportcsp')->value)
                 {
-                    $csp .= ' report-uri: '.$local->base().'/cspreport/;';
+                    $edp = $local->base().'/cspreport/';
+                    $csp .= ' report-uri: '.$edp.';'; // This is deprecated but widely supported
+                    $csp .= ' report-to: csp-report;';
+                    $this->addheader([
+                        'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }'
+                    ]);
                 }
                 $this->addheader([
                     'Content-Security-Policy'   => $csp
@@ -414,7 +441,7 @@
  *
  * @param string    $secret  The recaptcha secret for this site
  *
- * @return boolean
+ * @return bool
  */
         public function recaptcha(string $secret) : bool
         {

@@ -3,13 +3,14 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework;
 
-    use Config\Config as Config;
-    use Framework\Web\Web as Web;
-    use Framework\Web\StatusCodes as StatusCodes;
+    use \Config\Config as Config;
+    use \Config\Framework as FW;
+    use \Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes as StatusCodes;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -21,28 +22,28 @@
     {
         use \Framework\Utility\Singleton;
 
-        const ERROR     = 0;        # 'errmessage';
-        const WARNING   = 1;        # 'warnmessage';
-        const MESSAGE   = 2;        # 'message';
+        const ERROR     = 0;        # 'fwerrmessage';
+        const WARNING   = 1;        # 'fwwarnmessage';
+        const MESSAGE   = 2;        # 'fwmessage';
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
-        private  static $msgnames  = ['errmessage', 'warnmessage', 'message'];
+        private  static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
 /**
  * @var	string		The absolute path to the site directory
  */
-        private $basepath;
+        private $basepath = '';
 /**
  * @var	string		The name of the site directory
  */
         private $basedname	= '';
 
 /**
- * @var	boolean		If TRUE then ignore trapped errors
+ * @var	bool		If TRUE then ignore trapped errors
  */
         private $errignore	= FALSE;	# needed for checking preg expressions....
 /**
- * @var	boolean		Set to TRUE if an error was trapped and ignored
+ * @var	bool		Set to TRUE if an error was trapped and ignored
  */
         private $wasignored	= FALSE;
 /**
@@ -50,19 +51,19 @@
  */
         private $senterrors	= [];
 /**
- * @var	boolean		If TRUE then we are doing debugging
+ * @var	bool		If TRUE then we are doing debugging
  */
         private $debug		= FALSE;
 /**
- * @var boolean         If TRUE then we are handling an error
+ * @var bool         If TRUE then we are handling an error
  */
         private $error          = FALSE;
 /**
- * @var	boolean		If TRUE then we are in developer mode
+ * @var	bool		If TRUE then we are in developer mode
  */
         private $devel		= FALSE;
 /**
- * @var	boolean		If TRUE then we are in ajax code and so error reporting is different
+ * @var	bool		If TRUE then we are in ajax code and so error reporting is different
  */
         private $ajax		= FALSE;
 /**
@@ -70,7 +71,7 @@
  */
         private $sysadmin	= [Config::SYSADMIN];
 /**
- * @var	object		the Twig renderer
+ * @var	?object		the Twig renderer
  */
         private $twig		= NULL;
 /**
@@ -84,7 +85,7 @@
 /**
  * @var string          Backtrace info - only used with errors
  */
-        private $back;
+        private $back       = '';
 /**
  * @var array           Config values from database
  */
@@ -95,7 +96,7 @@
  *
  * @return void
  */
-        private function addmessages()
+        private function addmessages() : void
         {
             foreach ($this->messages as $ix => $vals)
             {
@@ -104,16 +105,25 @@
             $this->clearmessages();
         }
 /**
+ * Rewrite error string
+ *
+ * @return string
+ */
+        private function eRewrite() : string
+        {
+            return '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+        }
+/**
  * Tell sysadmin there was an error
  *
- * @param string	$msg	An error messager
- * @param string	$type	An error type
- * @param string 	$file	file in which error happened
- * @param string	$line	Line at which it happened
+ * @param string	 $msg	An error messager
+ * @param int|string $type	An error type
+ * @param string 	 $file	file in which error happened
+ * @param int    	 $line	Line at which it happened
  *
- * @return void
+ * @return string
  */
-        private function telladmin($msg, $type, $file, $line)
+        private function telladmin(string $msg, $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
@@ -122,6 +132,7 @@
                 $this->senterrors[$ekey] = TRUE;
                 if (isset($_GET['fwtrace']))
                 {
+                    $this->debug = TRUE;
                     ob_start();
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back = ob_get_clean(); # will get used later in make500
@@ -138,13 +149,13 @@
                             $mail->addAddress($em);
                         }
                         $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-                        $mail->msgHTML('<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>');
+                        $mail->msgHTML($this->eRewrite());
                         $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
                         $mail->send();
                     }
-                    catch (\PHPMailer\PHPMailer\Exception $e)
+                    catch (\Exception $e)
                     {
-                        $ekey .= '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+                        $ekey .= $this->eRewrite();
                     }
                 }
 
@@ -158,21 +169,19 @@
  *
  * @return void
  */
-        private function make500(string $ekey)
+        private function make500(string $ekey) : void
         {
             if (!headers_sent())
             { # haven't generated any output yet.
                 if ($this->devel || !$this->ajax)
                 { # not in an ajax page so try and send a pretty error
-                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? '<pre>'.
-                        str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>' :
-                        'There has been an internal error');
-                    if (is_object($this->twig))
+                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : 'There has been an internal error');
+                    if (!$this->ajax && is_object($this->twig))
                     { # we have twig so render a nice page
                         Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
-                    { # no twig so just dump
+                    { # no twig or ajax so just dump
                         Web::getinstance()->internal($str);
                     }
                 }
@@ -188,17 +197,17 @@
  *
  * It also closes the RedBean connection
  */
-        public function shutdown()
+        public function shutdown() : void
         {
             if ($error = error_get_last())
             { # are we terminating with an error?
                 if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
                 { # tell the developers about this
                     $ekey = $this->telladmin(
-                	$error['message'],
+                        $error['message'],
                         $error['type'],
                         $error['file'],
-                	$error['line']
+                        $error['line']
                     );
                     $this->make500($ekey);
                 }
@@ -212,22 +221,23 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @param Exception	$e
+ * @param \Exception	$e
  */
-        public function exceptionHandler($e)
+        public function exceptionHandler($e) : void
         {
             if ($this->error)
             { // try and ignore errors within errors
                 return;
             }
             $ekey = $this->telladmin(
-                $e->getMessage().' ',
-                get_class($e),
+                get_class($e).': '.$e->getMessage(),
+                0,
                 $e->getFile(),
                 $e->getLine()
             );
             $this->make500($ekey);
             exit;
+            /* NOT REACHED */
         }
 /**
  * Called when a PHP error is detected - see PHP documentation for details
@@ -242,9 +252,9 @@
  * @param string	$errfile
  * @param int   	$errline
  *
- * @return boolean
+ * @return bool
  */
-        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline)
+        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
         {
             if ($this->errignore)
             { # wanted to ignore this so just return
@@ -256,8 +266,8 @@
                 return TRUE;
             }
             $ekey = $this->telladmin(
-                $errno.' '.$errstr,
-                'Error',
+                'Error '.$errno.' '.$errstr,
+                $errno,
                 $errfile,
                 $errline
             );
@@ -280,11 +290,11 @@
  * @param int       $line      Line number in file
  * @param string    $message    Message
  */
-            public function assertFail($file, $line, $message)
+            public function assertFail($file, $line, $message) : void
             {
                 $ekey = $this->telladmin(
-                    $message,
-                    'Assertion Failure',
+                    'Assertion Failure: '.$message,
+                    0,
                     $file,
                     $line
                 );
@@ -297,7 +307,7 @@
  *
  * @param bool       	$ignore	If TRUE then ignore the error otherwise stop ignoring
  *
- * @return boolean	The last value of the wasignored flag
+ * @return bool	The last value of the wasignored flag
  */
         public function eignore(bool $ignore) : bool
         {
@@ -349,9 +359,18 @@
  *
  * @return ?object
  */
-        public function config(string $name)
+        public function config(string $name) : ?object
         {
             return $this->fwconfig[$name] ?? NULL;
+        }
+/**
+ * Return aall the config values
+ *
+ * @return array
+ */
+        public function allconfig() : array
+        {
+            return $this->fwconfig;
         }
 /**
  * Initialise twig template engine
@@ -360,7 +379,7 @@
  *
  * @return void
  */
-        public function setuptwig(bool $cache = FALSE)
+        public function setuptwig(bool $cache = FALSE) : void
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
@@ -383,24 +402,28 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
+            foreach (self::$msgnames as $mn)
+            {
+                $this->twig->addGlobal($mn, []);
+            }
             $this->tvals = [];
         }
 /**
  * Calls a user defined function with the twig object as a parameter.
  * The user can then add extensions, filters etc.
  *
- * @param function     $fn      A user defined function
+ * @param callable     $fn      A user defined function
  *
  * @return void
  */
-        public function extendtwig(callable $fn)
+        public function extendtwig(callable $fn) : void
         {
             $fn($this->twig);
         }
 /**
  * Return TRUE if Twig is enabled
  *
- * @return boolean
+ * @return bool
  */
         public function hastwig() : bool
         {
@@ -422,6 +445,7 @@
             }
             $this->addmessages(); # add in any messages
             $this->addval($vals); # set up any values that have been passed
+            /** @psalm-suppress PossiblyNullReference */
             return $this->twig->render($tpl, $this->tvals);
         }
 /**
@@ -432,7 +456,7 @@
  *
  * @return void
  */
-        public function render(string $tpl, array $vals = [])
+        public function render(string $tpl, array $vals = []) : void
         {
             if ($tpl !== '')
             {
@@ -442,12 +466,12 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string	$vname		The name to be used inside the twig or an array of value pairs
- * @param mixed		$value		The value to be stored or "" if an array in param 1
+ * @param string|array	$vname		The name to be used inside the twig or an array of value pairs
+ * @param mixed		    $value		The value to be stored or "" if an array in param 1
  *
  * @return void
  */
-        public function addval($vname, $value = "")
+        public function addval($vname, $value = '') : void
         {
             if (is_array($vname))
             {
@@ -481,7 +505,7 @@
  *
  * @return void
  */
-        public function message(int $kind, $value)
+        public function message(int $kind, $value) : void
         {
             if (is_array($value))
             {
@@ -499,7 +523,7 @@
  *
  * @return void
  */
-        public function clearmessages(string $kind = '')
+        public function clearmessages(string $kind = '') : void
         {
             if ($kind === '')
             {
@@ -549,13 +573,15 @@
 /**
  * Put the system into debugging mode
  *
+ * @psalm-suppress PossiblyNullReference
+ *
  * @return void
  */
-        public function enabledebug()
+        public function enabledebug() : void
         {
             $this->debug = TRUE;
             if ($this->hastwig())
-            {
+            { // now we know we have twig - hence suppress above
                 $this->twig->addExtension(new \Twig\Extension\DebugExtension());
                 $this->twig->enableDebug();
             }
@@ -571,9 +597,9 @@
  * @param bool       	$loadtwig	if TRUE then load in Twig.
  * @param bool       	$loadrb		if TRUE then load in RedBean
  *
- * @return object
+ * @return \Framework\Local
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE)
+        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : \Framework\Local
         {
             $this->devel = $devel;
             $this->basepath = $basedir;
@@ -597,8 +623,11 @@
  /*
  * Set up all the system error handlers
  */
+            /** @psalm-suppress ArgumentTypeCoercion */
             set_exception_handler([$this, 'exceptionHandler']);
             set_error_handler([$this, 'errorHandler']);
+            /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
+            /** @psalm-suppress ArgumentTypeCoercion */
             register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
@@ -622,23 +651,24 @@
 /*
  * Initialise database access
  */
-//	    require_once('rb.php'); # RedBean interface
             class_alias('\RedBeanPHP\R','\R');
+            /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { # looks like there is a database configured
-                \R::setup('mysql:host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
+                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
                 $this->fwconfig = [];
-                foreach (\R::findAll('fwconfig') as $cnf)
+                foreach (\R::findAll(FW::CONFIG) as $cnf)
                 {
                     $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
                     $this->fwconfig[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {
+                    /** @psalm-suppress PossiblyNullReference */
                     $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
                 }
-	    }
+            }
             return $this;
         }
     }

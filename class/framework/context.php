@@ -3,11 +3,12 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework;
 
     use Config\Config as Config;
+    use Config\Framework as FW;
     use Framework\Web\Web as Web;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
@@ -18,58 +19,25 @@
 /**
  * The name of the authentication token field.
  */
-        const TOKEN 	        = 'X-APPNAME-TOKEN';
+        const TOKEN 	    = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
         const KEY	        = 'Some string of text.....';
-/**
- * Value indicating to generate a 400 output from function when value does not exist
- */
-        const R400              = 0;
-/**
- * Value indicating to generate a NULL return from function when value does not exist
- */
-        const RNULL             = 1;
-/**
- * Value indicating to throw an error from function when value does not exist
- */
-        const RTHROW            = 2;
-/**
- * Value indicating to return default value from function when value does not exist
- */
-        const RDEFAULT          =  3;
-/**
- * Value indicating to return a boolean value from function, FALSE if value does not exist
- */
-        const RBOOL             =  4;
-/**
- * @var object		NULL or an object decribing the current logged in User (if we have logins at all)
- */
+
+/** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
-/**
- * @var integer		Counter used for generating unique ids
- */
+/** @var integer	Counter used for generating unique ids */
         protected $idgen        = 0;
-/**
- * @var string		The first component of the current URL
- */
+/** @var string		The first component of the current URL */
         protected $reqaction	= 'home';
-/**
- * @var array		The rest of the current URL exploded at /
- */
+/** @var array		The rest of the current URL exploded at / */
         protected $reqrest	= [];
-/**
- * @var boolean		True if authenticated by token
- */
-	protected $tokauth	= FALSE;
- /**
- * @var array		A cache for rolename beans
- */
+/** @var boolean    True if authenticated by token */
+        protected $tokauth	= FALSE;
+/** @var array		A cache for rolename beans */
         protected $roles        = [];
- /**
- * @var array		A cache for rolecontext beans
- */
+/** @var array		A cache for rolecontext beans */
         protected $contexts     = [];
 /*
  ***************************************
@@ -105,29 +73,18 @@
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
  * @param integer           $count      The number to check for
- * @param integer           $onerror    What to do on failure
  *
  * @return array The parameters values in an array indexed from 0
  */
-        public function restcheck(int $count, int $onerror = self::R400) : array
+        public function restcheck(int $count) : array
         {
-            foreach (range(1, $count) as $ix)
+            if (($cnt = count($this->reqrest)) <= $count)
             {
-                if (($this->reqrest[$ix] ?? '') === '')
-                {
-                    switch ($onerror)
-                    {
-                    case self::R400:
-                        $this->web()->bad('parameter count');
-                        /* NOT REACHED */
-                    case self::RTHROW:
-                        throw new \Framework\Exception\ParameterCount();
-                    default:
-                        throw new \InvalidArgumentException('Onerror value');
-                    }
-                }
+                throw new \Framework\Exception\ParameterCount();
             }
-            return array_slice($this->reqrest, 1, $count);
+            $res = array_slice($this->reqrest, 1, $count);
+            $res[] = array_slice($this->reqrest, $count+1); // return anything left - there might be optional parameters.
+            return $res;
         }
 /**
  ***************************************
@@ -137,9 +94,9 @@
 /**
  * Return the current logged in user if any
  *
- * @return object
+ * @return ?object
  */
-        public function user()
+        public function user() : ?object
         {
             return $this->luser;
         }
@@ -148,16 +105,17 @@
  *
  * @param object    $user
  *
- * @return boolean
+ * @return bool
  */
         public function sameuser($user) : bool
         {
+             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
         }
 /**
  * Do we have a logged in user?
  *
- * @return boolean
+ * @return bool
  */
         public function hasuser() : bool
         {
@@ -170,6 +128,7 @@
  */
         public function hasadmin() : bool
         {
+            /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isadmin();
         }
 /**
@@ -179,6 +138,7 @@
  */
         public function hasdeveloper() : bool
         {
+            /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isdeveloper();
         }
 /**
@@ -192,38 +152,44 @@
 	}
 /**
  * Check for logged in and 403 if not
-  *
-  * @return void
-  */
-        public function mustbeuser()
+ *
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
+        public function mustbeuser() : void
         {
             if (!$this->hasuser())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be logged in');
             }
         }
 /**
  * Check for an admin and 403 if not
  *
+ * @throws \Framework\Exception\Forbidden
+ *
  * @return void
  */
-        public function mustbeadmin()
+        public function mustbeadmin() : void
         {
             if (!$this->hasadmin())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be an admin');
             }
         }
 /**
  * Check for an developer and 403 if not
  *
+ * @throws \Framework\Exception\Forbidden
+ *
  * @return void
  */
-        public function mustbedeveloper()
+        public function mustbedeveloper() : void
         {
             if (!$this->hasdeveloper())
             {
-                $this->web()->noaccess();
+                throw new \Framework\Exception\Forbidden('Must be a developer');;
             }
         }
 /*
@@ -231,6 +197,17 @@
  * Miscellaneous utility functions
  ***************************************
  */
+/**
+ * Set up pagination data
+ */
+        public function setpages() : void
+        {
+            $form = $this->formdata();
+            $this->local()->addval([
+                'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
+                'pagesize'  => $form->filterget('pagesize', 10, FILTER_VALIDATE_INT)
+            ]);
+        }
 /**
  * Generates a new, unique, sequential id value
  *
@@ -248,13 +225,13 @@
  *
  * @param string    $name   A Role name
  *
- * @return object
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function rolename(string $name)
+        public function rolename(string $name) : ?\RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->roles[$name] = \R::findOne('rolename', 'name=?', [$name]);
+                $this->roles[$name] = \R::findOne(FW::ROLENAME, 'name=?', [$name]);
             }
             return $this->roles[$name];
         }
@@ -263,13 +240,13 @@
  *
  * @param string    $name   A Role Context
  *
- * @return object
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function rolecontext(string $name)
+        public function rolecontext(string $name) : ?\RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->contexts[$name] = \R::findOne('rolecontext', 'name=?', [$name]);
+                $this->contexts[$name] = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name]);
             }
             return $this->contexts[$name];
         }
@@ -281,7 +258,7 @@
  *
  * @return mixed
  */
-        public function sessioncheck(string $var, bool $fail = TRUE)
+        public function sessioncheck(string $var)
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
@@ -290,10 +267,6 @@
                 {
                     return $_SESSION[$var];
                 }
-            }
-            if ($fail)
-            {
-                $this->web()->noaccess();
             }
             return NULL;
         }
@@ -304,71 +277,66 @@
  * @param bool       		$temporary	TRUE if this is a temporary redirect
  * @param string		$msg		A message to send
  * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
  *
- * @return void NEVER returns
+ * @return never-return
  */
-        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {
-            $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange);
+            $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange, $use303);
+            /* NOT REACHED */
         }
-
 /**
- * Load a bean or fail with a 400 error
+ * Load a bean
  *
  * @param string	$bean	    A bean type name
- * @param int    	$id	    A bean id
- * @param int           $onerror    A flag indicating what to do on error (see constants above)
+ * @param int    	$id	        A bean id
+ * @param boolean   $forupdate  If TRUE then use loadforupdate
  *
- * @throws  Exception when asked to by the "onerror" value
+ * R::load returns a new bean with id 0 if the given id does not exist.
  *
- * @return object
+ * @throws  \Framework\Exception\MissingBean
+ * @throws  \InvalidArgumentException - this would be an internal error
+ *
+ * @return \RedBeanPHP\OODBBean
  */
-        public function load(string $bean, int $id, int $onerror = self::R400)
+        public function load(string $bean, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            $foo = \R::load($bean, $id);
+            $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
-            { # a bean with that id does not exist
-                switch ($onerror)
-                {
-                case self::R400:
-                    $this->web()->bad($bean.' '.$id);
-                    /* NOT REACHED */
-                case self::RNULL:
-                    return NULL;
-                case self::RTHROW:
-                    throw new \Framework\Exception\MissingBean();
-                default:
-                    throw new \InvalidArgumentException('Onerror value');
-                }
+            {
+                throw new \Framework\Exception\MissingBean('Missing '.$bean);                
             }
             return $foo;
         }
 /**
  * Return the local object
  *
- * @return object
+ * @psalm-suppress MoreSpecificReturnType
+ *
+ * @return \Framework\Local
  */
-        public function local()
+        public function local() : \Framework\Local
         {
-            return Local::getinstance();
+            return \Framework\Local::getinstance();
         }
 /**
  * Return the Formdata object
  *
- * @return object
+ * @return \Support\FormData
  */
-        public function formdata()
+        public function formdata() : \Support\FormData
         {
-            return Formdata::getinstance();
+            return \Support\FormData::getinstance();
         }
 /**
  * Return the Web object
  *
- * @return object
+ * @return \Framework\Web\Web
  */
-        public function web()
+        public function web() : \Framework\Web\Web
         {
-            return Web::getinstance();
+            return \Framework\Web\Web::getinstance();
         }
 /**
  * Return an iso formatted time for NOW  in UTC
@@ -376,7 +344,7 @@
  * @return string
  */
         public function utcnow() : string
-        {
+        { /** @psalm-suppress InvalidOperand */
             return \R::isodatetime(time() - date('Z'));
         }
 /**
@@ -387,7 +355,7 @@
  * @return string
  */
         public function utcdate(string $datetime) : string
-        {
+        { /** @psalm-suppress InvalidOperand */
             return \R::isodatetime(strtotime($datetime) - date('Z'));
         }
 /*
@@ -398,19 +366,20 @@
 /**
  * Initialise the context and return self
  *
- * @return object
+ * @return \Framework\Context
  */
-        public function setup()
+        public function setup() : \Framework\Context
         {
-            $this->luser = $this->sessioncheck('user', FALSE); # see if there is a user variable in the session....
+            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
             foreach (getallheaders() as $k => $v)
             {
                 if (self::TOKEN === strtoupper($k))
                 { // we have mobile authentication in use
                     try
                     {
+                        /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                        $this->luser = $this->load('user', $tok->sub, self::RTHROW);
+                        $this->luser = $this->load('user', $tok->sub);
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.

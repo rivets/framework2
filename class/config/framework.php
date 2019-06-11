@@ -10,7 +10,7 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  */
     namespace Config;
 /**
@@ -18,12 +18,30 @@
  */
     class Framework
     {
+        const DBPREFIX	    = '';
+        const FWCONTEXT	    = self::DBPREFIX.'Site';
+        const TESTCONTEXT	= self::DBPREFIX.'Test';
+        const ADMINROLE	    = self::DBPREFIX.'Admin';
+        const DEVELROLE	    = self::DBPREFIX.'Developer';
+        const TESTROLE	    = self::DBPREFIX.'Tester';
+        const CONFIG	    = self::DBPREFIX.'fwconfig';
+        const CONFIRM	    = self::DBPREFIX.'confirm';
+        const FORM	        = self::DBPREFIX.'form';
+        const FORMFIELD	    = self::DBPREFIX.'formfield';
+        const PAGE	        = self::DBPREFIX.'page';
+        const PAGEROLE      = self::DBPREFIX.'pagerole';
+        const ROLE	        = self::DBPREFIX.'role';
+        const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
+        const ROLENAME	    = self::DBPREFIX.'rolename';
+        const TABLE	        = self::DBPREFIX.'table';
+        const USER	        = self::DBPREFIX.'user';
+
 /**
  * Initialise some standard things for any invocation of a page
  *
  * @return void
  */
-        public static function initialise()
+        public static function initialise() : void
         {
             error_reporting(E_ALL|E_STRICT);
 /*
@@ -40,7 +58,7 @@
             );
             spl_autoload_extensions('.php');
             spl_autoload_register();
-
+            /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php';
         }
     }

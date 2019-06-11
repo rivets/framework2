@@ -11,15 +11,9 @@
 
     {% import '@util/attrmacro.twig' as h %}
 
-{#
-    <link rel="shortcut icon" href="{{assets}}/img/favicon.png"/>
-    <link rel="icon" type="image/png" href="{{assets}}/img/favicon.png"/>
-#}
-{#
-    <link rel="apple-touch-icon" href="{{assets}}/ico/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{assets}}/ico/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{assets}}/ico/apple-touch-icon-114x114.png">
-#}
+    {% block favicons %}
+    {% endblock favicons %}
+
     <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
     <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
     <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>

@@ -4,70 +4,52 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
+
+{% block setup %}
+    const clicks = [
+        ['delb', framework.dodelbean, ''],
+        ['admb', framework.dotoggle, '{{constant('\\Config\\Framework::ADMINROLE')}}'],
+        ['confirm', framework.dotoggle, 'confirm'],
+        ['active', framework.dotoggle, 'active'],
+        ['devb', framework.dotoggle, '{{constant('\\Config\\Framework::DEVELROLE')}}'],
+        ['editb', framework.goedit]
+    ];
+{% endblock setup %}
 
 {% block onload %}
     $('#adduform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
-        var data = {admin : 0, devel : 0};
-	var frm = $('#adduform');
-	$('input:checked', frm).each(function(index, element){
-	     data[$(this).attr('name')] = 1;
-	});
-	$('input:text,input:password,input[type="email"]', frm).each(function(index, element){
-	     data[$(this).attr('name')] = $(this).val();
-	});
-	$.post('{{base}}/ajax/bean/user/', data).done(function(ret){
-	    $('#addu').modal('hide');
-	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
-		'<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
-		'<td>'+mktoggle('confirm', data.confirm)+'</td>'+
-		'<td>'+mktoggle('active', data.active)+'</td>'+
-		'<td>'+mktoggle('admb', data.admin)+'</td>'+
-		'<td>'+mktoggle('devb', data.devel)+'</td>'+
-		'<td><i class="editb far fa-edit"></i></td>' +
-		'<td><i class="delb far fa-trash-alt"></i></td></tr>'
-	    );
-	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
-	}).fail(function(){
-            bootbox.alert('Creation of new User failed');
+        e.preventDefault();
+        $(this).attr('disabled', true);
+        let data = {admin : 0, devel : 0};
+        const frm = $('#adduform');
+        $('input:checked', frm).each(function(index, element){
+             data[$(this).attr('name')] = 1;
         });
-    })
-    $('#utab').on('click', function(e){
-        var x = $(e.target);
-	if (x.hasClass('delb'))
-	{
-            dodelbean(e, x, 'user');
-	}
-	else if (x.hasClass('editb'))
-	{
-	    var tr = x.parent().parent();
-	    window.location.href = '{{base}}/admin/edit/user/' + tr.data('id') + '/';
-	}
-	else if (x.hasClass('admb'))
-	{
-	    dotoggle(e, x, 'user', 'Admin');
-	}
-	else if (x.hasClass('confirm'))
-	{
-	    dotoggle(e, x, 'user', 'confirm');
-	}
-	else if (x.hasClass('active'))
-	{
-	    dotoggle(e, x, 'user', 'active');
-	}
-	else if (x.hasClass('devb'))
-	{
-	    dotoggle(e, x, 'user', 'Developer');
-	}
-    })
+        $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
+             data[$(this).attr('name')] = $(this).val();
+        });
+        framework.beanCreate('user', data, function(ret){
+            $('#addu').modal('hide');
+            $('#utab tbody').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
+                '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
+                '<td>'+framework.mktoggle('confirm', data.confirm)+'</td>'+
+                '<td>'+framework.mktoggle('active', data.active)+'</td>'+
+                '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
+                '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
+                '<td><i class="editb far fa-edit"></i></td>' +
+                '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+            );
+            framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
+        }, '#addb');
+    });
+    $('#utab').on('click', {bean: 'user', clicks: clicks}, framework.tableClick);
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -75,7 +57,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('user') + pagesize)/pagesize %}
+{% set pages = siteinfo.pagecount('user', pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -84,7 +66,6 @@
 {% endblock header %}
 
 {% block main %}
-    {% import _self as h %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
@@ -121,45 +102,39 @@
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#addu" type="button">Add User</button></p>
         </article>
     </section>
-    <div class="modal fade" id="addu" tabindex="-1" role="dialog" aria-labelledby="Add User" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                {{m.header({title: 'Add A New User'})}}
-                <div class="modal-body">
-                    <form id="adduform" action="#" method="post">
-                        <div class="form-group">
-                            <label for="un" class="control-label">User Name</label>
-                            <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
-                            data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/logincheck/"
-                            data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="pw" class="control-label">Password</label>
-                            <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required"/>
-                        </div>
-                        <div class="form-group">
-                             <label for="rpw" class="control-label">Repeat Password</label>
-                            <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
-                                data-parsley-trigger="change" data-parsley-equalto="#pw"/>
-                        </div>
-                        <div class="form-group">
-                            <label for="em" class="control-label">Email Adress</label>
-                            <input type="email" id="em" name="email" placeholder="pat@smith.com" data-parsley-trigger="change" class="form-control" required="required"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="admin" value="1"> Admin
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="devel" value="1"> Developer
-                            </label>
-                        </div>
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
+    {{m.open({id: 'addu', title: 'Add A New User'})}}
+    <div class="modal-body">
+        <form id="adduform" action="#" method="post">
+            <div class="form-group">
+                <label for="un" class="control-label">User Name</label>
+                <input type="text" id="un" name="login" placeholder="username - alphanumeric characters only" class="form-control" required="required"
+                data-parsley-trigger="change"  data-parsley-remote-reverse="false" data-parsley-remote="{{base}}/ajax/unique/{{constant('Config\\Framework::USER')}}/login/{value}"
+                data-parsley-remote-message="That user name is not available" data-parsley-type="alphanum"/>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="pw" class="control-label">Password</label>
+                <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required"/>
+            </div>
+            <div class="form-group">
+                 <label for="rpw" class="control-label">Repeat Password</label>
+                <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
+                    data-parsley-trigger="change" data-parsley-equalto="#pw"/>
+            </div>
+            <div class="form-group">
+                <label for="em" class="control-label">Email Adress</label>
+                <input type="email" id="em" name="email" placeholder="pat@smith.com" data-parsley-trigger="change" class="form-control" required="required"/>
+            </div>
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="admin" value="1"> Admin
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="devel" value="1"> Developer
+                </label>
+            </div>
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

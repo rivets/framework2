@@ -122,6 +122,16 @@
                     <fieldset>
                         <legend>Database Information</legend>
                         <div class="form-group">
+                            <label for="dt" class="control-label">Database Type</label>
+                            <select is="dt" name="dbtype" class="form-control" required="required">
+                                <option value="mysql">MySQL</option>
+                                <option value="mysql">MariaDB</option>
+                                <option value="pgsql">PostgresSQL</option>
+                                <option disabled="disabled">CUBRID</option>
+                                <option disabled="disabled">SQLite</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="dh" class="control-label">Host</label>
                             <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
                         </div>
@@ -204,16 +214,6 @@
                         <legend>Features</legend>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="usecsp" value="1"/> Emit a Content Security Policy header
-                            </label>
-                        </div>            
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="reportcsp" value="1"/> Report Content Security Policy errors
-                            </label>
-                        </div>  
-                        <div class="form-check">
-                            <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input" name="private" value="1"/> Support file uploading with access control on downloads
                             </label>
                         </div>
@@ -235,6 +235,21 @@
                     </fieldset>
                     <fieldset>
                         <legend>Security</legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="usecsp" value="1"/> Emit a Content Security Policy header
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="reportcsp" value="1"/> Report Content Security Policy errors
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
+                            </label>
+                        </div>
                         <div class="form-group">
                             <label for="em" class="control-label">Admin Email</label>
                             <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required="required"/>

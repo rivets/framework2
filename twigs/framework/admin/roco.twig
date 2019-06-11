@@ -1,0 +1,139 @@
+{% set ajax = TRUE %}
+{# Role names and Context names pages are identical apart from the typology #}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+{% import '@util/attrmacro.twig' as h %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+    <script {{h.urlattr(fwurls.parsley)}}></script>
+{% endblock scripts %}
+
+{% set ctype = type|capitalize %}
+
+{% block setup %}
+    const clicks = [
+        ['delb', framework.dodelbean, ''],
+        ['fixed', framework.dotoggle, 'fixed'],
+    ]
+{% endblock setup %}
+
+{% block onload %}
+    $('#nrform').on('submit', false).parsley();
+    $('#addb').on('click', function(e){
+        e.preventDefault();
+        $(this).attr('disabled', true);
+        const pn = $('#nrname').val();
+        if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
+        {
+            bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
+            return;
+        }
+        let sp = null;
+        let error = false;
+        $('.rname').each(function(e){
+            var t = $(this).text();
+            if (t == pn)
+            {
+                error = true;
+                return false;
+            }
+            if (t > pn)
+            {
+                sp = $(this);
+                return false;
+            }
+        });
+        if (error)
+        {
+            bootbox.alert('That {{beantype}} name already exists');
+            $(this).attr('disabled', false);
+            return;
+        }
+        $('#nroco').modal('hide');
+        const htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td><i class="delb far fa-trash-alt"></i></td></tr>';
+        let nx;
+        if (sp == null)
+        {
+            nx = $(htm).appendTo($('#rtab tbody'));
+        }
+        else
+        {
+            nx = $(htm).insertBefore(sp.parent());
+        }
+        $.post('{{base}}/ajax/bean/{{beantype}}/', {
+            name : pn,
+        }).done(function(data){
+               nx.data('id', data)
+        }).fail(function(jqXHR, textStatus, errorThrown){
+            bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
+        }).always(function(e){
+            $('#addb').attr('disabled', false);
+        });
+    });
+    $('#rtab').on('click', {bean: '{{beantype}}', clicks: clicks}, framework.tableClick);
+
+    $('#nroco').on('show.bs.modal', function(e){
+        $('#nrform input').val('');
+    });
+{% endblock onload %}
+
+{% if not page is defined %}
+    {% set page = 1 %}
+    {% set pagesize = 10 %}
+{% endif %}
+
+{% set pages = siteinfo.pagecount(beantype, pagesize) %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+	<h1>{{ctype}} Names</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            <table class="table table-striped table-hover" id="rtab">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Fixed</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in attribute(siteinfo, fcall, [page, pagesize]) %}
+                        <tr data-id="{{r.id}}">
+                            <td class="rname">{{r.name}}</td>
+                            <td>{{f.tick(r.fixed, 'fixed')}}</td>
+                            <td>{% if r.fixed %}&nbsp;{% else %}<i class="delb far fa-trash-alt"></i>{% endif %}</td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="3">No {{type}} names defined</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            {{m.invoke('nroco', 'Add ' ~ ctype ~ ' Name')}}
+        </article>
+    </section>
+    {{m.open({id: 'nroco', title: 'New ' ~ ctype ~ ' Name'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="nrform">
+            <div class="form-group">
+                {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, parsley: { trigger: 'change',
+                'remote-reverse': 'false', remote: base~'/ajax/unique/' ~ beantype ~ '/name/{value}',
+                'remote-message': 'That ' ~ type ~ ' name is not available', type: 'alphanum'} })}}
+            </div>
+       </form>
+    </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

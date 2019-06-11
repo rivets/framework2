@@ -12,6 +12,8 @@
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
+{% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{% endif %}{% endmacro fileopts %}
+
 {% macro data(opts) %}{% for k,v in opts %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
 
 {% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro parsley %}
@@ -20,12 +22,15 @@
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
-<input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.numopts(type, opts)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}/>
+<input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.fileopts(type, opts)}}{{fx.numopts(type, opts)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}/>
 {% endmacro input %}
 
 {% macro bsl(opts) %}{% import _self as fx %}<div class="form-group">
     {% if opts.label != '' %}
         <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
+    {% endif %}
+    {% if opts.rlabel != '' %}
+        <label{{fx.hv('for', opts.id)}}>{{opts.rlabel|raw}}</label>
     {% endif %}
 {% endmacro bsl %}
 
@@ -36,6 +41,8 @@
 </div>
 {% endmacro bse%}
 
+{% macro slct(opts, ov) %}{% if (opts.multiple and ov.value in opts.selected) or opts.selected == ov.value %} selected="selected"{% endif %}{% endmacro slct %}
+
 {% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
 {% macro email(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('email', opts)}}{{fx.bse(opts)}}{% endmacro %}
@@ -44,7 +51,7 @@
 
 {% macro number(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('range', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
@@ -80,9 +87,9 @@
 {% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
-    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}>
+    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{{fx.hv('size', opts.size)}}>
         {% for ov in opts.options %}
-            <option value="{{ov.value}}"{% if opts.selected == ov.value %} selected="selected"{% endif %}>{{ov.text|raw}}</option>
+            <option value="{{ov.value is defined ? ov.value : ov.text}}"{{fx.slct(opts, ov)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
     </select>{{fx.bse(opts)}}{% endmacro select %}
 
@@ -97,11 +104,11 @@
     {% endif %}
 {% endmacro recaptcha %}
 
-{% macro tick(val, class) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i>{% endmacro tick %}
+{% macro tick(val, class, label = '', disabled = FALSE) %}<i class="{{class}} fas fa-toggle-{% if val %}on{% else %}off{% endif %}"></i> {{label}}{% endmacro tick %}
 
-{% macro htick(val, class, name, disabled) %}
+{% macro htick(val, class, name, disabled, label = '') %}
 {% import _self as fx %}
-{{fx.tick(val, class ~ ' htick', disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
+{{fx.tick(val, class ~ ' htick', label, disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
 {% macro inline(type, name, msg, id, value, empty = '----') %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}

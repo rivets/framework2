@@ -22,7 +22,7 @@
  */
         public function __construct(string $name)
         {
-	    $this->far = $_FILES[$name];
+            $this->far = $_FILES[$name];
 /*
  *  The 'error' sub-array is just used an iteration control and any of the field arrays could be used.
  */
@@ -38,17 +38,17 @@
  *
  * @return array
  */
-        public function current()
+        public function current() : array
         {
             $x = $this->far;
-	    $k = $this->key();
-	    return [
-	        'name'      => $x['name'][$k],
-	        'type'      => $x['type'][$k],
-	        'size'      => $x['size'][$k],
-	        'tmp_name'  => $x['tmp_name'][$k],
-	        'error'     => $x['error'][$k],
-	    ];
+            $k = $this->key();
+            return [
+                'name'      => $x['name'][$k],
+                'type'      => $x['type'][$k],
+                'size'      => $x['size'][$k],
+                'tmp_name'  => $x['tmp_name'][$k],
+                'error'     => $x['error'][$k],
+            ];
         }
     }
 ?>

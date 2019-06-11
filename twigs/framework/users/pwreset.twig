@@ -1,6 +1,6 @@
 {% extends '@content/page.twig' %}
 
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>

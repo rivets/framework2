@@ -3,10 +3,11 @@
  * Definition of Userlogin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  */
     namespace Framework\Pages;
 
+    use \Config\Framework as FW;
     use \Config\Config as Config;
     use \Framework\Local as Local;
     use \Support\Context as Context;
@@ -14,23 +15,24 @@
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
-    class Userlogin extends \Framework\Siteaction
+    class UserLogin extends \Framework\SiteAction
     {
+        use \Support\Login;
 /**
  * Find a user based on either a login or an email address
  *
  * @param string	$lg     A username or email address
  *
- * @return object	The user or NULL
+ * @return ?\RedBeanPHP\OODBBean	The user or NULL
  */
-        private function eorl(string $lg)
+        private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
-            return R::findOne('user', (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
+            return R::findOne(FW::USER, (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
 /**
  * Make a confirmation code and store it in the database
  *
- * @param object	$context The context bean
+ * @param \Support\Context	$context The context bean
  * @param object	$bn	 A User bean
  * @param string	$kind
  *
@@ -38,9 +40,9 @@
  */
         private function makecode(Context $context, $bn, string $kind) : string
         {
-            R::trashAll(R::find('confirm', 'user_id=?', [$bn->getID()]));
+            R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
-            $conf = R::dispense('confirm');
+            $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
             $conf->issued = $context->utcnow();
             $conf->kind = $kind;
@@ -51,120 +53,62 @@
 /**
  * Mail a confirmation code
  *
- * @param object	$context The context object
+ * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
  *
- * @return string
+ * @return void
  */
-        private function sendconfirm(Context $context, $bn) : string
+        private function sendconfirm(Context $context, $bn) : void
         {
             $code = $this->makecode($context, $bn, 'C');
             mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
-            "Please use this link to confirm your email address\n\n\n".
-            Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-            'From: '.Config::SITENOREPLY
+                "Please use this link to confirm your email address\n\n\n".
+                Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+                'From: '.Config::SITENOREPLY
             );
         }
 /**
  * Mail a password reset code
  *
- * @param object	$context The context object
+ * @param \Support\Context	$context The context object
  * @param object	$bn	 A User bean
- *
- * @return string
- */
-        private function sendreset(Context $context, $bn) : string
-        {
-            $code = $this->makecode($context, $bn, 'P');
-            mail($bn->email, 'Reset your '.Config::SITENAME.' password',
-            "Please use this link to reset your password\n\n\n".
-            Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-            'From: '.Config::SITENOREPLY
-            );
-        }
-/**
- * Handle a logout
- *
- * Clear all the session material if any and then divert to the /login page
- *
- * Code taken directly from the PHP session_destroy manual page
- *
- * @link	http://php.net/manual/en/function.session-destroy.php
- *
- * @param object	$context	The context object for the site
  *
  * @return void
  */
-        public function logout(Context $context)
+        private function sendreset(Context $context, $bn) : void
         {
-            $_SESSION = []; # Unset all the session variables.
-
-            # If it's desired to kill the session, also delete the session cookie.
-            # Note: This will destroy the session, and not just the session data!
-            if (ini_get('session.use_cookies'))
-            {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
-                );
-            }
-            if (session_status() == PHP_SESSION_ACTIVE)
-            { # no session started yet
-                session_destroy(); # Finally, destroy the -session.
-            }
-            $context->divert('/');
+            $code = $this->makecode($context, $bn, 'P');
+            mail($bn->email, 'Reset your '.Config::SITENAME.' password',
+                "Please use this link to reset your password\n\n\n".
+                Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
+                'From: '.Config::SITENOREPLY
+            );
         }
 /**
  * Handle a login
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
         public function login(Context $context) : string
         {
             $local = $context->local();
-            $local->addval('register', \Config\Config::REGISTER);
+            $local->addval('register', Config::REGISTER);
             if ($context->hasuser())
             { # already logged in
-                $local->message(Local::MESSAGE, 'Please log out before trying to login');
+                $local->message(Local::WARNING, 'Please log out before trying to login');
             }
             else
             {
-                $fdt = $context->formdata();
-                if (($lg = $fdt->post('login', '')) !== '')
-                {
-                    $page = $fdt->post('page', '');
-                    $pw = $fdt->post('password', '');
-                    if ($pw !== '')
-                    {
-                        $user = $this->eorl($lg);
-                        if (is_object($user) && $user->pwok($pw) && $user->confirm)
-                        {
-                            if (session_status() != PHP_SESSION_ACTIVE)
-                            { # no session started yet
-                                session_start(['name' => Config::SESSIONNAME, 'cookie_path' => $local->base().'/']);
-                            }
-                            $_SESSION['user'] = $user;
-                            $context->divert($page === '' ? '/' : $page); # success - divert to home page
-                        }
-                    }
-                    $local->message(Local::MESSAGE, 'Please try again.');
-                }
-                else
-                {
-                    $page = $fdt->get('page', '');
-                }
-                $local->addval('page', $page);
+                $this->checkLogin($context);
             }
             return '@content/login.twig';
         }
 /**
  * handle a registration
  *
- *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -183,15 +127,15 @@
                     $email = $fdt->mustpost('email');
                     if ($pw != $rpw)
                     {
-                    $errmess[] = 'The passwords do not match';
+                        $errmess[] = 'The passwords do not match';
                     }
                     if (preg_match('/[^a-z0-9]/i', $login))
                     {
-                    $errmess[] = 'Your username can only contain letters and numbers';
+                        $errmess[] = 'Your username can only contain letters and numbers';
                     }
                     if (!filter_var($email, FILTER_VALIDATE_EMAIL))
                     {
-                    $errmess[] = 'Please provide a valid email address';
+                        $errmess[] = 'Please provide a valid email address';
                     }
                     if (empty($errmess))
                     {
@@ -221,7 +165,7 @@
 /**
  * Handle things to do with email address confirmation
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -229,9 +173,9 @@
         {
             if ($context->hasuser())
             { # logged in, so this stupid....
-            $context->divert('/');
+                $context->divert('/');
             }
-                $local = $context->local();
+            $local = $context->local();
             $tpl = 'index.twig';
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
@@ -243,7 +187,7 @@
                 }
                 else
                 { # handle the form
-                    $user = $this->eorl($lg);
+                    $user = self::eorl($lg);
                     if (!is_object($user))
                     {
                         $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
@@ -261,10 +205,10 @@
             }
             else
             { # confirming the email
-                $x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'C']);
+                $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
                 if (is_object($x))
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 3)
                     {
                         $x->user->doconfirm();
@@ -282,19 +226,19 @@
 /**
  * Handle things to do with password reset
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
         public function forgot(Context $context) : string
         {
+            $local = $context->local();
             if ($context->hasuser())
             { # logged in, so this stupid....
-                $context->local()->addval('done', TRUE);
-                $context->local()->message(Local::WARNING, 'You are already logged in');
+                $local->addval('done', TRUE);
+                $local->message(Local::WARNING, 'You are already logged in');
                 return '@users/reset.twig';
             }
-            $local = $context->local();
             $fdt = $context->formdata();
             $tpl = 'index.twig';
             $rest = $context->rest();
@@ -304,7 +248,7 @@
                 $tpl = '@users/reset.twig';
                 if ($lg !== '')
                 {
-                    $user = $this->eorl($lg);
+                    $user = self::eorl($lg);
                     $tpl = '@users/reset.twig';
                     if (is_object($user))
                     {
@@ -321,12 +265,12 @@
             elseif ($rest[0] === 'reset')
             {
                 $tpl = '@users/pwreset.twig';
-                $user = $context->load('user', $fdt->mustpost('uid'));
+                $user = $fdt->mustpostbean('uid', 'user');
                 $code = $fdt->mustpost('code');
-                $xc = R::findOne('confirm', 'code=? and kind=?', [$code, 'P']);
+                $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($xc->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($xc->issued));
                     if ($interval->days <= 1)
                     {
                         $pw = $fdt->mustpost('password');
@@ -346,7 +290,6 @@
                     {
                         $local->message(Local::ERROR, 'Sorry, that code has expired!');
                     }
-
                 }
                 else
                 {
@@ -355,10 +298,10 @@
             }
             else
             {
-                $x = R::findOne('confirm', 'code=? and kind=?', [$rest[0], 'P']);
+                $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'P']);
                 if (is_object($x))
                 {
-                    $interval = (new DateTime($context->utcnow()))->diff(new DateTime($x->issued));
+                    $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 1)
                     {
                         $local->addval('pwuser', $x->user);
@@ -376,7 +319,7 @@
 /**
  * Handle /login /logout /register /forgot /confirm
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

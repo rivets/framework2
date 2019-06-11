@@ -3,7 +3,7 @@
   * Class for handling contact messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2012-2018 Newcastle University
+  * @copyright 2012-2019 Newcastle University
   */
     namespace Pages;
 
@@ -14,12 +14,12 @@
 /**
  * A class that contains code to implement a contact page
  */
-    class Contact extends \Framework\Siteaction
+    class Contact extends \Framework\SiteAction
     {
 /**
  * Handle various contact operations /contact
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
@@ -34,7 +34,6 @@
                 $mail->addAddress(Config::SYSADMIN);
 
                 $mail->Subject = $fd->post('subject', 'No Subject');
-                $mail->AltBody= $msg;
                 $mail->Body= $msg;
                 $mail->send();
 

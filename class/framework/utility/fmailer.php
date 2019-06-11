@@ -4,7 +4,7 @@
  * or using the SMTP part so f PHPMailer
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2018 Newcastle University
+ * @copyright 2017-2019 Newcastle University
  */
     namespace Framework\Utility;
 
@@ -19,11 +19,14 @@
 /**
  * The constructor
  *
+ * @psalm-suppress UndefinedConstant Some of the constants are not defined in some installations.
+ *
  * @param bool          $exceptions    Passed to the PHPMailer constructor
  */
         public function __construct(bool $exceptions = TRUE)
         {
             parent::__construct($exceptions);
+            /** @psalm-suppress TypeDoesNotContainType */
             if (Config::USEPHPM)
             {
                 $this->isSMTP();

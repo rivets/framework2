@@ -5,7 +5,7 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -17,11 +17,11 @@
 /**
  * Handle editing of beans
  * 
- * @param object    $fdt  The formdata object from the context
+ * @param \Support\FormData    $fdt  The formdata object from the context
  *
- * @return array
+ * @return string[]
  */
-        private function dofields($fdt)
+        private function dofields(\Support\FormData $fdt) : array
         {
             $emess = [];
             foreach (self::$editfields as $fld => $flags)

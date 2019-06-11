@@ -3,7 +3,7 @@
  * Contains definition of Debug class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2017 Newcastle University
+ * @copyright 2014-2019 Newcastle University
  */
     namespace Framework;
 /**
@@ -12,7 +12,7 @@
     class Debug
     {
 /**
- * @var Resource    The file descriptor
+ * @var ?Resource    The file descriptor
  */
         private static $fd = NULL;
 /**
@@ -22,7 +22,7 @@
 /**
  * Set up the file
  */
-        private static function setup()
+        private static function setup() : void
         {
             if (self::$fd === NULL)
             {
@@ -35,28 +35,31 @@
  * @param string    $str
  *
  * @todo use the new ... stuff in PHP 5.6 to allow many parameters
- * 
+ *
  * @return void
  */
-        public static function show(string $str)
+        public static function show(string $str) : void
         {
             self::setup();
+            /** @psalm-suppress PossiblyNullArgument  */
             fputs(self::$fd, $str."\n");
         }
 /**
  * Dump a variable - uses buffering to grab the output.
  *
- * @param mixed    $var
+ * @param mixed $vars
  *
  * @todo use the new ... stuff in PHP 5.6 to allow many parameters
  *
  * @return void
  */
-        public static function vdump($var)
+        public static function vdump(...$vars) : void
         {
             self::setup();
             ob_start();
-            var_dump($var);
+            /** @psalm-suppress ForbiddenCode */
+            var_dump(...$vars);
+            /** @psalm-suppress PossiblyNullArgument  */
             fputs(self::$fd, ob_get_clean());
         }
 /**
@@ -64,7 +67,7 @@
  *
  * @return void
  */
-        public static function flush()
+        public static function flush() : void
         {
             if (self::$fd !== NULL)
             {
@@ -80,11 +83,10 @@
  *
  * @return void
  */
-        public static function head(string $str)
+        public static function head(string $str) : void
         {
             self::$hcount += 1;
-            header('X-DEBUG-INFO'.$hcount.': '.$str);
+            header('X-DEBUG-INFO'.self::$hcount.': '.$str);
         }
-
     }
 ?>

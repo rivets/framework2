@@ -4,7 +4,7 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
 
 {% block css %}
     <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
@@ -19,53 +19,46 @@
     <script {{h.urlattr(fwurls.editable)}}></script>
 {% endblock scripts %}
 
-{% set types = ['Object', 'Template', 'In-site Temporary Redirect', 'In-site Permanent Redirect', 'External Temporary Redirect',  'External Permanent Rehome'] %}
+{% set types = ['Object', 'Template', 'In-site 302', 'In-site 301',
+    'External 302',  'External 301', 'In-site 303', 'External 303',
+    'In-site 307', 'External 307',
+    'In-site 308', 'External 308'] %}
 
 {% block setup %}
-    function editcall(params)
-    {
-        var url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
-        return $.ajax(url,{
-            method: 'PATCH',
-            data: {
-                value: params.value
-            }
-        });
-    }
-
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
     }
 
-    var kname = [];
     function paramset(params)
     {
         params.id = params.pk
-        params.bean = 'page'
+        params.bean = '{{constant('Config\\Framework::PAGE')}}'
         params.op = 'update'
         return params
     }
-    kname = [
+    const kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
         {% endfor %}
-    ]
-    var clicks = [
-        ['delb', dodelbean, ''],
-        ['actb', dotoggle, 'active'],
-        ['logn', dotoggle, 'needlogin'],
-        ['mobo', dotoggle, 'mobileonly']
+    ];
+
+    const clicks = [
+        ['delb', framework.dodelbean, ''],
+        ['actb', framework.dotoggle, 'active'],
+        ['logn', framework.dotoggle, 'needlogin'],
+        ['mobo', framework.dotoggle, 'mobileonly'],
+        ['editb', framework.goedit]
     ]
 {% endblock setup %}
 
 {% block onload %}
     $('.ppedit').editable({
-        ajaxOptions: { type: 'PUT' },
+        ajaxOptions: { type: 'PATCH' },
         params: paramset,
         source: kname,
         onblur: 'cancel',
-        url: editcall
+        url: framework.editcall
     });
     $('#npform').on('submit', false).parsley();
     $('#npkind').on('change', function(e) {
@@ -85,16 +78,17 @@
     })
     $('#addb').on('click', function(e){
         e.preventDefault();
-        var pn = $('#npname').val().toLowerCase();
+        $(this).attr('disabled', true); // disable submit button
+        const pn = $('#npname').val().toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
             return;
         }
-        var sp = null;
-        var error = false;
+        let sp = null;
+        let error = false;
         $('.pname').each(function(e){
-            var t = $(this).text();
+            const t = $(this).text();
             if (t == pn)
             {
                 error = true;
@@ -109,34 +103,37 @@
         if (error)
         {
             bootbox.alert('That page already exists');
+            $(this).attr('disabled', false);
             return;
         }
-        var src = $('#npsrc').val()
+        const src = $('#npsrc').val()
         if (src == '')
         {
             bootbox.alert('Please specify a source');
+            $(this).attr('disabled', false);
             return;
         }
-        var kind = $('#npkind').val();
+        const kind = $('#npkind').val();
         if (kind == '')
         {
             bootbox.alert('Please pick a page type');
+            $(this).attr('disabled', false);
             return;
         }
-        var active = $('#npactive').is(':checked') ? 1 : 0;
-        var login = $('#nplogin').is(':checked') ? 1 : 0;
-        var mobile = $('#npmobile').is(':checked') ? 1 : 0;
+        const active = $('#npactive').is(':checked') ? 1 : 0;
+        const login = $('#nplogin').is(':checked') ? 1 : 0;
+        const mobile = $('#npmobile').is(':checked') ? 1 : 0;
         $('#npage').modal('hide');
         var fn = function(data){
-                var htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                const htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
-                '<td>'+mktoggle('logn', login)+'</td>'+
-                '<td>'+mktoggle('mobo', mobile)+'</td>'+
-                '<td>'+mktoggle('actb', active)+'</td>'+
-                '<td><a href="/admin/edit/page/'+data+'"><i class="editb far fa-edit"></i></a></td>'+
+                '<td>'+framework.mktoggle('logn', login)+'</td>'+
+                '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
+                '<td>'+framework.mktoggle('actb', active)+'</td>'+
+                '<td><i class="editb far fa-edit"></i></td>'+
                 '<td><i class="delb far fa-trash-alt"></i></td></tr>';
-                var nx
+                let nx
                 if (sp == null)
                 {
                      nx = $(htm).appendTo($('#ptab tbody'));
@@ -148,7 +145,7 @@
                 nx.data('id', data);
                 //$('.ppedit', nx).editable({params: paramset, source: kname});
             };
-        var dt = {
+        let dt = {
                 name : pn,
                 kind : kind,
                 source : src,
@@ -156,47 +153,31 @@
                 login : login,
                 mobile: mobile
             };
-        var sel = ['context', 'role'];
-        var inp = ['start', 'end', 'otherinfo'];
-        var f = $('#npform');
+        const sel = ['context', 'role'];
+        const inp = ['start', 'end', 'otherinfo'];
+        const f = $('#npform');
         var inx = 0;
-        for (var n in inp)
+        for (let nv of inp)
         {
             inx = 0;
-            $('input[name^="'+inp[n]+'"]', f).each(function(){
-                dt[inp[n]+'['+inx+']'] = $(this).val();
+            $('input[name^="'+nv+'"]', f).each(function(){
+                dt[nv+'['+inx+']'] = $(this).val();
             });
         }
-        for (var n in sel)
+        for (let sv of sel)
         {
             inx = 0;
-            $('select[name^="'+sel[n]+'"]', f).each(function(){
-                dt[sel[n]+'['+inx+']'] = $(this).val();
+            $('select[name^="'+sv+'"]', f).each(function(){
+                dt[sv+'['+inx+']'] = $(this).val();
             });
         }
-        $.post('{{base}}/ajax/bean/page/', dt).done(fn).fail(function(){
-            bootbox.alert('Failed to create new page');
-        });
-    })
-    $('#ptab').on('click', function(e){
-        var x = $(e.target)
-        for (var ix in clicks)
-        {
-            if (x.hasClass(clicks[ix][0]))
-            {
-                clicks[ix][1](e, x, 'page', clicks[ix][2])
-            }
-        }
-    })
+        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, '#addb');
+    });
+    $('#ptab').on('click', {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}, framework.tableClick);
     $('#npage').on('show.bs.modal', function(e){
-        $('#npform input,select').val('')
-    })
-    $('#more').on('click', function(e){
-        e.preventDefault()
-        $('#mrow').before($('#example').clone())
-        $('input', $('#mrow').prev()).val('') // clear the new inputs
-        $('option', $('#mrow').prev()).prop('selected', false) // clear any selections
-    })
+        $('#npform option').attr('selected', false)
+    });
+    $('#more').on('click', framework.addMore);
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -204,7 +185,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = (siteinfo.count('page') + pagesize)/pagesize %}
+{% set pages = siteinfo.pagecount('page',  pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -237,7 +218,7 @@
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
-                            <td><a href="{{base}}/admin/edit/page/{{p.getID}}"><i class="editb far fa-edit"></i></a></td>
+                            <td><i class="editb far fa-edit"></a></td>
                             <td><i class="delb far fa-trash-alt"></i></td>
                         </tr>
                     {% else %}
@@ -246,79 +227,79 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#npage" type="button">Add Page</button></p>
+            <p>{{m.invoke('npage', 'Add Page')}}</p>
         </article>
     </section>
-    <div class="modal fade" id="npage" aria-labelledby="npage" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                {{m.header({title: 'New Page'})}}
-                <div class="modal-body">
-                    <form action="#" method="POST" id="npform">
-                        {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
-                            parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/pagecheck/{value}',
-                            'remote-message': 'That page already exists'} })}}
-                        {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
-                                {value: '', text: '&mdash; Pick a Type &mdash;'},
-                                {value: 1,  text: 'Object'},
-                                {value: 2,  text: 'Template'},
-                                {value: 3,  text: 'In-site Temporary Redirect'},
-                                {value: 4,  text: 'In-site Permanent Redirect'},
-                                {value: 5,  text: 'External Temporary Redirect'},
-                                {value: 6,  text: 'External Permanent Rehome'},
-                        ]})}}
-                        {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
-                        {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
-                        {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
-                        {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
-                        <fieldset>
-                            <legend>Roles</legend>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Context</th>
-                                        <th>Role</th>
-                                        <th>Start</th>
-                                        <th>End</th>
-                                        <th>Other Info</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr id="example">
-                                        <td>
-                                           <select name="context[]">
-                                                <option value="">&mdash; Context &mdash;</option>
-                                                {% for sr in siteinfo.contexts %}
-                                                    <option value="{{sr.getID}}">{{sr.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                         <td>
-                                            <select name="role[]">
-                                                <option value="">&mdash; Role &mdash;</option>
-                                                {% for sr in siteinfo.roles %}
-                                                    <option value="{{sr.getID}}">{{sr.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </td>
-                                        <td><input type="text" name="start[]" value="" placeholder="Start Date or Now" class="form-control"/></td>
-                                        <td><input type="text" name="end[]" value="" placeholder="End Date or Never" class="form-control"/></td>
-                                        <td><input type="text" name="otherinfo[]" value="" placeholder="Other Info" class="form-control"/></td>
-                                    </tr>
-                                    <tr id="mrow">
-                                        <td colspan="4">&nbsp;</td>
-                                        <td><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </fieldset>
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.open({id: 'npage', title: 'New Page'})}}
+    <div class="modal-body">
+        <form action="#" method="POST" id="npform">
+            {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
+                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/unique/' ~ constant('Config\\Framework::PAGE') ~ '/name/{value}',
+                'remote-message': 'That page already exists'} })}}
+            {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
+                    {value: '', text: '&mdash; Pick a Type &mdash;'},
+                    {value: 1,  text: 'Object'},
+                    {value: 2,  text: 'Template'},
+                    {value: 4,  text: 'In-site 301'},
+                    {value: 6,  text: 'External 301'},
+                    {value: 3,  text: 'In-site 302'},
+                    {value: 5,  text: 'External 302'},
+                    {value: 7,  text: 'In-site 303'},
+                    {value: 8,  text: 'External 303'},
+                    {value: 9,  text: 'In-site 307'},
+                    {value: 10,  text: 'External 307'},
+                    {value: 11,  text: 'Internal 308'},
+                    {value: 12,  text: 'External 308'},                   
+            ]})}}
+            {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
+            {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
+            {{f.checkbox({labels: ['Mobile Only'], values:[1], ids: ['npmobile']})}}
+            {{f.checkbox({labels: ['Login Required'], values:[1], ids: ['nplogin']})}}
+            <fieldset>
+                <legend>Roles</legend>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Context</th>
+                            <th>Role</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Other Info</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="example">
+                            <td>
+                               <select name="context[]">
+                                    <option value="">&mdash; Context &mdash;</option>
+                                    {% for sr in siteinfo.contexts %}
+                                        <option value="{{sr.getID}}">{{sr.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                             <td>
+                                <select name="role[]">
+                                    <option value="">&mdash; Role &mdash;</option>
+                                    {% for sr in siteinfo.roles %}
+                                        <option value="{{sr.getID}}">{{sr.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td><input type="text" name="start[]" value="" placeholder="Start Date or Now" class="form-control"/></td>
+                            <td><input type="text" name="end[]" value="" placeholder="End Date or Never" class="form-control"/></td>
+                            <td><input type="text" name="otherinfo[]" value="" placeholder="Other Info" class="form-control"/></td>
+                        </tr>
+                        <tr id="mrow">
+                            <td colspan="4">&nbsp;</td>
+                            <td><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

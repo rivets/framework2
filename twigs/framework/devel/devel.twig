@@ -12,7 +12,11 @@
             {% include '@util/message.twig' %}
             {% if errlog is defined %}
                 <pre>
-                    {{errlog}}
+                    {% if raw %}
+                        {{errlog|raw}}
+                    {% else %}
+                        {{errlog}}
+                    {% endif %}
                 </pre>
             {% else %}
                 <p>Select a developer action from the navigation bar.</p>

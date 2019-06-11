@@ -3,7 +3,7 @@
  * A model class for the RedBean object Role
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  *
  */
     namespace Model;
@@ -19,7 +19,7 @@
  *
  * @return object
  */
-        public function rolename()
+        public function rolename() : ?object
         {
 	        return $this->bean->rolename;
         }
@@ -28,7 +28,7 @@
  *
  * @return object
  */
-        public function rolecontext()
+        public function rolecontext() : ?object
         {
 	        return $this->bean->rolecontext;
         }
@@ -39,7 +39,7 @@
  *
  * @return string
  */
-        private function checkstart(string $start)
+        private function checkstart(string $start) : string
         {
             return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
@@ -50,14 +50,14 @@
  *
  * @return string
  */
-        private function checkend(string $end)
+        private function checkend(string $end) : ?string
         {
             return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
  * Update - called when a rolename bean is stored
  */
-        public function update()
+        public function update() : void
         {
             $this->bean->start = $this->checkstart($this->bean->start);
             $this->bean->end = $this->checkend($this->bean->end);

@@ -16,6 +16,9 @@
 
     use \R as R;
     use \Support\Context as Context;
+    use \Config\Config as Config;
+    use \Config\Framework as FW;
+    use \Support\Formdata as FormData;
 /**
  * Handle Ajax operations in this class
  */
@@ -26,21 +29,72 @@
  * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
-            'bean'          => [TRUE,   [['Site', 'Admin']]],
-            'config'        => [TRUE,   [['Site', 'Admin']]],
+            'bean'          => [TRUE,   []], // permission checks are done in the bean function
+            'config'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
-            'logincheck'    => [FALSE,  []], // used by registration page
-            'pagecheck'     => [TRUE,   [['Site', 'Admin']]],
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
-            'pwcheck'       => [TRUE,   []],
-            'table'         => [TRUE,   [['Site', 'Admin']]],
-            'tablecheck'    => [TRUE,   [['Site', 'Admin']]],
-            'toggle'        => [TRUE,   [['Site', 'Admin']]],
-            'update'        => [TRUE,   [['Site', 'Admin']]],
+            'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
+            'shared'        => [TRUE,   []], // permission checks are done in the table function
+            'table'         => [TRUE,   []],
+            'tablecheck'    => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
+            'unique'        => [TRUE,   []], // test if a bean field value is unique
+            'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
+            'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+        ];
+/**
+ * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $beanperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
+                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for creating an audit log.
+ */
+        private static $audit = [
+//          ['BeanName'...]]
+        ];
+/**
+ * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $sharedperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $toggleperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
+                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
+ */
+        private static $tableperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
+                FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ */
+        private static $uniqueperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']] ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
+ * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
+ */
+        private static $uniquenlperms = [
+            [ FW::USER => ['login'] ],
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
- * add some appropriate vaues into these arrays.
+ * add some appropriate vaues into these arrays. You do this in support/ajax.php. Not her.
  *
  * The key to both the array fields is the name of the bean type you are working with.
  */
@@ -48,8 +102,8 @@
  * @var array   Values controlling whether or not pagination calls are allowed
  */
         private static $paging = [
-            'page'  => [TRUE,   [['Site', 'Admin']]],
-            'user'  => [TRUE,   [['Site', 'Admin']]],
+            FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
@@ -61,131 +115,142 @@
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * Add a User
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function adduser(Context $context)
-        {
-            $now = $context->utcnow(); # make sure time is in UTC
-            $fdt = $context->formdata();
-            $u = R::dispense('user');
-            $u->login = $fdt->mustpost('login');
-            $u->email = $fdt->mustpost('email');
-            $u->active = 1;
-            $u->confirm = 1;
-            $u->joined = $now;
-            R::store($u);
-            $u->setpw($fdt->mustpost('password'));
-            if ($fdt->post('admin', 0) == 1)
-            {
-                $u->addrole('Site', 'Admin', '', $now);
-            }
-            if ($fdt->post('devel', 0) == 1)
-            {
-                $u->addrole('Site', 'Developer', '', $now);
-            }
-            echo $u->getID();
-        }
-/**
- * Add a Rolename
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function addrolename(Context $context)
-        {
-            $p = R::dispense('rolename');
-            $p->name = $context->formdata()->mustpost('name');
-            $p->fixed = 0;
-            R::store($p);
-            echo $p->getID();
-        }
-/**
- * Add a Rolecontext
- *
- * @param object	$context	The context object for the site
- *
- * @return void
- */
-        private function addrolecontext(Context $context)
-        {
-            $p = R::dispense('rolecontext');
-            $p->name = $context->formdata()->mustpost('name');
-            $p->fixed = 0;
-            R::store($p);
-            echo $p->getID();
-        }
-/**
- * Check URL string for n values and pull them out
- *
- * The value in $rest[0] is the opcode so we always start at $rest[1]
- *
- * @param object        $context    The context object
- * @param int           $count      The number to check for
- *
- * @return array
- */
-        protected function restcheck(Context $context, int $count) : array
-        {
-            $values = [];
-            $rest = $context->rest();
-            foreach (range(1, $count) as $ix)
-            {
-                if (($val = $rest[$ix] ?? '') === '')
-                {
-                    $context->web()->bad();
-                }
-                $values[] = $val;
-            }
-            return $values;
-        }
-/**
  * Config value operation
  *
- * @param object	$context	The context object for the site
+ * @internal
+ * @param \Support\Context	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
  *
  * @return void
  */
-        private function config(Context $context)
+        private final function config(Context $context) : void
         {
             $rest = $context->rest();
-            list($name) = $this->restcheck($context, 1);
-            $v = R::findOne('fwconfig', 'name=?', [$name]);
+            list($name) = $context->restcheck(1);
+            $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
-            switch ($_SERVER['REQUEST_METHOD'])
+            switch ($context->web()->method())
             {
             case 'POST':
                 if (is_object($v))
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('Item already exists');
                 }
-                $v = R::dispense('fwconfig');
+                $v = R::dispense(FW::CONFIG);
                 $v->name = $name;
                 $v->value = $fdt->mustpost('value');
+                $v->type = $fdt->mustpost('type');
                 R::store($v);
                 break;
             case 'PATCH':
             case 'PUT':
                 if (!is_object($v))
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('No such item');
                 }
                 $v->value = $fdt->mustput('value');
                 R::store($v);
                 break;
             case 'DELETE':
+                if (!is_object($v))
+                {
+                    throw new \Framework\Exception\BadValue('No such item');
+                }
                 R::trash($v);
                 break;
             case 'GET':
+                if (!is_object($v))
+                {
+                    throw new \Framework\Exception\BadValue('No such item');
+                }
                 echo $v->value;
                 break;
             default:
-                $context->web()->bad();
+                throw new \Framework\Exception\BadOperation($context->web()->method().' is not supported');
             }
+        }
+/**
+ * Check that a bean has a field. Do not allow id field to be manipulated.
+ *
+ * @param string    $type    The type of bean
+ * @param string    $field   The field name
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        private function fieldExists(string $type, string $field) : void
+        {
+            $fds = \R::inspect($type);
+            if ($field == 'id' || !isset($fds[$field]))
+            {
+                throw new \Framework\Exception\BadValue('Bad field: '.$field);
+            }
+        }
+/**
+ * Check down an array with permissions in the first field and return the first
+ * row that is OK
+ *
+ * @internal
+ * @param \Support\Context  $context  The context object
+ * @param array   $perms    The array with permissions in the first element
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @return array
+ */
+        protected final function findRow(Context $context, $perms) : array
+        {
+            $tables = [];
+            foreach ($perms as $bpd)
+            {
+                try
+                {
+                    $this->checkPerms($context, $bpd[0]); // make sure we are allowed
+                    $tables[] = $bpd[1];
+                }
+                catch (\Framework\Exception\Forbidden $e)
+                {
+                    // void go round and try the next item in the array
+                }
+            }
+            if (empty($tables))
+            {
+                throw new \Framework\Exception\Forbidden('Permission Denied');
+            }
+/**
+ * Need to merge all the tables together. We can't use array_merge
+ * since empty elements imply all fields and array_merge would overwrite empties.
+ *
+ * @todo Revisit the table design to be able to use some of the array functions
+ *
+ */
+            $merged = [];
+            foreach ($tables as $t)
+            {
+                foreach ($t as $k => $v)
+                {
+                    if (isset($merged[$k]))
+                    {
+                        if (!empty($merged[$k]))
+                        {
+                            if (empty($v))
+                            {
+                                $merged[$k] = [];
+                            }
+                            else
+                            {
+                                $merged[$k] = array_merge($merged[$k], $v);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        $merged[$k] = $v;
+                    }
+                }
+            }
+            return $merged;
         }
 /**
  * Toggle a flag field in a bean
@@ -193,30 +258,44 @@
  * Note that for Roles the toggling is more complex and involves role removal/addition rather than
  * simply changing a value.
  *
- * @param object	$context	The context object for the site
+ * @internal
+ * @param \Support\Context	$context	The context object for the site
  *
+ * @throws \Framework\Exception\BadValue
  * @return void
  */
-        private function toggle(Context $context)
+        private final function toggle(Context $context) : void
         {
-            $fdt = $context->formdata();
-            $type = $fdt->mustpost('bean');
-            $field = $fdt->mustpost('field');
+            $beans = $this->findRow($context, self::$toggleperms);
+            $rest = $context->rest();
+            if (count($rest) > 2)
+            {
+                list($type, $bid, $field) = $context->restcheck(3);
+            }
+            else // this is legacy
+            {
+                $bean = $rest[1];
+                $fdt = $context->formdata();
+                $type = $fdt->mustpost('bean');
+                $field = $fdt->mustpost('field');
+                $bid = $fdt->mustpost('id');
+            }
 
-            $bn = $context->load($type, $fdt->mustpost('id'));
-            if ($type === 'user' && ctype_upper($field[0]))
-            { # not simple toggling...
-                if (is_object($bn->hasrole('Site', $field)))
+            $bn = $context->load($type, $bid);
+            if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
+            { # not simple toggling... and can only be done by the Site Administrator
+                if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
-                    $bn->delrole('Site', $field);
+                    $bn->delrole(FW::FWCONTEXT, $field);
                 }
                 else
                 {
-                    $bn->addrole('Site', $field, '', $context->utcnow());
+                    $bn->addrole(FW::FWCONTEXT, $field, '', $context->utcnow());
                 }
             }
             else
             {
+                $this->fieldExists($type, $field); // make sure the bean has this field....
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
                 R::store($bn);
             }
@@ -224,75 +303,265 @@
 /**
  * Update a field in a bean
  *
- * @param object	$context	The context object for the site
+ * @internal
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return void
  */
-        private function update(Context $context)
+        private final function update(Context $context) : void
         {
             $fdt = $context->formdata();
 
-            $bn = $context->load($fdt->mustpost('bean'), $fdt->mustpost('id'), Context::R400);
+            $type = $fdt->mustpost('bean');
             $field = $fdt->mustpost('name');
+            $this->fieldExists($type, $field);
+            $bn = $fdt->mustpostbean('id', $type);
             $bn->$field = $fdt->mustpost('value');
             R::store($bn);
         }
 /**
- * Carry out operations on beans
+ * Check if a bean/field combination is allowed and the field exists and is not id
  *
- * @param object    $context The context object
+ * @internal
+ * @param array   $beans
+ * @param string  $bean
+ * @param string  $field
+ *
+ * @throws Framework\Exception\Forbidden
+ *
+ * @return boolean or error out
+ */
+        protected function beanCheck($beans, $bean, $field) : bool
+        {
+            $this->fieldExists($bean, $field);
+            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
+            { // no permission to update this field
+                throw new \Framework\Exception\Forbidden('Permission denied');
+            }
+            return TRUE;
+        }
+/**
+ * make log entry
+ *
+ * @param \Support\Context	$context	The context object for the site
+ * @param int $op
+ * @param string $bean
+ * @param int $id
+ * @param string $field
+ * @param mixed $value
  *
  * @return void
  */
-        private function bean(Context $context)
+        private function mklog(Context $context, $op, $bean, $id, $field, $value)
         {
+            $lg = \R::dispense('beanlog');
+            $lg->user = $context->user();
+            $lg->updated = $context->utcnow();
+            $lg->op = $op;
+            $lg->bean = $bean;
+            $lg->bid = $id;
+            $lg->field = $field;
+            $lg->value = $value;
+            \R::store($lg);
+        }
+/**
+ * Carry out operations on beans
+ *
+ * @internal
+ * @param \Support\Context    $context The context object
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
+        private final function bean(Context $context) : void
+        {
+            $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
-            switch ($_SERVER['REQUEST_METHOD'])
+            $log = in_array($bean, self::$audit);
+            if (!isset($beans[$bean]))
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+            }
+            switch ($context->web()->method())
             {
             case 'POST': // make a new one /ajax/bean/KIND/
+                /** @psalm-suppress UndefinedConstant */
                 $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {
-                    $class::add($context);
-                }
-                elseif (!method_exists($this, 'add'.$bean))
-                {
-                    $context->web()->bad();
+                    /** @psalm-suppress InvalidStringClass */
+                    $id = $class::add($context)->getID();
+                    if ($log)
+                    {
+                        $this->mklog($context, 0, $bean, $id, '*', NULL);
+                    }
+                    echo $id;
                 }
                 else
-                {
-                    $this->{'add'.$bean}($context);
+                { // operation not supported
+                    throw new \Framework\Exception\BadOperation('Cannot add a '.$bean);
                 }
                 break;
             case 'PATCH':
-            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/
-                $id = $rest[2] ?? 0; // get the id from the URL
-                if ($id <= 0)
-                {
-                    $context->web()->bad();
-                }
-                $bn = $context->load($bean, $id);
-                $fields = R::inspect($bean); // gets all the fields
-                $field = $rest[3] ?? ''; // get the field name from the URL
-                if (!isset($fields[$field]))
-                {
-                    $context->web()->bad();
-                }
-                $bn->$field = $context->formdata()->mustput('value');
+            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
+                list($bean, $id, $field, $more) = $context->restcheck(3);
+                $this->beanCheck($beans, $bean, $field);
+                $bn = $context->load($bean, $id, TRUE);
+                $old = $bn->$field;
+                $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
                 R::store($bn);
+                if ($log)
+                {
+                    $this->mklog($context, 1, $bean, $bn->getID(), $field, $old);
+                }
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
                 $id = $rest[2] ?? 0; // get the id from the URL
                 if ($id <= 0)
                 {
-                    $context->web()->bad();
+                    throw new \Framework\Exception\BadValue('Missing value');
                 }
-                R::trash($context->load($bean, $id));
+                $bn = $context->load($bean, $id);
+                if ($log)
+                {
+                    $this->mklog($context, 2, $bean, $id, '*', json_encode($bn->export()));
+                }
+                R::trash($bn);
                 break;
             case 'GET':
             default:
-                $context->web()->bad();
+                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
+            }
+        }
+/**
+ * Carry out operations on RB shared lists
+ *
+ * @internal
+ * @param \Support\Context    $context The context object
+ *
+ * @throws \Framework\Exception\BadOperation
+ * @throws \Framework\Exception\BadValue
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
+        private final function shared(Context $context) : void
+        {
+//            $beans = $this->findRow($context, self::$sharedperms);
+            list($b1, $id1, $b2, $id2) = $context->restcheck(4);
+            $bn1 = $context->load($b1, $id1);
+            $bn2 = $context->load($b2, $id2);
+            switch ($context->web()->method())
+            {
+            case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
+                $bn1->{'shared'.ucfirst($b2).'List'}[] = $bn2;
+                \R::store($bn1);
+                break;
+            case 'DELETE': // /ajax/shared/KIND1/id1/KIND2/id2
+                unset($bn1->{'shared'.ucfirst($b2).'List'}[$bn2->getID()]);
+                \R::store($bn1);
+                break;
+            case'PUT':
+            case 'PATCH':
+            case 'GET':
+            default:
+                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
+            }
+        }
+/**
+ * Carry out operations on tables
+ *
+ * @internal
+ * @param \Support\Context   $context The context object
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\BadOperation
+ *
+ * @return void
+ */
+        private final function table(Context $context) : void
+        {
+            $tables = $this->findRow($context, self::$tableperms);
+            $rest = $context->rest();
+            $table = $rest[1];
+            $method = $context->web()->method();
+            if (!in_array($table, $tables))
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+            }
+            switch ($method)
+            {
+            case 'POST': // make a new one
+            case 'PATCH':
+            case 'PUT': // add a field
+            case 'DELETE':
+            case 'GET':
+            default:
+                throw new \Framework\Exception\BadOperation('Operation not supported');
+            }
+        }
+/**
+ * Get a page of bean values
+ *
+ * @internal
+ * @param \Support\Context	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @return void
+ */
+        private final function paging(Context $context) : void
+        {
+            $fdt = $context->formdata();
+            $bean = $fdt->mustget('bean');
+            if (isset(self::$paging[$bean]))
+            { // pagination is allowed for this bean
+                $this->checkPerms($context, self::$paging[$bean][1]); // make sure we are allowed
+                $order = $fdt->get('order', '');
+                $page = $fdt->mustget('page');
+                $pagesize = $fdt->mustget('pagesize');
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order bye '.$order) : ''), [], $page, $pagesize);
+                $context->web()->sendJSON($res);
+            }
+            else
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+            }
+        }
+/**
+ * Get serach hints for a bean
+ *
+ * @internal
+ * @param \Support\Context	$context	The context object for the site
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @return void
+ */
+        private final function hints(Context $context) : void
+        {
+            $fdt = $context->formdata();
+            $bean = $fdt->mustget('bean');
+            if (isset(self::$hints[$bean]))
+            { // hinting is allowed for this bean
+                $this->checkPerms($context, self::$hints[$bean][2]); // make sure we are allowed
+                $field = self::$hints[$bean][0];
+                if ($field == '*')
+                { # the call must specify the field
+                    $field = $fdt->mustget('field');
+                }
+                $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
+                $order = $fdt->get('order', '');
+                $search = $fdt->mustget('search');
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
+                $context->web()->sendJSON($res);
+            }
+            else
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
         }
 /**
@@ -374,14 +643,21 @@
 /**
  * Add an operation
  *
- * @param string    $function   The name of a function
+ * @param mixed     $function   The name of a function or an array of names
  * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
  */
-        public function operation(string $function, array $perms)
+        public final function operation($function, array $perms) : void
         {
-            self::$restops[$function] = $perms;
+            if (!is_array($function))
+            {
+                $function = [$function];
+            }
+            foreach ($function as $f)
+            {
+                self::$restops[$f] = $perms;
+            }
         }
 /**
  * Add pagination or searching tables
@@ -391,65 +667,88 @@
  *
  * @return void
  */
-        public function pageOrHint(array $paging, array $hints)
+        public final function pageOrHint(array $paging, array $hints) : void
         {
             self::$paging = array_merge(self::$paging, $paging);
             self::$hints = array_merge(self::$paging, $hints);
         }
 /**
- * Do a database check for uniqueness
+ * Add bean permissions to allow non site/admins to use the functions
  *
- * @param object    $context  The Context object
- * @param string    $bean     The kind of bean
- * @param string    $name     The field to check
+ * @param array     $bean
+ * @param array     $toggle
+ * @param array     $table
+ * @param array     $audit
  *
  * @return void
  */
-        protected function uniqCheck(Context $context, string $bean, string $field)
+        public final function beanAccess(array $bean, array $toggle, array $table, array $audit) : void
         {
-            $rest= $context->rest();
-            list($name) = $this->restcheck($context, 1);
-            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$name]) > 0)
+            self::$beanperms = array_merge(self::$beanperms, $bean);
+            self::$toggleperms = array_merge(self::$toggleperms, $toggle);
+            self::$tableperms = array_merge(self::$tableperms, $table);
+            self::$audit = array_merge(self::$audit, $audit);
+        }
+/**
+ * Do a database check for uniqueness
+ *
+ * @param \Support\Context    $context  The Context object
+ * @param string    $bean     The kind of bean
+ * @param string    $field    The field to check
+ * @param string    $value    The value to check
+ *
+ * @return void
+ */
+        protected final function uniqCheck(Context $context, string $bean, string $field, string $value) : void
+        {
+            if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
             }
         }
 /**
- * Do a parsley login check
+ * Do a parsley uniqueness check
  *
- * @param object    $context
+ * @internal
+ * @param \Support\Context   $context
  *
  * @return void
  */
-        public function logincheck(Context $context)
+        private function unique(Context $context) : void
         {
-            $this->uniqCheck($context, 'user', 'login');
+            $beans = $this->findRow($context, self::$uniqueperms);
+            list($bean, $field, $value) = $context->restcheck(3);
+            $this->beanCheck($beans, $bean, $field);
+            $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
- * Do a parsley page check
+ * Do a parsley uniqueness check
  *
- * @param object    $context
+ * @internal
+ * @param \Support\Context    $context
  *
  * @return void
  */
-        public function pagecheck(Context $context)
+        private function uniquenl(Context $context) : void
         {
-            $this->uniqCheck($context, 'page', 'name');
+            list($bean, $field, $value) = $context->restcheck(3);
+            $this->beanCheck(self::$uniquenlperms, $bean, $field);
+            $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
  * Do a parsley table check
  *
- * @param object    $context
+ * @internal
+ * @param \Support\Context    $context
  *
  * @return void
  */
-        public function tablecheck(Context $context)
+        private function tablecheck(Context $context) : void
         {
-            $rest= $context->rest();
-            list($name) = $this->restcheck($context, 1);
+            list($name) = $context->restcheck(1);
             $tb = \R::inspect();
-            if (isset($tb[strtolower($rest[1])]))
+            if (in_array(strtolower($name), $tb))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
@@ -458,73 +757,89 @@
 /**
  * Do a password verification
  *
- * @param object    $context
+ * @internal
+ * @param \Support\Context    $context
+ *
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        public function pwcheck(Context $context)
+        private function pwcheck(Context $context) : void
         {
-            if (($pw = $context->formdata()->get('pw', '')) !== '')
+            /** @psalm-suppress PossiblyNullReference */
+            if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
             {
-                if ($context->user()->pwok($pw))
+                throw new \Framework\Exception\Forbidden('Permission denied');
+            }
+        }
+/**
+ * Check that user has the permissions specified in an array
+ *
+ * @internal
+ * @param \Support\Context    $context  The Context bject
+ * @param array     $perms    The permission array
+ *
+ * @throws \Framework\Exception\Forbidden
+ *
+ * @psalm-suppress PossiblyNullReference
+ *
+ * @return void
+ */
+        protected final function checkPerms(Context $context, array $perms) : void
+        {
+            foreach ($perms as $rcs)
+            {
+                if (is_array($rcs[0]))
+                { // this is an OR
+                    foreach ($rcs as $orv)
+                    {
+                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                        {
+                            continue 2;
+                        }
+                    }
+                    throw new \Framework\Exception\Forbidden('Permission denied');
+                }
+                elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
                 {
-                    return;
+                    throw new \Framework\Exception\Forbidden('Permission denied');
                 }
             }
-            $context->web()->noaccess();
         }
 /**
  * Check that the caller is allowed to perform the operation.
  *
- * @param object   $context  The Context Object
+ * @internal
+ * @param \Support\Context   $context  The Context Object
  * @param boolean  $login    If TRUE Then user must be logged in.
  * @param array    $perms    As specified for the various arrays defined above
  *
- * @return void  Does not return if user is not allowed.
+ * @return boolean  Does not return if user is not allowed.
  */
-        private function checkPerms(Context $context, bool $login, array $perms)
+        private function checkLogin(Context $context, bool $login, array $perms) : bool
         {
             if ($login)
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
             }
-            foreach ($perms as $rcs)
+            try
             {
-                if (is_array($rcs[0]))
-                { // this is an OR
-                    $ok = FALSE;
-                    foreach ($rcs as $orv)
-                    {
-                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
-                        {
-                            $ok = TRUE;
-                            break;
-                        }
-                    }
-                    if (!$ok)
-                    {
-                        $context->web()->noaccess();
-                        /* NOT REACHED */
-                    }
-                }
-                else
-                {
-                    if ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
-                    {
-                        $context->web()->noaccess();
-                        /* NOT REACHED */
-                    }
-                }
+                $this->checkPerms($context, $perms);
+                return TRUE;
+            }
+            catch (\Framework\Exception\Forbidden $e)
+            {
+                return FALSE;
             }
         }
 /**
  * Handle AJAX operations
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return void
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : void
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call
@@ -532,20 +847,31 @@
                 $op = $rest[0];
                 if (isset(self::$restops[$op]))
                 { # a valid operation
-                    $this->checkPerms($context, self::$restops[$op][0], self::$restops[$op][1]);
-                    $this->{$op}($context);
-                }
-                else
-                { # return a 400
-                    $context->web()->bad();
-                    /* NOT REACHED */
+                    try
+                    {
+                        $this->checkLogin($context, self::$restops[$op][0], self::$restops[$op][1]);
+                        $this->{$op}($context);
+                        return;
+                    }
+                    catch(\Framework\Exception\Forbidden $e)
+                    {
+                        $context->web()->noaccess($e->getMessage());
+                    }
+                    catch(\Framework\Exception\BadValue |
+                          \Framework\Exception\BadOperation |
+                          \Framework\Exception\MissingBean |
+                          \Framework\Exception\ParameterCount $e)
+                    {
+                        $context->web()->bad($e->getMessage());
+                    }
+                    catch(\Exception $e)
+                    { // any other exception - this will be a framework internal error
+                        $context->web()->internal($e->getMessage());
+                    }
                 }
             }
-            else
-            { // for the moment no other options
-                $context->web()->bad();
-                /* NOT REACHED */
-            }
+            $context->web()->bad('No such operation');
+            /* NOT REACHED */
         }
     }
 ?>

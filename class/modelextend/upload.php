@@ -5,7 +5,7 @@
  * Add any new methods you want the Uploadbean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-2019 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -22,11 +22,11 @@
  *
  * @param object	$user	A user object
  *
- * @return boolean
+ * @return bool
  */
-	public function canaccess($user)
-	{
-	    return $this->bean->user->equals($user) || $user->isadmin();
-	}
+        public function canaccess($user) : bool
+        {
+            return $this->bean->user->equals($user) || $user->isadmin();
+        }
     }
 ?>

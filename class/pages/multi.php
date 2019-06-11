@@ -3,7 +3,7 @@
  * A class that contains code to implement Multi nested static pages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2013 Newcastle University
+ * @copyright 2012-2019 Newcastle University
  *
  */
     namespace Pages;
@@ -12,12 +12,12 @@
 /**
  * Provide support for a nested static page structure
  */
-    class Multi extends \Framework\Siteaction
+    class Multi extends \Framework\SiteAction
     {
 /**
  * Handles static pages that are nested in depth /multi/level/page
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */

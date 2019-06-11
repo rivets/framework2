@@ -3,104 +3,242 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2017-2019 Newcastle University
  */
     namespace Framework;
 
     use \Config\Config as Config;
+    use \Config\Framework as FW;
     use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
-    use Support\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * This class dispatches pages to the appropriate places
  */
     class Dispatch
     {
-        use \Framework\Utility\Singleton;
+/*
+ * Indicates that there is an Object that handles the call
+ */
+        const OBJECT	= 1;
+/*
+ * Indicates that there is only a template for this URL.
+ */
+        const TEMPLATE	= 2;
+/*
+ * Indicates that the URL should be temporarily redirected - 302
+ */
+        const REDIRECT	= 3;
+/*
+ * Indicates that the URL should be permanent redirected - 301
+ */
+        const REHOME	= 4;
+/*
+ * Indicates that the URL should be permanently redirected - 302
+ */
+        const XREDIRECT	= 5;
+/*
+ * Indicates that the URL should be temporarily redirected -301
+ */
+        const XREHOME	= 6;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        const REDIRECT3	= 7;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        const XREDIRECT3	= 8;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const REDIRECT7	= 9;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        const XREDIRECT7	= 10;
+/*
+ * Indicates that the URL should be permanently redirected - 308
+ */
+        const REHOME8	= 11;
+/*
+ * Indicates that the URL should be permanently redirected - 308
+ */
+        const XREHOME8	= 12;
+/**
+ * @var array $actions Values for determining handling of above codes
+ */
+        public static $actions = [
+            self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
+            self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
+            self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
+            self::XREHOME     => [FALSE, [FALSE, '', FALSE, FALSE]],
+            self::REDIRECT3   => [TRUE,  [TRUE, '', FALSE, TRUE]],
+            self::XREDIRECT3  => [FALSE, [TRUE, '', FALSE, TRUE]],
+            self::REDIRECT7   => [TRUE,  [TRUE, '', TRUE, FALSE]],
+            self::XREDIRECT7  => [FALSE, [TRUE, '', TRUE, FALSE]],
+            self::REHOME8     => [TRUE,  [FALSE, '', TRUE, FALSE]],
+            self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
+        ];
 /**
  * Handle dispatch of a page.
  *
- * @param object    $context
+ * @param \Support\Context    $context
  * @param string    $action
+ *
+ * @psalm-suppress PossiblyUndefinedMethod
  *
  * @return void
  */
-        public function handle(Context $context, string $action)
+        public static function handle(Context $context, string $action) : void
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
 /*
- * Look in the database for what to do based on the first part of the URL. DBOP is either = or regexp
+ * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
  */
-            $page = \R::findOne('page', 'name'.Config::DBOP.'? and active=?', [$action, 1]);
+            /**
+             * @psalm-suppress TypeDoesNotContainType
+             * @psalm-suppress RedundantCondition
+             */
+            $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             if (!is_object($page))
             { # No such page or it is marked as inactive
-               $page = new stdClass;
-               $page->kind = Siteaction::OBJECT;
-               $page->source = 'NoPage';
+               $page = new \stdClass;
+               $page->kind = self::OBJECT;
+               $page->source = '\Pages\NoPage';
             }
             else
             {
-                if (($page->needlogin) && !$context->hasuser())
-                { # not logged in
-                    $context->divert('/login?page='.urlencode($local->debase($_SERVER['REQUEST_URI'])));
-                    /* NOT REACHED */
-                }
-
-                if (($page->admin && !$context->hasadmin()) ||		// not an admin
-                    ($page->devel && !$context->hasdeveloper()) ||	// not a developer
-                    ($page->mobileonly && !$context->hastoken()))	// not mobile and logged in
-                {
-                    $context->web()->sendstring($local->getrender('@error/403.twig'), $mime, StatusCodes::HTTP_FORBIDDEN);
-                    exit;
-                }
+                $page->check($context);
             }
-
-            $local->addval('context', $context);
-            $local->addval('page', $action);
-            $local->addval('siteinfo', new Siteinfo($local)); // make sure we get the derived version not the Framework version
+        
+            $local->addval([
+                'context'   => $context,
+                'action'    => $action,
+                'siteinfo'  => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
+                'ajax'      => FALSE,                            // Mark pages as not using AJAX by default
+            ]);
 
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
-            case Siteaction::OBJECT: # fire up the object to handle the request
-                $tpl = (new $page->source)->handle($context);
-                if (is_array($tpl))
+            case self::OBJECT: // fire up the object to handle the request
+                $pageObj = new $page->source;
+                $csp = $pageObj;
+                try
                 {
+                    \Support\Setup::preliminary($context, $page); // any user setup code
+                    $tpl = $pageObj->handle($context);
+                    $pageObj->setCache($context);
+                }
+                catch(\Framework\Exception\Forbidden $e)
+                {
+                    $context->web()->noaccess($e->getMessage());
+                    /* NOT REACHED */
+                }
+                catch(\Framework\Exception\BadValue |
+                      \Framework\Exception\BadOperation |
+                      \Framework\Exception\MissingBean |
+                      \Framework\Exception\ParameterCount $e)
+                {
+                    $context->web()->bad($e->getMessage());
+                    /* NOT REACHED */
+                }
+
+                if (is_array($tpl))
+                { // page is returning more than just a template filename
                     list($tpl, $mime, $code) = $tpl;
                 }
                 break;
 
-            case Siteaction::TEMPLATE: # render a template
+            case self::TEMPLATE: // render a template
+                \Support\Setup::preliminary($context, $page); // any user setup code
+                $csp = $context->web();
                 $tpl = $page->source;
                 break;
 
-            case Siteaction::REDIRECT: # redirect to somewhere else on the this site (temporary)
-                $context->divert($page->source, TRUE);
-                /* NOT REACHED */
-
-            case Siteaction::REHOME: # redirect to somewhere else on the this site (permanent)
-                $context->divert($page->source, FALSE);
-                /* NOT REACHED */
-
-            case Siteaction::XREDIRECT: # redirect to an external URL (temporary)
-                $context->web()->relocate($page->source, TRUE);
-                /* NOT REACHED */
-
-            case Siteaction::XREHOME: # redirect to an external URL (permanent)
-                $context->web()->relocate($page->source, FALSE);
-                /* NOT REACHED */
-
-            default :
-                $context->web()->internal('Weird error');
+            default:
+                if (!isset(self::$actions[$page->kind]))
+                { # check value is OK
+                    $context->web()->internal('Bad page kind');
+                    /* NOT REACHED */
+                }
+                if (self::$actions[$page->kind][0])
+                { # local
+                    $context->divert($page->source, ...self::$actions[$page->kind][1]);
+                    /* NOT REACHED */
+                }
+                else
+                {
+                    $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]);
+                    /* NOT REACHED */
+                }
                 /* NOT REACHED */
             }
-
+            /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
             if ($tpl !== '')
             { # an empty template string means generate no output here...
-                $context->web()->sendstring($local->getrender($tpl), $mime, $code);
+                $html = $local->getrender($tpl);
+                /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
+                $csp->setCSP($context); // set up CSP Header in use : rendering the page may have generated new hashcodes.
+                $context->web()->sendstring($html, $mime, $code);
+            }
+            //else if ($code != StatusCodes::HTTP_OK);
+            //{
+            //    header(StatusCodes::httpHeaderFor($code));
+            //}
+        }
+/**
+ * Check if a value is appropriate for the dispatch kind
+ *
+ * @param int $kind
+ * @param string $source
+ *
+ * @throws \Framework\Exception\BadValue
+ *
+ * @return void
+ */
+        public static function check(int $kind, string $source) : void
+        {
+            switch ($kind)
+            {
+            case self::OBJECT:
+                if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
+                }
+                break;
+            case self::TEMPLATE:
+                if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (twig) "'.$source.'"');
+                }
+                break;
+            case self::REDIRECT: // these need a local URL, i.e. no http
+            case self::REDIRECT3:
+            case self::REDIRECT7:
+            case self::REHOME:
+            case self::REHOME8:
+                if (!preg_match('#^(/.*?)+#i', $source))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (local path)');
+                }
+                break;
+            case self::XREDIRECT: // these need a URL
+            case self::XREDIRECT3:
+            case self::XREDIRECT7:
+            case self::XREHOME:
+            case self::XREHOME8:
+                if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
+                {
+                    throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
+                }
+                break;
+            default:
+                throw new \Framework\Exception\BadValue('Invalid page type');
             }
         }
     }

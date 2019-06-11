@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2018 Newcastle University
+ * @copyright 2015-2019 Newcastle University
  */
     namespace Framework;
 
@@ -12,11 +12,11 @@
 /**
  * A class that provides helpers for accessing form data
  */
-    class Formdata
+    class FormData
     {
         use \Framework\Utility\Singleton;
 /**
- * @var string    Holds data read from php://input
+ * @var ?array    Holds data read from php://input
  */
         private $putdata    = NULL;
 /**
@@ -24,10 +24,10 @@
  *
  * @return void
  */
-        private function setput()
+        private function setput() : void
         {
             if (!is_array($this->putdata))
-            {
+            { /** @psalm-suppress NullArgument */
                 parse_str(file_get_contents('php://input'), $this->putdata);
             }
         }
@@ -41,7 +41,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hasget(string $name) : bool
         {
@@ -52,7 +52,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function haspost(string $name) : bool
         {
@@ -63,7 +63,7 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hascookie(string $name) : bool
         {
@@ -76,34 +76,51 @@
  *
  * @param string	$name	The key
  *
- * @return boolean
+ * @return bool
  */
         public function hasfile(string $name) : bool
         {
             return isset($_FILES[$name]);
         }
 /**
+ * Is the key in the PUT/PATCH data
+ *
+ * @param string	$name	The key
+ *
+ * @return bool
+ */
+        public function hasput($name) : bool
+        {
+            $this->setput();
+            return isset($this->putdata[$name]);
+        }
+/**
  * Utility function to dig out an element from a possibly multi-dimensional array
  *
- * @interna
+ * @internal
  * @see \Framework\Context for failure action constants
  *
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param int       $fail       Failure action
+ * @param bool   $throw      If TRUE Then throw an exception
  *
- * @throws Exception
+ * @throws \Framework\Exception\BadValue
+ *
  * @return string
  */
-        private function getval(array $porg, array $keys, $default = NULL, int $fail = Context::RDEFAULT) : string
+        private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
         {
-            while (TRUE)
+            while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
                 if (!isset($porg[$key]))
                 {
-                    break;
+                    if ($throw)
+                    {
+                        throw new \Framework\Exception\BadValue('Missing form array item');
+                    }
+                    return $default;
                 }
                 $val = $porg[$key];
                 if (empty($keys))
@@ -111,40 +128,8 @@
                     return trim($val);
                 }
             }
-            return $this->failure($fail, 'Missing form array item', $default);
-        }
-/**
- * Method to handle error returning
- *
- * @internal
- * @see \Framework\Context for failure action constants
- *
- * May not actually return;
- *
- * @param int       $option     The action to take (constants defined in Context)
- * @param string    $message    Error message
- * @param mixed     $dflt       Default value to return
- *
- * @throws Exception
- * @return NULL
- */
-        private function failure(int $option, string $message, $dflt = NULL)
-        {
-            switch($option)
-            {
-            case Context::R400:
-                Web::getinstance()->bad($message);
-
-            case Context::RTHROW:
-                throw new Exception($message);
-
-            case Context::RNULL:
-                return NULL;
-
-            case Context::RDEFAULT:
-                return $dflt;
-            }
-            Web::getinstance()->internal(); // should never get here
+            /* NOT REACHED */
+            return ''; // to shut psalm up!!
         }
 /**
  * Pick out and treat a value
@@ -155,30 +140,41 @@
  * @param array     $arr        The array to pick value from
  * @param mixed     $name       The string name of the entry or [name, selector,...]
  * @param mixed     $dflt       A default value to return
- * @param int       $fail       What to do if not defined - constant defined in Context
+ * @param bool   $throw      What to do if not defined - constant defined in Context
  *
- * @throws Exception
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
-        private function fetchit(int $filter, array $arr, $name, $dflt = '', int $fail = Context::R400)
+        private function fetchit(int $filter, array $arr, $name, $dflt = '', bool $throw = TRUE)
         {
             if (is_array($name))
             {
                 $n = array_shift($name); // shift off the variable name
                 if (filter_has_var($filter, $n))
                 { // the entry is there
-                    return $this->getval($arr[$n], $name, NULL, $fail);
+                    return $this->getval($arr[$n], $name, NULL, $throw);
+                }
+                if ($throw)
+                {
+                    throw new \Framework\Exception\BadValue('Missing item '.$n.'['.$name[0].']');
                 }
             }
             elseif (filter_has_var($filter, $name))
             {
-                if (is_array($arr[$name]))
+                if (!is_array($arr[$name]))
                 {
-                    return $this->failure($fail, $name.' is array', $dflt);
+                    return trim($arr[$name]);
                 }
-                return trim($arr[$name]);
+                if ($throw)
+                {
+                    throw new \Framework\Exception\BadValue($name.' is array');
+                }
             }
-            return $this->failure($fail, 'Missing form item '.(is_array($name) ? ($n.'['.$name[0].']') : $name), $dflt);
+            elseif ($throw)
+            {
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            return $dflt;
         }
 /*
  ***************************************
@@ -191,13 +187,13 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int    	$fail	What to do if not defined - constant defined in Context
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
-        public function mustget($name, int $fail = Context::R400)
+        public function mustget($name)
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, $fail);
+            return $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE);
         }
 /**
  * Look in the $_GET array for a key and return its trimmed value or a default value
@@ -207,27 +203,45 @@
  * @param mixed	    $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param mixed	    $dflt	Returned if the key does not exist
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function get($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_GET, $_GET, $name, $dflt, FALSE);
+        }
+/**
+ * Look in the $_GET array for a key that is an id for a bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string    $bean       The bean type
+ * @param bool   $forupdate  If TRUE then load for update
+ *
+ * @throws \Framework\Exception\BadValue
+ *
+ * @return \RedBeanPHP\OODBBean
+ */
+        public function mustgetbean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        {
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_GET, $name, NULL, TRUE), $forupdate);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int   	$fail	if the key does not exist - see Context::load
  *
+ * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
  */
-        public function mustgeta($name, int $fail = Context::R400)
+        public function mustgeta($name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_GET, $name) && is_array($_GET[$name]))
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            return $this->failure($fail, 'Missing get array');
+            throw new \Framework\Exception\BadValue('Missing get array '.$name);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -245,16 +259,40 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string        $default    A default value
+ * @param mixed     $default    A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterget(string $name, string $default, int $filter, $options = '')
+        public function filterget(string $name, $default, int $filter, $options = '')
         {
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the $_GET array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param string    $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfilterget(string $name, int $filter, $options = '')
+        {
+            $res = filter_input(INPUT_GET, $name, $filter, $options);
+            if ($res === NULL)
+            { # no such variable
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            if ($res === FALSE)
+            { # filter error
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+            }
+            return $res;
         }
 /*
  ***************************************
@@ -267,13 +305,13 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int 	$fail	Fail if the key does not exist in the array - see Context::load
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
-        public function mustpost(string $name, int $fail = Context::R400)
+        public function mustpost(string $name)
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, $fail);
+            return $this->fetchit(INPUT_POST, $_POST, $name, NULL, TRUE);
         }
 
 /**
@@ -288,49 +326,90 @@
  */
         public function post($name, $dflt = '')
         {
-            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_POST, $_POST, $name, $dflt, FALSE);
+        }
+/**
+ * Look in the $_POST array for a key that is an id for a bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string        $bean   The bean type
+ *
+ * @throws \Framework\Exception\BadValue
+ * 
+ * @return \RedBeanPHP\OODBBean
+ */
+        public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
+        {
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, TRUE));
         }
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param int   	$fail	What to do if not defined - constant defined in Context
  *
- * @return ArrayIterator
+ * @throws \Framework\Exception\BadValue
+ * @return \ArrayIterator
  */
-        public function mustposta(string $name, int $fail = Context::R400) : \ArrayIterator
+        public function mustposta(string $name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure($fail, 'Missing post array');
+            throw new \Framework\Exception\BadValue('Missing post array '.$name);
         }
 /**
- * Look in the $_POST array for a key that is an array and return an
- ArrayIterator over it
+ * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
  * @param string 	$name	The key
  * @param array		$dflt	Returned if the key does not exist
  *
- * @return ArrayIterator
+ * @return \ArrayIterator
  */
         public function posta(string $name, array $dflt = []) :\ArrayIterator
         {
             return new \ArrayIterator(filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]) ? $_POST[$name] : $dflt);
         }
 /**
- * Look in the $_POST array for a key and  apply filters
+ * Look in the $_POST array for a key and apply filters
  *
- * @param string 	$name		The key
- * @param int    	$filter		Filter values - see PHP manual
+ * @param string	$name		The key
+ * @param mixed     $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filterpost(string $name, int $filter, $options = '')
+        public function filterpost(string $name, $default, int $filter, $options = '')
         {
-            return filter_input(INPUT_POST, $name, $filter, $options);
+            $res = filter_input(INPUT_POST, $name, $filter, $options);
+            return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the $_GET array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param string    $default    A default value
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfilterpost(string $name, int $filter, $options = '')
+        {
+            $res = filter_input(INPUT_POST, $name, $filter, $options);
+            if ($res === NULL)
+            {
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            if ($res === FALSE)
+            {
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+            }
+            return $res;
         }
 /*
  ***************************************
@@ -343,11 +422,11 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param int	$fail	Fail if the key does not exist in the array - see Context::load
  *
+ * @throws \Framework\Exception\BadValue
  * @return mixed
  */
-        public function mustput($name, int $fail = Context::R400)
+        public function mustput($name)
         {
             $this->setput();
             if (is_array($name))
@@ -355,16 +434,31 @@
                 if (isset($this->putdata[$name[0]]))
                 {
                     $n = array_shift($name);
-                    return $this->getval($this->putdata[$n], $name, NULL, $fail);
+                    return $this->getval($this->putdata[$n], $name, NULL, TRUE);
                 }
             }
             elseif (isset($this->putdata[$name]))
             {
                 return trim($this->putdata[$name]);
             }
-            return $this->failure($fail, 'Missing put/patch item');
+            throw new \Framework\Exception\BadValue('Missing put/patch item');
        }
-
+/**
+ * Get php://input data, check array for an id and return its bean
+ *
+ * N.B. This function assumes the value is a string and will fail if used on array values
+ *
+ * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string        $bean   The bean type
+ *
+ * @throws \Framework\Exception\BadValue
+ * 
+ * @return \RedBeanPHP\OODBBean
+ */
+        public function mustputbean($name, $bean) : \RedBeanPHP\OODBBean
+        {
+            return Context::getinstance()->load($bean, $this->mustput($name));
+        }
 /**
  * Get php://input data, check arrayfor a key and return its trimmed value or a default value
  *
@@ -398,13 +492,13 @@
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
  * @param string     $name The cookie name
- * @param int        $fail Action to take on failure
  *
- * @return mixed
+ * @throws \Framework\Exception\BadValue
+ * @return string
  */
-        public function mustcookie(string $name, int $fail = Context::R400)
+        public function mustcookie(string $name) : string
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, $fail);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, TRUE);
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
@@ -412,27 +506,27 @@
  * @param string	$name	The key
  * @param mixed		$dflt	Returned if the key does not exist
  *
- * @return mixed
+ * @return string
  */
-        public function cookie(string $name, $dflt = '')
+        public function cookie(string $name, $dflt = '') : string
         {
-            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, Context::RDEFAULT);
+            return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
  *
  * @param string	$name	The key
- * @param int   	$fail	What to do if not defined - constant defined in Context
  *
+ * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
  */
-        public function mustcookiea(string $name, int $fail = Context::R400) : \ArrayIterator
+        public function mustcookiea(string $name) : \ArrayIterator
         {
             if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            return $this->failure($fail, 'Missing cookie array');
+            throw new \Framework\Exception\BadValue('Missing cookie array item '.$name);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it

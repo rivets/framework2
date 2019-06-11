@@ -4,57 +4,52 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import _self as h %}
+{% import '@util/attrmacro.twig' as h %}
     
 {% block scripts %}
     <script {{h.urlattr(fwurls.parsley)}}></script>
     <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.bgfadejs)}}></script>
 {% endblock scripts %}
+
+{% set methods = ['PARTIAL', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'] %}
+
+{% block setup %}
+    var clicks = [
+        ['delb', framework.dodelbean, ''],
+        ['editb', framework.goedit],
+        ['viewb', framework.goview],
+    ]
+    var mname = ['PARTIAL', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+{% endblock setup %}
 
 {% block onload %}
     $('#addfform').on('submit', false).parsley()
     $('#addb').on('click', function(e){
-        var data = {}
-	var frm = $('#addfform')
-	$('input:checked', frm).each(function(index, element){
-	     data[$(this).attr('name')] = 1
-	})
-	$('input:text', frm).each(function(index, element){
-	     data[$(this).attr('name')] = $(this).val()
-	})
-	$.post('{{base}}/ajax/bean/form/', data).done(function(ret){
-	    $('#addf').modal('hide')
-	    $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
-	        '<td>' + data.action + '</td>' +
-	        '<td>' + (data.method == 1 ? 'GET' : 'POST') + '</td>' +
-	        '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
-		'<td title="View"><i class="viewb far fa-eye"></i></td>' +
-		'<td title="Edit"><i class="editb far fa-edit"></i></td>' +
-		'<td><i class="delb far fa-trash-alt"></i></td></tr>'
-	    )
-	    doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
-	}).fail(function(){
-            bootbox.alert('Creation of new Form failed');
-        });
+        e.preventDefault();
+        $(this).attr('disabled', true); // disable submit button
+        let data = {}
+        const frm = $('#addfform')
+        $('input:checked', frm).each(function(index, element){
+             data[$(this).attr('name')] = $(this).val();
+        })
+        $('input:text', frm).each(function(index, element){
+             data[$(this).attr('name')] = $(this).val()
+        })
+        framework.beanCreate('{{constant('Config\\Framework::FORM')}}', data, function(ret){
+            $('#addf').modal('hide')
+            $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
+                '<td>' + data.action + '</td>' +
+                '<td>' + data.idval + '</td>' +
+                '<td>' + mname[data.method] + '</td>' +
+                '<td>' + (data.multipart != undefined ? '<i class="fas fa-check"></i>' : '') + '</td>' +
+                '<td title="View"><i class="viewb far fa-eye"></i></td>' +
+                '<td title="Edit"><i class="editb far fa-edit"></i></td>' +
+                '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+            )
+            framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
+        }, '#addb');
     })
-    $('#utab').on('click', function(e){
-        var x = $(e.target)
-	if (x.hasClass('delb'))
-	{
-            dodelbean(e, x, 'form');
-	}
-	else if (x.hasClass('editb'))
-	{
-	    var tr = x.parent().parent()
-	    window.location.href = '{{base}}/admin/edit/form/' + tr.data('id');
-	}
-	else if (x.hasClass('viewb'))
-	{
-	    var tr = x.parent().parent()
-	    window.location.href = '{{base}}/admin/view/form/' + tr.data('id');
-	}
-    })
+    $('#utab').on('click', {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}, framework.tableClick);
 {% endblock onload %}
 
 {% block header %}
@@ -85,7 +80,7 @@
                         <td>{{u.action}}</td>
                         <td>{{u.idval}}</td>
                         <td>{{u.class}}</td>
-                        <td>{{u.method == 1 ? 'GET' : 'POST'}}</td>
+                        <td>{{methods[u.method]}}</td>
                         <td>{{f.tick(u.multipart)}}</td>
                         <td title="View"><i class="viewb far fa-eye"></i></td>
                         <td title="Edit"><i class="editb far fa-edit"></i></td>
@@ -99,25 +94,19 @@
             <p><button class="btn btn-primary" data-toggle="modal" data-target="#addf" type="button">Add a Form</button></p>
         </article>
     </section>
-    <div class="modal fade" id="addf" tabindex="-1" role="dialog" aria-labelledby="Add a Form" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                {{m.header({title: 'Add a Form'})}}
-                <div class="modal-body">
-                    <form id="addfform" action="#" method="post">
-                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
-                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
-                        {{f.radio({name: 'method', values:[1, 2], labels: ['GET', 'POST'], check: [TRUE, FALSE]})}}
-                        <br/>
-                        {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
-                    </form>
-                </div>
-                {{m.footer({action: 'Add', id: 'addb'})}}
-            </div>
-        </div>
+    {{m.open({id: 'addf', title: 'Add a Form'})}}
+    <div class="modal-body">
+        <form id="addfform" action="#" method="post">
+            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
+            {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}
+            {{f.radio({name: 'method', values:[1, 2, 0], labels: ['GET', 'POST', 'PARTIAL'], check: [TRUE, FALSE, FALSE]})}}
+            <br/>
+            {{f.checkbox({names: ['multipart'], values:[1], labels: ['Multipart Encoded']})}}
+        </form>
     </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}

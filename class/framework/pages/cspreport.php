@@ -9,17 +9,17 @@
 
     use \Config\Config as Config;
     use \Framework\Local as Local;
-    use \support\Context as Context;
+    use \Support\Context as Context;
 
 /**
  * A class that contains code to implement a contact page
  */
-    class CSPReport extends \Framework\Siteaction
+    class CSPReport extends \Framework\SiteAction
     {
 /**
  * Handle various contact operations /contact
  *
- * @param object	$context	The context object for the site
+ * @param \Support\Context	$context	The context object for the site
  *
  * @return string	A template name
  */
