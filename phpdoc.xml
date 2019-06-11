@@ -12,10 +12,15 @@
     <directory>class/</directory>
     <directory>class/config</directory>
     <directory>class/framework</directory>
-    <directory>class/models</directory>
-    <directory>class/utility</directory>
-    <ignore>devel/hack.php</ignore>
-    <ignore>devel/testautoload.php</ignore>
+    <directory>class/model</directory>
+    <directory>class/modelextend</directory>
+    <directory>class/pages</directory>
+    <directory>class/support</directory>
+    <ignore>devel</ignore>
+    <ignore>tests</ignore>
     <ignore>vendor</ignore>
+    <ignore>twigs</ignore>
+    <ignore>install</ignore>
+    <ignore>install.php</ignore>
   </files>
 </phpdoc>
