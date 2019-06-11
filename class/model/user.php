@@ -182,6 +182,7 @@
  * Setup for an edit
  *
  * @param \Support\Context    $context   The context object
+ * @param array               $rest      Any other values from the URL
  * 
  * @return void
  */

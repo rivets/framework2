@@ -24,7 +24,7 @@
 /**
  * Calculate integrity checksums for local js and css files
  *
- * @param string    $citem    The config item to check and update
+ * @param \Support\Context    $context
  *
  * @return void
  */
