@@ -387,7 +387,7 @@
             {
                 $loader->addPath($twigdir.'/framework/'.$tns, $tns);
             }
-            foreach (['content', 'surround'] as $tns)
+            foreach (['content', 'info', 'surround'] as $tns)
             {
                 $loader->addPath($twigdir.'/'.$tns, $tns);
             }

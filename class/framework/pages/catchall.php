@@ -40,11 +40,11 @@
                 break;
 
             case 'robots.txt':
-                return ['robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
+                return ['@info/robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
 
             case 'sitemap.xml':
                 $context->local()->addval('url', Config::SITEURL);
-                return ['sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
+                return ['@info/sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
             default:
                 $context->local()->addval('page', $_SERVER['REQUEST_URI']);
