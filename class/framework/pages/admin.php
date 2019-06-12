@@ -24,7 +24,7 @@
 /**
  * Calculate integrity checksums for local js and css files
  *
- * @param \Support\Framework   $context
+ * @param \Support\Context   $context
  *
  * @return void
  */
