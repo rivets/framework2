@@ -15,7 +15,7 @@
 /**
  * The default behaviour when a page does not match in the database.
  */
-    class NoPage extends \Framework\CatchAll
+    class NoPage extends \Framework\Pages\CatchAll
     {
 /**
  * Handle non-object or template page requests
