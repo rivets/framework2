@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpdoc>
+<phpdocumentor>
   <parser>
+    <default-package-name>the-framework2</default-package-name>
     <target>../api</target>
   </parser>
   <transformer>
@@ -9,13 +10,19 @@
   <files>
     <file>ajax.php</file>
     <file>index.php</file>
-    <directory>class/</directory>
-    <directory>class/config</directory>
-    <directory>class/framework</directory>
-    <directory>class/models</directory>
-    <directory>class/utility</directory>
-    <ignore>devel/hack.php</ignore>
-    <ignore>devel/testautoload.php</ignore>
-    <ignore>vendor</ignore>
+    <directory>class/*</directory>
+    <ignore>devel/*</ignore>
+    <ignore>tests/*</ignore>
+    <ignore>vendor/*</ignore>
+    <ignore>twigs/*</ignore>
+    <ignore>install/*</ignore>
+    <ignore>assets/*</ignore>
+    <ignore>install.php</ignore>
   </files>
-</phpdoc>
+    <plugins>
+        <plugin path="Core" />
+    </plugins>
+    <transformations>
+        <template name="clean" />
+    </transformations>
+</phpdocumentor>

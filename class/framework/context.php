@@ -19,11 +19,11 @@
 /**
  * The name of the authentication token field.
  */
-        const TOKEN 	    = 'X-APPNAME-TOKEN';
+        private const TOKEN 	    = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-        const KEY	        = 'Some string of text.....';
+        private const KEY	        = 'Some string of text.....';
 
 /** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
@@ -31,13 +31,13 @@
         protected $idgen        = 0;
 /** @var string		The first component of the current URL */
         protected $reqaction	= 'home';
-/** @var array		The rest of the current URL exploded at / */
+/** @var string[]		The rest of the current URL exploded at / */
         protected $reqrest	= [];
 /** @var boolean    True if authenticated by token */
         protected $tokauth	= FALSE;
-/** @var array		A cache for rolename beans */
+/** @var \RedBeanPHP\OODBBean[]		A cache for rolename beans */
         protected $roles        = [];
-/** @var array		A cache for rolecontext beans */
+/** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
         protected $contexts     = [];
 /*
  ***************************************
@@ -61,7 +61,7 @@
  * Note that if there is nothing after the action in the URL this function returns
  * an array with a single element containing an empty string.
  *
- * @return array
+ * @return string[]
  */
         public function rest() : array
         {
@@ -74,7 +74,7 @@
  *
  * @param integer           $count      The number to check for
  *
- * @return array The parameters values in an array indexed from 0
+ * @return string[] The parameters values in an array indexed from 0
  */
         public function restcheck(int $count) : array
         {
@@ -279,7 +279,8 @@
  * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
  *
- * @return never-return
+ * @psalm-return never-return
+ * @return void
  */
         public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
         {

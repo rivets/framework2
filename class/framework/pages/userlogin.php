@@ -14,6 +14,7 @@
     use \R as R;
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
+ *
  */
     class UserLogin extends \Framework\SiteAction
     {
@@ -88,6 +89,8 @@
  * Handle a login
  *
  * @param \Support\Context	$context	The context object for the site
+ *
+ * @uses \Support\Login
  *
  * @return string	A template name
  */

@@ -15,16 +15,16 @@
 /**
  * Process the login form
  *
- * Diifferent kinds of logins might be required. This is the default
+ * Different kinds of logins might be required. This is the default
  * that uses the local database table.
  *
- * @see class/framework/pages/userlogin.php
+ * @used-by \Framework\Pages\UserLogin
  *
  * @param \Support\Context $context
  *
  * @return bool
  */
-        public function checkLogin(\Support\Context $context) : bool
+        public function checkLogin(Context $context) : bool
         {
             $fdt = $context->formdata();
             if (($lg = $fdt->post('login', '')) !== '')
@@ -66,9 +66,11 @@
  *
  * @param \Support\Context	$context	The context object for the site
  *
+ * @used-by \Framework\Pages\UserLogin
+ *
  * @return void
  */
-        public function logout(Context $context)
+        public function logout(Context $context) : void
         {
             $_SESSION = []; # Unset all the session variables.
 
