@@ -40,7 +40,7 @@
                 break;
 
             case 'robots.txt':
-                return ['@info/robot.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
+                return ['@info/robots.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
 
             case 'sitemap.xml':
                 $context->local()->addval('url', Config::SITEURL);
