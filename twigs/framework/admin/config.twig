@@ -10,14 +10,17 @@
     <script {{h.urlattr(fwurls.parsley)}}></script>
 {% endblock scripts %}
 
+{% set patch = constant('Config\\Config::PUTORPATCH') %}
+{% set config = constant('Config\\Framework::CONFIG') %}
+
 {% block setup %}
     function setlocal(e)
     {
         e.preventDefault();
         const t = $(this);
         const id = t.parent().parent().parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/local/', {
-            method: 'PATCH', // because we are updating an item
+        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
+            method: '{{patch}}', // because we are updating an item
             data: {
                 value: t.is(':checked') ? 1 : 0
             }
@@ -28,7 +31,7 @@
 
     function delbean(e)
     {
-        framework.dodelbean(e, this, '{{constant('Config\\Framework::CONFIG')}}');
+        framework.dodelbean(e, this, '{{config}}');
     }
 {% endblock setup %}
 
@@ -41,21 +44,21 @@
         e.preventDefault();
         const t = $(this);
         const id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/value/', {
-            method: 'PATCH', // because we are updating an item
+        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
+            method: '{{patch}}', // because we are updating an item
             data: { value: t.val() }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/integrity/', {
-            method: 'PATCH', // because we are updating an item
+        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
+            method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/'+id+'/crossorigin/', {
-            method: 'PATCH', // because we are updating an item
+        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
+            method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
@@ -89,7 +92,7 @@
         const name = $('.nname').val();
         const value = t.val();
         const local = $('#Xnewlocal').is(':checked') ? 1 : 0;
-        $.ajax('{{base}}/ajax/bean/{{constant('Config\\Framework::CONFIG')}}/', {
+        $.ajax('{{base}}/ajax/bean/{{config}}/', {
             method: 'POST', // because we are creating a new item
             data: {
                 name: name,
@@ -123,7 +126,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set pages = siteinfo.pagecount(constant('Config\\Framework::CONFIG'), pagesize) %}
+{% set pages = siteinfo.pagecount(config, pagesize) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
