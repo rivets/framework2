@@ -15,7 +15,9 @@
     {% endblock favicons %}
 
     <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
-    <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
+    {% if fwurls.facss.type == 'css' %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
+    {% endif %}
     <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
 
     {% block head %}
@@ -34,6 +36,10 @@
     <script {{h.urlattr(fwurls.popperjs)}}></script>
     <script {{h.urlattr(fwurls.bootjs)}}></script>
     <script {{h.urlattr(fwurls.bootbox)}}></script>
+    {% if fwurls.facss.type == 'js' %}
+        <script {{h.urlattr(fwurls.facss)}}></script> {# if you are using a font awesome kit #}
+    {% endif %}
+
 
     {% block userscripts %}
     {% endblock userscripts %}
