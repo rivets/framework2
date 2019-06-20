@@ -32,7 +32,7 @@
                     foreach ($fd->posta('public') as $ix => $public)
                     {
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fd->filedata('uploads', $ix), $public, $context->user());
+                        $upl->savefile($context, $fd->filedata('uploads', $ix), $public, $context->user(), $ix);
                     }
                 }
                 else
@@ -40,7 +40,7 @@
                     foreach(new \Framework\FAIterator('uploads') as $ix => $fa)
                     { # we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fa, Config::UPUBLIC, $context->user());
+                        $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
                     }
                 }
             }
