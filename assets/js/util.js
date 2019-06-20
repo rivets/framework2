@@ -30,7 +30,7 @@
                 { // toggle at the other end
                     const tr = x.parent().parent();
                     $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
-                        method: 'PATCH',
+                        method: putorpatch,
                     }).done(function(){
                        framework.toggle(x);
                     }).fail(function(jx){
@@ -59,7 +59,7 @@
         editcall: function(params) {
             const url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
             return $.ajax(url, {
-                method: 'PATCH',
+                method: putorpatch,
                 data: { value: params.value }
             });
         },
