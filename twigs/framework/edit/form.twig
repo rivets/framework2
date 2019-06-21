@@ -67,7 +67,7 @@
 
 {% block onload %}
     $('.ppedit').editable({
-        ajaxOptions: { type: 'PATCH' },
+        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
         params: paramset,
         source: kname,
         onblur: 'cancel',

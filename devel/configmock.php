@@ -7,6 +7,7 @@
     {
         const BASEDNAME	= '/xxx';
         const SESSIONNAME	= 'PSIxx';
+        const PUTORPATCH    = 'PATCH';
         const DBTYPE	= 'mysql';
         const DBHOST	= 'xx';
         const DB	= 'xx';
