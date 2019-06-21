@@ -39,11 +39,9 @@
  */
         public function addData(\Support\Context $context, int $index) : void
         {
-            $fd = $context->formdata();
-            $this->bean->name[$index] = $fd->get(['name', $index], '');
-            $this->bean->unpack[$index] = $fd->get(['unpack', $index], 0);
-            $this->bean->desc[$index] = $fd->get(['desc', $index], '');
-            $this->bean->access[$index] = $fd->get(['access', $index], 1);
+            /*
+             * Your code
+             */
         }
     }
 ?>
