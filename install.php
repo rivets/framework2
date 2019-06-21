@@ -703,7 +703,7 @@
                 $drname = makerc(DBPREFIX.'rolename', DEVELROLE);
                 makerole(DBPREFIX.'role', $now, $user, $cname, $drname);
     // Testing role and context
-                $cname = makerc(DBPREFIX.'rolecontext', TESTCONTEXT);
+                $tname = makerc(DBPREFIX.'rolecontext', TESTCONTEXT);
                 $trname = makerc(DBPREFIX.'rolename', TESTROLE);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
