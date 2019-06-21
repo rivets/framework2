@@ -31,12 +31,13 @@
 /**
  * Hook for adding extra data to a file save.
  *
+ * @param \Support\Context	$context	The context object for the site
  * @param int	$index	If you are reading data from an array fo files, this is the index
  *                      in the file. You may have paralleld data arrays and need this index.
  *
- * @return bool
+ * @return void
  */
-        public function addData(int $index) : void
+        public function addData(\Support\Context $context, int $index) : void
         {
             /*
              * Your code

@@ -70,7 +70,7 @@
             $this->bean->filename = $da['name'];
             $this->bean->public = $public ? 1: 0;
             $this->bean->user = $owner;
-            $this->addData($index); // call the user extend function in the trait
+            $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
             if (!@chdir($dir))
             { # go back to where we were in the file system
