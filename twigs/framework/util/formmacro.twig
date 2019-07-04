@@ -56,7 +56,7 @@
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
 
 {% macro checkbox(opts) %}
-{% import _self as fx %}{%if opts.group %}{{fx.bsl({})}}{% endif %}
+{% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     {{fx.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
@@ -69,7 +69,7 @@
 {% endmacro %}
 
 {% macro radio(opts) %}
-{% import _self as fx %}{%if opts.group %}{{fx.bsl({})}}{% endif %}
+{% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     {{fx.xsl(opts, 'form-check form-check-inline')}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
@@ -111,7 +111,7 @@
 {{fx.tick(val, class ~ ' htick', label, disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
-{% macro inline(type, name, msg, id, value, empty = '----') %}<a href="#" class="ppedit" data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}
+{% macro inline(type, name, msg, id, value, empty = '----') %}<a href="#" class="ppedit" {% if type == 'select' %}data-value="{{value}}" {% endif %}data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}
 {# use this if editable breaks....
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
