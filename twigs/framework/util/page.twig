@@ -16,7 +16,7 @@
 
     <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
     {% if usevue %}
-        <link rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+        <link rel="stylesheet" {{h.urlattr(fwurls.bootvuecss)}}/>
     {% endif %}
     {% if fwurls.facss.type == 'css' %}
         <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
@@ -32,7 +32,7 @@
 
     {% if usevue %}
         <script {{h.urlattr(fwurls.vuejs)}}></script>
-        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+        <script {{h.urlattr(fwurls.bootvuejs)}}></script>
     {% else %}
         {% if ajax %}
             <script {{h.urlattr(fwurls.jquery)}}></script>
