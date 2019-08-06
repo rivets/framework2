@@ -2,48 +2,34 @@
 
     <form id="tform2">
         {{f.number({label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50})}}
-        {{f.number({label: 'Number disabled', id : 'nmid2', name: 'nm2', value: 42, min: 30, step: 2, max: 50, disabled: TRUE})}}
-        {{f.number({label: 'Number readonly', id : 'nmid3', name: 'nm3', value: 42, min: 30, step: 2, max: 50, readonly: TRUE})}}
+        {{f.number({label: 'Number Disabled', id : 'nmid2', name: 'nm2', value: 42, min: 30, step: 2, max: 50, disabled: TRUE})}}
+        {{f.number({label: 'Number Readonly', id : 'nmid3', name: 'nm3', value: 42, min: 30, step: 2, max: 50, readonly: TRUE})}}
 
         {{f.range({label: 'Range', id : 'rnid1', name: 'rn1', dvalue: 15, min:10, step: 1, max: 20})}}
-        {{f.range({label: 'Range disabled', id : 'rnid2', name: 'rn2', dvalue: 15, min:10, step: 1, max: 20, disabled: TRUE})}}
-        {{f.range({label: 'Range readonly', id : 'rnid3', name: 'rn3', dvalue: 15, min:10, step: 1, max: 20, readonly: TRUE})}}
+        {{f.range({label: 'Range Disabled', id : 'rnid2', name: 'rn2', dvalue: 15, min:10, step: 1, max: 20, disabled: TRUE})}}
+        {{f.range({label: 'Range Readonly', id : 'rnid3', name: 'rn3', dvalue: 15, min:10, step: 1, max: 20, readonly: TRUE})}}
 
         {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
 
         {{f.file({label: 'File', id : 'flid', name: 'fl', accept: 'image/png'})}}
-        {{f.select({label: 'Select Multiple', is: 'slid1', name: 'sl1', size: 3, multiple: TRUE, selected: [1, 4], options: [
+        {{f.file({label: 'File Disabled', id : 'flid', name: 'fl', accept: 'image/png', disabled: TRUE})}}
+
+        {% set options = [
             {text: '&mdash;Select&mdash;', value: ''},
             {text: 'Value 1', value: 1},
             {text: 'Value 2', value: 2},
             {text: 'Value 3', value: 3},
             {text: 'Value 4', value: 4},
             {text: 'Value 5', value: 5},
-        ]})}}
-        {{f.select({label: 'Select', is: 'slid2', name: 'sl2', selected: 1, options: [
-            {text: '&mdash;Select&mdash;', value: ''},
-            {text: 'Value 1', value: 1},
-            {text: 'Value 2', value: 2},
-            {text: 'Value 3', value: 3},
-            {text: 'Value 4', value: 4},
-            {text: 'Value 5', value: 5},
-        ]})}}
-        {{f.select({label: 'Select disabled', is: 'slid2', name: 'sl2', selected: 1, disabled: TRUE, options: [
-            {text: '&mdash;Select Disabled&mdash;', value: ''},
-            {text: 'Value 1', value: 1},
-            {text: 'Value 2', value: 2},
-            {text: 'Value 3', value: 3},
-            {text: 'Value 4', value: 4},
-            {text: 'Value 5', value: 5},
-        ]})}}
-        {{f.select({label: 'Select readonly', is: 'slid2', name: 'sl2', selected: 1, readonly: TRUE, options: [
-            {text: '&mdash;Select Readonly&mdash;', value: ''},
-            {text: 'Value 1', value: 1},
-            {text: 'Value 2', value: 2},
-            {text: 'Value 3', value: 3},
-            {text: 'Value 4', value: 4},
-            {text: 'Value 5', value: 5},
-        ]})}}
+        ] %}
+        {{f.select({label: 'Select', is: 'slid21', name: 'sl21', selected: 1, options: options})}}
+        {{f.select({label: 'Select Disabled', is: 'slid22', name: 'sl22', selected: 1, disabled: TRUE, options: options})}}
+        {{f.select({label: 'Select readonly', is: 'slid23', name: 'sl23', selected: 1, readonly: TRUE, options: options})}}
+        
+        {{f.select({label: 'Select Multiple', is: 'slid11', name: 'sl11', size: 3, multiple: TRUE, selected: [1, 4], options: options})}}
+        {{f.select({label: 'Select Multiple Disabled', is: 'slid12', name: 'sl12', size: 3, multiple: TRUE, selected: [1, 4], options: options, disabled: TRUE})}}
+        {{f.select({label: 'Select Multiple Readonly', is: 'slid13', name: 'sl13', size: 3, multiple: TRUE, selected: [1, 4], options: options, readonly: TRUE})}}
+
         <div class="form-group">
         <label>Checkbox</label>
         {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
