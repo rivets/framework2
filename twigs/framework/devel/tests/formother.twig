@@ -28,6 +28,22 @@
             {text: 'Value 4', value: 4},
             {text: 'Value 5', value: 5},
         ]})}}
+        {{f.select({label: 'Select disabled', is: 'slid2', name: 'sl2', selected: 1, disabled: TRUE, options: [
+            {text: '&mdash;Select Disabled&mdash;', value: ''},
+            {text: 'Value 1', value: 1},
+            {text: 'Value 2', value: 2},
+            {text: 'Value 3', value: 3},
+            {text: 'Value 4', value: 4},
+            {text: 'Value 5', value: 5},
+        ]})}}
+        {{f.select({label: 'Select readonly', is: 'slid2', name: 'sl2', selected: 1, readonly: TRUE, options: [
+            {text: '&mdash;Select Readonly&mdash;', value: ''},
+            {text: 'Value 1', value: 1},
+            {text: 'Value 2', value: 2},
+            {text: 'Value 3', value: 3},
+            {text: 'Value 4', value: 4},
+            {text: 'Value 5', value: 5},
+        ]})}}
         <div class="form-group">
         <label>Checkbox</label>
         {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
