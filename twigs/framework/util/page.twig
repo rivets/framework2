@@ -15,6 +15,9 @@
     {% endblock favicons %}
 
     <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
+    {% if usevue %}
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"/>
+    {% endif %}
     {% if fwurls.facss.type == 'css' %}
         <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
     {% endif %}
@@ -27,19 +30,23 @@
     {% block body %}
     {% endblock body %}
 
-    {% if ajax %}
-        <script {{h.urlattr(fwurls.jquery)}}></script>
+    {% if usevue %}
+        <script {{h.urlattr(fwurls.vuejs)}}></script>
+        <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
     {% else %}
-        <script {{h.urlattr(fwurls.jqueryslim)}}></script>
+        {% if ajax %}
+            <script {{h.urlattr(fwurls.jquery)}}></script>
+        {% else %}
+            <script {{h.urlattr(fwurls.jqueryslim)}}></script>
+        {% endif %}
+        <script {{h.urlattr(fwurls.popperjs)}}></script>
+        <script {{h.urlattr(fwurls.bootjs)}}></script>
+        <script {{h.urlattr(fwurls.bootbox)}}></script>
     {% endif %}
 
-    <script {{h.urlattr(fwurls.popperjs)}}></script>
-    <script {{h.urlattr(fwurls.bootjs)}}></script>
-    <script {{h.urlattr(fwurls.bootbox)}}></script>
     {% if fwurls.facss.type == 'js' %}
         <script {{h.urlattr(fwurls.facss)}}></script> {# if you are using a font awesome kit #}
     {% endif %}
-
 
     {% block userscripts %}
     {% endblock userscripts %}
