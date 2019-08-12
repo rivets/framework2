@@ -287,19 +287,21 @@
 // CSS
         'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
-        'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, 'sha384-lASoplRCh9raTlvIKvrhqO3avLn7BFQyvIOBEl2orbulYLy3fRL73IyCvt+FRy3K', 'anonymous', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.8.1/css/all.css', 1, 'sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU', 'anonymous', 0, 0, 'css'],
+        'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.10.1/css/all.css', 1, '', '', 0, 0, 'css'],
+        'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
-        'jquery'        => ['https://code.jquery.com/jquery-3.4.0.min.js', 1, 'sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=', 'anonymous', 0, 0, 'js'],
-        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.0.slim.min.js', 1, 'sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo', 'anonymous', 0, 0, 'js'],
+        'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', 'anonymous', 0, 0, 'js'],
+        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, 'sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=', 'anonymous', 0, 0, 'js'],
         'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', 'anonymous', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
-        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
-        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, 'sha384-9VKBwSH8YZVLtOgG0nfM/RQ2MryjGteF7CCN84RPbtbFuW0aRWHhbC8aKGGcr5Z/', 'anonymous', 0, 0, 'js'],
-        'vuejs'         => ['https://unpkg.com/vue', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
+        'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
+        'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
     ];
 /**
  *  RedBean needs an alias to use namespaces
