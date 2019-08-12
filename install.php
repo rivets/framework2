@@ -285,7 +285,7 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO', 'anonymous', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
         'facss'         => ['https://use.fontawesome.com/releases/v5.10.1/css/all.css', 1, '', '', 0, 0, 'css'],
@@ -293,7 +293,7 @@
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', 'anonymous', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, 'sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=', 'anonymous', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, 'sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy', 'anonymous', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, 'sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', 'anonymous', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
