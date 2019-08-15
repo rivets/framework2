@@ -64,7 +64,7 @@
                 @chdir($dir);
                 throw new \Exception('Cannot move uploaded file to '.$fname);
             }
-            $this->bean->added = \R::isodatetime();
+            $this->bean->added = $context->utcnow();
             $pname[] = $fname;
             $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
             $this->bean->filename = $da['name'];
