@@ -6,7 +6,7 @@ This version uses more features of PHP than the previous versions, so
 as to provide examplars of how they can be used as the Framework is
 used in a module teaching server-side development with PHP.
 
-http://catless.ncl.ac.uk/framework/ has details of installation and usage
+http://catless.ncl.ac.uk/framework/ has details of installation and usage.
 
 ## Vagrant
 
