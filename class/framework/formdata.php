@@ -286,11 +286,11 @@
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             if ($res === NULL)
             { # no such variable
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
+                throw new \Framework\Exception\BadValue('Missing get item '.$name);
             }
             if ($res === FALSE)
             { # filter error
-                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+                throw new \Framework\Exception\BadValue('Get filter failure '.$name);
             }
             return $res;
         }
@@ -337,7 +337,7 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * 
+ *
  * @return \RedBeanPHP\OODBBean
  */
         public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -388,7 +388,7 @@
             return $res === FALSE || $res === NULL ? $default : $res;
         }
 /**
- * Look in the $_GET array for a key and apply filters
+ * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
  * @param int   	$filter		Filter values - see PHP manual
@@ -402,11 +402,11 @@
             $res = filter_input(INPUT_POST, $name, $filter, $options);
             if ($res === NULL)
             {
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
+                throw new \Framework\Exception\BadValue('Missing post item '.$name);
             }
             if ($res === FALSE)
             {
-                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+                throw new \Framework\Exception\BadValue('Post filter failure '.$name);
             }
             return $res;
         }
@@ -512,45 +512,42 @@
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
 /**
- * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
- *
- * @param string	$name	The key
- *
- * @throws \Framework\Exception\BadValue
- * @return \ArrayIterator
- */
-        public function mustcookiea(string $name) : \ArrayIterator
-        {
-            if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
-            {
-                return new \ArrayIterator($_POST[$name]);
-            }
-            throw new \Framework\Exception\BadValue('Missing cookie array item '.$name);
-        }
-/**
- * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
- *
- * @param string	$name	The key
- * @param array		$dflt	Returned if the key does not exist
- *
- * @return \ArrayIterator
- */
-        public function cookiea(string $name, array $dflt = []) : \ArrayIterator
-        {
-            return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
-        }
-/**
  * Look in the $_POST array for a key and  apply filters
  *
  * @param string	$name		The key
+ * @param $mixed    $default    The default value
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
  * @return mixed
  */
-        public function filtercookie(string $name, int $filter, $options = '')
+        public function filtercookie(string $name, $default, int $filter, $options = '')
         {
-            return filter_input(INPUT_COOKIE, $name, $filter, $options);
+            $res = filter_input(INPUT_COOKIE, $name, $filter, $options);
+            return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the $_COOKIE array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfiltercookie(string $name, int $filter, $options = '')
+        {
+            $res = filter_input(INPUT_COOKIE, $name, $filter, $options);
+            if ($res === NULL)
+            {
+                throw new \Framework\Exception\BadValue('Missing cookie item '.$name);
+            }
+            if ($res === FALSE)
+            {
+                throw new \Framework\Exception\BadValue('Cookie filter failure '.$name);
+            }
+            return $res;
         }
 /*
  ******************************
