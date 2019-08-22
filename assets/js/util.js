@@ -40,11 +40,15 @@
             }
         },
 
-        deletebean: function(e, x, bean, id, yes)
+        deletebean: function(e, x, bean, id, yes, msg = '')
         {
             e.preventDefault();
             e.stopPropagation();
-            bootbox.confirm('Are you sure you you want to delete this '+bean+'?', function(r){
+            if (msg == '')
+            {
+                msg = 'this '+bean;
+            }
+            bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
                     $.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
@@ -68,10 +72,10 @@
                tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
         },
 
-        dodelbean: function(e, x, bean)
+        dodelbean: function(e, x, bean, msg = '')
         {
             let tr = $(x).parent().parent();
-            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);});
+            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);}, msg);
         },
 
         tableClick: function(event)

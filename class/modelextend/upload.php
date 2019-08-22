@@ -21,10 +21,11 @@
  * method to add more complex access control schemes.
  *
  * @param object	$user	A user object
+ * @param string    $op     r for read, u for update, d for delete
  *
  * @return bool
  */
-        public function canaccess($user) : bool
+        public function canaccess($user, $op = 'r') : bool
         {
             return $this->bean->user->equals($user) || $user->isadmin();
         }
@@ -42,6 +43,25 @@
             /*
              * Your code
              */
+        }
+/**
+ * Called when you try to trash to an upload. Do any cleanup in here
+ *
+ * @throws \Framework\Exceotion\Forbidden
+ *
+ * @return void
+ */
+        public function delete() : void
+        {
+/**** Do not change this code *****/
+            $context = \Support\Context::getinstance();
+            if (!$this->bean->canaccess($context->user(), 'd'))
+            { // we cannot do this
+                throw new \Framework\Exception\Forbidden;
+            }
+// Now delete the file
+            unlink($context->local()->basedir().DIRECTORY_SEPARATOR.($this->bean->public ? 'public' : 'private').$this->fname); // fname starts with a /
+/**** Put any cleanup code of yours after this line ****/
         }
     }
 ?>
