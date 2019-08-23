@@ -41,13 +41,13 @@
         public function addData(\Support\Context $context, int $index) : void
         {
             /*
-             * Your code
+             * Your code goes here
              */
         }
 /**
  * Called when you try to trash to an upload. Do any cleanup in here
  *
- * @throws \Framework\Exceotion\Forbidden
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
@@ -56,12 +56,15 @@
 /**** Do not change this code *****/
             $context = \Support\Context::getinstance();
             if (!$this->bean->canaccess($context->user(), 'd'))
-            { // we cannot do this
+            { // not allowed
                 throw new \Framework\Exception\Forbidden;
             }
 // Now delete the file
-            unlink($context->local()->basedir().DIRECTORY_SEPARATOR.($this->bean->public ? 'public' : 'private').$this->fname); // fname starts with a /
+            unlink($context->local()->basedir().$this->fname);
 /**** Put any cleanup code of yours after this line ****/
+            /*
+             * Your code goes here
+             */
         }
     }
 ?>

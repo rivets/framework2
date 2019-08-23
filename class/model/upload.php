@@ -51,14 +51,7 @@
                 }
                 $owner = $context->user();
             }
-            $dir = getcwd();
-            chdir($context->local()->basedir());
-            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m')];
-            foreach ($pname as $pd)
-            { # walk the path cding and making if needed
-                $this->mkch($pd);
-            }
-            $fname = uniqid('', TRUE).'.'.pathinfo($da['name'], PATHINFO_EXTENSION);
+            list($dir, $pname, $fname) = $this->mkpath($context, $owner, $private, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -77,6 +70,49 @@
                 throw new \Exception('Cannot chdir to '.$dir);
             }
             return TRUE;
+        }
+/**
+ * Replace the existing uploaded file with another one
+ *
+ * @param \Support\Context    $context
+ * @param array               $da        The file upload info array via formdata
+ *
+ * @return void
+ */
+        public function replace(Context $context, array $da) : void
+        {
+            $oldfile = $this->bean->fname;
+            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->private, $da);
+            if (!@move_uploaded_file($da['tmp_name'], $fname))
+            {
+                @chdir($dir);
+                throw new \Exception('Cannot move uploaded file to '.$fname);
+            }
+            $this->bean->added = $context->utcnow();
+            $pname[] = $fname;
+            $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
+            \R::store($this->bean);
+            unlink($context->local()->basedir().$oldfile);
+            if (!@chdir($dir))
+            { # go back to where we were in the file system
+                throw new \Exception('Cannot chdir to '.$dir);
+            }
+        }
+/**
+ * Make a path for a new file
+ *
+ * @return array
+ */
+        private function mkpath($context, $owner, $public, $da) : array
+        {
+            $dir = getcwd();
+            chdir($context->local()->basedir());
+            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m')];
+            foreach ($pname as $pd)
+            { # walk the path cding and making if needed
+                $this->mkch($pd);
+            }
+            return [$dir, $pname, uniqid('', TRUE).'.'.pathinfo($da['name'], PATHINFO_EXTENSION)];
         }
  /**
  * Make a directory if necessary and cd into it
