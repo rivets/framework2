@@ -116,10 +116,15 @@
             }
         
             $local->addval([
-                'context'   => $context,
-                'action'    => $action,
-                'siteinfo'  => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
-                'ajax'      => FALSE,                            // Mark pages as not using AJAX by default
+                'context'           => $context,
+                'action'            => $action,
+                'siteinfo'          => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
+                'ajax'              => FALSE,                            // Mark pages as not using AJAX by default
+                'usejquery'         => TRUE,
+                'usebootstrapcss'   => TRUE,
+                'usebootstrapjs'    => TRUE,
+                'usebootbox'        => TRUE,
+                'usevue'            => FALSE,
             ]);
 
             $code = StatusCodes::HTTP_OK;
