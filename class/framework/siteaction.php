@@ -304,5 +304,20 @@
             }
             exit;
         }
+/**
+ * Validate the number of fields in the rest of the URL
+ *
+ * @todo This function could do a lot moreabout checking things....
+ *
+ * @param array    $rest
+ * @param int      $num
+ * @param array    $format   Currently not used
+ *
+ * @return array
+ */
+        public function checkRest(array $rest, int $num, $format = [])
+        {
+            return array_merge([count($rest) >= $num], $rest);
+        }
     }
 ?>
