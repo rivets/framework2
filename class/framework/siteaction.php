@@ -310,14 +310,16 @@
  * @todo This function could do a lot moreabout checking things....
  *
  * @param array    $rest
- * @param int      $num
+ * @param int      $start    The element to start at
+ * @param int      $num      The number of params required
  * @param array    $format   Currently not used
  *
  * @return array
  */
-        public function checkRest(array $rest, int $num, $format = [])
+        public function checkRest(array $rest, int $start, int $num, $format = [])
         {
-            return array_merge([count($rest) >= $num], $rest);
+
+            return array_merge([count($rest) >= $num + $start], array_pad(array_slice($rest, $start, $num), $num, ''));
         }
     }
 ?>
