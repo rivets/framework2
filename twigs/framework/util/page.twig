@@ -14,7 +14,9 @@
     {% block favicons %}
     {% endblock favicons %}
 
-    <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
+    {% if usebootstrapcss %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
+    {% endif %}
     {% if usevue %}
         <link rel="stylesheet" {{h.urlattr(fwurls.bootvuecss)}}/>
     {% endif %}
@@ -36,12 +38,16 @@
     {% else %}
         {% if ajax %}
             <script {{h.urlattr(fwurls.jquery)}}></script>
-        {% else %}
+        {% elseif usejquery %}
             <script {{h.urlattr(fwurls.jqueryslim)}}></script>
         {% endif %}
-        <script {{h.urlattr(fwurls.popperjs)}}></script>
-        <script {{h.urlattr(fwurls.bootjs)}}></script>
-        <script {{h.urlattr(fwurls.bootbox)}}></script>
+        {% if usebootstrapjs %}
+            <script {{h.urlattr(fwurls.popperjs)}}></script>
+            <script {{h.urlattr(fwurls.bootjs)}}></script>
+        {% endif %}
+        {% if usebootbox %}
+            <script {{h.urlattr(fwurls.bootbox)}}></script>
+        {% endif %}
     {% endif %}
 
     {% if fwurls.facss.type == 'js' %}
