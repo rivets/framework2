@@ -314,12 +314,16 @@
  * @param int      $num      The number of params required
  * @param array    $format   Currently not used
  *
+ * @throws \Framework\Exception\ParameterCount
  * @return array
  */
         public function checkRest(array $rest, int $start, int $num, $format = [])
         {
-
-            return array_merge([count($rest) >= $num + $start], array_pad(array_slice($rest, $start, $num), $num, ''));
+            if (count($rest) >= $num + $start)
+            {
+                return array_slice($rest, $start, $num);
+            }
+            throw new \Framework\Exception\ParameterCount('Missing Parameter');
         }
     }
 ?>
