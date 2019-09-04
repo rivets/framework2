@@ -130,12 +130,12 @@
             {
                 if (!@mkdir($dir, 0770))
                 {
-                    throw new \Exception('Cannot mkdir '.$dir);
+                    throw new \Framework\Exception\Forbidden('Cannot mkdir '.$dir);
                 }
             }
             if (!@chdir($dir))
             {
-                throw new \Exception('Cannot chdir '.$dir);
+                throw new \Framework\Exception\Forbidden('Cannot chdir '.$dir);
             }
         }
     }
