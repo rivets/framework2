@@ -51,7 +51,7 @@
                 }
                 $owner = $context->user();
             }
-            list($dir, $pname, $fname) = $this->mkpath($context, $owner, $private, $da);
+            list($dir, $pname, $fname) = $this->mkpath($context, $owner, !$public, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
