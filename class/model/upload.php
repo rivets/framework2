@@ -82,7 +82,7 @@
         public function replace(Context $context, array $da) : void
         {
             $oldfile = $this->bean->fname;
-            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->private, $da);
+            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, !$this->bean->private, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
