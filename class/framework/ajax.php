@@ -559,7 +559,7 @@
                 $res = [];
                 foreach (\Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]) as $bn)
                 {
-                    $v = new stdclass;
+                    $v = new \stdClass;
                     $v->value = $bn->getID();
                     $v->text = $bn->$field;
                     $res[] = $v;
