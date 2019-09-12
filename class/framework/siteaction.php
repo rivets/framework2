@@ -304,5 +304,26 @@
             }
             exit;
         }
+/**
+ * Validate the number of fields in the rest of the URL
+ *
+ * @todo This function could do a lot moreabout checking things....
+ *
+ * @param array    $rest
+ * @param int      $start    The element to start at
+ * @param int      $num      The number of params required
+ * @param array    $format   Currently not used
+ *
+ * @throws \Framework\Exception\ParameterCount
+ * @return array
+ */
+        public function checkRest(array $rest, int $start, int $num, $format = [])
+        {
+            if (count($rest) >= $num + $start)
+            {
+                return array_slice($rest, $start, $num);
+            }
+            throw new \Framework\Exception\ParameterCount('Missing Parameter');
+        }
     }
 ?>

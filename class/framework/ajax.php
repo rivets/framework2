@@ -524,7 +524,7 @@
                 $order = $fdt->get('order', '');
                 $page = $fdt->mustget('page');
                 $pagesize = $fdt->mustget('pagesize');
-                $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order bye '.$order) : ''), [], $page, $pagesize);
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order by '.$order) : ''), [], $page, $pagesize);
                 $context->web()->sendJSON($res);
             }
             else
@@ -533,7 +533,7 @@
             }
         }
 /**
- * Get serach hints for a bean
+ * Get search hints for a bean
  *
  * @internal
  * @param \Support\Context	$context	The context object for the site
@@ -556,7 +556,7 @@
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $order = $fdt->get('order', '');
                 $search = $fdt->mustget('search');
-                $res = \Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order bye '.$order) : ''), [$search]);
+                $res = \Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]);
                 $context->web()->sendJSON($res);
             }
             else

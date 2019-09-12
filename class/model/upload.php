@@ -51,7 +51,7 @@
                 }
                 $owner = $context->user();
             }
-            list($dir, $pname, $fname) = $this->mkpath($context, $owner, $private, $da);
+            list($dir, $pname, $fname) = $this->mkpath($context, $owner, $public, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -82,7 +82,7 @@
         public function replace(Context $context, array $da) : void
         {
             $oldfile = $this->bean->fname;
-            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->private, $da);
+            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->public, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -130,12 +130,12 @@
             {
                 if (!@mkdir($dir, 0770))
                 {
-                    throw new \Exception('Cannot mkdir '.$dir);
+                    throw new \Framework\Exception\Forbidden('Cannot mkdir '.$dir);
                 }
             }
             if (!@chdir($dir))
             {
-                throw new \Exception('Cannot chdir '.$dir);
+                throw new \Framework\Exception\Forbidden('Cannot chdir '.$dir);
             }
         }
     }
