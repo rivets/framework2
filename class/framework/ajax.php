@@ -554,9 +554,16 @@
                     $field = $fdt->mustget('field');
                 }
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
-                $order = $fdt->get('order', '');
+                $order = $fdt->get('order', $field);
                 $search = $fdt->mustget('search');
-                $res = \Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]);
+                $res = [];
+                foreach (\Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]) as $bn)
+                {
+                    $v = new stdclass;
+                    $v->value = $bn->getID();
+                    $v->text = $bn->$field;
+                    $res[] = $v;
+                }
                 $context->web()->sendJSON($res);
             }
             else
