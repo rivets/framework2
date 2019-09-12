@@ -43,7 +43,7 @@
  * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
  * @return mixed
  */
-        public function collect(string $bean, string $where, array $params, int $start, int $count)
+        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0)
         {
             if ($start >= 0)
             {
@@ -67,7 +67,7 @@
  *
  * @return array
  */
-        public function fetch(string $bean, string $where, array $params, int $start, int $count) : array
+        public function fetch(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : array
         {
             if ($start >= 0)
             {
