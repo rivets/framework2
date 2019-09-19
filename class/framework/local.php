@@ -383,14 +383,19 @@
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
-            foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
+            foreach (['', 'vue'] as $cssFrame)
             {
-                $loader->addPath($twigdir.'/framework/'.$tns, $tns);
+                $dir = $cssFrame !== '' ? '/'.$cssFrame : '';
+                foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
+                {
+                    $loader->addPath($twigdir.$dir.'/framework/'.$tns, $cssFrame.$tns);
+                }
+                foreach (['content', 'info', 'surround'] as $tns)
+                {
+                    $loader->addPath($twigdir.$dir.'/'.$tns, $cssFrame.$tns);
+                }
             }
-            foreach (['content', 'info', 'surround'] as $tns)
-            {
-                $loader->addPath($twigdir.'/'.$tns, $tns);
-            }
+
             $this->twig = new \Twig\Environment(
                 $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
