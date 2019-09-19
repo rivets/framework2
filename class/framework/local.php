@@ -388,11 +388,17 @@
                 $dir = $cssFrame !== '' ? '/'.$cssFrame : '';
                 foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
                 {
-                    $loader->addPath($twigdir.$dir.'/framework/'.$tns, $cssFrame.$tns);
+                    if (file_exists($twigdir.$dir.'/framework/'.$tns))
+                    {
+                        $loader->addPath($twigdir.$dir.'/framework/'.$tns, $cssFrame.$tns);
+                    }
                 }
                 foreach (['content', 'info', 'surround'] as $tns)
                 {
-                    $loader->addPath($twigdir.$dir.'/'.$tns, $cssFrame.$tns);
+                    if (file_exists($twigdir.$dir.'/framework/'.$tns))
+                    {
+                        $loader->addPath($twigdir.$dir.'/'.$tns, $cssFrame.$tns);
+                    }
                 }
             }
 
