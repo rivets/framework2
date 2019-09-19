@@ -383,25 +383,22 @@
         {
             $twigdir = $this->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
-            foreach (['', 'vue'] as $cssFrame)
+            foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
-                $dir = $cssFrame !== '' ? '/'.$cssFrame : '';
-                foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
-                {
-                    if (file_exists($twigdir.$dir.'/framework/'.$tns))
-                    {
-                        $loader->addPath($twigdir.$dir.'/framework/'.$tns, $cssFrame.$tns);
-                    }
-                }
-                foreach (['content', 'info', 'surround'] as $tns)
-                {
-                    if (file_exists($twigdir.$dir.'/framework/'.$tns))
-                    {
-                        $loader->addPath($twigdir.$dir.'/'.$tns, $cssFrame.$tns);
-                    }
-                }
+                    $loader->addPath($twigdir.'/framework/'.$tns, $tns);
             }
-
+            foreach (['content', 'info', 'surround'] as $tns)
+            {
+                $loader->addPath($twigdir.'/'.$tns, $tns);
+            }
+            foreach (['util'] as $tns)
+            {
+                    $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
+            }
+            foreach (['content'] as $tns)
+            {
+                $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
+            }
             $this->twig = new \Twig\Environment(
                 $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
