@@ -543,17 +543,18 @@
  */
         private final function hints(Context $context) : void
         {
-            $fdt = $context->formdata();
-            $bean = $fdt->mustget('bean');
+            $rest = $context->rest();
+            $bean = $rest[1];
             if (isset(self::$hints[$bean]))
             { // hinting is allowed for this bean
                 $this->checkPerms($context, self::$hints[$bean][2]); // make sure we are allowed
                 $field = self::$hints[$bean][0];
                 if ($field == '*')
                 { # the call must specify the field
-                    $field = $fdt->mustget('field');
+                    $field = $rest[2];
                 }
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
+                $fdt = $context->formdata();
                 $order = $fdt->get('order', $field);
                 $search = $fdt->mustget('search');
                 $res = [];
