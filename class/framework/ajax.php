@@ -558,7 +558,7 @@
                 $field = '`'.$field.'`';
                 $fdt = $context->formdata();
                 $order = $fdt->get('order', $field);
-                if ($order === $field)
+                if ($order !== $field)
                 { // strop the fieldname if it occurs in the order spec
                     $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
                 }
