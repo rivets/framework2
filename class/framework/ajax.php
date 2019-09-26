@@ -570,7 +570,7 @@
                 {
                     $v = new \stdClass;
                     $v->value = $bn->getID();
-                    $v->text = $bn->$field;
+                    $v->text = $bn->$ofield;
                     $res[] = $v;
                 }
                 $context->web()->sendJSON($res);
