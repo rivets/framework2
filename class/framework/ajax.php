@@ -556,9 +556,11 @@
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $fdt = $context->formdata();
                 $order = $fdt->get('order', $field);
+                $limit = $fdt->get('limit', '');
                 $search = $fdt->mustget('search');
                 $res = [];
-                foreach (\Support\SiteInfo::getinstance()->fetch($bean, '`'.$field.'`'.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]) as $bn)
+                foreach (\Support\SiteInfo::getinstance()->fetch($bean,
+                    '`'.$field.'`'.' like ?'.($order !== '' ? (' order by '.$order) : '').($limit !== '' ? (' limit '.$limit) : ''), [$search]) as $bn)
                 {
                     $v = new \stdClass;
                     $v->value = $bn->getID();
