@@ -557,7 +557,7 @@
                 $order = $fdt->get('order', $field);
                 $search = $fdt->mustget('search');
                 $res = [];
-                foreach (\Support\SiteInfo::getinstance()->fetch($bean, $field.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]) as $bn)
+                foreach (\Support\SiteInfo::getinstance()->fetch($bean, '`'.$field.'`'.' like ?'.($order !== '' ? (' order by '.$order) : ''), [$search]) as $bn)
                 {
                     $v = new \stdClass;
                     $v->value = $bn->getID();

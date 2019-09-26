@@ -1,0 +1,59 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8"/>
+
+    <title>{% block title %}{{fwurls.sitename.value|upper}}{% endblock title %}</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    {% import '@util/attrmacro.twig' as h %}
+
+    {% block favicons %}
+    {% endblock favicons %}
+
+    {% import '@util/attrmacro.twig' as h %}
+
+    {% block favicons %}
+    {% endblock favicons %}
+
+    {% if usebootstrapcss %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.bootvuecss)}}/>
+    {% endif %}
+    {% if fwurls.facss.type == 'css' %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
+    {% endif %}
+
+    {% block head %}
+    {% endblock head %}
+</head>
+<body lang="{{deflang is defined ? deflang : 'en-GB'}}">
+    {% block body %}
+    {% endblock body %}
+
+    {% if usevue %}
+        <script {{h.urlattr(fwurls.vuejs)}}></script>
+     {% if usebootstrap %}
+         <script {{h.urlattr(fwurls.bootvuejs)}}></script>
+    {% endif %}
+
+    {% if fwurls.facss.type == 'js' %}
+        <script {{h.urlattr(fwurls.facss)}}></script> {# if you are using a font awesome kit #}
+    {% endif %}
+
+    {% block userscripts %}
+    {% endblock userscripts %}
+
+    {% set sjs, ojs = '', '' %}
+    {% if block('setup') is defined %}{% set sjs = block('setup')|trim %}{% endif %}
+    {% if block('onload') is defined %}
+        {% set ojs = block('onload')|trim %}
+        {% if ojs|length > 0 %}{% set ojs = '$(function(){'~ojs~'});' %}{% endif %}
+    {% endif %}
+    {% set js = sjs~ojs %}
+    {% if js|length > 0 %}
+        {% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}
+        <script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>
+    {% endif %}
+</body>
+</html>
