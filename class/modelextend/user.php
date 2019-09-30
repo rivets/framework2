@@ -30,5 +30,18 @@
         {
             return $pw !== '';
         }
+/**
+ * Do any extra registration stuff
+ *
+ * Returns an array of error messages or an empty array if OK
+ *
+ * @param \Support\Context $context
+ *
+ * @return array
+ */
+        public function register($context) : array
+        {
+            return [];
+        }
     }
 ?>
