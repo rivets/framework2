@@ -132,6 +132,10 @@
                     {
                         $errmess[] = 'The passwords do not match';
                     }
+                    if (!\Model\User::pwValid($pw))
+                    {
+                        $errmess[] = 'The passwords do not match';
+                    }
                     if (preg_match('/[^a-z0-9]/i', $login))
                     {
                         $errmess[] = 'Your username can only contain letters and numbers';
@@ -149,9 +153,17 @@
                         $x->active = 1;
                         $x->joined = $context->utcnow();
                         R::store($x);
-                        $x->setpw($pw);
-                        $this->sendconfirm($context, $x);
-                        $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                        $rerr = $x->register($context); // do any extra registration
+                        if (empty($rerr))
+                        { 
+                            $this->sendconfirm($context, $x);
+                            $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                        }
+                        else
+                        { // extra registration failed
+                            \R::trash($x); // delete the user object
+                            $errmess = array_merge($errmess, $rerr);
+                        }
                     }
                 }
                 else
