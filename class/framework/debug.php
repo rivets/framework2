@@ -20,7 +20,9 @@
  */
         private static $hcount = 0;
 /**
- * Set up the file
+ * Set up the debug text file
+ *
+ * @return void
  */
         private static function setup() : void
         {
@@ -34,8 +36,6 @@
  *
  * @param string    $str
  *
- * @todo use the new ... stuff in PHP 5.6 to allow many parameters
- *
  * @return void
  */
         public static function show(string $str) : void
@@ -48,8 +48,6 @@
  * Dump a variable - uses buffering to grab the output.
  *
  * @param mixed $vars
- *
- * @todo use the new ... stuff in PHP 5.6 to allow many parameters
  *
  * @return void
  */
@@ -78,8 +76,6 @@
  * Display a string in an X-DEBUG-INFO header
  *
  * @param string    $str
- *
- * @todo use the new ... stuff in PHP 5.6 to allow many parameters
  *
  * @return void
  */
