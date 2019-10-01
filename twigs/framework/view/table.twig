@@ -44,7 +44,7 @@
 {% block onload %}
     {%if inline %}
         $('.ppedit').editable({
-            ajaxOptions: { type: 'PUT' },
+            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
             params: paramset,
             onblur: 'cancel',
             url: framework.editcall
