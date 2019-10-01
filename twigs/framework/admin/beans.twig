@@ -21,11 +21,11 @@
         const dt = {
            name: $('#xbn').val(),
         };
-        $('input[name="field[]"]', form).each(function(index, input) {
-            dt['field[' + index + ']'] = input.val();
+        $('input[name="field[]"]', form).each(function(index) {
+            dt['field[' + index + ']'] = $(this).val();
         });
-        $('input[name="sample[]"]', form).each(function(index, input) {
-            dt['sample[' + index + ']'] = input.val();
+        $('input[name="sample[]"]', form).each(function(index) {
+            dt['sample[' + index + ']'] = $(this).val();
         });
         const fn = function(data){
             var htm = '<tr><td>'+name+'</td>'+
