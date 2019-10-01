@@ -30,11 +30,11 @@
         $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         });
-    })
+    });
     $('#nbean').on('show.bs.modal', function(e){
-        $('#nbform input,select').val('')
-    })
-    $('#more').on('click', framework.addMore)
+        $('#nbform input,select').val('');
+    });
+    $('#more').on('click', function() { bootbox.alert('Coming soon'); ));
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -85,13 +85,13 @@
         <form action="#" method="POST" id="nbform">
             <fieldset>
                 {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                    parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                    parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
                     'remote-message': 'That bean already exists'} })}}
                 {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
             </fieldset>
             <p id="mrow">
-                <button class="btn btn-small" id="more">More</button>
+                <button class="btn btn-sm btn-info" id="more">More</button>
             </p>
         </form>
     </div>
