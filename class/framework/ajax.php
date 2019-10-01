@@ -490,7 +490,7 @@
             $method = $context->web()->method();
             if ($method == 'POST')
             {
-                if (!$context->isadmin())
+                if (!$context->hasadmin())
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                     /* NOT REACHED */
