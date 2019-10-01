@@ -14,10 +14,11 @@
 {% block onload %}
     $('#nbform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
-        this.attr('disabled', true);
+        const btn = $(this);
+        btn.attr('disabled', true);
         e.preventDefault()
         const name = $('#npname').val()
-        const btn = this;
+
         $('#npage').modal('hide');
         const fn = function(data){
             var htm = '<tr><td>'+name+'</td>'+
