@@ -129,7 +129,7 @@
         {{m.open({is: 'nfield', title: 'New Field'})}}
         <div class="modal-body">
             <form action="#" method="POST" id="nfform">
-                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {type: 'alphanum'} })}}
+                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {pattern: '[a-z][a-z0-9.]*'} })}}
                 {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
             </form>
         </div>
