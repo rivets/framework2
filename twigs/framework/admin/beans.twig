@@ -85,7 +85,7 @@
         <form action="#" method="POST" id="nbform">
             <fieldset>
                 {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                    parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                    parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
                     'remote-message': 'That bean already exists'} })}}
                 {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
