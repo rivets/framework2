@@ -288,7 +288,7 @@
         'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.10.1/css/all.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.11.2/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', 'anonymous', 0, 0, 'js'],
