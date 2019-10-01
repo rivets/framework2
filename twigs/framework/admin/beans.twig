@@ -24,15 +24,7 @@
             var htm = '<tr><td>'+name+'</td>'+
             '<td><a href="/admin/view/table/'+data+'"><i class="editb far fa-eye"></i></a></td>'+
             '<td><a href="/admin/edit/table/'+data+'"><i class="editb far fa-edit"></i></a></td></tr>';
-            var nx
-            if (sp == null)
-            {
-                 nx = $(htm).appendTo($('#ptab tbody'));
-            }
-            else
-            {
-                nx = $(htm).insertBefore(sp.parent());
-            }
+            var nx = sp == null ? $(htm).appendTo($('#ptab tbody')) : $(htm).insertBefore(sp.parent());
             nx.data('id', data);
         };
         $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){

@@ -241,8 +241,8 @@
                     if ($cid !== '')
                     {
                         $p->addrolebybean(
-                            $context->load(FW::ROLECONTEXT, $cid),
-                            $fdt->mustpostbean(['role', $ix], FW::ROLENAME),
+                            $context->load(FW::ROLECONTEXT, $cid),                         // the context id
+                            $context->load(FW::ROLENAME, $fdt->mustpost(['role', $ix])),   // the rolename id
                             $fdt->mustpost(['otherinfo', $ix]),
                             $fdt->mustpost(['start', $ix]),
                             $fdt->mustpost(['end', $ix])
