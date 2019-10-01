@@ -12,7 +12,7 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#nbform').parsley();
+    $('#nbform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         this.attr('disabled', true);
         e.preventDefault()
