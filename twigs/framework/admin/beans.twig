@@ -15,17 +15,25 @@
     $('#nbform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
         const btn = $(this);
+        const form = $('#nbform');
         btn.attr('disabled', true);
         e.preventDefault()
-        const name = $('#npname').val()
-
-        $('#npage').modal('hide');
+        const dt = {
+           name: $('#xbn').val(),
+        };
+        $('input[name="field[]"]', form).each(function(index, input)
+            dt['field[' + index + ']'] = input.val();
+        });
+        $('input[name="sample[]"]', form).each(function(index, input)
+            dt['sample[' + index + ']'] = input.val();
+        });
         const fn = function(data){
             var htm = '<tr><td>'+name+'</td>'+
             '<td><a href="/admin/view/table/'+data+'"><i class="editb far fa-eye"></i></a></td>'+
             '<td><a href="/admin/edit/table/'+data+'"><i class="editb far fa-edit"></i></a></td></tr>';
             var nx = sp == null ? $(htm).appendTo($('#ptab tbody')) : $(htm).insertBefore(sp.parent());
             nx.data('id', data);
+            $('#nbean').modal('hide');
         };
         $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
