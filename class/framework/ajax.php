@@ -488,6 +488,7 @@
             $rest = $context->rest();
             $table = strtolower($rest[1]);
             $method = $context->web()->method();
+            $fdt = $context->formdata();
             if ($method == 'POST')
             {
                 if (!$context->hasadmin())
@@ -502,8 +503,12 @@
                     /* NOT REACHED */
                 }
                 $bn = \R::dispense($table);
+                foreach ($fdt->posta('field') as $ix => $fname)
+                {
+                    $bn->$fname = $fdt->post(['sample', $ix], '');
+                }
                 $id = \R::store($bn);
-                echo $id;
+                \R::trash($bn);
             }
             else
             {
