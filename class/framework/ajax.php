@@ -72,7 +72,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
+ * Permissions array for table acccess.
  */
         private static $tableperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
@@ -199,7 +199,7 @@
  * @throws \Framework\Exception\Forbidden
  * @return array
  */
-        protected final function findRow(Context $context, $perms) : array
+        protected final function <findRow>(Context $context, $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
@@ -485,23 +485,36 @@
  */
         private final function table(Context $context) : void
         {
-            $tables = $this->findRow($context, self::$tableperms);
+
             $rest = $context->rest();
             $table = $rest[1];
             $method = $context->web()->method();
-            if (!in_array($table, $tables))
+            if ($method == 'POST')
             {
-                throw new \Framework\Exception\Forbidden('Permission denied');
+                if (!$context->isadmin())
+                {
+                    throw new \Framework\Exception\Forbidden('Permission denied');
+                }
+                $bn = \R::dispense($table);
+                $id = \R::store($bn);
+                echo $id;
             }
-            switch ($method)
+            else
             {
-            case 'POST': // make a new one
-            case 'PATCH':
-            case 'PUT': // add a field
-            case 'DELETE':
-            case 'GET':
-            default:
-                throw new \Framework\Exception\BadOperation('Operation not supported');
+                $tables = $this->findRow($context, self::$tableperms);
+                if (!in_array($table, $tables))
+                {
+                    throw new \Framework\Exception\Forbidden('Permission denied');
+                }
+                switch ($method)
+                {
+                case 'PATCH':
+                case 'PUT': // add a field
+                case 'DELETE':
+                case 'GET':
+                default:
+                    throw new \Framework\Exception\BadOperation('Operation not supported');
+                }
             }
         }
 /**
