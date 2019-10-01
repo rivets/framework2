@@ -516,7 +516,14 @@
                 switch ($method)
                 {
                 case 'DELETE':
-                    \R::wipe($table);
+                    try
+                    {
+                        \R::exec('drop table ' + $table);
+                    }
+                    catch (\Exception $e)
+                    {
+                        throw new \Framework\Exception\Forbidden($e->getMessage());
+                    }
                     break;
                 case 'PATCH':
                 case 'PUT': // add a field
