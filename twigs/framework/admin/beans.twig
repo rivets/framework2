@@ -27,7 +27,7 @@
         });
         const fn = function(data){
             var htm = '<tr><td>'+name+'</td>'+
-            '<td><a href="/admin/view/table/'+data+'"><i class="editb far fa-eye"></i></a></td>'+
+            '<td><a href="/admin/view/table/'+data+'"><i class="far fa-eye"></i></a></td>'+
             '<td><a href="/admin/edit/table/'+data+'"><i class="editb far fa-edit"></i></a></td></tr>';
             var nx = sp == null ? $(htm).appendTo($('#ptab tbody')) : $(htm).insertBefore(sp.parent());
             nx.data('id', data);
@@ -35,7 +35,7 @@
         };
         $.post('{{base}}/ajax/table/' + $('#xbn').val(), dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
-        }).always(function(e) { btn.attr('disabled', false); });
+        }).always(function() { btn.attr('disabled', false); });
     });
     $('#nbean').on('show.bs.modal', function(e){
         $('#nbform input,select').val('');
@@ -67,7 +67,7 @@
                 <thead class="thead-inverse">
                     <tr>
                         <th>Name</th>
-                        <th colspan="2">&nbsp</th>
+                        <th colspan="3">&nbsp</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,9 +76,10 @@
                             <td class="bname">{{nb.name}}</td>
                             <td><a href="{{base}}/admin/view/table/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
                             <td><a href="{{base}}/admin/edit/table/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
+                            <td><i class="delb far fa-trash-alt"></i></a></td>
                         </td>
                     {% else %}
-                        <tr><td colspan="3">No beans defined</td></tr>
+                        <tr><td colspan="4">No beans defined</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
