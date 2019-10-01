@@ -18,9 +18,7 @@
         const form = $('#nbform');
         btn.attr('disabled', true);
         e.preventDefault()
-        const dt = {
-           name: $('#xbn').val(),
-        };
+        const dt = {};
         $('input[name="field[]"]', form).each(function(index) {
             dt['field[' + index + ']'] = $(this).val();
         });
@@ -35,7 +33,7 @@
             nx.data('id', data);
             $('#nbean').modal('hide');
         };
-        $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
+        $.post('{{base}}/ajax/table/' + $('#xbn').val(), dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function(e) { btn.attr('disabled', false); });
     });
