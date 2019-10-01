@@ -485,15 +485,21 @@
  */
         private final function table(Context $context) : void
         {
-
             $rest = $context->rest();
-            $table = $rest[1];
+            $table = strtolower($rest[1]);
             $method = $context->web()->method();
             if ($method == 'POST')
             {
                 if (!$context->isadmin())
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
+                    /* NOT REACHED */
+                }
+                $tb = \R::inspect();
+                if (in_array(strtolower($table), $tb))
+                {
+                    throw new \Framework\Exception\Forbidden('Table exists');
+                    /* NOT REACHED */
                 }
                 $bn = \R::dispense($table);
                 $id = \R::store($bn);
