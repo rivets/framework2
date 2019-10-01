@@ -334,7 +334,7 @@
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
  * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param string        $bean   The bean type
+ * @param string    $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
  * 
