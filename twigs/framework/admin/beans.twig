@@ -62,7 +62,7 @@
     $('#nbean').on('show.bs.modal', function(e){
         $('#nbform input,select').val('');
     });
-    $('.delb').function(e){
+    $('.delb').on('click', function(e){
         e.preventDefault();
         e.stopPropagation();
         let table = $('.bname', $(this).parent().parent()).text();
