@@ -309,7 +309,7 @@
  * @throws \Framework\Exception\BadValue
  * @return mixed
  */
-        public function mustpost(string $name)
+        public function mustpost($name)
         {
             return $this->fetchit(INPUT_POST, $_POST, $name, NULL, TRUE);
         }
