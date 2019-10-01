@@ -509,7 +509,7 @@
                 }
                 $id = \R::store($bn);
                 \R::trash($bn);
-                \R::exec('truncate '.$table');
+                \R::exec('truncate '.$table);
             }
             else
             {
