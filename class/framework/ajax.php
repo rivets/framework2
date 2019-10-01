@@ -199,7 +199,7 @@
  * @throws \Framework\Exception\Forbidden
  * @return array
  */
-        protected final function <findRow>(Context $context, $perms) : array
+        protected final function findRow(Context $context, $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
