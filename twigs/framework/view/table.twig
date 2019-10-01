@@ -55,11 +55,6 @@
         $('#addb').on('click', function(e){
             e.preventDefault();
             const pn = $('#nfname').val().toLowerCase();
-            if (!pn.match(/^[a-z][a-z0-9.]*$/))
-            {
-                bootbox.alert('&quot;'+pn+'&quot; is not a valid field name. Letters and numbers only');
-                return;
-            }
             let sp = null;
             let error = false;
             $('.fname').each(function(e){
