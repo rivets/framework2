@@ -485,17 +485,17 @@
  */
         private final function table(Context $context) : void
         {
+            if (!$context->hasadmin())
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+                /* NOT REACHED */
+            }
             $rest = $context->rest();
             $table = strtolower($rest[1]);
             $method = $context->web()->method();
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                if (!$context->hasadmin())
-                {
-                    throw new \Framework\Exception\Forbidden('Permission denied');
-                    /* NOT REACHED */
-                }
                 $tb = \R::inspect();
                 if (in_array(strtolower($table), $tb))
                 {
@@ -513,16 +513,14 @@
             }
             else
             {
-                $tables = $this->findRow($context, self::$tableperms);
-                if (!in_array($table, $tables))
-                {
-                    throw new \Framework\Exception\Forbidden('Permission denied');
-                }
                 switch ($method)
                 {
+                case 'DELETE':
+                    \R::wipe($table);
+                    break;
                 case 'PATCH':
                 case 'PUT': // add a field
-                case 'DELETE':
+
                 case 'GET':
                 default:
                     throw new \Framework\Exception\BadOperation('Operation not supported');
