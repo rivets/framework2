@@ -564,25 +564,28 @@
                     break;
                 case 'PATCH':
                 case 'PUT': // change a field
+                    $value = $fdt->mustpost('value');
                     $f1 = $rest[2];
-                    $f2 = $rest[3];
-                    if ($f1 == 'id')
+                    if (!$this->fieldExists($table, $f1))
                     {
-                        throw new \Framework\Exception\Forbidden('Permission Denied');
+                        throw new \Framework\Exception\BadValue('Bad field name');
                         /* NOT REACHED */
                     }
-                    if ($f1 != $f2)
-                    { // change the field's name;
-                    }
-                    $fields = \R::inspect($table);
-                    $value = $fdt->mustpost('value');
-                    if ($fields[$f1] !== $value)
-                    { // type change
+                    switch ($rest[3])
+                    {
+                    case 'name':
+                        break;
+                    case 'type':
+                        break;
+                    default:
+                        throw new \Framework\Exception\BadValue('No such change');
+                        /* NOT REACHED */
                     }
                     break;
                 case 'GET':
                 default:
                     throw new \Framework\Exception\BadOperation('Operation not supported');
+                    /* NOT REACHED */
                 }
             }
         }
