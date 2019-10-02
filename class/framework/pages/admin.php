@@ -93,37 +93,48 @@
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Support\\'.$kind;
-                /** @psalm-suppress InvalidStringClass */
-                $obj = new $class($rest[2]);
+                try
+                {
+                    /** @psalm-suppress InvalidStringClass */
+                    $obj = new $class($rest[2]);
+                }
+                catch (\Exception $e)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
+                    $obj = NULL;
+                }
             }
             else
             {
                 $obj = $context->load($kind, $rest[2]);
             }
             $context->local()->addval('bean', $obj);
-            $obj->startEdit($context, $rest); // do any special setup that the edit requires
-            if (($bid = $context->formdata()->post('bean', '')) !== '')
-            { // this is a post
-                if (($notmodel && $bid != $kind) || $bid != $obj->getID())
-                { # something odd...
-                    throw new \Exception('Oddness');
+            if (is_object($obj))
+            {
+                $obj->startEdit($context, $rest); // do any special setup that the edit requires
+                if (($bid = $context->formdata()->post('bean', '')) !== '')
+                { // this is a post
+                    if (($notmodel && $bid != $kind) || $bid != $obj->getID())
+                    { # something odd...
+                        throw new \Exception('Oddness');
+                    }
+                    \Framework\Utility\CSRFGuard::getinstance()->check();
+                    try
+                    {
+                        list($error, $emess) = $obj->edit($context); // handle the edit result
+                    }
+                    catch (\Exception $e)
+                    {
+                        $error = TRUE;
+                        $emess = $e->getMessage();
+                    }
+                    if ($error)
+                    {
+                        $context->local()->message(\Framework\Local::ERROR, $emess);
+                    }
+                    // The edit call might divert to somewhere else so sometimes we may not get here.
+                    $context->local()->message(\Framework\Local::MESSAGE, 'Saved');
                 }
-                \Framework\Utility\CSRFGuard::getinstance()->check();
-                try
-                {
-                    list($error, $emess) = $obj->edit($context); // handle the edit result
-                }
-                catch (\Exception $e)
-                {
-                    $error = TRUE;
-                    $emess = $e->getMessage();
-                }
-                if ($error)
-                {
-                    $context->local()->message(\Framework\Local::ERROR, $emess);
-                }
-                // The edit call might divert to somewhere else so sometimes we may not get here.
-                $context->local()->message(\Framework\Local::MESSAGE, 'Saved');
             }
             return '@edit/'.$kind.'.twig';
         }
@@ -149,15 +160,26 @@
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Support\\'.$kind;
-                /** @psalm-suppress InvalidStringClass */
-                $obj = new $class($rest[2]);
+                try
+                {
+                    /** @psalm-suppress InvalidStringClass */
+                    $obj = new $class($rest[2]);
+                }
+                catch (\Exception $e)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
+                    $obj = NULL;
+                }
             }
             else
             {
                 $obj = $context->load($kind, $rest[2]);
             }
-            $obj->view($context, $rest); // do any required set up
-            $context->local()->addval('bean', $obj);
+            if (is_object($obj))
+            {
+                $obj->view($context, $rest); // do any required set up
+                $context->local()->addval('bean', $obj);
+            }
             return '@view/'.$kind.'.twig';
         }
 /**

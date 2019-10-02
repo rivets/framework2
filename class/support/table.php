@@ -25,6 +25,11 @@
  */
         public function __construct(string $name)
         {
+            if (!\Support\Siteinfo::tableExists($name))
+            {
+                throw new \Framework\Exception\BadValue('Table does not exist');
+                /* NOT REACHED */
+            }
             $this->table = $name;
         }
 /**
