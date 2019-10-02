@@ -599,7 +599,7 @@
                 /* NOT REACHED */
             }
             $op = $fdt->mustget('op');
-            $value = $fdt->mustget('value');
+            $value = $fdt->get('value', '');
             $incv = ' ?';
             if ($op == '4')
             {
