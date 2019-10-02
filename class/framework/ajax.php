@@ -491,6 +491,11 @@
                 /* NOT REACHED */
             }
             $rest = $context->rest();
+            if (count($rest) < 2)
+            {
+                throw new \Framework\Exception\BadValue('No table name');
+                /* NOT REACHED */
+            }
             $table = strtolower($rest[1]);
             $method = $context->web()->method();
             $fdt = $context->formdata();
