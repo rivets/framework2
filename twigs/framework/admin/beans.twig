@@ -130,10 +130,10 @@
     {{m.open({id: 'nbean', title: 'New Bean'})}}
     <div class="modal-body">
         <form action="#" method="POST" id="nbform">
+            {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                'remote-message': 'That bean already exists'} })}}
             <fieldset id="example">
-                {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                    parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
-                    'remote-message': 'That bean already exists'} })}}
                 {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
             </fieldset>
