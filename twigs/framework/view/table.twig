@@ -145,14 +145,14 @@
                         {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
                             <td class="fname">{{name}}</td>
-                            <td>{% if view is defined %}{{type}}{% else %}{{f.inline('text', name, 'Enter new field type', name, type, 'tabppedit')}}{% endif %}</td>
+                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.inline('text', name, 'Enter new field type', name, type, 'tabppedit')}}{% endif %}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
                                     {% set xn = name|split('_') %}
                                     <td><a href="{{base}}/admin/{{ view is defined ? 'view' : 'edit'}}/table/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
-                                    <td>{% if view is defined %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
+                                    <td>{% if view is defined  or name == 'id' %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
                                 {% endif %}
                             {% endif %}
                         </tr>
