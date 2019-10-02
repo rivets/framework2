@@ -540,7 +540,7 @@
                 }
                 $id = \R::store($bn);
                 \R::trash($bn);
-                \R::exec('truncate '.$table);
+                \R::exec('truncate `'.$table.'`');
             }
             else
             {
@@ -554,7 +554,7 @@
                 case 'DELETE':
                     try
                     {
-                        \R::exec('drop table ' . $table);
+                        \R::exec('drop table `'.$table.'`');
                     }
                     catch (\Exception $e)
                     {
@@ -574,13 +574,24 @@
                     switch ($rest[3])
                     {
                     case 'name':
+                        if (\Support\Siteinfo::hasField($table, $value))
+                        {
+                            throw new \Framework\Exception\BadValue('Field already exists');
+                            /* NOT REACHED */
+                        }
+                        $f2 = $value;
+                        $fields = \R::inspect($table);
+                        $type = $fields[$f1];
                         break;
                     case 'type':
+                        $f2 = $f1;
+                        $type = $value;
                         break;
                     default:
                         throw new \Framework\Exception\BadValue('No such change');
                         /* NOT REACHED */
                     }
+                    \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
                     break;
                 case 'GET':
                 default:
