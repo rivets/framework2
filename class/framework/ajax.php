@@ -568,7 +568,7 @@
             }
             $rest = $context->rest();
             $bean = $rest[1];
-            if (!\Support\Table::tableExists($bean))
+            if (!\Support\Siteinfo::tableExists($bean))
             {
                 throw new \Framework\Exception\BadValue('No such table');
                 /* NOT REACHED */
