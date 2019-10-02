@@ -519,7 +519,7 @@
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                if (\Support\Siteinfo::tableExists($table, $tb))
+                if (\Support\Siteinfo::tableExists($table))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
                     /* NOT REACHED */
