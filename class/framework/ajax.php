@@ -544,6 +544,11 @@
             }
             else
             {
+                if (\Support\Siteinfo::isFWTable($table))
+                {
+                    throw new \Framework\Exception\Forbidden('Permission Denied');
+                    /* NOT REACHED */
+                }
                 switch ($method)
                 {
                 case 'DELETE':
@@ -557,8 +562,8 @@
                     }
                     break;
                 case 'PATCH':
-                case 'PUT': // add a field
-
+                case 'PUT': // change a field
+                    break;
                 case 'GET':
                 default:
                     throw new \Framework\Exception\BadOperation('Operation not supported');
