@@ -237,11 +237,10 @@
             switch ($rest[0])
             {
             case 'beans':
-                \Support\Table::add($context);
                 $tpl = '@admin/beans.twig';
                 break;
-            case 'checksum':
-                $context->local()->message(\Framework\Local::MESSAGE, 'Done');
+            case 'checksum': // calculate checksums for locally included files
+                $context->local()->message(\Framework\Local::WARNING, 'Currently not supported');
                 $tpl = '@admin/admin.twig';
                 break;
             case 'config':  // show and add config items

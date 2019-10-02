@@ -11,30 +11,83 @@
     <script {{h.urlattr(fwurls.utiljs)}}></script>
 {% endblock scripts %}
 
-{% block onload %}
-    $('#nbform').parsley();
-    $('#addb').on('click', function(e){
-        $('#nbform').submit();
-
-        return;
-        e.preventDefault()
-        const name = $('#npname').val()
-        $('#npage').modal('hide');
-        const fn = function(data){
-            var htm = '<tr><td>'+name+'</td>'+
-            '<td><a href="/admin/view/table/'+data+'"><i class="editb far fa-eye"></i></a></td>'+
-            '<td><a href="/admin/edit/table/'+data+'"><i class="editb far fa-edit"></i></a></td></tr>';
-            var nx = sp == null ? $(htm).appendTo($('#ptab tbody')) : $(htm).insertBefore(sp.parent());
-            nx.data('id', data);
-        };
-        $.post('{{base}}/ajax/table', dt).done(fn).fail(function(jx){
-            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+{% block setup %}
+    function deltable(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        let tr = $(this).parent().parent();
+        let table = $('.bname', tr).text();
+        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+            if (r)
+            { // user picked OK
+                $.ajax(base+'/ajax/table/'+table, {
+                    method: 'DELETE',
+                }).done(function(){
+                    framework.fadetodel(tr);
+                }).fail(function(jx){
+                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                });
+            }
         });
+    }
+{% endblock setup %}
+
+{% block onload %}
+    $('#nbform').on('submit', false).parsley();
+    $('#addb').on('click', function(e){
+        const btn = $(this);
+        const form = $('#nbform');
+        btn.attr('disabled', true);
+        e.preventDefault()
+        let name = $('#xbn').val();
+        let sp = null;
+        let error = false;
+        $('.bname').each(function(e){
+            const t = $(this).text();
+            if (t == name)
+            {
+                error = true;
+                return false;
+            }
+            if (t > name)
+            {
+                sp = $(this);
+                return false;
+            }
+        })
+        if (error)
+        {
+            bootbox.alert('That page already exists');
+            $(this).attr('disabled', false);
+            return;
+        }
+        const dt = {};
+        $('input[name="field[]"]', form).each(function(index) {
+            dt['field[' + index + ']'] = $(this).val();
+        });
+        $('input[name="sample[]"]', form).each(function(index) {
+            dt['sample[' + index + ']'] = $(this).val();
+        });
+        const fn = function(data){
+            var htm = '<tr><td class="bname">'+name+'</td>'+
+            '<td><a href="/admin/view/table/'+data+'"><i class="far fa-eye"></i></a></td>'+
+            '<td><a href="/admin/edit/table/'+data+'"><i class="far fa-edit"></i></a></td>'+
+            '<td><i class="delb far fa-trash-alt"></i></a></td></tr>';
+            var nx = sp == null ? $(htm).appendTo($('#btab tbody')) : $(htm).insertBefore(sp.parent());
+            $('.delb', nx).on('click', deltable);
+            nx.data('id', data);
+            $('#nbean').modal('hide');
+        };
+        $.post('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
+            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+        }).always(function() { btn.attr('disabled', false); });
     });
     $('#nbean').on('show.bs.modal', function(e){
         $('#nbform input,select').val('');
     });
-    $('#more').on('click', function() { bootbox.alert('Coming soon'); ));
+    $('.delb').on('click', deltable);
+    $('#mrow button').on('click', function(e) { framework.addMore(e); });
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -57,11 +110,11 @@
         <article class="offset-md-1 col-md-9">
             {% include '@util/message.twig' %}
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <table class="table table-responsive table-striped table-hover" id="ptab">
+            <table class="table table-responsive table-striped table-hover" id="btab">
                 <thead class="thead-inverse">
                     <tr>
                         <th>Name</th>
-                        <th colspan="2">&nbsp</th>
+                        <th colspan="3">&nbsp</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,9 +123,10 @@
                             <td class="bname">{{nb.name}}</td>
                             <td><a href="{{base}}/admin/view/table/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
                             <td><a href="{{base}}/admin/edit/table/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
+                            <td><i class="delb far fa-trash-alt"></i></a></td>
                         </td>
                     {% else %}
-                        <tr><td colspan="3">No beans defined</td></tr>
+                        <tr><td colspan="4">No beans defined</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -83,15 +137,15 @@
     {{m.open({id: 'nbean', title: 'New Bean'})}}
     <div class="modal-body">
         <form action="#" method="POST" id="nbform">
-            <fieldset>
-                {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                    parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
-                    'remote-message': 'That bean already exists'} })}}
-                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', type: 'alphanum'} })}}
+            {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
+                parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                'remote-message': 'That bean already exists'} })}}
+            <fieldset id="example">
+                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
             </fieldset>
             <p id="mrow">
-                <button class="btn btn-sm btn-info" id="more">More</button>
+                <button class="btn btn-sm btn-info" type="button">More</button>
             </p>
         </form>
     </div>

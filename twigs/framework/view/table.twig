@@ -79,6 +79,38 @@
         $('#nfield').on('show.bs.modal', function(e){
             $('#nfform input,select').val('');
         })
+    {% else %}
+        $('#searchb').on('click', function(e){
+            e.preventDefault();
+            $.get(base + '/ajax/tablesearch/{{bean.name}}', {
+                bean: '{{bean.name}}',
+                field : $('#fname').val(),
+                op :  $('#fop').val(),
+                value:  $('#fval').val(),
+            }).done(function(data){
+                var bdy = $('#sres tbody');
+                if (data.length == 0)
+                {
+                    bdy.html('<tr><td>No results</td></tr>');
+                }
+                else
+                {
+                    htm = ''
+                    for (let bn of data)
+                    {
+                        htm += '<tr><td colspan="2"><hr/></td></tr>';
+                        for (var fld in bn)
+                        {
+                            htm += '<tr><td>' + fld + '</td><td>' + bn[fld] + '</td></tr>';
+                        }
+                    }
+                    bdy.html(htm);
+                }
+                $('#tsearch').modal('hide');
+            }).fail(function(jx){
+                bootbox.alert('<h3>Search failed</h3>'+jx.responseText);
+            });
+        });
     {% endif %}
 {% endblock onload %}
 
@@ -135,23 +167,31 @@
             <form action="#" method="POST" id="sform">
                 {{f.select({label: 'Field', id: 'fname', ph: 'Field Name', required: TRUE, options: foptions })}}
                 {{f.select({label: 'Operator', id: 'fop', ph: 'Comparison', required: TRUE, options: [
-                   {value: '=' },
-                   {value: '!=' },
-                   {value: 'like' },
-                   {value: 'contains' },
-                   {value: '>' },
-                   {value: '>=' },
-                   {value: '<' },
-                   {value: '<=' },
-                   {value: 'regexp' },
-                   {value: 'is NULL' },
-                   {value: 'is not NULL' },
+                   {value: 1, text: '=' },
+                   {value: 2, text:  '!=' },
+                   {value: 3, text:  'like' },
+                   {value: 4, text:  'contains' },
+                   {value: 5, text:  '>' },
+                   {value: 6, text:  '>=' },
+                   {value: 7, text:  '<' },
+                   {value: 8, text:  '<=' },
+                   {value: 9, text:  'regexp' },
+                   {value: 10, text:  'is NULL' },
+                   {value: 11, text:  'is not NULL' },
                 ]})}}
                 {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
             </form>
         </div>
-        {{m.close({action: 'Add', id: 'Search'})}}  
+        {{m.close({action: 'Search', id: 'searchb'})}}
     {% endif %}
+    <section id="sres" class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            <table class="table table-responsive table-striped">
+                <tbody>
+                </tbody>
+            </table>
+        </article>
+    </section>
 {% endblock main %}
 
 {% block pagefooter %}

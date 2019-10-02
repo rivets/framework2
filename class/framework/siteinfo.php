@@ -210,6 +210,29 @@
                 [$rnid, $rcid]);
             return $res['user'];
         }
+ /**
+  * Check to see if a table exists - utility function used by AJAX
+  *
+  * @param string $table
+  *
+  * @return bool
+  */
+        public static function tableExists($table)
+        {
+            $tbs = \R::inspect();
+            return in_array(strtolower($table), $tbs);
+        }
+/**
+ * Check if table is a framework table
+ *
+ * @param string $table
+ *
+ * @return bool
+ */
+        public static function isFWTable($table)
+        {
+            return in_array($table, self::$fwtables);
+        }
 /**
  * Return bean table data
  *
@@ -222,7 +245,7 @@
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
-                if ($all || !in_array($tab, self::$fwtables))
+                if ($all || !self::isFWTable($tab))
                 {
                     $beans[] = new \Support\Table($tab);
                 }

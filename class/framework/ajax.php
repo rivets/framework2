@@ -33,13 +33,14 @@
             'config'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
-            'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
-            'shared'        => [TRUE,   []], // permission checks are done in the table function
-            'table'         => [TRUE,   []],
+            'pwcheck'       => [TRUE,   []], // permission checks are done in the pwcheck function
+            'shared'        => [TRUE,   []], // permission checks are done in the shared function
+            'table'         => [TRUE,   []], // permission checks are done in the table function
             'tablecheck'    => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            'tablesearch'   => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
-            'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
+            'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
             'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
         ];
 /**
@@ -72,7 +73,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for table acccess. This helps allow non-site admins use the AJAX bean functions
+ * Permissions array for table acccess.
  */
         private static $tableperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
@@ -113,6 +114,23 @@
         private static $hints = [
             // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
+/**
+ * @var array Search ops
+ */
+        private static $searchops = [
+            '',
+            '=',
+            '!=' ,
+            'like' ,
+            'contains' ,
+            '>' ,
+            '>=' ,
+            '<' ,
+            '<=',
+            'regexp',
+            'is NULL',
+            'is not NULL',
         ];
 /**
  * Config value operation
@@ -485,24 +503,128 @@
  */
         private final function table(Context $context) : void
         {
-            $tables = $this->findRow($context, self::$tableperms);
-            $rest = $context->rest();
-            $table = $rest[1];
-            $method = $context->web()->method();
-            if (!in_array($table, $tables))
+            if (!$context->hasadmin())
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
+                /* NOT REACHED */
             }
-            switch ($method)
+            $rest = $context->rest();
+            if (count($rest) < 2)
             {
-            case 'POST': // make a new one
-            case 'PATCH':
-            case 'PUT': // add a field
-            case 'DELETE':
-            case 'GET':
-            default:
-                throw new \Framework\Exception\BadOperation('Operation not supported');
+                throw new \Framework\Exception\BadValue('No table name');
+                /* NOT REACHED */
             }
+            $table = strtolower($rest[1]);
+            $method = $context->web()->method();
+            $fdt = $context->formdata();
+            if ($method == 'POST')
+            {
+                if (\Support\Siteinfo::tableExists($table, $tb))
+                {
+                    throw new \Framework\Exception\Forbidden('Table exists');
+                    /* NOT REACHED */
+                }
+                if (!preg_match('/[a-z][a-z0-9]*/', $table))
+                {
+                    throw new \Framework\Exception\BadValue('Table name should be alphanumeric');
+                    /* NOT REACHED */
+                }
+                $bn = \R::dispense($table);
+                foreach ($fdt->posta('field') as $ix => $fname)
+                {
+                    $fname = strtolower($fname);
+                    if (preg_match('/[a-z][a-z0-9]*/', $fname))
+                    {
+                        $bn->$fname = $fdt->post(['sample', $ix], '');
+                    }
+                }
+                $id = \R::store($bn);
+                \R::trash($bn);
+                \R::exec('truncate '.$table);
+            }
+            else
+            {
+                switch ($method)
+                {
+                case 'DELETE':
+                    try
+                    {
+                        \R::exec('drop table ' . $table);
+                    }
+                    catch (\Exception $e)
+                    {
+                        throw new \Framework\Exception\Forbidden($e->getMessage());
+                    }
+                    break;
+                case 'PATCH':
+                case 'PUT': // add a field
+
+                case 'GET':
+                default:
+                    throw new \Framework\Exception\BadOperation('Operation not supported');
+                }
+            }
+        }
+/**
+ * Search a table
+ *
+ * @internal
+ * @param \Support\Context   $context The context object
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\BadOperation
+ *
+ * @return void
+ */
+        private final function tablesearch(Context $context) : void
+        {
+            if (!$context->hasadmin())
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+                /* NOT REACHED */
+            }
+            $rest = $context->rest();
+            $bean = $rest[1];
+            if (!\Support\Siteinfo::tableExists($bean))
+            {
+                throw new \Framework\Exception\BadValue('No such table');
+                /* NOT REACHED */
+            }
+            $fdt = $context->formdata();
+            $field = $fdt->mustget('field');
+            $fields = \R::inspect($bean);
+            if (!isset($fields[$field]))
+            {
+                throw new \Framework\Exception\BadValue('No such field '.$field);
+                /* NOT REACHED */
+            }
+            $op = $fdt->mustget('op');
+            $value = $fdt->get('value', '');
+            $incv = ' ?';
+            if ($op == '4')
+            {
+                $value = '%'.$value.'%';
+                $op = 'like';
+            }
+            else
+            {
+                if ($op == 10 || $op == 11)
+                { // no value on a NULL test
+                    $incv = '';
+                }
+                $op = self::$searchops[$op];
+            }
+            $res = [];
+            foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
+            {
+                $bv = new \stdClass;
+                foreach (array_keys($fields) as $f)
+                {
+                    $bv->$f = $bn->$f;
+                }
+                $res[] = $bv;
+            }
+            $context->web()->sendJSON($res);
         }
 /**
  * Get a page of bean values
@@ -678,6 +800,8 @@
  * @internal
  * @param \Support\Context    $context
  *
+ * @todo this call ought to be rate limited in some way!
+ *
  * @return void
  */
         private function uniquenl(Context $context) : void
@@ -697,8 +821,7 @@
         private function tablecheck(Context $context) : void
         {
             list($name) = $context->restcheck(1);
-            $tb = \R::inspect();
-            if (in_array(strtolower($name), $tb))
+            if (\Support\Siteinfo::tableExists($name))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
