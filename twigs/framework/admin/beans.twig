@@ -11,6 +11,28 @@
     <script {{h.urlattr(fwurls.utiljs)}}></script>
 {% endblock scripts %}
 
+{% block setup %}
+    function deltable(e)
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        let tr = $(this).parent().parent();
+        let table = $('.bname', tr).text();
+        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+            if (r)
+            { // user picked OK
+                $.ajax(base+'/ajax/table/'+table, {
+                    method: 'DELETE',
+                }).done(function(){
+                    framework.fadetodel(tr);
+                }).fail(function(jx){
+                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                });
+            }
+        });
+    }
+{% endblock setup %}
+
 {% block onload %}
     $('#nbform').on('submit', false).parsley();
     $('#addb').on('click', function(e){
@@ -50,8 +72,10 @@
         const fn = function(data){
             var htm = '<tr><td>'+name+'</td>'+
             '<td><a href="/admin/view/table/'+data+'"><i class="far fa-eye"></i></a></td>'+
-            '<td><a href="/admin/edit/table/'+data+'"><i class="far fa-edit"></i></a></td></tr>';
+            '<td><a href="/admin/edit/table/'+data+'"><i class="far fa-edit"></i></a></td>'+
+            '<td><i class="delb far fa-trash-alt"></i></a></td></tr>';
             var nx = sp == null ? $(htm).appendTo($('#btab tbody')) : $(htm).insertBefore(sp.parent());
+            $('.delb', $htm).on('click', deltable);
             nx.data('id', data);
             $('#nbean').modal('hide');
         };
@@ -62,24 +86,7 @@
     $('#nbean').on('show.bs.modal', function(e){
         $('#nbform input,select').val('');
     });
-    $('.delb').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        let tr = $(this).parent().parent();
-        let table = $('.bname', tr).text();
-        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
-            if (r)
-            { // user picked OK
-                $.ajax(base+'/ajax/table/'+table, {
-                    method: 'DELETE',
-                }).done(function(){
-                    framework.fadetodel(tr);
-                }).fail(function(jx){
-                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
-                });
-            }
-        });
-    });
+    $('.delb').on('click', deltable);
     $('#mrow button').on('click', function(e) { framework.addMore(e); });
 {% endblock onload %}
 
