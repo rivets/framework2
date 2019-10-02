@@ -41,7 +41,7 @@
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
             'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
-            'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+//            'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
         ];
 /**
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
@@ -200,10 +200,10 @@
  */
         private function fieldExists(string $type, string $field) : void
         {
-            $fds = \R::inspect($type);
-            if ($field == 'id' || !isset($fds[$field]))
+            if (!\Support\Siteinfo::hasField($type, $field) || $field == 'id')
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
+                /* NOT REACHED */
             }
         }
 /**
@@ -326,17 +326,17 @@
  *
  * @return void
  */
-        private final function update(Context $context) : void
-        {
-            $fdt = $context->formdata();
-
-            $type = $fdt->mustpost('bean');
-            $field = $fdt->mustpost('name');
-            $this->fieldExists($type, $field);
-            $bn = $fdt->mustpostbean('id', $type);
-            $bn->$field = $fdt->mustpost('value');
-            R::store($bn);
-        }
+        //private final function update(Context $context) : void
+        //{
+        //    $fdt = $context->formdata();
+        //
+        //    $type = $fdt->mustpost('bean');
+        //    $field = $fdt->mustpost('name');
+        //    $this->fieldExists($type, $field);
+        //    $bn = $fdt->mustpostbean('id', $type);
+        //    $bn->$field = $fdt->mustpost('value');
+        //    R::store($bn);
+        //}
 /**
  * Check if a bean/field combination is allowed and the field exists and is not id
  *
@@ -519,7 +519,7 @@
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                if (\Support\Siteinfo::tableExists($table, $tb))
+                if (\Support\Siteinfo::tableExists($table))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
                     /* NOT REACHED */
@@ -540,28 +540,63 @@
                 }
                 $id = \R::store($bn);
                 \R::trash($bn);
-                \R::exec('truncate '.$table);
+                \R::exec('truncate `'.$table.'`');
             }
             else
             {
+                if (\Support\Siteinfo::isFWTable($table))
+                {
+                    throw new \Framework\Exception\Forbidden('Permission Denied');
+                    /* NOT REACHED */
+                }
                 switch ($method)
                 {
                 case 'DELETE':
                     try
                     {
-                        \R::exec('drop table ' . $table);
+                        \R::exec('drop table `'.$table.'`');
                     }
                     catch (\Exception $e)
                     {
                         throw new \Framework\Exception\Forbidden($e->getMessage());
+                        /* NOT REACHED */
                     }
                     break;
                 case 'PATCH':
-                case 'PUT': // add a field
-
+                case 'PUT': // change a field
+                    $value = $fdt->mustput('value');
+                    $f1 = $rest[2];
+                    if (\Support\Siteinfo::hasField($table, $f1))
+                    {
+                        throw new \Framework\Exception\BadValue('Bad field name');
+                        /* NOT REACHED */
+                    }
+                    switch ($rest[3])
+                    {
+                    case 'name':
+                        if (\Support\Siteinfo::hasField($table, $value))
+                        {
+                            throw new \Framework\Exception\BadValue('Field already exists');
+                            /* NOT REACHED */
+                        }
+                        $f2 = $value;
+                        $fields = \R::inspect($table);
+                        $type = $fields[$f1];
+                        break;
+                    case 'type':
+                        $f2 = $f1;
+                        $type = $value;
+                        break;
+                    default:
+                        throw new \Framework\Exception\BadValue('No such change');
+                        /* NOT REACHED */
+                    }
+                    \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
+                    break;
                 case 'GET':
                 default:
                     throw new \Framework\Exception\BadOperation('Operation not supported');
+                    /* NOT REACHED */
                 }
             }
         }
@@ -615,10 +650,11 @@
                 $op = self::$searchops[$op];
             }
             $res = [];
+            $fields = array_keys($fields);
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass;
-                foreach (array_keys($fields) as $f)
+                foreach ($fields as $f)
                 {
                     $bv->$f = $bn->$f;
                 }

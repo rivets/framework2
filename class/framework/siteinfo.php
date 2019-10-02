@@ -222,6 +222,19 @@
             $tbs = \R::inspect();
             return in_array(strtolower($table), $tbs);
         }
+ /**
+  * Check to see if a table has a given field
+  *
+  * @param string $table
+  * @parm string $field
+  *
+  * @return bool
+  */
+        public static function hasField($table, $field)
+        {
+            $tbs = \R::inspect();
+            return isset($tbs[$field]);
+        }
 /**
  * Check if table is a framework table
  *

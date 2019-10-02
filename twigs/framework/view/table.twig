@@ -8,7 +8,7 @@
 {% import '@util/attrmacro.twig' as h %}
 
 {% set allownew = view is not defined and object is not defined %}
-{% set inline = view is not defined and object is defined %}
+{% set inline = view is not defined %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
@@ -28,15 +28,23 @@
     {%if inline %} {# only want this if we are doing inline edits  #}
         function mkinline(type, name, msg, id, value)
         {
-            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
         }
 
         function paramset(params)
         {
-            params.id = params.pk
-            params.bean = '{{bean.name}}'
-            params.op = 'update'
-            return params
+            params.id = params.pk;
+            params.bean = '{{bean.name}}';
+            params.op = 'bean';
+            return params;
+        }
+
+        function tabparamset(params)
+        {
+            params.id = params.pk;
+            params.bean = '{{bean.name}}';
+            params.op = 'table';
+            return params;
         }
     {% endif %}
 {% endblock setup %}
@@ -46,6 +54,12 @@
         $('.ppedit').editable({
             ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
             params: paramset,
+            onblur: 'cancel',
+            url: framework.editcall
+        });
+        $('.tabppedit').editable({
+            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
+            params: tabparamset,
             onblur: 'cancel',
             url: framework.editcall
         });
@@ -88,23 +102,23 @@
                 op :  $('#fop').val(),
                 value:  $('#fval').val(),
             }).done(function(data){
-                var bdy = $('#sres tbody');
+                var bdy = $('#sres article');
                 if (data.length == 0)
                 {
-                    bdy.html('<tr><td>No results</td></tr>');
+                    bdy.html('<div class="alert alert-warning">No results</div>');
                 }
                 else
                 {
                     htm = ''
                     for (let bn of data)
                     {
-                        htm += '<tr><td colspan="2"><hr/></td></tr>';
+                        htm += '<table class="table table-striped table-hover border mt-2"><tbody>';
                         for (var fld in bn)
                         {
                             htm += '<tr><td>' + fld + '</td><td>' + bn[fld] + '</td></tr>';
                         }
                     }
-                    bdy.html(htm);
+                    bdy.html(htm + '</tbody></table>');
                 }
                 $('#tsearch').modal('hide');
             }).fail(function(jx){
@@ -130,15 +144,15 @@
                     {% for name,type in bean.fields %}
                         {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
-                            <td class="fname">{{name}}</td>
-                            <td>{{type}}</td>
+                            <td class="fname">{% if view is defined or name == 'id' %}{{name}}{% else %}{{f.inline('text', 'name', 'Enter new field name', name, name, 'tabppedit')}}{% endif %}</td>
+                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.inline('text', 'type', 'Enter new field type', name, type, 'tabppedit')}}{% endif %}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
                                     {% set xn = name|split('_') %}
                                     <td><a href="{{base}}/admin/{{ view is defined ? 'view' : 'edit'}}/table/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
-                                    <td>{% if view is defined %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
+                                    <td>{% if view is defined  or name == 'id' %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
                                 {% endif %}
                             {% endif %}
                         </tr>
@@ -186,10 +200,6 @@
     {% endif %}
     <section id="sres" class="row">
         <article class="ml-auto col-md-10 mr-auto">
-            <table class="table table-responsive table-striped">
-                <tbody>
-                </tbody>
-            </table>
         </article>
     </section>
 {% endblock main %}
