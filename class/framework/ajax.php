@@ -559,10 +559,26 @@
                     catch (\Exception $e)
                     {
                         throw new \Framework\Exception\Forbidden($e->getMessage());
+                        /* NOT REACHED */
                     }
                     break;
                 case 'PATCH':
                 case 'PUT': // change a field
+                    $f1 = $rest[2];
+                    $f2 = $rest[3];
+                    if ($f1 == 'id')
+                    {
+                        throw new \Framework\Exception\Forbidden('Permission Denied');
+                        /* NOT REACHED */
+                    }
+                    if ($f1 != $f2)
+                    { // change the field's name;
+                    }
+                    $fields = \R::inspect($table);
+                    $value = $fdt->mustpost('value');
+                    if ($fields[$f1] !== $value)
+                    { // type change
+                    }
                     break;
                 case 'GET':
                 default:
