@@ -75,7 +75,7 @@
             '<td><a href="/admin/edit/table/'+data+'"><i class="far fa-edit"></i></a></td>'+
             '<td><i class="delb far fa-trash-alt"></i></a></td></tr>';
             var nx = sp == null ? $(htm).appendTo($('#btab tbody')) : $(htm).insertBefore(sp.parent());
-            $('.delb', $htm).on('click', deltable);
+            $('.delb', htm).on('click', deltable);
             nx.data('id', data);
             $('#nbean').modal('hide');
         };
