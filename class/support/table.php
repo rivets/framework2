@@ -66,7 +66,7 @@
                         }
                     }
                     \R::store($bn);
-                    \R::trash($bn); // delete it as we don't want it anymore
+                    \R::exec('truncate '.$name); // clean out the table
                     $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     return TRUE;
                 }
@@ -81,6 +81,18 @@
         public function fields() : array
         {
             return \R::inspect($this->table);
+        }
+/**
+ * Test if a field exists
+ *
+ * @param string $fld The field name
+ *
+ * @return bool
+ */
+        public function hasField($fld) : bool
+        {
+            $flds = $this->fields();
+            return isset($flds[$fld]);
         }
 /**
  * Return the name

@@ -79,6 +79,31 @@
         $('#nfield').on('show.bs.modal', function(e){
             $('#nfform input,select').val('');
         })
+    {% else %}
+        $('#searchb').on('click', function(e){
+            e.preventDefault();
+            $.get(base + '/ajax/tablesearch/{{bean.name}}', {
+                bean: '{{bean.name}}'
+                field : $('#fname').val(),
+                op :  $('#fop').val(),
+                value:  $('#fval').val(),
+            }).done(function(data){
+                var bdy = $('#sres tbody');
+                if (data.length == 0)
+                {
+                    bdy.html('<tr><td>No results</td></tr>');
+                }
+                else
+                {
+                    for (let bn of data)
+                    {
+
+                    }
+                }
+            }).fail(function(jx){
+                bootbox.alert('<h3>Search failed</h3>'+jx.responseText);
+            });
+        });
     {% endif %}
 {% endblock onload %}
 
@@ -150,8 +175,16 @@
                 {{f.text({label: 'Value', id: 'fval', ph: 'Field Value'})}}
             </form>
         </div>
-        {{m.close({action: 'Add', id: 'Search'})}}  
+        {{m.close({action: 'Search', id: 'searchb'})}}
     {% endif %}
+    <section id="sres" class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            <table class="table table-responsive table-striped">
+                <tbody>
+                </tbody>
+            </table>
+        </article>
+    </section>
 {% endblock main %}
 
 {% block pagefooter %}

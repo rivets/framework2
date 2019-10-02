@@ -33,13 +33,14 @@
             'config'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             'hints'         => [FALSE,  []], // permission checks are done in the hints function
             'paging'        => [FALSE,  []], // permission checks are done in the paging function
-            'pwcheck'       => [TRUE,   []], // permission checks are done in the table function
-            'shared'        => [TRUE,   []], // permission checks are done in the table function
-            'table'         => [TRUE,   []],
+            'pwcheck'       => [TRUE,   []], // permission checks are done in the pwcheck function
+            'shared'        => [TRUE,   []], // permission checks are done in the shared function
+            'table'         => [TRUE,   []], // permission checks are done in the table function
             'tablecheck'    => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            'tablesearch'   => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
-            'uniquenl'      => [FALSE,  []], // uique test with no login - used at least by user registration form
+            'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
             'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
         ];
 /**
@@ -501,8 +502,7 @@
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                $tb = \R::inspect();
-                if (in_array($table, $tb))
+                if (\Support\Siteinfo::tableExists($table, $tb))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
                     /* NOT REACHED */
@@ -547,6 +547,63 @@
                     throw new \Framework\Exception\BadOperation('Operation not supported');
                 }
             }
+        }
+/**
+ * Search a table
+ *
+ * @internal
+ * @param \Support\Context   $context The context object
+ *
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\BadOperation
+ *
+ * @return void
+ */
+        private final function tablesearch(Context $context) : void
+        {
+            if (!$context->hasadmin())
+            {
+                throw new \Framework\Exception\Forbidden('Permission denied');
+                /* NOT REACHED */
+            }
+            $rest = $context->rest();
+            $bean = $rest[1];
+            if (!\Support\Table::tableExists($bean))
+            {
+                throw new \Framework\Exception\BadValue('No such table');
+                /* NOT REACHED */
+            }
+            $fdt = $context->formdata();
+            $field = $fdt->mustpost('field');
+            $fields = \R::inspect($bean);
+            if (!in_array($field, $fields))
+            {
+                throw new \Framework\Exception\BadValue('No such field');
+                /* NOT REACHED */
+            }
+            $op = $fdt->mustpost('op');
+            $value = $fdt->mustpost('value');
+            $incv = ' ?';
+            if ($op == 'contains')
+            {
+                $value = '%'.$value.'%';
+                $op = 'like';
+            }
+            elseif (preg_match('/NULL$/', $op))
+            { // no value on a NULL test
+                $incv = '';
+            }
+            $res = [];
+            foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
+            {
+                $bv = new stdClass;
+                foreach ($fields as $f)
+                {
+                    $bv->$f = $bn->$f;
+                }
+                $res[] = $bv;
+            }
+            $context->web()->sendJSON($res);
         }
 /**
  * Get a page of bean values
@@ -722,6 +779,8 @@
  * @internal
  * @param \Support\Context    $context
  *
+ * @todo this call ought to be rate limited in some way!
+ *
  * @return void
  */
         private function uniquenl(Context $context) : void
@@ -741,8 +800,7 @@
         private function tablecheck(Context $context) : void
         {
             list($name) = $context->restcheck(1);
-            $tb = \R::inspect();
-            if (in_array(strtolower($name), $tb))
+            if (\Support\Siteinfo::tableExists($name))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
