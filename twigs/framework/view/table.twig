@@ -145,7 +145,7 @@
                         {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
                             <td class="fname">{{name}}</td>
-                            <td>{{type}}</td>
+                            <td>{% if view is defined %}{{type}}{% else %}{{f.inline('text', name, 'Enter new field name', bean, x, 'tabppedit')}}{% endif %}{{type}}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
