@@ -116,6 +116,23 @@
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
+ * @var array Search ops
+ */
+        private static $searchops = [
+            '',
+            '=',
+            '!=' ,
+            'like' ,
+            'contains' ,
+            '>' ,
+            '>=' ,
+            '<' ,
+            '<=',
+            'regexp',
+            'is NULL',
+            'is not NULL',
+        ];
+/**
  * Config value operation
  *
  * @internal
@@ -584,14 +601,18 @@
             $op = $fdt->mustget('op');
             $value = $fdt->mustget('value');
             $incv = ' ?';
-            if ($op == 'contains')
+            if ($op == '4')
             {
                 $value = '%'.$value.'%';
                 $op = 'like';
             }
-            elseif (preg_match('/NULL$/', $op))
-            { // no value on a NULL test
-                $incv = '';
+            else
+            {
+                if ($op == 10 || $op == 11)
+                { // no value on a NULL test
+                    $incv = '';
+                }
+                $op = self::$searchops[$op];
             }
             $res = [];
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
