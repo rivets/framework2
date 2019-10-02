@@ -595,7 +595,7 @@
             $fields = \R::inspect($bean);
             if (!in_array($field, $fields))
             {
-                throw new \Framework\Exception\BadValue('No such field');
+                throw new \Framework\Exception\BadValue('No such field '.$field);
                 /* NOT REACHED */
             }
             $op = $fdt->mustget('op');
