@@ -584,7 +584,7 @@
                 /* NOT REACHED */
             }
             $rest = $context->rest();
-            $bean = $rest[1];
+            $table = $rest[2];
             if (!\Support\Siteinfo::tableExists($bean))
             {
                 throw new \Framework\Exception\BadValue('No such table');
@@ -592,7 +592,7 @@
             }
             $fdt = $context->formdata();
             $field = $fdt->mustget('field');
-            $fields = \R::inspect($bean);
+            $fields = \R::inspect($table);
             if (!in_array($field, $fields))
             {
                 throw new \Framework\Exception\BadValue('No such field '.$field);
@@ -615,7 +615,7 @@
                 $op = self::$searchops[$op];
             }
             $res = [];
-            foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
+            foreach (\R::find($table, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new stdClass;
                 foreach ($fields as $f)
