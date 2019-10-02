@@ -111,7 +111,7 @@
  * @return {void}
  */
         editcall: function(params) {
-            const url = base+'/ajax/bean/'+params.bean+'/'+params.pk+'/'+params.name+'/';
+            const url = base + '/ajax/' + params.op + '/' + params.bean + '/' + params.pk + '/'+params.name+'/';
             return $.ajax(url, {
                 method: putorpatch,
                 data: { value: params.value }

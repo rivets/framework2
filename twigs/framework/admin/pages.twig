@@ -27,15 +27,15 @@
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
     }
 
     function paramset(params)
     {
-        params.id = params.pk
-        params.bean = '{{constant('Config\\Framework::PAGE')}}'
-        params.op = 'update'
-        return params
+        params.id = params.pk;
+        params.bean = '{{constant('Config\\Framework::PAGE')}}';
+        params.op = 'bean';
+        return params;
     }
     const kname = [
         {% for v in types %}

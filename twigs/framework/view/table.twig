@@ -28,15 +28,23 @@
     {%if inline %} {# only want this if we are doing inline edits  #}
         function mkinline(type, name, msg, id, value)
         {
-            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
         }
 
         function paramset(params)
         {
-            params.id = params.pk
-            params.bean = '{{bean.name}}'
-            params.op = 'update'
-            return params
+            params.id = params.pk;
+            params.bean = '{{bean.name}}';
+            params.op = 'bean';
+            return params;
+        }
+
+        function tabparamset(params)
+        {
+            params.id = params.pk;
+            params.bean = '{{bean.name}}';
+            params.op = 'table';
+            return params;
         }
     {% endif %}
 {% endblock setup %}
@@ -46,6 +54,12 @@
         $('.ppedit').editable({
             ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
             params: paramset,
+            onblur: 'cancel',
+            url: framework.editcall
+        });
+        $('.tabppedit').editable({
+            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
+            params: tabparamset,
             onblur: 'cancel',
             url: framework.editcall
         });
