@@ -97,13 +97,13 @@
                 {
                     for (let bn of data)
                     {
-                        $htm = '<tr><td><hr/></td>';
+                        htm = '<tr><td><hr/></td>';
                         for (var fld in bn)
                         {
-                            $htm += '<td>' + fld + '</td><td>' + bn[fld] + '</td>';
+                            htm += '<td>' + fld + '</td><td>' + bn[fld] + '</td>';
                         }
-                        $htm += '</tr>';
-                        $bdy.append($htm);
+                        htm += '</tr>';
+                        bdy.append(htm);
                     }
                 }
                 $('#tsearch').modal('hide');
