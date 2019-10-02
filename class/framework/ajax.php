@@ -497,15 +497,24 @@
             if ($method == 'POST')
             {
                 $tb = \R::inspect();
-                if (in_array(strtolower($table), $tb))
+                if (in_array($table, $tb))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
+                    /* NOT REACHED */
+                }
+                if (!preg_match('/[a-z][a-z0-9]*/', $table))
+                {
+                    throw new \Framework\Exception\BadValue('Table name should be alphanumeric');
                     /* NOT REACHED */
                 }
                 $bn = \R::dispense($table);
                 foreach ($fdt->posta('field') as $ix => $fname)
                 {
-                    $bn->$fname = $fdt->post(['sample', $ix], '');
+                    $fname = strtolower($fname);
+                    if (preg_match('/[a-z][a-z0-9]*/', $fname))
+                    {
+                        $bn->$fname = $fdt->post(['sample', $ix], '');
+                    }
                 }
                 $id = \R::store($bn);
                 \R::trash($bn);
