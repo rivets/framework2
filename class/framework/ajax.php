@@ -618,7 +618,7 @@
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass;
-                foreach ($fields as $f)
+                foreach (array_keys($fields) as $f)
                 {
                     $bv->$f = $bn->$f;
                 }
