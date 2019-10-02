@@ -100,7 +100,7 @@
                 }
                 catch (\Exception $e)
                 {
-                    $context->local()->addval(\Framework\Local::ERROR, $e->getMessage());
+                    $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
                     $obj = NULL;
                 }
             }
@@ -167,7 +167,7 @@
                 }
                 catch (\Exception $e)
                 {
-                    $context->local()->addval(\Framework\Local::ERROR, $e->getMessage());
+                    $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
                     $obj = NULL;
                 }
             }
