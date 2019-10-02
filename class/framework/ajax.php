@@ -574,15 +574,15 @@
                 /* NOT REACHED */
             }
             $fdt = $context->formdata();
-            $field = $fdt->mustpost('field');
+            $field = $fdt->mustget('field');
             $fields = \R::inspect($bean);
             if (!in_array($field, $fields))
             {
                 throw new \Framework\Exception\BadValue('No such field');
                 /* NOT REACHED */
             }
-            $op = $fdt->mustpost('op');
-            $value = $fdt->mustpost('value');
+            $op = $fdt->mustget('op');
+            $value = $fdt->mustget('value');
             $incv = ' ?';
             if ($op == 'contains')
             {
