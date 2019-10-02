@@ -200,10 +200,10 @@
  */
         private function fieldExists(string $type, string $field) : void
         {
-            $fds = \R::inspect($type);
-            if ($field == 'id' || !isset($fds[$field]))
+            if (!\Support\Siteinfo::hasField($type, $field) || $field == 'id')
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
+                /* NOT REACHED */
             }
         }
 /**
@@ -566,7 +566,7 @@
                 case 'PUT': // change a field
                     $value = $fdt->mustput('value');
                     $f1 = $rest[2];
-                    if (!$this->fieldExists($table, $f1))
+                    if (\Support\Siteinfo::hasField($table, $f1))
                     {
                         throw new \Framework\Exception\BadValue('Bad field name');
                         /* NOT REACHED */
@@ -639,10 +639,11 @@
                 $op = self::$searchops[$op];
             }
             $res = [];
+            $fields = array_keys($fields);
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass;
-                foreach (array_keys($fields) as $f)
+                foreach ($fields as $f)
                 {
                     $bv->$f = $bn->$f;
                 }
