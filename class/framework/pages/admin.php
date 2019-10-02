@@ -156,7 +156,14 @@
             {
                 $obj = $context->load($kind, $rest[2]);
             }
-            $obj->view($context, $rest); // do any required set up
+            try
+            {
+                $obj->view($context, $rest); // do any required set up
+            }
+            catch (\Exception $e)
+            {
+                $context->local()->addval(\Framework\Local::ERROR, $e->getMessage());
+            }
             $context->local()->addval('bean', $obj);
             return '@view/'.$kind.'.twig';
         }
