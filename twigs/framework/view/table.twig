@@ -8,7 +8,7 @@
 {% import '@util/attrmacro.twig' as h %}
 
 {% set allownew = view is not defined and object is not defined %}
-{% set inline = view is not defined and object is defined %}
+{% set inline = view is not defined %}
 
 {% block scripts %}
     <script {{h.urlattr(fwurls.utiljs)}}></script>
