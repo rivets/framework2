@@ -150,21 +150,25 @@
             {
                 $class = '\\Support\\'.$kind;
                 /** @psalm-suppress InvalidStringClass */
-                $obj = new $class($rest[2]);
+                try
+                {
+                    $obj = new $class($rest[2]);
+                }
+                catch (\Exception $e)
+                {
+                    $context->local()->addval(\Framework\Local::ERROR, $e->getMessage());
+                    $obj = NULL;
+                }
             }
             else
             {
                 $obj = $context->load($kind, $rest[2]);
             }
-            try
+            if (is_object($obj))
             {
                 $obj->view($context, $rest); // do any required set up
+                $context->local()->addval('bean', $obj);
             }
-            catch (\Exception $e)
-            {
-                $context->local()->addval(\Framework\Local::ERROR, $e->getMessage());
-            }
-            $context->local()->addval('bean', $obj);
             return '@view/'.$kind.'.twig';
         }
 /**
