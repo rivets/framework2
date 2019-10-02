@@ -593,7 +593,7 @@
             $fdt = $context->formdata();
             $field = $fdt->mustget('field');
             $fields = \R::inspect($bean);
-            if (!in_array($field, $fields))
+            if (!isset($fields[$field]))
             {
                 throw new \Framework\Exception\BadValue('No such field '.$field);
                 /* NOT REACHED */
