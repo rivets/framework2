@@ -564,7 +564,7 @@
                     break;
                 case 'PATCH':
                 case 'PUT': // change a field
-                    $value = $fdt->mustpost('value');
+                    $value = $fdt->mustput('value');
                     $f1 = $rest[2];
                     if (!$this->fieldExists($table, $f1))
                     {
