@@ -83,7 +83,7 @@
         $('#searchb').on('click', function(e){
             e.preventDefault();
             $.get(base + '/ajax/tablesearch/{{bean.name}}', {
-                bean: '{{bean.name}}'
+                bean: '{{bean.name}}',
                 field : $('#fname').val(),
                 op :  $('#fop').val(),
                 value:  $('#fval').val(),
