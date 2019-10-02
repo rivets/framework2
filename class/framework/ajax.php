@@ -518,7 +518,7 @@
                 case 'DELETE':
                     try
                     {
-                        \R::exec('drop table ' + $table);
+                        \R::exec('drop table ' . $table);
                     }
                     catch (\Exception $e)
                     {
