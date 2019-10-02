@@ -145,7 +145,7 @@
                         {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
                             <td class="fname">{% if view is defined or name == 'id' %}{{name}}{% else %}{{f.inline('text', name, 'Enter new field name', 'name', name, 'tabppedit')}}{% endif %}</td>
-                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.inline('text', name, 'Enter new field type', 'type', type, 'tabppedit')}}{% endif %}</td>
+                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.inline('text', type, 'Enter new field type', 'type', name, 'tabppedit')}}{% endif %}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
