@@ -232,7 +232,7 @@
   */
         public static function hasField($table, $field)
         {
-            $tbs = \R::inspect();
+            $tbs = \R::inspect($table);
             return isset($tbs[$field]);
         }
 /**
