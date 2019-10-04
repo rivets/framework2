@@ -445,14 +445,14 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
-            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],
-            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'], # name of const, add to DB, non-optional, type
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],  # name of const, add to DB?, non-optional?, type
+            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'],
             'dbname'        => ['DB', FALSE, TRUE, 'string'],
             'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
             'dbpass'        => ['DBPW', FALSE, TRUE, 'string'],
             'sitename'      => ['SITENAME', TRUE, TRUE, 'string'],
-            'siteurl'       => ['SITEURL', TRUE, TRUE, 'string'],
             'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string'],
+            'siteurl'       => ['', TRUE, TRUE, 'string'],
             'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string'],
             'admin'         => ['', FALSE, TRUE],
             'adminpw'       => ['', FALSE, TRUE],

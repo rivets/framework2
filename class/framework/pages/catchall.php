@@ -33,6 +33,7 @@
         public function handle(Context $context)
         {
             $tpl = '';
+            $local = $context->local();
             switch ($context->action())
             {
             case 'favicon.ico':
@@ -40,15 +41,15 @@
                 break;
 
             case 'robots.txt':
-                $context->local()->addval('url', Config::SITEURL);
+                $local->addval('url', $local->fwconfig('siteurl'));
                 return ['@info/robots.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
 
             case 'sitemap.xml':
-                $context->local()->addval('url', Config::SITEURL);
+                $local->addval('url', $local->fwconfig('siteurl'));
                 return ['@info/sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
             default:
-                $context->local()->addval('page', $_SERVER['REQUEST_URI']);
+                $local->addval('page', $_SERVER['REQUEST_URI']);
                 return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
             }
             return $tpl;

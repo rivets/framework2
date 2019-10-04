@@ -61,11 +61,12 @@
  */
         private function sendconfirm(Context $context, $bn) : void
         {
+            $local = $context->local();
             $code = $this->makecode($context, $bn, 'C');
-            mail($bn->email, 'Please confirm your email address for '.Config::SITENAME,
+            mail($bn->email, 'Please confirm your email address for '.$local->fwconfig('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
-                Config::SITEURL.'/confirm/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-                'From: '.Config::SITENOREPLY
+                $local->fwconfig('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->fwconfig('sitename')." Team\n\n",
+                'From: '.$local->fwconfig('noreply')
             );
         }
 /**
@@ -78,11 +79,12 @@
  */
         private function sendreset(Context $context, $bn) : void
         {
+            $local = $context->local();
             $code = $this->makecode($context, $bn, 'P');
-            mail($bn->email, 'Reset your '.Config::SITENAME.' password',
+            mail($bn->email, 'Reset your '.$local->fwconfig('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
-                Config::SITEURL.'/forgot/'.$code."\n\n\nThank you,\n\n The ".Config::SITENAME." Team\n\n",
-                'From: '.Config::SITENOREPLY
+                $local->fwconfig('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->fwconfig('sitename')." Team\n\n",
+                'From: '.$local->fwconfig('sitenoreply')
             );
         }
 /**
