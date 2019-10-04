@@ -168,13 +168,14 @@
 /**
  * Generate a token for this user that can be used as a unique id from a phone.
  *
+ * @param string    $url        The URL of the site
  * @param string    $device     Currently not used!!
  *
  * @return string
  */
-	public function maketoken(string $device = '') : string
+	public function maketoken(string $url, string $device = '') : string
 	{
-	    $token = (object)['iss' => \Config\Config::SITEURL, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
+	    $token = (object)['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
         /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
 	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
 	}
