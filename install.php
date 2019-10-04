@@ -264,7 +264,7 @@
     { // go backwards till we get to document root
         $pp = pathinfo($dn);
         $dn = $pp['dirname'];
-        $bdr[] = $pp['basename'];
+        array_unshift($bdr, $pp['basename']);
     }
     if (empty($bdr))
     {
