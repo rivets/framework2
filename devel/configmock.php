@@ -14,15 +14,12 @@
         const DBUSER	= 'xxx';
         const DBPW	= 'xxx';
         const SITENAME	= 'xxx';
-        const SITEURL	= 'http://site.com';
         const SITENOREPLY	= 'noreply@y.z';
         const SYSADMIN	= 'x@y.z';
         const DBRX	= FALSE;
         const REGISTER  = FALSE;
         const UPUBLIC	= FALSE;
         const UPRIVATE	= FALSE;
-        const USECSP	= TRUE;
-        const REPORTCSP = FALSE;
         const USEPHPM	= FALSE;
         const SMTPHOST = 'xxx';
         const FWCONTEXT = 'Site';
