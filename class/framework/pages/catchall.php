@@ -41,11 +41,11 @@
                 break;
 
             case 'robots.txt':
-                $local->addval('url', $local->fwconfig('siteurl'));
+                $local->addval('url', $local->config('siteurl'));
                 return ['@info/robots.twig', 'text/plain; charset="utf-8"', StatusCodes::HTTP_OK];
 
             case 'sitemap.xml':
-                $local->addval('url', $local->fwconfig('siteurl'));
+                $local->addval('url', $local->config('siteurl'));
                 return ['@info/sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
             default:
