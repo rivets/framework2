@@ -63,10 +63,10 @@
         {
             $local = $context->local();
             $code = $this->makecode($context, $bn, 'C');
-            mail($bn->email, 'Please confirm your email address for '.$local->fwconfig('sitename'),
+            mail($bn->email, 'Please confirm your email address for '.$local->config('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
-                $local->fwconfig('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->fwconfig('sitename')." Team\n\n",
-                'From: '.$local->fwconfig('noreply')
+                $local->config('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->config('sitename')." Team\n\n",
+                'From: '.$local->config('noreply')
             );
         }
 /**
@@ -81,10 +81,10 @@
         {
             $local = $context->local();
             $code = $this->makecode($context, $bn, 'P');
-            mail($bn->email, 'Reset your '.$local->fwconfig('sitename').' password',
+            mail($bn->email, 'Reset your '.$local->config('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
-                $local->fwconfig('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->fwconfig('sitename')." Team\n\n",
-                'From: '.$local->fwconfig('sitenoreply')
+                $local->fonfig('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->config('sitename')." Team\n\n",
+                'From: '.$local->config('sitenoreply')
             );
         }
 /**
