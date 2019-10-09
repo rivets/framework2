@@ -364,7 +364,7 @@
             return $this->fwconfig[$name] ?? NULL;
         }
 /**
- * Return aall the config values
+ * Return all the config values
  *
  * @return array
  */
