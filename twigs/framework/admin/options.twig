@@ -1,0 +1,154 @@
+{% extends '@content/page.twig' %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Enable/Disable Install Options</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            {% include '@util/message.twig' %}
+                <form action="#" method="post" class="well" data-parsley-validate="parsley"/>
+                    <fieldset>
+                        <legend>Site Information</legend>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site Name</label>
+                            <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
+                                class="form-control" required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site URL</label>
+                            <input type="text" id="sn" name="siteurl" value="{{siteurl}}" placeholder="The canonical url for your site" class="form-control"
+                              required="required" data-parsley-type="url"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sn" class="control-label">Site No Reply Email</label>
+                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required="required"/>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Database Information</legend>
+                        <div class="form-group">
+                            <label for="dt" class="control-label">Database Type</label>
+                            <select is="dt" name="dbtype" class="form-control" required="required">
+                                <option value="mysql">MySQL</option>
+                                <option value="mysql">MariaDB</option>
+                                <option value="pgsql">PostgresSQL</option>
+                                <option disabled="disabled">CUBRID</option>
+                                <option disabled="disabled">SQLite</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="dh" class="control-label">Host</label>
+                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="dn" class="control-label">Database</label>
+                            <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
+                                required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="du" class="control-label">User</label>
+                            <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
+                            required="required" data-parsley-type="alphanum"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="dp" class="control-label">Password</label>
+                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="cdp" class="control-label">Confirm Password</label>
+                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+                        </div>
+                    </fieldset>
+                    <fieldset id="mailconfig">
+                        <legend>Configure an external mailer</legend>
+                        <div class="form-group">
+                            <label for="sh" class="control-label">SMTP Server</label>
+                            <input type="text" id="sh" name="smtphost" placeholder="e.g. smtp.gmail.com" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="sp" class="control-label">SMTP Port</label>
+                            <input type="text" id="sp" name="smtpport" placeholder="25, 465 for SSL, 587 for authenticated TLS" class="form-control"
+                                 disabled="disabled" data-parsley-type="digits"/>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="" disabled="disabled"> Plain
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="ssl" disabled="disabled"> SSL
+                          </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="protocol" value="tls" disabled="disabled"> TLS
+                          </label>
+                        </div>
+                        <div class="control-group">
+                            <label for="su" class="control-label">Username</label>
+                            <input type="text" id="su" name="smtpuser" value="" placeholder="Your SMTP server username" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="spw" class="control-label">Password</label>
+                            <input type="password" id="spw" name="smtppass" placeholder="**************" class="form-control" disabled="disabled"/>
+                        </div>
+                        <div class="control-group">
+                            <label for="csp" class="control-label">Confirm Password</label>
+                            <input type="password" id="cspw" name="csmtppass" placeholder="**************" class="form-control"  disabled="disabled" data-parsley-equalto="#spw"/>
+                            <p><small><em>N.B. if you have two factor authentication enabled you may need an application specific password</em></small></p>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Features</legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="private" value="1"/> Support file uploading with access control on downloads
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="public" value="1"/> Support file uploading with <b>NO</b> access control on downloads
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="register" value="1"/> Support registration of new users
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="regexp" disabled="disabled" value="1"/> Support pattern matching when identifying first part of the REST URL (NOT supported fully yet)
+                            </label>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Security</legend>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="usecsp" value="1"/> Emit a Content Security Policy header
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="reportcsp" value="1"/> Report Content Security Policy errors
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
+                            </label>
+                        </div>
+                    </fieldset>
+                    <p><input type="submit" class="btn btn-primary" value="Update"/></p>
+                </form>
+         </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}
