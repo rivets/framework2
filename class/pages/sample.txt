@@ -1,0 +1,28 @@
+<?php
+ /**
+  * Basic page class
+  *
+  * @author Your Name <Your@email.org>
+  * @copyright year You
+  */
+    namespace Pages;
+
+    use \Support\Context as Context;
+/**
+ * A Basic page class
+ */
+    class Sample extends \Framework\SiteAction
+    {
+/**
+ * Handle various contact operations /
+ *
+ * @param \Support\Context	$context	The context object for the site
+ *
+ * @return string	A template name
+ */
+        public function handle(Context $context)
+        {
+            return '@content/sample.twig';
+        }
+    }
+?>
