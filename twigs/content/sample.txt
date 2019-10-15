@@ -9,6 +9,14 @@
 {% import '@util/formmacro.twig' as f %}
 #}
 
+{# this brings in macros for accessing values in the config database
+{% import '@util/attrmacro.twig' as h %}
+#}
+
+{# this brings in some useful macros for making modals
+{% import '@util/modalacro.twig' as f %}
+#}
+
 {# put a string in this block that will appear as the title of the page
 {% block title %}
 {% endblock title %}
@@ -28,6 +36,12 @@
 
 {% block scripts %}
 {# <script src=""></script> for any other JS files you need #}
+{# Bring in parsley - uses attrmacro above
+<script {{h.urlattr(fwurls.parsley)}}></script>
+#}
+{# Bring in framework util functions - uses attrmacro above
+<script {{h.urlattr(fwurls.utiljs)}}></script>
+#}
 {% endblock scripts %}
 
 {% block setup %}

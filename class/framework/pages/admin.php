@@ -281,9 +281,6 @@
                 $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
                 phpinfo();
                 exit; // phpinfo display is all we need
-            case 'options':  // change install options
-                $tpl = '@admin/options.twig';
-                break;
             case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
                 break;
