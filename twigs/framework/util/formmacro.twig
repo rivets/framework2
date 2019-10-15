@@ -119,7 +119,7 @@
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
 {% macro startform(opts) %}{% import _self as fx %}
-<form{{h.hv('id', opts.id)}}{{h.hv('class', opts.class)}}{{h.hv('action', opts.action)}}{{h.hvd('method', opts.method, '#')}}{% if opts.multi %} enctype="multipart/form-data"{% endif %} role="form">
+<form{{h.hv('id', opts.id)}}{{h.hv('class', opts.class)}}{{h.hvd('action', opts.action, '#')}}{{h.hvd('method', opts.method, 'GET')}}{% if opts.multi %} enctype="multipart/form-data"{% endif %} role="form">
 {% endmacro startform %}
 
 {% macro endform(opts) %}</form>{% endmacro endform %}
