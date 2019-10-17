@@ -3,6 +3,11 @@
 {% set ajax = TRUE %}
 #}
 
+{#
+    If your page does NOT need not use bootbox then this will stop the JS being loaded for it
+{% set usebootbox = FALSE %}
+#}
+
 {% extends '@content/page.twig' %}
 
 {# this brings in some useful macros for making forms
@@ -21,6 +26,10 @@
 {% block title %}
 {% endblock title %}
 #}
+
+{{% block meta %}
+{# <meta> for things like keywords etc.#}
+{% endblock meta %}
 
 {% block links %}
 {# <link> for non-css and non-type things#}
