@@ -41,7 +41,6 @@
             'toggle'        => [TRUE,   []], // permission checks are done in the toggle function
             'unique'        => [TRUE,   []], // test if a bean field value is unique
             'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
-//            'update'        => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
         ];
 /**
  * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
@@ -318,25 +317,6 @@
                 R::store($bn);
             }
         }
-/**
- * Update a field in a bean
- *
- * @internal
- * @param \Support\Context	$context	The context object for the site
- *
- * @return void
- */
-        //private final function update(Context $context) : void
-        //{
-        //    $fdt = $context->formdata();
-        //
-        //    $type = $fdt->mustpost('bean');
-        //    $field = $fdt->mustpost('name');
-        //    $this->fieldExists($type, $field);
-        //    $bn = $fdt->mustpostbean('id', $type);
-        //    $bn->$field = $fdt->mustpost('value');
-        //    R::store($bn);
-        //}
 /**
  * Check if a bean/field combination is allowed and the field exists and is not id
  *
