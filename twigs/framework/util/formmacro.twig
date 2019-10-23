@@ -34,7 +34,7 @@
     {% endif %}
 {% endmacro bsl %}
 
-{% macro xsl(opts, cls, nolabel = FALSE) %}{% import _self as fx %}<div class="{{cls}}">{% if not nolabel and opts.label != '' %}    <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}{% endmacro xsl %}
+{% macro xsl(opts, cls) %}{% import _self as fx %}<div class="{{cls}}">{% if opts.label != '' %}    <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}{% endmacro xsl %}
 
 {% macro bse(opts) %}
 {% if opts.help != '' %}<small id="{{opts.id}}Help" class="form-text text-muted">{{opts.help|raw}}</small>{% endif %}
@@ -57,7 +57,7 @@
 
 {% macro checkbox(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
-    {{fx.xsl(opts, 'form-check form-check-inline', TRUE)}}
+    <div class="form-check form-check-inline>
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
 	    <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}{{fx.data(opts.data)}}
@@ -70,7 +70,7 @@
 
 {% macro radio(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
-    {{fx.xsl(opts, 'form-check form-check-inline', TRUE)}}
+    <div class="form-check form-check-inline>
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
 	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}
