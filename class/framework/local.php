@@ -126,7 +126,7 @@
         private function telladmin(string $msg, $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
-            $ekey = $file.' / Line '.$line.' / Error '.$type.' / '.$msg;
+            $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
             if (!isset($this->senterrors[$ekey]))
             {
                 $this->senterrors[$ekey] = TRUE;
@@ -309,7 +309,7 @@
  *
  * @return bool	The last value of the wasignored flag
  */
-        public function eignore(bool $ignore) : bool
+        public function eignore(bool $ignore)
         {
             $this->errignore = $ignore;
             $wi = $this->wasignored;
@@ -321,7 +321,7 @@
  *
  * @return string
  */
-        public function makepath() : string
+        public function makepath()
         {
             return implode(DIRECTORY_SEPARATOR, func_get_args());
         }
@@ -330,7 +330,7 @@
  *
  * @return string
  */
-        public function makebasepath() : string
+        public function makebasepath()
         {
             return $this->basedir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, func_get_args());
         }
@@ -339,7 +339,7 @@
  *
  * @return string
  */
-        public function assets() : string
+        public function assets()
         {
             return $this->base().'/assets'; # for HTML so the / is OK to use here
         }
@@ -348,7 +348,7 @@
  *
  * @return string
  */
-        public function assetsdir() : string
+        public function assetsdir()
         {
             return $this->basedir().DIRECTORY_SEPARATOR.'assets';
         }
@@ -433,7 +433,7 @@
  *
  * @return bool
  */
-        public function hastwig() : bool
+        public function hastwig()
         {
             return is_object($this->twig);
         }
@@ -445,7 +445,7 @@
  *
  * @return string
  */
-        public function getrender(string $tpl, array $vals = []) : string
+        public function getrender(string $tpl, array $vals = [])
         {
             if ($tpl === '')
             { // no template so no output
@@ -461,8 +461,6 @@
  *
  * @param string	$tpl	The template
  * @param array	        $vals	Values to set for the twig
- *
- * @return void
  */
         public function render(string $tpl, array $vals = []) : void
         {
@@ -476,17 +474,29 @@
  *
  * @param string|array	$vname		The name to be used inside the twig or an array of value pairs
  * @param mixed		    $value		The value to be stored or "" if an array in param 1
+ * @param bool          $tglobal    If TRUE add this as a twig global variable
  *
  * @return void
  */
-        public function addval($vname, $value = '') : void
+        public function addval($vname, $value = '', $tglobal = FALSE) : void
         {
             if (is_array($vname))
             {
                 foreach ($vname as $key => $aval)
                 {
-                    $this->tvals[$key] = $aval;
+                    if ($tglobal)
+                    {
+                        $this->twig->addGlobal($key, $aval);
+                    }
+                    else
+                    {
+                        $this->tvals[$key] = $aval;
+                    }
                 }
+            }
+            elseif ($tglobal)
+            {
+                $this->twig->addGlobal($vname, $value);
             }
             else
             {
@@ -547,7 +557,7 @@
  *
  * @return string
  */
-        public function base() : string
+        public function base()
         {
             return $this->basedname;
         }
@@ -556,7 +566,7 @@
  *
  * @return string
  */
-        public function basedir() : string
+        public function basedir()
         {
             return $this->basepath;
         }
@@ -570,7 +580,7 @@
  *
  * @return string
  */
-        public function debase(string $url) : string
+        public function debase(string $url)
         {
             if ($this->base() !== '')
             {

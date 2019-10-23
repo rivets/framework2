@@ -125,7 +125,7 @@
                 'usebootstrapjs'    => TRUE,
                 'usebootbox'        => TRUE,
                 'usevue'            => FALSE,
-            ]);
+            ], '', TRUE);
 
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)

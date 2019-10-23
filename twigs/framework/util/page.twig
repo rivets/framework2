@@ -57,10 +57,10 @@
     {% block userscripts %}
     {% endblock userscripts %}
 
-    {% set sjs, ojs = '', '' %}
-    {% if block('setup') is defined %}{% set sjs = block('setup')|trim %}{% endif %}
+    {% set sjs, ojs = '', context.getons %}
+    {% if block('setup') is defined %}{% set sjs = sjs ~ block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
-        {% set ojs = block('onload')|trim %}
+        {% set ojs = ojs~block('onload')|trim %}
         {% if ojs|length > 0 %}{% set ojs = '$(function(){'~ojs~'});' %}{% endif %}
     {% endif %}
     {% set js = sjs~ojs %}

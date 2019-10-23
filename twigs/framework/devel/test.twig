@@ -3,7 +3,6 @@
 {% import '@util/accmacro.twig' as a %}
 
 {% block onload %}
-    $('#tform,#tform2').on('submit', false);
     $('#nopu').on('click', function(e){
         $(this).toggleClass('btn-primary').toggleClass('btn-warning');
     })

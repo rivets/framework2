@@ -39,6 +39,8 @@
         protected $roles        = [];
 /** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
         protected $contexts     = [];
+/** @var \RedBeanPHP\OODBBean[]		A cache for JS ons beans */
+        protected $ons          = [];
 /*
  ***************************************
  * URL and REST support functions
@@ -49,7 +51,7 @@
  *
  * @return string
  */
-        public function action() : string
+        public function action()
         {
             return $this->reqaction;
         }
@@ -63,7 +65,7 @@
  *
  * @return string[]
  */
-        public function rest() : array
+        public function rest()
         {
             return $this->reqrest;
         }
@@ -107,7 +109,7 @@
  *
  * @return bool
  */
-        public function sameuser($user) : bool
+        public function sameuser($user)
         {
              /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
@@ -117,7 +119,7 @@
  *
  * @return bool
  */
-        public function hasuser() : bool
+        public function hasuser()
         {
             return is_object($this->luser);
         }
@@ -126,7 +128,7 @@
  *
  * @return boolean
  */
-        public function hasadmin() : bool
+        public function hasadmin()
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isadmin();
@@ -136,7 +138,7 @@
  *
  * @return boolean
  */
-        public function hasdeveloper() : bool
+        public function hasdeveloper()
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isdeveloper();
@@ -146,7 +148,7 @@
  *
  * @return boolean
  */
-	public function hastoken() : bool
+	public function hastoken()
 	{
 	    return $this->tokauth;
 	}
@@ -215,10 +217,40 @@
  *
  * @return string
  */
-        public function newid(string $str = 'id') : string
+        public function newid(string $str = 'id')
         {
             $this->idgen += 1;
             return $str.$this->idgen;
+        }
+/**
+ * Save values into the on cache
+ *
+ * @param string   $id
+ * @param string   $on
+ * @param string   $fn
+ */
+        public function saveon($id, $on, $fn)
+        {
+            $this->ons[$id][$on] = $fn;
+        }
+/**
+ * Get the KS for onloading the ons
+ *
+ * @return string
+ */
+        public function getons()
+        {
+            $res = '';
+            foreach ($this->ons as $id => $conds)
+            {
+                $xres = '';
+                foreach ($conds as $on => $fn)
+                {
+                    $xres .= ".on('".$on."', ".$fn.")";
+                }
+                $res = $res. "$('#".$id."')".$xres.";\n";
+            }
+            return $res;
         }
 /**
  * Find a rolename bean
@@ -355,6 +387,7 @@
  *
  * @return string
  */
+
         public function utcdate(string $datetime) : string
         { /** @psalm-suppress InvalidOperand */
             return \R::isodatetime(strtotime($datetime) - date('Z'));

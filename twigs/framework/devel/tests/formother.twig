@@ -1,6 +1,6 @@
 {% import '@util/formmacro.twig' as f %}
 
-    <form id="tform2">
+    {{f.startform({id: 'tform2', on: {submit: 'false'} })}}
         {{f.number({label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50})}}
         {{f.number({label: 'Number Disabled', id : 'nmid2', name: 'nm2', value: 42, min: 30, step: 2, max: 50, disabled: TRUE})}}
         {{f.number({label: 'Number Readonly', id : 'nmid3', name: 'nm3', value: 42, min: 30, step: 2, max: 50, readonly: TRUE})}}
@@ -30,13 +30,8 @@
         {{f.select({label: 'Select Multiple Disabled', is: 'slid12', name: 'sl12', size: 3, multiple: TRUE, selected: [1, 4], options: options, disabled: TRUE})}}
         {{f.select({label: 'Select Multiple Readonly', is: 'slid13', name: 'sl13', size: 3, multiple: TRUE, selected: [1, 4], options: options, readonly: TRUE})}}
 
-        <div class="form-group">
-        <label>Checkbox</label>
-        {{f.checkbox({ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE]})}}
-        </div>
-        <div class="form-group">
-        <label>Radio</label>
-        {{f.radio({ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, 2, 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE]})}}
-        </div>
+        {{f.checkbox({group: TRUE, label: 'Checkbox', ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE], disabled: [FALSE, TRUE, FALSE]})}}
+        {{f.radio({group: TRUE, label: 'Radio', ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE], disabled: [FALSE, TRUE, FALSE]})}}
+
         <p>{{f.submit({value: 'Submit Button', bstyle: 'btn-info'})}}</p>
-    </form>
+    {{f.endform()}}
