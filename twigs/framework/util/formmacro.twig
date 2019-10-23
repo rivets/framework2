@@ -20,7 +20,7 @@
 
 {% macro help(opts) %}{% if opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro help %}
 
-{% macro on(opts) %}{% if opts.on is defined and opts.id != '' %}{% for e,v in opts.on %}{% set onloadjs = onloadJS~"$('#"~opts.id~"').on('"~e~"', "~v~");\n" %}{% endfor %}{% endif %}{% endmacro on %}
+{% macro on(opts) %}{% if opts.on is defined and opts.id != '' %}{% for e,v in opts.on %}{% set onloadJS = onloadJS~"$('#"~opts.id~"').on('"~e~"', "~v~");\n" %}{% endfor %}{% endif %}{% endmacro on %}
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
