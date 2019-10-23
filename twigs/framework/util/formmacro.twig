@@ -73,7 +73,8 @@
     {{fx.xsl(opts, 'form-check form-check-inline', TRUE)}}
     {% for ix,val in opts.values %}
         <label class="form-check-label mr-2">
-	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}{{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}/>
+	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}
+            {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}{{fx.cd(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled', 'disabled')}}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
