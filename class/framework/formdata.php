@@ -580,5 +580,16 @@
             }
             return $x;
         }
+/**
+ * Make arrays of files work more like singletons
+ *
+ * @param string    $name
+ *
+ * @return \ArrayIterator
+ */
+        public function filea(string $name, array $dflt = []) : \ArrayIterator
+        {
+            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\FAIterator($name) : new \ArrayIterator($dflt);
+        }
     }
 ?>
