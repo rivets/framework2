@@ -123,7 +123,7 @@
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
-{% macro startform(opts) %}{% import _self as fx %}
+{% macro startform(opts) %}{% import _self as fx %}{{fx.on(opts)}}
 <form{{fx.hv('id', opts.id)}}{{fx.hv('class', opts.class)}}{{fx.hvd('action', opts.action, '#')}}{{fx.hvd('method', opts.method, 'GET')}}{{fx.data(opts.data)}}{% if opts.multi %} enctype="multipart/form-data"{% endif %} role="form">
 {% endmacro startform %}
 
