@@ -57,7 +57,7 @@
     {% block userscripts %}
     {% endblock userscripts %}
 
-    {% set sjs, ojs = '', onloadJS %}
+    {% set sjs, ojs = '', context.getons %}
     {% if block('setup') is defined %}{% set sjs = sjs ~ block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
         {% set ojs = ojs~block('onload')|trim %}
