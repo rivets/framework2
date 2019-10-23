@@ -410,6 +410,7 @@
  */
             $this->twig->addGlobal('base', $this->base());
             $this->twig->addGlobal('assets', $this->assets());
+            $this->twig->addGlobal('onloadJS', '');
             foreach (self::$msgnames as $mn)
             {
                 $this->twig->addGlobal($mn, []);
