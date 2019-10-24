@@ -456,7 +456,7 @@
             switch ($context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
-                $bn1->{'shared'.ucfirst($b2).'List'}[] = $bn2;
+                $bn1->noload()->{'shared'.ucfirst($b2).'List'}[] = $bn2;
                 \R::store($bn1);
                 break;
             case 'DELETE': // /ajax/shared/KIND1/id1/KIND2/id2
@@ -687,14 +687,25 @@
             { // hinting is allowed for this bean
                 $this->checkPerms($context, self::$hints[$bean][2]); // make sure we are allowed
                 $field = self::$hints[$bean][0];
-                if ($field == '*')
-                { # the call must specify the field
+                $tix = 2;
+                if (is_array($field))
+                {
+                    $tix = 3;
+                    if (!in_array($rest[2], $field))
+                    {
+                        throw new \Framework\Exception\Forbidden('Acess denied');
+                    }
                     $field = $rest[2];
                 }
+                elseif ($field == '*')
+                { # the call must specify the field
+                    $field = $rest[2];
+                    $tix = 3;
+                }
                 $obj = TRUE;
-                if (isset($rest[3]))
+                if (isset($rest[$tix]))
                 {
-                    switch ($rest[3])
+                    switch ($rest[$tix])
                     {
                     case 'text':
                         $obj = FALSE;
@@ -710,7 +721,7 @@
                 { // strop the fieldname if it occurs in the order spec
                     $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
                 }
-                $limit = $fdt->get('limit', '');
+                $limit = $fdt->get('limit', 10);
                 $search = $fdt->get('search', '%');
                 $res = [];
                 foreach (\Support\SiteInfo::getinstance()->fetch($bean,
