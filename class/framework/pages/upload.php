@@ -44,7 +44,7 @@
                     }
                 }
             }
-            return '@pages/upload.twig';
+            return '@content/upload.twig';
         }
     }
 ?>
