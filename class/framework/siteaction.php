@@ -66,6 +66,8 @@
  * Indicates that the URL should be temporarily redirected - 307
  */
         const AREHOME	= 12;
+
+        use \Support\SiteAction;
 /**
  * Handle an action
  *
@@ -187,65 +189,6 @@
 	    }
 	}
 /**
- * Set any cache headers that are wanted
- *
- * This needs to be overridden if it is to do anything
- *
- * @param \Support\Context    $context The context object
- *
- * @return void
- */
-        public function setCache(Context $context) : void
-        {
-            // void
-        }
-/**
- * Make an etag for an item
- *
- * This needs to be overridden by pages that can generate etags
- *
- * @return string
- */
-        public function makeetag() : string
-        {
-            return '';
-        }
-/**
- * Make a max age value for an item
- *
- * This needs to be overridden by pages that want to use this
- *
- * @return mixed
- */
-        public function makemaxage()
-        {
-            return '';
-        }
-/**
- * Returns true of the request would generate a page.
- *
- * This needs to be overridden if it is to be used. Currently returns TRUE,
- * thus assuming that pages always exist....
- *
- * @return boolean
- */
-        public function exists() : bool
-        {
-            return TRUE;
-        }
-/**
- * Get a last modified time for the page
- *
- * By default this returns the current time. For pages that need to use this in anger,
- * then this function may need to be overridden.
- *
- * @return int
- */
-        public function lastmodified() : int
-        {
-            return time();
-        }
-/**
  * Format a time suitable for Last-Modified header
  *
  * @param int 	$time	The last modified time
@@ -255,32 +198,6 @@
         public function makemod(int $time) : string
         {
             return gmdate('D, d M Y H:i:s', $time).' GMT';
-        }
-/**
- * Check a timestamp to see if we need to send the page again or not.
- *
- * This always returns FALSE, indicating that we need to send the page again.
- * The assumption is that pages that implement etags will override this function
- * appropriately to do actual value checking.
- *
- * @param string	$time	The time value to check
- *
- * @return bool
- */
-        public function checkmodtime(string $time) : bool
-        {
-            return FALSE;
-        }
-/**
- * Check an etag to see if we need to send the page again or not.
- *
- * @param string	$tag	The etag value to check
- *
- * @return bool
- */
-        public function checketag(string $tag) : bool
-        {
-            return $tag === $this->makeetag();
         }
 /**
  * We have a matched etag - check request method and send the appropriate header.
