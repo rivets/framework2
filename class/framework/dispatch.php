@@ -83,6 +83,11 @@
             self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
         ];
 /**
+ * @var array $configs Constants that might be defined in the configuration that
+ * need to be passed into twigs.
+ */
+        private static $configs = ['lang', 'keywords', 'description'];
+/**
  * Handle dispatch of a page.
  *
  * @param \Support\Context    $context
@@ -115,7 +120,7 @@
                 $page->check($context);
             }
         
-            $local->addval([
+            $basicvals = [
                 'context'           => $context,
                 'action'            => $action,
                 'siteinfo'          => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
@@ -125,7 +130,20 @@
                 'usebootstrapjs'    => TRUE,
                 'usebootbox'        => TRUE,
                 'usevue'            => FALSE,
-            ], '', TRUE);
+            ];
+            foreach (self::$configs as $cf)
+            {
+                try
+                {
+                    $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
+                    $basicvals[$cf] = $constant_reflex->getValue();
+                }
+                catch (\ReflectionException $e)
+                {
+                    // void
+                }
+            }
+            $local->addval($basicvals, '', TRUE);
 
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
