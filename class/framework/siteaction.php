@@ -195,7 +195,7 @@
  *
  * @return void
  */
-        public function setcache(Context $context) : void
+        public function setCache(Context $context) : void
         {
             // void
         }
