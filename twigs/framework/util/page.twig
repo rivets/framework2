@@ -1,13 +1,21 @@
 <!doctype html>
-<!--[if lt IE 9]><html class="ie"><![endif]-->
-<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<!--[if lt IE 9]><html class="ie"{% if lang is defined %} lang="{{lang}}"{% endif %}><![endif]-->
+<!--[if gte IE 9]><!--><html{% if lang is defined %} lang="{{lang}}"{% endif %}><!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
 
-    <title>{% block title %}{{fwurls.sitename.value|upper}}{% endblock title %}</title>
+    <title>{% block title %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endblock title %}</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    {% if keywords is defined %}
+        <meta name="keywords" content="{{keywords}}"/>
+    {% endif %}
+
+    {% if description is defined %}
+        <meta name="description" content="{{description}}"/>
+    {% endif %}
 
     {% import '@util/attrmacro.twig' as h %}
 

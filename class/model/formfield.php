@@ -14,7 +14,7 @@
 /**
  * @var string[] Attributes that this supports
  */
-        private static $attributes  = ['type', 'class', 'name', 'placeholder'];
+        private static $attributes  = ['class', 'name', 'placeholder'];
  /**
   * @var int Counter used for generating new IDs
   */
@@ -66,6 +66,14 @@
             if ($doValue)
             { # include the value in the attributes
                 $attrs[] = 'value';
+            }
+            switch ($this->bean->type)
+            {
+            case 'textarea':
+                break;
+            default:
+                $attrs[] = 'type';
+                break;
             }
             $res = ['']; # ensures a space at the start of the result
             if ($this->bean->idval !== '')

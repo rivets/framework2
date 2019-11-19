@@ -199,8 +199,8 @@
             {
                 $form = '<form action="'.
                     ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
-                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').'" '.
-                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').'" '.
+                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').' '.
+                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').' '.
                     'method="'.self::$methods[$this->bean->method].'"'.
                     ($this->bean->multipart ? ' enctype="multipart/form-data"' : '').
                     ' role="form">'.PHP_EOL;
@@ -263,7 +263,7 @@
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
                 case 'submit' :
-                    $form .= '<div class="form-group"><button type="submit"'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
+                    $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
                 case 'button' :
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
