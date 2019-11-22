@@ -44,7 +44,9 @@
             {
                 $hdrs['Etag'] = '"'.$etag.'"';
             }
-            $this->set304Cache($context->web());
+            $web = $context->web();
+            $web->addheader($hdrs);
+            $this->set304Cache($web);
         }
 /**
  * Set up etag if wanted
