@@ -157,7 +157,7 @@
                     \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context); // set up cache-control headers.
-                    $pageObj->setEtag();
+                    $pageObj->setEtag($context);
                 }
                 catch(\Framework\Exception\Forbidden $e)
                 {
