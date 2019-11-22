@@ -148,7 +148,9 @@
             }
         }
 /**
- * Send a 304 response
+ * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
+ *
+ * @see \Support\SiteAction
  *
  * @return void
  */
