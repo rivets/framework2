@@ -139,7 +139,7 @@
                 {
                     foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
                     {
-                        if ($this->checketag(str_replace('"', '', $etag))) # extract the ETag from its surrounding quotes
+                        if ($this->checketag(substr(trim($etag), 1, -1))) # extract the ETag from its surrounding quotes
                         { # We have matched the etag and file has not been modified
                             $this->etagmatched();
                             /* NOT REACHED */
