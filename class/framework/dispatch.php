@@ -154,6 +154,7 @@
                 $csp = $pageObj;
                 try
                 {
+                    $pageObj->ifmodcheck($context);
                     \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context); // set up cache-control headers.
