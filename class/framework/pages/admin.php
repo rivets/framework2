@@ -313,7 +313,7 @@
         {
             $hdrs = [
                 // 'Last-Modified' => $this->makemod($this->mtime),
-                'Expires'       => 0
+                'Expires'       => $this->makemod($time())
             ];
             $context->web()->addheader($hdrs);
             $this->set304Cache($context);
