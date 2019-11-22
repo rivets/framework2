@@ -154,11 +154,10 @@
                 $csp = $pageObj;
                 try
                 {
-                    $pageObj->ifmodcheck($context);
+                    $pageObj->ifmodcheck($context); // check for any If- headers
                     \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context); // set up cache-control headers.
-                    $pageObj->setEtag($context);
                 }
                 catch(\Framework\Exception\Forbidden $e)
                 {

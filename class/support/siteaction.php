@@ -36,7 +36,15 @@
  */
         public function setCache(Context $context) : void
         {
-            // void
+            $hdrs = [
+                // 'Last-Modified' => $this->makemod($this->mtime),
+                'Expires'       => $this->makemod(time() + self::$maxage),
+            ];
+            if (($etag = $this->makeetag()) !== '')
+            {
+                $hdrs['Etag'] = '"'.$etag.'"';
+            }
+            $this->set304Cache($context->web());
         }
 /**
  * Set up etag if wanted

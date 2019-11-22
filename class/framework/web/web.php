@@ -37,11 +37,11 @@
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param string		$where		The URL to divert to
+ * @param string	$where		The URL to divert to
  * @param bool       	$temporary	TRUE if this is a temporary redirect
- * @param string		$msg		A message to send
+ * @param string	$msg		A message to send
  * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       	$use303    If TRUE then use 303 rather than 302
+ * @param bool       	$use303         If TRUE then use 303 rather than 302
  *
  * @psalm-return never-return
  * @return void
@@ -80,6 +80,7 @@
                 echo '<p>'.$msg.'</p>';
             }
             exit;
+            /* NOT REACHED */
         }
 /**
  * Check for a range request and check it
@@ -133,10 +134,6 @@
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
-            if (!empty($this->cache))
-            {
-                header('Cache-Control', implode(',', $this->cache));
-            }
             if ($mtype !== '')
             {
                 header('Content-Type: '.$mtype);
@@ -314,7 +311,7 @@
  *
  * @return void
  **/
-        public function putheaders()
+        private function putheaders()
         {
             foreach ($this->headers as $name => $vals)
             {
@@ -322,6 +319,10 @@
                 {
                     header($name.': '.$v);
                 }
+            }
+            if (!empty($this->cache))
+            {
+                header('Cache-Control', implode(',', $this->cache));
             }
         }
 /**
