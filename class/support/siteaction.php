@@ -143,7 +143,8 @@
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return $tag === $this->makeetag($context);
+            $etag = $this->makeetag($context);
+            return $tag === $etag || $tag == $etag.'-gzip';
         }
     }
 ?>
