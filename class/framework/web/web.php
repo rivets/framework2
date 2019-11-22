@@ -322,7 +322,7 @@
             }
             if (!empty($this->cache))
             {
-                header('Cache-Control', implode(',', $this->cache));
+                header('Cache-Control: '.implode(',', $this->cache));
             }
         }
 /**
