@@ -111,7 +111,7 @@
  *
  * @return void
  */
-	public function ifmodcheck() : void
+	public function ifmodcheck(Context $context) : void
 	{
 	    $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
@@ -123,15 +123,15 @@
                 }
                 $st = strtotime($ifmod);
                 /** @psalm-suppress InvalidScalarArgument */
-                $ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
+                $ifms = $st !== FALSE && $this->checkmodtime($context, $st); # will 304 later if there is no NONE_MATCH or nothing matches
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
 	    {
                 if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
                 {
-                    if ($this->exists())
+                    if ($this->exists($context))
                     { # this request would generate a page and has not been modified
-                        $this->etagmatched();
+                        $this->etagmatched($context);
                         /* NOT REACHED */
                     }
                 }
@@ -139,9 +139,9 @@
                 {
                     foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
                     {
-                        if ($this->checketag(substr(trim($etag), 1, -1))) # extract the ETag from its surrounding quotes
+                        if ($this->checketag($context, substr(trim($etag), 1, -1))) # extract the ETag from its surrounding quotes
                         { # We have matched the etag and file has not been modified
-                            $this->etagmatched();
+                            $this->etagmatched($context);
                             /* NOT REACHED */
                         }
                     }
@@ -150,7 +150,7 @@
 	    }
 	    if (!$ifms)
 	    { # we dont need to send the page
-                $this->etagmatched();
+                $this->etagmatched($context);
                 /* NOT REACHED */
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
@@ -158,19 +158,20 @@
                 $match = FALSE;
                 if ($_SERVER['HTTP_IF_MATCH'] == '*')
                 {
-                    $match = $this->exists();
+                    $match = $this->exists($context);
                 }
                 else
                 {
                     foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
                     {
-                    $match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
+                        $match |= $this->checketag($context, substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
                     }
                 }
                 if (!$match)
                 { # nothing matched or did not exist
-                    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                    $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
                     exit;
+                    /* NOT REACHED */
                 }
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
@@ -181,10 +182,11 @@
                     $ifus = $m[1];
                 }
                 $st = strtotime($ifus); # ignore if not a valid time
-                if ($st !== FALSE && $st < $this->lastmodified())
+                if ($st !== FALSE && $st < $this->lastmodified($context))
                 {
-                    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                    $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
                     exit;
+                    /* NOT REACHED */
                 }
 	    }
 	}
@@ -208,9 +210,9 @@
  * @psalm-return never-return
  * @return void
  */
-        private function etagmatched() : void
+        private function etagmatched(Context $context) : void
         {
-            $web = Web::getinstance();
+            $web = $context->web();
             $rqm = $web->method();
             if ($rqm != 'GET' && $rqm != 'HEAD')
             { # fail if not a GET or HEAD - see W3C specification
@@ -218,8 +220,8 @@
             }
             else
             {
-                $this->set304Cache($web); // set up the cahce headers for the 304 response.
-                $web->send304($this->makeetag());
+                $this->set304Cache($context); // set up the cahce headers for the 304 response.
+                $web->send304($this->makeetag($context));
             }
             exit;
         }

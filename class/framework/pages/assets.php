@@ -77,11 +77,11 @@
                 }
                 finfo_close($finfo);
             }
-            $mag = $this->makemaxage();
+            $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([
 //              'Last-Modified'	=> $this->makemod($this->mtime),
-                'Etag'		=> '"'.$this->makeetag().'"',
+                'Etag'		=> '"'.$this->makeetag($context).'"',
                 'Expires'	=> $this->makemod(time()+$mag),
                 'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
             ]);
@@ -92,31 +92,36 @@
 /**
  * Make an etag - overrides the function in SiteAction
  *
+ * @param \Support\Context    $context   The context object for the site
+ *
  * @return string
  */
-        public function makeetag() : string
+        public function makeetag(Context $context) : string
         {
-            return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.(Web::getinstance()->acceptgzip() ? 1 : 0);
+            return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
  * Make a maximum age - overrides function in SiteAction
  *
  * An hour for the most recent volume and a year for everything else
  *
+ * @param \Support\Context    $context   The context object for the site
+ *
  * @return integer
  */
-        public function makemaxage() : int
+        public function makemaxage(Context $context) : int
         {
             return 3600*24*365; # make it a year
         }
 /**
  * Check a timestamp to see if we need to send the page again or not - overriding method in SiteAction
  *
+ * @param \Support\Context    $context   The context object for the site
  * @param string	$time	The time value to check
  *
  * @return boolean
  */
-        public function checkmodtime(string $time) : bool
+        public function checkmodtime(Context $context, string $time) : bool
         {
             return $this->mtime > $time;
         }

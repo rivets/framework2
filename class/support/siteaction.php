@@ -40,39 +40,24 @@
                 // 'Last-Modified' => $this->makemod($this->mtime),
                 'Expires'       => $this->makemod(time() + self::$maxage),
             ];
-            if (($etag = $this->makeetag()) !== '')
+            if (($etag = $this->makeetag($context)) !== '')
             {
                 $hdrs['Etag'] = '"'.$etag.'"';
             }
-            $web = $context->web();
-            $web->addheader($hdrs);
-            $this->set304Cache($web);
-        }
-/**
- * Set up etag if wanted
- *
- * @param \Support\Context    $context The context object
- *
- * @return void
- */
-        public function setEtag(Context $context) : void
-        {
-            if (($etag = $this->makeetag()) !== '')
-            {
-                $context->web()->addheader('Etag', '"'.$etag.'"');
-            }
+            $context->web()->addheader($hdrs);
+            $this->set304Cache($context);
         }
 /**
  * Set any cache headers that are wanted on a 304 response
  *
- * @param \Framework\Web\Web    $web The web object
+ * @param \Support\Context    $context   The context object for the site
  *
  * @return void
  */
-        public function set304Cache(\Framework\Web\Web $web) : void
+        public function set304Cache(Context $context) : void
         {
-            $web->addCache([
-                'maxage='.$this->makemaxage(),
+            $context->web()->addCache([
+                'maxage='.$this->makemaxage($context),
                 'must-revalidate',
                 'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
                 'stale-if-error=259200'
@@ -83,9 +68,11 @@
  *
  * This needs to be overridden by pages that can generate etags
  *
+ * @param \Support\Context    $context   The context object for the site
+ *
  * @return string
  */
-        public function makeetag() : string
+        public function makeetag(Context $context) : string
         {
             return '';
         }
@@ -94,9 +81,11 @@
  *
  * This needs to be overridden by pages that want to use this
  *
+ * @param \Support\Context    $context   The context object for the site
+ *
  * @return int
  */
-        public function makemaxage() : int
+        public function makemaxage(Context $context) : int
         {
             return self::$maxage;
         }
@@ -106,9 +95,11 @@
  * This needs to be overridden if it is to be used. Currently returns TRUE,
  * thus assuming that pages always exist....
  *
+ * @param \Support\Context    $context  The context object for the site
+ *
  * @return boolean
  */
-        public function exists() : bool
+        public function exists(Context $context) : bool
         {
             return TRUE;
         }
@@ -118,9 +109,11 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function may need to be overridden.
  *
+ * @param \Support\Context  $context  The context object for the site
+ *
  * @return int
  */
-        public function lastmodified() : int
+        public function lastmodified(Context $context) : int
         {
             return time();
         }
@@ -131,24 +124,26 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
+ * @param \Support\Context    $context   The context object for the site
  * @param string	$time	The time value to check
  *
  * @return bool
  */
-        public function checkmodtime(string $time) : bool
+        public function checkmodtime(Context $context, string $time) : bool
         {
             return FALSE;
         }
 /**
  * Check an etag to see if we need to send the page again or not.
  *
+ * @param \Support\Context    $context   The context object for the site
  * @param string	$tag	The etag value to check
  *
  * @return bool
  */
-        public function checketag(string $tag) : bool
+        public function checketag(Context $context, string $tag) : bool
         {
-            return $tag === $this->makeetag();
+            return $tag === $this->makeetag($context);
         }
     }
 ?>
