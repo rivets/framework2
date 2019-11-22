@@ -218,7 +218,7 @@
             }
             else
             {
-                $this->set304Cache(); // set up the cahce headers for the 304 response.
+                $this->set304Cache($web); // set up the cahce headers for the 304 response.
                 $web->send304($this->makeetag());
             }
             exit;

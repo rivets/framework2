@@ -13,6 +13,7 @@
  *
  */
     use \Support\Context as Context;
+    use \Framework\Web\Web as Web;
 
     namespace Support;
 /**
@@ -55,13 +56,13 @@
 /**
  * Set any cache headers that are wanted on a 304 response
  *
- * @param \Support\Context    $context The context object
+ * @param \Framework\Web\Web    $web The web object
  *
  * @return void
  */
-        public function set304Cache(Context $context) : void
+        public function set304Cache(Web $web) : void
         {
-            $context->web()-addCache([
+            $web->addCache([
                 'maxage='.$this->makemaxage(),
                 'must-revalidate',
                 'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
