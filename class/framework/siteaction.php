@@ -116,76 +116,76 @@
 	    $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
 	    {
-            $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
-            if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
-            {
-                $ifmod = $m[1];
-            }
-            $st = strtotime($ifmod);
-            /** @psalm-suppress InvalidScalarArgument */
-            $ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
+                $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
+                if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
+                {
+                    $ifmod = $m[1];
+                }
+                $st = strtotime($ifmod);
+                /** @psalm-suppress InvalidScalarArgument */
+                $ifms = $st !== FALSE && $this->checkmodtime($st); # will 304 later if there is no NONE_MATCH or nothing matches
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
 	    {
-            if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
-            {
-                if ($this->exists())
-                { # this request would generate a page and has not been modified
-                    $this->etagmatched();
-                    /* NOT REACHED */
-                }
-            }
-            else
-            {
-                foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
+                if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
                 {
-                    if ($this->checketag(str_replace('"', '', $etag))) # extract the ETag from its surrounding quotes
-                    { # We have matched the etag and file has not been modified
+                    if ($this->exists())
+                    { # this request would generate a page and has not been modified
                         $this->etagmatched();
                         /* NOT REACHED */
                     }
                 }
-            }
-            $ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
+                else
+                {
+                    foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
+                    {
+                        if ($this->checketag(str_replace('"', '', $etag))) # extract the ETag from its surrounding quotes
+                        { # We have matched the etag and file has not been modified
+                            $this->etagmatched();
+                            /* NOT REACHED */
+                        }
+                    }
+                }
+                $ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
 	    }
 	    if (!$ifms)
 	    { # we dont need to send the page
-            $this->etagmatched();
-            /* NOT REACHED */
+                $this->etagmatched();
+                /* NOT REACHED */
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
 	    {
-            $match = FALSE;
-            if ($_SERVER['HTTP_IF_MATCH'] == '*')
-            {
-                $match = $this->exists();
-            }
-            else
-            {
-                foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
+                $match = FALSE;
+                if ($_SERVER['HTTP_IF_MATCH'] == '*')
                 {
-                $match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
+                    $match = $this->exists();
                 }
-            }
-            if (!$match)
-            { # nothing matched or did not exist
-                Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-                exit;
-            }
+                else
+                {
+                    foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
+                    {
+                    $match |= $this->checketag(substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
+                    }
+                }
+                if (!$match)
+                { # nothing matched or did not exist
+                    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                    exit;
+                }
 	    }
 	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
 	    {
-            $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
-            if (preg_match('/^(.*);(.*)$/', $ifus, $m))
-            {
-                $ifus = $m[1];
-            }
-            $st = strtotime($ifus); # ignore if not a valid time
-            if ($st !== FALSE && $st < $this->lastmodified())
-            {
-                Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-                exit;
-            }
+                $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
+                if (preg_match('/^(.*);(.*)$/', $ifus, $m))
+                {
+                    $ifus = $m[1];
+                }
+                $st = strtotime($ifus); # ignore if not a valid time
+                if ($st !== FALSE && $st < $this->lastmodified())
+                {
+                    Web::getinstance()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                    exit;
+                }
 	    }
 	}
 /**
@@ -205,9 +205,10 @@
  *
  * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
  *
+ * @psalm-return never-return
  * @return void
  */
-        private function etagmatched() : void
+        private function etagmatched(array $ccvals) : void
         {
             $web = Web::getinstance();
             $rqm = $web->method();
@@ -217,7 +218,8 @@
             }
             else
             {
-                $web->send304($this->makeetag(), $this->makemaxage());
+                $this->set304Cache(); // set up the cahce headers for the 304 response.
+                $web->send304($this->makeetag());
             }
             exit;
         }

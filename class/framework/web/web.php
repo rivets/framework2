@@ -29,6 +29,10 @@
  */
         private $nocsp      = [];
 /**
+ * @var array   Holds values for Cache-Control headers
+ */
+        private $cache      = [];
+/**
  * Generate a Location header
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
@@ -125,10 +129,14 @@
  *
  * @return void
  */
-        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '')
+        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '') : void
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
+            if (!empty($this->cache))
+            {
+                header('Cache-Control', implode(',', $this->cache));
+            }
             if ($mtype !== '')
             {
                 header('Content-Type: '.$mtype);
@@ -145,17 +153,13 @@
 /**
  * Send a 304 response
  *
- * @param	string		$etag	An entity tag
- * @param	integer		$maxage	Maximum age for page in seconds
+ * @param	string	$etag	 An entity tag
  *
  * @return void
  */
-        public function send304(string $etag, int $maxage)
+        public function send304(string $etag) : void
         {
-            $this->addheader([
-                'Etag'	=> '"'.$etag.'"',
-                'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
-            ]);
+            $this->addheader('Etag', '"'.$etag.'"');
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
 /**
@@ -440,6 +444,17 @@
                     'Content-Security-Policy'   => $csp
                 ]);
             }
+        }
+/**
+ * Add an item for use in a Cache-Control header
+ *
+ * @param array  $items  An array of items
+ *
+ * @return void
+ */
+        public function addCache(array $items) : void
+        {
+            $this->cache = array_merge($this-cache, $items);
         }
 /**
  * Check a recaptcha value

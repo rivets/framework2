@@ -12,16 +12,23 @@
  * @copyright 2019 Newcastle University
  *
  */
+    use \Support\Context as Context;
+
     namespace Support;
 /**
- * User table stores info about users of the syste,
+ * Adds functions for dealing with various cache control circumstances.
+ * If you add code here then these will apply to all pages. You can override these
+ * functions if you want to have special behaviour for a particular page.
+ *
  */
     trait SiteAction
     {
 /**
- * Set any cache headers that are wanted
- *
- * This needs to be overridden if it is to do anything
+ * @var int - the default maxage for a page. This is a static because you can't have consts in a trait....
+ */
+        private static $maxage = 3600; // 1 hour
+/**
+ * Set any cache headers that are wanted for a normal page delivery
  *
  * @param \Support\Context    $context The context object
  *
@@ -30,6 +37,22 @@
         public function setCache(Context $context) : void
         {
             // void
+        }
+/**
+ * Set any cache headers that are wanted on a 304 response
+ *
+ * @param \Support\Context    $context The context object
+ *
+ * @return void
+ */
+        public function set304Cache(Context $context) : void
+        {
+            $context->web()-addCache([
+                'maxage='.$this->makemaxage(),
+                'must-revalidate',
+                'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
+                'stale-if-error=259200'
+            ]);
         }
 /**
  * Make an etag for an item
@@ -47,11 +70,11 @@
  *
  * This needs to be overridden by pages that want to use this
  *
- * @return mixed
+ * @return int
  */
-        public function makemaxage()
+        public function makemaxage() : int
         {
-            return '';
+            return self::$maxage;
         }
 /**
  * Returns true of the request would generate a page.
