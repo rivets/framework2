@@ -309,11 +309,30 @@
  *
  * @return void
  */
-        public function setcache(Context $context) : void
+        public function setCache(Context $context) : void
         {
-            $context->web()->addheader([
-                'cache-control' => 'no-cache, no-store, must-revalidate, private',
-                'Expires'       => '0',
+            $hdrs = [
+                // 'Last-Modified' => $this->makemod($this->mtime),
+                'Expires'       => 0
+            ];
+            $context->web()->addheader($hdrs);
+            $this->set304Cache($context);
+        }
+/**
+ * Set any cache headers that are wanted on a 304 response
+ *
+ * @param \Support\Context    $context   The context object for the site
+ *
+ * @return void
+ */
+        public function set304Cache(Context $context) : void
+        {
+            $context->web()->addCache([
+                'no-store',
+                'no-cache',
+                'must-revalidate',
+                'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
+                'stale-if-error=259200'
             ]);
         }
     }
