@@ -36,15 +36,6 @@
  */
         public function setCache(Context $context) : void
         {
-            $hdrs = [
-                // 'Last-Modified' => $this->makemod($this->mtime),
-                'Expires'       => $this->makemod(time() + self::$maxage),
-            ];
-            if (($etag = $this->makeetag($context)) !== '')
-            {
-                $hdrs['Etag'] = '"'.$etag.'"';
-            }
-            $context->web()->addheader($hdrs);
             $this->set304Cache($context);
         }
 /**
@@ -56,6 +47,15 @@
  */
         public function set304Cache(Context $context) : void
         {
+            $hdrs = [
+                // 'Last-Modified' => $this->makemod($this->mtime),
+                'Expires' => $this->makemod(time() + self::$maxage),
+            ];
+            if (($etag = $this->makeetag($context)) !== '')
+            {
+                $hdrs['Etag'] = '"'.$etag.'"';
+            }
+            $context->web()->addheader($hdrs);
             $context->web()->addCache([
                 'maxage='.$this->makemaxage($context),
                 'must-revalidate',

@@ -150,13 +150,10 @@
 /**
  * Send a 304 response
  *
- * @param	string	$etag	 An entity tag
- *
  * @return void
  */
-        public function send304(string $etag) : void
+        public function send304() : void
         {
-            $this->addheader('Etag', '"'.$etag.'"');
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
 /**
