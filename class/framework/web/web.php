@@ -454,7 +454,7 @@
  */
         public function addCache(array $items) : void
         {
-            $this->cache = array_merge($this-cache, $items);
+            $this->cache = array_merge($this->cache, $items);
         }
 /**
  * Check a recaptcha value
