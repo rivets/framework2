@@ -13,7 +13,6 @@
  *
  */
     use \Support\Context as Context;
-    use \Framework\Web\Web as Web;
 
     namespace Support;
 /**
@@ -60,7 +59,7 @@
  *
  * @return void
  */
-        public function set304Cache(Web $web) : void
+        public function set304Cache(\Framework\Web\Web $web) : void
         {
             $web->addCache([
                 'maxage='.$this->makemaxage(),
