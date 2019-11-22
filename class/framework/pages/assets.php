@@ -101,6 +101,18 @@
             return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
+ * Check an etag to see if we need to send the page again or not.
+ *
+ * @param \Support\Context    $context   The context object for the site
+ * @param string	$tag	The etag value to check
+ *
+ * @return bool
+ */
+        public function checketag(Context $context, string $tag) : bool
+        {
+            return substr($tag, 0, -1) == substr($this->makeetag($context), 0, -1);
+        }
+/**
  * Make a maximum age - overrides function in SiteAction
  *
  * An hour for the most recent volume and a year for everything else

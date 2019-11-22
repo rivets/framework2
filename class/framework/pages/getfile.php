@@ -172,7 +172,7 @@
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return $tag == $this->mtime;
+            return $tag == $this->mtime || $tag == $this->mtime.'-gzip';
         }
     }
 ?>
