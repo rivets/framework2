@@ -208,7 +208,7 @@
  * @psalm-return never-return
  * @return void
  */
-        private function etagmatched(array $ccvals) : void
+        private function etagmatched() : void
         {
             $web = Web::getinstance();
             $rqm = $web->method();
