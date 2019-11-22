@@ -145,6 +145,7 @@
             }
             $local->addval($basicvals, '', TRUE);
 
+            $etag = '';
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
@@ -155,7 +156,8 @@
                 {
                     \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
-                    $pageObj->setCache($context);
+                    $pageObj->setCache($context); // set up cache-control headers.
+                    $pageObj->setEtag();
                 }
                 catch(\Framework\Exception\Forbidden $e)
                 {

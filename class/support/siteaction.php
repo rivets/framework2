@@ -39,6 +39,20 @@
             // void
         }
 /**
+ * Set up etag if wanted
+ *
+ * @param \Support\Context    $context The context object
+ *
+ * @return void
+ */
+        public function setEtag(Context $context) : void
+        {
+            if (($etag = $this->makeetag()) !== '')
+            {
+                $context->web()->addheader('Etag', '"'.$etag.'"');
+            }
+        }
+/**
  * Set any cache headers that are wanted on a 304 response
  *
  * @param \Support\Context    $context The context object
