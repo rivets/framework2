@@ -90,7 +90,7 @@
  * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
-            [ FW::USER => ['login'] ],
+            FW::USER => ['login'],
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -327,9 +327,9 @@
  *
  * @throws Framework\Exception\Forbidden
  *
- * @return boolean or error out
+ * @return bool
  */
-        protected function beanCheck($beans, $bean, $field) : bool
+        protected function beanCheck(array $beans, string $bean, string $field) : bool
         {
             $this->fieldExists($bean, $field);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
@@ -350,7 +350,7 @@
  *
  * @return void
  */
-        private function mklog(Context $context, $op, $bean, $id, $field, $value)
+        private function mklog(Context $context, $op, string $bean, $id, string <uniquenl$field, $value)
         {
             $lg = \R::dispense('beanlog');
             $lg->user = $context->user();
@@ -828,6 +828,7 @@
  * @param \Support\Context    $context
  *
  * @todo this call ought to be rate limited in some way!
+ * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
  *
  * @return void
  */
