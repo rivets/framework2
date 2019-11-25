@@ -91,6 +91,7 @@
             $this->bean->added = $context->utcnow();
             $pname[] = $fname;
             $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
+            $this->updateData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
             unlink($context->local()->basedir().$oldfile);
             if (!@chdir($dir))
