@@ -21,6 +21,8 @@
         const VIEWABLE = [FW::TABLE, FW::FORM];
         const NOTMODEL = [FW::TABLE];
         const HASH     = 'sha384';
+        
+        use \Support\Nocache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
  *
@@ -302,38 +304,6 @@
             }
             return $tpl;
         }
-/**
- * Make it so that none of the admin pages get cached
- *
- * @param \Support\Context    $context The context object
- *
- * @return void
- */
-        public function setCache(Context $context) : void
-        {
-            $hdrs = [
-                // 'Last-Modified' => $this->makemod($this->mtime),
-                'Expires'       => $this->makemod(time())
-            ];
-            $context->web()->addheader($hdrs);
-            $this->set304Cache($context);
-        }
-/**
- * Set any cache headers that are wanted on a 304 response
- *
- * @param \Support\Context    $context   The context object for the site
- *
- * @return void
- */
-        public function set304Cache(Context $context) : void
-        {
-            $context->web()->addCache([
-                'no-store',
-                'no-cache',
-                'must-revalidate',
-                'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
-                'stale-if-error=259200'
-            ]);
-        }
+
     }
 ?>
