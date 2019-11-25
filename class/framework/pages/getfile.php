@@ -105,7 +105,7 @@
                 /* NOT REACHED */
             }
 
-            $this->ifmodcheck(); # check to see if we actually need to send anything
+            $this->ifmodcheck($context); # check to see if we actually need to send anything
 
             $web->addheader([
 //                'Last-Modified'	=> $this->mtime,
