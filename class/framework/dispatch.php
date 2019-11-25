@@ -145,6 +145,7 @@
             }
             $local->addval($basicvals, '', TRUE);
 
+            $etag = '';
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
@@ -153,9 +154,10 @@
                 $csp = $pageObj;
                 try
                 {
+                    $pageObj->ifmodcheck($context); // check for any If- headers
                     \Support\Setup::preliminary($context, $page); // any user setup code
                     $tpl = $pageObj->handle($context);
-                    $pageObj->setCache($context);
+                    $pageObj->setCache($context); // set up cache-control headers.
                 }
                 catch(\Framework\Exception\Forbidden $e)
                 {

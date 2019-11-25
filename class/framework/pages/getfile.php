@@ -109,7 +109,7 @@
 
             $web->addheader([
 //                'Last-Modified'	=> $this->mtime,
-                'Etag'		=> '"'.$this->makeetag().'"',
+                'Etag'		=> '"'.$this->makeetag($context).'"',
             ]);
             $web->sendfile($this->file, $file->filename);
             return '';
@@ -120,9 +120,11 @@
  * This needs to be overridden by pages that can generate etag. Defaults
  * to the mtime value.
  *
+ * @param \Support\Context	$context	The context object for the site
+ *
  * @return string
  */
-        public function makeetag() : string
+        public function makeetag($context) : string
         {
             return (string) $this->mtime;
         }
@@ -132,9 +134,11 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function may need to be overridden.
  *
+ * @param \Support\Context	$context	The context object for the site
+ *
  * @return int
  */
-        public function lastmodified() : int
+        public function lastmodified($context) : int
         {
             return $this->mtime;
         }
@@ -145,11 +149,12 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
+ * @param \Support\Context    $context   The context object for the site
  * @param string 	$time	The time value to check
  *
  * @return bool
  */
-        public function checkmodtime(string $time) : bool
+        public function checkmodtime(Context $context, string $time) : bool
         {
             return $time == $this->mtime;
         }
@@ -160,13 +165,14 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do different value checking.
  *
+ * @param \Support\Context    $context   The context object for the site
  * @param string	$tag	The etag value to check
  *
  * @return bool
  */
-        public function checketag(string $tag) : bool
+        public function checketag(Context $context, string $tag) : bool
         {
-            return $tag == $this->mtime;
+            return $tag == $this->mtime || $tag == $this->mtime.'-gzip';
         }
     }
 ?>

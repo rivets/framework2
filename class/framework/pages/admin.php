@@ -21,6 +21,8 @@
         const VIEWABLE = [FW::TABLE, FW::FORM];
         const NOTMODEL = [FW::TABLE];
         const HASH     = 'sha384';
+        
+        use \Support\Nocache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
  *
@@ -302,19 +304,6 @@
             }
             return $tpl;
         }
-/**
- * Make it so that none of the admin pages get cached
- *
- * @param \Support\Context    $context The context object
- *
- * @return void
- */
-        public function setcache(Context $context) : void
-        {
-            $context->web()->addheader([
-                'cache-control' => 'no-cache, no-store, must-revalidate, private',
-                'Expires'       => '0',
-            ]);
-        }
+
     }
 ?>

@@ -29,15 +29,19 @@
  */
         private $nocsp      = [];
 /**
+ * @var array   Holds values for Cache-Control headers
+ */
+        private $cache      = [];
+/**
  * Generate a Location header
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param string		$where		The URL to divert to
+ * @param string	$where		The URL to divert to
  * @param bool       	$temporary	TRUE if this is a temporary redirect
- * @param string		$msg		A message to send
+ * @param string	$msg		A message to send
  * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       	$use303    If TRUE then use 303 rather than 302
+ * @param bool       	$use303         If TRUE then use 303 rather than 302
  *
  * @psalm-return never-return
  * @return void
@@ -76,6 +80,7 @@
                 echo '<p>'.$msg.'</p>';
             }
             exit;
+            /* NOT REACHED */
         }
 /**
  * Check for a range request and check it
@@ -125,7 +130,7 @@
  *
  * @return void
  */
-        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '')
+        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '') : void
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
@@ -143,19 +148,14 @@
             }
         }
 /**
- * Send a 304 response
+ * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
  *
- * @param	string		$etag	An entity tag
- * @param	integer		$maxage	Maximum age for page in seconds
+ * @see \Support\SiteAction
  *
  * @return void
  */
-        public function send304(string $etag, int $maxage)
+        public function send304() : void
         {
-            $this->addheader([
-                'Etag'	=> '"'.$etag.'"',
-                'Cache-Control'	=> 'maxage='.$maxage.',stale-while-revalidate=86400, stale-if-error=259200',
-            ]);
             $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
 /**
@@ -310,7 +310,7 @@
  *
  * @return void
  **/
-        public function putheaders()
+        private function putheaders()
         {
             foreach ($this->headers as $name => $vals)
             {
@@ -318,6 +318,10 @@
                 {
                     header($name.': '.$v);
                 }
+            }
+            if (!empty($this->cache))
+            {
+                header('Cache-Control: '.implode(',', $this->cache));
             }
         }
 /**
@@ -440,6 +444,17 @@
                     'Content-Security-Policy'   => $csp
                 ]);
             }
+        }
+/**
+ * Add an item for use in a Cache-Control header
+ *
+ * @param array  $items  An array of items
+ *
+ * @return void
+ */
+        public function addCache(array $items) : void
+        {
+            $this->cache = array_merge($this->cache, $items);
         }
 /**
  * Check a recaptcha value
