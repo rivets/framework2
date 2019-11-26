@@ -74,13 +74,13 @@
  *
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param integer           $count      The number to check for
+ * @param integer   $count  The number to check for
  *
- * @return string[] The parameters values in an array indexed from 0
+ * @return string[] The parameter values in an array indexed from 0
  */
         public function restcheck(int $count) : array
         {
-            if (($cnt = count($this->reqrest)) <= $count)
+            if (count($this->reqrest) <= $count)
             {
                 throw new \Framework\Exception\ParameterCount();
             }
