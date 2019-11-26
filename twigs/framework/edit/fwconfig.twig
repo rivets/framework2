@@ -42,7 +42,7 @@
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 {{bean.guard|raw}}
                 <fieldset>
-                    <legend>Login details</legend>
+                    <legend>Details</legend>
                     {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
                     {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, help: 'The hashcode value for the integrity attribute for URLs'})}}
                     {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, help:'Valid values are <i>anonymous</i> or <i>use-credentials</i>'})}}
