@@ -417,7 +417,7 @@
         {
             $local = $context->local();
             /** @psalm-suppress PossiblyNullPropertyFetch */
-            if ($local->config('usecsp')->value)
+            if ($local->configval('usecsp'))
             {
                 $csp = '';
                 foreach (\Config\Config::$defaultCSP as $key => $val)
@@ -431,7 +431,7 @@
                         $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
                     }
                 }
-                if ($local->config('reportcsp')->value)
+                if ($local->configval('reportcsp'))
                 {
                     $edp = $local->base().'/cspreport/';
                     $csp .= ' report-uri: '.$edp.';'; // This is deprecated but widely supported
