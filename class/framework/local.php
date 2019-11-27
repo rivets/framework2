@@ -353,7 +353,7 @@
             return $this->basedir().DIRECTORY_SEPARATOR.'assets';
         }
 /**
- * Return a named config value
+ * Return a named config bean
  *
  * @param string       $name  The name of the item
  *
@@ -362,6 +362,17 @@
         public function config(string $name) : ?object
         {
             return $this->fwconfig[$name] ?? NULL;
+        }
+/**
+ * Return a named config bean value
+ *
+ * @param string       $name  The name of the item
+ *
+ * @return string
+ */
+        public function configval(string $name) : string
+        {
+            return $this->fwconfig[$name]->value ?? '';
         }
 /**
  * Return all the config values
