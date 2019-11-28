@@ -87,6 +87,7 @@
                 {
                     $u->addrole(FW::FWCONTEXT, FW::DEVELROLE, '', $now);
                 }
+                $u->addData($context);
                 return $u;
             }
             else

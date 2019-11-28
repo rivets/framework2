@@ -43,5 +43,16 @@
         {
             return [];
         }
+/**
+ * Called from the "add" function when a new user is created.
+ * This allows you to do any extra operations that you want to when a user is added
+ *
+ * @param \Support\Context $context
+ *
+ * @return void
+ */
+        public function addData(Context $context)
+        {
+        }
     }
 ?>
