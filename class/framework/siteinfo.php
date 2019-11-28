@@ -249,7 +249,7 @@
 /**
  * Return bean table data
  *
- * @param boolean    $all  If TRUE then return all beans, otehrwise just non-framework beans.
+ * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
  *
  * @return array
  */
