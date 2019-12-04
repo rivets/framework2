@@ -384,7 +384,12 @@
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
-            switch ($context->web()->method())
+            $method = $context->web()->method();
+            if (method_exists($bean, 'canAjaxBean'))
+            {
+                $bean->canAjaxBean($context, $method);
+            }
+            switch ($method)
             {
             case 'POST': // make a new one /ajax/bean/KIND/
                 /** @psalm-suppress UndefinedConstant */
@@ -432,7 +437,7 @@
                 break;
             case 'GET':
             default:
-                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
+                throw new \Framework\Exception\BadOperation($method.' not supported');
             }
         }
 /**
