@@ -434,8 +434,8 @@
                 if ($local->configval('reportcsp'))
                 {
                     $edp = $local->base().'/cspreport/';
-                    $csp .= ' report-uri: '.$edp.';'; // This is deprecated but widely supported
-                    $csp .= ' report-to: csp-report;';
+                    $csp .= ' report-uri '.$edp.';'; // This is deprecated but widely supported
+                    $csp .= ' report-to csp-report;';
                     $this->addheader([
                         'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }'
                     ]);

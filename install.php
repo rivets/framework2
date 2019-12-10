@@ -721,6 +721,7 @@
                     'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
+                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, 0],
                     'home'          => [\Framework\SiteAction::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
                     'install.php'   => [\Framework\SiteAction::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
