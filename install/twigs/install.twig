@@ -4,34 +4,27 @@
     <script src="{{fwurls.parsley[0]}}"></script>
 {% endblock scripts %}
 
-{% block onload %}
-    $('#mailconfig,#cfem').hide()
-    $('#mailon').on('click', function(){
-        var mc = $('#mailconfig')
-        if ($(this).is(':checked'))
-        { // show fieldset and enable inputs
-            mc.show();
-            $('input', mc).prop('disabled', false)
-        }
-        else
-        { // hide and disable
-            mc.hide();
-            $('input', mc).prop('disabled', true)
-        }
-    })
-    $('#regis').on('click', function(){
-        var ce = $('#cfem')
-        if ($(this).is(':checked'))
+{% block setup %}
+    function shbit(btn, id)
+    {
+        var ce = $('#'+id)
+        if (btn.is(':checked'))
         { // show fieldset and enable inputs
             ce.show();
-            $('input', mc).prop('disabled', false)
+            $('input', ce).prop('disabled', false)
         }
         else
         { // hide and disable
             ce.hide();
-            $('input', mc).prop('disabled', true)
+            $('input', ce).prop('disabled', true)
         }
-    })
+        }
+{% endblock setup %}
+
+{% block onload %}
+    $('#mailconfig,#cfem').hide()
+    $('#mailon').on('click', function(){ shbit($(this), 'mailconfig'); });
+    $('#regis').on('click', function(){ shbit($(this), 'cfem'); });
 {% endblock onload %}
 
 {% block main%}
