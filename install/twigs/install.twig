@@ -5,10 +5,10 @@
 {% endblock scripts %}
 
 {% block onload %}
-    $('#mailconfig').hide()
+    $('#mailconfig,#cfem').hide()
     $('#mailon').on('click', function(){
         var mc = $('#mailconfig')
-        if ($(this).prop('checked'))
+        if ($(this).is(':checked'))
         { // show fieldset and enable inputs
             mc.show();
             $('input', mc).prop('disabled', false)
@@ -16,6 +16,19 @@
         else
         { // hide and disable
             mc.hide();
+            $('input', mc).prop('disabled', true)
+        }
+    })
+    $('#regis').on('click', function(){
+        var ce = $('#cfem')
+        if ($(this).is(':checked'))
+        { // show fieldset and enable inputs
+            ce.show();
+            $('input', mc).prop('disabled', false)
+        }
+        else
+        { // hide and disable
+            ce.hide();
             $('input', mc).prop('disabled', true)
         }
     })
@@ -224,7 +237,12 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="register" value="1"/> Support registration of new users
+                                <input type="checkbox" class="form-check-input" id="regis" name="register" value="1"/> Support registration of new users
+                            </label>
+                        </div>
+                        <div class="form-check" id="cfem">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" disabled="disabled" name="confemail" value="1"/> Confirm email address on registration
                             </label>
                         </div>
                         <div class="form-check disabled">
