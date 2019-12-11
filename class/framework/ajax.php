@@ -899,14 +899,14 @@
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                        if (is_object($context->user()->hasrole($orv[0], $orv[1])))
                         {
                             continue 2;
                         }
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                elseif (!is_object($context->user()->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
