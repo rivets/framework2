@@ -69,7 +69,7 @@
         <h1>Test Framework AJAX calls</h1>
         {% if context.hasadmin %}
             <h2>Running as Site Admin</h2>
-        {% elsif context.user.hasrole('Test', 'Tester') %}
+        {% elseif context.user.hasrole('Test', 'Tester') %}
             <h2>Running as Test Tester</h2>
         {% endif %}
     </section>
