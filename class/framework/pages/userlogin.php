@@ -158,7 +158,7 @@
                         $rerr = $x->register($context); // do any extra registration
                         if (empty($rerr))
                         {
-                            if (\constant('\\Config\\Config::CONFEMAIL'))
+                            if (!defined('\\Config\\Config::CONFEMAIL') || \constant('\\Config\\Config::CONFEMAIL'))
                             {
                                 $this->sendconfirm($context, $x);
                                 $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
