@@ -94,8 +94,8 @@
                     /* NOT REACHED */
                 }
             }
-            if (!$file->canaccess($context->user()))
-            { # caurrent user cannot access the file
+            if (!$file->canaccess($context->user(), 'r'))
+            { # current user cannot access the file
                 throw new \Framework\Exception\Forbidden('No access');
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
@@ -104,7 +104,7 @@
                 $web->internal('Lost File: '.$this->file);
                 /* NOT REACHED */
             }
-
+            $file->downloaded($context);
             $this->ifmodcheck($context); # check to see if we actually need to send anything
 
             $web->addheader([
