@@ -201,11 +201,12 @@
  *
  * @param string    $type    The type of bean
  * @param string    $field   The field name
+ * @param bool      $idok    Allow the id field
  *
  * @throws \Framework\Exception\BadValue
  * @return void
  */
-        private function fieldExists(string $type, string $field) : void
+        private function fieldExists(string $type, string $field, bool $idok = FALSE) : void
         {
             if (!\Support\Siteinfo::hasField($type, $field) || $field == 'id')
             {
@@ -332,14 +333,15 @@
  * @param array   $beans
  * @param string  $bean
  * @param string  $field
+ * @param bool    $idok    Allow the id field
  *
  * @throws Framework\Exception\Forbidden
  *
  * @return bool
  */
-        protected function beanCheck(array $beans, string $bean, string $field) : bool
+        protected function beanCheck(array $beans, string $bean, string $field, bool $idok = FALSE) : bool
         {
-            $this->fieldExists($bean, $field);
+            $this->fieldExists($bean, $field, $idok);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field
                 throw new \Framework\Exception\Forbidden('Permission denied');
@@ -621,7 +623,7 @@
             //    /* NOT REACHED */
             //}
             $fdt = $context->formdata();
-            $this->beanCheck($beans, $bean, $field); // make sure we are allowed to search this bean/field and that it exists
+            $this->beanCheck($beans, $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
             $value = $fdt->get('value', '');
             $incv = ' ?';
             if ($op == '4')
