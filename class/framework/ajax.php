@@ -788,15 +788,17 @@
  * @param array     $toggle
  * @param array     $table
  * @param array     $audit
+ * @param array     $tsearch
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table, array $audit) : void
+        public final function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
             self::$tableperms = array_merge(self::$tableperms, $table);
             self::$audit = array_merge(self::$audit, $audit);
+            self::$tablesearchperms = array_merge(self::$tablesearchperms, $tsearch);
         }
 /**
  * Do a database check for uniqueness
