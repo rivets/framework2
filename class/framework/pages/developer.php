@@ -53,7 +53,7 @@
                 $bn->f1 = 'a string';
                 $bn->tog = 1;
                 \R::store($bn);
-                $context->web->addCSP('script-src', 'unsafe-inline');
+                $context->web()->addCSP('script-src', 'unsafe-inline');
                 $tpl = '@devel/testajax.twig';
                 break;
 
