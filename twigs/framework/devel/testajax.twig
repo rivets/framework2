@@ -1,0 +1,91 @@
+{% set ajax = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+{% import '@util/attrmacro.twig' as h %}
+
+{% block scripts %}
+    <script {{h.urlattr(fwurls.utiljs)}}></script>
+{% endblock scripts %}
+
+{% set ops = [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'] %}
+
+{% block setup %}
+    function testbean()
+    {
+        bootbox.alert('Bean operation test complete');
+    }
+
+    function testconfig()
+    {
+    }
+
+    function testhints()
+    {
+    }
+
+    function testpaging()
+    {
+    }
+
+    function testpwcheck()
+    {
+    }
+
+    function testshared()
+    {
+    }
+
+    function testtable()
+    {
+    }
+
+    function testtablecheck()
+    {
+    }
+
+    function testtablesearch()
+    {
+    }
+
+    function testtoggle()
+    {
+    }
+
+    function testunique()
+    {
+    }
+      
+    function testuniquenl()
+    {
+    }  
+{% endblock setup %}
+
+{% block onload %}
+{% endblock onload %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Test Framework AJAX calls</h1>
+        {% if context.hasadmin %}
+            <h2>Running as Site Admin</h2>
+        {% elseif context.user.hasrole('Test', 'Tester') %}
+            <h2>Running as Test Tester</h2>
+        {% endif %}
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            {% for x in ops %}
+                <p><button class="btn btn-info" onclick="test{{x}}();">Test {{x}}</button></p>
+            {% endfor %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

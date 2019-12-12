@@ -76,10 +76,11 @@
  *
  * @param \Support\Context    $context
  * @param array               $da        The file upload info array via formdata
+ * @param int                 $index     The index if this all part of an array of data
  *
  * @return void
  */
-        public function replace(Context $context, array $da) : void
+        public function replace(Context $context, array $da, int $index = 0) : void
         {
             $oldfile = $this->bean->fname;
             list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->public, $da);
@@ -91,6 +92,7 @@
             $this->bean->added = $context->utcnow();
             $pname[] = $fname;
             $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
+            $this->bean->filename = $da['name'];
             $this->updateData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
             unlink($context->local()->basedir().$oldfile);

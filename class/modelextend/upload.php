@@ -48,12 +48,12 @@
  * Hook for adding extra data to a file replace.
  *
  * @param \Support\Context	$context  The context object for the site
- * @param int	                $index	  If you are reading data from an array fo files, this is the index
- *                                        in the file. You may have paralleld data arrays and need this index.
+ * @param int	                $index	  If you are reading data from an array of files, this is the index
+ *                                        in the file. You may have parallel data arrays and need this index.
  *
  * @return void
  */
-        public function updateData(\Support\Context $context, int $index) : void
+        public function updateData(\Support\Context $context, int $index = 0) : void
         {
             /*
              * Your code goes here
