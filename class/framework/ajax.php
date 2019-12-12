@@ -208,7 +208,7 @@
  */
         private function fieldExists(string $type, string $field, bool $idok = FALSE) : void
         {
-            if (!\Support\Siteinfo::hasField($type, $field) || $field == 'id')
+            if (!\Support\Siteinfo::hasField($type, $field) || (!$idok && $field == 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
@@ -609,7 +609,7 @@
         private final function tablesearch(Context $context) : void
         {
             $beans = $this->findRow($context, self::$tablesearchperms);
-            list($bean, $field, $op) = $context->restcheck(2);
+            list($bean, $field, $op) = $context->restcheck(3);
             //if (!$context->hasadmin())
             //{
             //    throw new \Framework\Exception\Forbidden('Permission denied');
