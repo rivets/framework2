@@ -607,7 +607,7 @@
         private final function tablesearch(Context $context) : void
         {
             $beans = $this->findRow($context, self::$tablesearchperms);
-            list($bean) = $context->restcheck(1);
+            list($bean, $field, $op) = $context->restcheck(2);
             //if (!$context->hasadmin())
             //{
             //    throw new \Framework\Exception\Forbidden('Permission denied');
@@ -621,10 +621,7 @@
             //    /* NOT REACHED */
             //}
             $fdt = $context->formdata();
-            $field = $fdt->mustget('field');
             $this->beanCheck($beans, $bean, $field); // make sure we are allowed to search this bean/field and that it exists
-
-            $op = $fdt->mustget('op');
             $value = $fdt->get('value', '');
             $incv = ' ?';
             if ($op == '4')
