@@ -20,8 +20,8 @@
  * At the moment it is either the user or any admin that is allowd. Rewrite the
  * method to add more complex access control schemes.
  *
- * @param object	$user	A user object
- * @param string    $op     r for read, u for update, d for delete
+ * @param object   $user   A user object
+ * @param string   $op     r for read, u for update, d for delete
  *
  * @return bool
  */
@@ -54,6 +54,19 @@
  * @return void
  */
         public function updateData(\Support\Context $context, int $index = 0) : void
+        {
+            /*
+             * Your code goes here
+             */
+        }
+/**
+ * Hook for doing something when a file is downloaded
+ *
+ * @param \Support\Context	$context  The context object for the site
+ *
+ * @return void
+ */
+        public function downloaded(\Support\Context $context) : void
         {
             /*
              * Your code goes here
