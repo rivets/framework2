@@ -8,6 +8,8 @@
  * @copyright 2018-2019 Newcastle University
  *
  */
+    use \Support\Context as Context;
+
     namespace ModelExtend;
 /**
  * User table stores info about users of the system
