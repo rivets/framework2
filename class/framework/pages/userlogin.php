@@ -119,7 +119,7 @@
  */
         public function register(Context $context) : string
         {
-                $fdt = $context->formdata();
+            $fdt = $context->formdata();
             $login = $fdt->post('login', '');
             if ($login !== '')
             {
@@ -157,9 +157,17 @@
                         R::store($x);
                         $rerr = $x->register($context); // do any extra registration
                         if (empty($rerr))
-                        { 
-                            $this->sendconfirm($context, $x);
-                            $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                        {
+                            if (!defined('\\Config\\Config::CONFEMAIL') || \constant('\\Config\\Config::CONFEMAIL'))
+                            {
+                                $this->sendconfirm($context, $x);
+                                $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
+                            }
+                            else
+                            {
+                                $x->confirm = 1;
+                                R::store($x);
+                            }
                         }
                         else
                         { // extra registration failed

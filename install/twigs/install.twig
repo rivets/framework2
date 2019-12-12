@@ -4,21 +4,27 @@
     <script src="{{fwurls.parsley[0]}}"></script>
 {% endblock scripts %}
 
-{% block onload %}
-    $('#mailconfig').hide()
-    $('#mailon').on('click', function(){
-        var mc = $('#mailconfig')
-        if ($(this).prop('checked'))
+{% block setup %}
+    function shbit(btn, id)
+    {
+        var ce = $('#'+id)
+        if (btn.is(':checked'))
         { // show fieldset and enable inputs
-            mc.show();
-            $('input', mc).prop('disabled', false)
+            ce.show();
+            $('input', ce).prop('disabled', false)
         }
         else
         { // hide and disable
-            mc.hide();
-            $('input', mc).prop('disabled', true)
+            ce.hide();
+            $('input', ce).prop('disabled', true)
         }
-    })
+        }
+{% endblock setup %}
+
+{% block onload %}
+    $('#mailconfig,#cfem').hide()
+    $('#mailon').on('click', function(){ shbit($(this), 'mailconfig'); });
+    $('#regis').on('click', function(){ shbit($(this), 'cfem'); });
 {% endblock onload %}
 
 {% block main%}
@@ -224,7 +230,12 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="register" value="1"/> Support registration of new users
+                                <input type="checkbox" class="form-check-input" id="regis" name="register" value="1"/> Support registration of new users
+                            </label>
+                        </div>
+                        <div class="form-check" id="cfem">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" disabled="disabled" name="confemail" value="1"/> Confirm email address on registration
                             </label>
                         </div>
                         <div class="form-check disabled">

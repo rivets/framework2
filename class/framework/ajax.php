@@ -77,6 +77,14 @@
         private static $tableperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
                 FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER] ],
+//          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
+        ];
+/**
+ * Permissions array for tablesearch acccess.
+ */
+        private static $tablesearchperms = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG => [], FW::FORM => [], FW::FORMFIELD => [],
+                FW::PAGE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -216,7 +224,7 @@
  * @throws \Framework\Exception\Forbidden
  * @return array
  */
-        protected final function findRow(Context $context, $perms) : array
+        protected final function findRow(Context $context, array $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
@@ -598,26 +606,24 @@
  */
         private final function tablesearch(Context $context) : void
         {
-            if (!$context->hasadmin())
-            {
-                throw new \Framework\Exception\Forbidden('Permission denied');
-                /* NOT REACHED */
-            }
-            $rest = $context->rest();
-            $bean = $rest[1];
-            if (!\Support\Siteinfo::tableExists($bean))
-            {
-                throw new \Framework\Exception\BadValue('No such table');
-                /* NOT REACHED */
-            }
+            $beans = $this->findRow($context, self::$tablesearchperms);
+            list($bean) = $context->restcheck(1);
+            //if (!$context->hasadmin())
+            //{
+            //    throw new \Framework\Exception\Forbidden('Permission denied');
+            //    /* NOT REACHED */
+            //}
+            //$rest = $context->rest();
+            //$bean = $rest[1];
+            //if (!\Support\Siteinfo::tableExists($bean))
+            //{
+            //    throw new \Framework\Exception\BadValue('No such table');
+            //    /* NOT REACHED */
+            //}
             $fdt = $context->formdata();
             $field = $fdt->mustget('field');
-            $fields = \R::inspect($bean);
-            if (!isset($fields[$field]))
-            {
-                throw new \Framework\Exception\BadValue('No such field '.$field);
-                /* NOT REACHED */
-            }
+            $this->beanCheck($beans, $bean, $field); // make sure we are allowed to search this bean/field and that it exists
+
             $op = $fdt->mustget('op');
             $value = $fdt->get('value', '');
             $incv = ' ?';
@@ -635,7 +641,7 @@
                 $op = self::$searchops[$op];
             }
             $res = [];
-            $fields = array_keys($fields);
+            $fields = array_keys(\R::inspect($bean));
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass;
@@ -899,14 +905,14 @@
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        if ($context->user()->hasrole($orv[0], $orv[1]) !== FALSE)
+                        if (is_object($context->user()->hasrole($orv[0], $orv[1])))
                         {
                             continue 2;
                         }
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif ($context->user()->hasrole($rcs[0], $rcs[1]) === FALSE)
+                elseif (!is_object($context->user()->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }

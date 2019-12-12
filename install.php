@@ -285,10 +285,10 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', 1, 'sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', 'anonymous', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', 1, 'sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', 'anonymous', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.11.2/css/all.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.12.0/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', 'anonymous', 0, 0, 'js'],
@@ -298,7 +298,7 @@
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
         'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
@@ -459,6 +459,7 @@
             'cadminpw'      => ['', FALSE, TRUE],
             'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
             'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
+            'confemail'     => ['CONFEMAIL', FALSE, FALSE, 'bool'],
             'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
             'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
             'usecsp'        => ['', TRUE, FALSE, 'bool'],
@@ -721,7 +722,7 @@
                     'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, 0],
+                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $options['private'] ? 1 : 0],
                     'home'          => [\Framework\SiteAction::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
                     'install.php'   => [\Framework\SiteAction::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],

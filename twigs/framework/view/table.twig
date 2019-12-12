@@ -96,10 +96,7 @@
     {% else %}
         $('#searchb').on('click', function(e){
             e.preventDefault();
-            $.get(base + '/ajax/tablesearch/{{bean.name}}', {
-                bean: '{{bean.name}}',
-                field : $('#fname').val(),
-                op :  $('#fop').val(),
+            $.get(base + '/ajax/tablesearch/{{bean.name}}'+'/'+$('#fname').val()+'/'+$('#fop').val(), {
                 value:  $('#fval').val(),
             }).done(function(data){
                 var bdy = $('#sres article');
