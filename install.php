@@ -285,15 +285,15 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', 1, 'sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', 'anonymous', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
         'facss'         => ['https://use.fontawesome.com/releases/v5.12.0/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
-        'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=', 'anonymous', 0, 0, 'js'],
-        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, 'sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=', 'anonymous', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, 'sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', 'anonymous', 0, 0, 'js'],
+        'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, '', '', 0, 0, 'js'],
+        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
