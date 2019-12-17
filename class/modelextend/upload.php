@@ -27,7 +27,7 @@
  *
  * @return bool
  */
-        public function canaccess($user, $op = 'r') : bool
+        public function canaccess($user, string $op = 'r') : bool
         {
             return $this->bean->user->equals($user) || $user->isadmin();
         }
