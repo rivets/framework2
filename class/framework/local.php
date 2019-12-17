@@ -414,6 +414,7 @@
                 $loader,
                 ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
             );
+            $this->twig->addExtension(new \Framework\Utility\Plural());
 /*
  * A set of basic values that get passed into the TWIG renderer
  *
