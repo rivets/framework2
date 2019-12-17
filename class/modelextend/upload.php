@@ -8,9 +8,9 @@
  * @copyright 2018-2019 Newcastle University
  *
  */
-    use \Support\Context as Context;
-
     namespace ModelExtend;
+
+    use \Support\Context as Context;
 /**
  * Upload table stores info about files that have been uploaded...
  */
