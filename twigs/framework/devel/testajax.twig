@@ -20,50 +20,64 @@
 
     function testconfig()
     {
+        bootbox.alert('Config operation test complete');
     }
 
     function testhints()
     {
+        bootbox.alert('Hints operation test complete');
     }
 
     function testpaging()
     {
+        bootbox.alert('Paging operation test complete');
     }
 
     function testpwcheck()
     {
+        bootbox.alert('Pwcheck operation test complete');
     }
 
     function testshared()
     {
+        bootbox.alert('Shared operation test complete');
     }
 
     function testtable()
     {
+        bootbox.alert('Table operation test complete');
     }
 
     function testtablecheck()
     {
+        bootbox.alert('Tablecheck operation test complete');
     }
 
     function testtablesearch()
     {
+        bootbox.alert('Tablesearch operation test complete');
     }
 
     function testtoggle()
     {
+        bootbox.alert('Toggle operation test complete');
     }
 
     function testunique()
     {
+        bootbox.alert('Unique operation test complete');
     }
       
     function testuniquenl()
     {
+        bootbox.alert('Uniquenl operation test complete');
     }  
 {% endblock setup %}
 
 {% block onload %}
+    {% for x in ops %}
+        $('#{{x}}').on('click', test{{x}});
+    {% endfor %}
 {% endblock onload %}
 
 {% block header %}
@@ -81,7 +95,7 @@
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% for x in ops %}
-                <p><button class="btn btn-info" onclick="test{{x}}();">Test {{x}}</button></p>
+                <p><button class="btn btn-info" id="{{x}}">Test {{x}}</button></p>
             {% endfor %}
         </article>
     </section>

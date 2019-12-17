@@ -9,6 +9,8 @@
  *
  */
     namespace ModelExtend;
+
+    use \Support\Context as Context;
 /**
  * Upload table stores info about files that have been uploaded...
  */
@@ -25,7 +27,7 @@
  *
  * @return bool
  */
-        public function canaccess($user, $op = 'r') : bool
+        public function canaccess($user, string $op = 'r') : bool
         {
             return $this->bean->user->equals($user) || $user->isadmin();
         }
@@ -38,7 +40,7 @@
  *
  * @return void
  */
-        public function addData(\Support\Context $context, int $index) : void
+        public function addData(Context $context, int $index) : void
         {
             /*
              * Your code goes here
@@ -53,7 +55,7 @@
  *
  * @return void
  */
-        public function updateData(\Support\Context $context, int $index = 0) : void
+        public function updateData(Context $context, int $index = 0) : void
         {
             /*
              * Your code goes here
@@ -66,7 +68,7 @@
  *
  * @return void
  */
-        public function downloaded(\Support\Context $context) : void
+        public function downloaded(Context $context) : void
         {
             /*
              * Your code goes here
@@ -79,13 +81,12 @@
  *
  * @return void
  */
-        public function delete() : void
+        public function delete(Context $context) : void
         {
 /**** Do not change this code *****/
-            $context = \Support\Context::getinstance();
             if (!$this->bean->canaccess($context->user(), 'd'))
             { // not allowed
-                throw new \Framework\Exception\Forbidden;
+                throw new \Framework\Exception\Forbidden('Permission Denied');
             }
 // Now delete the file
             unlink($context->local()->basedir().$this->fname);

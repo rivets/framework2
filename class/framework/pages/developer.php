@@ -49,10 +49,13 @@
                 break;
 
             case 'ajax': # test the ajax calls
-                $bn = \R::dispense('fwtest');
-                $bn->f1 = 'a string';
-                $bn->tog = 1;
-                \R::store($bn);
+               if (!SiteInfo::getinstance()->tableExists('fwtest'))
+                {
+                    $bn = \R::dispense('fwtest');
+                    $bn->f1 = 'a string';
+                    $bn->tog = 1;
+                    \R::store($bn);
+                }
                 $context->web()->addCSP('script-src', "'unsafe-inline'");
                 $tpl = '@devel/testajax.twig';
                 break;

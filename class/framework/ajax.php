@@ -443,6 +443,10 @@
                 {
                     $this->mklog($context, 2, $bean, $id, '*', json_encode($bn->export()));
                 }
+                if (method_exists($bean, 'delete'))
+                {
+                    $bean->delete($context);
+                }
                 R::trash($bn);
                 break;
             case 'GET':
