@@ -109,7 +109,7 @@
  *
  * @return bool
  */
-        public function sameuser($user)
+        public function sameuser($user) : bool
         {
              /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
