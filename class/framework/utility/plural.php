@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019 Newcastle University
  */
-    namespace \Framework\Utility;
+    namespace Framework\Utility;
 
     class Plural extends \Twig\Extension\AbstractExtension
     {
