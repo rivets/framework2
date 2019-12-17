@@ -2,7 +2,7 @@
 /**
  * A trait that allows extending the model class for the RedBean object Upload
  *
- * Add any new methods you want the Uploadbean to have here.
+ * Add any new methods you want the Upload bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2019 Newcastle University
