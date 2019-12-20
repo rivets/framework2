@@ -389,19 +389,29 @@
  */
         public function addCSP(string $type, string $string)
         {
-            $this->csp[$type][] = $string;
+            if (!isset($this->csp[$type]))
+            {
+                $this->csp[$type] = [$string];
+            }
+            else
+            {
+                $this->csp[$type][] = $string;
+            }
         }
 /**
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
  * @param string  $type    What the item is for (script-src, css-src etc.)
- * @param string  $string  The item to add
+ * @param string  $string  The item to remove
  *
  * @return void
  */
         public function removeCSP($type, $string)
         {
-            $this->nocsp[$type][] = $string;
+            if (isset($this->nocsp[$type]))
+            {
+                $this->nocsp[$type][] = $string;
+            }
         }
 /**
  * Set up default CSP headers for a page
