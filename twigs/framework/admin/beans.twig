@@ -107,7 +107,7 @@
 
 {% set beans = siteinfo.tables(all, page,  pagesize) %}
 
-{% set pages =floor((siteinfo.tablecount(all) + pagesize) / pagesize) %}
+{% set pages = (siteinfo.tablecount(all) + pagesize) / pagesize)|round(0, 'floor') %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
