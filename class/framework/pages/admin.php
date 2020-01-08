@@ -162,7 +162,7 @@
             }
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
-                $class = '\\Support\\'.$kind;
+                $class = '\\Framework\\Support\\'.$kind;
                 try
                 {
                     /** @psalm-suppress InvalidStringClass */
