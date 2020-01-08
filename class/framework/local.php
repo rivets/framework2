@@ -223,7 +223,7 @@
  *
  * @param \Exception	$e
  */
-        public function exceptionHandler($e) : void
+        public function exceptionHandler(\Exception $e) : void
         {
             if ($this->error)
             { // try and ignore errors within errors
