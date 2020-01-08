@@ -258,7 +258,7 @@
         public function handle(Context $context)
         {
             $rest = $context->rest();
-            $context->setpages(); // most of hte pages use pagination so get values if any
+            $context->setpages(); // most of the pages use pagination so get values if any
             switch ($rest[0])
             {
             case 'beans':
