@@ -89,7 +89,7 @@
             return FALSE;
         }
 /**
- * Return the fieldsin this table
+ * Return the fields in this table
  *
  * @return string[]
  */
