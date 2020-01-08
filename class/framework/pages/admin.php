@@ -78,6 +78,7 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\ParameterCount
+ * @throws \Framework\Exception\InternalError
  *
  * @return string
  */
@@ -94,7 +95,7 @@
             }
             if (($notmodel = in_array($kind, self::NOTMODEL)))
             {
-                $class = '\\Support\\'.$kind;
+                $class = '\\Framework\\Support\\'.$kind;
                 try
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -118,7 +119,7 @@
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
-                        throw new \Exception('Oddness');
+                        throw new \Framework\Exception\InternalError('Oddness');
                     }
                     \Framework\Utility\CSRFGuard::getinstance()->check();
                     try
