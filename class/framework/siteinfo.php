@@ -273,7 +273,7 @@
                     $beans[] = new \Framework\Support\Table($tab);
                 }
             }
-            return $start < 0 ? $beans : array_slice($beans, $start * $count, $count);
+            return $start < 0 ? $beans : array_slice($beans, ($start - 1) * $count, $count);
         }
 /**
  * Do a page count calculation for a table
