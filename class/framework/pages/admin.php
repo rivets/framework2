@@ -262,6 +262,7 @@
             switch ($rest[0])
             {
             case 'beans':
+                $context->local()->addval('all', $context->hasadmin() && isset($_GET['all']));
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files

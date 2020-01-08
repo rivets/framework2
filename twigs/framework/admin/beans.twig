@@ -95,7 +95,7 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set beans = siteinfo.tables(FALSE) %}
+{% set beans = siteinfo.tables(all is defined ? all : FALSE) %}
 
 {% set pages = (beans|length + pagesize)/pagesize %}
 
