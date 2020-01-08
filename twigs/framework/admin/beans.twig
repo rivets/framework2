@@ -105,9 +105,9 @@
     {% set all = FALSE %}
 {% endif %}
 
-{% set beans = siteinfo.tables(all is defined ? all : FALSE) %}
+{% set beans = siteinfo.tables(all, page,  pagesize) %}
 
-{% set pages = (beans|length + pagesize)/pagesize %}
+{% set pages = siteinfo.tablecount(all) %}
 
 {% block header %}
     <section class="col-md-12 mt-5">

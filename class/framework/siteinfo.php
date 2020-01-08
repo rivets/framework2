@@ -247,13 +247,23 @@
             return in_array($table, self::$fwtables);
         }
 /**
+ * Number of tables
+ *
+ * @return int
+ */
+        public static function tablecount(bool $all = FALSE) : int
+        {
+            $x = \R::inspect();
+            return $all ? count($x) : count($x) - count(self::$fwtables);
+        }
+/**
  * Return bean table data
  *
  * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
  *
  * @return array
  */
-        public function tables(bool $all = FALSE) : array
+        public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
         {
             $beans = [];
             foreach(\R::inspect() as $tab)
@@ -263,7 +273,7 @@
                     $beans[] = new \Framework\Support\Table($tab);
                 }
             }
-            return $beans;
+            return $start < 0 ? $beans : array_slice($beans, $start * $count, $count);
         }
 /**
  * Do a page count calculation for a table
