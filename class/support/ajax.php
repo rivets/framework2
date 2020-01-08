@@ -25,7 +25,7 @@
         }
  */
 /**
- * If you are using the pagination or search hinting features of the framework then you need to
+ * If you are using the predefined features of the framework then you may need to
  * add some appropriate vaues into these arrays.
  *
  * The key to both the array fields is the name of the bean type you are working with.

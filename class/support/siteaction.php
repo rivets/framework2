@@ -1,7 +1,5 @@
 <?php
 /**
- * A trait that allows extending the model class for edit functionality for
- *
  * Add any new methods you want the SiteAction bean to have here.
  *
  * N.B. The functions pre-defined in here can also be overridden by individual pages
@@ -9,7 +7,7 @@
  * to ALL object pages rather than having to override theme everywhere.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  *
  */
     use \Support\Context as Context;
