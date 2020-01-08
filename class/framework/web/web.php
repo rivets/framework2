@@ -74,10 +74,19 @@
  */
         private function sendhead(int $code, string $msg)
         {
-            $this->sendheaders($code);
             if ($msg !== '')
             {
-                echo '<p>'.$msg.'</p>';
+                $msg = '<p>'.$msg.'</p>';
+                $length = strlen($msg);
+            }
+            else
+            {
+                $length = '';
+            }
+            $this->sendheaders($code, self::HTMLMIME, $length);
+            if ($msg !== '')
+            {
+                echo $msg;
             }
             exit;
             /* NOT REACHED */
@@ -227,7 +236,7 @@
  *
  * @return void
  */
-        public function sendfile(string $path, string $name = '', string $mime = '')
+        public function sendfile(string $path, string $name = '', string $mime = '') : void
         {
             list($code, $range, $length) = $this->hasrange(filesize($path));
             if ($mime === '')
@@ -263,7 +272,7 @@
  *
  * @return void
  */
-        public function sendstring(string $value, string $mime = '', $code = StatusCodes::HTTP_OK)
+        public function sendstring(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
             list($code, $range, $length) = $this->hasrange(strlen($value), $code);
@@ -277,9 +286,9 @@
  *
  * @return void
  */
-        public function sendJSON($res)
+        public function sendJSON($res, $code = StatusCodes::HTTP_OK) : void
         {
-            $this->sendstring(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json');
+            $this->sendstring(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
 /**
  * Add a header to the header list.
@@ -291,7 +300,7 @@
  *
  * @return void
  */
-        public function addheader($key, string $value = '')
+        public function addheader($key, string $value = '') : void
         {
             if (is_array($key))
             {
@@ -310,7 +319,7 @@
  *
  * @return void
  **/
-        private function putheaders()
+        private function putheaders() : void
         {
             foreach ($this->headers as $name => $vals)
             {
@@ -389,14 +398,8 @@
  */
         public function addCSP(string $type, string $string)
         {
-            if (!isset($this->csp[$type]))
-            {
-                $this->csp[$type] = [$string];
-            }
-            else
-            {
-                $this->csp[$type][] = $string;
-            }
+
+            $this->csp[$type][] = $string;
         }
 /**
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
