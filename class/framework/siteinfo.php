@@ -217,7 +217,7 @@
   *
   * @return bool
   */
-        public static function tableExists($table)
+        public static function tableExists(string $table) : bool
         {
             $tbs = \R::inspect();
             return in_array(strtolower($table), $tbs);
@@ -226,11 +226,11 @@
   * Check to see if a table has a given field
   *
   * @param string $table
-  * @parm string $field
+  * @param string $field
   *
   * @return bool
   */
-        public static function hasField($table, $field)
+        public static function hasField(string $table, string $field) : bool
         {
             $tbs = \R::inspect($table);
             return isset($tbs[$field]);
@@ -242,7 +242,7 @@
  *
  * @return bool
  */
-        public static function isFWTable($table)
+        public static function isFWTable(string $table) : bool
         {
             return in_array($table, self::$fwtables);
         }
@@ -253,14 +253,14 @@
  *
  * @return array
  */
-        public function tables($all = FALSE) : array
+        public function tables(bool $all = FALSE) : array
         {
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
                 if ($all || !self::isFWTable($tab))
                 {
-                    $beans[] = new \Support\Table($tab);
+                    $beans[] = new \Framework\Support\Table($tab);
                 }
             }
             return $beans;
@@ -273,7 +273,7 @@
  *
  * @return int
  */
-        public function pagecount($table, $pagesize) : int
+        public function pagecount(string $table, int $pagesize) : int
         {
             return (int) floor((\R::count($table) + $pagesize) / $pagesize);
         }
