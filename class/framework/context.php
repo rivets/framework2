@@ -234,7 +234,7 @@
             $this->ons[$id][$on] = $fn;
         }
 /**
- * Get the KS for onloading the ons
+ * Get the JS for onloading the ons
  *
  * @return string
  */
