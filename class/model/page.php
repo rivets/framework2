@@ -233,9 +233,13 @@
             //$p->active = $fdt->mustpost('active');
             //$p->needlogin = $fdt->mustpost('login');
             //$p->mobileonly = $fdt->mustpost('mobile');
-            foreach (['name', 'kind', 'source', 'active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
-            {
+            foreach (['name', 'kind', 'source'] as $fld)
+            { # mandatory
                 $p->{$fld} = $fdt->mustpost($fld);
+            }
+            foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
+            { # optional flags
+                $p->{$fld} = $fdt->post($fld, 0);
             }
             try
             {
