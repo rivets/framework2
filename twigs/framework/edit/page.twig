@@ -68,35 +68,15 @@
                 </fieldset>
                 <fieldset>
                     <legend>Page Properties</legend>
-                    {{f.text({ label: 'Parameter Spec', id: 'pm', name: 'params', value: bean.params, disabled: TRUE})}}
-                    <div class="form-group">
-                        <label for="npsrc">Source</label>
-                        <input type="text" class="form-control" id="npsrc" name="source" value="{{bean.source}}" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npactive" name="active"{% if bean.active %} checked="checked"{% endif %}/> Active</label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npmobile" name="mobileonly"{% if bean.mobileonly %} checked="checked"{% endif %}/> Mobile Only</label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="nplogin" name="needlogin"{% if bean.needlogin %} checked="checked"{% endif %}/> Must Login</label>
-                    </div>
+                    {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params, ph: 'Not in use currently', disabled: TRUE})}}
+                    {{f.text({ label: 'Source', id: 'npsrc', name: 'source', value: bean.source, ph: 'page.twig="page, class name, /local/redirection or URL', required: TRUE})}}
+                    {{f.checkbox({labels: ['Active', 'Mobile Only', 'Must Login'], ids : ['npactive', 'npmobile', 'nplogin'], names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], check: [bean.active, bean.mobileonly, bean.needlogin]})}}
                 </fieldset>
                 <fieldset>
                     <legend>Page Functional Requirements</legend>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npajax" name="needajax"{% if bean.needajax %} checked="checked"{% endif %}/> Page uses AJAX</label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npfwutils" name="needfwutils"{% if bean.needfwutils %} checked="checked"{% endif %}/> Page uses Framework JS utilities</label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npparsley" name="needparsley"{% if bean.needparsley %} checked="checked"{% endif %}/> Page uses Parsley</label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label"><input type="checkbox" value="1" id="npeditable" name="neededitable"{% if bean.neededitable %} checked="checked"{% endif %}/> Page uses inline editable package</label>
-                    </div>
+                    {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
+                        values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
