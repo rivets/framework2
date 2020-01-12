@@ -227,12 +227,16 @@
         {
             $fdt = $context->formdata();
             $p = \R::dispense('page');
-            $p->name = $fdt->mustpost('name');
-            $p->kind = $fdt->mustpost('kind');
-            $p->source = $fdt->mustpost('source');
-            $p->active = $fdt->mustpost('active');
-            $p->needlogin = $fdt->mustpost('login');
-            $p->mobileonly = $fdt->mustpost('mobile');
+            //$p->name = $fdt->mustpost('name');
+            //$p->kind = $fdt->mustpost('kind');
+            //$p->source = $fdt->mustpost('source');
+            //$p->active = $fdt->mustpost('active');
+            //$p->needlogin = $fdt->mustpost('login');
+            //$p->mobileonly = $fdt->mustpost('mobile');
+            foreach (['name', 'kind', 'source', 'active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
+            {
+                $p->{$fld} = $fdt->mustpost($fld);
+            }
             try
             {
                 \R::store($p);
