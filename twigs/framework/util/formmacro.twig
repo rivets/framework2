@@ -59,7 +59,7 @@
 
 {% macro checkbox(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
-    <div class="form-check form-check-inline>
+    <div class="form-check form-check-inline">
     {% for ix,val in opts.values %}
         <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
@@ -73,7 +73,7 @@
 
 {% macro radio(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
-    <div class="form-check form-check-inline>
+    <div class="form-check form-check-inline">
     {% for ix,val in opts.values %}
         <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
