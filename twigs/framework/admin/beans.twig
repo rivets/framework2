@@ -1,15 +1,11 @@
 {% set ajax = TRUE %}
+{% set fwutils = TRUE %}
+{% set parsley = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-{% endblock scripts %}
 
 {% block setup %}
     function deltable(e)

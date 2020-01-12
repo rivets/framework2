@@ -1,14 +1,10 @@
 {% set ajax = TRUE %}
+{% set fwutils = TRUE %}
+{% set parsley = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-{% endblock scripts %}
 
 {% block onload %}
      $('#more').on('click', function(e){
@@ -69,10 +65,10 @@
                             ]
                         })}}
                     </div>
-                    <fieldset>
-                        <legend>Parameter Spec</legend>
-                        {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params})}}
-                    </fieldset>
+                </fieldset>
+                <fieldset>
+                    <legend>Page Properties</legend>
+                    {{f.text({ label: 'Parameter Spec', id: 'pm', name: 'params', value: bean.params, disabled: TRUE})}}
                     <div class="form-group">
                         <label for="npsrc">Source</label>
                         <input type="text" class="form-control" id="npsrc" name="source" value="{{bean.source}}" placeholder="page.twig, class name, /local/redirection or URL" required="required"/>
@@ -85,6 +81,21 @@
                     </div>
                     <div class="form-check">
                         <label class="form-check-label"><input type="checkbox" value="1" id="nplogin" name="needlogin"{% if bean.needlogin %} checked="checked"{% endif %}/> Must Login</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Page Functional Requirements</legend>
+                    <div class="form-check">
+                        <label class="form-check-label"><input type="checkbox" value="1" id="npajax" name="needajax"{% if bean.needajax %} checked="checked"{% endif %}/> Page uses AJAX</label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label"><input type="checkbox" value="1" id="npfwutils" name="needfwutils"{% if bean.needfwutils %} checked="checked"{% endif %}/> Page uses Framework JS utilities</label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label"><input type="checkbox" value="1" id="npparsley" name="needparsley"{% if bean.needparsley %} checked="checked"{% endif %}/> Page uses Parsley</label>
+                    </div>
+                    <div class="form-check">
+                        <label class="form-check-label"><input type="checkbox" value="1" id="npeditable" name="neededitable"{% if bean.neededitable %} checked="checked"{% endif %}/> Page uses inline editable package</label>
                     </div>
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}

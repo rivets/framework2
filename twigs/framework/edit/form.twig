@@ -1,21 +1,11 @@
 {% set ajax = TRUE %}
+{% set fwutils = TRUE %}
+{% set parsley = TRUE %}
+{% set editable = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-    <script {{h.urlattr(fwurls.editable)}}></script>-->
-    {#<script src="{{assets}}/js/bs4-editable-min.js"></script>#}
-{% endblock scripts %}
-
-{% block css %}
-    {#<link rel="stylesheet" href="{{assets}}/css/bs4-editable.css"/>#}
-    <link rel="stylesheet" {{a.urlattr(fwurls.editable)}}/>
-{% endblock css %}
 
 {% set types = ['text', 'textarea', 'email', 'password', 'checkbox',
     'radio', 'select', 'file', 'range', 'number', 'button', 'submit',

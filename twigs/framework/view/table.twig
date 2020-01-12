@@ -1,28 +1,18 @@
 {% set ajax = TRUE %}
+{% set fwutils = TUE %}
+
 {% set x = context.web.addCSP('script-src', "'unsafe-inline'") %}
+
+{% set allownew = view is not defined and object is not defined %}
+{% set inline = view is not defined %}
+
+{% set parsley = allownew %}
+{% set editable = inline %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% set allownew = view is not defined and object is not defined %}
-{% set inline = view is not defined %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-    {% if allownew %}
-        <script {{h.urlattr(fwurls.parsley)}}></script>
-    {% endif %}
-    {% if inline %}
-        <script {{h.urlattr(fwurls.editable)}}></script>
-    {% endif %}
-{% endblock scripts %}
-
-{% block css %}
-    <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
-{% endblock css %}
 
 {% block setup %}
     {%if inline %} {# only want this if we are doing inline edits  #}

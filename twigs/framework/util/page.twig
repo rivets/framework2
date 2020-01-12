@@ -31,6 +31,9 @@
     {% if fwurls.facss.type == 'css' %}
         <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
     {% endif %}
+    {% if editable %}
+        <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
+    {% endif %}
     <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
 
     {% block head %}
@@ -49,13 +52,23 @@
         {% elseif usejquery %}
             <script {{h.urlattr(fwurls.jqueryslim)}}></script>
         {% endif %}
-        {% if usebootstrapjs %}
+        {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use BS JS and fwutils uses bootbox #}
             <script {{h.urlattr(fwurls.popperjs)}}></script>
             <script {{h.urlattr(fwurls.bootjs)}}></script>
         {% endif %}
-        {% if usebootbox %}
+        {% if usebootbox or fwutils %} {# fwutils uses bootbox#}
             <script {{h.urlattr(fwurls.bootbox)}}></script>
         {% endif %}
+        {% if fwutils %}
+            <script {{h.urlattr(fwurls.utiljs)}}></script>
+        {% endif %}
+        {% if parsley %}
+            <script {{h.urlattr(fwurls.parsley)}}></script>
+        {% endif %}
+        {% if editable %}
+            <script {{h.urlattr(fwurls.editable)}}></script>
+        {% endif %}
+
     {% endif %}
 
     {% if fwurls.facss.type == 'js' %}
