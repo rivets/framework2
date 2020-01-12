@@ -25,7 +25,7 @@
         use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
- * @var Array   Key is name of field and the array contains flags for checks
+ * @var Array   Key is name of field and the array contains flags for checkboxes
  */
         private static $editfields = [
             'name'          => [TRUE, FALSE],
@@ -34,6 +34,10 @@
             'active'        => [TRUE, TRUE],
             'mobileonly'    => [TRUE, TRUE],
             'needlogin'     => [TRUE, TRUE],
+            'needajax'      => [TRUE, TRUE],
+            'needfwutils'   => [TRUE, TRUE],
+            'needparsley'   => [TRUE, TRUE],
+            'neededitable'  => [TRUE, TRUE],
         ];
 
         use \ModelExtend\FWEdit;
