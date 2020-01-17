@@ -285,7 +285,8 @@
  */
         public function pagecount(string $table, int $pagesize) : int
         {
-            return (int) floor((\R::count($table) + $pagesize) / $pagesize);
+            $count = \R::count($table);
+            return (int) floor((($count % $pagesize > 0) ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
 ?>
