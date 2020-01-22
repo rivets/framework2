@@ -8,7 +8,7 @@
     namespace Framework\Pages;
     
     use \Support\Context as Context;
-    use \Framework\Config\Framework as FW;
+    use \Config\Framework as FW;
 /**
  * Class for developer hacks and helpers...
  */
