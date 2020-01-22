@@ -34,6 +34,7 @@
         const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
         const ROLENAME	    = self::DBPREFIX.'rolename';
         const TABLE	        = self::DBPREFIX.'table';
+        const TEST	        = self::DBPREFIX.'fwtest';
         const USER	        = self::DBPREFIX.'user';
 
 /**

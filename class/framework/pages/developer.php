@@ -8,6 +8,7 @@
     namespace Framework\Pages;
     
     use \Support\Context as Context;
+    use \Framework\Config\Framework as FW;
 /**
  * Class for developer hacks and helpers...
  */
@@ -49,14 +50,7 @@
                 break;
 
             case 'ajax': # test the ajax calls
-               if (!\Support\SiteInfo::getinstance()->tableExists('fwtest'))
-                {
-                    $bn = \R::dispense('fwtest');
-                    $bn->f1 = 'a string';
-                    $bn->tog = 1;
-                    \R::store($bn);
-                }
-                $context->web()->addCSP('script-src', "'unsafe-inline'");
+                $context->local()->addval('bean', R::findOrCreate(FW::TEST, ['f1' => 'a string', 'tog' => 1]));
                 $tpl = '@devel/testajax.twig';
                 break;
 
