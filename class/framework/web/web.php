@@ -33,6 +33,18 @@
  */
         private $cache      = [];
 /**
+ * @var ?object   The Context object
+ */
+        private $context      = NULL;
+/**
+ * Class constructor. The concrete class using this trait can override it.
+ * @internal
+ */
+        protected function __construct()
+        {
+            $this->context = Context::getinstance();
+        }
+/**
  * Generate a Location header
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
@@ -422,13 +434,11 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @param \Support\Context   $context    The context object
- *
  * @return void
  */
-        public function setCSP(Context $context) : void
+        public function setCSP() : void
         {
-            $local = $context->local();
+            $local = $this->context->local();
             /** @psalm-suppress PossiblyNullPropertyFetch */
             if ($local->configval('usecsp'))
             {

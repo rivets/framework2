@@ -17,9 +17,9 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array  Array of the names of the beans used by the framework
+ * @var $object  The Context object
  */
-        private static $fwtables = [
+        protected static $fwtables = [
             FW::CONFIG,
             FW::CONFIRM,
             FW::FORM,
@@ -31,6 +31,18 @@
             FW::ROLENAME,
             FW::USER,
         ];
+/**
+ * @var array  Array of the names of the beans used by the framework
+ */
+        protected $context = NULL;
+/**
+ * Class constructor. The concrete class using this trait can override it.
+ * @internal
+ */
+        protected function __construct()
+        {
+            $this->context = Context::getinstance();
+        }
 /**
  * Get beans in chunks and turn them one by one using a generator
  *
@@ -201,9 +213,8 @@
  */
         public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            $context = Context::getinstance();
-            $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();
-            $rcid = is_object($rolecontext) ? $rolecontext->getID() : $context->rolecontext($rolecontext)->getID();
+            $rnid = is_object($rolename) ? $rolename->getID() : $this->context->rolename($rolename)->getID();
+            $rcid = is_object($rolecontext) ? $rolecontext->getID() : $this->context->rolecontext($rolecontext)->getID();
             $res = \R::findMulti(FW::USER, 'select '.FW::USER.'.* from '.FW::USER.' join '.FW::ROLE.' on ('.FW::ROLE.
                 '.'.FW::USER.'_id = '.FW::USER.'.id) where '.FW::ROLENAME.'_id=? and '.FW::ROLECONTEXT.'_id = ?'.
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
