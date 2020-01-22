@@ -66,15 +66,21 @@
       
     function testuniquenl()
     {
-        $.ajax(base+'/ajax/user/login/{{context.user.login}}', {
+        $.ajax(base+'/ajax/uniquenl/user/login/{{context.user.login}}', {
             method: 'GET',
         }).done(function(e){
-            bootbox.alert('Uniquenl operation fails');
+            bootbox.alert('Uniquenl fails - 200 on existing login');
         }).fail(function(jx){
-            console.log(jx);
-            bootbox.alert('Uniquenl operation OK');
+            if (jx.status == 404)
+            {
+                bootbox.alert('Uniquenl OK');
+            }
+            else
+            {
+                bootbox.alert('Uniquenl fails - '+jx.status+' '+jx.responseText);
+            }
         });
-        bootbox.alert('Uniquenl operation test complete');
+        bootbox.alert('Uniquenl test complete');
     }  
 {% endblock setup %}
 
