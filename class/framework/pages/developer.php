@@ -49,7 +49,7 @@
                 break;
 
             case 'ajax': # test the ajax calls
-               if (!SiteInfo::getinstance()->tableExists('fwtest'))
+               if (!\Support\SiteInfo::getinstance()->tableExists('fwtest'))
                 {
                     $bn = \R::dispense('fwtest');
                     $bn->f1 = 'a string';
