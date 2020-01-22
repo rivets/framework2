@@ -50,7 +50,7 @@
                 break;
 
             case 'ajax': # test the ajax calls
-                $context->local()->addval('bean', R::findOrCreate(FW::TEST, ['f1' => 'a string', 'tog' => 1]));
+                $context->local()->addval('bean', \R::findOrCreate(FW::TEST, ['f1' => 'a string', 'tog' => 1]));
                 $tpl = '@devel/testajax.twig';
                 break;
 
