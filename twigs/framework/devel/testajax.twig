@@ -70,6 +70,7 @@
         let t = $(this).parent();
         $.ajax(base+'/ajax/uniquenl/user/login/'+login, {
             method: 'GET',
+            async: false,
         }).done(function(e){
             t.append('<p>Existing login fails - 200 on existing login</p>');
         }).fail(function(jx){
@@ -84,6 +85,7 @@
         });
         $.ajax(base+'/ajax/uniquenl/user/login/'+login+'XXXXX', {
             method: 'GET',
+            async: false,
         }).done(function(e){
             t.append('Non-existent login OK');
         }).fail(function(jx){
