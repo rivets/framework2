@@ -6,9 +6,9 @@
  * @copyright 2019-2020 Newcastle University
  *
  */
-    use \Support\Context as Context;
-
     namespace Support;
+    
+    use \Support\Context as Context;
 /**
  * Adds functions for dealing with various cache control circumstances.
  * If you add code here then these will apply to all pages. You can override these

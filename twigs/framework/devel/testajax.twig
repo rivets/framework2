@@ -11,56 +11,67 @@
 {% block setup %}
     function testbean()
     {
+        let t = $(this).parent();
         bootbox.alert('Bean operation test complete');
     }
 
     function testconfig()
     {
+        let t = $(this).parent();
         bootbox.alert('Config operation test complete');
     }
 
     function testhints()
     {
+        let t = $(this).parent();
         bootbox.alert('Hints operation test complete');
     }
 
     function testpaging()
     {
+        let t = $(this).parent();
         bootbox.alert('Paging operation test complete');
     }
 
     function testpwcheck()
     {
+        let t = $(this).parent();
         bootbox.alert('Pwcheck operation test complete');
     }
 
     function testshared()
     {
+        let t = $(this).parent();
         bootbox.alert('Shared operation test complete');
     }
 
     function testtable()
     {
+        let t = $(this).parent();
         bootbox.alert('Table operation test complete');
     }
 
     function testtablecheck()
     {
+        let t = $(this).parent();
         bootbox.alert('Tablecheck operation test complete');
     }
 
     function testtablesearch()
     {
+        let t = $(this).parent();
         bootbox.alert('Tablesearch operation test complete');
     }
 
     function testtoggle()
     {
+        let t = $(this).parent();
         bootbox.alert('Toggle operation test complete');
     }
 
     function testunique()
     {
+        let t = $(this).parent();
         bootbox.alert('Unique operation test complete');
     }
       
@@ -87,9 +98,9 @@
             method: 'GET',
             async: false,
         }).done(function(e){
-            t.append('Non-existent login OK');
+            t.append('<p>Non-existent login OK</p>');
         }).fail(function(jx){
-            t.append('Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
+            t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
         });
         t.append('<p>Test Complete</p>');
     }  
