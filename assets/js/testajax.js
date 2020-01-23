@@ -1,5 +1,3 @@
-    'use strict';
-
     var ajaxops = [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'];
 
     function makecall(url, data, succ, err)
@@ -93,5 +91,5 @@
         }, function(jx){
             t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
         });
-        t.append('<p>Test Complete</p>'));
+        t.append('<p>Test Complete</p>');
     }
