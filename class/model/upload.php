@@ -3,7 +3,7 @@
  * A model class for the RedBean object Upload
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2016 Newcastle University
+ * @copyright 2015-2020 Newcastle University
  *
  */
     namespace Model;
@@ -35,6 +35,8 @@
  * @param ?object	        $owner		The user who owns the upload. If NULL then  the currently logged in user
  * @param int               $index      If there is an array of files possibly with other data, then this is the index in the array.
  *
+ * @throws \Framework\Exception\InternalError
+ * 
  * @return bool
  */
         public function savefile(Context $context, array $da, bool $public, $owner = NULL, $index = 0) : bool
@@ -47,7 +49,7 @@
             {
                 if (!$context->hasuser())
                 { # no logged in user! This should never happen...
-                    throw new \Exception('No user');
+                    throw new \Framework\Exception\InternalError('No user');
                 }
                 $owner = $context->user();
             }
@@ -55,7 +57,7 @@
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
-                throw new \Exception('Cannot move uploaded file to '.$fname);
+                throw new \Framework\Exception\InternalError('Cannot move uploaded file to '.$fname);
             }
             $this->bean->added = $context->utcnow();
             $pname[] = $fname;
@@ -67,7 +69,7 @@
             \R::store($this->bean);
             if (!@chdir($dir))
             { # go back to where we were in the file system
-                throw new \Exception('Cannot chdir to '.$dir);
+                throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
             return TRUE;
         }
@@ -78,6 +80,8 @@
  * @param array               $da        The file upload info array via formdata
  * @param int                 $index     The index if this all part of an array of data
  *
+ * @throws \Framework\Exception\InternalError
+ * 
  * @return void
  */
         public function replace(Context $context, array $da, int $index = 0) : void
@@ -87,7 +91,7 @@
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
-                throw new \Exception('Cannot move uploaded file to '.$fname);
+                throw new \Framework\Exception\InternalError('Cannot move uploaded file to '.$fname);
             }
             $this->bean->added = $context->utcnow();
             $pname[] = $fname;
@@ -98,7 +102,7 @@
             unlink($context->local()->basedir().$oldfile);
             if (!@chdir($dir))
             { # go back to where we were in the file system
-                throw new \Exception('Cannot chdir to '.$dir);
+                throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
         }
 /**
@@ -122,8 +126,7 @@
  *
  * @param string    $dir The directory name
  *
- * @throws Cannot mkdir
- * @throws Cannot chdir
+ * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */

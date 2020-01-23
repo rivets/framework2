@@ -17,9 +17,9 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array  Array of the names of the beans used by the framework
+ * @var $object  The Context object
  */
-        private static $fwtables = [
+        protected static $fwtables = [
             FW::CONFIG,
             FW::CONFIRM,
             FW::FORM,
@@ -31,6 +31,18 @@
             FW::ROLENAME,
             FW::USER,
         ];
+/**
+ * @var array  Array of the names of the beans used by the framework
+ */
+        protected $context = NULL;
+/**
+ * Class constructor. The concrete class using this trait can override it.
+ * @internal
+ */
+        protected function __construct()
+        {
+            $this->context = Context::getinstance();
+        }
 /**
  * Get beans in chunks and turn them one by one using a generator
  *
@@ -201,9 +213,8 @@
  */
         public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
-            $context = Context::getinstance();
-            $rnid = is_object($rolename) ? $rolename->getID() : $context->rolename($rolename)->getID();
-            $rcid = is_object($rolecontext) ? $rolecontext->getID() : $context->rolecontext($rolecontext)->getID();
+            $rnid = is_object($rolename) ? $rolename->getID() : $this->context->rolename($rolename)->getID();
+            $rcid = is_object($rolecontext) ? $rolecontext->getID() : $this->context->rolecontext($rolecontext)->getID();
             $res = \R::findMulti(FW::USER, 'select '.FW::USER.'.* from '.FW::USER.' join '.FW::ROLE.' on ('.FW::ROLE.
                 '.'.FW::USER.'_id = '.FW::USER.'.id) where '.FW::ROLENAME.'_id=? and '.FW::ROLECONTEXT.'_id = ?'.
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
@@ -217,7 +228,7 @@
   *
   * @return bool
   */
-        public static function tableExists($table)
+        public static function tableExists(string $table) : bool
         {
             $tbs = \R::inspect();
             return in_array(strtolower($table), $tbs);
@@ -226,11 +237,11 @@
   * Check to see if a table has a given field
   *
   * @param string $table
-  * @parm string $field
+  * @param string $field
   *
   * @return bool
   */
-        public static function hasField($table, $field)
+        public static function hasField(string $table, string $field) : bool
         {
             $tbs = \R::inspect($table);
             return isset($tbs[$field]);
@@ -242,9 +253,19 @@
  *
  * @return bool
  */
-        public static function isFWTable($table)
+        public static function isFWTable(string $table) : bool
         {
             return in_array($table, self::$fwtables);
+        }
+/**
+ * Number of tables
+ *
+ * @return int
+ */
+        public static function tablecount(bool $all = FALSE) : int
+        {
+            $x = \R::inspect();
+            return $all ? count($x) : count($x) - count(self::$fwtables);
         }
 /**
  * Return bean table data
@@ -253,17 +274,17 @@
  *
  * @return array
  */
-        public function tables($all = FALSE) : array
+        public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
         {
             $beans = [];
             foreach(\R::inspect() as $tab)
             {
                 if ($all || !self::isFWTable($tab))
                 {
-                    $beans[] = new \Support\Table($tab);
+                    $beans[] = new \Framework\Support\Table($tab);
                 }
             }
-            return $beans;
+            return $start < 0 ? $beans : array_slice($beans, ($start - 1) * $count, $count);
         }
 /**
  * Do a page count calculation for a table
@@ -273,9 +294,10 @@
  *
  * @return int
  */
-        public function pagecount($table, $pagesize) : int
+        public function pagecount(string $table, int $pagesize) : int
         {
-            return (int) floor((\R::count($table) + $pagesize) / $pagesize);
+            $count = \R::count($table);
+            return (int) floor((($count % $pagesize > 0) ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
 ?>

@@ -221,9 +221,9 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @param \Exception	$e
+ * @param \Throwable	$e
  */
-        public function exceptionHandler($e) : void
+        public function exceptionHandler(\Throwable $e) : void
         {
             if ($this->error)
             { // try and ignore errors within errors

@@ -3,12 +3,12 @@
  * A trait that implements nocaching for pages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  *
  */
-    use \Support\Context as Context;
-
     namespace Support;
+    
+    use \Support\Context as Context;
 /**
  * Adds functions for dealing with various cache control circumstances.
  * If you add code here then these will apply to all pages. You can override these
@@ -18,7 +18,7 @@
     trait NoCache
     {
 /**
- * Make it so that the page does nto get cahced
+ * Make it so that the page does not get cached
  *
  * @param \Support\Context    $context The context object
  *

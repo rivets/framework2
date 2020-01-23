@@ -25,7 +25,7 @@
         use \ModelExtend\MakeGuard;
         use \Framework\HandleRole;
 /**
- * @var Array   Key is name of field and the array contains flags for checks
+ * @var Array   Key is name of field and the array contains flags for checkboxes
  */
         private static $editfields = [
             'name'          => [TRUE, FALSE],
@@ -34,6 +34,10 @@
             'active'        => [TRUE, TRUE],
             'mobileonly'    => [TRUE, TRUE],
             'needlogin'     => [TRUE, TRUE],
+            'needajax'      => [TRUE, TRUE],
+            'needfwutils'   => [TRUE, TRUE],
+            'needparsley'   => [TRUE, TRUE],
+            'neededitable'  => [TRUE, TRUE],
         ];
 
         use \ModelExtend\FWEdit;
@@ -227,12 +231,20 @@
         {
             $fdt = $context->formdata();
             $p = \R::dispense('page');
-            $p->name = $fdt->mustpost('name');
-            $p->kind = $fdt->mustpost('kind');
-            $p->source = $fdt->mustpost('source');
-            $p->active = $fdt->mustpost('active');
-            $p->needlogin = $fdt->mustpost('login');
-            $p->mobileonly = $fdt->mustpost('mobile');
+            //$p->name = $fdt->mustpost('name');
+            //$p->kind = $fdt->mustpost('kind');
+            //$p->source = $fdt->mustpost('source');
+            //$p->active = $fdt->mustpost('active');
+            //$p->needlogin = $fdt->mustpost('login');
+            //$p->mobileonly = $fdt->mustpost('mobile');
+            foreach (['name', 'kind', 'source'] as $fld)
+            { # mandatory
+                $p->{$fld} = $fdt->mustpost($fld);
+            }
+            foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
+            { # optional flags
+                $p->{$fld} = $fdt->post($fld, 0);
+            }
             try
             {
                 \R::store($p);

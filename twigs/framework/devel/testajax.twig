@@ -1,76 +1,108 @@
 {% set ajax = TRUE %}
+{% set fwutils = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-{% endblock scripts %}
 
 {% set ops = [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'] %}
 
 {% block setup %}
     function testbean()
     {
+        let t = $(this).parent();
         bootbox.alert('Bean operation test complete');
     }
 
     function testconfig()
     {
+        let t = $(this).parent();
         bootbox.alert('Config operation test complete');
     }
 
     function testhints()
     {
+        let t = $(this).parent();
         bootbox.alert('Hints operation test complete');
     }
 
     function testpaging()
     {
+        let t = $(this).parent();
         bootbox.alert('Paging operation test complete');
     }
 
     function testpwcheck()
     {
+        let t = $(this).parent();
         bootbox.alert('Pwcheck operation test complete');
     }
 
     function testshared()
     {
+        let t = $(this).parent();
         bootbox.alert('Shared operation test complete');
     }
 
     function testtable()
     {
+        let t = $(this).parent();
         bootbox.alert('Table operation test complete');
     }
 
     function testtablecheck()
     {
+        let t = $(this).parent();
         bootbox.alert('Tablecheck operation test complete');
     }
 
     function testtablesearch()
     {
+        let t = $(this).parent();
         bootbox.alert('Tablesearch operation test complete');
     }
 
     function testtoggle()
     {
+        let t = $(this).parent();
         bootbox.alert('Toggle operation test complete');
     }
 
     function testunique()
     {
+        let t = $(this).parent();
         bootbox.alert('Unique operation test complete');
     }
       
     function testuniquenl()
     {
-        bootbox.alert('Uniquenl operation test complete');
+        let login = '{{context.user.login}}';
+        let t = $(this).parent();
+        $.ajax(base+'/ajax/uniquenl/user/login/'+login, {
+            method: 'GET',
+            async: false,
+        }).done(function(e){
+            t.append('<p>Existing login fails - 200 on existing login</p>');
+        }).fail(function(jx){
+            if (jx.status == 404)
+            {
+               t.append('<p>Existing login OK</p>');
+            }
+            else
+            {
+                t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
+            }
+        });
+        $.ajax(base+'/ajax/uniquenl/user/login/'+login+'XXXXX', {
+            method: 'GET',
+            async: false,
+        }).done(function(e){
+            t.append('<p>Non-existent login OK</p>');
+        }).fail(function(jx){
+            t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
+        });
+        t.append('<p>Test Complete</p>');
     }  
 {% endblock setup %}
 
@@ -95,7 +127,9 @@
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% for x in ops %}
-                <p><button class="btn btn-info" id="{{x}}">Test {{x}}</button></p>
+                <div>
+                    <p><button class="btn btn-info" id="{{x}}">Test {{x}}</button></p>
+                </div>
             {% endfor %}
         </article>
     </section>

@@ -1,15 +1,11 @@
 {% set ajax = TRUE %}
+{% set fwutils = TRUE %}
+{% set parsley = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-{% import '@util/attrmacro.twig' as h %}
-
-{% block scripts %}
-    <script {{h.urlattr(fwurls.parsley)}}></script>
-    <script {{h.urlattr(fwurls.utiljs)}}></script>
-{% endblock scripts %}
 
 {% block setup %}
     function deltable(e)
@@ -95,9 +91,19 @@
     {% set pagesize = 10 %}
 {% endif %}
 
-{% set beans = siteinfo.tables(FALSE) %}
+{% set extra = '' %}
 
-{% set pages = (beans|length + pagesize)/pagesize %}
+{% if all is defined %}
+    {% if all %}
+        {% set extra = 'all=1' %}
+    {% endif %}
+{% else %}
+    {% set all = FALSE %}
+{% endif %}
+
+{% set beans = siteinfo.tables(all, page,  pagesize) %}
+
+{% set pages = ((siteinfo.tablecount(all) + pagesize) / pagesize)|round(0, 'floor') %}
 
 {% block header %}
     <section class="col-md-12 mt-5">
@@ -109,7 +115,7 @@
     <section class="row">
         <article class="offset-md-1 col-md-9">
             {% include '@util/message.twig' %}
-            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages, extra: extra } %}
             <table class="table table-responsive table-striped table-hover" id="btab">
                 <thead class="thead-inverse">
                     <tr>
@@ -130,7 +136,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+            {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages, extra: extra } %}
 	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nbean" type="button">Add Bean</button></p>
         </article>
     </section>

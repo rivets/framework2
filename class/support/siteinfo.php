@@ -3,14 +3,14 @@
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2018 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  *
  */
     namespace Support;
 /**
  * Utility class that returns generally useful information about parts of the site
- * The parent class (FWSiteInfo) contains a set of functions that are used by the
- * admin pages of the site.
+ * The parent class (\Framework\SiteInfo) contains a set of functions that are used by the
+ * admin pages of the site. q.v. for the utility functions it provides
  */
     class SiteInfo extends \Framework\SiteInfo
     {

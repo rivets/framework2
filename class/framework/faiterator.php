@@ -20,13 +20,13 @@
  *
  * @param string  $name The name of the entry in the $_FILES array
  *
- * throws \Exception
+ * throws \Framework\Exception\InternalError
  */
         public function __construct(string $name)
         {
             if (!isset($_FILES[$name]) || !is_array($_FILES[$name]['error']))
             {
-                throw new \Exception('Not an array of files');
+                throw new \Framework\Exception\InternalError('Not an array of files');
                 /* NOT REACHED */
             }
             $this->far = $_FILES[$name];

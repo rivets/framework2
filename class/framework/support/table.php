@@ -3,10 +3,10 @@
  * A class for the object Table
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  *
  */
-    namespace Support;
+    namespace Framework\Support;
 
     use \Support\Context as Context;
 /**
@@ -14,7 +14,9 @@
  */
     class Table
     {
-/** @var string The name of the table */
+/**
+ * @var string The name of the table
+ */
         private $table;
 
         use \ModelExtend\MakeGuard;
@@ -44,23 +46,27 @@
             $fd = $context->formdata();
             if ($fd->haspost('name'))
             {
+                $fk = [];
                 $name = strtolower($fd->mustpost('name'));
-                if ($name === '')
+                if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
-                    $context->local()->message(\Framework\Local::ERROR, 'You must provide a bean name');
-                }
-                elseif (!preg_match('/^[a-z][a-z0-9]*/', $name))
-                {
-                    $context->local()->message(\Framework\Local::ERROR, 'You must provide a bean name');
+                    $context->local()->message(\Framework\Local::ERROR, 'You must provide a valid bean name');
                 }
                 else
                 {
-                    $bn = \R::dispense(strtolower($name));
+                    $bn = \R::dispense($name);
                     foreach ($fd->posta('field') as $ix => $field)
                     {
                         if ($field !== '')
                         {
-                            if (!preg_match('/^[a-z][a-z0-9]*/', $field))
+                            if (preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
+                            { # this is a special case for foreign keys
+                                $fkbn = \R::dispense($m[1]); // make a bean of the required type
+                                \R::store($fkbn);
+                                $bn->{$field} = $fkbn;
+                                $fk[] = $fkbn;  // remember this bean as it needs to be deleted later - see below
+                            }
+                            elseif (!preg_match('/^[a-z][a-z0-9]*/', $field))
                             {
                                 $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
                             }
@@ -72,6 +78,10 @@
                     }
                     \R::store($bn);
                     \R::exec('truncate '.$name); // clean out the table
+                    if (!empty($fk))
+                    { # get rid of any extra beans we created for foreign keys
+                        \R::trashAll($fk);
+                    }
                     $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
                     return TRUE;
                 }
@@ -79,7 +89,7 @@
             return FALSE;
         }
 /**
- * Return the fields
+ * Return the fields in this table
  *
  * @return string[]
  */
@@ -90,17 +100,17 @@
 /**
  * Test if a field exists
  *
- * @param string $fld The field name
+ * @param string   $fld The field name
  *
  * @return bool
  */
-        public function hasField($fld) : bool
+        public function hasField(string $fld) : bool
         {
             $flds = $this->fields();
             return isset($flds[$fld]);
         }
 /**
- * Return the name
+ * Return the name of the table
  *
  * @return string
  */
@@ -112,7 +122,7 @@
  * Setup for an edit
  *
  * @param \Support\Context    $context  The context object
- * @param array               $rest
+ * @param array               $rest     The rest of the URL
  *
  * @return void
  */

@@ -82,8 +82,8 @@
  *
  * @param int    $type  Defaults to INPUT_POST, but could be INPUT_GET
  *
- * @throws Exception when CSRFName is expected and not found
- * @throws Exception when token or name is not as stored in session
+ * @throws \Framework\Exception\InternalError when CSRFName is expected and not found
+ * @throws \Framework\Exception\InternalError when token or name is not as stored in session
  *
  * @return void
  */
@@ -107,11 +107,11 @@
             }
             if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
             {
-                throw new \Exception('No CSRF Name found, probable invalid request.');
+                throw new \Framework\Exception\InternalError('No CSRF Name found, probable invalid request.');
             }
             if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
             {
-                throw new \Exception('Invalid CSRF token');
+                throw new \Framework\Exception\InternalError('Invalid CSRF token');
             }
         }
     }

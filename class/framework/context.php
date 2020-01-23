@@ -201,14 +201,24 @@
  */
 /**
  * Set up pagination data
+ *
+ * @param ?int    $count If not NULL then set pages based on this
+ * 
+ * @return void
  */
-        public function setpages() : void
+        public function setpages($count = NULL) : void
         {
             $form = $this->formdata();
-            $this->local()->addval([
+            $psize = $form->filterget('pagesize', 10, FILTER_VALIDATE_INT);
+            $values = [
                 'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
-                'pagesize'  => $form->filterget('pagesize', 10, FILTER_VALIDATE_INT)
-            ]);
+                'pagesize'  => $psize
+            ];
+            if ($count != NULL)
+            {
+                $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);                
+            }
+            $this->local()->addval($values);
         }
 /**
  * Generates a new, unique, sequential id value
@@ -234,7 +244,7 @@
             $this->ons[$id][$on] = $fn;
         }
 /**
- * Get the KS for onloading the ons
+ * Get the JS for onloading the ons
  *
  * @return string
  */

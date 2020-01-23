@@ -3,13 +3,14 @@
  * A class to allow some setup for all pages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  *
  */
     namespace Support;
+
     use Support\Context as Context;
 /**
- * A class implementing a RedBean model for Form beans
+ * A class that supports setup code for all pages
  */
     class Setup
     {
@@ -17,7 +18,7 @@
  * For user code
  *
  * @param \Support\Context    $context  The context object
- * @param object    $page     An object about the page about to be rendered
+ * @param object              $page     An object about the page about to be rendered
  *
  * @return void
  */

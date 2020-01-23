@@ -2,6 +2,18 @@
     If your page uses AJAX include this line at the start of the file - it loads a different version of jQuery.
 {% set ajax = TRUE %}
 #}
+{#
+    If your page uses the Framework JS util package include this line at the start of the file
+{% set fwutils = TRUE %}
+#}
+{#
+    If your page uses Parsley include this line at the start of the file
+{% set parsley = TRUE %}
+#}
+{#
+    If your page uses the inlin editable package include this line at the start of the file
+{% set editable = TRUE %}
+#}
 
 {#
     If your page does NOT need not use bootbox then this will stop the JS being loaded for it
@@ -45,12 +57,6 @@
 
 {% block scripts %}
 {# <script src=""></script> for any other JS files you need #}
-{# Bring in parsley - uses attrmacro above
-<script {{h.urlattr(fwurls.parsley)}}></script>
-#}
-{# Bring in framework util functions - uses attrmacro above
-<script {{h.urlattr(fwurls.utiljs)}}></script>
-#}
 {% endblock scripts %}
 
 {% block setup %}

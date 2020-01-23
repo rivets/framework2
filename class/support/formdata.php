@@ -1,16 +1,14 @@
 <?php
 /**
- * A class that contains code to access the PHP super globals
+ * A class that allows extension of the base class that accesses PHP superglobals
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  *
  */
     namespace Support;
 /**
- * Utility class that returns generally useful information about parts of the site
- * The parent class (FWSiteInfo) contains a set of functions that are used by the
- * admin pages of the site.
+ * A class that allows extension of the base class that accesses PHP superglobals
  */
     class FormData extends \Framework\FormData
     {

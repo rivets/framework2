@@ -75,20 +75,20 @@
 /**
  * Prevents object cloning
  * @internal
- * @throws Exception
+ * @throws \Framework\Exception\InternalError
  */
         public function __clone()
         {
-            throw new \Exception('Cannot clone Singleton objects');
+            throw new \Framework\Exception\InternalError('Cannot clone Singleton objects');
         }
 /**
  * Prevents object serialization
  * @internal
- * @throws Exception
+ * @throws \Framework\Exception\InternalError
  */
         public function __sleep()
         {
-            throw new \Exception('Cannot serialize Singleton objects');
+            throw new \Framework\Exception\InternalError('Cannot serialize Singleton objects');
         }
 /**
  * Returns the only instance if is called as a function
