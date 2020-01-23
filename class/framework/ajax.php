@@ -1,16 +1,12 @@
 <?php
 /**
- * Class for handling AJAX calls invoked from ajax.php. You could integrate the
- * AJAX handling calls into the normal index.php RESTful route, but sometimes
- * keeping them separate is a good thing to do.
+ * Class for handling AJAX calls invoked from ajax.php.
  *
- * It assumes that ajax calls are made to {{base}}/ajax.php via a POST and that
- * they have at least a parameter called 'op' that defines what is to be done.
- *
- * Of course, this is entirely arbitrary and you can do whatever you want!
+ * It assumes that RESTful ajax calls are made to {{base}}/ajax and that
+ * the first part of the URL after ajax is an opcode that defines what is to be done.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2018 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
     namespace Framework;
 
