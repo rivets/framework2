@@ -17,7 +17,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    for (var op in testingajaxops)
+    for (var op in testing.ajaxops)
     {
         $('#'+op).on('click', 'testing.test'+op);
     }

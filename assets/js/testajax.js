@@ -2,8 +2,7 @@
 
         ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
 
-        makecall : function (url, data)
-        {
+        makecall : function (url, data){
             var rdata = '';
             var rcode = 200;
             data.async = true;
@@ -13,88 +12,75 @@
             });
             return [rdata, rcode];
         },
-        testbean: function ()
-        {
+        testbean: function (){
             let t = $(this).parent();
             bootbox.alert('Bean operation test complete');
         },
     
-        testconfig : function ()
-        {
+        testconfig : function (){
             let t = $(this).parent();
             bootbox.alert('Config operation test complete');
         },
     
-        testhints: function ()
-        {
+        testhints: function (){
             let t = $(this).parent();
             bootbox.alert('Hints operation test complete');
         },
 
-        testpaging: function ()
-        {
+        testpaging: function (){
             let t = $(this).parent();
             bootbox.alert('Paging operation test complete');
         },
     
-        testpwcheck: function ()
-        {
+        testpwcheck: function (){
             let t = $(this).parent();
             bootbox.alert('Pwcheck operation test complete');
         },
     
-        testshared: function ()
-        {
+        testshared: function (){
             let t = $(this).parent();
             bootbox.alert('Shared operation test complete');
         },
     
-        testtable: function ()
-        {
+        testtable: function (){
             let t = $(this).parent();
             bootbox.alert('Table operation test complete');
         },
     
-        testtablecheck: function ()
-        {
+        testtablecheck: function (){
             let t = $(this).parent();
             bootbox.alert('Tablecheck operation test complete');
         },
     
-        testablesearch: function ()
-        {
+        testablesearch: function (){
             let t = $(this).parent();
             bootbox.alert('Tablesearch operation test complete');
         },
     
-        testoggle : function()
-        {
+        testoggle : function(){
             let t = $(this).parent();
             bootbox.alert('Toggle operation test complete');
         },
     
-        testunique: function ()
-        {
+        testunique: function (){
             let t = $(this).parent();
             bootbox.alert('Unique operation test complete');
         },
     
-        testuniquenl :function ()
-        {
+        testuniquenl :function (){
             let t = $(this).parent();
             var res = testing.makecall('uniquenl/user/login/'+goodlogin, { method: 'GET' });
-                if (res[0] == 200)
-                {
-                    t.append('<p>Existing login fails - 200 on existing login</p>');
-                }
-                else if (jx.status == 404)
-                {
-                   t.append('<p>Existing login OK</p>');
-                }
-                else
-                {
-                    t.append('<p>Existing login fails - '+res[0]+'</p>'+res[1]);
-                }
+            if (res[0] == 200)
+            {
+                t.append('<p>Existing login fails - 200 on existing login</p>');
+            }
+            else if (jx.status == 404)
+            {
+               t.append('<p>Existing login OK</p>');
+            }
+            else
+            {
+                t.append('<p>Existing login fails - '+res[0]+'</p>'+res[1]);
             }
             res = testing.makecall('uniquenl/user/login/'+goodlogin+'XXXXX', { method: 'GET' });
             if (res[0] == 200)
