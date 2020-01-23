@@ -78,7 +78,7 @@
         let t = $(this).parent();
         makecall('uniquenl/user/login/'+goodlogin, { method: 'GET' }, function(e){
             t.append('<p>Existing login fails - 200 on existing login</p>');
-        }), function(jx){
+        }, function(jx){
             if (jx.status == 404)
             {
                t.append('<p>Existing login OK</p>');
@@ -87,10 +87,10 @@
             {
                 t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
             }
-        }));
+        });
         makecall('uniquenl/user/login/'+goodlogin+'XXXXX', { method: 'GET' }).done(function(e){
             t.append('<p>Non-existent login OK</p>');
-        }), function(jx){
+        }, function(jx){
             t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
         });
         t.append('<p>Test Complete</p>'));
