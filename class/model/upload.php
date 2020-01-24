@@ -115,7 +115,7 @@
  *
  * @return array
  */
-        private function mkpath(\Support\Context $context, object $owner, bool $public, $array = array();$da) : array
+        private function mkpath(\Support\Context $context, object $owner, bool $public, array $da) : array
         {
             $dir = getcwd();
             chdir($context->local()->basedir());
