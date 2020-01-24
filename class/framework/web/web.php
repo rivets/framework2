@@ -33,9 +33,9 @@
  */
         private $cache      = [];
 /**
- * @var ?object   The Context object
+ * @var object   The Context object
  */
-        private $context      = NULL;
+        private $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
@@ -93,7 +93,7 @@
             }
             else
             {
-                $length = '';
+                $length = NULL;
             }
             $this->sendheaders($code, self::HTMLMIME, $length);
             if ($msg !== '')
@@ -439,7 +439,6 @@
         public function setCSP() : void
         {
             $local = $this->context->local();
-            /** @psalm-suppress PossiblyNullPropertyFetch */
             if ($local->configval('usecsp'))
             {
                 $csp = '';
