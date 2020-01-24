@@ -38,10 +38,10 @@
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
+ * @psalm-suppress PropertyTypeCoercion
  */
         protected function __construct()
         {
-            /** @psalm-suppress InvalidPropertyAssignmentValue **/
             $this->context = Context::getinstance();
         }
 /**

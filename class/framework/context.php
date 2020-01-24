@@ -299,7 +299,7 @@
  *
  * @param string    $name   A Role Context
  *
- * @throws \Framework\Exception\InternalErrorl
+ * @throws \Framework\Exception\InternalError
  *
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
@@ -406,6 +406,7 @@
  *
  * @return \Framework\Web\Web
  * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function web() : \Framework\Web\Web
         {
