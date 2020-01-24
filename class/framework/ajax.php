@@ -303,7 +303,7 @@
                 $bid = $fdt->mustpost('id');
             }
 
-            $bn = $context->load($type, $bid);
+            $bn = $context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
@@ -331,7 +331,7 @@
  * @param string  $field
  * @param bool    $idok    Allow the id field
  *
- * @throws Framework\Exception\Forbidden
+ * @throws \Framework\Exception\Forbidden
  *
  * @return bool
  */
@@ -391,15 +391,16 @@
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
             $method = $context->web()->method();
-            if (method_exists($bean, 'canAjaxBean'))
+            /** @psalm-suppress UndefinedConstant */
+            $class = REDBEAN_MODEL_PREFIX.$bean;
+            if (method_exists($class, 'canAjaxBean'))
             {
-                $bean->canAjaxBean($context, $method);
+                /** @psalm-suppress InvalidStringClass */
+                $class::canAjaxBean($context, $method);
             }
             switch ($method)
             {
             case 'POST': // make a new one /ajax/bean/KIND/
-                /** @psalm-suppress UndefinedConstant */
-                $class = REDBEAN_MODEL_PREFIX.$bean;
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
