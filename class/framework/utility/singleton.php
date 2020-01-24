@@ -48,8 +48,8 @@
 /**
  * Checks, instantiates and returns the only instance of the using class.
  *
- * @template T
- * @psalm-return T
+ * @template object
+ * @psalm-return object
  *
  * @psalm-suppress MismatchingDocblockReturnType
  * @psalm-suppress ReservedWord
@@ -95,8 +95,8 @@
  *
  * @internal
  * 
- * @template T
- * @psalm-return T
+ * @template object
+ * @psalm-return object
  * 
  * @return object
  */
