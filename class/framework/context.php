@@ -78,8 +78,7 @@
  *
  * @throws \Framework\Exception\ParameterCount
  *
- * @return array The parameter values in an array indexed from 0
- * @psalm-return non-empty-array<array-key, array<array-key, string>|string>
+ * @return array The parameter values in an array indexed from 0 with last parameter, anything left in an array
  */
         public function restcheck(int $count) : array
         {
