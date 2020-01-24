@@ -22,11 +22,11 @@
  * @param string    $key      Your API key
  * @param string    $ip       The IP address to check
  * @param array     $options  Options for the check - see proxycheck.io API definition
- * @param string    $tag      A tag to identify this call.
+ * @param ?string    $tag      A tag to identify this call.
  *
  * @return array
  */
-        public static function check(string $key, string $ip, array $options, string $tag = '') : array
+        public static function check(string $key, string $ip, array $options, ?string $tag = NULL) : array
         {          
             // Check if they have enabled the blocked country feature by providing countries.
             if (!empty($options['countries']))
