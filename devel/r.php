@@ -104,6 +104,17 @@ class R
     }
 /**
  * @param string $b
+ * @param array $y
+ * @param string $s
+ *
+ * @return \RedBeanPHP\OODBBean
+ */
+    public static function findOrCreate(string $b, array $y = [], string $s = '') : \RedBeanPHP\OODBBean
+    {
+        return self::$dummy;
+    }
+/**
+ * @param string $b
  * @param string $x
  * @param array $y
  * @return int
