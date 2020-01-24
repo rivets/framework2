@@ -137,7 +137,7 @@
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back = ob_get_clean(); # will get used later in make500
                 }
-                /** @psalm-suppress: RedundantCondition **/
+                /** @psalm-suppress RedundantCondition **/
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     try
@@ -497,7 +497,7 @@
         {
             if (!is_object($this->twig))
             {
-                throw \Framework\Exception\InternalError('No Twig');
+                throw new \Framework\Exception\InternalError('No Twig');
             }
             if (is_array($vname))
             {
