@@ -146,12 +146,12 @@
  *
  * @param int    	$code	The HTTP return code
  * @param string	$mtype	The mime-type of the file
- * @param string 	$length	The length of the data
+ * @param ?int    	$length	The length of the data
  * @param string	$name	A file name
  *
  * @return void
  */
-        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '') : void
+        public function sendheaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
@@ -159,7 +159,7 @@
             {
                 header('Content-Type: '.$mtype);
             }
-            if ($length !== '')
+            if ($length !== NULL)
             {
                 header('Content-Length: '.$length);
             }
