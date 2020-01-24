@@ -145,10 +145,10 @@
  * @throws \Framework\Exception\BadValue
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function config(Context $context) : void
         {
-            $rest = $context->rest();
             list($name) = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
@@ -283,12 +283,11 @@
  * @internal
  * @param \Support\Context	$context	The context object for the site
  *
- * @throws \Framework\Exception\BadValue
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function toggle(Context $context) : void
         {
-            $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
             if (count($rest) > 2)
             {
@@ -302,7 +301,8 @@
                 $field = $fdt->mustpost('field');
                 $bid = $fdt->mustpost('id');
             }
-
+            $beans = $this->findRow($context, self::$toggleperms);
+            $this->beancheck($beans, $type, $field);
             $bn = $context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
@@ -317,7 +317,6 @@
             }
             else
             {
-                $this->fieldExists($type, $field); // make sure the bean has this field....
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
                 R::store($bn);
             }
@@ -338,8 +337,8 @@
         protected function beanCheck(array $beans, string $bean, string $field, bool $idok = FALSE) : bool
         {
             $this->fieldExists($bean, $field, $idok);
-            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
-            { // no permission to update this field
+            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])) || !$this->fieldExists($type, $field))
+            { // no permission to update this field or it doesn't exist
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
             return TRUE;
@@ -465,7 +464,7 @@
  */
         private final function shared(Context $context) : void
         {
-//            $beans = $this->findRow($context, self::$sharedperms);
+            $beans = $this->findRow($context, self::$sharedperms);
             list($b1, $id1, $b2, $id2) = $context->restcheck(4);
             $bn1 = $context->load($b1, (int) $id1);
             $bn2 = $context->load($b2, (int) $id2);
