@@ -39,7 +39,7 @@
         protected $roles        = [];
 /** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
         protected $contexts     = [];
-/** @var \RedBeanPHP\OODBBean[]		A cache for JS ons beans */
+/** @var string[]		A cache for JS ons beans */
         protected $ons          = [];
 /*
  ***************************************
@@ -75,6 +75,8 @@
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
  * @param integer   $count  The number to check for
+ *
+ * @throws \Framework\Exception\ParameterCount
  *
  * @return string[] The parameter values in an array indexed from 0
  */
@@ -238,8 +240,10 @@
  * @param string   $id
  * @param string   $on
  * @param string   $fn
+ *
+ * @return void
  */
-        public function saveon($id, $on, $fn)
+        public function saveon($id, $on, $fn) : void
         {
             $this->ons[$id][$on] = $fn;
         }
@@ -333,8 +337,8 @@
  * Load a bean
  *
  * @param string	$bean	    A bean type name
- * @param int    	$id	        A bean id
- * @param boolean   $forupdate  If TRUE then use loadforupdate
+ * @param int    	$id	    A bean id
+ * @param boolean       $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *

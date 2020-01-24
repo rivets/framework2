@@ -141,6 +141,15 @@ class R
         return '';
     }
 /**
+ * @param string $b
+ * @param array $y
+ * @return int
+ */
+    public static function exec(string $b,  array $y = []) : int
+    {
+        return 0;
+    }
+/**
  * @param object $b
  * @return void
  */

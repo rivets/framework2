@@ -204,7 +204,7 @@
  */
         private function fieldExists(string $type, string $field, bool $idok = FALSE) : void
         {
-            if (!\Support\Siteinfo::hasField($type, $field) || (!$idok && $field == 'id'))
+            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field == 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
@@ -420,7 +420,7 @@
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
                 list($bean, $id, $field, $more) = $context->restcheck(3);
                 $this->beanCheck($beans, $bean, $field);
-                $bn = $context->load($bean, $id, TRUE);
+                $bn = $context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
                 $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
                 R::store($bn);
@@ -435,14 +435,14 @@
                 {
                     throw new \Framework\Exception\BadValue('Missing value');
                 }
-                $bn = $context->load($bean, $id);
+                $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    $this->mklog($context, 2, $bean, $id, '*', json_encode($bn->export()));
+                    $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
-                if (method_exists($bean, 'delete'))
+                if (method_exists($class, 'delete'))
                 {
-                    $bean->delete($context);
+                    $bn->delete($context);
                 }
                 R::trash($bn);
                 break;
@@ -467,8 +467,8 @@
         {
 //            $beans = $this->findRow($context, self::$sharedperms);
             list($b1, $id1, $b2, $id2) = $context->restcheck(4);
-            $bn1 = $context->load($b1, $id1);
-            $bn2 = $context->load($b2, $id2);
+            $bn1 = $context->load($b1, (int) $id1);
+            $bn2 = $context->load($b2, (int) $id2);
             switch ($context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
@@ -515,7 +515,7 @@
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                if (\Support\Siteinfo::tableExists($table))
+                if (\Support\SiteInfo::tableExists($table))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
                     /* NOT REACHED */
@@ -540,7 +540,7 @@
             }
             else
             {
-                if (\Support\Siteinfo::isFWTable($table))
+                if (\Support\SiteInfo::isFWTable($table))
                 {
                     throw new \Framework\Exception\Forbidden('Permission Denied');
                     /* NOT REACHED */
@@ -562,7 +562,7 @@
                 case 'PUT': // change a field
                     $value = $fdt->mustput('value');
                     $f1 = $rest[2];
-                    if (\Support\Siteinfo::hasField($table, $f1))
+                    if (\Support\SiteInfo::hasField($table, $f1))
                     {
                         throw new \Framework\Exception\BadValue('Bad field name');
                         /* NOT REACHED */
@@ -570,7 +570,7 @@
                     switch ($rest[3])
                     {
                     case 'name':
-                        if (\Support\Siteinfo::hasField($table, $value))
+                        if (\Support\SiteInfo::hasField($table, $value))
                         {
                             throw new \Framework\Exception\BadValue('Field already exists');
                             /* NOT REACHED */
@@ -862,7 +862,7 @@
         private function tablecheck(Context $context) : void
         {
             list($name) = $context->restcheck(1);
-            if (\Support\Siteinfo::tableExists($name))
+            if (\Support\SiteInfo::tableExists($name))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
