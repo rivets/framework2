@@ -103,7 +103,7 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param bool   $throw      If TRUE Then throw an exception
+ * @param bool      $throw      If TRUE Then throw an exception
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -259,7 +259,7 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param mixed     $default    A default value
+ * @param mixed         $default        A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -376,7 +376,7 @@
  * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string    $default    A default value
+ * @param string        $default        A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -538,7 +538,7 @@
  */
         public function cookiea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
+            return new \ArrayIterator(\filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
         }
 /**
  * Look in the $_COOKIE array for a key and  apply filters
@@ -547,11 +547,11 @@
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
- * @return mixed
+ * @return string|null|false
  */
         public function filtercookie(string $name, int $filter, $options = '')
         {
-            return filter_input(INPUT_COOKIE, $name, $filter, $options);
+            return \filter_input(INPUT_COOKIE, $name, $filter, $options);
         }
 /*
  ******************************
