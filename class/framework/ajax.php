@@ -53,7 +53,7 @@
 //          ['BeanName'...]]
         ];
 /**
- * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
+ * Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -295,7 +295,6 @@
             }
             else // this is legacy
             {
-                $bean = $rest[1];
                 $fdt = $context->formdata();
                 $type = $fdt->mustpost('bean');
                 $field = $fdt->mustpost('field');
@@ -337,7 +336,7 @@
         protected function beanCheck(array $beans, string $bean, string $field, bool $idok = FALSE) : bool
         {
             $this->fieldExists($bean, $field, $idok);
-            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])) || !$this->fieldExists($type, $field))
+            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])) || !$this->fieldExists($bean, $field))
             { // no permission to update this field or it doesn't exist
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
@@ -378,6 +377,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function bean(Context $context) : void
         {
@@ -392,6 +392,7 @@
             $method = $context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
+            /** @psalm-suppress RedundantCondition */
             if (method_exists($class, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
@@ -400,6 +401,7 @@
             switch ($method)
             {
             case 'POST': // make a new one /ajax/bean/KIND/
+                /** @psalm-suppress RedundantCondition */
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -439,6 +441,7 @@
                 {
                     $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
+                /** @psalm-suppress RedundantCondition */
                 if (method_exists($class, 'delete'))
                 {
                     $bn->delete($context);
@@ -461,13 +464,21 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function shared(Context $context) : void
         {
-            $beans = $this->findRow($context, self::$sharedperms);
+
             list($b1, $id1, $b2, $id2) = $context->restcheck(4);
             $bn1 = $context->load($b1, (int) $id1);
             $bn2 = $context->load($b2, (int) $id2);
+            $beans = $this->findRow($context, self::$sharedperms);
+/**
+ * @todo This check is not right as the array format is slightly different for sharedperms
+ *       Fix when this gets properly implemented.
+ */
+            $this->beancheck($beans, $bn1->getMeta('type'), '');
+            $this->beancheck($beans, $bn2->getMeta('type'), '');
             switch ($context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
@@ -495,6 +506,7 @@
  * @throws \Framework\Exception\BadOperation
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function table(Context $context) : void
         {
@@ -533,7 +545,7 @@
                         $bn->$fname = $fdt->post(['sample', $ix], '');
                     }
                 }
-                $id = \R::store($bn);
+                \R::store($bn);
                 \R::trash($bn);
                 \R::exec('truncate `'.$table.'`');
             }
@@ -605,24 +617,13 @@
  * @throws \Framework\Exception\BadOperation
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function tablesearch(Context $context) : void
         {
-            $beans = $this->findRow($context, self::$tablesearchperms);
             list($bean, $field, $op) = $context->restcheck(3);
-            //if (!$context->hasadmin())
-            //{
-            //    throw new \Framework\Exception\Forbidden('Permission denied');
-            //    /* NOT REACHED */
-            //}
-            //$rest = $context->rest();
-            //$bean = $rest[1];
-            //if (!\Support\Siteinfo::tableExists($bean))
-            //{
-            //    throw new \Framework\Exception\BadValue('No such table');
-            //    /* NOT REACHED */
-            //}
             $fdt = $context->formdata();
+            $beans = $this->findRow($context, self::$tablesearchperms);
             $this->beanCheck($beans, $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
             $value = $fdt->get('value', '');
             $incv = ' ?';
@@ -661,6 +662,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function paging(Context $context) : void
         {
@@ -688,6 +690,7 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function hints(Context $context) : void
         {
@@ -756,6 +759,7 @@
  * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         public final function operation($function, array $perms) : void
         {
@@ -825,6 +829,7 @@
  * @param \Support\Context   $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function unique(Context $context) : void
         {
@@ -843,6 +848,7 @@
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function uniquenl(Context $context) : void
         {
@@ -857,6 +863,7 @@
  * @param \Support\Context    $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function tablecheck(Context $context) : void
         {
@@ -876,6 +883,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function pwcheck(Context $context) : void
         {
