@@ -17,7 +17,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var string[]  The Context object
+ * @var string[]  A list of the Framework DB tables
  */
         protected static $fwtables = [
             FW::CONFIG,
@@ -32,9 +32,9 @@
             FW::USER,
         ];
 /**
- * @var ?object  The Context object
+ * @var \Support\Context  The Context object
  */
-        protected $context = NULL;
+        protected $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
