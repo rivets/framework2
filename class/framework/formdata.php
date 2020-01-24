@@ -517,6 +517,7 @@
  * @param string	$name	The key
  *
  * @throws \Framework\Exception\BadValue
+ * 
  * @return \ArrayIterator
  */
         public function mustcookiea(string $name) : \ArrayIterator

@@ -41,6 +41,7 @@
         <file name="class/framework/utility/jwt/ExpiredException.php" />
         <file name="class/framework/utility/jwt/SignatureInvalidException.php" />
         <file name="class/framework/utility/jwt/jwt.php" /> -->
+        <file name="class/framework/utility/plural.php" />
         <file name="class/framework/utility/proxycheck.php" />
         <file name="class/framework/utility/singleton.php" />
         <file name="class/framework/web/statuscodes.php" />
