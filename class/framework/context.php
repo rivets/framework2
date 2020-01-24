@@ -277,10 +277,12 @@
  *
  * @param string    $name   A Role name
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @throws \Framework\Exception\InternalError
+ *
+ * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolename(string $name) : ?\RedBeanPHP\OODBBean
+        public function rolename(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -297,10 +299,12 @@
  *
  * @param string    $name   A Role Context
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @throws \Framework\Exception\InternalError
+ *
+ * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolecontext(string $name) : ?\RedBeanPHP\OODBBean
+        public function rolecontext(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {

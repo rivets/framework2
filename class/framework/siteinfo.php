@@ -41,6 +41,7 @@
  */
         protected function __construct()
         {
+            /** @psalm-suppress InvalidPropertyAssignmentValue **/
             $this->context = Context::getinstance();
         }
 /**

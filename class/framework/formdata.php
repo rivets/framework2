@@ -538,7 +538,7 @@
  */
         public function cookiea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return new \ArrayIterator(\filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
+            return new \ArrayIterator((\filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name])) ? $_COOKIE[$name] : $dflt);
         }
 /**
  * Look in the $_COOKIE array for a key and  apply filters
