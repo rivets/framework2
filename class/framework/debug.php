@@ -12,9 +12,9 @@
     class Debug
     {
 /**
- * @var ?Resource    The file descriptor
+ * @var ?\resource    The file descriptor
  */
-        private static $fd = NULL;
+        private static $fd = FALSE;
 /**
  * @var integer     header count
  */
@@ -26,7 +26,7 @@
  */
         private static function setup() : void
         {
-            if (self::$fd === NULL)
+            if (self::$fd === FALSE)
             {
                 self::$fd = fopen(Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
             }

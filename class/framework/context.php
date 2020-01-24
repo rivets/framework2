@@ -39,7 +39,7 @@
         protected $roles        = [];
 /** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
         protected $contexts     = [];
-/** @var string[int][string]		A cache for JS ons */
+/** @var string[][]		A cache for JS ons */
         protected $ons          = [];
 /*
  ***************************************
