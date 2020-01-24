@@ -8,6 +8,7 @@
     namespace Framework;
 
     use \Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes as StatusCodes;
     use \Support\Context as Context;
 /**
  * A class that all provides a base class for any class that wants to implement a site action
@@ -92,7 +93,7 @@
  */
         public function setCSP() : void
         {
-            \Framework\Web\Web::getinstance()->setCSP();
+            Web::getinstance()->setCSP();
         }
 /**
  * Look to see if there are any IF... headers, and deal with them. Exit if a 304 or 412 is generated.
@@ -218,8 +219,8 @@
             }
             else
             {
-                $this->set304Cache($context); // set up the cahce headers for the 304 response.
-                $web->send304($this->makeetag($context));
+                $this->set304Cache($context); // set up the cache headers for the 304 response.
+                $web->send304();
             }
             exit;
         }

@@ -60,7 +60,7 @@
 
             if (count($fpt) == 2 && $fpt[0] == 'file')
             { # this is access by upload ID
-                $file = \R::load('upload', $fpt[1]);
+                $file = \R::load('upload', (int) $fpt[1]);
                 if ($file->getID() == 0)
                 {
                     throw new \Framework\Exception\BadValue('No such file');
