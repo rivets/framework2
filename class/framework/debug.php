@@ -41,7 +41,7 @@
         public static function show(string $str) : void
         {
             self::setup();
-            /** @psalm-suppress PossiblyNullArgument  */
+            /** @psalm-suppress PossiblyFalseArgument  */
             fputs(self::$fd, $str."\n");
         }
 /**
@@ -57,7 +57,7 @@
             ob_start();
             /** @psalm-suppress ForbiddenCode */
             var_dump(...$vars);
-            /** @psalm-suppress PossiblyNullArgument  */
+            /** @psalm-suppress PossiblyFalseArgument  */
             fputs(self::$fd, ob_get_clean());
         }
 /**
@@ -67,8 +67,9 @@
  */
         public static function flush() : void
         {
-            if (self::$fd !== NULL)
+            if (self::$fd !== FALSE)
             {
+                /** @psalm-suppress PossiblyFalseArgument  */
                 fflush(self::$fd);
             }
         }
