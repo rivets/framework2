@@ -62,7 +62,10 @@
                 throw new \Exception('Unhandled Exception Test');
 
             case 'mail' : # this lets you test email sending
-                /** @psalm-suppress PossiblyNullPropertyFetch PossiblyNullArgument **/
+/**
+ * @psalm-suppress PossiblyNullPropertyFetch
+ * @psalm-suppress PossiblyNullArgument
+ **/
                 $foo = mail($context->user()->email, 'test', 'test');
                 $context->local()->message(\Framework\Local::MESSAGE, 'sent');
                 break;
