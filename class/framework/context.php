@@ -299,7 +299,7 @@
  *
  * @param string    $name   A Role Context
  *
- * @throws \Framework\Exception\InternalError
+ * @throws \Framework\Exception\InternalErrorl
  *
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
@@ -383,7 +383,8 @@
  * @psalm-suppress MoreSpecificReturnType
  *
  * @return \Framework\Local
- * @psalm-suppress InvalidReturnStatement
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function local() : \Framework\Local
         {
@@ -393,7 +394,8 @@
  * Return the Formdata object
  *
  * @return \Support\FormData
- * @psalm-suppress InvalidReturnStatement
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function formdata() : \Support\FormData
         {
@@ -403,7 +405,7 @@
  * Return the Web object
  *
  * @return \Framework\Web\Web
- * @psalm-suppress InvalidReturnStatement
+ * @psalm-suppress LessSpecificReturnStatement
  */
         public function web() : \Framework\Web\Web
         {
