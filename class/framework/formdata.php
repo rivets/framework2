@@ -541,7 +541,7 @@
             return new \ArrayIterator(filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]) ? $_COOKIE[$name] : $dflt);
         }
 /**
- * Look in the $_POST array for a key and  apply filters
+ * Look in the $_COOKIE array for a key and  apply filters
  *
  * @param string	$name		The key
  * @param int		$filter		Filter values - see PHP manual
