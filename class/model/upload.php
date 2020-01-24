@@ -108,9 +108,14 @@
 /**
  * Make a path for a new file
  *
+ * @param \Support\Context $context
+ * @param object           $owner
+ * @param bool             $public
+ * @param array            $da
+ *
  * @return array
  */
-        private function mkpath($context, $owner, $public, $da) : array
+        private function mkpath(\Support\Context $context, object $owner, bool $public, $array = array();$da) : array
         {
             $dir = getcwd();
             chdir($context->local()->basedir());

@@ -295,10 +295,11 @@
  * Deliver JSON response.
  *
  * @param mixed    $res
+ * @param int      $code
  *
  * @return void
  */
-        public function sendJSON($res, $code = StatusCodes::HTTP_OK) : void
+        public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
         {
             $this->sendstring(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
