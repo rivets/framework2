@@ -95,6 +95,7 @@ class R
  * @param string $b
  * @param string $x
  * @param array $y
+ *
  * @return ?\RedBeanPHP\OODBBean
  */
     public static function findOne(string $b, string $x = '', array $y = []) : ?\RedBeanPHP\OODBBean

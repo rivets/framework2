@@ -245,7 +245,7 @@
  */
         public function saveon($id, $on, $fn) : void
         {
-            $this<[$id][$on] = $fn;
+            $this->ons[$id][$on] = $fn;
         }
 /**
  * Get the JS for onloading the ons
