@@ -70,6 +70,7 @@
         <file name="class/support/login.php" />
         <file name="class/support/nocache.php" />
         <file name="class/support/setup.php" />
+        <file name="class/support/siteaction.php" />
         <file name="class/support/siteinfo.php" />
         <file name="ajax.php" />
         <file name="index.php" />

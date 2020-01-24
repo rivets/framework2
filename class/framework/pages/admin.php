@@ -22,7 +22,7 @@
         const NOTMODEL = [FW::TABLE];
         const HASH     = 'sha384';
         
-        use \Support\Nocache; // don't cache admin pages.
+        use \Support\NoCache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
  *

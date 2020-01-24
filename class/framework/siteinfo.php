@@ -17,7 +17,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var $object  The Context object
+ * @var string[]  The Context object
  */
         protected static $fwtables = [
             FW::CONFIG,
@@ -32,7 +32,7 @@
             FW::USER,
         ];
 /**
- * @var array  Array of the names of the beans used by the framework
+ * @var ?object  The Context object
  */
         protected $context = NULL;
 /**
