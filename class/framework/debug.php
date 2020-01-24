@@ -12,7 +12,7 @@
     class Debug
     {
 /**
- * @var ?\resource    The file descriptor
+ * @var \resource|false    The file descriptor
  */
         private static $fd = FALSE;
 /**

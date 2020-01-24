@@ -18,6 +18,7 @@
         <file name="class/framework/exception/badoperation.php" />
         <file name="class/framework/exception/badvalue.php" />
         <file name="class/framework/exception/forbidden.php" />
+        <file name="class/framework/exception/internalerror.php" />
         <file name="class/framework/exception/missingbean.php" />
         <file name="class/framework/exception/parametercount.php" />
         <file name="class/framework/faiterator.php" />
