@@ -324,6 +324,7 @@
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
+                /** @psalm-suppress UnusedFunctionCall **/
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
@@ -378,6 +379,7 @@
  * @psalm-suppress MoreSpecificReturnType
  *
  * @return \Framework\Local
+ * @psalm-suppress InvalidReturnStatement
  */
         public function local() : \Framework\Local
         {
@@ -387,6 +389,7 @@
  * Return the Formdata object
  *
  * @return \Support\FormData
+ * @psalm-suppress InvalidReturnStatement
  */
         public function formdata() : \Support\FormData
         {
@@ -396,6 +399,7 @@
  * Return the Web object
  *
  * @return \Framework\Web\Web
+ * @psalm-suppress InvalidReturnStatement
  */
         public function web() : \Framework\Web\Web
         {
