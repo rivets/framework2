@@ -78,7 +78,8 @@
  *
  * @throws \Framework\Exception\ParameterCount
  *
- * @return string[] The parameter values in an array indexed from 0
+ * @return array The parameter values in an array indexed from 0
+ * @psalm-return non-empty-array<array-key, array<array-key, string>|string>
  */
         public function restcheck(int $count) : array
         {
@@ -110,6 +111,7 @@
  * @param object    $user
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function sameuser($user) : bool
         {
@@ -174,6 +176,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function mustbeadmin() : void
         {
@@ -188,6 +191,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function mustbedeveloper() : void
         {
@@ -228,6 +232,7 @@
  * @param string	$str The prefix for the id
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function newid(string $str = 'id')
         {
@@ -242,6 +247,7 @@
  * @param string   $fn
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function saveon($id, $on, $fn) : void
         {
@@ -251,6 +257,7 @@
  * Get the JS for onloading the ons
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function getons()
         {
@@ -272,12 +279,17 @@
  * @param string    $name   A Role name
  *
  * @return ?\RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function rolename(string $name) : ?\RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->roles[$name] = \R::findOne(FW::ROLENAME, 'name=?', [$name]);
+                if (!is_object($bn = \R::findOne(FW::ROLENAME, 'name=?', [$name])))
+                {
+                    throw new \Framework\Exception\InternalError('Missing role name: '.$name);
+                }
+                $this->roles[$name] = $bn;
             }
             return $this->roles[$name];
         }
@@ -287,12 +299,17 @@
  * @param string    $name   A Role Context
  *
  * @return ?\RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function rolecontext(string $name) : ?\RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->contexts[$name] = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name]);
+                if (!is_object($bn = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name])))
+                {
+                    throw new \Framework\Exception\InternalError('Missing context name: '.$name);
+                }
+                $this->contexts[$name] = $bn;
             }
             return $this->contexts[$name];
         }
