@@ -495,10 +495,7 @@
  */
         public function addval($vname, $value = '', $tglobal = FALSE) : void
         {
-            if (!is_object($this->twig))
-            {
-                throw new \Framework\Exception\InternalError('No Twig');
-            }
+            assert(is_object($this->twig)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
             {
                 foreach ($vname as $key => $aval)

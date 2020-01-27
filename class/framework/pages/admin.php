@@ -124,7 +124,7 @@
                     \Framework\Utility\CSRFGuard::getinstance()->check();
                     try
                     {
-                        list($error, $emess) = $obj->edit($context); // handle the edit result
+                        [$error, $emess] = $obj->edit($context); // handle the edit result
                     }
                     catch (\Exception $e)
                     {

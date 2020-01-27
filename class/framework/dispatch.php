@@ -175,7 +175,7 @@
 
                 if (is_array($tpl))
                 { // page is returning more than just a template filename
-                    list($tpl, $mime, $code) = $tpl;
+                    [$tpl, $mime, $code] = $tpl;
                 }
                 break;
 

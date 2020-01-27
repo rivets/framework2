@@ -479,7 +479,7 @@
             }
             if ($_SERVER['QUERY_STRING'] !== '')
             { # there is a query string so get rid it of it from the URI
-                list($uri) = explode('?', $uri);
+                [$uri] = explode('?', $uri);
             }
             $req = array_filter(explode('/', $uri)); # array_filter removes empty elements - trailing / or multiple /
 /*

@@ -250,7 +250,7 @@
  */
         public function sendfile(string $path, string $name = '', string $mime = '') : void
         {
-            list($code, $range, $length) = $this->hasrange(filesize($path));
+            [$code, $range, $length] = $this->hasrange(filesize($path));
             if ($mime === '')
             {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -287,7 +287,7 @@
         public function sendstring(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
-            list($code, $range, $length) = $this->hasrange(strlen($value), $code);
+            [$code, $range, $length] = $this->hasrange(strlen($value), $code);
             $this->sendheaders($code, $mime, $length);
             echo empty($range) ? $value : substr($value, $range[0], $length);
         }

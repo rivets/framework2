@@ -149,7 +149,7 @@
  */
         private final function config(Context $context) : void
         {
-            list($name) = $context->restcheck(1);
+            [$name] = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($context->web()->method())
@@ -425,7 +425,7 @@
                 break;
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
-                list($bean, $id, $field, $more) = $context->restcheck(3);
+                [$bean, $id, $field, $more] = $context->restcheck(3);
                 $this->beanCheck($beans, $bean, $field);
                 $bn = $context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
@@ -478,7 +478,7 @@
         private final function shared(Context $context) : void
         {
 
-            list($b1, $id1, $b2, $id2) = $context->restcheck(4);
+            [$b1, $id1, $b2, $id2] = $context->restcheck(4);
             $bn1 = $context->load($b1, (int) $id1);
             $bn2 = $context->load($b2, (int) $id2);
             $beans = $this->findRow($context, self::$sharedperms);
@@ -630,7 +630,7 @@
  */
         private final function tablesearch(Context $context) : void
         {
-            list($bean, $field, $op) = $context->restcheck(3);
+            [$bean, $field, $op] = $context->restcheck(3);
             $fdt = $context->formdata();
             $beans = $this->findRow($context, self::$tablesearchperms);
             $this->beanCheck($beans, $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
@@ -843,7 +843,7 @@
         private function unique(Context $context) : void
         {
             $beans = $this->findRow($context, self::$uniqueperms);
-            list($bean, $field, $value) = $context->restcheck(3);
+            [$bean, $field, $value] = $context->restcheck(3);
             $this->beanCheck($beans, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
@@ -861,7 +861,7 @@
  */
         private function uniquenl(Context $context) : void
         {
-            list($bean, $field, $value) = $context->restcheck(3);
+            [$bean, $field, $value] = $context->restcheck(3);
             $this->beanCheck(self::$uniquenlperms, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
@@ -876,7 +876,7 @@
  */
         private function tablecheck(Context $context) : void
         {
-            list($name) = $context->restcheck(1);
+            [$name] = $context->restcheck(1);
             if (\Support\SiteInfo::tableExists($name))
             {
                 $context->web()->notfound(); // error if it exists....
