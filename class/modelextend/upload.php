@@ -89,7 +89,7 @@
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
 // Now delete the file
-            unlink($context->local()->basedir().$this->fname);
+            unlink($context->local()->basedir().$this->bean->fname);
 /**** Put any cleanup code of yours after this line ****/
             /*
              * Your code goes here
