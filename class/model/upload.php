@@ -109,17 +109,17 @@
  * Make a path for a new file
  *
  * @param \Support\Context $context
- * @param object           $owner
+ * @param ?object           $owner
  * @param bool             $public
  * @param array            $da
  *
  * @return array
  */
-        private function mkpath(\Support\Context $context, object $owner, bool $public, array $da) : array
+        private function mkpath(\Support\Context $context, ?object $owner, bool $public, array $da) : array
         {
             $dir = getcwd();
             chdir($context->local()->basedir());
-            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m')];
+            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')];
             foreach ($pname as $pd)
             { # walk the path cding and making if needed
                 $this->mkch($pd);

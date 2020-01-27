@@ -392,7 +392,10 @@
             $method = $context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
-            /** @psalm-suppress RedundantCondition */
+            /**
+             * @psalm-suppress RedundantCondition
+             * @psalm-suppress ArgumentTypeCoercion
+             */
             if (method_exists($class, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
@@ -401,7 +404,10 @@
             switch ($method)
             {
             case 'POST': // make a new one /ajax/bean/KIND/
-                /** @psalm-suppress RedundantCondition */
+                /**
+                 * @psalm-suppress RedundantCondition
+                 * @psalm-suppress ArgumentTypeCoercion
+                 */
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -441,7 +447,10 @@
                 {
                     $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
-                /** @psalm-suppress RedundantCondition */
+                /**
+                 * @psalm-suppress RedundantCondition
+                 * @psalm-suppress ArgumentTypeCoercion
+                 */
                 if (method_exists($class, 'delete'))
                 {
                     $bn->delete($context);
