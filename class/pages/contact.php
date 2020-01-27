@@ -34,6 +34,7 @@
                 $mail->addAddress(Config::SYSADMIN);
 
                 $mail->Subject = $fd->post('subject', 'No Subject');
+                /** @psalm-suppress UndefinedPropertyAssignment */
                 $mail->Body= $msg;
                 $mail->send();
 

@@ -37,7 +37,7 @@
         protected $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
- * @internal
+ * 
  * @psalm-suppress PropertyTypeCoercion
  */
         protected function __construct()
