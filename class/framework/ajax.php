@@ -200,15 +200,16 @@
  * @param bool      $idok    Allow the id field
  *
  * @throws \Framework\Exception\BadValue
- * @return void
+ * @return bool
  */
-        private function fieldExists(string $type, string $field, bool $idok = FALSE) : void
+        private function fieldExists(string $type, string $field, bool $idok = FALSE) : bool
         {
             if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field == 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
             }
+            return TRUE;
         }
 /**
  * Check down an array with permissions in the first field and return the first
