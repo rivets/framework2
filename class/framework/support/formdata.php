@@ -3,9 +3,9 @@
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2019 Newcastle University
+ * @copyright 2015-2020 Newcastle University
  */
-    namespace Framework;
+    namespace Framework\Support;
 
     use Framework\Web\Web as Web;
     use \Support\Context as Context;
@@ -590,7 +590,7 @@
  */
         public function filea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\FAIterator($name) : new \ArrayIterator($dflt);
+            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\Support\FAIterator($name) : new \ArrayIterator($dflt);
         }
     }
 ?>

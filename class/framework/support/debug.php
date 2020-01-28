@@ -3,9 +3,9 @@
  * Contains definition of Debug class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2019 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
-    namespace Framework;
+    namespace Framework\Support;
 /**
  * A class that handles various debugging related things
  */
