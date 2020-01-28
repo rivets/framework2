@@ -338,7 +338,7 @@
             $this->fieldExists($bean, $field, $idok);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])) || !$this->fieldExists($bean, $field))
             { // no permission to update this field or it doesn't exist
-                throw new \Framework\Exception\Forbidden('Permission denied');
+                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean.'::'.$field);
             }
             return TRUE;
         }
