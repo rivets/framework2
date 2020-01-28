@@ -384,11 +384,11 @@
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
-            $log = in_array($bean, self::$audit);
             if (!isset($beans[$bean]))
             {
-                throw new \Framework\Exception\Forbidden('Permission denied');
+                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
+            $log = in_array($bean, self::$audit);
             $method = $context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
@@ -451,7 +451,7 @@
                  * @psalm-suppress RedundantCondition
                  * @psalm-suppress ArgumentTypeCoercion
                  */
-                if (method_exists($class, 'delete'))
+                if (method_exists($class, 'delete')) // call the clean-up function if it has one
                 {
                     $bn->delete($context);
                 }
@@ -911,26 +911,26 @@
  *
  * @throws \Framework\Exception\Forbidden
  *
- * @psalm-suppress PossiblyNullReference
- *
  * @return void
+ * @psalm-suppress PossiblyNullReference
  */
         protected final function checkPerms(Context $context, array $perms) : void
         {
+            $user = $context->user();
             foreach ($perms as $rcs)
             {
                 if (is_array($rcs[0]))
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        if (is_object($context->user()->hasrole($orv[0], $orv[1])))
+                        if (is_object($user->hasrole($orv[0], $orv[1])))
                         {
                             continue 2;
                         }
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif (!is_object($context->user()->hasrole($rcs[0], $rcs[1])))
+                elseif (!is_object($user->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
@@ -940,11 +940,11 @@
  * Check that the caller is allowed to perform the operation.
  *
  * @internal
- * @param \Support\Context   $context  The Context Object
- * @param boolean  $login    If TRUE Then user must be logged in.
- * @param array    $perms    As specified for the various arrays defined above
+ * @param \Support\Context  $context  The Context Object
+ * @param bool              $login    If TRUE Then user must be logged in.
+ * @param array             $perms    As specified for the various arrays defined above
  *
- * @return boolean  Does not return if user is not allowed.
+ * @return bool  Does not return if user is not allowed.
  */
         private function checkLogin(Context $context, bool $login, array $perms) : bool
         {
