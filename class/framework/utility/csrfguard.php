@@ -29,7 +29,7 @@
  *
  * @return string	The token
  */
-        private function maketoken($uname)
+        private function maketoken(string $uname) : string
         {
             $token = bin2hex(random_bytes(self::STRENGTH));
             /** @psalm-suppress RedundantCondition - not sure why psalm complains about this */
@@ -45,9 +45,9 @@
  * @param string	$uname		The name to be used for storing the token into the Session data
  * @param string	$tocheck	The token to be compared with what is stored
  *
- * @return boolean	The token
+ * @return bool
  */
-        private function validate($uname, $tocheck)
+        private function validate($uname, $tocheck) : bool
         {
             if (!isset($_SESSION[$uname]))
             { # no token in there so we are not checking so it's valid
@@ -62,7 +62,7 @@
  *
  * @return array
  */
-        public function generate()
+        public function generate() : array
         {
             $name ='CSRFGuard_'.mt_rand(0,mt_getrandmax());
             return [$name,  $this->maketoken($name)];
@@ -72,7 +72,7 @@
  *
  * @return string
  */
-        public function inputs()
+        public function inputs() : string
         {
             $grd = $this->generate();
             return '<input type="hidden" name="'.self::NAME.'" value="'.$grd[0].'"/><input type="hidden" name="'.self::TOKEN.'" value="'.$grd[1].'"/>';
@@ -87,7 +87,7 @@
  *
  * @return void
  */
-        public function check($type = INPUT_POST)
+        public function check(int $type = INPUT_POST) : void
         {
             switch ($type)
             {

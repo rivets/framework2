@@ -119,7 +119,7 @@
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
-                        throw new \Framework\Exception\InternalError('Oddness');
+                        throw new \Framework\Exception\BadValue('Bean param');
                     }
                     \Framework\Utility\CSRFGuard::getinstance()->check();
                     try
