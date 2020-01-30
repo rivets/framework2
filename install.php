@@ -415,7 +415,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'forcessl', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
+        'forcessl', 'confemail', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
     ];
     $cvalue = [];
     $options = [];

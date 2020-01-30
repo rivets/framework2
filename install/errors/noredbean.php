@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
 -->
 
-    <link rel="stylesheet" href="<?php echo $fwurls['bootcss'][0]; ?>" media="screen,print"/>
+    <link rel="stylesheet" href="<?php global $fwurls; echo $fwurls['bootcss'][0]; ?>" media="screen,print"/>
 
 </head>
 <body lang="en-GB">
