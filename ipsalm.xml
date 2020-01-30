@@ -53,6 +53,7 @@
         <MissingParamType errorLevel="info" />
 
         <RedundantCondition errorLevel="info" />
+        <UndefinedGlobalVariable errorLevel="info"/>
         <UndefinedPropertyAssignment errorLevel="info" />
         <UndefinedPropertyFetch errorLevel="info" />
         <DocblockTypeContradiction errorLevel="info" />

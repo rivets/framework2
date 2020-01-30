@@ -709,27 +709,30 @@
      *
      * the link for install.php is to catch when people try to run install again after a successful install
      */
+                $private = $options['private'] ? 1 : 0;
+                $resister = $options['register'] ? 1 : 0;
                 $pages = [
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
+                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $options['private'] ? 1 : 0],
+                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $private],
                     'home'          => [\Framework\SiteAction::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
                     'install.php'   => [\Framework\SiteAction::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
-                    'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
-                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
-                    'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
+                    'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private],
+                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
+                    'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $private],
                 ];
                 foreach ($pages as $pname => $data)
                 {
                     $page = \R::dispense(DBPREFIX.'page');
+                    /** @psalm-suppress PossiblyUndefinedArrayOffset **/
                     $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
                     $page->source = $data[1];
