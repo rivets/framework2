@@ -28,7 +28,7 @@
         {
             if (self::$fd === FALSE)
             {
-                self::$fd = fopen(Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
+                self::$fd = fopen(\Framework\Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
             }
         }
 /**
