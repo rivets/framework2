@@ -3,7 +3,7 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2019 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
     global $cwd, $verbose;
 
@@ -45,13 +45,13 @@
 /**
  * Store a new framework config item
  *
- * @param string    $name
- * @param string    $value
- * @param bool          $local     If TRUE then this value should not be overwritten by remote updates
+ * @param string           $name
+ * @param string|array     $value
+ * @param bool             $local     If TRUE then this value should not be overwritten by remote updates
  *
  * @return void
  */
-    function addfwconfig($name, $value, $local)
+    function addfwconfig(string $name, $value, bool $local) : void
     {
         $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
@@ -99,9 +99,6 @@
             {
                 echo '<h2>There has been an installer system error</h2>';
             }
-            echo '<pre>';
-            var_dump($error);
-            echo '</pre>';
             cleanup();
         }
         if (class_exists('R'))
@@ -113,15 +110,15 @@
  * Deal with untrapped exceptions - see PHP documentation
  *
  * @param Exception	$e
+ *
+ * @psalm-return never-return
  */
     function exception_handler($e)
     {
         echo '<h2>There has been an installer system exception</h2>';
-        echo '<pre>';
-        var_dump($e);
-        echo '</pre>';
         cleanup();
         exit;
+        /** NOT REACHED **/
     }
 /**
  * Called when a PHP error is detected - see PHP documentation for details
