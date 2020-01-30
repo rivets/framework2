@@ -656,7 +656,7 @@
                 $user = R::dispense(DBPREFIX.'user');
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
-                $user->password = password_hash($cvalue['adminpw'], PASSWORD_DEFAULT);
+                $user->password = password_hash((string) $cvalue['adminpw'], PASSWORD_DEFAULT);
                 $user->active = 1;
                 $user->confirm = 1;
                 $user->joined = $now;
@@ -681,7 +681,7 @@
                 {
                     if ($pars[1])
                     {
-                        addfwconfig($fld, $cvalue[$fld], TRUE);
+                        addfwconfig($fld, (string) $cvalue[$fld], TRUE);
                     }
                 }
                 foreach ($fwurls as $k => $v)
