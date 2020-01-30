@@ -5,8 +5,6 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2020 Newcastle University
  */
-    global $cwd, $verbose;
-
     define('DBPREFIX', '');
     define('FWCONTEXT', 'Site');
     define('TESTCONTEXT', 'Test');
@@ -375,15 +373,15 @@
  * Set up important values
  */
     $vals = [
-             'name'         => $name,
-             'dir'          => __DIR__,
-             'base'         => $dir,
-             'fwurls'       => $fwurls,
-             'siteurl'      => 'http://'.$host.$dir.'/',
-             'noreply'      => 'noreply@'.$host,
-             'adminemail'   => $_SERVER['SERVER_ADMIN'],
-             'sendmail'     => $sendmail !== '',
-        ];
+        'name'         => $name,
+        'dir'          => __DIR__,
+        'base'         => $dir,
+        'fwurls'       => $fwurls,
+        'siteurl'      => 'http://'.$host.$dir.'/',
+        'noreply'      => 'noreply@'.$host,
+        'adminemail'   => $_SERVER['SERVER_ADMIN'],
+        'sendmail'     => $sendmail !== '',
+    ];
 
     $fail = FALSE;
     if (preg_match('/#/', $name))
