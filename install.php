@@ -712,6 +712,7 @@
                 /**
                  * @psalm-suppress PossiblyUndefinedArrayOffset
                  * @psalm-suppress TypeDoesNotContainType
+                 * @psalm-suppress RedundantCondition
                  */
                 $private = $options['private'] ? 1 : 0;
                 $register = $options['register'] ? 1 : 0;
