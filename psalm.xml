@@ -13,18 +13,18 @@
         <file name="class/config/framework.php" />
         <file name="class/framework/ajax.php" />
         <file name="class/framework/context.php" />
-        <file name="class/framework/debug.php" />
         <file name="class/framework/dispatch.php" />
+        <file name="class/framework/handlerole.php" />
+        <file name="class/framework/local.php" />
+        <file name="class/framework/siteaction.php" />
+
         <file name="class/framework/exception/badoperation.php" />
         <file name="class/framework/exception/badvalue.php" />
         <file name="class/framework/exception/forbidden.php" />
         <file name="class/framework/exception/internalerror.php" />
         <file name="class/framework/exception/missingbean.php" />
         <file name="class/framework/exception/parametercount.php" />
-        <file name="class/framework/faiterator.php" />
-        <file name="class/framework/formdata.php" />
-        <file name="class/framework/handlerole.php" />
-        <file name="class/framework/local.php" />
+
         <file name="class/framework/pages/admin.php" />
         <file name="class/framework/pages/assets.php" />
         <file name="class/framework/pages/catchall.php" />
@@ -32,9 +32,12 @@
         <file name="class/framework/pages/developer.php" />
         <file name="class/framework/pages/getfile.php" />
         <file name="class/framework/pages/userlogin.php" />
+        <file name="class/framework/support/debug.php" />
+        <file name="class/framework/support/faiterator.php" />
+        <file name="class/framework/support/formdata.php" />
+        <file name="class/framework/support/siteinfo.php" />
         <file name="class/framework/support/table.php" />
-        <file name="class/framework/siteaction.php" />
-        <file name="class/framework/siteinfo.php" />
+
         <file name="class/framework/utility/csrfguard.php" />
         <file name="class/framework/utility/fmailer.php" />
         <!-- <file name="class/framework/utility/jwt/BeforeValidException.php" />
@@ -44,8 +47,10 @@
         <file name="class/framework/utility/plural.php" />
         <file name="class/framework/utility/proxycheck.php" />
         <file name="class/framework/utility/singleton.php" />
+
         <file name="class/framework/web/statuscodes.php" />
         <file name="class/framework/web/web.php" />
+
         <file name="class/model/form.php" />
         <file name="class/model/formfield.php" />
         <file name="class/model/fwconfig.php" />
@@ -56,14 +61,17 @@
         <file name="class/model/rolename.php" />
         <file name="class/model/upload.php" />
         <file name="class/model/user.php" />
+
         <file name="class/modelextend/fwedit.php" />
         <file name="class/modelextend/makeguard.php" />
         <file name="class/modelextend/upload.php" />
         <file name="class/modelextend/user.php" />
+
         <file name="class/pages/contact.php" />
         <file name="class/pages/home.php" />
         <file name="class/pages/multi.php" />
         <file name="class/pages/nopage.php" />
+
         <file name="class/support/ajax.php" />
         <file name="class/support/context.php" />
         <file name="class/support/formdata.php" />
@@ -72,6 +80,7 @@
         <file name="class/support/setup.php" />
         <file name="class/support/siteaction.php" />
         <file name="class/support/siteinfo.php" />
+
         <file name="ajax.php" />
         <file name="index.php" />
         <ignoreFiles>
