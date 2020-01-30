@@ -710,11 +710,11 @@
      * the link for install.php is to catch when people try to run install again after a successful install
      */
                 /**
-                 * @psalm-suppree PossiblyUndefinedArrayOffset
+                 * @psalm-suppress PossiblyUndefinedArrayOffset
                  * @psalm-suppress TypeDoesNotContainType
                  */
                 $private = $options['private'] ? 1 : 0;
-                $resister = $options['register'] ? 1 : 0;
+                $register = $options['register'] ? 1 : 0;
                 $pages = [
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
