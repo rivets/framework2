@@ -147,6 +147,7 @@
         { # this is an internal error so we need to stop
             cleanup();
             exit;
+            /** NOT REACHED **/
         }
 /*
  * If we get here it's a warning or a notice, so we aren't stopping
@@ -163,7 +164,7 @@
  *
  * @return object
  */
-    function makerc(string $type, string $name)
+    function makerc(string $type, string $name) : object
     {
         $drname = \R::dispense($type);
         $drname->name = $name;
@@ -182,7 +183,7 @@
  *
  * @return object
  */
-    function makerole(string $type, string $now, $owner, $cname, $rname)
+    function makerole(string $type, string $now, object $owner, object $cname, object $rname) : object
     {
         $role = \R::dispense($type);
         $role->otherinfo = '-';
