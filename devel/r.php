@@ -38,6 +38,19 @@ class R
     {
     }
 /**
+ * @return void
+ */
+    public static function nuke() : void
+    {
+    }
+/**
+ * @param string $table
+ * @return void
+ */
+    public static function wipe(string $table) : void
+    {
+    }
+/**
  * @param string $b
  * @return \RedBeanPHP\OODBBean
  */
