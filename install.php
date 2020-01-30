@@ -709,6 +709,10 @@
      *
      * the link for install.php is to catch when people try to run install again after a successful install
      */
+                /**
+                 * @psalm-suppree PossiblyUndefinedArrayOffset
+                 * @psalm-suppress TypeDoesNotContainType
+                 */
                 $private = $options['private'] ? 1 : 0;
                 $resister = $options['register'] ? 1 : 0;
                 $pages = [
