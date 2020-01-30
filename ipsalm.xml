@@ -53,12 +53,15 @@
         <MissingParamType errorLevel="info" />
 
         <RedundantCondition errorLevel="info" />
-        <UndefinedGlobalVariable errorLevel="suppress"/>
         <UndefinedPropertyAssignment errorLevel="info" />
         <UndefinedPropertyFetch errorLevel="info" />
         <DocblockTypeContradiction errorLevel="info" />
         <RedundantConditionGivenDocblockType errorLevel="info" />
-
+        <UndefinedGlobalVariable>
+            <errorLevel type="suppress">
+              <directory name="install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
+            </errorLevel>
+        </UndefinedGlobalVariable>
         <UnresolvableInclude errorLevel="info" />
 
         <RawObjectIteration errorLevel="info" />
