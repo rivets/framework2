@@ -568,6 +568,14 @@
  */
         public function filedata(string $name, $key = '') : array
         {
+            if (!isset($_FILES[$name]))
+            {
+                throw new \Framework\Exception\InternalError('Missing _FILES element '.name);
+            }
+            if ($key !== '' && !isset($_FILES[$name]['name'][$key]))
+            {
+                throw new \Framework\Exception\InternalError('Missing _FILES array element '.name);
+            }
             $x = $_FILES[$name];
             if ($key !== '')
             {
