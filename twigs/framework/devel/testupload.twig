@@ -15,6 +15,7 @@
             {{f.startform({method: 'post', multi: TRUE})}}
                 {{f.file({id: 'f0', name: 'upload', label: 'File'})}}
                 {{f.checkbox({labels: ['Public'], values: [1], names: ['public']})}}
+                {{f.submit({value: 'Upload'})}}
             {{f.endform()}}
         </article>
     </section>
