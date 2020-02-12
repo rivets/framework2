@@ -54,6 +54,10 @@
                 $tpl = '@devel/testajax.twig';
                 break;
 
+            case 'upload' :
+                $tpl = '@devel/testupload.twig';
+                break;
+
             case 'fail': # this lets you test error handling
                 $x = 2 / 0;
                 break;
