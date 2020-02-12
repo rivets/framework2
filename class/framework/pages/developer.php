@@ -60,7 +60,7 @@
                 if ($fd->hasfile('upload'))
                 {
                     $upl = \R::dispense('upload');
-                    $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
+                    $upl->savefile($context, $fa, FALSE, $context->user(), $ix);
                     $context->local()->addval('download', $upl->getID());
                 }
                 if (count($rest) == 3)
