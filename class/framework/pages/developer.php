@@ -56,6 +56,29 @@
 
             case 'upload' :
                 $tpl = '@devel/testupload.twig';
+                $fd = $context->formdata();
+                if ($fd->hasfile('upload'))
+                {
+                    $upl = \R::dispense('upload');
+                    $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
+                    $context->local()->addval('download', $upl->getID());
+                }
+                if (count($rest) == 3)
+                {
+                    $id = (int) $rest[2];
+                    switch ($rest[1])
+                    {
+                    case 'get':
+                        $context->local()->addval('download', $id);
+                        break;
+
+                    case'delete':
+                        $bn = $context->load('upload', $id);
+                        $bn->delete($context);
+                        \R::trash($bn);
+                        break;
+                    }
+                }
                 break;
 
             case 'fail': # this lets you test error handling

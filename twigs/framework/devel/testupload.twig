@@ -17,6 +17,18 @@
             {{f.endform()}}
         </article>
     </section>
+    {% if download is defined %}
+        <section class="row">
+            <article class="ml-auto col-md-10 mr-auto">
+                <p class="class="text-center">
+                    <a class="btn btn-primary" href="{{base}}/devel/upload/get/{{download}}">Download</a>
+                </p>
+                <p class="class="text-center">
+                    <a class="btn btn-primary" href="{{base}}/devel/upload/delete/{{download}}">Delete</a>
+                </p>
+            </article>
+        </section>
+    {% endif %}
 {% endblock main %}
 
 {% block pagefooter %}
