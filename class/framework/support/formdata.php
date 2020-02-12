@@ -564,6 +564,8 @@
  * @param string    $name
  * @param mixed     $key
  *
+ * @throws \Framework\Exception\InternalError
+ *
  * @return array
  */
         public function filedata(string $name, $key = '') : array
