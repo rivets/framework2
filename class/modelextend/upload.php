@@ -77,6 +77,8 @@
 /**
  * Called when you try to trash to an upload. Do any cleanup in here
  *
+ * @param \Support\Context $context
+ *
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
@@ -88,7 +90,7 @@
             { // not allowed
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
-// Now delete the file
+// Now delete the associated file
             unlink($context->local()->basedir().$this->bean->fname);
 /**** Put any cleanup code of yours after this line ****/
             /*
