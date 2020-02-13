@@ -564,7 +564,7 @@
  * @param string    $name
  * @param mixed     $key
  *
- * @throws \Framework\Exception\InternalError
+ * @throws \Framework\Exception\BadValue
  *
  * @return array
  */
@@ -572,11 +572,11 @@
         {
             if (!isset($_FILES[$name]))
             {
-                throw new \Framework\Exception\InternalError('Missing _FILES element '.name);
+                throw new \Framework\Exception\BadValue('Missing _FILES element '.name);
             }
             if ($key !== '' && !isset($_FILES[$name]['name'][$key]))
             {
-                throw new \Framework\Exception\InternalError('Missing _FILES array element '.name);
+                throw new \Framework\Exception\BadValue('Missing _FILES array element '.name);
             }
             $x = $_FILES[$name];
             if ($key !== '')
