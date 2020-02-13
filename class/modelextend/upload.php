@@ -75,7 +75,7 @@
              */
         }
 /**
- * Called when you try to trash to an upload. Do any cleanup in here
+ * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
  *
  * @param \Support\Context $context
  *
