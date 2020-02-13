@@ -12,6 +12,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
+            {% include '@util/message.twig' %}
             {{f.startform({method: 'post', multi: TRUE})}}
                 {{f.file({id: 'f0', name: 'upload', label: 'File'})}}
                 {{f.checkbox({labels: ['Public'], values: [1], names: ['public']})}}
