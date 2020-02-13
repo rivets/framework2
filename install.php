@@ -208,7 +208,7 @@
  */
     function mkstring(string $str): string
     {
-        return "'".preg_replace("'", "\\'", $str)."'";
+        return "'".preg_replace("/'/", "\\'", $str)."'";
     }
 /**
  * Make a bool constant
