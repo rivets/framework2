@@ -199,6 +199,28 @@
         \R::store($rname);
         return $role;
     }
+/**
+ * Make a string constant
+ *
+ * @param string $str
+ *
+ * @return string
+ */
+    function mkstring(string $str): string
+    {
+        return "'".preg_replace("'", "\\'", $str)."'";
+    }
+/**
+ * Make a bool constant
+ *
+ * @param bool $bl
+ *
+ * @return string
+ */
+    function mkbool(bool $bl) : bool
+    {
+        return $bl ? 'TRUE' : 'FALSE';
+    }
     $verbose = isset($_GET['verbose']);
 /*
  * Remember where we are in the file system
@@ -441,33 +463,43 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
-            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],  # name of const, add to DB?, non-optional?, type
-            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'],
-            'dbname'        => ['DB', FALSE, TRUE, 'string'],
-            'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
-            'dbpass'        => ['DBPW', FALSE, TRUE, 'string'],
-            'sitename'      => ['SITENAME', TRUE, TRUE, 'string'],
-            'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string'],
-            'siteurl'       => ['', TRUE, TRUE, 'string'],
-            'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string'],
-            'admin'         => ['', FALSE, TRUE, ''],
-            'adminpw'       => ['', FALSE, TRUE, ''],
-            'cadminpw'      => ['', FALSE, TRUE, ''],
-            'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
-            'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
-            'confemail'     => ['CONFEMAIL', FALSE, FALSE, 'bool'],
-            'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
-            'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
-            'usecsp'        => ['', TRUE, FALSE, 'bool'],
-            'reportcsp'     => ['', TRUE, FALSE, 'bool'],
-            'forcessl'      => ['', FALSE, FALSE, 'bool'],
-            'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
-            'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
-            'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
-            'protocol'      => ['PROTOCOL', FALSE, FALSE, 'string'],
-            'smtpuser'      => ['SMTPUSER', FALSE, FALSE, 'string'],
-            'smtppass'      => ['SMTPPW', FALSE, FALSE, 'string'],
-            'csmtppass'     => ['', FALSE, FALSE, 'string'],
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string', 'mysql'],  # name of const, add to DB?, non-optional?, type, default
+            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string', 'localhost'],
+            'dbname'        => ['DB', FALSE, TRUE, 'string', ''],
+            'dbuser'        => ['DBUSER', FALSE, TRUE, 'string', ''],
+            'dbpass'        => ['DBPW', FALSE, TRUE, 'string', ''],
+
+            'sitename'      => ['SITENAME', TRUE, TRUE, 'string', ''],
+            'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string', ''],
+            'siteurl'       => ['', TRUE, TRUE, 'string', ''],
+            'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string', ''],
+
+            'admin'         => ['', FALSE, TRUE, '', ''],
+            'adminpw'       => ['', FALSE, TRUE, '', ''],
+            'cadminpw'      => ['', FALSE, TRUE, '', ''],
+
+            'regexp'        => ['DBRX', FALSE, FALSE, 'bool', FALSE],
+            'register'      => ['REGISTER', FALSE, FALSE, 'bool', FALSE],
+            'confemail'     => ['CONFEMAIL', FALSE, FALSE, 'bool', FALSE],
+
+            'public'        => ['UPUBLIC', FALSE, FALSE, 'bool', FALSE],
+            'private'       => ['UPRIVATE', FALSE, FALSE, 'bool', FALSE],
+
+            'usecsp'        => ['', TRUE, FALSE, 'bool', TRUE],
+            'reportcsp'     => ['', TRUE, FALSE, 'bool', FALSE],
+            'forcessl'      => ['', FALSE, FALSE, 'bool', FALSE],
+
+            'recaptcha'     => ['RECAPTCHA', FALSE, TRUE, 'int', 0],
+            'recaptchakey'  => ['RECAPTCHAKEY', FALSE, FALSE, 'string', ''],
+            'recaptchasecret'  => ['RECAPTCHASECRET', FALSE, FALSE, 'string', ''],
+
+            'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool', FALSE],
+            'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string', ''],
+            'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string', ''],
+            'protocol'      => ['PROTOCOL', FALSE, FALSE, 'string', ''],
+            'smtpuser'      => ['SMTPUSER', FALSE, FALSE, 'string', ''],
+            'smtppass'      => ['SMTPPW', FALSE, FALSE, 'string', ''],
+            'csmtppass'     => ['', FALSE, FALSE, 'string', ''],
         ];
 
         foreach (array_keys($cvars) as $v)
@@ -482,38 +514,18 @@
                 exit;
             }
         }
-        $direrr = [];
-        if (!file_exists('debug'))
-        {
-            if (!@mkdir('debug', 0770)) // make a directory for debugging output
-            {
-                $direrr[] = 'Cannot create directory "debug"';
-            }
-        }
 /*
- *  Make directories for uploads if required
+ * Make some directories that might be useful now or in the future if options change
  */
-        if ($options['public'] && !file_exists('assets'.DIRECTORY_SEPARATOR.'public'))
-        { # make the directory for public files
-            if (!@mkdir('assets'.DIRECTORY_SEPARATOR.'public', 0766))
-            {
-                $direrr[] = 'Cannot create directory "assets'.DIRECTORY_SEPARATOR.'public"';
-            }
-        }
-
-        if ($options['private'] && !file_exists('private'))
-        { # make the directory for private files
-            if (!@mkdir('private', 0766))
-            {
-                $direrr[] = 'Cannot create directory "private"';
-            }
-        }
-
-        if (!file_exists('twigcache'))
+        $direrr = [];
+        foreach (['debug', 'assets'.DIRECTORY_SEPARATOR.'public', 'private', 'twigcache'] as $mdir)
         {
-            if (!@mkdir('twigcache')) # in case we turn caching on for twig.
+            if (!file_exists($mdir))
             {
-                $direrr[] = 'Cannot create directory "twigcache"';
+                if (!@mkdir($mdir, 0770)) // make a directory for debugging output
+                {
+                    $direrr[] = 'Cannot create directory "'.$mdir.'"';
+                }
             }
         }
 
@@ -536,7 +548,7 @@
             }
             fputs($fd, '<?php'.PHP_EOL.'    namespace Config;'.PHP_EOL);
             fputs($fd, '/**'.PHP_EOL.' * Generated by framework installer - '.date('r').PHP_EOL.'*/'.PHP_EOL.'    class Config'.PHP_EOL.'    {'.PHP_EOL);
-            fputs($fd, "        const BASEDNAME\t= '".$dir."';".PHP_EOL);
+            fputs($fd, "        const BASEDNAME\t= ".mkstring($dir).';'.PHP_EOL);
             fputs($fd, "        const PUTORPATCH\t= 'PATCH';".PHP_EOL);
             fputs($fd, "        const SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', (string) $cvalue['sitename'])."';".PHP_EOL);
 
@@ -544,26 +556,46 @@
             {
                 if ($pars[0] !== '')
                 { # Only save relevant values - see above
+                    fputs($fd, "        const ".$pars[0]."\t= ");
                     switch($pars[3])
                     {
                     case 'string':
                         if (isset($cvalue[$fld]))
                         {
-                            fputs($fd, "        const ".$pars[0]."\t= ");
-                            fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
+                            fputs($fd, mkstring($cvalue[$fld]).';'.PHP_EOL);
                         }
                         elseif ($pars[2])
-                        { // this is required
+                        { // this is required and should exist
+                        }
+                        else
+                        {
+                            fputs($fd, mkstring($pars[4]).';'.PHP_EOL);
                         }
                         break;
                     case 'bool':
                         if (isset($options[$fld]))
                         {
-                            fputs($fd, "        const ".$pars[0]."\t= ");
-                            fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+                            fputs($fd, mkbool($options[$fld]).';'.PHP_EOL);
                         }
                         elseif ($pars[2])
                         { // this is required
+                        }
+                        else
+                        {
+                            fputs($fd, mkbool($pars[4]).';'.PHP_EOL);
+                        }
+                        break;
+                    case 'int':
+                        if (isset($options[$fld]))
+                        {
+                            fputs($fd, $options[$fld].';'.PHP_EOL);
+                        }
+                        elseif ($pars[2])
+                        { // this is required
+                        }
+                        else
+                        {
+                            fputs($fd, $pars[4].';'.PHP_EOL);
                         }
                         break;
                     }
