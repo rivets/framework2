@@ -83,10 +83,10 @@
  *
  * @return void
  */
-        public function delete(Context $context) : void
+        public function delete() : void
         {
 /**** Do not change this code *****/
-            if (!$this->bean->canaccess($context->user(), 'd'))
+            if (!$this->bean->canaccess(Context::getinstance()->user(), 'd'))
             { // not allowed
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
