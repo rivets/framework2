@@ -57,27 +57,34 @@
             case 'upload' :
                 $tpl = '@devel/testupload.twig';
                 $fd = $context->formdata();
-                if ($fd->hasfile('upload'))
+                try
                 {
-                    $upl = \R::dispense('upload');
-                    $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
-                    $context->local()->addval('download', $upl->getID());
-                }
-                if (count($rest) == 3)
-                {
-                    $id = (int) $rest[2];
-                    switch ($rest[1])
+                    if ($fd->hasfile('upload'))
                     {
-                    case 'get':
-                        $context->local()->addval('download', $id);
-                        break;
-
-                    case'delete':
-                        $bn = $context->load('upload', $id);
-                        $bn->delete($context);
-                        \R::trash($bn);
-                        break;
+                        $upl = \R::dispense('upload');
+                        $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
+                        $context->local()->addval('download', $upl->getID());
                     }
+                    if (count($rest) == 3)
+                    {
+                        $id = (int) $rest[2];
+                        switch ($rest[1])
+                        {
+                        case 'get':
+                            $context->local()->addval('download', $id);
+                            break;
+
+                        case'delete':
+                            $bn = $context->load('upload', $id);
+                            $bn->delete($context);
+                            \R::trash($bn);
+                            break;
+                        }
+                    }
+                }
+                catch (\Exception $e)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $e->getmessage());
                 }
                 break;
 
