@@ -75,9 +75,8 @@
                             break;
 
                         case'delete':
-                            $bn = $context->load('upload', $id);
-                            $bn->delete($context);
-                            \R::trash($bn);
+                            \R::trash($context->load('upload', $id));
+                            $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
                             break;
                         }
                     }
