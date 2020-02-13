@@ -70,7 +70,7 @@
         {% endif %}
         {% if constant('Config\\Framework::RECAPTCHA') == 2 %}
             <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-        {% elsif constant('Config\\Framework::RECAPTCHA') == 3 %}
+        {% elseif constant('Config\\Framework::RECAPTCHA') == 3 %}
             <script src="https://www.google.com/recaptcha/api.js?render={{constant('Config\\Framework::RECAPTCHAKEY')}}"</script>
         {% endif %}
 
