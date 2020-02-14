@@ -114,14 +114,7 @@
                 'equal-to': '#pw'
             } })}}
             {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.com', parsley: {trigger: 'change'}, required: TRUE})}}
-            <div class="form-group">
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="admin" value="1"> Admin
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" name="devel" value="1"> Developer
-                </label>
-            </div>
+            {{f.checkbox({label: 'Roles', labels: ['Admin', 'Developer'], values: [1, 1], names: ['admin', 'devel']})}}
         {{f.endform()}}
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
