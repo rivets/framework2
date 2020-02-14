@@ -95,7 +95,7 @@
  */
         private static $uniquenlperms = [
             FW::USER => ['login'],
-// ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
+// 'bean' => [...fields...], ... // an array of beans and fields that can be accessed
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
