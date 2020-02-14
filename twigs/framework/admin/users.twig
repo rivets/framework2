@@ -106,7 +106,7 @@
                 'remote-reverse': 'false',
                 remote: base~'/ajax/unique/'~constant('Config\\Framework::USER')~'/login/{value}',
                 'remote-message': 'That user name is not available',
-                type': alphanum'
+                type: 'alphanum'
             } })}}
             {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE})}}
             {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {
