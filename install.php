@@ -586,9 +586,9 @@
                         }
                         break;
                     case 'int':
-                        if (isset($options[$fld]))
+                        if (isset($cvalue[$fld]))
                         {
-                            fputs($fd, $options[$fld].';'.PHP_EOL);
+                            fputs($fd, $cvalue[$fld].';'.PHP_EOL);
                         }
                         elseif ($pars[2])
                         { // this is required
