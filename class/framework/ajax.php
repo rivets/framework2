@@ -338,7 +338,7 @@
         protected function beanCheck(array $beans, string $bean, string $field, bool $idok = FALSE) : bool
         {
             $this->fieldExists($bean, $field, $idok);
-            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])) || !$this->fieldExists($bean, $field))
+            if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field or it doesn't exist
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean.'::'.$field);
             }
