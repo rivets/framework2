@@ -70,7 +70,7 @@
  * @var array   Values controlling whether or not calls on the uniquenl operation are allowed
  */
         private static $allowUniquenl = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
         ];
 /**
  * @var array   Values controlling whether or not bean operations are logged for certain beans
