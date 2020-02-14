@@ -103,7 +103,7 @@
         {{f.startform({id: 'adduform', method: 'post'})}}
             {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'username - alphanumeric characters only', required: TRUE, parsley: {
                 trigger: 'change',
-                'remote-reverse': 'false'
+                'remote-reverse': 'false',
                 remote: base~'/ajax/unique/'~constant('Config\\Framework::USER')~'/login/{value}',
                 'remote-message': 'That user name is not available',
                 type': alphanum'
