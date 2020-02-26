@@ -111,10 +111,10 @@
  * @return void
  */
 	public function ifmodcheck(Context $context) : void
-	{
-	    $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
-	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
-	    {
+        {
+            $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
+            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
+            {
                 $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
                 if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
                 {
@@ -123,9 +123,9 @@
                 $st = strtotime($ifmod);
                 /** @psalm-suppress InvalidScalarArgument */
                 $ifms = $st !== FALSE && $this->checkmodtime($context, $st); # will 304 later if there is no NONE_MATCH or nothing matches
-	    }
-	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
-	    {
+            }
+            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
+            {
                 if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
                 {
                     if ($this->exists($context))
@@ -146,14 +146,14 @@
                     }
                 }
                 $ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
-	    }
-	    if (!$ifms)
-	    { # we dont need to send the page
+            }
+            if (!$ifms)
+            { # we dont need to send the page
                 $this->etagmatched($context);
                 /* NOT REACHED */
-	    }
-	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
-	    {
+            }
+            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
+            {
                 $match = FALSE;
                 if ($_SERVER['HTTP_IF_MATCH'] == '*')
                 {
@@ -172,9 +172,9 @@
                     exit;
                     /* NOT REACHED */
                 }
-	    }
-	    if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
-	    {
+            }
+            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
+            {
                 $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
                 if (preg_match('/^(.*);(.*)$/', $ifus, $m))
                 {
@@ -187,8 +187,8 @@
                     exit;
                     /* NOT REACHED */
                 }
-	    }
-	}
+            }
+        }
 /**
  * Format a time suitable for Last-Modified header
  *
