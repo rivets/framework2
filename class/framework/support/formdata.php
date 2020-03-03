@@ -9,6 +9,7 @@
 
     use Framework\Web\Web as Web;
     use \Support\Context as Context;
+    use \Config\Config as Config;
 /**
  * A class that provides helpers for accessing form data
  */
@@ -601,6 +602,33 @@
         public function filea(string $name, array $dflt = []) : \ArrayIterator
         {
             return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\Support\FAIterator($name) : new \ArrayIterator($dflt);
+        }
+/**
+ * Deal with a recaptcha
+ *
+ */
+        public function recaptcha()
+        {
+            if (Config::RECAPTCHA != 0)
+            {
+                if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+                {
+                    $data = [
+                        'secret'    => Config::RECAPTCHASECRET,
+                        'response'  => $_POST['g-recaptcha-response'],
+                        'remoteip'  => $_SERVER['REMOTE_ADDR']
+                    ];
+                    $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
+                    $res = $client->request('POST', '/recaptcha/api/siteverify', $data); 
+                    if ($response->getStatusCode() == 200)
+                    {
+                        $jd = json_decode($response->getBody());
+                        return $jd->success;
+                    }
+                }
+                return FALSE;
+            }
+            return TRUE; // no captcha so it always works.
         }
     }
 ?>
