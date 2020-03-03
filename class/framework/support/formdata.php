@@ -606,8 +606,9 @@
 /**
  * Deal with a recaptcha
  *
+ * @return bool
  */
-        public function recaptcha()
+        public function recaptcha() : bool
         {
             if (Config::RECAPTCHA != 0)
             {
