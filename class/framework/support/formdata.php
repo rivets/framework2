@@ -620,7 +620,7 @@
                         'remoteip'  => $_SERVER['REMOTE_ADDR']
                     ];
                     $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
-                    $res = $client->request('POST', '/recaptcha/api/siteverify', $data); 
+                    $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
                     {
                         $jd = json_decode($response->getBody());
