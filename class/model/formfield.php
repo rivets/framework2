@@ -70,6 +70,7 @@
             switch ($this->bean->type)
             {
             case 'textarea':
+            case 'recaptcha':
                 break;
             default:
                 $attrs[] = 'type';
