@@ -643,21 +643,21 @@
  * Deal with a recaptcha
  *
  * @return bool
+ * @psalm-suppress UndefinedClass
+ * @psalm-suppress UndefinedConstant
  */
         public function recaptcha() : bool
         {
-            /** @psalm-suppress UndefinedConstant */
             if (Config::RECAPTCHA != 0)
             {
                 if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
                 {
-                    /** @psalm-suppress UndefinedConstant */
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,
                         'response'  => $_POST['g-recaptcha-response'],
                         'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR']
                     ];
-                    /** @psalm-suppress UndefinedClass */
+
                     $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
                     $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
