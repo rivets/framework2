@@ -135,7 +135,7 @@
                     $this->debug = TRUE;
                     ob_start();
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
-                    $this->back = ob_get_clean(); # will get used later in make500
+                    $this->back .= ob_get_clean(); # will get used later in make500
                 }
                 /** @psalm-suppress RedundantCondition **/
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
@@ -230,6 +230,7 @@
             { // try and ignore errors within errors
                 return;
             }
+            $this->back = $e->getTraceAsString();
             $ekey = $this->telladmin(
                 get_class($e).': '.$e->getMessage(),
                 0,
@@ -276,6 +277,7 @@
             { # this is an internal error or we are debugging, so we need to stop
                 $this->make500($ekey);
                 exit;
+                /* NOT REACHED */
             }
 /*
  * If we get here it's a warning or a notice, so we arent stopping
@@ -290,6 +292,8 @@
  * @param string    $file    File name
  * @param int       $line      Line number in file
  * @param string    $message    Message
+ *
+ * @return void
  */
             public function assertFail($file, $line, $message) : void
             {
@@ -300,6 +304,8 @@
                     $line
                 );
                 $this->make500($ekey);
+                exit;
+                /* NOT REACHED */
             }
 /**
  * Allow system to ignore errors
