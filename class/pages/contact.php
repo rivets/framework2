@@ -29,7 +29,7 @@
             if (($msg = $fd->post('message', '')) !== '')
             { # there is a post
                 $subj = $fd->post('subject', '');
-                $sender = $fd->filterpost('subject', '', FILTER_VALIDATE_EMAIL);
+                $sender = $fd->filterpost('sender', '', FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
                 {
                     $mail = new \Framework\Utility\FMailer;
