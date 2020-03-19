@@ -96,6 +96,47 @@
             return isset($this->putdata[$name]);
         }
 /**
+ * Look in the specified array for a key and apply filters
+ *
+ * @param int           $which          The INPUT_... selector for the array
+ * @param string	$name		The key
+ * @param mixed         $default        A default value
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @return mixed
+ */
+        private function filter(int $which, string $name, $default, int $filter, $options = '')
+        {
+            $res = filter_input($which, $name, $filter, $options);
+            return $res === FALSE || $res === NULL ? $default : $res;
+        }
+/**
+ * Look in the specified array for a key and apply filters
+ *
+ * @param int           $which          The INPUT_... selector for the array
+ * @param string	$name		The key
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ *
+ * @return mixed
+ */
+        private function mustfilter(int $which, string $name, int $filter, $options = '')
+        {
+            $res = filter_input($which, $name, $filter, $options);
+            if ($res === NULL)
+            { # no such variable
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
+            }
+            if ($res === FALSE)
+            { # filter error
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+            }
+            return $res;
+        }
+/**
  * Utility function to dig out an element from a possibly multi-dimensional array
  *
  * @internal
@@ -268,8 +309,7 @@
  */
         public function filterget(string $name, $default, int $filter, $options = '')
         {
-            $res = filter_input(INPUT_GET, $name, $filter, $options);
-            return $res === FALSE || $res === NULL ? $default : $res;
+            return $this->filter(INPUT_GET, $name, $default, $filter, $options);
         }
 /**
  * Look in the $_GET array for a key and apply filters
@@ -284,16 +324,7 @@
  */
         public function mustfilterget(string $name, int $filter, $options = '')
         {
-            $res = filter_input(INPUT_GET, $name, $filter, $options);
-            if ($res === NULL)
-            { # no such variable
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
-            }
-            if ($res === FALSE)
-            { # filter error
-                throw new \Framework\Exception\BadValue('Filter failure '.$name);
-            }
-            return $res;
+            return $this->mustfilter(INPUT_GET, $name, $filter, $options);
         }
 /*
  ***************************************
@@ -385,11 +416,10 @@
  */
         public function filterpost(string $name, $default, int $filter, $options = '')
         {
-            $res = filter_input(INPUT_POST, $name, $filter, $options);
-            return $res === FALSE || $res === NULL ? $default : $res;
+            return $this->filter(INPUT_POST, $name, $default, $filter, $options);
         }
 /**
- * Look in the $_GET array for a key and apply filters
+ * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
  * @param int   	$filter		Filter values - see PHP manual
@@ -400,16 +430,7 @@
  */
         public function mustfilterpost(string $name, int $filter, $options = '')
         {
-            $res = filter_input(INPUT_POST, $name, $filter, $options);
-            if ($res === NULL)
-            {
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
-            }
-            if ($res === FALSE)
-            {
-                throw new \Framework\Exception\BadValue('Filter failure '.$name);
-            }
-            return $res;
+            return $this->mustfilter(INPUT_POST, $name, $filter, $options);
         }
 /*
  ***************************************
@@ -550,9 +571,23 @@
  *
  * @return string|null|false
  */
-        public function filtercookie(string $name, int $filter, $options = '')
+        public function filtercookie(string $name, $default, int $filter, $options = '')
         {
-            return \filter_input(INPUT_COOKIE, $name, $filter, $options);
+            return $this->filter(INPUT_COOKIE, $name, $default, $filter, $options);
+        }
+/**
+ * Look in the $_COOKIE array for a key and apply filters
+ *
+ * @param string	$name		The key
+ * @param int   	$filter		Filter values - see PHP manual
+ * @param mixed		$options	see PHP manual
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return mixed
+ */
+        public function mustfiltercookie(string $name, int $filter, $options = '')
+        {
+            return $this->mustfilter(INPUT_COOKIE, $name, $filter, $options);
         }
 /*
  ******************************
