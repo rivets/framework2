@@ -215,7 +215,7 @@
  *
  * @param mixed $bl
  *
- * @return bool
+ * @return string
  */
     function mkbool($bl) : string
     {
