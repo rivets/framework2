@@ -3,10 +3,10 @@
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2019 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  *
  */
-    namespace Framework;
+    namespace Framework\Support;
 
     use \Support\Context as Context;
     use \Config\Framework as FW;
@@ -17,7 +17,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var $object  The Context object
+ * @var string[]  A list of the Framework DB tables
  */
         protected static $fwtables = [
             FW::CONFIG,
@@ -32,12 +32,13 @@
             FW::USER,
         ];
 /**
- * @var array  Array of the names of the beans used by the framework
+ * @var \Support\Context  The Context object
  */
-        protected $context = NULL;
+        protected $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
- * @internal
+ * 
+ * @psalm-suppress PropertyTypeCoercion
  */
         protected function __construct()
         {

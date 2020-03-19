@@ -3,18 +3,18 @@
  * Contains definition of Debug class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2019 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
-    namespace Framework;
+    namespace Framework\Support;
 /**
  * A class that handles various debugging related things
  */
     class Debug
     {
 /**
- * @var ?Resource    The file descriptor
+ * @var \resource|false    The file descriptor
  */
-        private static $fd = NULL;
+        private static $fd = FALSE;
 /**
  * @var integer     header count
  */
@@ -26,9 +26,9 @@
  */
         private static function setup() : void
         {
-            if (self::$fd === NULL)
+            if (self::$fd === FALSE)
             {
-                self::$fd = fopen(Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
+                self::$fd = fopen(\Framework\Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
             }
         }
 /**
@@ -41,7 +41,7 @@
         public static function show(string $str) : void
         {
             self::setup();
-            /** @psalm-suppress PossiblyNullArgument  */
+            /** @psalm-suppress PossiblyFalseArgument  */
             fputs(self::$fd, $str."\n");
         }
 /**
@@ -57,7 +57,7 @@
             ob_start();
             /** @psalm-suppress ForbiddenCode */
             var_dump(...$vars);
-            /** @psalm-suppress PossiblyNullArgument  */
+            /** @psalm-suppress PossiblyFalseArgument  */
             fputs(self::$fd, ob_get_clean());
         }
 /**
@@ -67,8 +67,9 @@
  */
         public static function flush() : void
         {
-            if (self::$fd !== NULL)
+            if (self::$fd !== FALSE)
             {
+                /** @psalm-suppress PossiblyFalseArgument  */
                 fflush(self::$fd);
             }
         }

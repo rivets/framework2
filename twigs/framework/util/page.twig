@@ -68,6 +68,13 @@
         {% if editable %}
             <script {{h.urlattr(fwurls.editable)}}></script>
         {% endif %}
+        {% if recaptcha %}
+            {% if constant('Config\\Config::RECAPTCHA') == 2 %}
+                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+            {% elseif constant('Config\\Config::RECAPTCHA') == 3 %}
+                <script src="https://www.google.com/recaptcha/api.js?render={{constant('Config\\Config::RECAPTCHAKEY')}}"</script>
+            {% endif %}
+        {% endif %}
 
     {% endif %}
 

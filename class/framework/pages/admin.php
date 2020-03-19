@@ -22,7 +22,7 @@
         const NOTMODEL = [FW::TABLE];
         const HASH     = 'sha384';
         
-        use \Support\Nocache; // don't cache admin pages.
+        use \Support\NoCache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
  *
@@ -119,12 +119,12 @@
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
-                        throw new \Framework\Exception\InternalError('Oddness');
+                        throw new \Framework\Exception\BadValue('Bean param');
                     }
                     \Framework\Utility\CSRFGuard::getinstance()->check();
                     try
                     {
-                        list($error, $emess) = $obj->edit($context); // handle the edit result
+                        [$error, $emess] = $obj->edit($context); // handle the edit result
                     }
                     catch (\Exception $e)
                     {

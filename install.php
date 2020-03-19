@@ -3,10 +3,8 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2019 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
-    global $cwd, $verbose;
-
     define('DBPREFIX', '');
     define('FWCONTEXT', 'Site');
     define('TESTCONTEXT', 'Test');
@@ -45,13 +43,13 @@
 /**
  * Store a new framework config item
  *
- * @param string    $name
- * @param string    $value
- * @param bool          $local     If TRUE then this value should not be overwritten by remote updates
+ * @param string           $name
+ * @param string|array     $value
+ * @param bool             $local     If TRUE then this value should not be overwritten by remote updates
  *
  * @return void
  */
-    function addfwconfig($name, $value, $local)
+    function addfwconfig(string $name, $value, bool $local) : void
     {
         $fwc = \R::dispense('fwconfig');
         $fwc->name = $name;
@@ -99,9 +97,6 @@
             {
                 echo '<h2>There has been an installer system error</h2>';
             }
-            echo '<pre>';
-            var_dump($error);
-            echo '</pre>';
             cleanup();
         }
         if (class_exists('R'))
@@ -113,15 +108,15 @@
  * Deal with untrapped exceptions - see PHP documentation
  *
  * @param Exception	$e
+ *
+ * @psalm-return never-return
  */
     function exception_handler($e)
     {
         echo '<h2>There has been an installer system exception</h2>';
-        echo '<pre>';
-        var_dump($e);
-        echo '</pre>';
         cleanup();
         exit;
+        /** NOT REACHED **/
     }
 /**
  * Called when a PHP error is detected - see PHP documentation for details
@@ -150,6 +145,7 @@
         { # this is an internal error so we need to stop
             cleanup();
             exit;
+            /** NOT REACHED **/
         }
 /*
  * If we get here it's a warning or a notice, so we aren't stopping
@@ -166,7 +162,7 @@
  *
  * @return object
  */
-    function makerc(string $type, string $name)
+    function makerc(string $type, string $name) : object
     {
         $drname = \R::dispense($type);
         $drname->name = $name;
@@ -185,7 +181,7 @@
  *
  * @return object
  */
-    function makerole(string $type, string $now, $owner, $cname, $rname)
+    function makerole(string $type, string $now, object $owner, object $cname, object $rname) : object
     {
         $role = \R::dispense($type);
         $role->otherinfo = '-';
@@ -202,6 +198,28 @@
         \R::store($cname);
         \R::store($rname);
         return $role;
+    }
+/**
+ * Make a string constant
+ *
+ * @param string $str
+ *
+ * @return string
+ */
+    function mkstring(string $str): string
+    {
+        return "'".preg_replace("/'/", "\\'", $str)."'";
+    }
+/**
+ * Make a bool constant
+ *
+ * @param bool $bl
+ *
+ * @return string
+ */
+    function mkbool(bool $bl) : bool
+    {
+        return $bl ? 'TRUE' : 'FALSE';
     }
     $verbose = isset($_GET['verbose']);
 /*
@@ -377,15 +395,15 @@
  * Set up important values
  */
     $vals = [
-             'name'         => $name,
-             'dir'          => __DIR__,
-             'base'         => $dir,
-             'fwurls'       => $fwurls,
-             'siteurl'      => 'http://'.$host.$dir.'/',
-             'noreply'      => 'noreply@'.$host,
-             'adminemail'   => $_SERVER['SERVER_ADMIN'],
-             'sendmail'     => $sendmail !== '',
-        ];
+        'name'         => $name,
+        'dir'          => __DIR__,
+        'base'         => $dir,
+        'fwurls'       => $fwurls,
+        'siteurl'      => 'http://'.$host.$dir.'/',
+        'noreply'      => 'noreply@'.$host,
+        'adminemail'   => $_SERVER['SERVER_ADMIN'],
+        'sendmail'     => $sendmail !== '',
+    ];
 
     $fail = FALSE;
     if (preg_match('/#/', $name))
@@ -419,7 +437,7 @@
  * We need to know some option selections to do some requirements checking
  */
     $flags = [
-        'forcessl', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
+        'forcessl', 'confemail', 'private', 'public', 'regexp', 'register', 'reportcsp', 'usecsp', 'usephpm',
     ];
     $cvalue = [];
     $options = [];
@@ -445,33 +463,43 @@
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
     { # this is an installation attempt
         $cvars = [
-            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string'],  # name of const, add to DB?, non-optional?, type
-            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string'],
-            'dbname'        => ['DB', FALSE, TRUE, 'string'],
-            'dbuser'        => ['DBUSER', FALSE, TRUE, 'string'],
-            'dbpass'        => ['DBPW', FALSE, TRUE, 'string'],
-            'sitename'      => ['SITENAME', TRUE, TRUE, 'string'],
-            'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string'],
-            'siteurl'       => ['', TRUE, TRUE, 'string'],
-            'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string'],
-            'admin'         => ['', FALSE, TRUE],
-            'adminpw'       => ['', FALSE, TRUE],
-            'cadminpw'      => ['', FALSE, TRUE],
-            'regexp'        => ['DBRX', FALSE, FALSE, 'bool'],
-            'register'      => ['REGISTER', FALSE, FALSE, 'bool'],
-            'confemail'     => ['CONFEMAIL', FALSE, FALSE, 'bool'],
-            'public'        => ['UPUBLIC', FALSE, FALSE, 'bool'],
-            'private'       => ['UPRIVATE', FALSE, FALSE, 'bool'],
-            'usecsp'        => ['', TRUE, FALSE, 'bool'],
-            'reportcsp'     => ['', TRUE, FALSE, 'bool'],
-            'forcessl'      => ['', FALSE, FALSE, 'bool'],
-            'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool'],
-            'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string'],
-            'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string'],
-            'protocol'      => ['PROTOCOL', FALSE, FALSE, 'string'],
-            'smtpuser'      => ['SMTPUSER', FALSE, FALSE, 'string'],
-            'smtppass'      => ['SMTPPW', FALSE, FALSE, 'string'],
-            'csmtppass'     => ['', FALSE, FALSE, 'string'],
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string', 'mysql'],  # name of const, add to DB?, non-optional?, type, default
+            'dbhost'        => ['DBHOST', FALSE, TRUE, 'string', 'localhost'],
+            'dbname'        => ['DB', FALSE, TRUE, 'string', ''],
+            'dbuser'        => ['DBUSER', FALSE, TRUE, 'string', ''],
+            'dbpass'        => ['DBPW', FALSE, TRUE, 'string', ''],
+
+            'sitename'      => ['SITENAME', TRUE, TRUE, 'string', ''],
+            'sitenoreply'   => ['SITENOREPLY', TRUE, TRUE, 'string', ''],
+            'siteurl'       => ['', TRUE, TRUE, 'string', ''],
+            'sysadmin'      => ['SYSADMIN', TRUE, TRUE, 'string', ''],
+
+            'admin'         => ['', FALSE, TRUE, '', ''],
+            'adminpw'       => ['', FALSE, TRUE, '', ''],
+            'cadminpw'      => ['', FALSE, TRUE, '', ''],
+
+            'regexp'        => ['DBRX', FALSE, FALSE, 'bool', FALSE],
+            'register'      => ['REGISTER', FALSE, FALSE, 'bool', FALSE],
+            'confemail'     => ['CONFEMAIL', FALSE, FALSE, 'bool', FALSE],
+
+            'public'        => ['UPUBLIC', FALSE, FALSE, 'bool', FALSE],
+            'private'       => ['UPRIVATE', FALSE, FALSE, 'bool', FALSE],
+
+            'usecsp'        => ['', TRUE, FALSE, 'bool', TRUE],
+            'reportcsp'     => ['', TRUE, FALSE, 'bool', FALSE],
+            'forcessl'      => ['', FALSE, FALSE, 'bool', FALSE],
+
+            'recaptcha'     => ['RECAPTCHA', FALSE, TRUE, 'int', 0],
+            'recaptchakey'  => ['RECAPTCHAKEY', FALSE, FALSE, 'string', ''],
+            'recaptchasecret'  => ['RECAPTCHASECRET', FALSE, FALSE, 'string', ''],
+
+            'usephpm'       => ['USEPHPM', FALSE, FALSE, 'bool', FALSE],
+            'smtphost'      => ['SMTPHOST', FALSE, FALSE, 'string', ''],
+            'smtpport'      => ['SMTPPORT', FALSE, FALSE, 'string', ''],
+            'protocol'      => ['PROTOCOL', FALSE, FALSE, 'string', ''],
+            'smtpuser'      => ['SMTPUSER', FALSE, FALSE, 'string', ''],
+            'smtppass'      => ['SMTPPW', FALSE, FALSE, 'string', ''],
+            'csmtppass'     => ['', FALSE, FALSE, 'string', ''],
         ];
 
         foreach (array_keys($cvars) as $v)
@@ -486,38 +514,18 @@
                 exit;
             }
         }
-        $direrr = [];
-        if (!file_exists('debug'))
-        {
-            if (!@mkdir('debug', 0770)) // make a directory for debugging output
-            {
-                $direrr[] = 'Cannot create directory "debug"';
-            }
-        }
 /*
- *  Make directories for uploads if required
+ * Make some directories that might be useful now or in the future if options change
  */
-        if ($options['public'] && !file_exists('assets'.DIRECTORY_SEPARATOR.'public'))
-        { # make the directory for public files
-            if (!@mkdir('assets'.DIRECTORY_SEPARATOR.'public', 0766))
-            {
-                $direrr[] = 'Cannot create directory "assets'.DIRECTORY_SEPARATOR.'public"';
-            }
-        }
-
-        if ($options['private'] && !file_exists('private'))
-        { # make the directory for private files
-            if (!@mkdir('private', 0766))
-            {
-                $direrr[] = 'Cannot create directory "private"';
-            }
-        }
-
-        if (!file_exists('twigcache'))
+        $direrr = [];
+        foreach (['debug', 'assets'.DIRECTORY_SEPARATOR.'public', 'private', 'twigcache'] as $mdir)
         {
-            if (!@mkdir('twigcache')) # in case we turn caching on for twig.
+            if (!file_exists($mdir))
             {
-                $direrr[] = 'Cannot create directory "twigcache"';
+                if (!@mkdir($mdir, 0770)) // make a directory for debugging output
+                {
+                    $direrr[] = 'Cannot create directory "'.$mdir.'"';
+                }
             }
         }
 
@@ -540,34 +548,54 @@
             }
             fputs($fd, '<?php'.PHP_EOL.'    namespace Config;'.PHP_EOL);
             fputs($fd, '/**'.PHP_EOL.' * Generated by framework installer - '.date('r').PHP_EOL.'*/'.PHP_EOL.'    class Config'.PHP_EOL.'    {'.PHP_EOL);
-            fputs($fd, "        const BASEDNAME\t= '".$dir."';".PHP_EOL);
+            fputs($fd, "        const BASEDNAME\t= ".mkstring($dir).';'.PHP_EOL);
             fputs($fd, "        const PUTORPATCH\t= 'PATCH';".PHP_EOL);
-            fputs($fd, "        const SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', $cvalue['sitename'])."';".PHP_EOL);
+            fputs($fd, "        const SESSIONNAME\t= '".'PSI'.preg_replace('/[^a-z0-9]/i', '', (string) $cvalue['sitename'])."';".PHP_EOL);
 
             foreach ($cvars as $fld => $pars)
             {
                 if ($pars[0] !== '')
                 { # Only save relevant values - see above
+                    fputs($fd, "        const ".$pars[0]."\t= ");
                     switch($pars[3])
                     {
                     case 'string':
                         if (isset($cvalue[$fld]))
                         {
-                            fputs($fd, "        const ".$pars[0]."\t= ");
-                            fputs($fd, "'".$cvalue[$fld]."';".PHP_EOL);
+                            fputs($fd, mkstring($cvalue[$fld]).';'.PHP_EOL);
                         }
                         elseif ($pars[2])
-                        { // this is required
+                        { // this is required and should exist
+                        }
+                        else
+                        {
+                            fputs($fd, mkstring($pars[4]).';'.PHP_EOL);
                         }
                         break;
                     case 'bool':
                         if (isset($options[$fld]))
                         {
-                            fputs($fd, "        const ".$pars[0]."\t= ");
-                            fputs($fd, ($options[$fld] ? 'TRUE' : 'FALSE').';'.PHP_EOL);
+                            fputs($fd, mkbool($options[$fld]).';'.PHP_EOL);
                         }
                         elseif ($pars[2])
                         { // this is required
+                        }
+                        else
+                        {
+                            fputs($fd, mkbool($pars[4]).';'.PHP_EOL);
+                        }
+                        break;
+                    case 'int':
+                        if (isset($cvalue[$fld]))
+                        {
+                            fputs($fd, $cvalue[$fld].';'.PHP_EOL);
+                        }
+                        elseif ($pars[2])
+                        { // this is required
+                        }
+                        else
+                        {
+                            fputs($fd, $pars[4].';'.PHP_EOL);
                         }
                         break;
                     }
@@ -647,18 +675,18 @@
      */
             try
             {
-                $now = \R::isodatetime(time() - date('Z')); # make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
+                $now = \R::isodatetime(time() - (int) date('Z')); # make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
                 $vals['dbtype'] = $cvalue['dbtype'];
                 $vals['dbhost'] = $cvalue['dbhost'];
                 $vals['dbname'] = $cvalue['dbname'];
                 $vals['dbuser'] = $cvalue['dbuser'];
-                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], $cvalue['dbuser'], $cvalue['dbpass']); # mysql initialiser
+                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); # mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
                 $user = R::dispense(DBPREFIX.'user');
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
-                $user->password = password_hash($cvalue['adminpw'], PASSWORD_DEFAULT);
+                $user->password = password_hash((string) $cvalue['adminpw'], PASSWORD_DEFAULT);
                 $user->active = 1;
                 $user->confirm = 1;
                 $user->joined = $now;
@@ -683,7 +711,7 @@
                 {
                     if ($pars[1])
                     {
-                        addfwconfig($fld, $cvalue[$fld], TRUE);
+                        addfwconfig($fld, (string) $cvalue[$fld], TRUE);
                     }
                 }
                 foreach ($fwurls as $k => $v)
@@ -713,27 +741,35 @@
      *
      * the link for install.php is to catch when people try to run install again after a successful install
      */
+                /**
+                 * @psalm-suppress PossiblyUndefinedArrayOffset
+                 * @psalm-suppress TypeDoesNotContainType
+                 * @psalm-suppress RedundantCondition
+                 */
+                $private = $options['private'] ? 1 : 0;
+                $register = $options['register'] ? 1 : 0;
                 $pages = [
                     'about'         => [\Framework\SiteAction::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
                     'admin'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
                     'assets'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
+                    'confirm'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
                     'contact'       => [\Framework\SiteAction::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
                     'cspreport'     => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
                     'devel'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
                     'forgot'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $options['private'] ? 1 : 0],
+                    'getfile'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $private],
                     'home'          => [\Framework\SiteAction::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
                     'install.php'   => [\Framework\SiteAction::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
                     'login'         => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
                     'logout'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
-                    'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $options['private'] ? 1 : 0],
-                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $options['register'] ? 1 : 0],
-                    'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $options['private'] ? 1 : 0],
+                    'private'       => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private],
+                    'register'      => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
+                    'upload'        => [\Framework\SiteAction::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $private],
                 ];
                 foreach ($pages as $pname => $data)
                 {
                     $page = \R::dispense(DBPREFIX.'page');
+                    /** @psalm-suppress PossiblyUndefinedArrayOffset **/
                     $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
                     $page->source = $data[1];

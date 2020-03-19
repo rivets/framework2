@@ -27,7 +27,7 @@
  */
         public function __construct(string $name)
         {
-            if (!\Support\Siteinfo::tableExists($name))
+            if (!\Support\SiteInfo::tableExists($name))
             {
                 throw new \Framework\Exception\BadValue('Table does not exist');
                 /* NOT REACHED */

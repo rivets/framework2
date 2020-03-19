@@ -9,6 +9,7 @@
     namespace Model;
     use Support\Context as Context;
     use \Config\Framework as FW;
+    use \Config\Config as Config;
 /**
  * A class implementing a RedBean model for Form beans
  */
@@ -262,10 +263,15 @@
                 case 'textarea':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
+                case 'recaptcha' :
+                    if (Config::RECAPTCHA != 0)
+                    {
+                        $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
+                        break;
+                    }
+            /********* FALLTHROUGH ********* when there is no recaptcha */
                 case 'submit' :
-                    $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
-                    break;
-                case 'button' :
+                case 'button':
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
                 default: # all the other types are very much the same.

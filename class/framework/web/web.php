@@ -33,9 +33,9 @@
  */
         private $cache      = [];
 /**
- * @var ?object   The Context object
+ * @var object   The Context object
  */
-        private $context      = NULL;
+        private $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
@@ -93,7 +93,7 @@
             }
             else
             {
-                $length = '';
+                $length = NULL;
             }
             $this->sendheaders($code, self::HTMLMIME, $length);
             if ($msg !== '')
@@ -146,12 +146,12 @@
  *
  * @param int    	$code	The HTTP return code
  * @param string	$mtype	The mime-type of the file
- * @param string 	$length	The length of the data
+ * @param ?int    	$length	The length of the data
  * @param string	$name	A file name
  *
  * @return void
  */
-        public function sendheaders(int $code, string $mtype = '', $length = '', string $name = '') : void
+        public function sendheaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
@@ -159,7 +159,7 @@
             {
                 header('Content-Type: '.$mtype);
             }
-            if ($length !== '')
+            if ($length !== NULL)
             {
                 header('Content-Length: '.$length);
             }
@@ -250,7 +250,7 @@
  */
         public function sendfile(string $path, string $name = '', string $mime = '') : void
         {
-            list($code, $range, $length) = $this->hasrange(filesize($path));
+            [$code, $range, $length] = $this->hasrange(filesize($path));
             if ($mime === '')
             {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
@@ -287,7 +287,7 @@
         public function sendstring(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
-            list($code, $range, $length) = $this->hasrange(strlen($value), $code);
+            [$code, $range, $length] = $this->hasrange(strlen($value), $code);
             $this->sendheaders($code, $mime, $length);
             echo empty($range) ? $value : substr($value, $range[0], $length);
         }
@@ -295,10 +295,11 @@
  * Deliver JSON response.
  *
  * @param mixed    $res
+ * @param int      $code
  *
  * @return void
  */
-        public function sendJSON($res, $code = StatusCodes::HTTP_OK) : void
+        public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
         {
             $this->sendstring(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
@@ -439,7 +440,6 @@
         public function setCSP() : void
         {
             $local = $this->context->local();
-            /** @psalm-suppress PossiblyNullPropertyFetch */
             if ($local->configval('usecsp'))
             {
                 $csp = '';

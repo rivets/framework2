@@ -49,6 +49,7 @@
  * Setup the autoloader
  */
             $dir = dirname(dirname(__DIR__));
+            /** @psalm-suppress UnusedFunctionCall **/
             set_include_path(
                 implode(PATH_SEPARATOR, [
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
@@ -57,6 +58,7 @@
                     get_include_path()
                 ])
             );
+            /** @psalm-suppress UnusedFunctionCall **/
             spl_autoload_extensions('.php');
             spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */

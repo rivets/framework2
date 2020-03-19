@@ -93,7 +93,7 @@
  *
  * @param \Support\Context    $context    The context object
  *
- * @throws \Framework\Exception\BadValue\
+ * @throws \Framework\Exception\BadValue
  *
  * @return \RedBeanPHP\OODBBean
  */

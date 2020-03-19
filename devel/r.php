@@ -38,6 +38,19 @@ class R
     {
     }
 /**
+ * @return void
+ */
+    public static function nuke() : void
+    {
+    }
+/**
+ * @param string $table
+ * @return void
+ */
+    public static function wipe(string $table) : void
+    {
+    }
+/**
  * @param string $b
  * @return \RedBeanPHP\OODBBean
  */
@@ -95,9 +108,21 @@ class R
  * @param string $b
  * @param string $x
  * @param array $y
+ *
  * @return ?\RedBeanPHP\OODBBean
  */
     public static function findOne(string $b, string $x = '', array $y = []) : ?\RedBeanPHP\OODBBean
+    {
+        return self::$dummy;
+    }
+/**
+ * @param string $b
+ * @param array $y
+ * @param string $s
+ *
+ * @return \RedBeanPHP\OODBBean
+ */
+    public static function findOrCreate(string $b, array $y = [], string $s = '') : \RedBeanPHP\OODBBean
     {
         return self::$dummy;
     }
@@ -139,6 +164,15 @@ class R
     public static function getCell(string $b,  array $y = [])
     {
         return '';
+    }
+/**
+ * @param string $b
+ * @param array $y
+ * @return int
+ */
+    public static function exec(string $b,  array $y = []) : int
+    {
+        return 0;
     }
 /**
  * @param object $b

@@ -19,7 +19,7 @@
 /**
  * Determine if a user can access the file
  *
- * At the moment it is either the user or any admin that is allowd. Rewrite the
+ * At the moment it is either the user or any admin that is allowed. Rewrite the
  * method to add more complex access control schemes.
  *
  * @param object   $user   A user object
@@ -75,21 +75,24 @@
              */
         }
 /**
- * Called when you try to trash to an upload. Do any cleanup in here
+ * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
+ *
+ * @param \Support\Context $context
  *
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        public function delete(Context $context) : void
+        public function delete() : void
         {
 /**** Do not change this code *****/
+            $context = Context::getinstance();
             if (!$this->bean->canaccess($context->user(), 'd'))
             { // not allowed
                 throw new \Framework\Exception\Forbidden('Permission Denied');
             }
-// Now delete the file
-            unlink($context->local()->basedir().$this->fname);
+// Now delete the associated file
+            unlink($context->local()->basedir().$this->bean->fname);
 /**** Put any cleanup code of yours after this line ****/
             /*
              * Your code goes here

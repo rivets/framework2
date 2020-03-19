@@ -137,6 +137,7 @@
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back = ob_get_clean(); # will get used later in make500
                 }
+                /** @psalm-suppress RedundantCondition **/
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     try
@@ -485,13 +486,16 @@
  * Add a value into the values stored for rendering the template
  *
  * @param string|array	$vname		The name to be used inside the twig or an array of value pairs
- * @param mixed		    $value		The value to be stored or "" if an array in param 1
+ * @param mixed		$value		The value to be stored or "" if an array in param 1
  * @param bool          $tglobal    If TRUE add this as a twig global variable
+ *
+ * @throws \Framework\Exception\InternalError
  *
  * @return void
  */
         public function addval($vname, $value = '', $tglobal = FALSE) : void
         {
+            assert(is_object($this->twig)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
             {
                 foreach ($vname as $key => $aval)

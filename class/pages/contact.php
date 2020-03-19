@@ -28,17 +28,27 @@
             $fd = $context->formdata();
             if (($msg = $fd->post('message', '')) !== '')
             { # there is a post
-                $mail = new \Framework\Utility\FMailer;
-                $mail->setFrom(Config::SITENOREPLY);
-                $mail->addReplyTo(Config::SITENOREPLY);
-                $mail->addAddress(Config::SYSADMIN);
-
-                $mail->Subject = $fd->post('subject', 'No Subject');
-                $mail->Body= $msg;
-                $mail->send();
-
-                //mail(Config::SYSADMIN, $fd->post('subject', 'No Subject'), $fd->post('sender', 'No Sender').PHP_EOL.PHP_EOL.$msg);
-                $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
+                $subj = $fd->post('subject', '');
+                $sender = $fd->filterpost('subject', '', FILTER_VALIDATE_EMAIL);
+                if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
+                {
+                    $mail = new \Framework\Utility\FMailer;
+                    $mail->setFrom(Config::SITENOREPLY);
+                    $mail->addReplyTo(Config::SITENOREPLY);
+                    $mail->addAddress(Config::SYSADMIN);
+    
+                    $mail->Subject = $context->local()->config('SITENAME').': '.$subj;
+                    /** @psalm-suppress UndefinedPropertyAssignment */
+                    $mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
+                    $mail->send();
+    
+                    //mail(Config::SYSADMIN, $context->local()->config('SITENAME').': '., $sender.PHP_EOL.PHP_EOL.$msg);
+                    $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
+                }
+                else
+                {
+                    $context->local()->message(Local::ERROR, 'Please fill out the form with the requested information.');
+                }
             }
             return '@content/contact.twig';
         }

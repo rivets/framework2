@@ -26,6 +26,7 @@
  * Required by Twig
  *
  * @return array
+ * @psalm-suppress LessSpecificImplementedReturnType
  */
         public function getFunctions() : array
         {
@@ -67,7 +68,7 @@
                 $res = $one;
                 break;
             default:
-                $res = $many;
+                $res = $some;
                 break;
             }
     

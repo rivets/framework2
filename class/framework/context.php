@@ -39,7 +39,7 @@
         protected $roles        = [];
 /** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
         protected $contexts     = [];
-/** @var \RedBeanPHP\OODBBean[]		A cache for JS ons beans */
+/** @var string[][]		A cache for JS ons */
         protected $ons          = [];
 /*
  ***************************************
@@ -76,7 +76,9 @@
  *
  * @param integer   $count  The number to check for
  *
- * @return string[] The parameter values in an array indexed from 0
+ * @throws \Framework\Exception\ParameterCount
+ *
+ * @return array The parameter values in an array indexed from 0 with last parameter, anything left in an array
  */
         public function restcheck(int $count) : array
         {
@@ -108,6 +110,7 @@
  * @param object    $user
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function sameuser($user) : bool
         {
@@ -172,6 +175,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function mustbeadmin() : void
         {
@@ -186,6 +190,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function mustbedeveloper() : void
         {
@@ -226,6 +231,7 @@
  * @param string	$str The prefix for the id
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function newid(string $str = 'id')
         {
@@ -238,8 +244,11 @@
  * @param string   $id
  * @param string   $on
  * @param string   $fn
+ *
+ * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function saveon($id, $on, $fn)
+        public function saveon($id, $on, $fn) : void
         {
             $this->ons[$id][$on] = $fn;
         }
@@ -247,6 +256,7 @@
  * Get the JS for onloading the ons
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function getons()
         {
@@ -267,13 +277,20 @@
  *
  * @param string    $name   A Role name
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @throws \Framework\Exception\InternalError
+ *
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolename(string $name) : ?\RedBeanPHP\OODBBean
+        public function rolename(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->roles[$name] = \R::findOne(FW::ROLENAME, 'name=?', [$name]);
+                if (!is_object($bn = \R::findOne(FW::ROLENAME, 'name=?', [$name])))
+                {
+                    throw new \Framework\Exception\InternalError('Missing role name: '.$name);
+                }
+                $this->roles[$name] = $bn;
             }
             return $this->roles[$name];
         }
@@ -282,13 +299,20 @@
  *
  * @param string    $name   A Role Context
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @throws \Framework\Exception\InternalError
+ *
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolecontext(string $name) : ?\RedBeanPHP\OODBBean
+        public function rolecontext(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
-                $this->contexts[$name] = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name]);
+                if (!is_object($bn = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name])))
+                {
+                    throw new \Framework\Exception\InternalError('Missing context name: '.$name);
+                }
+                $this->contexts[$name] = $bn;
             }
             return $this->contexts[$name];
         }
@@ -304,6 +328,7 @@
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
+                /** @psalm-suppress UnusedFunctionCall **/
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
@@ -333,8 +358,8 @@
  * Load a bean
  *
  * @param string	$bean	    A bean type name
- * @param int    	$id	        A bean id
- * @param boolean   $forupdate  If TRUE then use loadforupdate
+ * @param int    	$id	    A bean id
+ * @param boolean       $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *
@@ -358,6 +383,8 @@
  * @psalm-suppress MoreSpecificReturnType
  *
  * @return \Framework\Local
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function local() : \Framework\Local
         {
@@ -367,6 +394,8 @@
  * Return the Formdata object
  *
  * @return \Support\FormData
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function formdata() : \Support\FormData
         {
@@ -376,6 +405,8 @@
  * Return the Web object
  *
  * @return \Framework\Web\Web
+ * @psalm-suppress LessSpecificReturnStatement
+ * @psalm-suppress MoreSpecificReturnType 
  */
         public function web() : \Framework\Web\Web
         {
@@ -448,7 +479,7 @@
             }
             if ($_SERVER['QUERY_STRING'] !== '')
             { # there is a query string so get rid it of it from the URI
-                list($uri) = explode('?', $uri);
+                [$uri] = explode('?', $uri);
             }
             $req = array_filter(explode('/', $uri)); # array_filter removes empty elements - trailing / or multiple /
 /*

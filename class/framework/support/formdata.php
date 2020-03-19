@@ -3,12 +3,13 @@
  * Contains the definition of the Formdata class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2019 Newcastle University
+ * @copyright 2015-2020 Newcastle University
  */
-    namespace Framework;
+    namespace Framework\Support;
 
     use Framework\Web\Web as Web;
     use \Support\Context as Context;
+    use \Config\Config as Config;
 /**
  * A class that provides helpers for accessing form data
  */
@@ -103,7 +104,7 @@
  * @param array     $porg       The array
  * @param array     $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param bool   $throw      If TRUE Then throw an exception
+ * @param bool      $throw      If TRUE Then throw an exception
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -259,7 +260,7 @@
  * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
- * @param mixed     $default    A default value
+ * @param mixed         $default        A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -286,11 +287,11 @@
             $res = filter_input(INPUT_GET, $name, $filter, $options);
             if ($res === NULL)
             { # no such variable
-                throw new \Framework\Exception\BadValue('Missing get item '.$name);
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
             }
             if ($res === FALSE)
             { # filter error
-                throw new \Framework\Exception\BadValue('Get filter failure '.$name);
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
             }
             return $res;
         }
@@ -337,7 +338,7 @@
  * @param string    $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- *
+ * 
  * @return \RedBeanPHP\OODBBean
  */
         public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -376,7 +377,7 @@
  * Look in the $_POST array for a key and apply filters
  *
  * @param string	$name		The key
- * @param string    $default    A default value
+ * @param string        $default        A default value
  * @param int   	$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -388,7 +389,7 @@
             return $res === FALSE || $res === NULL ? $default : $res;
         }
 /**
- * Look in the $_POST array for a key and apply filters
+ * Look in the $_GET array for a key and apply filters
  *
  * @param string	$name		The key
  * @param int   	$filter		Filter values - see PHP manual
@@ -402,11 +403,11 @@
             $res = filter_input(INPUT_POST, $name, $filter, $options);
             if ($res === NULL)
             {
-                throw new \Framework\Exception\BadValue('Missing post item '.$name);
+                throw new \Framework\Exception\BadValue('Missing item '.$name);
             }
             if ($res === FALSE)
             {
-                throw new \Framework\Exception\BadValue('Post filter failure '.$name);
+                throw new \Framework\Exception\BadValue('Filter failure '.$name);
             }
             return $res;
         }
@@ -512,42 +513,46 @@
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
 /**
- * Look in the $_POST array for a key and  apply filters
+ * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
+ *
+ * @param string	$name	The key
+ *
+ * @throws \Framework\Exception\BadValue
+ * 
+ * @return \ArrayIterator
+ */
+        public function mustcookiea(string $name) : \ArrayIterator
+        {
+            if (filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name]))
+            {
+                return new \ArrayIterator($_POST[$name]);
+            }
+            throw new \Framework\Exception\BadValue('Missing cookie array item '.$name);
+        }
+/**
+ * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
+ *
+ * @param string	$name	The key
+ * @param array		$dflt	Returned if the key does not exist
+ *
+ * @return \ArrayIterator
+ */
+        public function cookiea(string $name, array $dflt = []) : \ArrayIterator
+        {
+            return new \ArrayIterator((\filter_has_var(INPUT_COOKIE, $name) && is_array($_COOKIE[$name])) ? $_COOKIE[$name] : $dflt);
+        }
+/**
+ * Look in the $_COOKIE array for a key and  apply filters
  *
  * @param string	$name		The key
- * @param $mixed    $default    The default value
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
- * @return mixed
+ * @return string|null|false
  */
-        public function filtercookie(string $name, $default, int $filter, $options = '')
+        public function filtercookie(string $name, int $filter, $options = '')
         {
-            $res = filter_input(INPUT_COOKIE, $name, $filter, $options);
-            return $res === FALSE || $res === NULL ? $default : $res;
-        }
-/**
- * Look in the $_COOKIE array for a key and apply filters
- *
- * @param string	$name		The key
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
- *
- * @throws \Framework\Exception\BadValue
- * @return mixed
- */
-        public function mustfiltercookie(string $name, int $filter, $options = '')
-        {
-            $res = filter_input(INPUT_COOKIE, $name, $filter, $options);
-            if ($res === NULL)
-            {
-                throw new \Framework\Exception\BadValue('Missing cookie item '.$name);
-            }
-            if ($res === FALSE)
-            {
-                throw new \Framework\Exception\BadValue('Cookie filter failure '.$name);
-            }
-            return $res;
+            return \filter_input(INPUT_COOKIE, $name, $filter, $options);
         }
 /*
  ******************************
@@ -560,10 +565,20 @@
  * @param string    $name
  * @param mixed     $key
  *
+ * @throws \Framework\Exception\BadValue
+ *
  * @return array
  */
         public function filedata(string $name, $key = '') : array
         {
+            if (!isset($_FILES[$name]))
+            {
+                throw new \Framework\Exception\BadValue('Missing _FILES element '.name);
+            }
+            if ($key !== '' && !isset($_FILES[$name]['name'][$key]))
+            {
+                throw new \Framework\Exception\BadValue('Missing _FILES array element '.name);
+            }
             $x = $_FILES[$name];
             if ($key !== '')
             {
@@ -586,7 +601,35 @@
  */
         public function filea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\FAIterator($name) : new \ArrayIterator($dflt);
+            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\Support\FAIterator($name) : new \ArrayIterator($dflt);
+        }
+/**
+ * Deal with a recaptcha
+ *
+ * @return bool
+ */
+        public function recaptcha() : bool
+        {
+            if (Config::RECAPTCHA != 0)
+            {
+                if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+                {
+                    $data = [
+                        'secret'    => Config::RECAPTCHASECRET,
+                        'response'  => $_POST['g-recaptcha-response'],
+                        'remoteip'  => $_SERVER['REMOTE_ADDR']
+                    ];
+                    $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
+                    $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
+                    if ($response->getStatusCode() == 200)
+                    {
+                        $jd = json_decode($response->getBody());
+                        return $jd->success;
+                    }
+                }
+                return FALSE;
+            }
+            return TRUE; // no captcha so it always works.
         }
     }
 ?>

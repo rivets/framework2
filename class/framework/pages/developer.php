@@ -54,6 +54,39 @@
                 $tpl = '@devel/testajax.twig';
                 break;
 
+            case 'upload' :
+                $tpl = '@devel/testupload.twig';
+                $fd = $context->formdata();
+                try
+                {
+                    if ($fd->hasfile('upload'))
+                    {
+                        $upl = \R::dispense('upload');
+                        $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
+                        $context->local()->addval('download', $upl->getID());
+                    }
+                    if (count($rest) == 3)
+                    {
+                        $id = (int) $rest[2];
+                        switch ($rest[1])
+                        {
+                        case 'get':
+                            $context->local()->addval('download', $id);
+                            break;
+
+                        case'delete':
+                            \R::trash($context->load('upload', $id));
+                            $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+                            break;
+                        }
+                    }
+                }
+                catch (\Exception $e)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $e->getmessage());
+                }
+                break;
+
             case 'fail': # this lets you test error handling
                 $x = 2 / 0;
                 break;
@@ -62,7 +95,10 @@
                 throw new \Exception('Unhandled Exception Test');
 
             case 'mail' : # this lets you test email sending
-                /** @psalm-suppress PossiblyNullPropertyFetch */
+/**
+ * @psalm-suppress PossiblyNullPropertyFetch
+ * @psalm-suppress PossiblyNullArgument
+ **/
                 $foo = mail($context->user()->email, 'test', 'test');
                 $context->local()->message(\Framework\Local::MESSAGE, 'sent');
                 break;

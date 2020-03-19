@@ -1,16 +1,12 @@
 <?php
 /**
- * Class for handling AJAX calls invoked from ajax.php. You could integrate the
- * AJAX handling calls into the normal index.php RESTful route, but sometimes
- * keeping them separate is a good thing to do.
+ * Class for handling AJAX calls invoked from ajax.php.
  *
- * It assumes that ajax calls are made to {{base}}/ajax.php via a POST and that
- * they have at least a parameter called 'op' that defines what is to be done.
- *
- * Of course, this is entirely arbitrary and you can do whatever you want!
+ * It assumes that RESTful ajax calls are made to {{base}}/ajax and that
+ * the first part of the URL after ajax is an opcode that defines what is to be done.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2018 Newcastle University
+ * @copyright 2014-2020 Newcastle University
  */
     namespace Framework;
 
@@ -57,7 +53,7 @@
 //          ['BeanName'...]]
         ];
 /**
- * Permissions array for shares acccess. This helps allow non-site admins use the AJAX bean functions
+ * Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -99,6 +95,7 @@
  */
         private static $uniquenlperms = [
             FW::USER => ['login'],
+// 'bean' => [...fields...], ... // an array of beans and fields that can be accessed
         ];
 /**
  * If you are using the pagination or search hinting features of the framework then you need to
@@ -149,11 +146,11 @@
  * @throws \Framework\Exception\BadValue
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function config(Context $context) : void
         {
-            $rest = $context->rest();
-            list($name) = $context->restcheck(1);
+            [$name] = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             $fdt = $context->formdata();
             switch ($context->web()->method())
@@ -204,15 +201,16 @@
  * @param bool      $idok    Allow the id field
  *
  * @throws \Framework\Exception\BadValue
- * @return void
+ * @return bool
  */
-        private function fieldExists(string $type, string $field, bool $idok = FALSE) : void
+        private function fieldExists(string $type, string $field, bool $idok = FALSE) : bool
         {
-            if (!\Support\Siteinfo::hasField($type, $field) || (!$idok && $field == 'id'))
+            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field == 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
             }
+            return TRUE;
         }
 /**
  * Check down an array with permissions in the first field and return the first
@@ -287,27 +285,26 @@
  * @internal
  * @param \Support\Context	$context	The context object for the site
  *
- * @throws \Framework\Exception\BadValue
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function toggle(Context $context) : void
         {
-            $beans = $this->findRow($context, self::$toggleperms);
             $rest = $context->rest();
             if (count($rest) > 2)
             {
-                list($type, $bid, $field) = $context->restcheck(3);
+                [$type, $bid, $field] = $context->restcheck(3);
             }
             else // this is legacy
             {
-                $bean = $rest[1];
                 $fdt = $context->formdata();
                 $type = $fdt->mustpost('bean');
                 $field = $fdt->mustpost('field');
                 $bid = $fdt->mustpost('id');
             }
-
-            $bn = $context->load($type, $bid);
+            $beans = $this->findRow($context, self::$toggleperms);
+            $this->beancheck($beans, $type, $field);
+            $bn = $context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
@@ -321,7 +318,6 @@
             }
             else
             {
-                $this->fieldExists($type, $field); // make sure the bean has this field....
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
                 R::store($bn);
             }
@@ -335,7 +331,7 @@
  * @param string  $field
  * @param bool    $idok    Allow the id field
  *
- * @throws Framework\Exception\Forbidden
+ * @throws \Framework\Exception\Forbidden
  *
  * @return bool
  */
@@ -343,8 +339,8 @@
         {
             $this->fieldExists($bean, $field, $idok);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
-            { // no permission to update this field
-                throw new \Framework\Exception\Forbidden('Permission denied');
+            { // no permission to update this field or it doesn't exist
+                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean.'::'.$field);
             }
             return TRUE;
         }
@@ -383,27 +379,37 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function bean(Context $context) : void
         {
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
             $bean = $rest[1];
-            $log = in_array($bean, self::$audit);
             if (!isset($beans[$bean]))
             {
-                throw new \Framework\Exception\Forbidden('Permission denied');
+                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
+            $log = in_array($bean, self::$audit);
             $method = $context->web()->method();
-            if (method_exists($bean, 'canAjaxBean'))
+            /** @psalm-suppress UndefinedConstant */
+            $class = REDBEAN_MODEL_PREFIX.$bean;
+            /**
+             * @psalm-suppress RedundantCondition
+             * @psalm-suppress ArgumentTypeCoercion
+             */
+            if (method_exists($class, 'canAjaxBean'))
             {
-                $bean->canAjaxBean($context, $method);
+                /** @psalm-suppress InvalidStringClass */
+                $class::canAjaxBean($context, $method);
             }
             switch ($method)
             {
             case 'POST': // make a new one /ajax/bean/KIND/
-                /** @psalm-suppress UndefinedConstant */
-                $class = REDBEAN_MODEL_PREFIX.$bean;
+                /**
+                 * @psalm-suppress RedundantCondition
+                 * @psalm-suppress ArgumentTypeCoercion
+                 */
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -421,9 +427,9 @@
                 break;
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
-                list($bean, $id, $field, $more) = $context->restcheck(3);
+                [$bean, $id, $field, $more] = $context->restcheck(3);
                 $this->beanCheck($beans, $bean, $field);
-                $bn = $context->load($bean, $id, TRUE);
+                $bn = $context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
                 $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
                 R::store($bn);
@@ -438,14 +444,18 @@
                 {
                     throw new \Framework\Exception\BadValue('Missing value');
                 }
-                $bn = $context->load($bean, $id);
+                $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    $this->mklog($context, 2, $bean, $id, '*', json_encode($bn->export()));
+                    $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
-                if (method_exists($bean, 'delete'))
+                /**
+                 * @psalm-suppress RedundantCondition
+                 * @psalm-suppress ArgumentTypeCoercion
+                 */
+                if (method_exists($class, 'delete')) // call the clean-up function if it has one
                 {
-                    $bean->delete($context);
+                    $bn->delete($context);
                 }
                 R::trash($bn);
                 break;
@@ -465,13 +475,21 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function shared(Context $context) : void
         {
-//            $beans = $this->findRow($context, self::$sharedperms);
-            list($b1, $id1, $b2, $id2) = $context->restcheck(4);
-            $bn1 = $context->load($b1, $id1);
-            $bn2 = $context->load($b2, $id2);
+
+            [$b1, $id1, $b2, $id2] = $context->restcheck(4);
+            $bn1 = $context->load($b1, (int) $id1);
+            $bn2 = $context->load($b2, (int) $id2);
+            $beans = $this->findRow($context, self::$sharedperms);
+/**
+ * @todo This check is not right as the array format is slightly different for sharedperms
+ *       Fix when this gets properly implemented.
+ */
+            $this->beancheck($beans, $bn1->getMeta('type'), '');
+            $this->beancheck($beans, $bn2->getMeta('type'), '');
             switch ($context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
@@ -499,6 +517,7 @@
  * @throws \Framework\Exception\BadOperation
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function table(Context $context) : void
         {
@@ -518,7 +537,7 @@
             $fdt = $context->formdata();
             if ($method == 'POST')
             {
-                if (\Support\Siteinfo::tableExists($table))
+                if (\Support\SiteInfo::tableExists($table))
                 {
                     throw new \Framework\Exception\Forbidden('Table exists');
                     /* NOT REACHED */
@@ -537,13 +556,13 @@
                         $bn->$fname = $fdt->post(['sample', $ix], '');
                     }
                 }
-                $id = \R::store($bn);
+                \R::store($bn);
                 \R::trash($bn);
                 \R::exec('truncate `'.$table.'`');
             }
             else
             {
-                if (\Support\Siteinfo::isFWTable($table))
+                if (\Support\SiteInfo::isFWTable($table))
                 {
                     throw new \Framework\Exception\Forbidden('Permission Denied');
                     /* NOT REACHED */
@@ -565,7 +584,7 @@
                 case 'PUT': // change a field
                     $value = $fdt->mustput('value');
                     $f1 = $rest[2];
-                    if (\Support\Siteinfo::hasField($table, $f1))
+                    if (\Support\SiteInfo::hasField($table, $f1))
                     {
                         throw new \Framework\Exception\BadValue('Bad field name');
                         /* NOT REACHED */
@@ -573,7 +592,7 @@
                     switch ($rest[3])
                     {
                     case 'name':
-                        if (\Support\Siteinfo::hasField($table, $value))
+                        if (\Support\SiteInfo::hasField($table, $value))
                         {
                             throw new \Framework\Exception\BadValue('Field already exists');
                             /* NOT REACHED */
@@ -609,24 +628,13 @@
  * @throws \Framework\Exception\BadOperation
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function tablesearch(Context $context) : void
         {
-            $beans = $this->findRow($context, self::$tablesearchperms);
-            list($bean, $field, $op) = $context->restcheck(3);
-            //if (!$context->hasadmin())
-            //{
-            //    throw new \Framework\Exception\Forbidden('Permission denied');
-            //    /* NOT REACHED */
-            //}
-            //$rest = $context->rest();
-            //$bean = $rest[1];
-            //if (!\Support\Siteinfo::tableExists($bean))
-            //{
-            //    throw new \Framework\Exception\BadValue('No such table');
-            //    /* NOT REACHED */
-            //}
+            [$bean, $field, $op] = $context->restcheck(3);
             $fdt = $context->formdata();
+            $beans = $this->findRow($context, self::$tablesearchperms);
             $this->beanCheck($beans, $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
             $value = $fdt->get('value', '');
             $incv = ' ?';
@@ -665,6 +673,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function paging(Context $context) : void
         {
@@ -692,6 +701,7 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private final function hints(Context $context) : void
         {
@@ -760,6 +770,7 @@
  * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         public final function operation($function, array $perms) : void
         {
@@ -796,13 +807,14 @@
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch) : void
+        public final function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
             self::$tableperms = array_merge(self::$tableperms, $table);
             self::$audit = array_merge(self::$audit, $audit);
             self::$tablesearchperms = array_merge(self::$tablesearchperms, $tsearch);
+            self::$uniquenlperms = array_merge(self::$uniquenlperms, $uniquenl);
         }
 /**
  * Do a database check for uniqueness
@@ -829,11 +841,12 @@
  * @param \Support\Context   $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function unique(Context $context) : void
         {
             $beans = $this->findRow($context, self::$uniqueperms);
-            list($bean, $field, $value) = $context->restcheck(3);
+            [$bean, $field, $value] = $context->restcheck(3);
             $this->beanCheck($beans, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
@@ -847,10 +860,11 @@
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function uniquenl(Context $context) : void
         {
-            list($bean, $field, $value) = $context->restcheck(3);
+            [$bean, $field, $value] = $context->restcheck(3);
             $this->beanCheck(self::$uniquenlperms, $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
@@ -861,11 +875,12 @@
  * @param \Support\Context    $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function tablecheck(Context $context) : void
         {
-            list($name) = $context->restcheck(1);
-            if (\Support\Siteinfo::tableExists($name))
+            [$name] = $context->restcheck(1);
+            if (\Support\SiteInfo::tableExists($name))
             {
                 $context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
@@ -880,6 +895,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function pwcheck(Context $context) : void
         {
@@ -898,26 +914,26 @@
  *
  * @throws \Framework\Exception\Forbidden
  *
- * @psalm-suppress PossiblyNullReference
- *
  * @return void
+ * @psalm-suppress PossiblyNullReference
  */
         protected final function checkPerms(Context $context, array $perms) : void
         {
+            $user = $context->user();
             foreach ($perms as $rcs)
             {
                 if (is_array($rcs[0]))
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        if (is_object($context->user()->hasrole($orv[0], $orv[1])))
+                        if (is_object($user->hasrole($orv[0], $orv[1])))
                         {
                             continue 2;
                         }
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif (!is_object($context->user()->hasrole($rcs[0], $rcs[1])))
+                elseif (!is_object($user->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
@@ -927,11 +943,11 @@
  * Check that the caller is allowed to perform the operation.
  *
  * @internal
- * @param \Support\Context   $context  The Context Object
- * @param boolean  $login    If TRUE Then user must be logged in.
- * @param array    $perms    As specified for the various arrays defined above
+ * @param \Support\Context  $context  The Context Object
+ * @param bool              $login    If TRUE Then user must be logged in.
+ * @param array             $perms    As specified for the various arrays defined above
  *
- * @return boolean  Does not return if user is not allowed.
+ * @return bool  Does not return if user is not allowed.
  */
         private function checkLogin(Context $context, bool $login, array $perms) : bool
         {

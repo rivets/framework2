@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="false"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <file name="devel/redmock.php" />
+        <file name="devel/r.php" />
+
+        <file name="class/framework/siteaction.php"/>
+
+        <file name="install/errors/composer.php" />
+        <file name="install/errors/noredbean.php" />
+        <file name="install/errors/notwig.php" />
+        <file name="install/errors/phpbuild.php" />
+        <file name="install/errors/symlink.php" />
+
+        <file name="install.php" />
+        <ignoreFiles>
+            <directory name="vendor" />
+            <directory name="class" />
+            <directory name="devel" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="info" />
+
+        <!-- level 3 issues - slightly lazy code writing, but provably low false-negatives -->
+
+        <DeprecatedMethod errorLevel="info" />
+        <DeprecatedProperty errorLevel="info" />
+        <DeprecatedClass errorLevel="info" />
+        <DeprecatedConstant errorLevel="info" />
+        <DeprecatedInterface errorLevel="info" />
+        <DeprecatedTrait errorLevel="info" />
+
+        <InternalMethod errorLevel="info" />
+        <InternalProperty errorLevel="info" />
+        <InternalClass errorLevel="info" />
+
+        <MissingClosureReturnType errorLevel="info" />
+        <MissingReturnType errorLevel="info" />
+        <MissingPropertyType errorLevel="info" />
+        <InvalidDocblock errorLevel="info" />
+        <MisplacedRequiredParam errorLevel="info" />
+        <MismatchingDocblockReturnType errorLevel="info" />
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="info" />
+        <MissingClosureParamType errorLevel="info" />
+        <MissingParamType errorLevel="info" />
+
+        <RedundantCondition errorLevel="info" />
+        <UndefinedPropertyAssignment errorLevel="info" />
+        <UndefinedPropertyFetch errorLevel="info" />
+        <DocblockTypeContradiction errorLevel="info" />
+        <RedundantConditionGivenDocblockType errorLevel="info" />
+        <UndefinedGlobalVariable>
+            <errorLevel type="suppress">
+              <directory name="install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
+            </errorLevel>
+        </UndefinedGlobalVariable>
+        <UnresolvableInclude errorLevel="info" />
+
+        <RawObjectIteration errorLevel="info" />
+
+        <InvalidStringClass errorLevel="info" />
+        <ReservedWord errorLevel="info" />
+    </issueHandlers>
+</psalm>

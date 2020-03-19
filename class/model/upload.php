@@ -53,7 +53,7 @@
                 }
                 $owner = $context->user();
             }
-            list($dir, $pname, $fname) = $this->mkpath($context, $owner, $public, $da);
+            [$dir, $pname, $fname] = $this->mkpath($context, $owner, $public, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -87,7 +87,7 @@
         public function replace(Context $context, array $da, int $index = 0) : void
         {
             $oldfile = $this->bean->fname;
-            list($dir, $pname, $fname) = $this->mkpath($context, $this->bean->user, $this->bean->public, $da);
+            [$dir, $pname, $fname] = $this->mkpath($context, $this->bean->user, $this->bean->public, $da);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -108,13 +108,18 @@
 /**
  * Make a path for a new file
  *
+ * @param \Support\Context $context
+ * @param ?object           $owner
+ * @param bool             $public
+ * @param array            $da
+ *
  * @return array
  */
-        private function mkpath($context, $owner, $public, $da) : array
+        private function mkpath(\Support\Context $context, ?object $owner, bool $public, array $da) : array
         {
             $dir = getcwd();
             chdir($context->local()->basedir());
-            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : 0, date('Y'), date('m')];
+            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')];
             foreach ($pname as $pd)
             { # walk the path cding and making if needed
                 $this->mkch($pd);
