@@ -38,7 +38,7 @@
                     $mail->addAddress(Config::SYSADMIN);
                     /** @psalm-suppress PossiblyNullOperand **/
                     /** @psalm-suppress PossiblyNullPropertyFetch **/
-                    $mail->Subject = $context->local()->config('SITENAME')->value.': '.$subj;
+                    $mail->Subject = $context->local()->config('sitename')->value.': '.$subj;
                     /** @psalm-suppress UndefinedPropertyAssignment */
                     $mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
                     $mail->send();
