@@ -19,7 +19,7 @@
 /**
  * Determine if a user can access the file
  *
- * At the moment it is either the user or any admin that is allowd. Rewrite the
+ * At the moment it is either the user or any admin that is allowed. Rewrite the
  * method to add more complex access control schemes.
  *
  * @param object   $user   A user object
