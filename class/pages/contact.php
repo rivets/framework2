@@ -29,7 +29,7 @@
             if (($msg = $fd->post('message', '')) !== '')
             { # there is a post
                 $subj = $fd->post('subject', '');
-                $sender = $fd->filterpost('subject', '', FILTER_VALIDATE_EMAIL);
+                $sender = $fd->filterpost('sender', '', FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
                 {
                     $mail = new \Framework\Utility\FMailer;
@@ -38,12 +38,12 @@
                     $mail->addAddress(Config::SYSADMIN);
                     /** @psalm-suppress PossiblyNullOperand **/
                     /** @psalm-suppress PossiblyNullPropertyFetch **/
-                    $mail->Subject = $context->local()->config('SITENAME')->value.': '.$subj;
+                    $mail->Subject = \Config\Config::SITENAME.': '.$subj;
                     /** @psalm-suppress UndefinedPropertyAssignment */
                     $mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
                     $mail->send();
     
-                    //mail(Config::SYSADMIN, $context->local()->config('SITENAME').': '., $sender.PHP_EOL.PHP_EOL.$msg);
+                    //mail(Config::SYSADMIN, \Config\Config::SITENAME.': '.$subj, $sender.PHP_EOL.PHP_EOL.$msg);
                     $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
                 }
                 else
