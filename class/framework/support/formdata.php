@@ -566,6 +566,7 @@
  * Look in the $_COOKIE array for a key and  apply filters
  *
  * @param string	$name		The key
+ * @param mixed         $default        The default value
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
@@ -608,11 +609,11 @@
         {
             if (!isset($_FILES[$name]))
             {
-                throw new \Framework\Exception\BadValue('Missing _FILES element '.name);
+                throw new \Framework\Exception\BadValue('Missing _FILES element '.$name);
             }
             if ($key !== '' && !isset($_FILES[$name]['name'][$key]))
             {
-                throw new \Framework\Exception\BadValue('Missing _FILES array element '.name);
+                throw new \Framework\Exception\BadValue('Missing _FILES array element '.$name);
             }
             $x = $_FILES[$name];
             if ($key !== '')
@@ -645,15 +646,18 @@
  */
         public function recaptcha() : bool
         {
+            /** @psalm-suppress UndefinedConstant */
             if (Config::RECAPTCHA != 0)
             {
                 if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
                 {
+                    /** @psalm-suppress UndefinedConstant */
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,
                         'response'  => $_POST['g-recaptcha-response'],
-                        'remoteip'  => $_SERVER['REMOTE_ADDR']
+                        'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR']
                     ];
+                    /** @psalm-suppress UndefinedClass */
                     $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
                     $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
