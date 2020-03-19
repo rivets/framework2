@@ -1,7 +1,7 @@
 <?php
 /**
  * A class that tries to detect when there have been too
- * many class from a given IP address
+ * many calls from a given IP address
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020 Newcastle University

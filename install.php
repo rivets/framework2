@@ -202,25 +202,26 @@
 /**
  * Make a string constant
  *
- * @param string $str
+ * @param mixed $str
  *
  * @return string
  */
-    function mkstring(string $str): string
+    function mkstring($str): string
     {
         return "'".preg_replace("/'/", "\\'", $str)."'";
     }
 /**
  * Make a bool constant
  *
- * @param bool $bl
+ * @param mixed $bl
  *
  * @return string
  */
-    function mkbool(bool $bl) : bool
+    function mkbool($bl) : string
     {
         return $bl ? 'TRUE' : 'FALSE';
     }
+
     $verbose = isset($_GET['verbose']);
 /*
  * Remember where we are in the file system

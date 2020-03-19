@@ -253,7 +253,7 @@
                     {
                         $form .= $this->doOption($option);
                     }
-                    /** @psalm-suppress TypeDoesNotContainType */
+                    /** @psalm-suppress TypeDoesNotContainType **/
                     if ($this->optgroup)
                     { # close any open optgroup
                         $form .= '</optgroup>';
@@ -264,6 +264,7 @@
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
                 case 'recaptcha' :
+                    /** @psalm-suppress UndefinedConstant **/
                     if (Config::RECAPTCHA != 0)
                     {
                         $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
