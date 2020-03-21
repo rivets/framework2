@@ -104,11 +104,18 @@
 /*
  * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
  */
-            /**
-             * @psalm-suppress TypeDoesNotContainType
-             * @psalm-suppress RedundantCondition
-             */
-            $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
+            try
+            {
+                /**
+                 * @psalm-suppress TypeDoesNotContainType
+                 * @psalm-suppress RedundantCondition
+                 */
+                $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
+            }
+            catch (\Exception $e)
+            { # You can get DB errors from hacky URL values here.
+                $page = NULL;
+            }
             if (!is_object($page))
             { # No such page or it is marked as inactive
                $page = new \stdClass;
