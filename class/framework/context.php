@@ -216,15 +216,11 @@
  */
         public function constant($name, $default = '')
         {
-            try
+            if (defined('\\Config\\Config::'.$name))
             {
-                $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', $name);
-                return $constant_reflex->getValue();
+                return constant('\\Config\\Config::'.$name);
             }
-            catch (\ReflectionException $e)
-            {
-                return $default;
-            }
+            return $default;
         }
 /**
  * Set up pagination data
