@@ -51,7 +51,7 @@
  *
  * @return ?object
  */
-        public function hasrole(string $rolecontextname, string $rolenames) : ?object
+        public function hasrole(string $rolecontextname, string $rolename) : ?object
         {
             $rolecontextbean = \R::findOne(FW::ROLECONTEXT, 'name=?', [$rolecontextname]);
             if (!is_object($rolecontextbean))
@@ -64,7 +64,7 @@
             }
             else
             {
-                $rolenamebean = \R::findOne(FW::ROLENAME, 'name=?', [$rolenamestr]);
+                $rolenamebean = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
                 if (!is_object($rolenamebean))
                 { # no such role
                     return NULL;
