@@ -187,7 +187,7 @@
                 }
                 else
                 {
-                    $context->divert('/login');
+                    $context->divert('/login/');
                 }
             }
             return '@content/register.twig';
