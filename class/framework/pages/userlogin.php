@@ -136,7 +136,7 @@
                     }
                     if (!\Model\User::pwValid($pw))
                     {
-                        $errmess[] = 'The passwords do not match';
+                        $errmess[] = 'The password does not meet the specification';
                     }
                     if (preg_match('/[^a-z0-9]/i', $login))
                     {
@@ -155,6 +155,7 @@
                         $x->active = 1;
                         $x->joined = $context->utcnow();
                         R::store($x);
+                        $x->setpw($pw);
                         $rerr = $x->register($context); // do any extra registration
                         if (empty($rerr))
                         {
