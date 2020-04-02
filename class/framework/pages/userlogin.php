@@ -185,6 +185,10 @@
                 {
                     $context->local()->message(Local::ERROR, $errmess);
                 }
+                else
+                {
+                    $context->divert('/login/');
+                }
             }
             return '@content/register.twig';
         }
