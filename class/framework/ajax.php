@@ -954,16 +954,17 @@
             if ($login)
             { # this operation requires a logged in user
                 $context->mustbeuser(); // will not return if there is no user
+                /* NOT REACHED */
+                try
+                {
+                    $this->checkPerms($context, $perms);
+                }
+                catch (\Framework\Exception\Forbidden $e)
+                {
+                    return FALSE;
+                }
             }
-            try
-            {
-                $this->checkPerms($context, $perms);
-                return TRUE;
-            }
-            catch (\Framework\Exception\Forbidden $e)
-            {
-                return FALSE;
-            }
+            return TRUE;
         }
 /**
  * Handle AJAX operations
@@ -972,7 +973,7 @@
  *
  * @return void
  */
-        public function handle(Context $context) : void
+        public function check(Context $context) : void
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call
