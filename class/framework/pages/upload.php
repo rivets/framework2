@@ -37,7 +37,7 @@
                 }
                 else
                 {
-                    foreach(new \Framework\FAIterator('uploads') as $ix => $fa)
+                    foreach(new \Framework\Support\FAIterator('uploads') as $ix => $fa)
                     { # we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
                         $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
