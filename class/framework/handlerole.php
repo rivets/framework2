@@ -39,43 +39,52 @@
             {
                 return $res;
             }
-            return count($res) == count($roles) ? $res : []; // for an and you have to have all of them.
+            return count($res) == count($roles) ? $res : []; // for an "and" you have to have all of them.
         }
 /**
  * Check for a role
  *
  * @param string    $rolecontextname    The name of a context...
- * @param string	$rolename           The name of a role....
+ * @param string    $rolenamestr        The name of a role - if this is the empty string then having the context is enough
+ *
+ * @todo possibly rewrite this to do a join rather than 2/3 calls on the DB
  *
  * @return ?object
  */
-        public function hasrole(string $rolecontextname, string $rolename) : ?object
+        public function hasrole(string $rolecontextname, string $rolenames) : ?object
         {
-            $cname = \R::findOne(FW::ROLECONTEXT, 'name=?', [$rolecontextname]);
-            if (!is_object($cname))
-            {
+            $rolecontextbean = \R::findOne(FW::ROLECONTEXT, 'name=?', [$rolecontextname]);
+            if (!is_object($rolecontextbean))
+            { # no such context
                 return NULL;
             }
-            $rname = \R::findOne(FW::ROLENAME, 'name=?', [$rolename]);
-            if (!is_object($rname))
-            {
-                return NULL;
+            if ($rolename === '')
+            { # we only are checking for a context
+                $rolenamebean = NULL;
             }
-            return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$cname->getID(), $rname->getID(), $this->bean->getID()]);
+            else
+            {
+                $rolenamebean = \R::findOne(FW::ROLENAME, 'name=?', [$rolenamestr]);
+                if (!is_object($rolenamebean))
+                { # no such role
+                    return NULL;
+                }
+            }
+            return $this->hasrolebybean($rolecontextbean, $rolenamebean);
         }
 /**
  * Check for a role by bean
  *
  * @param object    $rolecontext    A rolecontext
- * @param object    $rolename       A rolename
+ * @param ?object   $rolename       A rolename - if this is NULL having the context is enough
  *
  * @return ?object
  */
-        public function hasrolebybean($rolecontext, $rolename) : ?object
+        public function hasrolebybean(object $rolecontext, ?object $rolename) : ?object
         {
-            return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::ROLENAME.'_id=? and '.FW::USER.'_id=? and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$rolecontext->getID(), $rolename->getID(), $this->bean->getID()]);
+            return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::USER.'_id=? '.
+                (!is_null($rolename) ? 'and '.FW::ROLENAME.'_id=? ' : '').'and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
+                [$rolecontext->getID(), $this->bean->getID(), is_null($rolename) ? '' : $rolename->getID()]);
         }
 /**
  * Delete a role
