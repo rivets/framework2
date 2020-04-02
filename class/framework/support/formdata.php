@@ -642,14 +642,20 @@
 /**
  * Deal with a recaptcha
  *
+ * For this to work, you need three constants defined in \Config\Config :
+ *
+ * RECAPTCHA - the kind of RECAPTCHA: 2 or 3 (0 means no RECAPTCHA)
+ * RECAPTCHAKEY - the key given by google
+ * RECAPTCHASECRET - the secret key given by google
+ *
  * @return bool
  * @psalm-suppress UndefinedClass
  * @psalm-suppress UndefinedConstant
  */
         public function recaptcha() : bool
         {
-            if (Config::RECAPTCHA != 0)
-            {
+            if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
+            { # if this is non-zero we can assume SECRET and KEY are defined also
                 if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
                 {
                     $data = [
