@@ -974,7 +974,7 @@
  *
  * @return void
  */
-        public function check(Context $context) : void
+        public function handle(Context $context) : void
         {
             if ($context->action() == 'ajax')
             { # REST style AJAX call
