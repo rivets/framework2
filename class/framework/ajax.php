@@ -920,6 +920,7 @@
         protected final function checkPerms(Context $context, array $perms) : void
         {
             $user = $context->user();
+            assert(!is_null($user)); // must have a user when checking
             foreach ($perms as $rcs)
             {
                 if (is_array($rcs[0]))
