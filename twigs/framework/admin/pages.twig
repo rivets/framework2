@@ -121,8 +121,8 @@
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
                 '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
-                '<td>{{i.fa('edit', 'editb')}}</td>'+
-                '<td>{{i.fa('trash-alt', 'delb')}}</td></tr>';
+                '<td>{{i.edit('editb')}}</td>'+
+                '<td>{{i.delete('delb')}}</td></tr>';
                 let nx
                 if (sp == null)
                 {
@@ -208,8 +208,8 @@
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
-                            <td>{{i.fa('edit', 'editb')}}</a></td>
-                            <td>{{i.fa('trash-alt', 'delb')}}</td>
+                            <td>{{i.edit('editb')}}</a></td>
+                            <td>{{i.delete('delb')}}</td>
                         </tr>
                     {% else %}
                         <tr><td colspan="4">No pages defined</td></tr>

@@ -4,6 +4,7 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as i %}
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
@@ -67,9 +68,9 @@
         });
         const fn = function(data){
             var htm = '<tr><td class="bname">'+name+'</td>'+
-            '<td><a href="'+base+'/admin/view/table/'+name+'/"><i class="far fa-eye"></i></a></td>'+
-            '<td><a href="'+base+'/admin/edit/table/'+name+'/"><i class="far fa-edit"></i></a></td>'+
-            '<td><i class="delb far fa-trash-alt"></i></td></tr>';
+            '<td><a href="'+base+'/admin/view/table/'+name+'/">{{i.view()}}</a></td>'+
+            '<td><a href="'+base+'/admin/edit/table/'+name+'/">{{i.edit()}}</a></td>'+
+            '<td>{{i.delete('delb')}}</td></tr>';
             var nx = sp == null ? $(htm).appendTo($('#btab tbody')) : $(htm).insertBefore(sp.parent());
             $('.delb', nx).on('click', deltable);
             nx.data('id', data);
@@ -127,9 +128,9 @@
                     {% for nb in beans %}
                         <tr data-bean="{{nb.name}}">
                             <td class="bname">{{nb.name}}</td>
-                            <td><a href="{{base}}/admin/view/table/{{nb.name}}"><i class="editb far fa-eye"></i></a></td>
-                            <td><a href="{{base}}/admin/edit/table/{{nb.name}}"><i class="editb far fa-edit"></i></a></td>
-                            <td><i class="delb far fa-trash-alt"></i></a></td>
+                            <td><a href="{{base}}/admin/view/table/{{nb.name}}">{{i.view('editb')}}</a></td>
+                            <td><a href="{{base}}/admin/edit/table/{{nb.name}}">{{i.edit('editb')}}</a></td>
+                            <td>{{i.delete('delb')}}</a></td>
                         </td>
                     {% else %}
                         <tr><td colspan="4">No beans defined</td></tr>

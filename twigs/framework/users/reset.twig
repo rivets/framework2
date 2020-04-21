@@ -1,5 +1,7 @@
 {% extends '@content/page.twig' %}
 
+{% import '@util/formmacro.twig' as i %}
+
 {% block header %}
     <section class="col-md-12">
         <h1 class="cntr">Password Reset</h1>
@@ -14,16 +16,13 @@
         <article class="ml-auto col-md-6 mr-auto mt-5">
             {% include '@util/message.twig' %}
             {% if not done %}
-                <form action="{{base}}/forgot" method="post" class="jumbotron">
+                {{f.startform({action: base ~ '/forgot', method: 'post', class: 'jumbotron'}}
                     <fieldset>
                         <legend>Send Password Reset Message</legend>
-                        <div class="form-group">
-                            <label for="el" class="control-label">Email</label>
-                            <input type="text" id="el" name="eorl" placeholder="Your email address" class="form-control input-sm" required="required"/>
-                        </div>
-                        <button class="btn btn-primary btn-sm" type="submit">Reset</button>
+                        {{f.text(id: 'el', label: 'Email', name: 'eorl', ph: 'Your email address', required: TRUE})}}
+                        {{f.submit('Reset')}}
                     </fieldset>
-                </form>
+                {{f.endform()}}
             {% endif %}
         </article>
     </section>

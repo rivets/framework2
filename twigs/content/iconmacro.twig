@@ -7,3 +7,13 @@
 {% macro fas(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fas %}
 {% macro fad(icon, other='') %}<i class="fad fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fad %}
 {% macro fab(icon, other='') %}<i class="fab fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fab %}
+
+{% macro edit(other='') %}{% import _self as s %}{{s.fa('edit', other)}}{% endmacro edit %}
+{% macro delete(other='') %}{% import _self as s %}{{s.fa('trash-alt', other)}}{% endmacro delete %}
+{% macro view(other='') %}{% import _self as s %}{{s.fa('eye', other)}}{% endmacro view %}
+{% macro forward(other='') %}{% import _self as s %}{{s.fa('forward', other)}}{% endmacro forward %}
+{% macro fastfwd(other='') %}{% import _self as s %}{{s.fa('fast-forward', other)}}{% endmacro fastfwd %}
+{% macro backward(other='') %}{% import _self as s %}{{s.fa('backward', other)}}{% endmacro backward %}
+{% macro fastbwd(other='') %}{% import _self as s %}{{s.fa('fast-backward', other)}}{% endmacro fastbwd %}
+{% macro search(other='') %}{% import _self as s %}{{s.fa('search', other)}}{% endmacro search %}
+{% macro check(other='') %}{% import _self as s %}{{s.fa('check', other)}}{% endmacro check %}

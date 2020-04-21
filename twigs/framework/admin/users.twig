@@ -4,6 +4,7 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as i %}
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
@@ -39,8 +40,8 @@
                 '<td>'+framework.mktoggle('active', data.active)+'</td>'+
                 '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
                 '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
-                '<td><i class="editb far fa-edit"></i></td>' +
-                '<td><i class="delb far fa-trash-alt"></i></td></tr>'
+                '<td>{{i.edit('editb')}}</td>' +
+                '<td>{{i.delete('delb')}}</td></tr>'
             );
             framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, '#addb');
@@ -86,8 +87,8 @@
                             <td>{{f.tick(u.isactive, 'active')}}</td>
                             <td>{{f.tick(u.isadmin, 'admb')}}</td>
                             <td>{{f.tick(u.isdeveloper, 'devb')}}</td>
-                            <td><i class="editb far fa-edit"></i></td>
-                            <td><i class="delb far fa-trash-alt"></i></td>
+                            <td>{{i.edit('editb')}}</td>
+                            <td>{{i.delete('delb')}}</td>
                         </tr>
                     {% else %}
                         <tr><td colspan="8">No users defined</td></tr>
