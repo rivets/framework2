@@ -307,16 +307,16 @@
         'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.12.0/css/all.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.13.0/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
-        'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, '', '', 0, 0, 'js'],
-        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, '', '', 0, 0, 'js'],
+        'jquery'        => ['https://code.jquery.com/jquery-3.5.0.min.js', 1, '', '', 0, 0, 'js'],
+        'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.0.slim.min.js', 1, '', '', 0, 0, 'js'],
         'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.3.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
-        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.1/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
         'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
@@ -384,7 +384,7 @@
         'default-src'   => ["'self'"],
         'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
-        'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com'],
+        'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
         'style-src'     => ["'self'", '*.fontawesome.com', 'stackpath.bootstrapcdn.com'],
     ];
 /*
