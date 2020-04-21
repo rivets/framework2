@@ -109,7 +109,7 @@
     {% endif %}
 {% endmacro recaptcha %}
 
-{% macro tick(val, class, label = '', disabled = FALSE) %}{% import '@content/iconmacro.twig' as i %}{{i.fa('toggle-' ~ (val ? 'on' : 'off'), class)}}"></i> {{label}}{% endmacro tick %}
+{% macro tick(val, class, label = '', disabled = FALSE) %}{% import '@content/iconmacro.twig' as i %}{{i.fa('toggle-' ~ (val ? 'on' : 'off'), class)}} {{label}}{% endmacro tick %}
 
 {% macro htick(val, class, name, disabled, label = '') %}
 {% import _self as fx %}
