@@ -131,6 +131,6 @@
 
 {% macro startfset(legend, class='') %}
 <fieldset{% if class != '' %} class="{{class}}"{% endif %}>{% if legend != ''%}<legend>{{legend}}</legend>{% endif %}
-{% endmacro startform %}
+{% endmacro startfset %}
 
-{% macro endfset(opts) %}</fieldset>{% endmacro endform %}
+{% macro endfset(opts) %}</fieldset>{% endmacro endfset %}

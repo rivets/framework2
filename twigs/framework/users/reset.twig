@@ -17,11 +17,10 @@
             {% include '@util/message.twig' %}
             {% if not done %}
                 {{f.startform({action: base ~ '/forgot', method: 'post', class: 'jumbotron'}}
-                    <fieldset>
-                        <legend>Send Password Reset Message</legend>
+                    {{f.startfset('Send Password Reset Message')}}
                         {{f.text(id: 'el', label: 'Email', name: 'eorl', ph: 'Your email address', required: TRUE})}}
                         {{f.submit('Reset')}}
-                    </fieldset>
+                    {{f.endfset()}}
                 {{f.endform()}}
             {% endif %}
         </article>
