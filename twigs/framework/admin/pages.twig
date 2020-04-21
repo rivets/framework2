@@ -5,6 +5,7 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as i %}
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
@@ -120,8 +121,8 @@
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
                 '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
-                '<td><i class="editb far fa-edit"></i></td>'+
-                '<td><i class="delb far fa-trash-alt"></i></td></tr>';
+                '<td>{{i.fa('edit', 'editb')}}</td>'+
+                '<td>{{i.fa('trash-alt', 'delb')}}</td></tr>';
                 let nx
                 if (sp == null)
                 {
@@ -207,8 +208,8 @@
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
-                            <td><i class="editb far fa-edit"></a></td>
-                            <td><i class="delb far fa-trash-alt"></i></td>
+                            <td>{{i.fa('edit', 'editb')}}</a></td>
+                            <td>{{i.fa('trash-alt', 'delb')}}</td>
                         </tr>
                     {% else %}
                         <tr><td colspan="4">No pages defined</td></tr>
