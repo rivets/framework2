@@ -114,6 +114,73 @@
             return '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
         }
 /**
+ * Send mail if possible
+ *
+ * @parm array    $to       An array of people to send to.
+ * @param string  $subject  The subject
+ * @param string  $msg      The message - if $alt is not empty then this is assumed to be HTML.
+ * @param string  $alt      The alt message - plain text
+ * @param array   $other    From, cc, bcc etc. etc.
+ * @param array   $attach   Any Attachments
+ *
+ * @return string
+ */
+        public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
+        {
+            /** @psalm-suppress RedundantCondition **/
+            if (Config::USEPHPM || ini_get('sendmail_path') !== '')
+            {
+                try
+                {
+                    $mail = new \Framework\Utility\FMailer;
+                    $mail->setFrom($other['from'] ?? Config::SITENOREPLY);
+                    if ($replyto !== '')
+                    {
+                        $mail->addReplyTo($replyto);
+                    }
+                    if (isset($other['cc']))
+                    {
+                        foreach ($other['cc'] as $cc)
+                        {
+                            $mail->addCC($cc);
+                        }
+                    }
+                    if (isset($other['bcc']))
+                    {
+                        foreach ($other['bcc'] as $cc)
+                        {
+                            $mail->addBCC($cc);
+                        }
+                    }
+                    foreach ($to as $em)
+                    {
+                        $mail->addAddress($em);
+                    }
+                    $mail->Subject = $subject;
+                    if ($alt !== '')
+                    {
+                        $mail->AltBody= $alt;
+                        $mail->isHTML(TRUE);
+                    }
+                    else
+                    {
+                        $mail->isHTML(FALSE);
+                    }
+                    $mail->msgHTML($msg);
+                    foreach ($attach as $fl)
+                    {
+                        $mail->addAttachment($fl); 
+                    }
+                    return $mail->send() ? '' : $mail->ErrorInfo;
+                }
+                catch (\Exception $e)
+                {
+                    return $mail->ErrorInfo;
+                }
+            }
+            return 'No mailer configured';
+        }
+/**
  * Tell sysadmin there was an error
  *
  * @param string	 $msg	An error messager
@@ -140,26 +207,31 @@
                 /** @psalm-suppress RedundantCondition **/
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
-                    try
-                    {
-                        $mail = new \Framework\Utility\FMailer;
-                        $mail->setFrom(Config::SITENOREPLY);
-                        $mail->addReplyTo(Config::SITENOREPLY);
-                        foreach ($this->sysadmin as $em)
-                        {
-                            $mail->addAddress($em);
-                        }
-                        $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-                        $mail->msgHTML($this->eRewrite());
-                        $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
-                        $mail->send();
-                    }
-                    catch (\Exception $e)
+                    $err = $this->sendmail($this->sysadmin, Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey,
+                        $this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back);
+                    if ($err !== '')
                     {
                         $ekey .= $this->eRewrite();
                     }
+                    //try
+                    //{
+                    //    $mail = new \Framework\Utility\FMailer;
+                    //    $mail->setFrom(Config::SITENOREPLY);
+                    //    $mail->addReplyTo(Config::SITENOREPLY);
+                    //    foreach ($this->sysadmin as $em)
+                    //    {
+                    //        $mail->addAddress($em);
+                    //    }
+                    //    $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
+                    //    $mail->msgHTML($this->eRewrite());
+                    //    $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
+                    //    $mail->send();
+                    //}
+                    //catch (\Exception $e)
+                    //{
+                    //    $ekey .= $this->eRewrite();
+                    //}
                 }
-
             }
             return $ekey;
         }
