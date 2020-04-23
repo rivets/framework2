@@ -292,12 +292,14 @@
  *
  * @param string    $table
  * @param int       $pagesize
+ * @param string    $where
+ * @param array     $pars
  *
  * @return int
  */
-        public function pagecount(string $table, int $pagesize) : int
+        public function pagecount(string $table, int $pagesize, string $where = '', array $pars = []) : int
         {
-            $count = \R::count($table);
+            $count = \R::count($table, $where, $pars);
             return (int) floor((($count % $pagesize > 0) ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
