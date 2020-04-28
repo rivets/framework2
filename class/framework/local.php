@@ -134,9 +134,9 @@
                 {
                     $mail = new \Framework\Utility\FMailer;
                     $mail->setFrom($other['from'] ?? Config::SITENOREPLY);
-                    if ($replyto !== '')
+                    if (isset($other['replyto']))
                     {
-                        $mail->addReplyTo($replyto);
+                        $mail->addReplyTo($other['replyto']);
                     }
                     if (isset($other['cc']))
                     {
@@ -208,7 +208,8 @@
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $err = $this->sendmail($this->sysadmin, Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey,
-                        $this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back);
+                        $this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
+                        ['from' => Config::SITENOREPLY]);
                     if ($err !== '')
                     {
                         $ekey .= $this->eRewrite();
