@@ -319,12 +319,12 @@
             {
                 foreach ($key as $k => $val)
                 {
-                    $this->headers[$k][] = $val;
+                    $this->headers[$k][] = trim($val);
                 }
             }
             else
             {
-                $this->headers[$key][] = $value;
+                $this->headers[$key][] = trim($value);
             }
         }
 /**
