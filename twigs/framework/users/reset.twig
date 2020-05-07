@@ -18,7 +18,7 @@
             {% if not done %}
                 {{f.startform({action: base ~ '/forgot', method: 'post', class: 'jumbotron'})}}
                     {{f.startfset('Send Password Reset Message')}}
-                        {{f.text(id: 'el', label: 'Email', name: 'eorl', ph: 'Your email address', required: TRUE})}}
+                        {{f.text({id: 'el', label: 'Email', name: 'eorl', ph: 'Your email address', required: TRUE})}}
                         {{f.submit('Reset')}}
                     {{f.endfset()}}
                 {{f.endform()}}
