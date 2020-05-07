@@ -48,6 +48,7 @@
             if ($divert && $res)
             { // we are flooding so divert the caller
                 Context::getinstance()->web()->relocate(self::DIVERSION);
+                /* NOT REACHED */
             }
             return $res;
         }
