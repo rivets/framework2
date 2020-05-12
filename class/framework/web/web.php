@@ -409,7 +409,7 @@
  *
  * @return void
  */
-        public function addCSP(string $type, string $host = '') : void
+        public function addCSP($type, string $host = '') : void
         {
             if (!is_array($type))
             {
