@@ -413,11 +413,8 @@
         {
             if (!is_array($type))
             {
-                $type = [$type, $host];
-            }
-            else
-            {
                 assert($host !== '');
+                $type = [$type, $host];
             }
             foreach ($type as $t => $h)
             {
@@ -436,11 +433,8 @@
         {
             if (!is_array($type))
             {
-                $type = [$type, $host];
-            }
-            else
-            {
                 assert($host !== '');
+                $type = [$type, $host];
             }
             foreach ($type as $t => $h)
             {
