@@ -424,7 +424,7 @@
 /**
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string|array  $type    What the item is for (script-src, css-src etc.)
+ * @param string|array  $type    What the item is for (script-src, style-src etc.)
  * @param string        $host    The item to remove
  *
  * @return void
@@ -438,10 +438,7 @@
             }
             foreach ($type as $t => $h)
             {
-                if (isset($this->nocsp[$t]))
-                {
-                    $this->nocsp[$t][] = $host;
-                }
+                $this->nocsp[$t][] = $host;
             }
         }
 /**
