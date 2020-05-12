@@ -414,7 +414,7 @@
             if (!is_array($type))
             {
                 assert($host !== '');
-                $type = [$type, $host];
+                $type = [$type => $host];
             }
             foreach ($type as $t => $h)
             {
@@ -434,11 +434,11 @@
             if (!is_array($type))
             {
                 assert($host !== '');
-                $type = [$type, $host];
+                $type = [$type => $host];
             }
             foreach ($type as $t => $h)
             {
-                $this->nocsp[$t][] = $host;
+                $this->nocsp[$t][] = $h;
             }
         }
 /**
