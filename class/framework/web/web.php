@@ -319,12 +319,12 @@
             {
                 foreach ($key as $k => $val)
                 {
-                    $this->headers[$k][] = trim($val);
+                    $this->headers[trim($k)][] = trim($val);
                 }
             }
             else
             {
-                $this->headers[$key][] = trim($value);
+                $this->headers[trim($key)][] = trim($value);
             }
         }
 /**
@@ -404,29 +404,41 @@
 /**
  * Add an item for use in a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string  $type    What the item is for (script-src, style-src etc.)
- * @param string  $string  The item to add
+ * @param string|array  $type    What the item is for (script-src, style-src etc.)
+ * @param string        $host    The host to add
  *
  * @return void
  */
-        public function addCSP(string $type, string $string)
+        public function addCSP($type, string $host = '') : void
         {
-
-            $this->csp[$type][] = $string;
+            if (!is_array($type))
+            {
+                assert($host !== '');
+                $type = [$type => $host];
+            }
+            foreach ($type as $t => $h)
+            {
+                $this->csp[$t][] = $h;
+            }
         }
 /**
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string  $type    What the item is for (script-src, css-src etc.)
- * @param string  $string  The item to remove
+ * @param string|array  $type    What the item is for (script-src, style-src etc.)
+ * @param string        $host    The item to remove
  *
  * @return void
  */
-        public function removeCSP($type, $string)
+        public function removeCSP($type, string $host = '') : void
         {
-            if (isset($this->nocsp[$type]))
+            if (!is_array($type))
             {
-                $this->nocsp[$type][] = $string;
+                assert($host !== '');
+                $type = [$type => $host];
+            }
+            foreach ($type as $t => $h)
+            {
+                $this->nocsp[$t][] = $h;
             }
         }
 /**
