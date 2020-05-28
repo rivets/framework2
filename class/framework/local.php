@@ -194,6 +194,14 @@
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
+            $origin = '';
+            foreach (['REQUEST_URI', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REQUEST_METHOD', 'REQUEST_SCHEME', 'QUERY_STRING', 'HTTP_COOKIE', 'HTTP_USER_AGENT'] AS $fld)
+            {
+                if (isset($_SERVER[$fld]))
+                {
+                    $origin .= $fld.': '.$_SERVER[$fld].PHP_EOL;
+                }
+            }
             if (!isset($this->senterrors[$ekey]))
             {
                 $this->senterrors[$ekey] = TRUE;
@@ -208,30 +216,12 @@
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $err = $this->sendmail($this->sysadmin, Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey,
-                        $this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
+                        $origin.$this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
                         ['from' => Config::SITENOREPLY]);
                     if ($err !== '')
                     {
                         $ekey .= $this->eRewrite();
                     }
-                    //try
-                    //{
-                    //    $mail = new \Framework\Utility\FMailer;
-                    //    $mail->setFrom(Config::SITENOREPLY);
-                    //    $mail->addReplyTo(Config::SITENOREPLY);
-                    //    foreach ($this->sysadmin as $em)
-                    //    {
-                    //        $mail->addAddress($em);
-                    //    }
-                    //    $mail->Subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-                    //    $mail->msgHTML($this->eRewrite());
-                    //    $mail->AltBody= 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back;
-                    //    $mail->send();
-                    //}
-                    //catch (\Exception $e)
-                    //{
-                    //    $ekey .= $this->eRewrite();
-                    //}
                 }
             }
             return $ekey;
