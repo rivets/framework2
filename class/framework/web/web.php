@@ -338,12 +338,12 @@
             {
                 foreach ($vals as $v)
                 {
-                    header($name.': '.$v);
+                    header(trim($name.': '.$v));
                 }
             }
             if (!empty($this->cache))
             {
-                header('Cache-Control: '.implode(',', $this->cache));
+                header(trim('Cache-Control: '.implode(',', $this->cache)));
             }
         }
 /**
