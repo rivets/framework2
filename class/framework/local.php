@@ -198,7 +198,8 @@
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
-            $origin = '';
+            $subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
+            $origin = $subject.PHP_EOL.PHP_EOL;
             foreach (['REQUEST_URI', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REQUEST_METHOD', 'REQUEST_SCHEME', 'QUERY_STRING', 'HTTP_COOKIE', 'HTTP_USER_AGENT'] AS $fld)
             {
                 if (isset($_SERVER[$fld]))
@@ -219,7 +220,7 @@
                 /** @psalm-suppress RedundantCondition **/
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
-                    $err = $this->sendmail($this->sysadmin, Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey,
+                    $err = $this->sendmail($this->sysadmin, $subject,
                         $this->eRewrite($origin), $origin.PHP_EOL.'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
                         ['from' => Config::SITENOREPLY]);
                     if ($err !== '')
