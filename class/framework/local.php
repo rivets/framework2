@@ -107,11 +107,15 @@
 /**
  * Rewrite error string
  *
+ * @param string $origin HTTP details
+ *
  * @return string
  */
-        private function eRewrite() : string
+        private function eRewrite(string $origin = '') : string
         {
-            return '<pre>'.str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+            return '<pre>'.
+                str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($origin)).
+                str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
         }
 /**
  * Send mail if possible
@@ -193,7 +197,7 @@
         private function telladmin(string $msg, $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
-            $ekey = $file.' / '.$line.' / '.$type.' / '.$msg;
+            $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
             $origin = '';
             foreach (['REQUEST_URI', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REQUEST_METHOD', 'REQUEST_SCHEME', 'QUERY_STRING', 'HTTP_COOKIE', 'HTTP_USER_AGENT'] AS $fld)
             {
@@ -216,11 +220,11 @@
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $err = $this->sendmail($this->sysadmin, Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey,
-                        $origin.$this->eRewrite(), 'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
+                        $this->eRewrite($origin), $origin.PHP_EOL.'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
                         ['from' => Config::SITENOREPLY]);
                     if ($err !== '')
                     {
-                        $ekey .= $this->eRewrite();
+                        $ekey .= $this->eRewrite($origin);
                     }
                 }
             }
