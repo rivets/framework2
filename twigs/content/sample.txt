@@ -11,7 +11,7 @@
 {% set parsley = TRUE %}
 #}
 {#
-    If your page uses the inlin editable package include this line at the start of the file
+    If your page uses the inline editable package include this line at the start of the file
 {% set editable = TRUE %}
 #}
 
@@ -31,7 +31,7 @@
 #}
 
 {# this brings in some useful macros for making modals
-{% import '@util/modalacro.twig' as f %}
+{% import '@util/modalmacro.twig' as f %}
 #}
 
 {# put a string in this block that will appear as the title of the page
