@@ -1,7 +1,5 @@
 <!doctype html>
-
-<!--[if lt IE 9]><html class="ie"{% if lang is defined %} lang="{{lang}}"{% endif %}{%if schema is defined %} {{schema}}{% endif %}><![endif]-->
-<!--[if gte IE 9]><!--><html{% if lang is defined %} lang="{{lang}}"{% endif %}{%if schema is defined %} {{schema}}{% endif %}><!--<![endif]-->
+<html{% if lang is defined %} lang="{{lang}}"{% endif %}{%if schema is defined %} {{schema|raw}}{% endif %}>
 <head>
     <meta charset="utf-8"/>
 
