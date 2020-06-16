@@ -363,18 +363,38 @@
  *
  * @return void
  */
-            public function assertFail($file, $line, $message) : void
-            {
-                $ekey = $this->telladmin(
-                    'Assertion Failure: '.$message,
-                    0,
-                    $file,
-                    $line
-                );
-                $this->make500($ekey);
-                exit;
-                /* NOT REACHED */
+        public function assertFail($file, $line, $message) : void
+        {
+            $ekey = $this->telladmin(
+                'Assertion Failure: '.$message,
+                0,
+                $file,
+                $line
+            );
+            $this->make500($ekey);
+            exit;
+            /* NOT REACHED */
+        }
+/**
+ * Generate a message page for early failures
+ *
+ * @param string    $title    Page title and heading
+ * @param string    $msg      The message to be displayed
+ *
+ * @return void
+ */
+        private function earlyFail(string $title, string $msg)
+        {
+            if (is_object($this->twig))
+            { # we have twig so can render a template
+                $this->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
             }
+            else
+            { # generate a very simple page...
+                echo '<!doctype html><html><head><title>'.$title.'</title></head><body><h1>'.$title.'</h1><p>'.$msg.'</p></body></html>';
+            }
+            exit;
+        }
 /**
  * Allow system to ignore errors
  *
@@ -753,8 +773,8 @@
             $offl = $this->makebasepath('offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
-                $this->render('@admin/offline.twig', ['msg' => file_get_contents($offl)]);
-                exit;
+                $this->earlyFail('OFFLINE', file_get_contents($offl));
+                /* NOT REACHED */
             }
 /*
  * Initialise database access
@@ -766,10 +786,19 @@
                 \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
                 \R::freeze(!$devel); # freeze DB for production systems
                 $this->fwconfig = [];
-                foreach (\R::findAll(FW::CONFIG) as $cnf)
-                {
-                    $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
-                    $this->fwconfig[$cnf->name] = $cnf;
+                try
+                { # sometimes RB does not get a connection
+                    foreach (\R::findAll(FW::CONFIG) as $cnf)
+                    {
+                        $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
+                        $this->fwconfig[$cnf->name] = $cnf;
+                    }
+                }
+                catch (\Exception $e)
+                { # But what do we do?
+                    $this->telladmin('Overload', 'Error', 'local.php', 791);
+                    $this->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.');
+                    /* NOT REACHED */                 
                 }
                 if ($loadtwig)
                 {
