@@ -2,6 +2,8 @@
 /**
  * You can put arbitrary code in here and run it
  */
+    use \R as R;
+
     \R::freeze(FALSE); // unfreeze the database in case you want to add fields
     $context = \Support\Context::getinstance();
     $siteinfo = \Support\SiteInfo::getinstance();
