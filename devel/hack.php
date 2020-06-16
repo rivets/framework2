@@ -13,6 +13,7 @@
     $siteinfo = \Support\SiteInfo::getinstance();
     $log = '';
     $raw = FALSE;
+    // set_time_limit(0); // use carefully - only if you know this will terminate!!
 /******************************************************************************/
 /*
  * Your code in here. Concatenate output to $log and it will be shown. If you want HTML output, set $raw to TRUE;
