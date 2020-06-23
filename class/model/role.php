@@ -3,7 +3,7 @@
  * A model class for the RedBean object Role
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2019 Newcastle University
+ * @copyright 2015-2020 Newcastle University
  *
  */
     namespace Model;
@@ -21,7 +21,7 @@
  */
         public function rolename() : ?object
         {
-	        return $this->bean->rolename;
+	    return $this->bean->rolename;
         }
 /**
  * Return rolecontext object
@@ -30,7 +30,7 @@
  */
         public function rolecontext() : ?object
         {
-	        return $this->bean->rolecontext;
+	    return $this->bean->rolecontext;
         }
 /**
  * Fixes up start values
@@ -56,11 +56,29 @@
         }
 /**
  * Update - called when a rolename bean is stored
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
  */
         public function update() : void
         {
             $this->bean->start = $this->checkstart($this->bean->start);
             $this->bean->end = $this->checkend($this->bean->end);
+            if ($this->bean->end !== '' && $this->bean->start > $this->bean->end)
+            {
+                throw new \Framework\Exception\BadValue('Start > End');
+            }
+        }
+/**
+ * Is this role currently valid?
+ * i.e. start < now < end (if end has a value)
+ *
+ * @return bool
+ */
+        public function valid()
+        {
+            $now = Context::getinstance()->utcnow();
+            return $this->bean->start <= $now && ($this->bean->end === '' || $now <= $this->bean->end);
         }
     }
 ?>
