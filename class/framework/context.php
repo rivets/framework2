@@ -540,6 +540,7 @@
                 $this->reqaction = strtolower(array_shift($req));
                 $this->reqrest = empty($req) ? [''] : array_values($req);
             }
+            return $this;
         }
     }
 ?>
