@@ -268,7 +268,7 @@
                 $msg = $fdt->mustpost('msg');
                 $onlyadmin = $fdt->post('onlyadmin', 0);
                 $online = $fdt->post('online', 0);
-                if ($adminonly && $fdt->post('deladonly', 0) == 1)
+                if ($adminonly && ($online || $fdt->post('deladonly', 0) == 1))
                 {   
                     unlink($adon);
                 }
