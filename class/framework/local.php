@@ -383,7 +383,7 @@
  *
  * @return void
  */
-        private function earlyFail(string $title, string $msg)
+        public function earlyFail(string $title, string $msg)
         {
             if (is_object($this->twig))
             { # we have twig so can render a template
