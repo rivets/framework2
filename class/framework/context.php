@@ -496,7 +496,7 @@
 /**
  * Check to see if non-admin users are being excluded
  */
-            $offl = $this->makebasepath('admin', 'adminonly');
+            $offl = $this->local()->makebasepath('admin', 'adminonly');
             if (file_exists($offl) && !$this->hasadmin())
             { # go offline before we try to do anything else as we are not an admin
                 $this->local()->earlyFail('OFFLINE', file_get_contents($offl));
