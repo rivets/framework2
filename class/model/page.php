@@ -188,7 +188,7 @@
 
 {% block header %}
     <article class="col-md-12 mt-5">
-        <h1 class="cntr">'.strtoupper($page).'</h1>
+        <h1 class="text-center">'.strtoupper($page).'</h1>
     </article>
 {% endblock header %}
 

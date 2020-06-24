@@ -17,7 +17,7 @@
             </thead>
             <tbody>
                 {% for r in bean.roles(TRUE) %}
-                    <tr data-id="{{r.getID}}">
+                    <tr data-id="{{r.getID}}" {% if not r.valid() %} class="notvalid"{% endif %}>
                         {{f.hidden({name: 'exist[]', value: r.getID})}}
                         <td>{{r.rolecontext.name}}</td>
                         <td>{{r.rolename.name}}</td>
