@@ -28,7 +28,7 @@
 
             {{f.startform({method: 'post'})}}
                 {{f.textarea({name: 'msg', ph: 'The message to be displayed to users'})}}
-                {{f.checkbox({names: ['offline', 'onlyadmin'], labels: ['Go offline', 'Allow admin'], values: [1, 1], check: [FALSE, adminonly]})}}
+                {{f.checkbox({names: ['onlyadmin'], labels: ['Allow admin'], values: [1, 1], check: [FALSE, adminonly]})}}
                 {% if adminonly %}
                     {{f.checkbox({names: ['deladonly'], labels: ['Remove Adminonly'], values: [1]})}}
                     {{f.checkbox({names: ['online'], labels: ['Go online'], values: [1]})}}

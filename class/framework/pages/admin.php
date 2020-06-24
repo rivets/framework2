@@ -268,7 +268,7 @@
                 $msg = $fdt->mustpost('msg');
                 $onlyadmin = $fdt->post('onlyadmin', 0);
                 $online = $fdt->post('online', 0);
-                if ($fdt->post('deladonly', 0) == 1 && $adminonly);
+                if ($adminonly && $fdt->post('deladonly', 0) == 1)
                 {   
                     unlink($adon);
                 }
@@ -279,7 +279,7 @@
                     fputs($fd, $msg);
                     fclose($fd);
                 }
-                $local->messge(\Framework\Local::MESSAGE, 'Done');
+                $local->message(\Framework\Local::MESSAGE, 'Done');
             }
             $local->addval([
                 'adminonly' => $adminonly,
