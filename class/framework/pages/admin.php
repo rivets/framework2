@@ -249,6 +249,44 @@
             return '@admin/update.twig';
         }
 /**
+ * Go offline (or online)
+ *
+ * Remember that if you go offline rather than adminonly you have to remove the file by hand to get back online!
+ *
+ * @param \Support\Context    $context  The Context object
+ *
+ * @return string
+ */
+        private function offline(Context $context)
+        {
+            $local = $context->local();
+            $adon = $local->makebasepath('admin', 'adminonly');
+            $adminonly = file_exists($adon);
+            $fdt = $context->formdata();
+            if ($fdt->haspost('msg'))
+            {
+                $msg = $fdt->mustpost('msg');
+                $onlyadmin = $fdt->post('onlyadmin', 0);
+                $online = $fdt->post('online', 0);
+                if ($adminonly && $fdt->post('deladonly', 0) == 1);
+                {   
+                    unlink($adon);
+                }
+                if ($online == 0)
+                {
+                    $file = $onlyadmin == 1 ? $adon : $local->makebasepath('admin', 'offline');
+                    $fd = fopen($file, 'w');
+                    fputs($fd, $msg);
+                    fclose($fd);
+                }
+                $local->messge(\Framework\Local::MESSAGE, 'Done');
+            }
+            $local->addval([
+                'adminonly' => $adminonly,
+            ]);
+            return '@admin/offline.twig';
+        }
+/**
  * Handle various admin operations /admin/xxxx
  *
  * @param \Support\Context	$context	The context object for the site
@@ -285,6 +323,9 @@
                 $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
                 phpinfo();
                 exit; // phpinfo display is all we need
+            case 'offline':
+                $tpl = $this->offline($context);
+                break;
             case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
                 break;
