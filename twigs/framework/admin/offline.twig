@@ -32,8 +32,8 @@
                 {% if adminonly %}
                     {{f.checkbox({names: ['deladonly'], labels: ['Remove Adminonly'], values: [1]})}}
                     {{f.checkbox({names: ['online'], labels: ['Go online'], values: [1]})}}
-                    {{f.submit({value: 'Set'})}}
                 {% endif %}
+                {{f.submit({value: 'Set'})}}
             {{f.endform()}}
          </article>
     </section>
