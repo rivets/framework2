@@ -3,7 +3,7 @@
  * A model class for the RedBean object Page
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2018 Newcastle University
+ * @copyright 2017-2020 Newcastle University
  */
     namespace Model;
     
@@ -23,7 +23,7 @@
 
 
         use \ModelExtend\MakeGuard;
-        use \Framework\HandleRole;
+        use \Framework\Support\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
  */
@@ -188,7 +188,7 @@
 
 {% block header %}
     <article class="col-md-12 mt-5">
-        <h1 class="cntr">'.strtoupper($page).'</h1>
+        <h1 class="text-center">'.strtoupper($page).'</h1>
     </article>
 {% endblock header %}
 

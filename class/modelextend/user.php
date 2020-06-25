@@ -56,5 +56,25 @@
         public function addData(Context $context) :void
         {
         }
+/**
+ * Function called when a user bean is updated - do error checking in here
+ *
+ * @throws \Framework\Exception\BadValue
+ * @return void
+ */
+        public function update() : void
+        {
+            if (!preg_match('/^[a-z0-9]+/i', $this->bean->login))
+            {
+                throw new \Framework\Exception\BadValue('Invalid login name');
+            }
+            if (!filter_var($this->bean->email, FILTER_VALIDATE_EMAIL))
+            {
+                throw new \Framework\Exception\BadValue('Invalid email address');
+            }
+/**
+ * @todo Validate the joined field. Correct date, not in the future
+ */
+        }
     }
 ?>

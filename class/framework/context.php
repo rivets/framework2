@@ -472,16 +472,35 @@
                     {
                         /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                        $this->luser = $this->load('user', $tok->sub);
+                        if (is_object($this->luser))
+                        {
+                            if ($this->luser->getID() != $tok->sub)
+                            {
+                                throw new \Exception('User conflict');
+                            }
+                        }
+                        else
+                        {
+                            $this->luser = $this->load('user', $tok->sub);
+                        }
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.
-                        $this->web()->noaccess();
+                        $this->web()->noaccess($e->getMessage());
                         /* NOT REACHED */
                     }
                     $this->tokauth = TRUE;
                     break;
                 }
+            }
+/**
+ * Check to see if non-admin users are being excluded
+ */
+            $offl = $this->local()->makebasepath('admin', 'adminonly');
+            if (file_exists($offl) && !$this->hasadmin())
+            { # go offline before we try to do anything else as we are not an admin
+                $this->local()->earlyFail('OFFLINE', file_get_contents($offl));
+                /* NOT REACHED */
             }
             if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
             {
@@ -521,7 +540,6 @@
                 $this->reqaction = strtolower(array_shift($req));
                 $this->reqrest = empty($req) ? [''] : array_values($req);
             }
-
             return $this;
         }
     }

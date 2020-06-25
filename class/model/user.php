@@ -3,7 +3,7 @@
  * A model class for the RedBean object User
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2013-2019 Newcastle University
+ * @copyright 2013-2020 Newcastle University
  *
  */
     namespace Model;
@@ -29,27 +29,7 @@
         use \ModelExtend\User;
         use \ModelExtend\FWEdit;
         use \ModelExtend\MakeGuard;
-        use \Framework\HandleRole;
-/**
- * Function called when a user bean is updated - do error checking in here
- *
- * @throws \Framework\Exception\BadValue
- * @return void
- */
-        public function update() : void
-        {
-            if (!preg_match('/^[a-z0-9]+/i', $this->bean->login))
-            {
-                throw new \Framework\Exception\BadValue('Invalid login name');
-            }
-            if (!filter_var($this->bean->email, FILTER_VALIDATE_EMAIL))
-            {
-                throw new \Framework\Exception\BadValue('Invalid email address');
-            }
-/**
- * @todo Validate the joined field. Correct date, not in the future
- */
-        }
+        use \Framework\Support\HandleRole;
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *

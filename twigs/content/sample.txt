@@ -39,7 +39,7 @@
 {% endblock title %}
 #}
 
-{{% block meta %}
+{% block meta %}
 {# <meta> for things like keywords etc.#}
 {% endblock meta %}
 
@@ -89,7 +89,7 @@
 
 {% block header %}
     <article class="col-md-12">
-        <h1 class="cntr">Header</h1>
+        <h1 class="text-center">Header</h1>
     </article>
 {% endblock header %}
 

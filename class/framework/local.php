@@ -383,7 +383,7 @@
  *
  * @return void
  */
-        private function earlyFail(string $title, string $msg)
+        public function earlyFail(string $title, string $msg)
         {
             if (is_object($this->twig))
             { # we have twig so can render a template
@@ -770,7 +770,7 @@
                 $this->setuptwig(FALSE);
             }
 
-            $offl = $this->makebasepath('offline');
+            $offl = $this->makebasepath('admin', 'offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
                 $this->earlyFail('OFFLINE', file_get_contents($offl));

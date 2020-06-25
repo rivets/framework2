@@ -3,9 +3,9 @@
  * A trait supporting classess that use roles
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2019 Newcastle University
+ * @copyright 2017-2020 Newcastle University
  */
-    namespace Framework;
+    namespace Framework\Support;
 
     use Framework\Web\Web as Web;
     use Config\Framework as FW;

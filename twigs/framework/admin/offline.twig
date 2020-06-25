@@ -1,0 +1,45 @@
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Go Offline</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mr-auto">
+            {% include '@util/message.twig' %}
+            {% if adminonly %}
+                <h2>Admin Only in force</h2>
+                <p>
+                    Use 'Remove Adminonly' if you want to go fully offline and not revert to adminonly status when you delete admin/offline.
+                </p>
+            {% endif %}
+            <p>
+                <strong>
+                       If you go fully offline you will have to delete the file admin/offline by hand to be able to get back online!
+                       If you want to stage the process go adminonly before you go fully offline, then when you delete admin/offline
+                       you will still be excluding ordinary users.
+                </strong>
+            </p>
+
+            {{f.startform({method: 'post'})}}
+                {{f.textarea({name: 'msg', ph: 'The message to be displayed to users'})}}
+                {{f.checkbox({names: ['onlyadmin'], labels: ['Allow admin'], values: [1], check: [adminonly]})}}
+                {% if adminonly %}
+                    {{f.checkbox({names: ['deladonly'], labels: ['Remove Adminonly'], values: [1]})}}
+                    {{f.checkbox({names: ['online'], labels: ['Go online'], values: [1]})}}
+                {% endif %}
+                <p class="mt-4">
+                    {{f.submit({value: 'Set'})}}
+                </p>
+            {{f.endform()}}
+         </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}
