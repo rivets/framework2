@@ -39,7 +39,7 @@
 {% endblock title %}
 #}
 
-{{% block meta %}
+{% block meta %}
 {# <meta> for things like keywords etc.#}
 {% endblock meta %}
 
