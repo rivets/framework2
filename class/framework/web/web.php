@@ -308,23 +308,20 @@
  *
  * This supports having more than one header with the same name.
  *
- * @param mixed        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
+ * @param string|array        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
  * @param string       $value
  *
  * @return void
  */
         public function addheader($key, string $value = '') : void
         {
-            if (is_array($key))
+            if (!is_array($key))
             {
-                foreach ($key as $k => $val)
-                {
-                    $this->headers[trim($k)][] = trim($val);
-                }
+                $key = [$key];
             }
-            else
+            foreach ($key as $k => $val)
             {
-                $this->headers[trim($key)][] = trim($value);
+                $this->headers[trim($k)][] = str_replace("\0", '', trim($val));
             }
         }
 /**
@@ -338,7 +335,7 @@
             {
                 foreach ($vals as $v)
                 {
-                    header(trim($name.': '.$v));
+                    header($name.': '.$v);
                 }
             }
             if (!empty($this->cache))
