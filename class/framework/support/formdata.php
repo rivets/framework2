@@ -7,7 +7,6 @@
  */
     namespace Framework\Support;
 
-    use Framework\Web\Web as Web;
     use \Support\Context as Context;
     use \Config\Config as Config;
 /**

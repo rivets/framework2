@@ -769,7 +769,7 @@
                 foreach (\Support\SiteInfo::getinstance()->fetch($bean,
                     $field.' like ? group by '.$field.($order !== '' ? (' order by '.$order) : '').($limit !== '' ? (' limit '.$limit) : ''), [$search]) as $bn)
                 {
-                    $v = new \stdClass;
+                    $v = new \stdClass();
                     $v->value = $obj ? $bn->getID() : $bn->$ofield;
                     $v->text = $bn->$ofield;
                     $res[] = $v;

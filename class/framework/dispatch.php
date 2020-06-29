@@ -69,7 +69,7 @@
 /**
  * @var array $actions Values for determining handling of above codes
  */
-        public static $actions = [
+        private static $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
             self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
             self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
