@@ -36,8 +36,8 @@
                     $mail->setFrom(Config::SITENOREPLY);
                     $mail->addReplyTo(Config::SITENOREPLY);
                     $mail->addAddress(Config::SYSADMIN);
-                    /** @psalm-suppress PossiblyNullOperand **/
-                    /** @psalm-suppress PossiblyNullPropertyFetch **/
+                    /** @psalm-suppress PossiblyNullOperand */
+                    /** @psalm-suppress PossiblyNullPropertyFetch */
                     $mail->Subject = \Config\Config::SITENAME.': '.$subj;
                     /** @psalm-suppress UndefinedPropertyAssignment */
                     $mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;

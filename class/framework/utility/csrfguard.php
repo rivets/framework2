@@ -64,7 +64,7 @@
  */
         public function generate() : array
         {
-            $name ='CSRFGuard_'.mt_rand(0,mt_getrandmax());
+            $name ='CSRFGuard_'.mt_rand(0, mt_getrandmax());
             return [$name,  $this->maketoken($name)];
         }
 /**

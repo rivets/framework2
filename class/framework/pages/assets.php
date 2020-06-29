@@ -119,7 +119,7 @@
  *
  * @param \Support\Context    $context   The context object for the site
  *
- * @return integer
+ * @return int
  */
         public function makemaxage(Context $context) : int
         {
@@ -131,7 +131,7 @@
  * @param \Support\Context    $context   The context object for the site
  * @param string	$time	The time value to check
  *
- * @return boolean
+ * @return bool
  */
         public function checkmodtime(Context $context, string $time) : bool
         {

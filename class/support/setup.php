@@ -8,7 +8,6 @@
  */
     namespace Support;
 
-    use Support\Context as Context;
 /**
  * A class that supports setup code for all pages
  */

@@ -23,7 +23,7 @@
  * @todo support nested AND/OR
  *
  * @param array   $roles  [['context', 'role'],...]]
- * @param boolean $or     If TRUE then the condition is OR
+ * @param bool    $or     If TRUE then the condition is OR
  *
  * @return array
  */

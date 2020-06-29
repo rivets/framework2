@@ -122,7 +122,7 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{# Uncomment this if your page uses AJAX
+                    fwrite($fd, '{# Uncomment this if your page uses AJAX
 {% set ajax = TRUE %}
 #}
 

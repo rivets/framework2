@@ -16,7 +16,7 @@
  */
         private static $fd = FALSE;
 /**
- * @var integer     header count
+ * @var int     header count
  */
         private static $hcount = 0;
 /**
