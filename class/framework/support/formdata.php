@@ -463,7 +463,7 @@
                 return trim($this->putdata[$name]);
             }
             throw new \Framework\Exception\BadValue('Missing put/patch item');
-       }
+        }
 /**
  * Get php://input data, check array for an id and return its bean
  *
