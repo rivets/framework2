@@ -58,7 +58,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {
             if ($temporary)
             {
@@ -84,7 +84,7 @@
  * @psalm-return never-return
  * @return void
  */
-        private function sendhead(int $code, string $msg)
+        private function sendhead(int $code, string $msg) : void
         {
             if ($msg !== '')
             {
@@ -187,7 +187,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function bad(string $msg = '')
+        public function bad(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
         }
@@ -199,7 +199,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function noaccess(string $msg = '')
+        public function noaccess(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_FORBIDDEN, $msg);
         }
@@ -211,7 +211,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function notfound(string $msg = '')
+        public function notfound(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_NOT_FOUND, $msg);
         }
@@ -223,7 +223,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function notsatisfiable(string $msg = '')
+        public function notsatisfiable(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $msg);
         }
@@ -235,7 +235,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function internal(string $msg = '')
+        public function internal(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
         }
@@ -377,7 +377,7 @@
  *
  * @return void
  */
-        public function debuffer()
+        public function debuffer() : void
         {
             while (ob_get_length() > 0)
             { # just in case we are inside some buffering

@@ -148,7 +148,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function config(Context $context) : void
+        final private function config(Context $context) : void
         {
             [$name] = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
@@ -223,7 +223,7 @@
  * @throws \Framework\Exception\Forbidden
  * @return array
  */
-        protected final function findRow(Context $context, array $perms) : array
+        final protected function findRow(Context $context, array $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
@@ -288,7 +288,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function toggle(Context $context) : void
+        final private function toggle(Context $context) : void
         {
             $rest = $context->rest();
             if (count($rest) > 2)
@@ -381,7 +381,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function bean(Context $context) : void
+        final private function bean(Context $context) : void
         {
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
@@ -477,7 +477,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function shared(Context $context) : void
+        final private function shared(Context $context) : void
         {
 
             [$b1, $id1, $b2, $id2] = $context->restcheck(4);
@@ -519,7 +519,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function table(Context $context) : void
+        final private function table(Context $context) : void
         {
             if (!$context->hasadmin())
             {
@@ -630,7 +630,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function tablesearch(Context $context) : void
+        final private function tablesearch(Context $context) : void
         {
             [$bean, $field, $op] = $context->restcheck(3);
             $fdt = $context->formdata();
@@ -675,7 +675,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function paging(Context $context) : void
+        final private function paging(Context $context) : void
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -703,7 +703,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        private final function hints(Context $context) : void
+        final private function hints(Context $context) : void
         {
             $rest = $context->rest();
             $bean = $rest[1];
@@ -772,7 +772,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
-        public final function operation($function, array $perms) : void
+        final public function operation($function, array $perms) : void
         {
             if (!is_array($function))
             {
@@ -791,7 +791,7 @@
  *
  * @return void
  */
-        public final function pageOrHint(array $paging, array $hints) : void
+        final public function pageOrHint(array $paging, array $hints) : void
         {
             self::$paging = array_merge(self::$paging, $paging);
             self::$hints = array_merge(self::$paging, $hints);
@@ -807,7 +807,7 @@
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
+        final public function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
@@ -826,7 +826,7 @@
  *
  * @return void
  */
-        protected final function uniqCheck(Context $context, string $bean, string $field, string $value) : void
+        final protected function uniqCheck(Context $context, string $bean, string $field, string $value) : void
         {
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
@@ -917,7 +917,7 @@
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        protected final function checkPerms(Context $context, array $perms) : void
+        final protected function checkPerms(Context $context, array $perms) : void
         {
             $user = $context->user();
             assert(!is_null($user)); // must have a user when checking

@@ -44,7 +44,7 @@
  * The only instance of using class
  * @var object
  */
-        protected static $_instance = NULL;
+        protected static $instance = NULL;
 /**
  * Checks, instantiates and returns the only instance of the using class.
  *
@@ -58,11 +58,11 @@
  */
         public static function getinstance() : object
         {
-            if (!(static::$_instance instanceof static)) // cannot get this to work with namespaces for some reason
+            if (!(static::$instance instanceof static)) // cannot get this to work with namespaces for some reason
             {
-                static::$_instance = new static();
+                static::$instance = new static();
             }
-            return static::$_instance;
+            return static::$instance;
         }
 /**
  * Class constructor. The concrete class using this trait can override it.

@@ -22,7 +22,7 @@
  *
  * @return void
  */
-        public static function preliminary(Context $context, $page)
+        public static function preliminary(Context $context, $page) : void
         {
             // Any code you wish to be run before ever page
         }

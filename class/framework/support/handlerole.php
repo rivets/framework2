@@ -191,7 +191,6 @@
         public function editroles(Context $context) : void
         {
             $fdt = $context->formdata();
-            $uroles = $this->roles();
             if ($fdt->haspost('exist'))
             {
                 foreach ($fdt->posta('exist') as $ix => $rid)
@@ -245,7 +244,7 @@
                     }
                     else
                     {
-                        $x = $this->addrolebybean($rcb, $rnb, $info, $start, $end);
+                        $this->addrolebybean($rcb, $rnb, $info, $start, $end);
                     }
                 }
             }
