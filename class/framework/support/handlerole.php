@@ -73,8 +73,8 @@
 /**
  * Check for a role by bean
  *
- * @param \RedBeanPHP\OODBBean    $rolecontext    A rolecontext
- * @param ?\RedBeanPHP\OODBBean   $rolename       A rolename - if this is NULL having the context is enough
+ * @param \RedBeanPHP\OODBBean    $rolecontext  A rolecontext
+ * @param ?\RedBeanPHP\OODBBean   $rolename     A rolename - if this is NULL having the context is enough
  *
  * @return ?object
  */
@@ -88,8 +88,8 @@
 /**
  * Delete a role
  *
- * @param string	$contextname    The name of a context...
- * @param string	$rolename       The name of a role....
+ * @param string    $contextname    The name of a context...
+ * @param string    $rolename       The name of a role....
  *
  * @throws \Framework\Exception\BadValue
  * @return void
@@ -112,11 +112,11 @@
 /**
  *  Add a role
  *
- * @param string	$contextname    The name of a context...
- * @param string	$rolename       The name of a role....
- * @param string	$otherinfo      Any other info that is to be stored with the role
- * @param string	$start		A datetime
- * @param string	$end		A datetime or ''
+ * @param string    $contextname    The name of a context...
+ * @param string    $rolename       The name of a role....
+ * @param string    $otherinfo      Any other info that is to be stored with the role
+ * @param string    $start          A datetime
+ * @param string    $end            A datetime or ''
  *
  * @throws \Framework\Exception\BadValue
  * @return \RedBeanPHP\OODBBean
@@ -129,8 +129,8 @@
 /**
  *  Add a role
  *
- * @param \RedBeanPHP\OODBBean	$rolecontext    Contextname
- * @param \RedBeanPHP\OODBBean	$rolename       Rolename
+ * @param \RedBeanPHP\OODBBean  $rolecontext    Contextname
+ * @param \RedBeanPHP\OODBBean  $rolename       Rolename
  * @param string	        $otherinfo      Any other info that is to be stored with the role
  * @param string                $start          A datetime
  * @param string                $end            A datetime or ''
@@ -167,7 +167,7 @@
 /**
  * Deal with the role selecting part of a form
  *
- * @param \Support\Context    $context    The context object
+ * @param \Support\Context  $context    The context object
  *
  * @psalm-suppress UndefinedClass
  *
