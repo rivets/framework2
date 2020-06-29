@@ -93,7 +93,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Not editable');
             }
-            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            if (in_array($kind, self::NOTMODEL))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try

@@ -47,10 +47,10 @@
  */
             $ch = curl_init(self::PCURL.$ip.'?'.implode('&', $query));
             $curlopts = [
-              CURLOPT_CONNECTTIMEOUT => 30,
-              CURLOPT_POST => 1,
-              CURLOPT_POSTFIELDS => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
-              CURLOPT_RETURNTRANSFER => true
+                CURLOPT_CONNECTTIMEOUT => 30,
+                CURLOPT_POST => 1,
+                CURLOPT_POSTFIELDS => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
+                CURLOPT_RETURNTRANSFER => true
             ];
             curl_setopt_array($ch, $curlopts);
             $json = curl_exec($ch);

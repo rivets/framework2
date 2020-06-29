@@ -151,7 +151,6 @@
             }
             $local->addval($basicvals, '', TRUE);
 
-            $etag = '';
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {

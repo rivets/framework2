@@ -196,7 +196,7 @@
         {
             if (!$this->hasdeveloper())
             {
-                throw new \Framework\Exception\Forbidden('Must be a developer');;
+                throw new \Framework\Exception\Forbidden('Must be a developer');
             }
         }
 /*
