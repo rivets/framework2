@@ -3,7 +3,7 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2019 Newcastle University
+ * @copyright 2017-2020 Newcastle University
  */
     namespace Framework;
 
@@ -224,7 +224,7 @@
 /**
  * Check if a value is appropriate for the dispatch kind
  *
- * @param int $kind
+ * @param int    $kind
  * @param string $source
  *
  * @throws \Framework\Exception\BadValue
