@@ -63,31 +63,49 @@
  * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE => [],
+                    FW::USER => [],
+                    FW::CONFIG => [],
+                    FW::FORM => [],
+                    FW::FORMFIELD => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME => [],
+                    FW::TABLE => []
+                ]
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for table acccess.
  */
         private static $tableperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
-                FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER]
+            ],
 //          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
         ];
 /**
  * Permissions array for tablesearch acccess.
  */
         private static $tablesearchperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG => [], FW::FORM => [], FW::FORMFIELD => [],
-                FW::PAGE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [ FW::CONFIG => [], FW::FORM => [], FW::FORMFIELD => [],
+                FW::PAGE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []]
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
  * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**

@@ -200,9 +200,9 @@
             {
                 $form = '<form action="'.
                     ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
-                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').' '.
-                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').' '.
-                    'method="'.self::$methods[$this->bean->method].'"'.
+                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').
+                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').
+                    ' method="'.self::$methods[$this->bean->method].'"'.
                     ($this->bean->multipart ? ' enctype="multipart/form-data"' : '').
                     ' role="form">'.PHP_EOL;
             }
