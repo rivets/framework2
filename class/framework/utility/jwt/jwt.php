@@ -43,7 +43,7 @@ class JWT
 /**
  * @var array Hash algorthms that this supports
  */
-    public static $supported_algs = [
+    private static $supported_algs = [
         'ES256' => ['openssl', 'SHA256'],
         'HS256' => ['hash_hmac', 'SHA256'],
         'HS512' => ['hash_hmac', 'SHA512'],
@@ -452,7 +452,7 @@ class JWT
         private static function signatureFromDER($der, $keySize) : string
         {
             // OpenSSL returns the ECDSA signatures as a binary ASN.1 DER SEQUENCE
-            list($offset, $_) = self::readDER($der);
+            list($offset) = self::readDER($der);
             list($offset, $r) = self::readDER($der, $offset);
             list($offset, $s) = self::readDER($der, $offset);
     

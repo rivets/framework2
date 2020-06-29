@@ -88,7 +88,7 @@
                 break;
 
             case 'fail': # this lets you test error handling
-                $x = 2 / 0;
+                2 / 0;
                 break;
 
             case 'throw': # this lets you test exception handling
