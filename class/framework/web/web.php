@@ -72,7 +72,7 @@
                 $code = $nochange ? StatusCodes::HTTP_PERMANENT_REDIRECT : StatusCodes::HTTP_MOVED_PERMANENTLY;
             }
             $this->addheader('Location', $where);
-            $this->sendstring($msg, self::HTMLMIME);
+            $this->sendstring($msg, self::HTMLMIME, $code);
             exit;
         }
 /**
