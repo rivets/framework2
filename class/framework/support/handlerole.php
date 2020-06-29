@@ -121,10 +121,12 @@
  * @throws \Framework\Exception\BadValue
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
+        public function addrole(string $contextname, string $rolename, string $otherinfo,
+            string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $cont = \Support\Context::getinstance();
-            return $this->addrolebybean($cont->rolecontext($contextname), $cont->rolename($rolename), $otherinfo, $start, $end);
+            return $this->addrolebybean($cont->rolecontext($contextname), $cont->rolename($rolename),
+                $otherinfo, $start, $end);
         }
 /**
  *  Add a role
@@ -137,7 +139,8 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrolebybean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
+        public function addrolebybean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename,
+            string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
