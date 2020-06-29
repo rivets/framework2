@@ -27,7 +27,7 @@
 
 /** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
-/** @var integer	Counter used for generating unique ids */
+/** @var int        	Counter used for generating unique ids */
         protected $idgen        = 0;
 /** @var string		The first component of the current URL */
         protected $reqaction	= 'home';
@@ -74,7 +74,7 @@
  *
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param integer   $count  The number to check for
+ * @param int   $count  The number to check for
  *
  * @throws \Framework\Exception\ParameterCount
  *
