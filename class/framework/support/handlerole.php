@@ -196,18 +196,9 @@
                     $start = $fdt->post(['xstart', $ix]);
                     $end = $fdt->post(['xend', $ix]);
                     $other = $fdt->post(['xotherinfo', $ix]);
-                    if ($start != $rl->start)
-                    {
-                        $rl->start = $start;
-                    }
-                    if ($end != $rl->end)
-                    {
-                         $rl->end = $end;
-                    }
-                    if ($other != $rl->otherinfo)
-                    {
-                        $rl->otherinfo = $other;
-                    }
+                    $rl->start = $start;
+                    $rl->end = $end;
+                    $rl->otherinfo = $other;
                     \R::store($rl);
                 }
             }
@@ -225,18 +216,9 @@
                     $info = $fdt->post(['otherinfo', $ix]);
                     if (is_object($prole))
                     { # exists already...
-                        if ($prole->start != $start)
-                        {
-                            $prole->start = $start;
-                        }
-                        if ($prole->end != $end)
-                        {
-                            $prole->end = $end;
-                        }
-                        if ($prole->otherinfo != $info)
-                        {
-                            $prole->otherinfo = $info;
-                        }
+                        $prole->start = $start;
+                        $prole->end = $end;
+                        $prole->otherinfo = $info;
                         \R::store($prole); // will only talk to DB if anything has changed...
                     }
                     else
