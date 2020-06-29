@@ -99,8 +99,15 @@
  * @psalm-suppress PossiblyNullPropertyFetch
  * @psalm-suppress PossiblyNullArgument
  **/
-                $foo = mail($context->user()->email, 'test', 'test');
-                $context->local()->message(\Framework\Local::MESSAGE, 'sent');
+                $msg = $context->local()->sendmail([$context->user()->email], 'test', 'test');
+                if ($msg === '')
+                {
+                    $context->local()->message(\Framework\Local::MESSAGE, 'sent');
+                }
+                else
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $msg);
+                }
                 break;
             }
             return $tpl;
