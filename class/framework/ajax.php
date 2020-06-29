@@ -363,30 +363,6 @@
             return TRUE;
         }
 /**
- * make log entry
- *
- * @param \Support\Context	$context	The context object for the site
- * @param int $op
- * @param string $bean
- * @param int $id
- * @param string $field
- * @param mixed $value
- *
- * @return void
- */
-        private function mklog(Context $context, $op, string $bean, $id, string $field, $value) : void
-        {
-            $lg = \R::dispense('beanlog');
-            $lg->user = $context->user();
-            $lg->updated = $context->utcnow();
-            $lg->op = $op;
-            $lg->bean = $bean;
-            $lg->bid = $id;
-            $lg->field = $field;
-            $lg->value = $value;
-            \R::store($lg);
-        }
-/**
  * Carry out operations on beans
  *
  * @internal
@@ -434,7 +410,7 @@
                     $id = $class::add($context)->getID();
                     if ($log)
                     {
-                        $this->mklog($context, 0, $bean, $id, '*', NULL);
+                        \Framework\Support\BeanLog::mklog(\Framework\Support\BeanLog::CREATE, $bean, $id, '*', NULL);
                     }
                     echo $id;
                 }
@@ -453,7 +429,7 @@
                 R::store($bn);
                 if ($log)
                 {
-                    $this->mklog($context, 1, $bean, $bn->getID(), $field, $old);
+                    \Framework\Support\BeanLog::mklog(\Framework\Support\BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
                 }
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
@@ -465,7 +441,7 @@
                 $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
+                    \Framework\Support\BeanLog::mklog(\Framework\Support\BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
                 /**
                  * @psalm-suppress RedundantCondition
