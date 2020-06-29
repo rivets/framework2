@@ -63,7 +63,7 @@
             $pname[] = $fname;
             $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
             $this->bean->filename = $da['name'];
-            $this->bean->public = $public ? 1: 0;
+            $this->bean->public = $public ? 1 : 0;
             $this->bean->user = $owner;
             $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);

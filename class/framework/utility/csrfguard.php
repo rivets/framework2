@@ -102,6 +102,7 @@
                 {
                     break;
                 }
+                // no break
             default:
                 return;
             }

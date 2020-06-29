@@ -570,7 +570,7 @@
  * @param int		$filter		Filter values - see PHP manual
  * @param mixed		$options	see PHP manual
  *
- * @return string|null|false
+ * @return string|false|null
  */
         public function filtercookie(string $name, $default, int $filter, $options = '')
         {

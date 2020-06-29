@@ -12,7 +12,7 @@
     class FormField extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var string[] Attributes that this supports
+ * @var array<string> Attributes that this supports
  */
         private static $attributes  = ['class', 'name', 'placeholder'];
  /**

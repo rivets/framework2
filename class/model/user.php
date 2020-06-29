@@ -70,11 +70,8 @@
                 $u->addData($context);
                 return $u;
             }
-            else
-            {
-                // bad password return
-                throw new \Framework\Exception\BadValue('Invalid Password');
-            }
+            // bad password return
+            throw new \Framework\Exception\BadValue('Invalid Password');
         }
 /**
  * Is this user an admin?

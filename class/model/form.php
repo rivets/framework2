@@ -232,6 +232,7 @@
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = '<label'.$fld->fieldAttr('', FALSE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
+                    // no break
                 case 'checkbox':
                 case 'radio':
                     $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
@@ -253,7 +254,7 @@
                     {
                         $form .= $this->doOption($option);
                     }
-                    /** @psalm-suppress TypeDoesNotContainType **/
+                    /** @psalm-suppress TypeDoesNotContainType */
                     if ($this->optgroup)
                     { # close any open optgroup
                         $form .= '</optgroup>';
@@ -264,13 +265,13 @@
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
                 case 'recaptcha' :
-                    /** @psalm-suppress UndefinedConstant **/
+                    /** @psalm-suppress UndefinedConstant */
                     if (Config::RECAPTCHA != 0)
                     {
                         $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
                         break;
                     }
-            /********* FALLTHROUGH ********* when there is no recaptcha */
+                    /* FALLTHROUGH when there is no recaptcha */
                 case 'submit' :
                 case 'button':
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
@@ -353,7 +354,7 @@
  */
         private function mkOption($value, $text, $selected, $disabled) : string
         {
-            return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected? ' selected="selected"' : '').'>'.$text.'</option>';
+            return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected ? ' selected="selected"' : '').'>'.$text.'</option>';
         }
 /**
  * Add a new form, called when adding a new form via ajax

@@ -673,7 +673,7 @@
             $fields = array_keys(\R::inspect($bean));
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
-                $bv = new \stdClass;
+                $bv = new \stdClass();
                 foreach ($fields as $f)
                 {
                     $bv->$f = $bn->$f;
@@ -952,7 +952,7 @@
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif (!is_object($user->hasrole($rcs[0], $rcs[1])))
+                if (!is_object($user->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }

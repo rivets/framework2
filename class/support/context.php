@@ -11,7 +11,7 @@
  * A wrapper for the real Context class that allows people to extend its functionality
  * in ways that are apporpriate for their particular website.
  */
-    class Context extends \Framework\Context
+    final class Context extends \Framework\Context
     {
 /**
  * Any functions that you need to be available through context.

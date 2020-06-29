@@ -20,7 +20,7 @@
  *
  * @used-by \Framework\Pages\UserLogin
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
  * @return bool
  */
@@ -48,10 +48,7 @@
                 $context->local()->message(\Framework\Local::MESSAGE, 'Please try again.');
                 return FALSE;
             }
-            else
-            {
-                $page = $fdt->get('page', '');
-            }
+            $page = $fdt->get('page', '');
             $context->local()->addval('page', $page);
             return TRUE;
         }

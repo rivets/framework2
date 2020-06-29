@@ -85,7 +85,7 @@
  */
         public function delete() : void
         {
-/**** Do not change this code *****/
+/* **** Do not change this code **** */
             $context = Context::getinstance();
             if (!$this->bean->canaccess($context->user(), 'd'))
             { // not allowed
@@ -93,7 +93,7 @@
             }
 // Now delete the associated file
             unlink($context->local()->basedir().$this->bean->fname);
-/**** Put any cleanup code of yours after this line ****/
+/* **** Put any cleanup code of yours after this line **** */
             /*
              * Your code goes here
              */

@@ -300,7 +300,7 @@
         public function pagecount(string $table, int $pagesize, string $where = '', array $pars = []) : int
         {
             $count = \R::count($table, $where, $pars);
-            return (int) floor((($count % $pagesize > 0) ? ($count + $pagesize) : $count) / $pagesize);
+            return (int) floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
 ?>

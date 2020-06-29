@@ -328,7 +328,7 @@
  * Output the headers
  *
  * @return void
- **/
+ */
         private function putheaders() : void
         {
             foreach ($this->headers as $name => $vals)
@@ -460,7 +460,7 @@
                     }
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? ' '.implode(' ', $this->csp[$key]) : '').';';
+                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key]) ? ' '.implode(' ', $this->csp[$key]) : '').';';
                     }
                 }
                 if ($local->configval('reportcsp'))
@@ -506,8 +506,8 @@
                     'response'  => $_POST['g-recaptcha-response'],
                     'remoteip'  => $_SERVER['REMOTE_ADDR']
                 ]);
-                $opts = ['http' =>
-                    [
+                $opts = [
+                    'http' => [
                         'method'  => 'POST',
                         'header'  => 'Content-Type: application/x-www-form-urlencoded',
                         'content' => $data

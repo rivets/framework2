@@ -12,7 +12,7 @@
 /**
  * Handles AntiFlood calls
  */
-    class AntiFlood
+    final class AntiFlood
     {
         const TABLE     = 'fwflood';
         const KEEPTIME  = 60*60;

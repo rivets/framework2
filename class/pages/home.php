@@ -16,7 +16,7 @@
 /**
  * Handle various contact operations /
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context	$context	The context object for the site
  *
  * @return string	A template name
  */

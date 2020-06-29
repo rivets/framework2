@@ -19,7 +19,7 @@
  * 
  * @param \Support\FormData    $fdt  The formdata object from the context
  *
- * @return string[]
+ * @return array<string>
  */
         private function dofields(\Support\FormData $fdt) : array
         {
