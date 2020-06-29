@@ -18,25 +18,24 @@
  */
     class Framework
     {
-        const DBPREFIX	    = '';
-        const FWCONTEXT	    = self::DBPREFIX.'Site';
-        const TESTCONTEXT	= self::DBPREFIX.'Test';
-        const ADMINROLE	    = self::DBPREFIX.'Admin';
-        const DEVELROLE	    = self::DBPREFIX.'Developer';
-        const TESTROLE	    = self::DBPREFIX.'Tester';
-        const CONFIG	    = self::DBPREFIX.'fwconfig';
-        const CONFIRM	    = self::DBPREFIX.'confirm';
-        const FORM	        = self::DBPREFIX.'form';
-        const FORMFIELD	    = self::DBPREFIX.'formfield';
-        const PAGE	        = self::DBPREFIX.'page';
-        const PAGEROLE      = self::DBPREFIX.'pagerole';
-        const ROLE	        = self::DBPREFIX.'role';
-        const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
-        const ROLENAME	    = self::DBPREFIX.'rolename';
-        const TABLE	        = self::DBPREFIX.'table';
-        const TEST	        = self::DBPREFIX.'fwtest';
-        const USER	        = self::DBPREFIX.'user';
-
+        public const DBPREFIX	    = '';
+        public const FWCONTEXT	    = self::DBPREFIX.'Site';
+        public const TESTCONTEXT	= self::DBPREFIX.'Test';
+        public const ADMINROLE	    = self::DBPREFIX.'Admin';
+        public const DEVELROLE	    = self::DBPREFIX.'Developer';
+        public const TESTROLE	    = self::DBPREFIX.'Tester';
+        public const CONFIG	    = self::DBPREFIX.'fwconfig';
+        public const CONFIRM	    = self::DBPREFIX.'confirm';
+        public const FORM	        = self::DBPREFIX.'form';
+        public const FORMFIELD	    = self::DBPREFIX.'formfield';
+        public const PAGE	        = self::DBPREFIX.'page';
+        public const PAGEROLE      = self::DBPREFIX.'pagerole';
+        public const ROLE	        = self::DBPREFIX.'role';
+        public const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
+        public const ROLENAME	    = self::DBPREFIX.'rolename';
+        public const TABLE	        = self::DBPREFIX.'table';
+        public const TEST	        = self::DBPREFIX.'fwtest';
+        public const USER	        = self::DBPREFIX.'user';
 /**
  * Initialise some standard things for any invocation of a page
  *

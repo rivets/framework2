@@ -17,10 +17,10 @@
  */
     class Admin extends \Framework\SiteAction
     {
-        const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
-        const VIEWABLE = [FW::TABLE, FW::FORM];
-        const NOTMODEL = [FW::TABLE];
-        const HASH     = 'sha384';
+        private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
+        private const VIEWABLE = [FW::TABLE, FW::FORM];
+        private const NOTMODEL = [FW::TABLE];
+        private const HASH     = 'sha384';
         
         use \Support\NoCache; // don't cache admin pages.
 /**

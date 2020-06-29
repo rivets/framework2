@@ -15,59 +15,9 @@
  *
  * Common functions used across the various sub-classes should go in here
  *
- * The constants are used in index.php to indicate how a particular URL should be handled
  */
     abstract class SiteAction
     {
-/*
- * Indicates that there is an Object that handles the call
- */
-        const OBJECT	= 1;
-/*
- * Indicates that there is only a template for this URL.
- */
-        const TEMPLATE	= 2;
-/*
- * Indicates that the URL should be temporarily redirected - 32
- */
-        const REDIRECT	= 3;
-/*
- * Indicates that the URL should be permanent redirected - 301
- */
-        const REHOME	= 4;
-/*
- * Indicates that the URL should be permanently redirected - 302
- */
-        const XREDIRECT	= 5;
-/*
- * Indicates that the URL should be temporarily redirected -301
- */
-        const XREHOME	= 6;
-/*
- * Indicates that the URL should be temporarily redirected - 303
- */
-        const YREDIRECT	= 7;
-/*
- * Indicates that the URL should be temporarily redirected - 303
- */
-        const YREHOME	= 8;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const ZREDIRECT	= 9;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const ZREHOME	= 10;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const AREDIRECT	= 11;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const AREHOME	= 12;
-
         use \Support\SiteAction;
 /**
  * Handle an action

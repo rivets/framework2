@@ -9,7 +9,6 @@
 
     use \Config\Config as Config;
     use \Config\Framework as FW;
-    use \Framework\SiteAction as SiteAction;
     use \Framework\Web\StatusCodes as StatusCodes;
     use \Framework\Web\Web as Web;
     use \Support\Context as Context;
@@ -22,51 +21,51 @@
 /*
  * Indicates that there is an Object that handles the call
  */
-        const OBJECT	= 1;
+        public const OBJECT	= 1;
 /*
  * Indicates that there is only a template for this URL.
  */
-        const TEMPLATE	= 2;
+        public const TEMPLATE	= 2;
 /*
  * Indicates that the URL should be temporarily redirected - 302
  */
-        const REDIRECT	= 3;
+        public const REDIRECT	= 3;
 /*
  * Indicates that the URL should be permanent redirected - 301
  */
-        const REHOME	= 4;
+        public const REHOME	= 4;
 /*
  * Indicates that the URL should be permanently redirected - 302
  */
-        const XREDIRECT	= 5;
+        public const XREDIRECT	= 5;
 /*
  * Indicates that the URL should be temporarily redirected -301
  */
-        const XREHOME	= 6;
+        public const XREHOME	= 6;
 /*
  * Indicates that the URL should be temporarily redirected - 303
  */
-        const REDIRECT3	= 7;
+        public const REDIRECT3	= 7;
 /*
  * Indicates that the URL should be temporarily redirected - 303
  */
-        const XREDIRECT3	= 8;
+        public const XREDIRECT3	= 8;
 /*
  * Indicates that the URL should be temporarily redirected - 307
  */
-        const REDIRECT7	= 9;
+        public const REDIRECT7	= 9;
 /*
  * Indicates that the URL should be temporarily redirected - 307
  */
-        const XREDIRECT7	= 10;
+        public const XREDIRECT7	= 10;
 /*
  * Indicates that the URL should be permanently redirected - 308
  */
-        const REHOME8	= 11;
+        public const REHOME8	= 11;
 /*
  * Indicates that the URL should be permanently redirected - 308
  */
-        const XREHOME8	= 12;
+        public const XREHOME8	= 12;
 /**
  * @var array $actions Values for determining handling of above codes
  */
