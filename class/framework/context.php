@@ -367,7 +367,7 @@
  * @psalm-return never-return
  * @return void
  */
-        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {
             $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange, $use303);
             /* NOT REACHED */

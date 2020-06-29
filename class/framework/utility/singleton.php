@@ -86,7 +86,7 @@
  * @internal
  * @throws \Framework\Exception\InternalError
  */
-        public function __sleep()
+        public function __sleep() : void
         {
             throw new \Framework\Exception\InternalError('Cannot serialize Singleton objects');
         }

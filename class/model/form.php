@@ -346,8 +346,8 @@
  *
  * @param string $value
  * @param string $text
- * @param boolean $selected
- * @param boolean $disabled
+ * @param bool   $selected
+ * @param bool   $disabled
  *
  * @return string
  */

@@ -356,7 +356,7 @@
  *
  * @return void
  */
-        private function mklog(Context $context, $op, string $bean, $id, string $field, $value)
+        private function mklog(Context $context, $op, string $bean, $id, string $field, $value) : void
         {
             $lg = \R::dispense('beanlog');
             $lg->user = $context->user();
