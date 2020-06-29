@@ -381,6 +381,7 @@
     ];
 
     $fwcsp = [
+        'connect-src'   => ["'self'"],
         'default-src'   => ["'self'"],
         'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
