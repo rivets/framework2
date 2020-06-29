@@ -186,7 +186,7 @@
             $pw = $fdt->post('pw', '');
             if ($pw !== '')
             {
-                if ($pw == $fdt->post('rpw', ''))
+                if ($pw === $fdt->post('rpw', ''))
                 {
                     $this->setpw($pw); // setting the password will do a store
                 }

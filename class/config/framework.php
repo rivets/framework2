@@ -47,7 +47,7 @@
 /*
  * Setup the autoloader
  */
-            $dir = dirname(dirname(__DIR__));
+            $dir = dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall **/
             set_include_path(
                 implode(PATH_SEPARATOR, [

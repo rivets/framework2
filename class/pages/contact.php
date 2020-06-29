@@ -32,16 +32,21 @@
                 $sender = $fd->filterpost('sender', '', FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
                 {
-                    $mail = new \Framework\Utility\FMailer;
-                    $mail->setFrom(Config::SITENOREPLY);
-                    $mail->addReplyTo(Config::SITENOREPLY);
-                    $mail->addAddress(Config::SYSADMIN);
-                    /** @psalm-suppress PossiblyNullOperand */
-                    /** @psalm-suppress PossiblyNullPropertyFetch */
-                    $mail->Subject = \Config\Config::SITENAME.': '.$subj;
-                    /** @psalm-suppress UndefinedPropertyAssignment */
-                    $mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
-                    $mail->send();
+                    $context->local()->sendmail(
+                        [Config::SYSADMIN],
+                        \Config\Config::SITENAME.': '.$subj,
+                        $sender.PHP_EOL.PHP_EOL.$msg
+                    );
+                    //$mail = new \Framework\Utility\FMailer();
+                    //$mail->setFrom(Config::SITENOREPLY);
+                    //$mail->addReplyTo(Config::SITENOREPLY);
+                    //$mail->addAddress(Config::SYSADMIN);
+                    ///** @psalm-suppress PossiblyNullOperand */
+                    ///** @psalm-suppress PossiblyNullPropertyFetch */
+                    //$mail->Subject = \Config\Config::SITENAME.': '.$subj;
+                    ///** @psalm-suppress UndefinedPropertyAssignment */
+                    //$mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
+                    //$mail->send();
     
                     //mail(Config::SYSADMIN, \Config\Config::SITENAME.': '.$subj, $sender.PHP_EOL.PHP_EOL.$msg);
                     $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');

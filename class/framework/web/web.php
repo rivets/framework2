@@ -460,7 +460,7 @@
                     }
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
+                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? ' '.implode(' ', $this->csp[$key]) : '').';';
                     }
                 }
                 if ($local->configval('reportcsp'))

@@ -289,7 +289,7 @@
             {
                 $form .= '</fieldset>';
             }
-            return ($noform || $this->bean->method == 0) ? $form : ($form.'</form>');
+            return $noform || $this->bean->method == 0 ? $form : $form.'</form>';
         }
 /**
  * handle an option

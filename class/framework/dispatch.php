@@ -117,7 +117,7 @@
             }
             if (!is_object($page))
             { # No such page or it is marked as inactive
-               $page = new \stdClass;
+               $page = new \stdClass();
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
             }
@@ -155,7 +155,7 @@
             switch ($page->kind)
             {
             case self::OBJECT: // fire up the object to handle the request
-                $pageObj = new $page->source;
+                $pageObj = new $page->source();
                 $csp = $pageObj;
                 try
                 {

@@ -115,7 +115,7 @@ class JWT
         }
 
         // Check the signature
-        if (!static::verify("$headb64.$bodyb64", $sig, $key, $header->alg)) {
+        if (!static::verify($headb64.'.'.$bodyb64, $sig, $key, $header->alg)) {
             throw new SignatureInvalidException('Signature verification failed');
         }
 
@@ -265,7 +265,7 @@ class JWT
                 }
                 $status |= (static::safeStrlen($signature) ^ static::safeStrlen($hash));
 
-                return ($status === 0);
+                return $status === 0;
         }
     }
 
@@ -362,18 +362,14 @@ class JWT
      */
     private static function handleJsonError($errno) : void
     {
-        $messages = array(
+        $messages = [
             JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
             JSON_ERROR_STATE_MISMATCH => 'Invalid or malformed JSON',
             JSON_ERROR_CTRL_CHAR => 'Unexpected control character found',
             JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
             JSON_ERROR_UTF8 => 'Malformed UTF-8 characters' //PHP >= 5.3.3
-        );
-        throw new DomainException(
-            isset($messages[$errno])
-            ? $messages[$errno]
-            : 'Unknown JSON error: ' . $errno
-        );
+        ];
+        throw new DomainException($messages[$errno] ?? 'Unknown JSON error: ' . $errno);
     }
 
     /**
