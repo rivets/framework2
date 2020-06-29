@@ -19,9 +19,9 @@
  */
     final class Framework
     {
-/*
- * Constants that are used to get the names of the Framework's internal tables
- */
+//
+// Constants that are used to get the names of the Framework's internal tables
+//
         public const DBPREFIX = '';
         public const FWCONTEXT = self::DBPREFIX.'Site';
         public const TESTCONTEXT = self::DBPREFIX.'Test';
@@ -48,9 +48,9 @@
         public static function initialise() : void
         {
             error_reporting(E_ALL | E_STRICT);
-/*
- * Setup the autoloader
- */
+//
+// Setup the autoloader
+//
             $dir = dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall */
             set_include_path(
