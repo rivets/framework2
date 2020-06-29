@@ -160,7 +160,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Not Viewable');
             }
-            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            if (in_array($kind, self::NOTMODEL))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
