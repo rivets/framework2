@@ -10,11 +10,11 @@
  */
     namespace Framework;
 
-    use \R as R;
-    use \Support\Context as Context;
-    use \Config\Config as Config;
-    use \Config\Framework as FW;
-    use \Support\Formdata as FormData;
+    use R as R;
+    use Support\Context as Context;
+    use Config\Config as Config;
+    use Config\Framework as FW;
+    use Support\Formdata as FormData;
 /**
  * Handle Ajax operations in this class
  */

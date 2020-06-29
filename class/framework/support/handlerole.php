@@ -7,7 +7,7 @@
  */
     namespace Framework\Support;
 
-    use \Config\Framework as FW;
+    use Config\Framework as FW;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
  *

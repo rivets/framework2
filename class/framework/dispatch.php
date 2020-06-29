@@ -7,11 +7,11 @@
  */
     namespace Framework;
 
-    use \Config\Config as Config;
-    use \Config\Framework as FW;
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
+    use Config\Config as Config;
+    use Config\Framework as FW;
+    use Framework\Web\StatusCodes as StatusCodes;
+    use Framework\Web\Web as Web;
+    use Support\Context as Context;
 
 /**
  * This class dispatches pages to the appropriate places
