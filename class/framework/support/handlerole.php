@@ -7,9 +7,8 @@
  */
     namespace Framework\Support;
 
-    use Framework\Web\Web as Web;
-    use Config\Framework as FW;
-    use Support\Context as Context;
+    use \Config\Framework as FW;
+    use \Support\Context as Context;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
  *
@@ -182,7 +181,7 @@
 /**
  * Deal with the role selecting part of a form
  *
- * @param \Support\Context    $context    The context object
+ * @param Context    $context    The context object
  *
  * @psalm-suppress UndefinedClass
  *
