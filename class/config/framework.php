@@ -19,24 +19,27 @@
  */
     final class Framework
     {
-        public const DBPREFIX	    = '';
-        public const FWCONTEXT	    = self::DBPREFIX.'Site';
-        public const TESTCONTEXT    = self::DBPREFIX.'Test';
-        public const ADMINROLE	    = self::DBPREFIX.'Admin';
-        public const DEVELROLE	    = self::DBPREFIX.'Developer';
-        public const TESTROLE	    = self::DBPREFIX.'Tester';
-        public const CONFIG	    = self::DBPREFIX.'fwconfig';
-        public const CONFIRM	    = self::DBPREFIX.'confirm';
-        public const FORM           = self::DBPREFIX.'form';
-        public const FORMFIELD	    = self::DBPREFIX.'formfield';
-        public const PAGE           = self::DBPREFIX.'page';
-        public const PAGEROLE       = self::DBPREFIX.'pagerole';
-        public const ROLE           = self::DBPREFIX.'role';
-        public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
-        public const ROLENAME	    = self::DBPREFIX.'rolename';
-        public const TABLE          = self::DBPREFIX.'table';
-        public const TEST           = self::DBPREFIX.'fwtest';
-        public const USER           = self::DBPREFIX.'user';
+/*
+ * Constants that are used to get the names of the Framework's internal tables
+ */
+        public const DBPREFIX = '';
+        public const FWCONTEXT = self::DBPREFIX.'Site';
+        public const TESTCONTEXT = self::DBPREFIX.'Test';
+        public const ADMINROLE = self::DBPREFIX.'Admin';
+        public const DEVELROLE = self::DBPREFIX.'Developer';
+        public const TESTROLE = self::DBPREFIX.'Tester';
+        public const CONFIG = self::DBPREFIX.'fwconfig';
+        public const CONFIRM = self::DBPREFIX.'confirm';
+        public const FORM = self::DBPREFIX.'form';
+        public const FORMFIELD = self::DBPREFIX.'formfield';
+        public const PAGE = self::DBPREFIX.'page';
+        public const PAGEROLE = self::DBPREFIX.'pagerole';
+        public const ROLE = self::DBPREFIX.'role';
+        public const ROLECONTEXT = self::DBPREFIX.'rolecontext';
+        public const ROLENAME = self::DBPREFIX.'rolename';
+        public const TABLE = self::DBPREFIX.'table';
+        public const TEST = self::DBPREFIX.'fwtest';
+        public const USER = self::DBPREFIX.'user';
 /**
  * Initialise some standard things for any invocation of a page
  *
