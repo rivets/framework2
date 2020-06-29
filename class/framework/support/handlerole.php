@@ -102,7 +102,7 @@
                 [
                     $cont->rolecontext($contextname)->getID(),
                     $cont->rolename($rolename)->getID(),
-                    $this->bean->getID()
+                    $this->bean->getID(),
                 ]);
             if (is_object($bn))
             {
@@ -133,7 +133,7 @@
  *
  * @param \RedBeanPHP\OODBBean  $rolecontext    Contextname
  * @param \RedBeanPHP\OODBBean  $rolename       Rolename
- * @param string	        $otherinfo      Any other info that is to be stored with the role
+ * @param string                $otherinfo      Any other info that is to be stored with the role
  * @param string                $start          A datetime
  * @param string                $end            A datetime or ''
  *
@@ -165,7 +165,8 @@
             {
                 return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
             }
-            return $this->bean->withCondition('start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end')->{'own'.ucfirst($this->roletype)};
+            $cond = 'start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end';
+            return $this->bean->withCondition($cond)->{'own'.ucfirst($this->roletype)};
         }
 /**
  * Deal with the role selecting part of a form
