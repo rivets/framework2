@@ -19,6 +19,8 @@
         <file name="class/framework/local.php" />
         <file name="class/framework/siteaction.php" />
 
+        <file name="class/framework/ajax/beanlog.php" />
+
         <file name="class/framework/exception/badoperation.php" />
         <file name="class/framework/exception/badvalue.php" />
         <file name="class/framework/exception/forbidden.php" />
@@ -88,6 +90,10 @@
         <file name="index.php" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="install" />
+            <directory name="devel" />
+            <file name="phpinsights.php" />
+            <file name="install.php" />
         </ignoreFiles>
     </projectFiles>
 

@@ -68,6 +68,7 @@
  * @param \Support\Context    $context   The context object for the site
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedParam
  */
         public function makeetag(Context $context) : string
         {
@@ -81,6 +82,7 @@
  * @param \Support\Context    $context   The context object for the site
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedParam
  */
         public function makemaxage(Context $context) : int
         {
@@ -95,6 +97,7 @@
  * @param \Support\Context    $context  The context object for the site
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedParam
  */
         public function exists(Context $context) : bool
         {
@@ -109,6 +112,7 @@
  * @param \Support\Context  $context  The context object for the site
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedParam
  */
         public function lastmodified(Context $context) : int
         {
@@ -125,6 +129,7 @@
  * @param string	$time	The time value to check
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedParam
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
