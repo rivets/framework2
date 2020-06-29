@@ -286,7 +286,7 @@
                 {
                     $xres .= ".on('".$on."', ".$fn.")";
                 }
-                $res = $res. "$('#".$id."')".$xres.";\n";
+                $res .= "$('#".$id."')".$xres.";\n";
             }
             return $res;
         }

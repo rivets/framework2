@@ -36,7 +36,7 @@
                     $user = \Framework\Pages\UserLogin::eorl($lg); // use either a login name or the email address - see framework/pages/userlogin.php
                     if (is_object($user) && $user->pwok($pw) && $user->confirm)
                     {
-                        if (session_status() != PHP_SESSION_ACTIVE)
+                        if (session_status() !== PHP_SESSION_ACTIVE)
                         { # no session started yet
                             session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
                         }
@@ -84,7 +84,7 @@
                     $params["secure"], $params["httponly"]
                 );
             }
-            if (session_status() == PHP_SESSION_ACTIVE)
+            if (session_status() === PHP_SESSION_ACTIVE)
             { # no session started yet
                 session_destroy(); # Finally, destroy the -session.
             }

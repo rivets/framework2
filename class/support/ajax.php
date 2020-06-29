@@ -8,7 +8,6 @@
  */
     namespace Support;
 
-    use Support\Context as Context;
 /**
  * Handles Ajax Calls.
  */
