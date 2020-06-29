@@ -33,7 +33,7 @@
         protected $reqaction	= 'home';
 /** @var string[]		The rest of the current URL exploded at / */
         protected $reqrest	= [];
-/** @var boolean    True if authenticated by token */
+/** @var bool    True if authenticated by token */
         protected $tokauth	= FALSE;
 /** @var \RedBeanPHP\OODBBean[]		A cache for rolename beans */
         protected $roles        = [];
@@ -122,16 +122,16 @@
  *
  * @return bool
  */
-        public function hasuser()
+        public function hasuser() : bool
         {
             return is_object($this->luser);
         }
 /**
  * Do we have a logged in admin user?
  *
- * @return boolean
+ * @return bool
  */
-        public function hasadmin()
+        public function hasadmin() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isadmin();
@@ -139,9 +139,9 @@
 /**
  * Do we have a logged in developer user?
  *
- * @return boolean
+ * @return bool
  */
-        public function hasdeveloper()
+        public function hasdeveloper() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isdeveloper();
@@ -149,9 +149,9 @@
 /**
  * Find out if this was validated using a token, if so, it is coming from a device not a browser
  *
- * @return boolean
+ * @return bool
  */
-	public function hastoken()
+	public function hastoken() : bool
 	{
 	    return $this->tokauth;
 	}
@@ -377,7 +377,7 @@
  *
  * @param string	$bean	    A bean type name
  * @param int    	$id	    A bean id
- * @param boolean       $forupdate  If TRUE then use loadforupdate
+ * @param bool       $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *
