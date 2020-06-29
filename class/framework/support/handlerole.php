@@ -42,19 +42,19 @@
 /**
  * Check for a role
  *
- * @param string    $rolecontextname    The name of a context...
- * @param string    $rolenamestr        The name of a role - if this is the empty string then having the context is enough
+ * @param string    $contextname    The name of a context...
+ * @param string    $rolename       The name of a role - if this is the empty string then having the context is enough
  *
  * @todo possibly rewrite this to do a join rather than 2/3 calls on the DB
  *
  * @return ?object
  */
-        public function hasrole(string $rolecontextname, string $rolename) : ?object
+        public function hasrole(string $contextname, string $rolename) : ?object
         {
             $cont = \Support\Context::getinstance();
             try
             {
-                $rolecontextbean = $cont->rolecontext($rolecontextname);
+                $rolecontextbean = $cont->rolecontext($contextname);
                 if ($rolename === '')
                 { # we only are checking for a context
                     $rolenamebean = NULL;
@@ -124,20 +124,20 @@
         public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $cont = \Support\Context::getinstance();
-            return $this->addrolebybean($cont->rolecontext($cname), $cont->rolename($rolename), $otherinfo, $start, $end);
+            return $this->addrolebybean($cont->rolecontext($contextname), $cont->rolename($rolename), $otherinfo, $start, $end);
         }
 /**
  *  Add a role
  *
- * @param object	$rolecontext    Contextname
- * @param object	$rolename       Rolename
- * @param string	$otherinfo      Any other info that is to be stored with the role
- * @param string	$start		A datetime
- * @param string	$end		A datetime or ''
+ * @param \RedBeanPHP\OODBBean	$rolecontext    Contextname
+ * @param \RedBeanPHP\OODBBean	$rolename       Rolename
+ * @param string	        $otherinfo      Any other info that is to be stored with the role
+ * @param string	        $start		A datetime
+ * @param string	        $end		A datetime or ''
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrolebybean(object $rolecontext, object $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
+        public function addrolebybean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
