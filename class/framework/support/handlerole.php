@@ -132,8 +132,8 @@
  * @param \RedBeanPHP\OODBBean	$rolecontext    Contextname
  * @param \RedBeanPHP\OODBBean	$rolename       Rolename
  * @param string	        $otherinfo      Any other info that is to be stored with the role
- * @param string	        $start		A datetime
- * @param string	        $end		A datetime or ''
+ * @param string                $start          A datetime
+ * @param string                $end            A datetime or ''
  *
  * @return \RedBeanPHP\OODBBean
  */
@@ -152,7 +152,7 @@
 /**
  * Get all currently valid roles for this bean
  *
- * @param bool       	$all	If TRUE then include expired roles
+ * @param bool  $all    If TRUE then include expired roles
  *
  * @return array<\RedBeanPHP\OODBBean>
  */
