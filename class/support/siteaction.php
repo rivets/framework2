@@ -30,6 +30,7 @@
  * @param \Support\Context    $context The context object
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function setCache(Context $context) : void
         {

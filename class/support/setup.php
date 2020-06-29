@@ -10,6 +10,8 @@
 
 /**
  * A class that supports setup code for all pages
+ *
+ * @psalm-suppress UnusedClass
  */
     class Setup
     {
