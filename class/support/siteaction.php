@@ -95,7 +95,7 @@
  *
  * @param \Support\Context    $context  The context object for the site
  *
- * @return boolean
+ * @return bool
  */
         public function exists(Context $context) : bool
         {
