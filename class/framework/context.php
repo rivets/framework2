@@ -7,9 +7,9 @@
  */
     namespace Framework;
 
-    use Config\Config as Config;
-    use Config\Framework as FW;
-    use Framework\Web\Web as Web;
+    use \Config\Config as Config;
+    use \Config\Framework as FW;
+    use \Framework\Web\Web as Web;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */

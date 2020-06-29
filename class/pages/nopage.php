@@ -11,7 +11,7 @@
  */
     namespace Pages;
 
-    use Support\Context as Context;
+    use \Support\Context as Context;
 /**
  * The default behaviour when a page does not match in the database.
  */

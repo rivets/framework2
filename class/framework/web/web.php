@@ -6,7 +6,8 @@
  * @copyright 2012-2018 Newcastle University
  */
     namespace Framework\Web;
-    use Support\Context as Context;
+
+    use \Support\Context as Context;
 /**
  * A class that handles various web related things.
  */

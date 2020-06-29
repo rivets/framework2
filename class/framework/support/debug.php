@@ -6,6 +6,7 @@
  * @copyright 2014-2020 Newcastle University
  */
     namespace Framework\Support;
+
 /**
  * A class that handles various debugging related things
  */

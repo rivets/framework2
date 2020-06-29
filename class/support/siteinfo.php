@@ -7,6 +7,7 @@
  *
  */
     namespace Support;
+
 /**
  * Utility class that returns generally useful information about parts of the site
  * The parent class (\Framework\SiteInfo) contains a set of functions that are used by the

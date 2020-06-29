@@ -8,7 +8,7 @@
  */
     namespace Pages;
 
-    use Support\Context as Context;
+    use \Support\Context as Context;
 /**
  * Provide support for a nested static page structure
  */
