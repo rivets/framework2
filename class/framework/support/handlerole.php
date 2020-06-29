@@ -8,7 +8,6 @@
     namespace Framework\Support;
 
     use \Config\Framework as FW;
-    use \Support\Context as Context;
 /**
  * A trait that provides various role handling functions for beans that have associated roles.
  *
@@ -21,8 +20,8 @@
  *
  * @todo support nested AND/OR
  *
- * @param array   $roles  [['context', 'role'],...]]
- * @param bool    $or     If TRUE then the condition is OR
+ * @param array<array<string>>  $roles  [['context', 'role'],...]]
+ * @param bool                  $or     If TRUE then the condition is OR
  *
  * @return array
  */
@@ -123,7 +122,6 @@
  * @param string	$end		A datetime or ''
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public function addrole(string $contextname, string $rolename, string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
@@ -168,7 +166,7 @@
  *
  * @param bool       	$all	If TRUE then include expired roles
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function roles(bool $all = FALSE) : array
         {
@@ -181,13 +179,13 @@
 /**
  * Deal with the role selecting part of a form
  *
- * @param Context    $context    The context object
+ * @param \Support\Context    $context    The context object
  *
  * @psalm-suppress UndefinedClass
  *
  * @return void
  */
-        public function editroles(Context $context) : void
+        public function editroles(\Support\Context $context) : void
         {
             $fdt = $context->formdata();
             if ($fdt->haspost('exist'))
