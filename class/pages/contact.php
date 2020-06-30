@@ -13,6 +13,7 @@
 
 /**
  * A class that contains code to implement a contact page
+ * @psalm-suppress UnusedClass
  */
     class Contact extends \Framework\SiteAction
     {

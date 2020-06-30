@@ -10,6 +10,7 @@
     use \Support\Context as Context;
 /**
  * A class that contains code to implement a home page
+ * @psalm-suppress UnusedClass
  */
     class Home extends \Framework\SiteAction
     {

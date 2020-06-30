@@ -66,6 +66,7 @@
  * @used-by \Framework\Pages\UserLogin
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function logout(Context $context) : void
         {

@@ -42,6 +42,7 @@
         public function setFrom(string $x) : void
         {
         }
+ /** @psalm-suppress PossiblyUnusedParam */
         public function msgHTML(string $x) : void
         {
         }

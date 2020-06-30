@@ -11,6 +11,7 @@
     use \Support\Context as Context;
 /**
  * Provide support for a nested static page structure
+ * @psalm-suppress UnusedClass
  */
     class Multi extends \Framework\SiteAction
     {
