@@ -154,7 +154,7 @@
  */
         public static function getMessageForCode(int $code) : string
         {
-            return  $code.' '.self::getMessage($code);
+            return $code.' '.self::getMessage($code);
         }
 /**
  * Is this an error code?
@@ -186,17 +186,12 @@
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
- * @phpcsSuppress PHP_CodeSniffer.Standards.Squiz.Sniffs.WhiteSpace.LanguageConstructSpacing
  */
         public static function canHaveBody(int $code) : bool
         {
-            return
-                // True if not in 100s
-                ($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK)
-                && // and not 204 NO CONTENT
-                $code != self::HTTP_NO_CONTENT
-                && // and not 304 NOT MODIFIED
-                $code != self::HTTP_NOT_MODIFIED;
+            return ($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK) // True if not in 100s
+                && $code != self::HTTP_NO_CONTENT // and not 204 NO CONTENT
+                && $code != self::HTTP_NOT_MODIFIED; // and not 304 NOT MODIFIED
         }
     }
 ?>
