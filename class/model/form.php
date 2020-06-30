@@ -237,7 +237,8 @@
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = '<label'.$fld->fieldAttr('', FALSE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
-                    // no break
+                    
+                    /* FALLTHROUGH */
                 case 'checkbox':
                 case 'radio':
                     $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
@@ -276,6 +277,7 @@
                         $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
                         break;
                     }
+
                     /* FALLTHROUGH when there is no recaptcha */
                 case 'submit' :
                 case 'button':
