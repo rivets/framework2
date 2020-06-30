@@ -3,10 +3,8 @@
  * A class that contains a last resort handler for pages that are not found through the normal
  * mechanisms. 
  *
- * Note that 
- *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2019 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  *
  */
     namespace Pages;
@@ -21,15 +19,14 @@
 /**
  * Handle non-object or template page requests
  *
- * This just diverts to a /error page but it could also just render a 404 template here.
- * Which might be better. Needs thought.
- *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return string|array<string>	A template name
+ * @phpcsSuppress PHP_CodeSniffer.CodeAnalysis.UselessOverridingMethod
  */
         public function handle(Context $context)
         {
+            /** Your code goes here **/
             return parent::handle($context);
         }
     }
