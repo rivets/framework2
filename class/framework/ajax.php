@@ -268,6 +268,7 @@
             $tables = [];
             foreach ($perms as $bpd)
             {
+                /** @phpcsSuppress  PHP_CodeSniffer.Standards.Generic.Sniffs.CodeAnalysis.EmptyStatement */
                 try
                 {
                     $this->checkPerms($context, $bpd[0]); // make sure we are allowed
