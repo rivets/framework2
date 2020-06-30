@@ -29,6 +29,8 @@
  * @param \Support\Context   $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function checksum(Context $context) : void
         {

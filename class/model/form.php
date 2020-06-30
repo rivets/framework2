@@ -26,7 +26,7 @@
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
 /**
- * @var array   Key is name of field and the array contains flags for checks
+ * @var array<array<bool, bool>>   Key is name of field and the array contains flags for checks
  */
         private static $editfields = [
             'name'            => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
@@ -75,7 +75,7 @@
 /**
  * Return the form's fields
  *
- * @return array
+ * @return array<string>
  */
         public function fields() : array
         {
@@ -86,7 +86,7 @@
  *
  * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
  *
- * @return array
+ * @return array<array<string>>
  */
         public function sequence() : array
         {
@@ -184,6 +184,7 @@
  * @param array $rest
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedParameter
  */
         public function view(Context $context, array $rest) : void
         {
@@ -191,8 +192,8 @@
 /**
  * Render a form
  *
- * @param array    $values Values to enter into form
- * @param bool  $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
+ * @param array     $values Values to enter into form
+ * @param bool      $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
  *
  * @return string
  */
@@ -363,7 +364,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param \Support\Context    $context  The context object
+ * @param Context    $context  The context object
  *
  * @return \RedBeanPHP\OODBBean
  */

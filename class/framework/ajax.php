@@ -306,6 +306,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function toggle(Context $context) : void
         {
@@ -375,6 +376,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function bean(Context $context) : void
         {
@@ -471,6 +473,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function shared(Context $context) : void
         {
@@ -513,6 +516,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function table(Context $context) : void
         {
@@ -624,6 +628,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function tablesearch(Context $context) : void
         {
@@ -669,6 +674,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function paging(Context $context) : void
         {
@@ -697,6 +703,7 @@
  * @throws \Framework\Exception\Forbidden
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final private function hints(Context $context) : void
         {
@@ -766,6 +773,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final public function operation($function, array $perms) : void
         {
@@ -837,6 +845,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function unique(Context $context) : void
         {
@@ -856,6 +865,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function uniquenl(Context $context) : void
         {
@@ -871,6 +881,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function tablecheck(Context $context) : void
         {
@@ -891,6 +902,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function pwcheck(Context $context) : void
         {
