@@ -120,6 +120,7 @@
  * @param Context    $context   The context object for the site
  *
  * @return int
+ * @phpcsSupress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
         {
@@ -132,6 +133,7 @@
  * @param string    $time       The time value to check
  *
  * @return bool
+ * @phpcsSupress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
