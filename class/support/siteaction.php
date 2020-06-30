@@ -70,6 +70,7 @@
  *
  * @return string
  * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeetag(Context $context) : string
         {
@@ -84,6 +85,7 @@
  *
  * @return int
  * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
         {
@@ -99,6 +101,7 @@
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function exists(Context $context) : bool
         {
@@ -114,6 +117,7 @@
  *
  * @return int
  * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function lastmodified(Context $context) : int
         {
@@ -131,6 +135,7 @@
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {

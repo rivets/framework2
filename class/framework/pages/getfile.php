@@ -34,8 +34,7 @@
 /*
  * The name of the directory where files are kept
  */
-        const DATADIR	= 'private';
-
+        private const DATADIR	= 'private';
 /** @var string	The name of the file we are working on */
         private $file = '';
 /** @var int	The last modified time for the file */
@@ -123,6 +122,7 @@
  * @param \Support\Context	$context	The context object for the site
  *
  * @return string
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeetag($context) : string
         {
@@ -137,6 +137,7 @@
  * @param \Support\Context	$context	The context object for the site
  *
  * @return int
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function lastmodified($context) : int
         {
@@ -153,6 +154,7 @@
  * @param string 	$time	The time value to check
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
@@ -169,6 +171,7 @@
  * @param string	$tag	The etag value to check
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checketag(Context $context, string $tag) : bool
         {

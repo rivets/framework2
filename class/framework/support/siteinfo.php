@@ -211,6 +211,7 @@
  * @param bool                          $collect    If TRUE then use collect not fetch
  *
  * @return array
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
