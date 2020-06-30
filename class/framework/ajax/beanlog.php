@@ -1,4 +1,15 @@
 <?php
+/**
+ * A class implementing logging of beans to the datbase
+ *
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2020 Newcastle University
+ */
+    namespace \Framework\Ajax;
+
+/**
+ * Class to log operations on beans
+ */
     class BeanLog
     {
         public const CREATE = 0;
