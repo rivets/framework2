@@ -19,6 +19,7 @@
  /** @psalm-suppress PossiblyUnusedParam */
         /** @psalm-suppress MissingParamType */
         public function __set(string $name, $value): void {}
+ /** @psalm-suppress PossiblyUnusedParam */
         /** @psalm-suppress MissingParamType */
         public function __call($function, $args)
         {
@@ -43,6 +44,7 @@
  * @param string $x
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedParam
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function with(string $x) : \RedBeanPHP\OODBBean
         {
@@ -52,6 +54,7 @@
  * @param string $x
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedParam
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function withCondition(string $x) : \RedBeanPHP\OODBBean
         {
@@ -59,6 +62,7 @@
         }
 /**
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function export() : string
         {
