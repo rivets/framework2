@@ -154,7 +154,7 @@
  */
         public static function getMessageForCode(int $code) : string
         {
-            return  $code . ' ' . self::getMessage($code);
+            return  $code.' '.self::getMessage($code);
         }
 /**
  * Is this an error code?
@@ -186,6 +186,7 @@
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
+ * @phpcsSuppress PHP_CodeSniffer.Standards.Squiz.Sniffs.WhiteSpace.LanguageConstructSpacing
  */
         public static function canHaveBody(int $code) : bool
         {
