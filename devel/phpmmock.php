@@ -1,7 +1,6 @@
 <?php
     namespace PHPMailer\PHPMailer;
 
-    /** @psalm-suppress PossiblyUnusedParam */
     class PHPMailer
     {
 /** @var string */
@@ -20,7 +19,7 @@
         public $Subject = '';
 /** @var string */
         public $AltBody = '';
-
+ /** @psalm-suppress PossiblyUnusedParam */
         public function __construct(bool $x)
         {
         }
@@ -31,22 +30,22 @@
         {
             return TRUE;
         }
-
+ /** @psalm-suppress PossiblyUnusedParam */
         public function addAddress(string $x) : void
         {
         }
-
+ /** @psalm-suppress PossiblyUnusedParam */
         public function addReplyTo(string $x) : void
         {
         }
-
+ /** @psalm-suppress PossiblyUnusedParam */
         public function setFrom(string $x) : void
         {
         }
         public function msgHTML(string $x) : void
         {
         }
-
+ /** @psalm-suppress PossiblyUnusedParam */
         public function send() : void
         {
         }
