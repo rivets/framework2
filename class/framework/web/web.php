@@ -319,7 +319,7 @@
         {
             if (!is_array($key))
             {
-                $key = [$key];
+                $key = [$value];
             }
             foreach ($key as $k => $val)
             {
