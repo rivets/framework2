@@ -262,7 +262,6 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @return array
- * @phpcsSuppress ObjectCalisthenics.MaxNestingLevel
  */
         final protected function findRow(Context $context, array $perms) : array
         {
@@ -289,7 +288,6 @@
  * since empty elements imply all fields and array_merge would overwrite empties.
  *
  * @todo Revisit the table design to be able to use some of the array functions
- *
  */
             $merged = [];
             foreach ($tables as $t)
@@ -300,14 +298,7 @@
                     {
                         if (!empty($merged[$k]))
                         {
-                            if (empty($v))
-                            {
-                                $merged[$k] = [];
-                            }
-                            else
-                            {
-                                $merged[$k] = array_merge($merged[$k], $v);
-                            }
+                            $merged[$k] = empty($v) ? [] : array_merge($merged[$k], $v);
                         }
                     }
                     else
