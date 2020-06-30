@@ -131,7 +131,7 @@
  */
         public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
         {
-            /** @psalm-suppress RedundantCondition **/
+            /** @psalm-suppress RedundantCondition */
             if (Config::USEPHPM || ini_get('sendmail_path') !== '')
             {
                 try
@@ -217,7 +217,7 @@
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back .= ob_get_clean(); # will get used later in make500
                 }
-                /** @psalm-suppress RedundantCondition **/
+                /** @psalm-suppress RedundantCondition */
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $err = $this->sendmail($this->sysadmin, $subject,

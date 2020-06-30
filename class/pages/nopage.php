@@ -26,7 +26,7 @@
  */
         public function handle(Context $context)
         {
-            /** Your code goes here **/
+            /*--- Your code goes here ---*/
             return parent::handle($context);
         }
     }

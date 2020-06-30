@@ -346,7 +346,7 @@
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
-                /** @psalm-suppress UnusedFunctionCall **/
+                /** @psalm-suppress UnusedFunctionCall */
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
