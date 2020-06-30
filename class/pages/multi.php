@@ -18,9 +18,9 @@
 /**
  * Handles static pages that are nested in depth /multi/level/page
  *
- * @param Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

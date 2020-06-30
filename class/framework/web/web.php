@@ -309,8 +309,8 @@
  *
  * This supports having more than one header with the same name.
  *
- * @param string|array        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
- * @param string       $value
+ * @param string|array<string>  $key  Either an array of key/value pairs or the key for the value that is in the second parameter
+ * @param string                $value
  *
  * @return void
  * @psalm-suppress PossiblyUnusedMethod

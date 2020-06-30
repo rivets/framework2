@@ -35,7 +35,7 @@
             'REQUEST_SCHEME',
             'QUERY_STRING',
             'HTTP_COOKIE',
-            'HTTP_USER_AGENT'
+            'HTTP_USER_AGENT',
         ];
 /**
  * @var array Contains string names for the message constants - used for Twig variables

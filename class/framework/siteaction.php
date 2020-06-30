@@ -22,9 +22,9 @@
 /**
  * Handle an action
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
- * @return string|array	A template name or an array [template name, mimetype, HTTP code]
+ * @return string|array     A template name or an array [template name, mimetype, HTTP code]
  *
  * @psalm-suppress InvalidReturnType
  */
@@ -60,7 +60,7 @@
  *
  * @return void
  */
-	public function ifmodcheck(Context $context) : void
+        public function ifmodcheck(Context $context) : void
         {
             $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
             if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
@@ -142,7 +142,7 @@
 /**
  * Format a time suitable for Last-Modified header
  *
- * @param int 	$time	The last modified time
+ * @param int 	$time    The last modified time
  *
  * @return string
  */

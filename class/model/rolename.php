@@ -34,7 +34,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param \Support\Context	$context	The Context object for the site
+ * @param Context    $context    The Context object for the site
  *
  * @return \RedBeanPHP\OODBBean
  */

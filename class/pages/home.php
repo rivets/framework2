@@ -17,9 +17,9 @@
 /**
  * Handle various contact operations /
  *
- * @param Context    $context    The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function handle(Context $context)
