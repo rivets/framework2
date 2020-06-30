@@ -94,6 +94,7 @@
             <directory name="tests" />
             <file name="phpinsights.php" />
             <file name="devel/hack.php" />
+            <file name="devel/testautoload.php" />
             <file name="install.php" />
         </ignoreFiles>
     </projectFiles>
