@@ -46,6 +46,7 @@
  */
         private function makebean(Context $context, string $bean) : void
         {
+            $fk = [];
             $fd = $context->formdata();
             $bn = \R::dispense($bean);
             foreach ($fd->posta('field') as $ix => $field)
@@ -89,7 +90,6 @@
             $fd = $context->formdata();
             if ($fd->haspost('name'))
             {
-                $fk = [];
                 $name = strtolower($fd->mustpost('name'));
                 if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
