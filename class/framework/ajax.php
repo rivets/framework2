@@ -42,8 +42,20 @@
  * @var array<array> Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::PAGEROLE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE        => [],
+                    FW::USER        => [],
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGEROLE    => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                ],
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
@@ -73,7 +85,7 @@
                     FW::FORMFIELD => [],
                     FW::ROLECONTEXT => [],
                     FW::ROLENAME => [],
-                    FW::TABLE => []
+                    FW::TABLE => [],
                 ]
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
@@ -93,9 +105,18 @@
  */
         private static $tablesearchperms = [
             [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [ FW::CONFIG => [], FW::FORM => [], FW::FORMFIELD => [],
-                FW::PAGE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []]
+                [
+                    [FW::FWCONTEXT, FW::ADMINROLE]],
+                    [
+                        FW::CONFIG      => [],
+                        FW::FORM        => [],
+                        FW::FORMFIELD   => [],
+                        FW::PAGE        => [],
+                        FW::ROLECONTEXT => [],
+                        FW::ROLENAME    => [],
+                        FW::TABLE       => [],
+                        FW::USER        => [],
+                    ]
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
