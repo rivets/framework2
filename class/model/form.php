@@ -297,7 +297,7 @@
 /**
  * handle an option
  *
- * @param mixed $option
+ * @param object|array  $option
  *
  * @return string
  */

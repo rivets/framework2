@@ -579,9 +579,9 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array	$vname		The name to be used inside the twig or an array of value pairs
- * @param mixed		$value		The value to be stored or "" if an array in param 1
- * @param bool          $tglobal    If TRUE add this as a twig global variable
+ * @param string|array<mixed>	$vname		The name to be used inside the twig or an array of key/value pairs
+ * @param mixed		        $value		The value to be stored or "" if an array in param 1
+ * @param bool                  $tglobal        If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
  *
@@ -628,8 +628,8 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param int   	$kind		The kind of message
- * @param mixed		$value		The value to be stored or an array of values
+ * @param int   	        $kind	The kind of message
+ * @param string|array<string>  $value	The value to be stored or an array of values
  *
  * @return void
  */

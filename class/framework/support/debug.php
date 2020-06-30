@@ -48,7 +48,7 @@
 /**
  * Dump a variable - uses buffering to grab the output.
  *
- * @param mixed $vars
+ * @param array<mixed> $vars
  *
  * @return void
  */

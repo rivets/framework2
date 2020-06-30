@@ -760,8 +760,8 @@
 /**
  * Add an operation
  *
- * @param mixed     $function   The name of a function or an array of names
- * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
+ * @param string|array<string>     $function   The name of a function or an array of names
+ * @param array                     $perms     [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
  * @psalm-suppress UnusedMethod

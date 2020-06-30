@@ -110,9 +110,9 @@
  * Media players ask for the file in chunks.
  *
  * @param int    	$size	The size of the output data
- * @param mixed		$code	The HTTP return code or ''
+ * @param string|int	$code	The HTTP return code or ''
  *
- * @return array
+ * @return array<mixed>
  *
  * @psalm-suppress InvalidOperand
  * @psalm-suppress PossiblyInvalidOperand

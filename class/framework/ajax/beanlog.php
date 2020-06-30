@@ -15,7 +15,7 @@
  *
  * @return void
  */
-        public static function mklog(int $op, string $bean, $id, string $field, $value) : void
+        public static function mklog(int $op, string $bean, int $id, string $field, $value) : void
         {
             $lg = \R::dispense('beanlog');
             $lg->user = $context->user();
