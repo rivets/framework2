@@ -1,6 +1,7 @@
 <?php
     namespace PHPMailer\PHPMailer;
 
+    /** @psalm-suppress PossiblyUnusedParam */
     class PHPMailer
     {
 /** @var string */
