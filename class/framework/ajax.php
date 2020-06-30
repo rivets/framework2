@@ -166,6 +166,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  */
+// SlevomatCodingStandard:disable Classes\UnusedPrivateElementsSniff
         final private function config(Context $context) : void
         {
             [$name] = $context->restcheck(1);
