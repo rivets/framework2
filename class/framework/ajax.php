@@ -262,13 +262,14 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @return array
+ * @phpcsSuppress ObjectCalisthenics.Metrics.MaxNestingLevel
  */
         final protected function findRow(Context $context, array $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
             {
-                /** @phpcsSuppress  PHP_CodeSniffer.Standards.Generic.CodeAnalysis.EmptyStatement */
+                /** @phpcsSuppress  PHP_CodeSniffer.CodeAnalysis.EmptyStatement */
                 try
                 {
                     $this->checkPerms($context, $bpd[0]); // make sure we are allowed
@@ -324,7 +325,7 @@
  * simply changing a value.
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return void
  * @psalm-suppress UnusedMethod
