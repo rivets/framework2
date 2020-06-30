@@ -153,7 +153,8 @@
  * @param string    $device     Currently not used!!
  *
  * @return string
- * @ psalm-suppress UnusedVariable
+ * @psalm-suppress UnusedVariable
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
 	public function maketoken(string $url, string $device = '') : string
 	{
@@ -164,10 +165,11 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context   The context object
+ * @param Context    $context   The context object
  * @param array               $rest      Any other values from the URL
  * 
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -175,9 +177,9 @@
 /**
  * Handle an edit form for this user
  *
- * @param \Support\Context   $context    The context object
+ * @param Context   $context    The context object
  *
- * @return  array   [TRUE if error, [error messages]]
+ * @return array   [TRUE if error, [error messages]]
  */
         public function edit(Context $context) : array
         {

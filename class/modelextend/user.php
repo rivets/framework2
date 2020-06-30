@@ -37,9 +37,10 @@
  *
  * Returns an array of error messages or an empty array if OK
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
- * @return array
+ * @return array<string>
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function register($context) : array
         {
@@ -52,6 +53,7 @@
  * @param Context $context
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function addData(Context $context) :void
         {

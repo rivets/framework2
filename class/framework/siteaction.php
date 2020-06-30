@@ -179,13 +179,14 @@
  *
  * @todo This function could do a lot moreabout checking things....
  *
- * @param array    $rest
- * @param int      $start    The element to start at
- * @param int      $num      The number of params required
- * @param array    $format   Currently not used
+ * @param array<string>     $rest
+ * @param int               $start    The element to start at
+ * @param int               $num      The number of params required
+ * @param array             $format   Currently not used
  *
  * @throws \Framework\Exception\ParameterCount
- * @return array
+ * @return array<string>
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkRest(array $rest, int $start, int $num, $format = [])
         {

@@ -163,6 +163,7 @@
  * @param array               $rest
  *
  * @return array
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function edit(Context $context, array $rest) : array
         {

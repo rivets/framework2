@@ -125,6 +125,7 @@
  * @param \Support\Context    $context   The context object
  * 
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context) : void
         {

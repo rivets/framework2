@@ -346,9 +346,10 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context  The context object
+ * @param Context    $context  The context object
  * 
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -356,7 +357,7 @@
 /**
  * Handle an edit form for this page
  *
- * @param \Support\Context   $context    The context object
+ * @param Context   $context    The context object
  *
  * @return array [TRUE if error, [error messages]]
  */

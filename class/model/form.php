@@ -134,10 +134,11 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context The context object
- * @param array    $rest     Not used here at the moment
+ * @param Context           $context The context object
+ * @param array<string>     $rest     Not used here at the moment
  * 
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -182,11 +183,12 @@
 /**
  * View a form
  *
- * @param \Support\Context $context
- * @param array $rest
+ * @param Context           $context
+ * @param array<string>     $rest
  *
  * @return void
  * @psalm-suppress PossiblyUnusedParameter
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function view(Context $context, array $rest) : void
         {

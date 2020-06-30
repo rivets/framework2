@@ -26,6 +26,7 @@
  * @param string   $op     r for read, u for update, d for delete
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function canaccess($user, string $op = 'r') : bool
         {
@@ -34,11 +35,12 @@
 /**
  * Hook for adding extra data to a file save.
  *
- * @param \Support\Context	$context  The context object for the site
- * @param int	                $index	  If you are reading data from an array fo files, this is the index
- *                                        in the file. You may have paralleld data arrays and need this index.
+ * @param Context   $context    The context object for the site
+ * @param int	    $index      If you are reading data from an array fo files, this is the index
+ *                              in the file. You may have paralleld data arrays and need this index.
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function addData(Context $context, int $index) : void
         {
@@ -49,11 +51,12 @@
 /**
  * Hook for adding extra data to a file replace.
  *
- * @param \Support\Context	$context  The context object for the site
- * @param int	                $index	  If you are reading data from an array of files, this is the index
- *                                        in the file. You may have parallel data arrays and need this index.
+ * @param Context    $context   The context object for the site
+ * @param int        $index     If you are reading data from an array of files, this is the index
+ *                              in the file. You may have parallel data arrays and need this index.
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function updateData(Context $context, int $index = 0) : void
         {
@@ -64,9 +67,10 @@
 /**
  * Hook for doing something when a file is downloaded
  *
- * @param \Support\Context	$context  The context object for the site
+ * @param Context    $context   The context object for the site
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function downloaded(Context $context) : void
         {
@@ -77,10 +81,9 @@
 /**
  * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
  * @throws \Framework\Exception\Forbidden
- *
  * @return void
  */
         public function delete() : void
