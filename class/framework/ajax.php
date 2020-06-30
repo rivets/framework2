@@ -105,18 +105,17 @@
  */
         private static $tablesearchperms = [
             [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
                 [
-                    [FW::FWCONTEXT, FW::ADMINROLE]],
-                    [
-                        FW::CONFIG      => [],
-                        FW::FORM        => [],
-                        FW::FORMFIELD   => [],
-                        FW::PAGE        => [],
-                        FW::ROLECONTEXT => [],
-                        FW::ROLENAME    => [],
-                        FW::TABLE       => [],
-                        FW::USER        => [],
-                    ]
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGE        => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                    FW::USER        => [],
+                ]
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -126,7 +125,8 @@
         private static $uniqueperms = [
             [
                 [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']] ],
+                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']]
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
