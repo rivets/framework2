@@ -6,7 +6,6 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <directory name="/Users/nlfm/Library/Mobile Documents/com~apple~CloudDocs/Development/FWStan" />
         <file name="devel/configmock.php" />
         <file name="devel/phpmmock.php" />
         <file name="devel/redmock.php" />
