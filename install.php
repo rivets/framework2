@@ -11,6 +11,8 @@
     define('ADMINROLE', 'Admin');
     define('DEVELROLE', 'Developer');
     define('TESTROLE', 'Tester');
+
+    global $verbose, $cwd;
 /**
  * Function to cleanup after errors
  *
