@@ -22,7 +22,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
+ * @var array<array> Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
@@ -39,7 +39,7 @@
             'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
         ];
 /**
- * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
@@ -47,20 +47,20 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for creating an audit log.
+ * @var array<string> Permissions array for creating an audit log.
  */
         private static $audit = [
 //          ['BeanName'...]]
         ];
 /**
- * Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
             [
@@ -79,7 +79,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for table acccess.
+ * @var array<array> Permissions array for table acccess.
  */
         private static $tableperms = [
             [
@@ -89,7 +89,7 @@
 //          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
         ];
 /**
- * Permissions array for tablesearch acccess.
+ * @var array<array> Permissions array for tablesearch acccess.
  */
         private static $tablesearchperms = [
             [
@@ -100,7 +100,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ * @var array<array> Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
             [
@@ -109,7 +109,7 @@
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
+ * @var array<string>   Permissions array for unique access. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
             FW::USER => ['login'],
@@ -131,14 +131,14 @@
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array   Values controlling whether or not search hint calls are allowed
+ * @var array<array>   Values controlling whether or not search hint calls are allowed
  */
         private static $hints = [
             // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array Search ops
+ * @var array<string> Search ops
  */
         private static $searchops = [
             '',
