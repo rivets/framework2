@@ -86,7 +86,7 @@
                     FW::ROLECONTEXT => [],
                     FW::ROLENAME => [],
                     FW::TABLE => [],
-                ]
+                ],
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -96,7 +96,7 @@
         private static $tableperms = [
             [
                 [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER]
+                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER],
             ],
 //          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
         ];
@@ -115,7 +115,7 @@
                     FW::ROLENAME    => [],
                     FW::TABLE       => [],
                     FW::USER        => [],
-                ]
+                ],
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -125,7 +125,7 @@
         private static $uniqueperms = [
             [
                 [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']]
+                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']],
             ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
@@ -179,7 +179,7 @@
  * Config value operation
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param \Support\Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
@@ -682,7 +682,7 @@
  * Get a page of bean values
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
@@ -712,7 +712,7 @@
  * Get search hints for a bean
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  * @return void
@@ -816,11 +816,11 @@
 /**
  * Add bean permissions to allow non site/admins to use the functions
  *
- * @param array     $bean
- * @param array     $toggle
- * @param array     $table
- * @param array     $audit
- * @param array     $tsearch
+ * @param array    $bean
+ * @param array    $toggle
+ * @param array    $table
+ * @param array    $audit
+ * @param array    $tsearch
  *
  * @return void
  */
@@ -836,7 +836,7 @@
 /**
  * Do a database check for uniqueness
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context   $context  The Context object
  * @param string    $bean     The kind of bean
  * @param string    $field    The field to check
  * @param string    $value    The value to check
@@ -991,7 +991,7 @@
 /**
  * Handle AJAX operations
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return void
  */

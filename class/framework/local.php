@@ -25,69 +25,81 @@
         public const ERROR     = 0;        # 'fwerrmessage';
         public const WARNING   = 1;        # 'fwwarnmessage';
         public const MESSAGE   = 2;        # 'fwmessage';
+        
+        private static $tellfields = [
+            'REQUEST_URI',
+            'HTTP_REFERER',
+            'HTTP_X_FORWARDED_FOR',
+            'REMOTE_ADDR',
+            'REQUEST_METHOD',
+            'REQUEST_SCHEME',
+            'QUERY_STRING',
+            'HTTP_COOKIE',
+            'HTTP_USER_AGENT'
+        ];
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
         private static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
 /**
- * @var	string		The absolute path to the site directory
+ * @var string    The absolute path to the site directory
  */
         private $basepath = '';
 /**
- * @var	string		The name of the site directory
+ * @var string  The name of the site directory
  */
         private $basedname	= '';
 
 /**
- * @var	bool		If TRUE then ignore trapped errors
+ * @var bool    If TRUE then ignore trapped errors
  */
         private $errignore	= FALSE;	# needed for checking preg expressions....
 /**
- * @var	bool		Set to TRUE if an error was trapped and ignored
+ * @var bool    Set to TRUE if an error was trapped and ignored
  */
         private $wasignored	= FALSE;
 /**
- * @var array		A list of errors that have been emailed to the user. Only send a message once.
+ * @var array    A list of errors that have been emailed to the user. Only send a message once.
  */
         private $senterrors	= [];
 /**
- * @var	bool		If TRUE then we are doing debugging
+ * @var bool    If TRUE then we are doing debugging
  */
         private $debug		= FALSE;
 /**
- * @var bool         If TRUE then we are handling an error
+ * @var bool   If TRUE then we are handling an error
  */
         private $error          = FALSE;
 /**
- * @var	bool		If TRUE then we are in developer mode
+ * @var bool    If TRUE then we are in developer mode
  */
         private $devel		= FALSE;
 /**
- * @var	bool		If TRUE then we are in ajax code and so error reporting is different
+ * @var bool    If TRUE then we are in ajax code and so error reporting is different
  */
         private $ajax		= FALSE;
 /**
- * @var	array		An array of email addresses for system administrators
+ * @var array<string>    An array of email addresses for system administrators
  */
         private $sysadmin	= [Config::SYSADMIN];
 /**
- * @var	?object		the Twig renderer
+ * @var ?object    the Twig renderer
  */
         private $twig		= NULL;
 /**
- * @var	array		Key/value array of data to pass into template renderer
+ * @var array    Key/value array of data to pass into template renderer
  */
         private $tvals		= [];
 /**
- * @var array           Stash away messages so that messages.twig works
+ * @var array<array>    Stash away messages so that messages.twig works
  */
         private $messages       = [[], [], []];
 /**
- * @var string          Backtrace info - only used with errors
+ * @var string    Backtrace info - only used with errors
  */
         private $back       = '';
 /**
- * @var array           Config values from database
+ * @var array               Config values from database
  */
         private $fwconfig       = [];
 /**
@@ -187,10 +199,10 @@
 /**
  * Tell sysadmin there was an error
  *
- * @param string	 $msg	An error messager
- * @param int|string $type	An error type
- * @param string 	 $file	file in which error happened
- * @param int    	 $line	Line at which it happened
+ * @param string        $msg    An error messager
+ * @param int|string    $type   An error type
+ * @param string        $file   file in which error happened
+ * @param int           $line    Line at which it happened
  *
  * @return string
  */
@@ -200,7 +212,7 @@
             $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
             $subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
             $origin = $subject.PHP_EOL.PHP_EOL;
-            foreach (['REQUEST_URI', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REQUEST_METHOD', 'REQUEST_SCHEME', 'QUERY_STRING', 'HTTP_COOKIE', 'HTTP_USER_AGENT'] AS $fld)
+            foreach (self::$tellfields as $fld)
             {
                 if (isset($_SERVER[$fld]))
                 {
@@ -400,9 +412,9 @@
  *
  * This always clears the wasignored flag
  *
- * @param bool       	$ignore	If TRUE then ignore the error otherwise stop ignoring
+ * @param bool    $ignore    If TRUE then ignore the error otherwise stop ignoring
  *
- * @return bool	The last value of the wasignored flag
+ * @return bool    The last value of the wasignored flag
  */
         public function eignore(bool $ignore)
         {
@@ -481,7 +493,7 @@
 /**
  * Initialise twig template engine
  *
- * @param bool       	$cache	if TRUE then enable the TWIG cache
+ * @param bool    $cache    if TRUE then enable the TWIG cache
  *
  * @return void
  */
@@ -547,8 +559,8 @@
 /**
  * Render a twig and return the string - do nothing if the template is the empty string
  *
- * @param string	$tpl	The template
- * @param array	        $vals	Values to set for the twig
+ * @param string    $tpl    The template
+ * @param array     $vals   Values to set for the twig
  *
  * @return string
  */
@@ -566,8 +578,8 @@
 /**
  * Render a twig - do nothing if the template is the empty string
  *
- * @param string	$tpl	The template
- * @param array	        $vals	Values to set for the twig
+ * @param string   $tpl  The template
+ * @param array    $vals Values to set for the twig
  */
         public function render(string $tpl, array $vals = []) : void
         {
@@ -579,9 +591,9 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array<mixed>	$vname		The name to be used inside the twig or an array of key/value pairs
- * @param mixed		        $value		The value to be stored or "" if an array in param 1
- * @param bool                  $tglobal        If TRUE add this as a twig global variable
+ * @param string|array<mixed>    $vname    The name to be used inside the twig or an array of key/value pairs
+ * @param mixed		         $value    The value to be stored or "" if an array in param 1
+ * @param bool                   $tglobal  If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
  *
@@ -628,8 +640,8 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param int   	        $kind	The kind of message
- * @param string|array<string>  $value	The value to be stored or an array of values
+ * @param int                   $kind   The kind of message
+ * @param string|array<string>  $value  The value to be stored or an array of values
  *
  * @return void
  */
@@ -719,11 +731,11 @@
  *
  * The $loadrb parameter simplifies some of the unit testing for this class
  *
- * @param string	$basedir	The full path to the site directory
- * @param bool       	$ajax		If TRUE then this is an AJAX call
- * @param bool       	$devel		If TRUE then we are developing the system
- * @param bool       	$loadtwig	if TRUE then load in Twig.
- * @param bool       	$loadrb		if TRUE then load in RedBean
+ * @param string  $basedir    The full path to the site directory
+ * @param bool    $ajax       If TRUE then this is an AJAX call
+ * @param bool    $devel      If TRUE then we are developing the system
+ * @param bool    $loadtwig   If TRUE then load in Twig.
+ * @param bool    $loadrb     If TRUE then load in RedBean
  *
  * @return \Framework\Local
  */

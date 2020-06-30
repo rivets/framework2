@@ -36,10 +36,9 @@
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -115,7 +114,7 @@
 /**
  * Set the user's password
  *
- * @param string	$pw	The password
+ * @param string    $pw The password
  *
  * @return void
  */
@@ -156,7 +155,7 @@
  * @psalm-suppress UnusedVariable
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-	public function maketoken(string $url, string $device = '') : string
+        public function maketoken(string $url, string $device = '') : string
 	{
 	    $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
         /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */

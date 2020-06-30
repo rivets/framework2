@@ -50,11 +50,11 @@
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param string	$where		The URL to divert to
- * @param bool       	$temporary	TRUE if this is a temporary redirect
- * @param string	$msg		A message to send
- * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       	$use303         If TRUE then use 303 rather than 302
+ * @param string    $where      The URL to divert to
+ * @param bool      $temporary  TRUE if this is a temporary redirect
+ * @param string    $msg        A message to send
+ * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool      $use303     If TRUE then use 303 rather than 302
  *
  * @psalm-return never-return
  * @return void
@@ -79,11 +79,11 @@
 /**
  * output a header and msg - this never returns
  *
- * @param int    	$code	The return code
- * @param string	$msg	The message (or '')
+ * @param int    	$code   The return code
+ * @param string	$msg    The message (or '')
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
         private function sendhead(int $code, string $msg) : void
         {
@@ -109,8 +109,8 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param int    	$size	The size of the output data
- * @param string|int	$code	The HTTP return code or ''
+ * @param int           $size    The size of the output data
+ * @param string|int    $code    The HTTP return code or ''
  *
  * @return array<mixed>
  *
@@ -145,10 +145,10 @@
 /**
  * Make a header sequence for a particular return code and add some other useful headers
  *
- * @param int    	$code	The HTTP return code
- * @param string	$mtype	The mime-type of the file
- * @param ?int    	$length	The length of the data
- * @param string	$name	A file name
+ * @param int       $code   The HTTP return code
+ * @param string    $mtype  The mime-type of the file
+ * @param ?int      $length The length of the data
+ * @param string    $name   A file name
  *
  * @return void
  */
@@ -183,10 +183,10 @@
 /**
  * Generate a 400 Bad Request error return
  *
- * @param string		$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
         public function bad(string $msg = '') : void
         {
@@ -195,7 +195,7 @@
 /**
  * Generate a 403 Access Denied error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
@@ -207,7 +207,7 @@
 /**
  * Generate a 404 Not Found error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
@@ -219,7 +219,7 @@
 /**
  * Generate a 416 Not Satisfiable error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
@@ -231,7 +231,7 @@
 /**
  * Generate a 500 Internal Error error return
  *
- * @param string		$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
@@ -243,9 +243,9 @@
 /**
  * Deliver a file as a response.
  *
- * @param string	$path	The path to the file
- * @param string	$name	The name of the file as told to the downloader
- * @param string	$mime	The mime type of the file
+ * @param string    $path    The path to the file
+ * @param string    $name    The name of the file as told to the downloader
+ * @param string    $mime    The mime type of the file
  *
  * @return void
  */
@@ -279,9 +279,9 @@
 /**
  * Deliver a string as a response.
  *
- * @param string	$value	The data to send
- * @param string	$mime	The mime type of the file
- * @param int    	$code	The HTTP return code
+ * @param string    $value   The data to send
+ * @param string    $mime    The mime type of the file
+ * @param int       $code    The HTTP return code
  *
  * @return void
  */

@@ -25,13 +25,13 @@
  */
         private const KEY	= 'Some string of text.....';
 
-/** @var ?\RedBeanPHP\OODBBean	NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
-/** @var int        	Counter used for generating unique ids */
+/** @var int    Counter used for generating unique ids */
         protected $idgen        = 0;
-/** @var string		The first component of the current URL */
+/** @var string The first component of the current URL */
         protected $reqaction	= 'home';
-/** @var array<string>		The rest of the current URL exploded at / */
+/** @var array<string>    The rest of the current URL exploded at / */
         protected $reqrest	= [];
 /** @var bool    True if authenticated by token */
         protected $tokauth	= FALSE;
@@ -151,7 +151,7 @@
  *
  * @return bool
  */
-	public function hastoken() : bool
+        public function hastoken() : bool
 	{
 	    return $this->tokauth;
 	}
@@ -235,7 +235,7 @@
             $psize = $form->filterget('pagesize', 10, FILTER_VALIDATE_INT);
             $values = [
                 'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
-                'pagesize'  => $psize
+                'pagesize'  => $psize,
             ];
             if ($count != NULL)
             {
@@ -337,8 +337,8 @@
 /**
  * Check to see if there is a session and return a specific value from it if it exists
  *
- * @param string	$var	The variable name
- * @param bool       	$fail	If TRUE then exit with an error return if the value  does not exist
+ * @param string  $var    The variable name
+ * @param bool    $fail   If TRUE then exit with an error return if the value  does not exist
  *
  * @return mixed
  */
@@ -358,14 +358,14 @@
 /**
  * Generate a Location header for within this site
  *
- * @param string		$where		The page to divert to
- * @param bool       		$temporary	TRUE if this is a temporary redirect
- * @param string		$msg		A message to send
- * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
+ * @param string    $where      The page to divert to
+ * @param bool      $temporary  TRUE if this is a temporary redirect
+ * @param string    $msg        A message to send
+ * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool      $use303     If TRUE then 303 will be used instead of 307
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
         public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {

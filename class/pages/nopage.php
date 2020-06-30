@@ -21,7 +21,7 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return string|array<string>	A template name
+ * @return string|array<string>     A template name
  * @phpcsSuppress PHP_CodeSniffer.CodeAnalysis.UselessOverridingMethod
  */
         public function handle(Context $context)

@@ -32,7 +32,7 @@
 /**
  * Add a RoleContext from a form - invoked by the AJAX bean operation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @return \RedBeanPHP\OODBBean
  */

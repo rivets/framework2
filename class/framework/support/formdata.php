@@ -39,7 +39,7 @@
 /**
  * Is the key in the $_GET array?
  *
- * @param string	$name	The key
+ * @param string    $name   The key
  *
  * @return bool
  */
@@ -50,7 +50,7 @@
 /**
  * Is the key in the $_POST array?
  *
- * @param string	$name	The key
+ * @param string    $name    The key
  *
  * @return bool
  */
@@ -61,7 +61,7 @@
 /**
  * Is the key in the $_COOKIE array?
  *
- * @param string	$name	The key
+ * @param string    $name    The key
  *
  * @return bool
  */
@@ -74,7 +74,7 @@
  *
  * Note: no support for FILES in the filter_has_var function
  *
- * @param string	$name	The key
+ * @param string    $name    The key
  *
  * @return bool
  */
@@ -85,7 +85,7 @@
 /**
  * Is the key in the PUT/PATCH data
  *
- * @param string	$name	The key
+ * @param string    $name    The key
  *
  * @return bool
  */
@@ -97,11 +97,11 @@
 /**
  * Look in the specified array for a key and apply filters
  *
- * @param int           $which      The INPUT_... selector for the array
- * @param string	$name       The key
- * @param mixed         $default    A default value
- * @param int   	$filter     Filter values - see PHP manual
- * @param mixed		$options    see PHP manual
+ * @param int       $which   The INPUT_... selector for the array
+ * @param string    $name    The key
+ * @param mixed     $default A default value
+ * @param int       $filter  Filter values - see PHP manual
+ * @param mixed     $options see PHP manual
  *
  * @return mixed
  */
@@ -113,10 +113,10 @@
 /**
  * Look in the specified array for a key and apply filters
  *
- * @param int           $which      The INPUT_... selector for the array
- * @param string	$name       The key
- * @param int   	$filter     Filter values - see PHP manual
- * @param mixed		$options    see PHP manual
+ * @param int       $which    The INPUT_... selector for the array
+ * @param string    $name     The key
+ * @param int       $filter   Filter values - see PHP manual
+ * @param mixed     $options  see PHP manual
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -256,9 +256,9 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param string    $bean       The bean type
- * @param bool   $forupdate  If TRUE then load for update
+ * @param mixed    $name        The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string   $bean        The bean type
+ * @param bool     $forupdate   If TRUE then load for update
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -271,7 +271,7 @@
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string    $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
  * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
@@ -287,8 +287,8 @@
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key
- * @param array		$dflt	Returned if the key does not exist
+ * @param string   $name    The key
+ * @param array    $dflt    Returned if the key does not exist
  *
  * @return \ArrayIterator
  */
@@ -299,10 +299,10 @@
 /**
  * Look in the $_GET array for a key and apply filters
  *
- * @param string	$name		The key
- * @param mixed         $default        A default value
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string   $name    The key
+ * @param mixed    $default A default value
+ * @param int      $filter  Filter values - see PHP manual
+ * @param mixed    $options see PHP manual
  *
  * @return mixed
  */
@@ -313,12 +313,11 @@
 /**
  * Look in the $_GET array for a key and apply filters
  *
- * @param string	$name		The key
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string    $name       The key
+ * @param int       $filter     Filter values - see PHP manual
+ * @param mixed     $options    see PHP manual
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return mixed
  */
         public function mustfilterget(string $name, int $filter, $options = '')
@@ -335,7 +334,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed     $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -350,8 +349,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param mixed		$dflt	Returned if the key does not exist
+ * @param mixed    $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed    $dflt    Returned if the key does not exist
  *
  * @return mixed
  */
@@ -364,11 +363,10 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param string    $bean   The bean type
+ * @param mixed     $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string    $bean    The bean type
  *
  * @throws \Framework\Exception\BadValue
- * 
  * @return \RedBeanPHP\OODBBean
  */
         public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -472,7 +470,6 @@
  * @param string        $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
- * 
  * @return \RedBeanPHP\OODBBean
  */
         public function mustputbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -538,7 +535,6 @@
  * @param string	$name	The key
  *
  * @throws \Framework\Exception\BadValue
- * 
  * @return \ArrayIterator
  */
         public function mustcookiea(string $name) : \ArrayIterator
@@ -601,7 +597,6 @@
  * @param mixed     $key
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return array
  */
         public function filedata(string $name, $key = '') : array
@@ -622,7 +617,7 @@
                     'type'     => $x['type'][$key],
                     'size'     => $x['size'][$key],
                     'tmp_name' => $x['tmp_name'][$key],
-                    'error'    => $x['error'][$key]
+                    'error'    => $x['error'][$key],
                 ];
             }
             return $x;
