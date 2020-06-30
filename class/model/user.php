@@ -18,10 +18,12 @@
     {
 /**
  * @var string   The type of the bean that stores roles for this page
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private $roletype = FW::ROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'email'     => [TRUE, FALSE],         # [NOTEMPTY]

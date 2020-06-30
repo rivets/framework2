@@ -19,6 +19,7 @@
     {
 /**
  * @var string   The type of the bean that stores roles for this page
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private $roletype = FW::PAGEROLE;
 
@@ -27,6 +28,7 @@
         use \Framework\Support\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'name'          => [TRUE, FALSE],
