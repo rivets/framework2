@@ -27,7 +27,7 @@
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
 /**
- * @var array<array<bool, bool>>   Key is name of field and the array contains flags for checks
+ * @var array<array<bool>>   Key is name of field and the array contains flags for checks
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
