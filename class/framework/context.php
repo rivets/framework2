@@ -3,13 +3,12 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
     use \Config\Config as Config;
     use \Config\Framework as FW;
-    use \Framework\Web\Web as Web;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
@@ -226,7 +225,7 @@
  * Set up pagination data
  *
  * @param ?int    $count If not NULL then set pages based on this
- * 
+ *
  * @return void
  */
         public function setpages($count = NULL) : void
@@ -239,7 +238,7 @@
             ];
             if ($count != NULL)
             {
-                $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);                
+                $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);
             }
             $this->local()->addval($values);
         }
@@ -391,7 +390,7 @@
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
-                throw new \Framework\Exception\MissingBean('Missing '.$bean);                
+                throw new \Framework\Exception\MissingBean('Missing '.$bean);
             }
             return $foo;
         }
@@ -402,7 +401,7 @@
  *
  * @return \Framework\Local
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function local() : \Framework\Local
         {
@@ -413,7 +412,7 @@
  *
  * @return \Support\FormData
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function formdata() : \Support\FormData
         {
@@ -424,7 +423,7 @@
  *
  * @return \Framework\Web\Web
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function web() : \Framework\Web\Web
         {
@@ -458,7 +457,7 @@
  */
 /**
  * Look for a mobile access token
- * 
+ *
  * @internal
  *
  * @return void

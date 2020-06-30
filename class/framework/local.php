@@ -25,7 +25,7 @@
         public const ERROR     = 0;        # 'fwerrmessage';
         public const WARNING   = 1;        # 'fwwarnmessage';
         public const MESSAGE   = 2;        # 'fwmessage';
-        
+
         private static $tellfields = [
             'REQUEST_URI',
             'HTTP_REFERER',
@@ -185,7 +185,7 @@
                     $mail->msgHTML($msg);
                     foreach ($attach as $fl)
                     {
-                        $mail->addAttachment($fl); 
+                        $mail->addAttachment($fl);
                     }
                     return $mail->send() ? '' : $mail->ErrorInfo;
                 }
@@ -810,7 +810,7 @@
                 { # But what do we do?
                     $this->telladmin('Overload', 'Error', 'local.php', 791);
                     $this->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.');
-                    /* NOT REACHED */                 
+                    /* NOT REACHED */
                 }
                 if ($loadtwig)
                 {
