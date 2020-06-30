@@ -262,7 +262,7 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @return array
- * @phpcsSuppress ObjectCalisthenics.Metrics.MaxNestingLevel
+ * @phpcsSuppress ObjectCalisthenics.MaxNestingLevel
  */
         final protected function findRow(Context $context, array $perms) : array
         {
