@@ -97,11 +97,11 @@
 /**
  * Look in the specified array for a key and apply filters
  *
- * @param int           $which          The INPUT_... selector for the array
- * @param string	$name		The key
- * @param mixed         $default        A default value
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param int           $which      The INPUT_... selector for the array
+ * @param string	$name       The key
+ * @param mixed         $default    A default value
+ * @param int   	$filter     Filter values - see PHP manual
+ * @param mixed		$options    see PHP manual
  *
  * @return mixed
  */
@@ -113,10 +113,10 @@
 /**
  * Look in the specified array for a key and apply filters
  *
- * @param int           $which          The INPUT_... selector for the array
- * @param string	$name		The key
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param int           $which      The INPUT_... selector for the array
+ * @param string	$name       The key
+ * @param int   	$filter     Filter values - see PHP manual
+ * @param mixed		$options    see PHP manual
  *
  * @throws \Framework\Exception\BadValue
  *
@@ -177,11 +177,11 @@
  *
  * @internal
  *
- * @param int       $filter     The flag used for the filter test
- * @param array     $arr        The array to pick value from
- * @param mixed     $name       The string name of the entry or [name, selector,...]
- * @param mixed     $dflt       A default value to return
- * @param bool      $throw      What to do if not defined - constant defined in Context
+ * @param int           $filter     The flag used for the filter test
+ * @param array         $arr        The array to pick value from
+ * @param string|array  $name       The string name of the entry or [name, selector,...]
+ * @param mixed         $dflt       A default value to return
+ * @param bool          $throw      If TRUE throw an error if not defined
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -373,7 +373,7 @@
  */
         public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->fetchit(INPUT_GET, $_POST, $name, NULL, TRUE));
+            return Context::getinstance()->load($bean, $this->fetchit(INPUT_POST, $_POST, $name, NULL, TRUE));
         }
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
