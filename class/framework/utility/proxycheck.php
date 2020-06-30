@@ -3,9 +3,10 @@
  * Contains definition of ProxyCheck class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-202 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  */
      namespace Framework\Utility;
+
 /**
  * A class that talk to proxycheck.io in order to get information about IP addresses
  *
@@ -20,12 +21,12 @@
 /**
  * Check an IP address
  *
- * @param string    $key      Your API key
- * @param string    $ip       The IP address to check
- * @param array     $options  Options for the check - see proxycheck.io API definition
- * @param ?string    $tag      A tag to identify this call.
+ * @param string            $key      Your API key
+ * @param string            $ip       The IP address to check
+ * @param array<string>     $options  Options for the check - see proxycheck.io API definition
+ * @param ?string           $tag      A tag to identify this call.
  *
- * @return array
+ * @return array<string>
  */
         public static function check(string $key, string $ip, array $options, ?string $tag = NULL) : array
         {          
@@ -48,10 +49,10 @@
  */
             $ch = curl_init(self::PCURL.$ip.'?'.implode('&', $query));
             $curlopts = [
-                CURLOPT_CONNECTTIMEOUT => 30,
-                CURLOPT_POST => 1,
-                CURLOPT_POSTFIELDS => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
-                CURLOPT_RETURNTRANSFER => true
+                CURLOPT_CONNECTTIMEOUT  => 30,
+                CURLOPT_POST            => 1,
+                CURLOPT_POSTFIELDS      => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
+                CURLOPT_RETURNTRANSFER  => TRUE,
             ];
             curl_setopt_array($ch, $curlopts);
             $json = curl_exec($ch);
