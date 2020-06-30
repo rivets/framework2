@@ -18,11 +18,11 @@
     class Form extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var string[] METHOD options for forms
+ * @var array<string> METHOD options for forms
  */
         private static $methods     = ['', 'GET', 'POST'];
 /**
- * @var string[] Attributes for inputs
+ * @var array<string> Attributes for inputs
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];

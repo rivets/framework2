@@ -17,7 +17,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var string[]  A list of the Framework DB tables
+ * @var array<string>  A list of the Framework DB tables
  */
         protected static $fwtables = [
             FW::CONFIG,

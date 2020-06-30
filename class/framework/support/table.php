@@ -106,7 +106,7 @@
 /**
  * Return the fields in this table
  *
- * @return string[]
+ * @return array<string>
  */
         public function fields() : array
         {

@@ -35,11 +35,11 @@
         protected $reqrest	= [];
 /** @var bool    True if authenticated by token */
         protected $tokauth	= FALSE;
-/** @var array<\RedBeanPHP\OODBBean[]>		A cache for rolename beans */
+/** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
         protected $roles        = [];
-/** @var array<\RedBeanPHP\OODBBean[]>		A cache for rolecontext beans */
+/** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
         protected $contexts     = [];
-/** @var string[][]		A cache for JS ons */
+/** @var array<array<string>>                   A cache for JS ons */
         protected $ons          = [];
 /*
  ***************************************

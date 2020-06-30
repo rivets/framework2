@@ -245,7 +245,7 @@
  */
         private function fieldExists(string $type, string $field, bool $idok = FALSE) : bool
         {
-            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field == 'id'))
+            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field === 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
