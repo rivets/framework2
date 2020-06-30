@@ -42,7 +42,7 @@
  *
  * @return string   A template name
  */
-        public function handle(Context $context) : string
+        public function handle(Context $context)
         {
             chdir($context->local()->assetsdir());
     
