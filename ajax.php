@@ -7,7 +7,6 @@
  */
 /**
  * The real work is all done in the Ajax class.
- * @phpcsSuppress NunoMaduro.Domain.ForbiddenDefineGlobalConstants
  */
     define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 
