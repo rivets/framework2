@@ -25,9 +25,9 @@
  */
         public function handle(Context $context)
         {
-            mail(Config::SYSADMIN, Config::SITENAME.' CSP Error Report',
-                 file_get_contents('php://input'), // get the JSON ereport
-                 'From: CSP Report <'.Config::SITENOREPLY.'>'.PHP_EOL);
+            $context->local()->sendmail([Config::SYSADMIN], Config::SITENAME.' CSP Error Report',
+                 file_get_contents('php://input'), // get the JSON report
+                 '', ['From' => 'CSP Report <'.Config::SITENOREPLY.'>']);
             header(\Framework\Web\StatusCodes::httpHeaderFor(\Framework\Web\StatusCodes::HTTP_NO_CONTENT));
             exit;
 //            return ['', '', \Framework\Web\StatusCodes::HTTP_NO_CONTENT];
