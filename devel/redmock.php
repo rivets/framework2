@@ -16,8 +16,10 @@
         public function __get(string $name)
         {
         }
- /** @psalm-suppress PossiblyUnusedParam */
-        /** @psalm-suppress MissingParamType */
+/**
+ * @psalm-suppress PossiblyUnusedParam
+ * @psalm-suppress MissingParamType
+ */
         public function __set(string $name, $value): void {}
  /** @psalm-suppress PossiblyUnusedParam */
         /** @psalm-suppress MissingParamType */
