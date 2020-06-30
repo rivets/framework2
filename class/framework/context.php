@@ -19,25 +19,25 @@
 /**
  * The name of the authentication token field.
  */
-        private const TOKEN 	    = 'X-APPNAME-TOKEN';
+        private const TOKEN 	= 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-        private const KEY	        = 'Some string of text.....';
+        private const KEY	= 'Some string of text.....';
 
-/** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var ?\RedBeanPHP\OODBBean	NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser	= NULL;
 /** @var int        	Counter used for generating unique ids */
         protected $idgen        = 0;
 /** @var string		The first component of the current URL */
         protected $reqaction	= 'home';
-/** @var string[]		The rest of the current URL exploded at / */
+/** @var array<string>		The rest of the current URL exploded at / */
         protected $reqrest	= [];
 /** @var bool    True if authenticated by token */
         protected $tokauth	= FALSE;
-/** @var \RedBeanPHP\OODBBean[]		A cache for rolename beans */
+/** @var array<\RedBeanPHP\OODBBean[]>		A cache for rolename beans */
         protected $roles        = [];
-/** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
+/** @var array<\RedBeanPHP\OODBBean[]>		A cache for rolecontext beans */
         protected $contexts     = [];
 /** @var string[][]		A cache for JS ons */
         protected $ons          = [];
@@ -98,21 +98,21 @@
 /**
  * Return the current logged in user if any
  *
- * @return ?object
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function user() : ?object
+        public function user() : ?\RedBeanPHP\OODBBean
         {
             return $this->luser;
         }
 /**
  * Return TRUE if the user in the parameter is the same as the current user
  *
- * @param object    $user
+ * @param \RedBeanPHP\OODBBean    $user
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function sameuser($user) : bool
+        public function sameuser(\RedBeanPHP\OODBBean $user) : bool
         {
              /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
