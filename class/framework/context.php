@@ -457,13 +457,15 @@
  ***************************************
  */
 /**
- * Initialise the context and return self
+ * Look for a mobile access token
+ * 
+ * @internal
  *
- * @return \Framework\Context
+ * @return void
+ * @throws \Framework\Exception\InternalError
  */
-        public function setup() : \Framework\Context
+        private function mtoken() : void
         {
-            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
             foreach (getallheaders() as $k => $v)
             {
                 if (self::TOKEN === strtoupper($k))
@@ -476,7 +478,8 @@
                         {
                             if ($this->luser->getID() != $tok->sub)
                             {
-                                throw new \Exception('User conflict');
+                                throw new \Framework\Exception\InternalError('User conflict');
+                                /* NOT REACHED */
                             }
                         }
                         else
@@ -493,6 +496,16 @@
                     break;
                 }
             }
+        }
+/**
+ * Initialise the context and return self
+ *
+ * @return \Framework\Context
+ */
+        public function setup() : \Framework\Context
+        {
+            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
+            $this->mtoken();
 /**
  * Check to see if non-admin users are being excluded
  */
