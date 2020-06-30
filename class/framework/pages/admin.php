@@ -75,8 +75,8 @@
 /**
  * Edit admin items
  *
- * @param \Support\Context    $context  The Context object
- * @param array     $rest     The rest of the URL
+ * @param Context           $context  The Context object
+ * @param array<string>     $rest     The rest of the URL
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\ParameterCount
@@ -146,8 +146,8 @@
 /**
  * View admin items
  *
- * @param \Support\Context    $context  The Context object
- * @param array     $rest     The rest of the URL
+ * @param Context           $context  The Context object
+ * @param array<string>     $rest     The rest of the URL
  *
  * @return string
  */

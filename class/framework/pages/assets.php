@@ -3,7 +3,7 @@
  * Handle assets access if that is what is wanted
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2019 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  *
  */
     namespace Framework\Pages;
@@ -20,7 +20,7 @@
         private $file = '';
 /** @var int	Last modified time for the file */
         private $mtime = 0;
-/** @var array Mime type values */
+/** @var array<string> Mime type values */
         private static $mtypes = [
             ''      => 'text/plain',
             'css'	=> 'text/css',
@@ -120,7 +120,7 @@
  * @param Context    $context   The context object for the site
  *
  * @return int
- * @phpcsSupress SlevomatCodingStandard.Functions.UnusedParameter
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
         {
@@ -133,7 +133,7 @@
  * @param string    $time       The time value to check
  *
  * @return bool
- * @phpcsSupress SlevomatCodingStandard.Functions.UnusedParameter
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
