@@ -63,7 +63,7 @@
  * Note that if there is nothing after the action in the URL this function returns
  * an array with a single element containing an empty string.
  *
- * @return string[]
+ * @return array<string>
  */
         public function rest()
         {
