@@ -38,11 +38,11 @@
  * you really want to get cacheability to be complete you either have to go through hoops
  * in the Apache config or you code it in here!
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context	$context	The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string
         {
             chdir($context->local()->assetsdir());
     
@@ -92,7 +92,7 @@
 /**
  * Make an etag - overrides the function in SiteAction
  *
- * @param \Support\Context    $context   The context object for the site
+ * @param Context   $context   The context object for the site
  *
  * @return string
  */
@@ -103,33 +103,33 @@
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$tag	The etag value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $tag        The etag value to check
  *
  * @return bool
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return substr($tag, 0, -1) == substr($this->makeetag($context), 0, -1);
+            return substr($tag, 0, -1) === substr($this->makeetag($context), 0, -1);
         }
 /**
  * Make a maximum age - overrides function in SiteAction
  *
  * An hour for the most recent volume and a year for everything else
  *
- * @param \Support\Context    $context   The context object for the site
+ * @param Context    $context   The context object for the site
  *
  * @return int
  */
         public function makemaxage(Context $context) : int
         {
-            return 3600*24*365; # make it a year
+            return 3600*24*365; // make it a year
         }
 /**
  * Check a timestamp to see if we need to send the page again or not - overriding method in SiteAction
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$time	The time value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
  *
  * @return bool
  */
