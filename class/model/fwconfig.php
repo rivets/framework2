@@ -7,10 +7,12 @@
  *
  */
     namespace Model;
-    use Support\Context as Context;
+    
+    use \Support\Context as Context;
     use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for Page beans
+ * @psalm-suppress UnusedClass
  */
     class FWConfig extends \RedBeanPHP\SimpleModel
     {

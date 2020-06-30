@@ -3,15 +3,16 @@
  * Contains definition of ProxyCheck class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018 Newcastle University
+ * @copyright 2018-202 Newcastle University
  */
      namespace Framework\Utility;
 /**
- * A class that talsk to proxycheck.io in order to get information about IP addresses
+ * A class that talk to proxycheck.io in order to get information about IP addresses
  *
  * You need an API key to use the system
  *
  * @link http://proxycheck.io/
+ * @psalm-suppress PossiblyUnusedMethod
  */
     class ProxyCheck
     {

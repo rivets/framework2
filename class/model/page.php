@@ -13,6 +13,7 @@
     use \Framework\Exception\BadValue as BadValue;
 /**
  * A class implementing a RedBean model for Page beans
+ * @psalm-suppress UnusedClass
  */
     class Page extends \RedBeanPHP\SimpleModel
     {

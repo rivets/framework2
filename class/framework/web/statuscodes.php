@@ -162,6 +162,7 @@
  * @param int            $code    The code number
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isError(int $code) : bool
         {
@@ -184,6 +185,7 @@
  * @param int            $code    The code number
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function canHaveBody(int $code) : bool
         {

@@ -11,6 +11,7 @@
     use \Support\Context as Context;
 /**
  * A class Table object
+ * @psalm-suppress UnusedClass
  */
     class Table
     {

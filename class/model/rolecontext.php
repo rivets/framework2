@@ -12,6 +12,7 @@
     use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for RoleContext beans
+ * @psalm-suppress UnusedClass
  */
     class RoleContext extends \RedBeanPHP\SimpleModel
     {

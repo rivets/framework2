@@ -313,6 +313,7 @@
  * @param string       $value
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function addheader($key, string $value = '') : void
         {
@@ -367,6 +368,7 @@
  * Is this a POST?
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function ispost() : bool
         {
@@ -392,6 +394,7 @@
  * @param string  $string  The data to be hashed
  *
  * @return string Returns the hash
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function saveCSP(string $type, string $string) : string
         {
@@ -402,8 +405,8 @@
 /**
  * Add an item for use in a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string|array  $type    What the item is for (script-src, style-src etc.)
- * @param string        $host    The host to add
+ * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
+ * @param string                $host    The host to add
  *
  * @return void
  */
@@ -426,6 +429,7 @@
  * @param string        $host    The item to remove
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function removeCSP($type, string $host = '') : void
         {
@@ -446,6 +450,7 @@
  * but individual pages may wish to extend or restrict these.
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function setCSP() : void
         {
@@ -497,6 +502,7 @@
  * @param string    $secret  The recaptcha secret for this site
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function recaptcha(string $secret) : bool
         {

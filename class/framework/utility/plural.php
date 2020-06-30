@@ -15,6 +15,7 @@
  * Required by Twig
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function getName() : string
         {

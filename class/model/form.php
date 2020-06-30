@@ -3,15 +3,17 @@
  * A model class for the RedBean object Form
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  *
  */
     namespace Model;
+
     use \Support\Context as Context;
     use \Config\Framework as FW;
     use \Config\Config as Config;
 /**
  * A class implementing a RedBean model for Form beans
+ * @psalm-suppress UnusedClass
  */
     class Form extends \RedBeanPHP\SimpleModel
     {

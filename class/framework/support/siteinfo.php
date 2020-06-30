@@ -253,6 +253,7 @@
  * @param string $table
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isFWTable(string $table) : bool
         {
@@ -262,6 +263,7 @@
  * Number of tables
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function tablecount(bool $all = FALSE) : int
         {
@@ -274,6 +276,7 @@
  * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
  *
  * @return array
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
         {
@@ -296,6 +299,7 @@
  * @param array     $pars
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function pagecount(string $table, int $pagesize, string $where = '', array $pars = []) : int
         {

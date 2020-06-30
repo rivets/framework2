@@ -17,18 +17,20 @@
 /**
  * Return rolename object
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod 
  */
-        public function rolename() : ?object
+        public function rolename() : \RedBeanPHP\OODBBean
         {
 	    return $this->bean->rolename;
         }
 /**
  * Return rolecontext object
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod 
  */
-        public function rolecontext() : ?object
+        public function rolecontext() : \RedBeanPHP\OODBBean
         {
 	    return $this->bean->rolecontext;
         }
@@ -59,6 +61,7 @@
  *
  * @throws \Framework\Exception\BadValue
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod 
  */
         public function update() : void
         {
@@ -74,8 +77,9 @@
  * i.e. start < now < end (if end has a value)
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod 
  */
-        public function valid()
+        public function valid() : bool
         {
             $now = Context::getinstance()->utcnow();
             return $this->bean->start <= $now && ($this->bean->end === '' || $now <= $this->bean->end);

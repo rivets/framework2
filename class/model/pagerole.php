@@ -9,6 +9,7 @@
     namespace Model;
 /**
  * A class implementing a RedBean model for PageRole beans
+ * @psalm-suppress UnusedClass
  */
     class PageRole extends Role
     {

@@ -3,11 +3,13 @@
  * A model class for the RedBean object FormField
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2019 Newcastle University
+ * @copyright 2016-2020 Newcastle University
  */
     namespace Model;
+
 /**
  * A class implementing a RedBean model for Form beans
+ * @psalm-suppress UnusedClass
  */
     class FormField extends \RedBeanPHP\SimpleModel
     {

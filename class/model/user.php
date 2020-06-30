@@ -12,6 +12,7 @@
     use \Config\Framework as FW;
 /**
  * A class implementing a RedBean model for User beans
+ * @psalm-suppress UnusedClass
  */
     class User extends \RedBeanPHP\SimpleModel
     {
@@ -150,6 +151,7 @@
  * @param string    $device     Currently not used!!
  *
  * @return string
+ * @ psalm-suppress UnusedVariable
  */
 	public function maketoken(string $url, string $device = '') : string
 	{

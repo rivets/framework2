@@ -10,6 +10,7 @@
     use Support\Context as Context;
 /**
  * Upload table stores info about files that have been uploaded...
+ * @psalm-suppress UnusedClass
  */
     class Upload extends \RedBeanPHP\SimpleModel
     {

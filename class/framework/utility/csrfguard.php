@@ -71,6 +71,7 @@
  * Return HTML inputs for CSRF
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function inputs() : string
         {
@@ -86,6 +87,7 @@
  * @throws \Framework\Exception\InternalError when token or name is not as stored in session
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function check(int $type = INPUT_POST) : void
         {
