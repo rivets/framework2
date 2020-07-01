@@ -9,7 +9,7 @@
 
     use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
-    use \Framework\SiteAction;
+    use \Framework\Dispatch;
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
@@ -267,7 +267,7 @@
                 $local = $context->local();
                 switch ($p->kind)
                 {
-                case SiteAction::OBJECT:
+                case Dispatch::OBJECT:
                     if (!preg_match('/\\\\/', $p->source))
                     { # no namespace so put it in \Pages
                         $p->source = '\\Pages\\'.$p->source;
@@ -317,7 +317,7 @@
                     }
                     self::maketwig($context, $p->name, '@content/'.$lbase.'.twig');
                     break;
-                case SiteAction::TEMPLATE:
+                case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
                     { # add .twig to name
                         $p->source .= '.twig';
@@ -329,10 +329,10 @@
                     }
                     self::maketwig($context, $p->name, $p->source);
                     break;
-                case SiteAction::REDIRECT:
-                case SiteAction::REHOME:
-                case SiteAction::XREDIRECT:
-                case SiteAction::XREHOME:
+                case Dispatch::REDIRECT:
+                case Dispatch::REHOME:
+                case Dispatch::XREDIRECT:
+                case Dispatch::XREHOME:
                     break;
                 }
                 return $p;
