@@ -412,7 +412,7 @@
                     $id = $class::add($context)->getID();
                     if ($log)
                     {
-                        \Framework\Ajax\BeanLog::mklog(\Framework\Ajax\BeanLog::CREATE, $bean, $id, '*', NULL);
+                        \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::CREATE, $bean, $id, '*', NULL);
                     }
                     echo $id;
                 }
