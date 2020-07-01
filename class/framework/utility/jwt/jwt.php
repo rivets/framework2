@@ -188,10 +188,8 @@ class JWT
      * @param string            $alg    The signing algorithm.
      *                                  Supported algorithms are 'HS256', 'HS384', 'HS512' and 'RS256'
      *
-     * @return string An encrypted message
-     *
      * @throws DomainException Unsupported algorithm was specified
-     *
+     * @return string
      * @psalm-suppress InvalidNullableReturnType
      */
     public static function sign(string $msg, $key, string $alg = 'HS256') : string
@@ -199,22 +197,25 @@ class JWT
         if (empty(static::$supported_algs[$alg])) {
             throw new DomainException('Algorithm not supported');
         }
-        list($function, $algorithm) = static::$supported_algs[$alg];
+        [$function, $algorithm] = static::$supported_algs[$alg];
         switch($function) {
-            case 'hash_hmac':
-                /** @psalm-suppress PossiblyInvalidArgument */
-                return hash_hmac($algorithm, $msg, $key, true);
-            case 'openssl':
-                $signature = '';
-                $success = openssl_sign($msg, $signature, $key, $algorithm);
-                if (!$success) {
-                    throw new DomainException("OpenSSL unable to sign data");
-                }
-                if ($alg === 'ES256') {
-                    $signature = self::signatureFromDER($signature, 256);
-                }
-                return $signature;
+        case 'hash_hmac':
+            /** @psalm-suppress PossiblyInvalidArgument */
+            return hash_hmac($algorithm, $msg, $key, true);
+        case 'openssl':
+            $signature = '';
+            $success = openssl_sign($msg, $signature, $key, $algorithm);
+            if (!$success) {
+                throw new DomainException("OpenSSL unable to sign data");
+            }
+            if ($alg === 'ES256') {
+                $signature = self::signatureFromDER($signature, 256);
+            }
+            return $signature;
+        default:
+            throw new DomainException('Algorithm not supported');
         }
+        /* NOT REACHED */
     }
 
     /**
