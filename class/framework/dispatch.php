@@ -144,7 +144,7 @@
                 }
                 catch (\ReflectionException $e)
                 {
-                    // void
+                    NULL; // void
                 }
             }
             $local->addval($basicvals, '', TRUE);

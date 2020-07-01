@@ -261,7 +261,7 @@
                 }
                 catch (\Framework\Exception\Forbidden $e)
                 {
-                    // void go round and try the next item in the array
+                    NULL; // void go round and try the next item in the array
                 }
             }
             if (empty($tables))
