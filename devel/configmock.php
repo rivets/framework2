@@ -28,6 +28,8 @@
         const DEVELROLE = 'Developer';
         const TESTROLE = 'Tester';
         const CONFIG = 'fwconfig';
+        const RECAPTCHA = 0;
+        const RECAPTCHASECRET = 'aaaaaa';
 
         public static function setup() : void
         {
