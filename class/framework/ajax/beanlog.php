@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020 Newcastle University
  */
-    namespace \Framework\Ajax;
+    namespace Framework\Ajax;
 
     use \Support\Context;
 /**
