@@ -7,9 +7,9 @@
  */
     namespace Framework;
 
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
+    use \Framework\Web\StatusCodes;
+    use \Framework\Web\Web;
+    use \Support\Context;
 /**
  * A class that all provides a base class for any class that wants to implement a site action
  *

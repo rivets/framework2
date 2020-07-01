@@ -9,7 +9,7 @@
  */
     namespace ModelExtend;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * Upload table stores info about files that have been uploaded...
  */

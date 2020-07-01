@@ -8,7 +8,7 @@
     namespace Model;
 
     use \Config\Framework as FW;
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for User beans
  * @psalm-suppress UnusedClass

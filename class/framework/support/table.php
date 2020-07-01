@@ -7,7 +7,7 @@
  */
     namespace Framework\Support;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class Table object
  * @psalm-suppress UnusedClass

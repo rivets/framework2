@@ -9,7 +9,7 @@
  */
     namespace ModelExtend;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * User table stores info about users of the system
  */

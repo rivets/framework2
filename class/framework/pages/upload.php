@@ -7,8 +7,8 @@
  */
     namespace Framework\Pages;
 
-    use \Config\Config as Config;
-    use \Support\Context as Context;
+    use \Config\Config;
+    use \Support\Context;
 /**
  * Deal with a file upload URL
  */

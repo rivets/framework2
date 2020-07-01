@@ -3,14 +3,14 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
-    use \Config\Config as Config;
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Framework\Web\Web as Web;
+    use \Framework\Web\StatusCodes;
+    use \Framework\Web\Web;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *

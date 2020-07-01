@@ -7,7 +7,7 @@
  */
     namespace Framework\Web;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class that handles various web related things.
  */

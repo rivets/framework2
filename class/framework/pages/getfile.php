@@ -22,7 +22,7 @@
  */
     namespace Framework\Pages;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * The Getfile class
  *

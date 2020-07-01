@@ -8,9 +8,9 @@
     namespace Model;
 
     use \Config\Framework as FW;
-    use \Framework\Exception\BadValue as BadValue;
-    use \Framework\SiteAction as SiteAction;
-    use \Support\Context as Context;
+    use \Framework\Exception\BadValue;
+    use \Framework\SiteAction;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass

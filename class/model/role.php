@@ -7,7 +7,7 @@
  */
     namespace Model;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Role beans
  */
