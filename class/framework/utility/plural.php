@@ -33,7 +33,7 @@
         {
             return [
                 new \Twig\TwigFunction('splural', [$this, 'essify']),
-                new \Twig\TwigFunction('plural', [$this, 'makePlural'])
+                new \Twig\TwigFunction('plural', [$this, 'makePlural']),
             ];
         }
 /**

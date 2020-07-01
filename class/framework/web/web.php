@@ -475,11 +475,11 @@
                     $csp .= ' report-uri '.$edp.';'; // This is deprecated but widely supported
                     $csp .= ' report-to csp-report;';
                     $this->addheader([
-                        'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }'
+                        'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }',
                     ]);
                 }
                 $this->addheader([
-                    'Content-Security-Policy'   => $csp
+                    'Content-Security-Policy'   => $csp,
                 ]);
             }
         }
@@ -511,14 +511,14 @@
                 $data = http_build_query([
                     'secret'    => $secret,
                     'response'  => $_POST['g-recaptcha-response'],
-                    'remoteip'  => $_SERVER['REMOTE_ADDR']
+                    'remoteip'  => $_SERVER['REMOTE_ADDR'],
                 ]);
                 $opts = [
                     'http' => [
                         'method'  => 'POST',
                         'header'  => 'Content-Type: application/x-www-form-urlencoded',
-                        'content' => $data
-                    ]
+                        'content' => $data,
+                    ],
                 ];
                 $context  = stream_context_create($opts);
                 $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);

@@ -26,7 +26,7 @@
         public function setCache(Context $context) : void
         {
             $hdrs = [
-                'Expires'       => $this->makemod(time()) // expires now...
+                'Expires'       => $this->makemod(time()), // expires now...
             ];
             $context->web()->addheader($hdrs);
             $this->set304Cache($context);
@@ -45,7 +45,7 @@
                 'no-cache',
                 'must-revalidate',
                 'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
-                'stale-if-error=259200'
+                'stale-if-error=259200',
             ]);
         }
     }

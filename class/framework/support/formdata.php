@@ -655,7 +655,7 @@
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,
                         'response'  => $_POST['g-recaptcha-response'],
-                        'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR']
+                        'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'],
                     ];
 
                     $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
