@@ -159,20 +159,7 @@
 /**
  * @var array<string> Search ops
  */
-        private static $searchops = [
-            '',
-            '=',
-            '!=' ,
-            'like' ,
-            'contains' ,
-            '>' ,
-            '>=' ,
-            '<' ,
-            '<=',
-            'regexp',
-            'is NULL',
-            'is not NULL',
-        ];
+        private static $searchops = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
 /**
  * Config value operation
  *
