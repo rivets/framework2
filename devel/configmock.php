@@ -29,6 +29,7 @@
         const TESTROLE = 'Tester';
         const CONFIG = 'fwconfig';
         const RECAPTCHA = 0;
+        const RECAPTCHAKEY = 'aaaaaa';
         const RECAPTCHASECRET = 'aaaaaa';
 
         public static function setup() : void
