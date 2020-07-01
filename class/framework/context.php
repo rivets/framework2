@@ -22,7 +22,7 @@
 /**
  * The key used to encode the token validation
  */
-        private const KEY       = 'Some string of text.....';
+        public const KEY       = 'Some string of text.....';
 
 /** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser        = NULL;
