@@ -155,7 +155,7 @@
  *
  * @return void
  */
-        public function doupdate(array $cdata) : string
+        public function doupdate(array $cdata, $base) : string
         {
             if ($this->bean->local == 0)
             { // update if not locally set and there is a new value
