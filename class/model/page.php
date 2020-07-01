@@ -22,9 +22,6 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private $roletype = FW::PAGEROLE;
-
-        use \Framework\Support\HandleRole;
-        use \ModelExtend\MakeGuard;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -43,6 +40,8 @@
         ];
 
         use \ModelExtend\FWEdit;
+        use \Framework\Support\HandleRole;
+        use \ModelExtend\MakeGuard;
 /**
  * Function called when a page bean is updated - do error checking in here
  *
