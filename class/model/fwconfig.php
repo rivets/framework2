@@ -149,5 +149,34 @@
             $emess = $this->dofields($context->formdata());
             return [!empty($emess), $emess];
         }
+/**
+ * Handle an update from the page updater
+ *
+ * @param array $cdata  Update values from the json updater
+ *
+ * @return void
+ */
+        public function doupdate(array $cdata) : string
+        {
+            if ($this->bean->local == 0)
+            { // update if not locally set and there is a new value
+                $change = FALSE;
+                foreach ($cdata as $k => $v)
+                {
+                    $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
+                    if ($this->bean->$k != $v)
+                    {
+                        $this->bean->$k = $v;
+                        $change = TRUE;
+                    }
+                }
+                if ($change)
+                {
+                    \R::store($this->bean);
+                    return $cdata->value;
+                }
+            }
+            return '';
+        }
     }
 ?>

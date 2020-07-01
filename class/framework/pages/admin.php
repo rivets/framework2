@@ -205,23 +205,9 @@
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
-                        if ($lval->local == 0)
-                        { // update if not locally set and there is a new value
-                            $change = FALSE;
-                            foreach ($cdata as $k => $v)
-                            {
-                                $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
-                                if ($lval->$k != $v)
-                                {
-                                    $lval->$k = $v;
-                                    $change = TRUE;
-                                }
-                            }
-                            if ($change)
-                            {
-                                \R::store($lval);
-                                $updated[$cname] = $cdata->value;
-                            }
+                        if (($upd = $lval->doupdate($cdata)) !== '')
+                        {
+                            $updated[$cname] = $upd;
                         }
                     }
                     else
