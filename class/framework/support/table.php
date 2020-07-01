@@ -43,7 +43,7 @@
  *
  * @return void
  */
-        private function makebean(Context $context, string $bean) : void
+        private static function makebean(Context $context, string $bean) : void
         {
             $fk = [];
             $fd = $context->formdata();
@@ -96,7 +96,7 @@
                 }
                 else
                 {
-                    $this->makebean($context, $bean);
+                    self::makebean($context, $name);
                     return TRUE;
                 }
             }
