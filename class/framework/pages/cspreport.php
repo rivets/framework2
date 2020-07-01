@@ -3,14 +3,12 @@
   * Class for handling csp error report messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2018-202 Newcastle University
+  * @copyright 2018-2020 Newcastle University
   */
     namespace Framework\Pages;
 
-    use \Config\Config as Config;
-    use \Framework\Local as Local;
-    use \Support\Context as Context;
-
+    use \Framework\Local;
+    use \Support\Context;
 /**
  * A class that contains code to implement a contact page
  */
@@ -19,7 +17,7 @@
 /**
  * Handle various contact operations /contact
  *
- * @param \Support\Context  $context    The context object for the site
+ * @param Context  $context    The context object for the site
  *
  * @return string   A template name
  */

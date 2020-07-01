@@ -10,10 +10,9 @@
  */
     namespace Framework\Pages;
 
-    use \Config\Config as Config;
-    use \Framework\Web\Web as Web;
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Support\Context as Context;
+    use \Framework\Web\StatusCodes;
+    use \Framework\Web\Web;
+    use \Support\Context;
 
 /**
  * The default behaviour when a page does not exist.

@@ -10,9 +10,9 @@
  */
     namespace Framework;
 
-    use \R as R;
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
+    use \R;
 /**
  * Handle Ajax operations in this class
  */

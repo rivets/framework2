@@ -8,8 +8,8 @@
  */
     namespace Framework\Support;
 
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */

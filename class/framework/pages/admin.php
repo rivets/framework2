@@ -3,13 +3,12 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class that contains code to handle any /admin related requests.
  *

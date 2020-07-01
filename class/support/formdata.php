@@ -7,6 +7,7 @@
  *
  */
     namespace Support;
+
 /**
  * A class that allows extension of the base class that accesses PHP superglobals
  */

@@ -6,6 +6,7 @@
  * @copyright 2020 Newcastle University
  */
     namespace Framework\Exception;
+
 /**
  * Internal error exception class
  */

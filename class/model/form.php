@@ -8,9 +8,9 @@
  */
     namespace Model;
 
-    use \Support\Context as Context;
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Config\Config as Config;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Form beans
  * @psalm-suppress UnusedClass

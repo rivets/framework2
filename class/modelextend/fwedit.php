@@ -5,10 +5,11 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  *
  */
     namespace ModelExtend;
+
 /**
  * User table stores info about users of the syste,
  */

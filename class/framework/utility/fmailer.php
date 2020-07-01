@@ -4,13 +4,12 @@
  * or using the SMTP part so f PHPMailer
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2019 Newcastle University
+ * @copyright 2017-2020 Newcastle University
  */
     namespace Framework\Utility;
 
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\Exception;
     use Config\Config;
+    use PHPMailer\PHPMailer\PHPMailer;
 /**
  * The FMailer class
  */

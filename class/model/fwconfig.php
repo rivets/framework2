@@ -3,13 +3,13 @@
  * A model class for the RedBean object FWConfig
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  *
  */
     namespace Model;
-    
-    use \Support\Context as Context;
+
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass
@@ -36,7 +36,6 @@
  * @param string   $type   For error message
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return void
  */
         public function checkURL(string $type) : void
@@ -97,7 +96,6 @@
  * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -123,7 +121,7 @@
  * Setup for an edit
  *
  * @param \Support\Context    $context   The context object
- * 
+ *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -132,7 +130,7 @@
         }
 /**
  * Return the CSRFGuard inputs for inclusion in a form;
- * 
+ *
  * @return string
  */
         public function guard() :string
