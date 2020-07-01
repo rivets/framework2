@@ -17,7 +17,7 @@
  */
     class ProxyCheck
     {
-        const PCURL = 'https://proxycheck.io/v2/';
+        private const PCURL = 'https://proxycheck.io/v2/';
 /**
  * Check an IP address
  *
