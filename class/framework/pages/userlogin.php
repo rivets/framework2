@@ -7,11 +7,11 @@
  */
     namespace Framework\Pages;
 
-    use \Config\Config as Config;
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Framework\Local as Local;
-    use \R as R;
-    use \Support\Context as Context;
+    use \Framework\Local;
+    use \R;
+    use \Support\Context;
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
@@ -158,16 +158,7 @@
                         $rerr = $x->register($context); // do any extra registration
                         if (empty($rerr))
                         {
-                            if ($context->constant('CONFEMAIL', FALSE))
-                            {
-                                $this->sendconfirm($context, $x);
-                                $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
-                            }
-                            else
-                            {
-                                $x->confirm = 1;
-                                R::store($x);
-                            }
+                            $this->confmessage($context, $x);
                         }
                         else
                         { // extra registration failed
@@ -184,12 +175,34 @@
                 {
                     $context->local()->message(Local::ERROR, $errmess);
                 }
-                else
-                {
-                    $context->divert('/login/');
-                }
             }
             return '@content/register.twig';
+        }
+/**
+ * Handle confirmation
+ *
+ * @internal
+ *
+ * @param Context            $context
+ * @param \RedBean\OODBBean  $user
+ *
+ * @return void
+ */
+        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user)
+        {
+            if ($context->constant('CONFEMAIL', FALSE))
+            {
+                $this->sendconfirm($context, $user);
+                $msg = 'A confirmation link has been sent to your email address';
+            }
+            else
+            {
+                $x->confirm = 1;
+                R::store($user);
+                $msg = 'You have been registered on the system';
+            }
+            $context->local()->message(Local::MESSAGE, $msg);
+            $context->local()->addval('regok', TRUE);
         }
 /**
  * Handle things to do with email address confirmation
