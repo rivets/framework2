@@ -60,7 +60,7 @@
         {
             if (!(static::$instance instanceof static)) // cannot get this to work with namespaces for some reason
             {
-                static::$instance = new static();
+                static::$instance = new static(); // @phpstan-ignore-line
             }
             return static::$instance;
         }
