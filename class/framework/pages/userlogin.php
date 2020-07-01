@@ -197,7 +197,7 @@
             }
             else
             {
-                $x->confirm = 1;
+                $user->confirm = 1;
                 R::store($user);
                 $msg = 'You have been registered on the system';
             }
