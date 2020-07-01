@@ -11,7 +11,6 @@
     use \Config\Framework as FW;
     use \Framework\Web\StatusCodes;
     use \Support\Context;
-
 /**
  * This class dispatches pages to the appropriate places
  */

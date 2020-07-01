@@ -8,8 +8,7 @@
  */
     namespace Framework\Pages;
 
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * Handle all the cacheing stuff and maybe return a file
  */

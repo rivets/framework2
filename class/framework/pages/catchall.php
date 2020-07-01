@@ -13,7 +13,6 @@
     use \Framework\Web\StatusCodes;
     use \Framework\Web\Web;
     use \Support\Context;
-
 /**
  * The default behaviour when a page does not exist.
  */

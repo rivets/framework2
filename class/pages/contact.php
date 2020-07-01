@@ -3,14 +3,13 @@
   * Class for handling contact messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2012-2019 Newcastle University
+  * @copyright 2012-2020 Newcastle University
   */
     namespace Pages;
 
-    use \Config\Config as Config;
-    use \Framework\Local as Local;
-    use \Support\Context as Context;
-
+    use \Config\Config;
+    use \Framework\Local;
+    use \Support\Context;
 /**
  * A class that contains code to implement a contact page
  * @psalm-suppress UnusedClass
@@ -38,18 +37,6 @@
                         \Config\Config::SITENAME.': '.$subj,
                         $sender.PHP_EOL.PHP_EOL.$msg
                     );
-                    //$mail = new \Framework\Utility\FMailer();
-                    //$mail->setFrom(Config::SITENOREPLY);
-                    //$mail->addReplyTo(Config::SITENOREPLY);
-                    //$mail->addAddress(Config::SYSADMIN);
-                    ///** @psalm-suppress PossiblyNullOperand */
-                    ///** @psalm-suppress PossiblyNullPropertyFetch */
-                    //$mail->Subject = \Config\Config::SITENAME.': '.$subj;
-                    ///** @psalm-suppress UndefinedPropertyAssignment */
-                    //$mail->Body= $sender.PHP_EOL.PHP_EOL.$msg;
-                    //$mail->send();
-    
-                    //mail(Config::SYSADMIN, \Config\Config::SITENAME.': '.$subj, $sender.PHP_EOL.PHP_EOL.$msg);
                     $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
                 }
                 else

@@ -7,7 +7,6 @@
   */
     namespace Framework\Pages;
 
-    use \Framework\Local;
     use \Support\Context;
 /**
  * A class that contains code to implement a contact page
