@@ -8,6 +8,7 @@
     namespace Framework\Support;
 
     use \Config\Config;
+    use \Framework\Exception\BadValue;
     use \Support\Context;
 /**
  * A class that provides helpers for accessing form data
@@ -118,7 +119,7 @@
  * @param int       $filter   Filter values - see PHP manual
  * @param mixed     $options  see PHP manual
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  *
  * @return mixed
  */
@@ -127,11 +128,11 @@
             $res = filter_input($which, $name, $filter, $options);
             if ($res === NULL)
             { # no such variable
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
+                throw new BadValue('Missing item '.$name);
             }
             if ($res === FALSE)
             { # filter error
-                throw new \Framework\Exception\BadValue('Filter failure '.$name);
+                throw new BadValue('Filter failure '.$name);
             }
             return $res;
         }
@@ -146,7 +147,7 @@
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param bool      $throw      If TRUE Then throw an exception
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  *
  * @return string
  */
@@ -159,7 +160,7 @@
                 {
                     if ($throw)
                     {
-                        throw new \Framework\Exception\BadValue('Missing form array item');
+                        throw new BadValue('Missing form array item');
                     }
                     return $default;
                 }
@@ -183,7 +184,7 @@
  * @param mixed         $dflt       A default value to return
  * @param bool          $throw      If TRUE throw an error if not defined
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return mixed
  */
         private function fetchit(int $filter, array $arr, $name, $dflt = '', bool $throw = TRUE)
@@ -197,7 +198,7 @@
                 }
                 if ($throw)
                 {
-                    throw new \Framework\Exception\BadValue('Missing item '.$n.'['.$name[0].']');
+                    throw new BadValue('Missing item '.$n.'['.$name[0].']');
                 }
             }
             elseif (filter_has_var($filter, $name))
@@ -208,12 +209,12 @@
                 }
                 if ($throw)
                 {
-                    throw new \Framework\Exception\BadValue($name.' is array');
+                    throw new BadValue($name.' is array');
                 }
             }
             elseif ($throw)
             {
-                throw new \Framework\Exception\BadValue('Missing item '.$name);
+                throw new BadValue('Missing item '.$name);
             }
             return $dflt;
         }
@@ -229,7 +230,6 @@
  *
  * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustget($name)
@@ -244,7 +244,6 @@
  * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param mixed $dflt   Returned if the key does not exist
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function get($name, $dflt = '')
@@ -260,8 +259,6 @@
  * @param string   $bean        The bean type
  * @param bool     $forupdate   If TRUE then load for update
  *
- * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public function mustgetbean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
@@ -273,7 +270,7 @@
  *
  * @param string    $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return \ArrayIterator
  */
         public function mustgeta($name) : \ArrayIterator
@@ -282,7 +279,7 @@
             {
                 return new \ArrayIterator($_GET[$name]);
             }
-            throw new \Framework\Exception\BadValue('Missing get array '.$name);
+            throw new BadValue('Missing get array '.$name);
         }
 /**
  * Look in the $_GET array for a key that is an array and return an ArrayIterator over it
@@ -317,7 +314,6 @@
  * @param int       $filter     Filter values - see PHP manual
  * @param mixed     $options    see PHP manual
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustfilterget(string $name, int $filter, $options = '')
@@ -336,7 +332,6 @@
  *
  * @param mixed     $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustpost($name)
@@ -366,7 +361,6 @@
  * @param mixed     $name    The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string    $bean    The bean type
  *
- * @throws \Framework\Exception\BadValue
  * @return \RedBeanPHP\OODBBean
  */
         public function mustpostbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -378,7 +372,7 @@
  *
  * @param string    $name   The key
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return \ArrayIterator
  */
         public function mustposta(string $name) : \ArrayIterator
@@ -387,7 +381,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            throw new \Framework\Exception\BadValue('Missing post array '.$name);
+            throw new BadValue('Missing post array '.$name);
         }
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
@@ -422,7 +416,6 @@
  * @param int       $filter     Filter values - see PHP manual
  * @param mixed     $options    see PHP manual
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustfilterpost(string $name, int $filter, $options = '')
@@ -441,7 +434,7 @@
  *
  * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return mixed
  */
         public function mustput($name)
@@ -459,7 +452,7 @@
             {
                 return trim($this->putdata[$name]);
             }
-            throw new \Framework\Exception\BadValue('Missing put/patch item');
+            throw new BadValue('Missing put/patch item');
         }
 /**
  * Get php://input data, check array for an id and return its bean
@@ -469,7 +462,6 @@
  * @param mixed     $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param string    $bean   The bean type
  *
- * @throws \Framework\Exception\BadValue
  * @return \RedBeanPHP\OODBBean
  */
         public function mustputbean($name, $bean) : \RedBeanPHP\OODBBean
@@ -510,7 +502,6 @@
  *
  * @param string     $name The cookie name
  *
- * @throws \Framework\Exception\BadValue
  * @return string
  */
         public function mustcookie(string $name) : string
@@ -534,7 +525,7 @@
  *
  * @param string    $name   The key
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return \ArrayIterator
  */
         public function mustcookiea(string $name) : \ArrayIterator
@@ -543,7 +534,7 @@
             {
                 return new \ArrayIterator($_POST[$name]);
             }
-            throw new \Framework\Exception\BadValue('Missing cookie array item '.$name);
+            throw new BadValue('Missing cookie array item '.$name);
         }
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
@@ -578,7 +569,6 @@
  * @param int       $filter     Filter values - see PHP manual
  * @param mixed     $options    see PHP manual
  *
- * @throws \Framework\Exception\BadValue
  * @return mixed
  */
         public function mustfiltercookie(string $name, int $filter, $options = '')
@@ -596,18 +586,18 @@
  * @param string    $name
  * @param mixed     $key
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  * @return array
  */
         public function filedata(string $name, $key = '') : array
         {
             if (!isset($_FILES[$name]))
             {
-                throw new \Framework\Exception\BadValue('Missing _FILES element '.$name);
+                throw new BadValue('Missing _FILES element '.$name);
             }
             if ($key !== '' && !isset($_FILES[$name]['name'][$key]))
             {
-                throw new \Framework\Exception\BadValue('Missing _FILES array element '.$name);
+                throw new BadValue('Missing _FILES array element '.$name);
             }
             $x = $_FILES[$name];
             if ($key !== '')
