@@ -31,6 +31,10 @@
         const RECAPTCHA = 0;
         const RECAPTCHAKEY = 'aaaaaa';
         const RECAPTCHASECRET = 'aaaaaa';
+        const SMTPPORT = 1;
+        const PROTOCOL = 'tls';   
+        const SMTPUSER = 'user';
+        const SMTPPW = 'pw';
 
         public static function setup() : void
         {
