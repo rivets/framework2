@@ -4,7 +4,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2013-2020 Newcastle University
- *
  */
     namespace Model;
 
