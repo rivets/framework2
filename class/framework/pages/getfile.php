@@ -19,7 +19,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2020 Newcastle University
- *
  */
     namespace Framework\Pages;
 
