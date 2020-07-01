@@ -397,7 +397,7 @@
  *
  * @return \ArrayIterator
  */
-        public function posta(string $name, array $dflt = []) :\ArrayIterator
+        public function posta(string $name, array $dflt = []) : \ArrayIterator
         {
             return new \ArrayIterator(filter_has_var(INPUT_POST, $name) && is_array($_POST[$name]) ? $_POST[$name] : $dflt);
         }

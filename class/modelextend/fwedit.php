@@ -1,6 +1,6 @@
 <?php
 /**
- * A trait that allows extending the model class for edit functionality for 
+ * A trait that allows extending the model class for edit functionality for
  *
  * Add any new methods you want the User bean to have here.
  *
@@ -17,7 +17,7 @@
     {
 /**
  * Handle editing of beans
- * 
+ *
  * @param \Support\FormData    $fdt  The formdata object from the context
  *
  * @return array<string>

@@ -37,7 +37,7 @@
         }
 /**
  * Process new bean
- * 
+ *
  * @internal
  * @param Context   $context    The context object
  * @param string    $bean       The bean type

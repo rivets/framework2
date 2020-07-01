@@ -95,10 +95,10 @@
  * Returns the only instance if is called as a function
  *
  * @internal
- * 
+ *
  * @template object
  * @psalm-return object
- * 
+ *
  * @return object
  */
         public function __invoke()

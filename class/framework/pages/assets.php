@@ -43,7 +43,7 @@
         public function handle(Context $context)
         {
             chdir($context->local()->assetsdir());
-    
+
             $rest = $context->rest();
             $this->file = implode(DIRECTORY_SEPARATOR, $rest);
             $this->mtime = filemtime($this->file);

@@ -72,7 +72,7 @@
                 $res = $some;
                 break;
             }
-    
+
             return sprintf($res, $count);
         }
     }

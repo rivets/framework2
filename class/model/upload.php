@@ -82,7 +82,7 @@
  * @param int                 $index     The index if this all part of an array of data
  *
  * @throws \Framework\Exception\InternalError
- * 
+ *
  * @return void
  */
         public function replace(Context $context, array $da, int $index = 0) : void

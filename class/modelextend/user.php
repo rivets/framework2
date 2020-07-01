@@ -9,7 +9,7 @@
  *
  */
     namespace ModelExtend;
-    
+
     use \Support\Context as Context;
 /**
  * User table stores info about users of the system
@@ -55,7 +55,7 @@
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function addData(Context $context) :void
+        public function addData(Context $context) : void
         {
         }
 /**

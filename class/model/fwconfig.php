@@ -133,7 +133,7 @@
  *
  * @return string
  */
-        public function guard() :string
+        public function guard() : string
         {
             return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }

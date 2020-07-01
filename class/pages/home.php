@@ -6,7 +6,7 @@
   * @copyright 2012-2019 Newcastle University
   */
     namespace Pages;
-    
+
     use \Support\Context as Context;
 /**
  * A class that contains code to implement a home page

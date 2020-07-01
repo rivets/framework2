@@ -1,7 +1,7 @@
 <?php
 /**
  * A class that contains a last resort handler for pages that are not found through the normal
- * mechanisms. 
+ * mechanisms.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University

@@ -18,7 +18,7 @@
  * Return rolename object
  *
  * @return \RedBeanPHP\OODBBean
- * @psalm-suppress PossiblyUnusedMethod 
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function rolename() : \RedBeanPHP\OODBBean
         {
@@ -28,7 +28,7 @@
  * Return rolecontext object
  *
  * @return \RedBeanPHP\OODBBean
- * @psalm-suppress PossiblyUnusedMethod 
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function rolecontext() : \RedBeanPHP\OODBBean
         {
@@ -61,7 +61,7 @@
  *
  * @throws \Framework\Exception\BadValue
  * @return void
- * @psalm-suppress PossiblyUnusedMethod 
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function update() : void
         {
@@ -77,7 +77,7 @@
  * i.e. start < now < end (if end has a value)
  *
  * @return bool
- * @psalm-suppress PossiblyUnusedMethod 
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function valid() : bool
         {

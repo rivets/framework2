@@ -136,7 +136,7 @@
  *
  * @param Context           $context The context object
  * @param array<string>     $rest     Not used here at the moment
- * 
+ *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -239,7 +239,7 @@
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = '<label'.$fld->fieldAttr('', FALSE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
-                    
+
                     /* FALLTHROUGH */
                 case 'checkbox':
                 case 'radio':

@@ -29,13 +29,13 @@
  * @return array<string>
  */
         public static function check(string $key, string $ip, array $options, ?string $tag = NULL) : array
-        {          
+        {
             // Check if they have enabled the blocked country feature by providing countries.
             if (!empty($options['countries']))
             {
                 $options['asn'] = 1;
             }
-            
+
             $query = ['key='.$key, 'port=1', 'seen=1'];
             foreach (['days', 'vpn', 'inf', 'asn'] as $fld)
             {
@@ -66,7 +66,7 @@
                 $res = json_decode($json, TRUE);
                 $res['block'] = FALSE;
                 $res['reason'] = '';
-        
+
                 if (isset($res[$ip]['proxy']))
                 { // this is a proxy server
                     if ($res[$ip]['proxy'] == 'yes')
@@ -74,7 +74,7 @@
                         $res['block'] = TRUE;
                         $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
                     }
-    
+
                     if (!empty($options['countries']) && in_array($res[$ip]['isocode'], $options['countries']))
                     {
                         $res['block'] = TRUE;

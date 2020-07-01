@@ -20,7 +20,7 @@
         private const VIEWABLE = [FW::TABLE, FW::FORM];
         private const NOTMODEL = [FW::TABLE];
         private const HASH     = 'sha384';
-        
+
         use \Support\NoCache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
@@ -270,7 +270,7 @@
                 $onlyadmin = $fdt->post('onlyadmin', 0);
                 $online = $fdt->post('online', 0);
                 if ($adminonly && ($online || $fdt->post('deladonly', 0) == 1))
-                {   
+                {
                     unlink($adon);
                 }
                 if ($online == 0)
