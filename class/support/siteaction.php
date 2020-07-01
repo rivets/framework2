@@ -8,7 +8,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2020 Newcastle University
- *
  */
     namespace Support;
 
