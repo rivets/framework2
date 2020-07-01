@@ -284,7 +284,7 @@
                 $xres = '';
                 foreach ($conds as $on => $fn)
                 {
-                    $xres .= ".on('".$on."', ".$fn.")";
+                    $xres .= ".on('".$on."', ".$fn.')';
                 }
                 $res .= "$('#".$id."')".$xres.";\n";
             }
