@@ -3,7 +3,7 @@
  * Contains definition of the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Web;
 

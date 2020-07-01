@@ -9,8 +9,8 @@
 
     use \Config\Config as Config;
     use \Config\Framework as FW;
-    use \Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
+    use \Framework\Web\Web as Web;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -48,24 +48,24 @@
 /**
  * @var string  The name of the site directory
  */
-        private $basedname	= '';
+        private $basedname      = '';
 
 /**
  * @var bool    If TRUE then ignore trapped errors
  */
-        private $errignore	= FALSE;	# needed for checking preg expressions....
+        private $errignore      = FALSE;	# needed for checking preg expressions....
 /**
  * @var bool    Set to TRUE if an error was trapped and ignored
  */
-        private $wasignored	= FALSE;
+        private $wasignored     = FALSE;
 /**
  * @var array    A list of errors that have been emailed to the user. Only send a message once.
  */
-        private $senterrors	= [];
+        private $senterrors     = [];
 /**
  * @var bool    If TRUE then we are doing debugging
  */
-        private $debug		= FALSE;
+        private $debug          = FALSE;
 /**
  * @var bool   If TRUE then we are handling an error
  */
@@ -73,23 +73,23 @@
 /**
  * @var bool    If TRUE then we are in developer mode
  */
-        private $devel		= FALSE;
+        private $devel          = FALSE;
 /**
  * @var bool    If TRUE then we are in ajax code and so error reporting is different
  */
-        private $ajax		= FALSE;
+        private $ajax           = FALSE;
 /**
  * @var array<string>    An array of email addresses for system administrators
  */
-        private $sysadmin	= [Config::SYSADMIN];
+        private $sysadmin       = [Config::SYSADMIN];
 /**
  * @var ?object    the Twig renderer
  */
-        private $twig		= NULL;
+        private $twig           = NULL;
 /**
  * @var array    Key/value array of data to pass into template renderer
  */
-        private $tvals		= [];
+        private $tvals          = [];
 /**
  * @var array<array>    Stash away messages so that messages.twig works
  */
@@ -97,7 +97,7 @@
 /**
  * @var string    Backtrace info - only used with errors
  */
-        private $back       = '';
+        private $back           = '';
 /**
  * @var array               Config values from database
  */
@@ -302,7 +302,7 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @param \Throwable	$e
+ * @param \Throwable    $e
  */
         public function exceptionHandler(\Throwable $e) : void
         {
@@ -329,10 +329,10 @@
  * However, exception handling is a much much better way of dealing with this kind of thing
  * whenever possible.
  *
- * @param int           $errno
- * @param string	$errstr
- * @param string	$errfile
- * @param int   	$errline
+ * @param int       $errno
+ * @param string    $errstr
+ * @param string    $errfile
+ * @param int       $errline
  *
  * @return bool
  */
@@ -591,9 +591,9 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array<mixed>    $vname    The name to be used inside the twig or an array of key/value pairs
- * @param mixed		         $value    The value to be stored or "" if an array in param 1
- * @param bool                   $tglobal  If TRUE add this as a twig global variable
+ * @param string|array<mixed>   $vname    The name to be used inside the twig or an array of key/value pairs
+ * @param mixed                 $value    The value to be stored or "" if an array in param 1
+ * @param bool                  $tglobal  If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
  *
@@ -754,9 +754,9 @@
         //    $bdr = [''];
         //    while ($bd != $_SERVER['DOCUMENT_ROOT'])
         //    { // keep stripping of the last component until we get to the document root
-        //	$pp = pathinfo($bd);
-        //	$bd = $pp['dirname'];
-        //	$bdr[] = $pp['basename'];
+        //        $pp = pathinfo($bd);
+        //        $bd = $pp['dirname'];
+        //        $bdr[] = $pp['basename'];
         //    }
         //    $this->basedname = implode('/', $bdr);
             $this->ajax = $ajax;

@@ -18,22 +18,22 @@
 /**
  * The name of the authentication token field.
  */
-        private const TOKEN 	= 'X-APPNAME-TOKEN';
+        private const TOKEN     = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-        private const KEY	= 'Some string of text.....';
+        private const KEY       = 'Some string of text.....';
 
 /** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
-        protected $luser	= NULL;
+        protected $luser        = NULL;
 /** @var int    Counter used for generating unique ids */
         protected $idgen        = 0;
 /** @var string The first component of the current URL */
-        protected $reqaction	= 'home';
+        protected $reqaction    = 'home';
 /** @var array<string>    The rest of the current URL exploded at / */
-        protected $reqrest	= [];
-/** @var bool    True if authenticated by token */
-        protected $tokauth	= FALSE;
+        protected $reqrest      = [];
+/** @var bool   True if authenticated by token */
+        protected $tokauth      = FALSE;
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
         protected $roles        = [];
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
@@ -151,9 +151,9 @@
  * @return bool
  */
         public function hastoken() : bool
-	{
-	    return $this->tokauth;
-	}
+        {
+            return $this->tokauth;
+        }
 /**
  * Check for logged in and 403 if not
  *
@@ -245,7 +245,7 @@
 /**
  * Generates a new, unique, sequential id value
  *
- * @param string	$str The prefix for the id
+ * @param string    $str    The prefix for the id
  *
  * @return string
  * @psalm-suppress PossiblyUnusedMethod
@@ -374,9 +374,9 @@
 /**
  * Load a bean
  *
- * @param string	$bean	    A bean type name
- * @param int    	$id	    A bean id
- * @param bool       $forupdate  If TRUE then use loadforupdate
+ * @param string    $bean	A bean type name
+ * @param int       $id         A bean id
+ * @param bool      $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *

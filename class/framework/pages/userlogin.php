@@ -21,7 +21,7 @@
 /**
  * Find a user based on either a login or an email address
  *
- * @param string	$lg     A username or email address
+ * @param string  $lg   A username or email address
  *
  * @return ?\RedBeanPHP\OODBBean    The user or NULL
  */

@@ -10,7 +10,6 @@
 
     use \Framework\Web\Web as Web;
     use \Support\Context as Context;
-
 /**
  * Handle all the cacheing stuff and maybe return a file
  */
@@ -23,13 +22,13 @@
 /** @var array<string> Mime type values */
         private static $mtypes = [
             ''      => 'text/plain',
-            'css'	=> 'text/css',
-            'js'	=> 'text/javascript',
-            'png'	=> 'image/png',
-            'jpg'	=> 'image/jpeg',
-            'jpeg'	=> 'image/jpeg',
-            'gif'	=> 'image/gif',
-            'ico'	=> 'image/x-icon',
+            'css'   => 'text/css',
+            'js'    => 'text/javascript',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpeg',
+            'jpeg'  => 'image/jpeg',
+            'gif'   => 'image/gif',
+            'ico'   => 'image/x-icon',
         ];
 /**
  * Handle access to things in assets
@@ -80,10 +79,10 @@
             $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([
-//              'Last-Modified'	=> $this->makemod($this->mtime),
-                'Etag'		=> '"'.$this->makeetag($context).'"',
-                'Expires'	=> $this->makemod(time()+$mag),
-                'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
+//              'Last-Modified' => $this->makemod($this->mtime),
+                'Etag'          => '"'.$this->makeetag($context).'"',
+                'Expires'       => $this->makemod(time()+$mag),
+                'Cache-Control' => 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
             ]);
             $this->ifmodcheck($context);
             $web->sendfile($this->file, $fname, $mime);

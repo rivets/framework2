@@ -34,7 +34,7 @@
 /*
  * The name of the directory where files are kept
  */
-        private const DATADIR	= 'private';
+        private const DATADIR   = 'private';
 /** @var string The name of the file we are working on */
         private $file = '';
 /** @var int    The last modified time for the file */
@@ -106,8 +106,8 @@
             $this->ifmodcheck($context); # check to see if we actually need to send anything
 
             $web->addheader([
-//                'Last-Modified'	=> $this->mtime,
-                'Etag'		=> '"'.$this->makeetag($context).'"',
+//                'Last-Modified'   => $this->mtime,
+                'Etag'      => '"'.$this->makeetag($context).'"',
             ]);
             $web->sendfile($this->file, $file->filename);
             return '';

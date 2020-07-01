@@ -7,8 +7,8 @@
  */
     namespace Framework\Support;
 
-    use \Support\Context as Context;
     use \Config\Config as Config;
+    use \Support\Context as Context;
 /**
  * A class that provides helpers for accessing form data
  */
