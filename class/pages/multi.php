@@ -4,11 +4,10 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2019 Newcastle University
- *
  */
     namespace Pages;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * Provide support for a nested static page structure
  * @psalm-suppress UnusedClass

@@ -4,7 +4,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University
- *
  */
     namespace Framework\Pages;
 
@@ -96,7 +95,7 @@
  */
         public function makeetag(Context $context) : string
         {
-            return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
+            return sprintf('%u', crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
  * Check an etag to see if we need to send the page again or not.

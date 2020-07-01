@@ -4,7 +4,6 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2019 Newcastle University
- *
  */
     namespace Support;
 

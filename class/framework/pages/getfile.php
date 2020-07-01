@@ -75,7 +75,6 @@
  * This all depends on your application and how you want to treat files and filenames and access of course!
  *
  * Always be careful that filenames do not have .. in them of course.
- *
  */
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
