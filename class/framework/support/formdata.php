@@ -481,8 +481,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	    $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param mixed     $dflt   Returned if the key does not exist
+ * @param mixed    $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed    $dflt   Returned if the key does not exist
  *
  * @return mixed
  */
@@ -520,8 +520,8 @@
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
  *
- * @param string    $name   The key
- * @param mixed	    $dflt   Returned if the key does not exist
+ * @param string   $name   The key
+ * @param mixed    $dflt   Returned if the key does not exist
  *
  * @return string
  */

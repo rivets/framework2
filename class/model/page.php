@@ -6,11 +6,11 @@
  * @copyright 2017-2020 Newcastle University
  */
     namespace Model;
-    
-    use \Framework\SiteAction as SiteAction;
-    use \Support\Context as Context;
+
     use \Config\Framework as FW;
     use \Framework\Exception\BadValue as BadValue;
+    use \Framework\SiteAction as SiteAction;
+    use \Support\Context as Context;
 /**
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass
@@ -85,7 +85,7 @@
                         '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
                     if (!$match ||                                          // User does not have all the required roles
-                        ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
+                        ($this->bean->mobileonly && !$context->hastoken())) // not mobile and logged in
                     {
                         $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                         exit;
@@ -348,7 +348,7 @@
  * Setup for an edit
  *
  * @param Context    $context  The context object
- * 
+ *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */

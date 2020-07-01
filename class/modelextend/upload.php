@@ -5,7 +5,7 @@
  * Add any new methods you want the Upload bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  *
  */
     namespace ModelExtend;
@@ -36,7 +36,7 @@
  * Hook for adding extra data to a file save.
  *
  * @param Context   $context    The context object for the site
- * @param int	    $index      If you are reading data from an array fo files, this is the index
+ * @param int       $index      If you are reading data from an array fo files, this is the index
  *                              in the file. You may have paralleld data arrays and need this index.
  *
  * @return void

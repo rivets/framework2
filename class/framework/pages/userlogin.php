@@ -32,9 +32,9 @@
 /**
  * Make a confirmation code and store it in the database
  *
- * @param \Support\Context	$context The context bean
- * @param object	$bn	 A User bean
- * @param string	$kind
+ * @param Context   $context The context bean
+ * @param object    $bn A User bean
+ * @param string    $kind
  *
  * @return string
  */
@@ -53,8 +53,8 @@
 /**
  * Mail a confirmation code
  *
- * @param \Support\Context	$context The context object
- * @param object	$bn	 A User bean
+ * @param Context   $context    The context object
+ * @param object    $bn         A User bean
  *
  * @return void
  */
@@ -71,8 +71,8 @@
 /**
  * Mail a password reset code
  *
- * @param \Support\Context	$context The context object
- * @param object	$bn	 A User bean
+ * @param Context  $context     The context object
+ * @param object   $bn          A User bean
  *
  * @return void
  */

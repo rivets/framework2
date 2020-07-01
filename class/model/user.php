@@ -8,8 +8,8 @@
  */
     namespace Model;
 
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context as Context;
 /**
  * A class implementing a RedBean model for User beans
  * @psalm-suppress UnusedClass
@@ -126,7 +126,7 @@
 /**
  * Check a password
  *
- * @param string	$pw The password
+ * @param string    $pw The password
  *
  * @return bool
  */
@@ -156,17 +156,17 @@
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function maketoken(string $url, string $device = '') : string
-	{
-	    $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
-        /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
-	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
-	}
+        {
+            $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
+            /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
+            return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
+        }
 /**
  * Setup for an edit
  *
  * @param Context    $context   The context object
  * @param array               $rest      Any other values from the URL
- * 
+ *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */

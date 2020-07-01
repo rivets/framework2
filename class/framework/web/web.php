@@ -15,8 +15,7 @@
     {
         use \Framework\Utility\Singleton;
 
-        const HTMLMIME	= 'text/html; charset="utf-8"';
-
+        public const HTMLMIME  = 'text/html; charset="utf-8"';
 /**
  * @var array   Holds values for headers that are required. Keyed by the name of the header
  */
@@ -79,8 +78,8 @@
 /**
  * output a header and msg - this never returns
  *
- * @param int    	$code   The return code
- * @param string	$msg    The message (or '')
+ * @param int       $code   The return code
+ * @param string    $msg    The message (or '')
  *
  * @return void
  * @psalm-return never-return
@@ -261,7 +260,7 @@
                 }
                 finfo_close($finfo);
             }
-    //	    $this->addheader(['Content-Description' => 'File Transfer']);
+    //      $this->addheader(['Content-Description' => 'File Transfer']);
             $this->sendheaders($code, $mime, $length, $name);
             $this->debuffer();
             if (!empty($range))

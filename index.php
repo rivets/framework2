@@ -3,7 +3,7 @@
  * Main entry point of the system
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
 /**
  * See the information at
@@ -28,9 +28,8 @@
     $mfl = $local->makebasepath('maintenance'); # maintenance mode indicator file
     if (file_exists($mfl) && !$context->hasadmin())
     { # only let administrators in as we are doing maintenance. Could have a similar feature for other roles
-	    $context->web()->sendtemplate('support/maintenance.twig', StatusCodes::HTTP_OK, 'text/html',
-	        ['msg' => file_get_contents($mfl)]);
-	    exit;
+        $context->web()->sendtemplate('support/maintenance.twig', StatusCodes::HTTP_OK, 'text/html', ['msg' => file_get_contents($mfl)]);
+        exit;
     }
     $action = $context->action();
     if ($action === '')

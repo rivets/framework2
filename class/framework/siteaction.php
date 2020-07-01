@@ -3,12 +3,12 @@
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
-    use \Framework\Web\Web as Web;
     use \Framework\Web\StatusCodes as StatusCodes;
+    use \Framework\Web\Web as Web;
     use \Support\Context as Context;
 /**
  * A class that all provides a base class for any class that wants to implement a site action
@@ -142,7 +142,7 @@
 /**
  * Format a time suitable for Last-Modified header
  *
- * @param int 	$time    The last modified time
+ * @param int   $time    The last modified time
  *
  * @return string
  */
