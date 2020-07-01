@@ -374,7 +374,7 @@
 /**
  * Load a bean
  *
- * @param string    $bean	A bean type name
+ * @param string    $bean       A bean type name
  * @param int       $id         A bean id
  * @param bool      $forupdate  If TRUE then use loadforupdate
  *

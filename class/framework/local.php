@@ -53,7 +53,7 @@
 /**
  * @var bool    If TRUE then ignore trapped errors
  */
-        private $errignore      = FALSE;	# needed for checking preg expressions....
+        private $errignore      = FALSE;    # needed for checking preg expressions....
 /**
  * @var bool    Set to TRUE if an error was trapped and ignored
  */
