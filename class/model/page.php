@@ -23,7 +23,6 @@
  */
         private $roletype = FW::PAGEROLE;
 
-
         use \ModelExtend\MakeGuard;
         use \Framework\Support\HandleRole;
 /**

@@ -14,6 +14,5 @@
  */
     class PageRole extends Role
     {
-
     }
 ?>
