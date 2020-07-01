@@ -20,9 +20,9 @@
     {
         use \Framework\Utility\Singleton;
 
-        const STRENGTH  = 64;
-        const NAME      = 'CSRFName';
-        const TOKEN     = 'CSRFToken';
+        private const STRENGTH  = 64;
+        private const NAME      = 'CSRFName';
+        private const TOKEN     = 'CSRFToken';
 /**
  * Generate unique token
  *

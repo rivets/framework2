@@ -13,9 +13,9 @@
  */
     final class AntiFlood
     {
-        const TABLE     = 'fwflood';
-        const KEEPTIME  = 60*60;
-        const DIVERSION = 'https://google.com';
+        private const TABLE     = 'fwflood';
+        private const KEEPTIME  = 60*60;
+        private const DIVERSION = 'https://google.com';
 /**
  * Check if an IP is flooding
  *
