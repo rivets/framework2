@@ -342,7 +342,7 @@
             case 'view': // view something - forms only at the moment
                 $tpl = $this->view($context, $rest);
                 break;
-            default :
+            default:
                 $tpl = '@admin/admin.twig';
                 break;
             }
