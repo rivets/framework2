@@ -227,7 +227,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -241,8 +241,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	    $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param mixed	    $dflt	Returned if the key does not exist
+ * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed $dflt   Returned if the key does not exist
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -376,7 +376,7 @@
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key
+ * @param string    $name   The key
  *
  * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
@@ -392,8 +392,8 @@
 /**
  * Look in the $_POST array for a key that is an array and return an ArrayIterator over it
  *
- * @param string 	$name	The key
- * @param array		$dflt	Returned if the key does not exist
+ * @param string    $name   The key
+ * @param array     $dflt   Returned if the key does not exist
  *
  * @return \ArrayIterator
  */
@@ -404,10 +404,10 @@
 /**
  * Look in the $_POST array for a key and apply filters
  *
- * @param string	$name		The key
- * @param string        $default        A default value
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string    $name       The key
+ * @param string    $default    A default value
+ * @param int       $filter     Filter values - see PHP manual
+ * @param mixed     $options    see PHP manual
  *
  * @return mixed
  */
@@ -418,9 +418,9 @@
 /**
  * Look in the $_POST array for a key and apply filters
  *
- * @param string	$name		The key
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string    $name       The key
+ * @param int       $filter     Filter values - see PHP manual
+ * @param mixed     $options    see PHP manual
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -439,7 +439,7 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed
@@ -466,8 +466,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed 	$name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param string        $bean   The bean type
+ * @param mixed     $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string    $bean   The bean type
  *
  * @throws \Framework\Exception\BadValue
  * @return \RedBeanPHP\OODBBean
@@ -481,8 +481,8 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed	  $name	The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
- * @param mixed	  $dflt	Returned if the key does not exist
+ * @param mixed	    $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param mixed     $dflt   Returned if the key does not exist
  *
  * @return mixed
  */
@@ -520,8 +520,8 @@
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
  *
- * @param string	$name	The key
- * @param mixed		$dflt	Returned if the key does not exist
+ * @param string    $name   The key
+ * @param mixed	    $dflt   Returned if the key does not exist
  *
  * @return string
  */
@@ -532,7 +532,7 @@
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key
+ * @param string    $name   The key
  *
  * @throws \Framework\Exception\BadValue
  * @return \ArrayIterator
@@ -548,8 +548,8 @@
 /**
  * Look in the $_COOKIE array for a key that is an array and return an ArrayIterator over it
  *
- * @param string	$name	The key
- * @param array		$dflt	Returned if the key does not exist
+ * @param string    $name   The key
+ * @param array     $dflt   Returned if the key does not exist
  *
  * @return \ArrayIterator
  */
@@ -560,10 +560,10 @@
 /**
  * Look in the $_COOKIE array for a key and  apply filters
  *
- * @param string	$name		The key
- * @param mixed         $default        The default value
- * @param int		$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string    $name       The key
+ * @param mixed     $default    The default value
+ * @param int       $filter     Filter values - see PHP manual
+ * @param mixed     $options    see PHP manual
  *
  * @return string|false|null
  */
@@ -574,9 +574,9 @@
 /**
  * Look in the $_COOKIE array for a key and apply filters
  *
- * @param string	$name		The key
- * @param int   	$filter		Filter values - see PHP manual
- * @param mixed		$options	see PHP manual
+ * @param string    $name       The key
+ * @param int       $filter     Filter values - see PHP manual
+ * @param mixed     $options    see PHP manual
  *
  * @throws \Framework\Exception\BadValue
  * @return mixed

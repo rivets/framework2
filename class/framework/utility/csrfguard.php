@@ -4,7 +4,7 @@
  *
  * This is derived directly from the code to be found at
  *
- * @link	https://www.owasp.org/index.php/PHP_CSRF_Guard
+ * @link    https://www.owasp.org/index.php/PHP_CSRF_Guard
  *
  * I have rewritten it a bit to make it a little more "wieldy" and conformant
  * to the style of this framework
@@ -12,6 +12,7 @@
  * ****************** NB This is just me playing around at the moment!!!! Not tested at all *******************
  */
     namespace Framework\Utility;
+
 /**
  * Contains definition of CRSFGuard class
  */
@@ -25,9 +26,9 @@
 /**
  * Generate unique token
  *
- * @param string	$uname	The name to be used for storing the token into the Session data
+ * @param string    $uname  The name to be used for storing the token into the Session data
  *
- * @return string	The token
+ * @return string   The token
  */
         private function maketoken(string $uname) : string
         {
@@ -42,8 +43,8 @@
 /**
  * Validate token
  *
- * @param string	$uname		The name to be used for storing the token into the Session data
- * @param string	$tocheck	The token to be compared with what is stored
+ * @param string    $uname      The name to be used for storing the token into the Session data
+ * @param string    $tocheck    The token to be compared with what is stored
  *
  * @return bool
  */

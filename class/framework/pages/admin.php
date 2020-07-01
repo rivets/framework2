@@ -255,7 +255,7 @@
  *
  * Remember that if you go offline rather than adminonly you have to remove the file by hand to get back online!
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context   $context    The Context object
  *
  * @return string
  */
@@ -291,9 +291,9 @@
 /**
  * Handle various admin operations /admin/xxxx
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

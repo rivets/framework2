@@ -3,7 +3,7 @@
   * Class for handling csp error report messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2018 Newcastle University
+  * @copyright 2018-202 Newcastle University
   */
     namespace Framework\Pages;
 
@@ -19,9 +19,9 @@
 /**
  * Handle various contact operations /contact
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param \Support\Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

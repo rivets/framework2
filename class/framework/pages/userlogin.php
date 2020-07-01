@@ -3,18 +3,17 @@
  * Definition of Userlogin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Config\Framework as FW;
     use \Config\Config as Config;
+    use \Config\Framework as FW;
     use \Framework\Local as Local;
-    use \Support\Context as Context;
     use \R as R;
+    use \Support\Context as Context;
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
- *
  */
     class UserLogin extends \Framework\SiteAction
     {
@@ -24,7 +23,7 @@
  *
  * @param string	$lg     A username or email address
  *
- * @return ?\RedBeanPHP\OODBBean	The user or NULL
+ * @return ?\RedBeanPHP\OODBBean    The user or NULL
  */
         private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
@@ -90,11 +89,11 @@
 /**
  * Handle a login
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
  * @uses \Support\Login
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function login(Context $context) : string
         {
@@ -113,9 +112,9 @@
 /**
  * handle a registration
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function register(Context $context) : string
         {
@@ -195,9 +194,9 @@
 /**
  * Handle things to do with email address confirmation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function confirm(Context $context) : string
         {
@@ -256,9 +255,9 @@
 /**
  * Handle things to do with password reset
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function forgot(Context $context) : string
         {
@@ -349,9 +348,9 @@
 /**
  * Handle /login /logout /register /forgot /confirm
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

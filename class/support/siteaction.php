@@ -130,8 +130,8 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$time	The time value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedParam
@@ -144,8 +144,8 @@
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$tag	The etag value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $tag        The etag value to check
  *
  * @return bool
  */

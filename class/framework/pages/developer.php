@@ -3,12 +3,12 @@
  * Contains definition of abstract Developer class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2017 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
-    
+
+    use \Config\Framework as FW;   
     use \Support\Context as Context;
-    use \Config\Framework as FW;
 /**
  * Class for developer hacks and helpers...
  */
@@ -19,9 +19,9 @@
  *
  * The test for developer status is done in index.php so deos not need to be repeated here.
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

@@ -16,9 +16,9 @@
  */
     class Assets extends \Framework\SiteAction
     {
-/** @var string	The file name */
+/** @var string The file name */
         private $file = '';
-/** @var int	Last modified time for the file */
+/** @var int    Last modified time for the file */
         private $mtime = 0;
 /** @var array<string> Mime type values */
         private static $mtypes = [
@@ -38,7 +38,7 @@
  * you really want to get cacheability to be complete you either have to go through hoops
  * in the Apache config or you code it in here!
  *
- * @param Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return string   A template name
  */

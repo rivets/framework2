@@ -3,10 +3,11 @@
  * A trait that allows extending the UserLogin class for different authentication processes
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  *
  */
     namespace Support;
+
 /**
  * Allows developers to change the way logins and logouts are handled.
  */
@@ -59,9 +60,9 @@
  *
  * Code taken directly from the PHP session_destroy manual page
  *
- * @link	http://php.net/manual/en/function.session-destroy.php
+ * @link    http://php.net/manual/en/function.session-destroy.php
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @used-by \Framework\Pages\UserLogin
  *
