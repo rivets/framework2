@@ -16,7 +16,6 @@
  *
  * Template rendering is done in here also so TWIG is initialised in this class. This allows TWIG
  * to be used for things like generating nice offline pages.
- *
  */
     class Local
     {

@@ -274,7 +274,7 @@
  *
  * @return string
  * @psalm-suppress PossiblyUnusedMethod
- * @psalmSuppress PhpCsFixer.StringNotation.SingleQuoteFixer
+ * @psalmSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
         public function getons()
         {

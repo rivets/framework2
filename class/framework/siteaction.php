@@ -14,7 +14,6 @@
  * A class that all provides a base class for any class that wants to implement a site action
  *
  * Common functions used across the various sub-classes should go in here
- *
  */
     abstract class SiteAction
     {
