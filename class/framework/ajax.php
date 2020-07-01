@@ -431,7 +431,7 @@
                 R::store($bn);
                 if ($log)
                 {
-                    \Framework\Support\BeanLog::mklog(\Framework\Support\BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
+                    \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
                 }
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
@@ -443,7 +443,7 @@
                 $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    \Framework\Support\BeanLog::mklog(\Framework\Support\BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
+                    \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
                 /**
                  * @psalm-suppress RedundantCondition
