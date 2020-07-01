@@ -76,3 +76,4 @@
             return sprintf($res, $count);
         }
     }
+?>

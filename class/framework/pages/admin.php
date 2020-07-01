@@ -314,7 +314,7 @@
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';
                 break;
-            case 'edit' : // Edit something - forms, user, pages...
+            case 'edit': // Edit something - forms, user, pages...
                 $tpl = $this->edit($context, $rest);
                 break;
             case 'forms': // show and add forms
@@ -339,7 +339,7 @@
             case 'users': //show and add users
                 $tpl = '@admin/users.twig';
                 break;
-            case 'view' : // view something - forms only at the moment
+            case 'view': // view something - forms only at the moment
                 $tpl = $this->view($context, $rest);
                 break;
             default :

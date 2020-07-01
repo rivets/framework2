@@ -100,16 +100,16 @@
                     return;
                 }
                 break;
-            case INPUT_GET;
+            case INPUT_GET:
                 if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET))
                 {
                     break;
                 }
-                // no break
+                /* FALLTHROUGH */
             default:
                 return;
             }
-            if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN) )
+            if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN))
             {
                 throw new \Framework\Exception\InternalError('No CSRF Name found, probable invalid request.');
             }
