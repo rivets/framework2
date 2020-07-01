@@ -23,8 +23,8 @@
  */
         private $roletype = FW::PAGEROLE;
 
-        use \ModelExtend\MakeGuard;
         use \Framework\Support\HandleRole;
+        use \ModelExtend\MakeGuard;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
