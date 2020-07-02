@@ -1,31 +1,5 @@
-{% set usebootstrapcss = TRUE %}
-{% set usebootstrapjs = TRUE %}
-
-{% extends '@content/page.twig' %}
-
-{% import "@content/iconmacro.twig" as i %}
-
-{% block header %}
-    <section class="ml-auto col-md-8 mr-auto mt-5 text-center">
-        <h1>Internal Error</h1>
-    </section>
-{% endblock header %}
-
-{% block main %}
-    <section class="row mt-4">
-        <article class="ml-auto col-lg mr-auto text-center">
-            <div class="jumbotron">
-                {% if context.hasadmin %}
-                    <div class="text-left">{{errdata|raw}}</div>
-                {% else %}
-                    <p>Sorry, there has been an internal error</p>
-                {% endif %}
-            </div>
-            <p><a href="{{base}}/" class="btn btn-primary">{{i.fa('home')}} Home Page</a></p>
-        </article>
-    </section>
-{% endblock main %}
-
-{% block pagefooter %}
-{# I don't want a footer #}
-{% endblock pagefooter %}
+{% if context.hasadmin %}
+    {% include '@content/errorpage.twig' with {heading: 'Internal Error', message: errdata, left: TRUE, raw: TRUE} %}
+{% else %}
+    {% include '@content/errorpage.twig' with {heading: 'Internal Error', message: 'Sorry, there has been an internal error'} %}
+{% endif %}

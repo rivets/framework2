@@ -15,8 +15,8 @@
     <section class="row mt-4">
         <article class="ml-auto col-lg mr-auto text-center">
             <div class="jumbotron">
-                {% if left is defined %}
-                    <div class="text-left">{{message}}</div>
+                {% if left %}
+                    <div class="text-left">{{raw ? message|raw : message}}</div>
                 {% else %}
                     <p>{{message}}</p>
                 {% endif %}
