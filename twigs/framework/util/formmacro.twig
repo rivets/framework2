@@ -85,7 +85,7 @@
     {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}
 {% endmacro %}
 
-{% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.on(opts)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
+{% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('rows', opts.rows)}}{{fx.hv('cols', opts.cols)}}{{fx.hv('placeholder', opts.ph)}}{{fx.on(opts)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
 
 {% macro file(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('file', opts)}}{{fx.bse(opts)}}{% endmacro file %}
 
