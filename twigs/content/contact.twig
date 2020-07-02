@@ -23,7 +23,7 @@
             {{f.startform({id: 'cform', method: 'post'})}}
                 {{f.hidden({name: 'details', value: '1'})}}
                 {{f.text({label: 'Subject', id: 'sj', name: 'subject', ph: 'Subject', required: TRUE})}}
-                {{f.textarea({label: 'Message', id: 'sj', name: 'message', ph: 'Message...', required: TRUE})}}
+                {{f.textarea({label: 'Message', id: 'sj', name: 'message', ph: 'Message...', rows: 10, required: TRUE})}}
                 {{f.email({label: 'Your Email Address', id: 'ms', name: 'sender', ph: 'Email Address', required: TRUE})}}
                 {{f.submit({value: 'Send'})}}
             {{f.endform()}}
