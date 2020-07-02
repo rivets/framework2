@@ -752,23 +752,24 @@
                  */
                 $private = $options['private'] ? 1 : 0;
                 $register = $options['register'] ? 1 : 0;
+                /* Type, location, Admin?, Must Login?, Developer?, Active?, Tester?  - Must Login and Active are 1 or 0 as they go into the database */
                 $pages = [
-                    'about'         => [\Framework\Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1],
-                    'admin'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1],
-                    'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0],          # not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
-                    'contact'       => [\Framework\Dispatch::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1],
-                    'cspreport'     => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0],
-                    'devel'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1],
-                    'forgot'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'getfile'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Getfile', FALSE, 0, FALSE, $private],
-                    'home'          => [\Framework\Dispatch::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1],
-                    'install.php'   => [\Framework\Dispatch::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1],
-                    'login'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1],
-                    'logout'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1],
-                    'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private],
-                    'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register],
-                    'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $private],
+                    'about'         => [\Framework\Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'admin'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
+                    'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], # not active - really only needed when total cacheability is needed
+                    'confirm'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'contact'       => [\Framework\Dispatch::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
+                    'cspreport'     => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
+                    'devel'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1, FALSE],
+                    'forgot'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'home'          => [\Framework\Dispatch::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1, FALSE],
+                    'install.php'   => [\Framework\Dispatch::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'login'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'logout'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
+                    'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
+                    'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', TRUE, 0, FALSE, 1, TRUE],
+                    'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)
                 {
@@ -788,6 +789,10 @@
                     if ($data[4])
                     { // must be a developer
                         makerole(DBPREFIX.'pagerole', $now, $page, $cname, $drname);
+                    }
+                    if ($data[5])
+                    { // must be a developer
+                        makerole(DBPREFIX.'pagerole', $now, $page, $tname, $trname);
                     }
                 }
                 $tpl = 'success.twig';
