@@ -72,7 +72,7 @@
             {
                 if (!$context->hasuser())
                 { # not logged in
-                    $context->divert('/login/?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])));
+                    $context->divert('/login/?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
                 if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)

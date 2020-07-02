@@ -7,14 +7,17 @@
  */
      include_once 'devel/curl.php';
 
-     $options = getopt('h::u::p::v::', ['host::', 'user::', 'password::', 'verbose::']);
+     $options = getopt('h:u::p::vb::s', ['base::host:', 'user::', 'password::', 'verbose', 'ssl']);
      $host = $options['h'] ?? 'localhost';
      $user = $options['u'] ?? '';
      $password = $options['p'] ?? '';
-     $verbose = $options['v'] ?? FALSE;
+     $verbose = isset($options['v']);
+     $base = $options['b'] ?? '';
+     $ssl = isset($options['s']);
      
-     $prefix = 'http://'.$host;
-     $prefixssl = 'https://'.$host;
+     $http = 'http://'.$host.($base !== '' ? '/'.$base : '');
+     $https = 'https://'.$host.($base !== '' ? '/'.$base : '');
+     $prefix = $ssl ? $https : $http;
      
      $nologin = [
         'success' => [
@@ -41,33 +44,40 @@
         $info = Curl::code();
         if ($info['http_code'] != 200 && $info['redirect_count'] == 0)
         {
-            echo '"'.$url.'" returns '.$info['http_code'].PHP_EOL;
+            echo '** "'.$url.'" returns '.$info['http_code'].PHP_EOL;
         }
-        elseif ($verbose !== FALSE)
+        elseif ($verbose)
         {
             echo '"'.$url.'" '.$info['http_code'].' OK'.PHP_EOL;
         }
     }
     foreach ($nologin['fail'] as $test)
     {
-        [$url, $code, $rdcount, $rdurl] = $test;
-        $url = $prefix.$url;
+        [$turl, $code, $rdcount, $rdurl] = $test;
+        $url = $prefix.$turl;
         $data = Curl::fetch($url);
         $info = Curl::code();
         $resurl = urldecode($info['redirect_url'] !== '' ? $info['redirect_url'] : $info['url']);
         if ($info['http_code'] != $code)
         {
-            echo '"'.$url.'" ('.$resurl.') returns '.$info['http_code'].' with '.$info['redirect_count'].' redirects'.PHP_EOL;
+            echo '** "'.$url.'" ('.$resurl.') returns '.$info['http_code'].' with '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').PHP_EOL;
         }
         elseif ($info['redirect_count'] != $rdcount)
         {
-            echo '"'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirects, expecting '.$rdcount.PHP_EOL;
+            if ($info['redirect_count'] == $rdcount + 1 && !$ssl && preg_match('/^https/i', $resurl) && $resurl == $https.$turl)
+            {
+                echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
+            }
+            else
+            {
+                echo '** "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.PHP_EOL;
+            }
         }
         elseif ($rdcount > 0 && $prefix.$rdurl != $resurl)
         {
-            echo '"'.$url.'" ('.$resurl.') expecting '.$prefix.$rdurl.PHP_EOL;
+            echo '** "'.$url.'" ('.$resurl.') expecting '.$prefix.$rdurl.PHP_EOL;
         }
-        elseif ($verbose !== FALSE)
+        elseif ($verbose)
         {
             echo '"'.$url.'" '.$info['http_code'].' ('.$resurl.') OK'.PHP_EOL;
         }
