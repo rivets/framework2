@@ -9,6 +9,7 @@
 
     use \Config\Config;
     use \Config\Framework as FW;
+    use \Framework\Exception\BadValue;
     use \Framework\Web\StatusCodes;
     use \Support\Context;
 /**
@@ -167,7 +168,7 @@
                     $context->web()->noaccess($e->getMessage());
                     /* NOT REACHED */
                 }
-                catch(\Framework\Exception\BadValue |
+                catch(BadValue |
                       \Framework\Exception\BadOperation |
                       \Framework\Exception\MissingBean |
                       \Framework\Exception\ParameterCount $e)
@@ -195,15 +196,11 @@
                     /* NOT REACHED */
                 }
                 if (self::$actions[$page->kind][0])
-                { # local
+                { # local diversion
                     $context->divert($page->source, ...self::$actions[$page->kind][1]);
                     /* NOT REACHED */
                 }
-                else
-                {
-                    $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]);
-                    /* NOT REACHED */
-                }
+                $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]); // off site relocation
                 /* NOT REACHED */
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
@@ -225,7 +222,7 @@
  * @param int    $kind
  * @param string $source
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  *
  * @return void
  */
@@ -236,13 +233,13 @@
             case self::OBJECT:
                 if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
+                    throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
                 }
                 break;
             case self::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (twig) "'.$source.'"');
+                    throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
                 }
                 break;
             case self::REDIRECT: // these need a local URL, i.e. no http
@@ -252,7 +249,7 @@
             case self::REHOME8:
                 if (!preg_match('#^(/.*?)+#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (local path)');
+                    throw new BadValue('Invalid source for page type (local path)');
                 }
                 break;
             case self::XREDIRECT: // these need a URL
@@ -262,11 +259,11 @@
             case self::XREHOME8:
                 if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
+                    throw new BadValue('Invalid source for page type (URL)');
                 }
                 break;
             default:
-                throw new \Framework\Exception\BadValue('Invalid page type');
+                throw new BadValue('Invalid page type');
             }
         }
     }
