@@ -64,13 +64,13 @@
         }
         elseif ($info['redirect_count'] != $rdcount)
         {
-            if ($info['redirect_count'] == $rdcount + 1 && !$ssl && preg_match('/^https/i', $resurl) && $resurl == $https.$turl)
+            if ($info['redirect_count'] == $rdcount + 1 && preg_match('/^https/i', $resurl) && ($resurl == $https.$turl || $resurl == $https.$turl.'/'))
             {
                 echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
             }
             else
             {
-                echo '** "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.PHP_EOL;
+                echo '** "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.' and '.$prefix.$rdurl.PHP_EOL;
             }
         }
         elseif ($rdcount > 0 && $prefix.$rdurl != $resurl)
@@ -81,5 +81,17 @@
         {
             echo '"'.$url.'" '.$info['http_code'].' ('.$resurl.') OK'.PHP_EOL;
         }
+    }
+    if ($user !== '' && $password !== '')
+    {
+        $data = Curl::post($prefix.'/login/',['login' => $user, 'password' => $password]);
+        $info = Curl::code();
+        if ($info['http_code'] == 200)
+        {
+        }
+        else
+        {
+            echo '** login failed'.PHP_EOL;
+        }           
     }
 ?>
