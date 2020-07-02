@@ -5,7 +5,7 @@
 
 {% block header %}
     <div class="ml-auto col-md-8 mr-auto mt-5">
-	<h1>Page not found!</h1>
+        <h1 class="text-center">Page not found!</h1>
     </div>
 {% endblock header %}
 
@@ -15,7 +15,7 @@
             <div class="jumbotron">
                 Sorry, there is no such page as "{{page}}".
             </div>
-            <p><a href="{{base}}/">Return to home page</a></p>
+            <p><a href="{{base}}/" class="btn btn-primary">Home Page</a></p>
         </article>
     </section>
 {% endblock main %}
