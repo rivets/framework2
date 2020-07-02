@@ -81,7 +81,7 @@
         public function hasrolebybean(\RedBeanPHP\OODBBean $rolecontext, ?\RedBeanPHP\OODBBean $rolename) : ?object
         {
             return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::USER.'_id=? '.
-                (!is_null($rolename) ? 'and '.FW::ROLENAME.'_id=?' : '').
+                (!is_null($rolename) ? 'and '.FW::ROLENAME.'_id=? ' : '').
                 'and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
                 [$rolecontext->getID(), $this->bean->getID(), is_null($rolename) ? '' : $rolename->getID()]);
         }
