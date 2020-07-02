@@ -56,7 +56,7 @@
         $info = Curl::code();
         if ($info['http_code'] != $code || $info['redirect_count'] != $rdcount || ($rdcount > 0 && $prefix.$rdurl != urldecode($info['redirect_url'])))
         {
-            echo '"'.$url.'" ('.urldecode($info['url']).') returns '.$info['http_code'].PHP_EOL;
+            echo '"'.$url.'" ('.urldecode($info['url']).') returns '.$info['http_code'].', '.$info['redirect_count'].PHP_EOL;
         }
         elseif ($verbose !== FALSE)
         {
