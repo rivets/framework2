@@ -66,9 +66,9 @@
         {
             $this->bean->start = $this->checkstart($this->bean->start);
             $this->bean->end = $this->checkend($this->bean->end);
-            if ($this->bean->end !== '' && $this->bean->start > $this->bean->end)
+            if (!empty($this->bean->end) && $this->bean->start > $this->bean->end)
             {
-                throw new \Framework\Exception\BadValue('Start > End');
+                throw new \Framework\Exception\BadValue('Start > End ');
             }
         }
 /**
@@ -81,7 +81,7 @@
         public function valid() : bool
         {
             $now = Context::getinstance()->utcnow();
-            return $this->bean->start <= $now && ($this->bean->end === '' || $now <= $this->bean->end);
+            return $this->bean->start <= $now && (!empty($this->bean->end) || $now <= $this->bean->end);
         }
     }
 ?>
