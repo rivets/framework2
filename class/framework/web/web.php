@@ -318,7 +318,7 @@
         {
             if (!is_array($key))
             {
-                $key = [$value];
+                $key = [$key => $value];
             }
             foreach ($key as $k => $val)
             {
