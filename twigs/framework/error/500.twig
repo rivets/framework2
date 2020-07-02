@@ -14,7 +14,7 @@
         <article class="ml-auto col-lg mr-auto text-center">
             <div class="jumbotron">
                 {% if context.hasadmin %}
-                    {{errdata|raw}}
+                    <p class="text-left">{{errdata|raw}}</p>
                 {% else %}
                     <p>Sorry, there has been an internal error</p>
                 {% endif %}
