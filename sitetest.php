@@ -57,7 +57,6 @@
         if ($info['http_code'] != $code || $info['redirect_count'] != $rdcount || ($rdcount > 0 && $prefix.$rdurl != urldecode($info['redirect_url'])))
         {
             echo '"'.$url.'" ('.urldecode($info['url']).') returns '.$info['http_code'].PHP_EOL;
-            var_dump($info);
         }
         elseif ($verbose !== FALSE)
         {
