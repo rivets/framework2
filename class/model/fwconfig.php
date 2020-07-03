@@ -155,7 +155,7 @@
  *
  * @return void
  */
-        public function doupdate(object $cdata, $base) : string
+        public function doupdate(object $cdata, string $base, bool $doit) : string
         {
             if ($this->bean->local == 0)
             { // update if not locally set and there is a new value
@@ -165,13 +165,19 @@
                     $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                     if ($this->bean->$k != $v)
                     {
-                        $this->bean->$k = $v;
+                        if ($doit)
+                        {
+                            $this->bean->$k = $v;
+                        }
                         $change = TRUE;
                     }
                 }
                 if ($change)
                 {
-                    \R::store($this->bean);
+                    if ($doit)
+                    {
+                        \R::store($this->bean);
+                    }
                     return $cdata->value;
                 }
             }

@@ -195,6 +195,7 @@
  */
         private function update(Context $context) : string
         {
+            $doit = $context->formdata()->get('update', 0) == 1;
             $updated = [];
             $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
@@ -205,7 +206,7 @@
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
-                        if (($upd = $lval->doupdate($cdata, $base)) !== '')
+                        if (($upd = $lval->doupdate($cdata, $base, $doit)) !== '')
                         {
                             $updated[$cname] = $upd;
                         }

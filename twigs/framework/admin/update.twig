@@ -9,6 +9,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
+            {% include '@util/message.twig %}
             <h2>Latest version is Framework {{version}}</h2>
             {% if current == version %}
                 <p>You have the latest code version</p>
@@ -16,10 +17,11 @@
                 <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
             {% for key,val in updated %}
-                <p>"{{key}}" updated to "{{val}}"</p>
+                <p>"{{key}}" {% if updated is defined %}will be {% endif %}updated to "{{val}}"</p>
             {% else %}
                 <p>No support software link updates</p>
             {%endfor %}
+            <p><a class="btn btn-primary" href="?update=1">Update</a></p>
          </article>
     </section>
 {% endblock main %}
