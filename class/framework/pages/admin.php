@@ -189,7 +189,7 @@
 /**
  * Check for version updates and update config info
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context    $context  The Context object
  *
  * @return string
  */
@@ -231,6 +231,7 @@
                 $context->local()->addval([
                     'version'   => $upd->version,
                     'updated'   => $updated,
+                    'done'      => $doit,
                     'current'   => trim(file_get_contents($context->local()->makebasepath('version.txt'))),
                 ]);
             }
