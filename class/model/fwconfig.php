@@ -151,11 +151,11 @@
 /**
  * Handle an update from the page updater
  *
- * @param array $cdata  Update values from the json updater
+ * @param object $cdata  Update values from the json updater
  *
  * @return void
  */
-        public function doupdate(array $cdata, $base) : string
+        public function doupdate(object $cdata, $base) : string
         {
             if ($this->bean->local == 0)
             { // update if not locally set and there is a new value
