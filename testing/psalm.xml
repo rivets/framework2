@@ -90,7 +90,7 @@
         <ignoreFiles>
             <directory name="vendor" />
             <directory name="install" />
-            <directory name="tests" />
+            <directory name="testing" />
             <file name="phpinsights.php" />
             <file name="devel/hack.php" />
             <file name="devel/testautoload.php" />

@@ -22,6 +22,7 @@
             <directory name="vendor" />
             <directory name="class" />
             <directory name="devel" />
+            <directory name="testing" />
         </ignoreFiles>
     </projectFiles>
 
