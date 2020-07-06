@@ -7,7 +7,7 @@
  */
     include_once 'devel/curl.php';
     
-    function success(string $url)
+    function success(string $url) : void
     {
         global $verbose, $ssl, $https, $http, $prefix;
 
@@ -24,7 +24,7 @@
         }
     }
     
-    function fail(string $url)
+    function fail(array $url) : void
     {
         global $verbose, $ssl, $https, $http, $prefix;
 
