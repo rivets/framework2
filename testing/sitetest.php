@@ -24,7 +24,7 @@
         }
     }
     
-    function fail(array $url) : void
+    function fail(array $test) : void
     {
         global $verbose, $ssl, $https, $http, $prefix;
 
