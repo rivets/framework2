@@ -9,7 +9,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
-            {% include '@util/message.twig %}
+            {% include '@util/message.twig' %}
             <h2>Latest version is Framework {{version}}</h2>
             {% if current == version %}
                 <p>You have the latest code version</p>
