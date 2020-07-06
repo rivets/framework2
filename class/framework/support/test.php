@@ -125,10 +125,11 @@
                     $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
                     $context->local()->addval('download', $upl->getID());
                 }
-                if (count($rest) == 3)
+                $rest = $context->rest();
+                if (count($rest) == 4)
                 {
-                    $id = (int) $rest[2];
-                    switch ($rest[1])
+                    $id = (int) $rest[3];
+                    switch ($rest[2])
                     {
                     case 'get':
                         $context->local()->addval('download', $id);
