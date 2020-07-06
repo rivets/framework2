@@ -64,7 +64,7 @@
 /**
  * @psalm-suppress PossiblyNullPropertyFetch
  * @psalm-suppress PossiblyNullArgument
- **/
+ */
             $msg = $context->local()->sendmail([$context->user()->email], 'test', 'test');
             if ($msg === '')
             {
