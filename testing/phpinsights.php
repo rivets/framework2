@@ -52,11 +52,10 @@ return [
 
     'exclude' => [
         'class/framework/utility/jwt',
-        'tests',
         'devel',
         'install',
         //'install.php',
-        'phpinsights.php',
+        'testing',
         'composer.json',
         //  'path/to/directory-or-file'
     ],
