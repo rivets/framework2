@@ -29,84 +29,30 @@
             $rest = $context->rest();
             switch ($rest[0])
             {
-            case 'assert': // failed assertion
-                assert(TRUE == FALSE);
+            case 'ajax': // configure user AJAX functions
+                $tpl = '@devel/ajax.twig';
                 break;
 
-            case 'hack': # execute some code.
+            case 'hack': // execute some code.
                 \R::freeze(FALSE); // turn off freezing so that you can fiddle with the database....
                 /** @psalm-suppress UnresolvableInclude */
                 include $context->local()->makebasepath('devel', 'hack.php');
                 break;
-
-            case 'test': # generate a test page
-                $context->local()->message(\Framework\Local::ERROR, 'Error 1');
-                $context->local()->message(\Framework\Local::ERROR, 'Error 2');
-                $context->local()->message(\Framework\Local::WARNING, 'Warning 1');
-                $context->local()->message(\Framework\Local::WARNING, 'Warning 2');
-                $context->local()->message(\Framework\Local::MESSAGE, 'Message 1');
-                $context->local()->message(\Framework\Local::MESSAGE, 'Message 2');
-                $tpl = '@devel/test.twig';
-                break;
-
-            case 'ajax': # test the ajax calls
-                $context->local()->addval('bean', \R::findOrCreate(FW::TEST, ['f1' => 'a string', 'tog' => 1]));
-                $tpl = '@devel/testajax.twig';
-                break;
-
-            case 'upload' :
-                $tpl = '@devel/testupload.twig';
-                $fd = $context->formdata();
-                try
+            
+            case 'test':
+                $test = new \Framework\Support\Test();
+                $rest = $context->rest();
+                if (count($rest) > 1)
                 {
-                    if ($fd->hasfile('upload'))
+                    if (method_exists($test, $rest[1]))
                     {
-                        $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
-                        $context->local()->addval('download', $upl->getID());
+                        $tpl = $test->{$rest[1]}($context);
                     }
-                    if (count($rest) == 3)
+                    else
                     {
-                        $id = (int) $rest[2];
-                        switch ($rest[1])
-                        {
-                        case 'get':
-                            $context->local()->addval('download', $id);
-                            break;
-
-                        case'delete':
-                            \R::trash($context->load('upload', $id));
-                            $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
-                            break;
-                        }
+                        $context->web()->bad();
+                        /* not reached */
                     }
-                }
-                catch (\Exception $e)
-                {
-                    $context->local()->message(\Framework\Local::ERROR, $e->getmessage());
-                }
-                break;
-
-            case 'fail': # this lets you test error handling
-                2 / 0;
-                break;
-
-            case 'throw': # this lets you test exception handling
-                throw new \Exception('Unhandled Exception Test');
-
-            case 'mail' : # this lets you test email sending
-/**
- * @psalm-suppress PossiblyNullPropertyFetch
- * @psalm-suppress PossiblyNullArgument
- **/
-                $msg = $context->local()->sendmail([$context->user()->email], 'test', 'test');
-                if ($msg === '')
-                {
-                    $context->local()->message(\Framework\Local::MESSAGE, 'sent');
-                }
-                else
-                {
-                    $context->local()->message(\Framework\Local::ERROR, $msg);
                 }
                 break;
             }
