@@ -288,8 +288,8 @@
             $context->setpages(); // most of the pages use pagination so get values if any
             switch ($rest[0])
             {
-            case 'beans':
-                $context->local()->addval('all', $context->hasadmin() && isset($_GET['all']));
+            case 'beans': // Look at the beans in the database
+                $context->local()->addval('all', $context->hasadmin() && $context->formdata()->hasget('all'));
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files
