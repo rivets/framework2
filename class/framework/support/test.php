@@ -33,9 +33,11 @@
  *
  * @return void
  */
-        public function assert(Context $context) : void
+        public function assert(Context $context) : string
         {
             assert(TRUE == FALSE);
+            $context->local()->message(\Framework\Local::ERROR, 'Assertion test : this should not be reached');
+            return '@devel/devel.twig';
         }
 /**
  * Test run time error handling
@@ -44,10 +46,12 @@
  *
  * @return int
  */
-        public function fail(Context $context) : int
+        public function fail(Context $context) : string
         {
-            return 2 / 0;
-        }
+            2 / 0;
+            $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
+            return '@devel/devel.twig';
+}
 /**
  * Test mail
  *
@@ -70,6 +74,7 @@
             {
                 $context->local()->message(\Framework\Local::ERROR, $msg);
             }
+            return '@devel/devel.twig';
         }
 /**
  * Generate a test page. This tests various twig macros etc.
@@ -96,9 +101,11 @@
  * @throws \Exception
  * @return void
  */
-        public function toss(Context $context) : void
+        public function toss(Context $context) : string
         {
             throw new \Exception('Unhandled Exception Test');
+            $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
+            return '@devel/test.twig';
         }
 /**
  * Test the upload features
