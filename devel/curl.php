@@ -87,14 +87,14 @@
             return self::exec($ch);
         }
 
-        public static function post($url, $data, $upw = '')
+        public static function post($url, $data, $upw = '', $csess = FALSE)
         {
             $encoded = [];
             foreach ($data as $key => $value)
             {
                 $encoded[] = urlencode($key).'='.urlencode($value);
             }
-            $ch = self::setup($url, '', $upw);
+            $ch = self::setup($url, '', $upw, $csess);
             curl_setopt($ch, CURLOPT_POST, TRUE);
             curl_setopt($ch, CURLOPT_POSTFIELDS,  implode('&', $encoded));
             return self::exec($ch);
