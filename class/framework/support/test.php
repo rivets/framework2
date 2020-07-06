@@ -7,6 +7,7 @@
  */
     namespace Framework\Support;
 
+    use \Config\Framework as FW;
     use \Support\Context;
 /**
  * A class that handles various site testing related things
