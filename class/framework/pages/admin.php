@@ -206,9 +206,9 @@
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
-                        if (($upd = $lval->doupdate($cdata, $base, $doit)) !== '')
+                        if (($upderr = $lval->doupdate($cdata, $base, $doit)) !== '')
                         {
-                            $updated[$cname] = $upd;
+                            $updated[$cname] = $upderr;
                         }
                     }
                     else
