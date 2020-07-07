@@ -3,10 +3,11 @@
  * Contains definition of the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Web;
-    use Support\Context as Context;
+
+    use \Support\Context;
 /**
  * A class that handles various web related things.
  */
@@ -14,8 +15,7 @@
     {
         use \Framework\Utility\Singleton;
 
-        const HTMLMIME	= 'text/html; charset="utf-8"';
-
+        public const HTMLMIME  = 'text/html; charset="utf-8"';
 /**
  * @var array   Holds values for headers that are required. Keyed by the name of the header
  */
@@ -49,16 +49,16 @@
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param string	$where		The URL to divert to
- * @param bool       	$temporary	TRUE if this is a temporary redirect
- * @param string	$msg		A message to send
- * @param bool       	$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       	$use303         If TRUE then use 303 rather than 302
+ * @param string    $where      The URL to divert to
+ * @param bool      $temporary  TRUE if this is a temporary redirect
+ * @param string    $msg        A message to send
+ * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool      $use303     If TRUE then use 303 rather than 302
  *
  * @psalm-return never-return
  * @return void
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {
             if ($temporary)
             {
@@ -72,19 +72,19 @@
                 $code = $nochange ? StatusCodes::HTTP_PERMANENT_REDIRECT : StatusCodes::HTTP_MOVED_PERMANENTLY;
             }
             $this->addheader('Location', $where);
-            $this->sendstring($msg, self::HTMLMIME);
+            $this->sendstring($msg, self::HTMLMIME, $code);
             exit;
         }
 /**
  * output a header and msg - this never returns
  *
- * @param int    	$code	The return code
- * @param string	$msg	The message (or '')
+ * @param int       $code   The return code
+ * @param string    $msg    The message (or '')
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
-        private function sendhead(int $code, string $msg)
+        private function sendhead(int $code, string $msg) : void
         {
             if ($msg !== '')
             {
@@ -108,10 +108,10 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param int    	$size	The size of the output data
- * @param mixed		$code	The HTTP return code or ''
+ * @param int           $size    The size of the output data
+ * @param string|int    $code    The HTTP return code or ''
  *
- * @return array
+ * @return array<mixed>
  *
  * @psalm-suppress InvalidOperand
  * @psalm-suppress PossiblyInvalidOperand
@@ -144,10 +144,10 @@
 /**
  * Make a header sequence for a particular return code and add some other useful headers
  *
- * @param int    	$code	The HTTP return code
- * @param string	$mtype	The mime-type of the file
- * @param ?int    	$length	The length of the data
- * @param string	$name	A file name
+ * @param int       $code   The HTTP return code
+ * @param string    $mtype  The mime-type of the file
+ * @param ?int      $length The length of the data
+ * @param string    $name   A file name
  *
  * @return void
  */
@@ -182,69 +182,69 @@
 /**
  * Generate a 400 Bad Request error return
  *
- * @param string		$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
-        public function bad(string $msg = '')
+        public function bad(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
         }
 /**
  * Generate a 403 Access Denied error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
  */
-        public function noaccess(string $msg = '')
+        public function noaccess(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_FORBIDDEN, $msg);
         }
 /**
  * Generate a 404 Not Found error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
  */
-        public function notfound(string $msg = '')
+        public function notfound(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_NOT_FOUND, $msg);
         }
 /**
  * Generate a 416 Not Satisfiable error return
  *
- * @param string	$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
  */
-        public function notsatisfiable(string $msg = '')
+        public function notsatisfiable(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $msg);
         }
 /**
  * Generate a 500 Internal Error error return
  *
- * @param string		$msg	A message to be sent
+ * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
  * @return void
  */
-        public function internal(string $msg = '')
+        public function internal(string $msg = '') : void
         {
             $this->sendhead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
         }
 /**
  * Deliver a file as a response.
  *
- * @param string	$path	The path to the file
- * @param string	$name	The name of the file as told to the downloader
- * @param string	$mime	The mime type of the file
+ * @param string    $path    The path to the file
+ * @param string    $name    The name of the file as told to the downloader
+ * @param string    $mime    The mime type of the file
  *
  * @return void
  */
@@ -260,7 +260,7 @@
                 }
                 finfo_close($finfo);
             }
-    //	    $this->addheader(['Content-Description' => 'File Transfer']);
+    //      $this->addheader(['Content-Description' => 'File Transfer']);
             $this->sendheaders($code, $mime, $length, $name);
             $this->debuffer();
             if (!empty($range))
@@ -278,9 +278,9 @@
 /**
  * Deliver a string as a response.
  *
- * @param string	$value	The data to send
- * @param string	$mime	The mime type of the file
- * @param int    	$code	The HTTP return code
+ * @param string    $value   The data to send
+ * @param string    $mime    The mime type of the file
+ * @param int       $code    The HTTP return code
  *
  * @return void
  */
@@ -308,37 +308,35 @@
  *
  * This supports having more than one header with the same name.
  *
- * @param mixed        $key	Either an array of key/value pairs or the key for the value that is in the second parameter
- * @param string       $value
+ * @param string|array<string>  $key  Either an array of key/value pairs or the key for the value that is in the second parameter
+ * @param string                $value
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function addheader($key, string $value = '') : void
         {
-            if (is_array($key))
+            if (!is_array($key))
             {
-                foreach ($key as $k => $val)
-                {
-                    $this->headers[trim($k)][] = trim($val);
-                }
+                $key = [$key => $value];
             }
-            else
+            foreach ($key as $k => $val)
             {
-                $this->headers[trim($key)][] = trim($value);
+                $this->headers[trim($k)][] = str_replace("\0", '', trim($val));
             }
         }
 /**
  * Output the headers
  *
  * @return void
- **/
+ */
         private function putheaders() : void
         {
             foreach ($this->headers as $name => $vals)
             {
                 foreach ($vals as $v)
                 {
-                    header(trim($name.': '.$v));
+                    header($name.': '.$v);
                 }
             }
             if (!empty($this->cache))
@@ -369,6 +367,7 @@
  * Is this a POST?
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function ispost() : bool
         {
@@ -380,7 +379,7 @@
  *
  * @return void
  */
-        public function debuffer()
+        public function debuffer() : void
         {
             while (ob_get_length() > 0)
             { # just in case we are inside some buffering
@@ -394,6 +393,7 @@
  * @param string  $string  The data to be hashed
  *
  * @return string Returns the hash
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function saveCSP(string $type, string $string) : string
         {
@@ -404,8 +404,8 @@
 /**
  * Add an item for use in a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string|array  $type    What the item is for (script-src, style-src etc.)
- * @param string        $host    The host to add
+ * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
+ * @param string                $host    The host to add
  *
  * @return void
  */
@@ -428,6 +428,7 @@
  * @param string        $host    The item to remove
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function removeCSP($type, string $host = '') : void
         {
@@ -448,6 +449,7 @@
  * but individual pages may wish to extend or restrict these.
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function setCSP() : void
         {
@@ -463,7 +465,7 @@
                     }
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key])  ? (' '.implode(' ', $this->csp[$key])) : '').';';
+                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key]) ? ' '.implode(' ', $this->csp[$key]) : '').';';
                     }
                 }
                 if ($local->configval('reportcsp'))
@@ -472,11 +474,11 @@
                     $csp .= ' report-uri '.$edp.';'; // This is deprecated but widely supported
                     $csp .= ' report-to csp-report;';
                     $this->addheader([
-                        'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }'
+                        'Report-To' => 'Report-To: { "group": "csp-report", "max-age": 10886400, "endpoints": [ { "url": "'.$edp.'" } ] }',
                     ]);
                 }
                 $this->addheader([
-                    'Content-Security-Policy'   => $csp
+                    'Content-Security-Policy'   => $csp,
                 ]);
             }
         }
@@ -499,6 +501,7 @@
  * @param string    $secret  The recaptcha secret for this site
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function recaptcha(string $secret) : bool
         {
@@ -507,14 +510,14 @@
                 $data = http_build_query([
                     'secret'    => $secret,
                     'response'  => $_POST['g-recaptcha-response'],
-                    'remoteip'  => $_SERVER['REMOTE_ADDR']
+                    'remoteip'  => $_SERVER['REMOTE_ADDR'],
                 ]);
-                $opts = ['http' =>
-                    [
+                $opts = [
+                    'http' => [
                         'method'  => 'POST',
                         'header'  => 'Content-Type: application/x-www-form-urlencoded',
-                        'content' => $data
-                    ]
+                        'content' => $data,
+                    ],
                 ];
                 $context  = stream_context_create($opts);
                 $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);

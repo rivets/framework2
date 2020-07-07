@@ -3,24 +3,23 @@
  * A class that contains code to handle any /upload related requests.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2019 Newcastle University
- *
+ * @copyright 2015-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Config\Config as Config;
-    use \Support\Context as Context;
+    use \Config\Config;
+    use \Support\Context;
 /**
  * Deal with a file upload URL
  */
     class Upload extends \Framework\SiteAction
     {
- /**
+/**
  * Handle various admin operations /upload
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

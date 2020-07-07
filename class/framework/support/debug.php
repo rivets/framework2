@@ -6,6 +6,7 @@
  * @copyright 2014-2020 Newcastle University
  */
     namespace Framework\Support;
+
 /**
  * A class that handles various debugging related things
  */
@@ -16,7 +17,7 @@
  */
         private static $fd = FALSE;
 /**
- * @var integer     header count
+ * @var int     header count
  */
         private static $hcount = 0;
 /**
@@ -47,7 +48,7 @@
 /**
  * Dump a variable - uses buffering to grab the output.
  *
- * @param mixed $vars
+ * @param array<mixed> $vars
  *
  * @return void
  */

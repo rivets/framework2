@@ -3,17 +3,15 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2019 Newcastle University
+ * @copyright 2017-2020 Newcastle University
  */
     namespace Framework;
 
-    use \Config\Config as Config;
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Framework\SiteAction as SiteAction;
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
-
+    use \Framework\Exception\BadValue;
+    use \Framework\Web\StatusCodes;
+    use \Support\Context;
 /**
  * This class dispatches pages to the appropriate places
  */
@@ -22,55 +20,55 @@
 /*
  * Indicates that there is an Object that handles the call
  */
-        const OBJECT	= 1;
+        public const OBJECT     = 1;
 /*
  * Indicates that there is only a template for this URL.
  */
-        const TEMPLATE	= 2;
+        public const TEMPLATE   = 2;
 /*
  * Indicates that the URL should be temporarily redirected - 302
  */
-        const REDIRECT	= 3;
+        public const REDIRECT   = 3;
 /*
  * Indicates that the URL should be permanent redirected - 301
  */
-        const REHOME	= 4;
+        public const REHOME     = 4;
 /*
  * Indicates that the URL should be permanently redirected - 302
  */
-        const XREDIRECT	= 5;
+        public const XREDIRECT  = 5;
 /*
  * Indicates that the URL should be temporarily redirected -301
  */
-        const XREHOME	= 6;
+        public const XREHOME    = 6;
 /*
  * Indicates that the URL should be temporarily redirected - 303
  */
-        const REDIRECT3	= 7;
+        public const REDIRECT3  = 7;
 /*
  * Indicates that the URL should be temporarily redirected - 303
  */
-        const XREDIRECT3	= 8;
+        public const XREDIRECT3 = 8;
 /*
  * Indicates that the URL should be temporarily redirected - 307
  */
-        const REDIRECT7	= 9;
+        public const REDIRECT7  = 9;
 /*
  * Indicates that the URL should be temporarily redirected - 307
  */
-        const XREDIRECT7	= 10;
+        public const XREDIRECT7 = 10;
 /*
  * Indicates that the URL should be permanently redirected - 308
  */
-        const REHOME8	= 11;
+        public const REHOME8    = 11;
 /*
  * Indicates that the URL should be permanently redirected - 308
  */
-        const XREHOME8	= 12;
+        public const XREHOME8   = 12;
 /**
- * @var array $actions Values for determining handling of above codes
+ * @var array<array> $actions Values for determining handling of above codes
  */
-        public static $actions = [
+        private static $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
             self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
             self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
@@ -102,7 +100,7 @@
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
 /*
- * Look in the database for what to do based on the first part of the URL. DBRX means do a regep match
+ * Look in the database for what to do based on the first part of the URL. DBRX means do a regexp match
  */
             try
             {
@@ -113,12 +111,12 @@
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
             catch (\Exception $e)
-            { # You can get DB errors from hacky URL values here.
+            { # You catch DB errors from hacky URL values here.
                 $page = NULL;
             }
             if (!is_object($page))
             { # No such page or it is marked as inactive
-               $page = new \stdClass;
+               $page = new \stdClass();
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
             }
@@ -126,7 +124,7 @@
             {
                 $page->check($context);
             }
-        
+
             $basicvals = [
                 'context'           => $context,
                 'action'            => $action,
@@ -147,17 +145,16 @@
                 }
                 catch (\ReflectionException $e)
                 {
-                    // void
+                    NULL; // void
                 }
             }
             $local->addval($basicvals, '', TRUE);
 
-            $etag = '';
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
             case self::OBJECT: // fire up the object to handle the request
-                $pageObj = new $page->source;
+                $pageObj = new $page->source();
                 $csp = $pageObj;
                 try
                 {
@@ -171,7 +168,7 @@
                     $context->web()->noaccess($e->getMessage());
                     /* NOT REACHED */
                 }
-                catch(\Framework\Exception\BadValue |
+                catch(BadValue |
                       \Framework\Exception\BadOperation |
                       \Framework\Exception\MissingBean |
                       \Framework\Exception\ParameterCount $e)
@@ -199,15 +196,11 @@
                     /* NOT REACHED */
                 }
                 if (self::$actions[$page->kind][0])
-                { # local
+                { # local diversion
                     $context->divert($page->source, ...self::$actions[$page->kind][1]);
                     /* NOT REACHED */
                 }
-                else
-                {
-                    $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]);
-                    /* NOT REACHED */
-                }
+                $context->web()->relocate($page->source, ...self::$actions[$page->kind][1]); // off site relocation
                 /* NOT REACHED */
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
@@ -226,10 +219,10 @@
 /**
  * Check if a value is appropriate for the dispatch kind
  *
- * @param int $kind
+ * @param int    $kind
  * @param string $source
  *
- * @throws \Framework\Exception\BadValue
+ * @throws BadValue
  *
  * @return void
  */
@@ -240,13 +233,13 @@
             case self::OBJECT:
                 if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (class name) "'.$source.'"');
+                    throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
                 }
                 break;
             case self::TEMPLATE:
                 if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (twig) "'.$source.'"');
+                    throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
                 }
                 break;
             case self::REDIRECT: // these need a local URL, i.e. no http
@@ -256,7 +249,7 @@
             case self::REHOME8:
                 if (!preg_match('#^(/.*?)+#i', $source))
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (local path)');
+                    throw new BadValue('Invalid source for page type (local path)');
                 }
                 break;
             case self::XREDIRECT: // these need a URL
@@ -266,11 +259,11 @@
             case self::XREHOME8:
                 if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
                 {
-                    throw new \Framework\Exception\BadValue('Invalid source for page type (URL)');
+                    throw new BadValue('Invalid source for page type (URL)');
                 }
                 break;
             default:
-                throw new \Framework\Exception\BadValue('Invalid page type');
+                throw new BadValue('Invalid page type');
             }
         }
     }

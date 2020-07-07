@@ -8,16 +8,13 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2020 Newcastle University
- *
  */
     namespace Support;
-    
-    use \Support\Context as Context;
+
 /**
  * Adds functions for dealing with various cache control circumstances.
  * If you add code here then these will apply to all pages. You can override these
  * functions if you want to have special behaviour for a particular page.
- *
  */
     trait SiteAction
     {
@@ -31,6 +28,7 @@
  * @param \Support\Context    $context The context object
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function setCache(Context $context) : void
         {
@@ -58,7 +56,7 @@
                 'maxage='.$this->makemaxage($context),
                 'must-revalidate',
                 'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
-                'stale-if-error=259200'
+                'stale-if-error=259200',
             ]);
         }
 /**
@@ -69,6 +67,8 @@
  * @param \Support\Context    $context   The context object for the site
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeetag(Context $context) : string
         {
@@ -82,6 +82,8 @@
  * @param \Support\Context    $context   The context object for the site
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
         {
@@ -95,7 +97,9 @@
  *
  * @param \Support\Context    $context  The context object for the site
  *
- * @return boolean
+ * @return bool
+ * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function exists(Context $context) : bool
         {
@@ -110,6 +114,8 @@
  * @param \Support\Context  $context  The context object for the site
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function lastmodified(Context $context) : int
         {
@@ -122,10 +128,12 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$time	The time value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedParam
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
@@ -134,15 +142,15 @@
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$tag	The etag value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $tag        The etag value to check
  *
  * @return bool
  */
         public function checketag(Context $context, string $tag) : bool
         {
             $etag = $this->makeetag($context);
-            return $tag === $etag || $tag == $etag.'-gzip';
+            return $tag === $etag || $tag === $etag.'-gzip';
         }
     }
 ?>

@@ -18,58 +18,58 @@
     class StatusCodes
     {
     // [Informational 1xx]
-        const HTTP_CONTINUE                         = 100;
-        const HTTP_SWITCHING_PROTOCOLS              = 101;
+        public const HTTP_CONTINUE                         = 100;
+        public const HTTP_SWITCHING_PROTOCOLS              = 101;
     // [Successful 2xx]
-        const HTTP_OK                               = 200;
-        const HTTP_CREATED                          = 201;
-        const HTTP_ACCEPTED                         = 202;
-        const HTTP_NONAUTHORITATIVE_INFORMATION     = 203;
-        const HTTP_NO_CONTENT                       = 204;
-        const HTTP_RESET_CONTENT                    = 205;
-        const HTTP_PARTIAL_CONTENT                  = 206;
+        public const HTTP_OK                               = 200;
+        public const HTTP_CREATED                          = 201;
+        public const HTTP_ACCEPTED                         = 202;
+        public const HTTP_NONAUTHORITATIVE_INFORMATION     = 203;
+        public const HTTP_NO_CONTENT                       = 204;
+        public const HTTP_RESET_CONTENT                    = 205;
+        public const HTTP_PARTIAL_CONTENT                  = 206;
 
     // [Redirection 3xx]
-        const HTTP_MULTIPLE_CHOICES                 = 300;
-        const HTTP_MOVED_PERMANENTLY                = 301;
-        const HTTP_FOUND                            = 302;
-        const HTTP_SEE_OTHER                        = 303;
-        const HTTP_NOT_MODIFIED                     = 304;
-        const HTTP_USE_PROXY                        = 305;
-        const HTTP_UNUSED                           = 306;
-        const HTTP_TEMPORARY_REDIRECT               = 307;
-        const HTTP_PERMANENT_REDIRECT               = 308;
+        public const HTTP_MULTIPLE_CHOICES                 = 300;
+        public const HTTP_MOVED_PERMANENTLY                = 301;
+        public const HTTP_FOUND                            = 302;
+        public const HTTP_SEE_OTHER                        = 303;
+        public const HTTP_NOT_MODIFIED                     = 304;
+        public const HTTP_USE_PROXY                        = 305;
+        public const HTTP_UNUSED                           = 306;
+        public const HTTP_TEMPORARY_REDIRECT               = 307;
+        public const HTTP_PERMANENT_REDIRECT               = 308;
 
     // [Client Error 4xx]
-        const errorCodesBeginAt                     = 400;
-        const HTTP_BAD_REQUEST                      = 400;
-        const HTTP_UNAUTHORIZED                     = 401;
-        const HTTP_PAYMENT_REQUIRED                 = 402;
-        const HTTP_FORBIDDEN                        = 403;
-        const HTTP_NOT_FOUND                        = 404;
-        const HTTP_METHOD_NOT_ALLOWED               = 405;
-        const HTTP_NOT_ACCEPTABLE                   = 406;
-        const HTTP_PROXY_AUTHENTICATION_REQUIRED    = 407;
-        const HTTP_REQUEST_TIMEOUT                  = 408;
-        const HTTP_CONFLICT                         = 409;
-        const HTTP_GONE                             = 410;
-        const HTTP_LENGTH_REQUIRED                  = 411;
-        const HTTP_PRECONDITION_FAILED              = 412;
-        const HTTP_REQUEST_ENTITY_TOO_LARGE         = 413;
-        const HTTP_REQUEST_URI_TOO_LONG             = 414;
-        const HTTP_UNSUPPORTED_MEDIA_TYPE           = 415;
-        const HTTP_REQUESTED_RANGE_NOT_SATISFIABLE  = 416;
-        const HTTP_EXPECTATION_FAILED               = 417;
+        public const ERRORCODESBEGINAT                     = 400;
+        public const HTTP_BAD_REQUEST                      = 400;
+        public const HTTP_UNAUTHORIZED                     = 401;
+        public const HTTP_PAYMENT_REQUIRED                 = 402;
+        public const HTTP_FORBIDDEN                        = 403;
+        public const HTTP_NOT_FOUND                        = 404;
+        public const HTTP_METHOD_NOT_ALLOWED               = 405;
+        public const HTTP_NOT_ACCEPTABLE                   = 406;
+        public const HTTP_PROXY_AUTHENTICATION_REQUIRED    = 407;
+        public const HTTP_REQUEST_TIMEOUT                  = 408;
+        public const HTTP_CONFLICT                         = 409;
+        public const HTTP_GONE                             = 410;
+        public const HTTP_LENGTH_REQUIRED                  = 411;
+        public const HTTP_PRECONDITION_FAILED              = 412;
+        public const HTTP_REQUEST_ENTITY_TOO_LARGE         = 413;
+        public const HTTP_REQUEST_URI_TOO_LONG             = 414;
+        public const HTTP_UNSUPPORTED_MEDIA_TYPE           = 415;
+        public const HTTP_REQUESTED_RANGE_NOT_SATISFIABLE  = 416;
+        public const HTTP_EXPECTATION_FAILED               = 417;
 
     // [Server Error 5xx]
-        const HTTP_INTERNAL_SERVER_ERROR            = 500;
-        const HTTP_NOT_IMPLEMENTED                  = 501;
-        const HTTP_BAD_GATEWAY                      = 502;
-        const HTTP_SERVICE_UNAVAILABLE              = 503;
-        const HTTP_GATEWAY_TIMEOUT                  = 504;
-        const HTTP_VERSION_NOT_SUPPORTED            = 505;
+        public const HTTP_INTERNAL_SERVER_ERROR            = 500;
+        public const HTTP_NOT_IMPLEMENTED                  = 501;
+        public const HTTP_BAD_GATEWAY                      = 502;
+        public const HTTP_SERVICE_UNAVAILABLE              = 503;
+        public const HTTP_GATEWAY_TIMEOUT                  = 504;
+        public const HTTP_VERSION_NOT_SUPPORTED            = 505;
 /**
- * @var string[]        The messages for each code.
+ * @var array<string>        The messages for each code.
  */
         private static $messages = [
         // [Informational 1xx]
@@ -121,7 +121,7 @@
             502    => 'Bad Gateway',
             503    => 'Service Unavailable',
             504    => 'Gateway Timeout',
-            505    => 'HTTP Version Not Supported'
+            505    => 'HTTP Version Not Supported',
         ];
 /**
  * Generate a header
@@ -132,12 +132,12 @@
  */
         public static function httpHeaderFor(int $code) : string
         {
-            return 'HTTP/1.1 ' . self::getMessageForCode($code);
+            return 'HTTP/1.1 '.self::getMessageForCode($code);
         }
 /**
  * Return the message part for a code
  *
- * @param int            $code    The code number
+ * @param int  $code    The code number
  *
  * @return string
  */
@@ -154,14 +154,15 @@
  */
         public static function getMessageForCode(int $code) : string
         {
-            return  $code . ' ' . self::getMessage($code);
+            return $code.' '.self::getMessage($code);
         }
 /**
  * Is this an error code?
  *
- * @param int            $code    The code number
+ * @param int  $code    The code number
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isError(int $code) : bool
         {
@@ -170,7 +171,7 @@
 /**
  * Is this a valid code?
  *
- * @param int           $code    The code number
+ * @param int  $code    The code number
  *
  * @return bool
  */
@@ -181,19 +182,16 @@
 /**
  * Can there be a body sent with this return code?
  *
- * @param int            $code    The code number
+ * @param int  $code    The code number
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function canHaveBody(int $code) : bool
         {
-            return
-                // True if not in 100s
-                ($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK)
-                && // and not 204 NO CONTENT
-                $code != self::HTTP_NO_CONTENT
-                && // and not 304 NOT MODIFIED
-                $code != self::HTTP_NOT_MODIFIED;
+            return ($code < self::HTTP_CONTINUE || $code >= self::HTTP_OK) // True if not in 100s
+                && $code != self::HTTP_NO_CONTENT // and not 204 NO CONTENT
+                && $code != self::HTTP_NOT_MODIFIED; // and not 304 NOT MODIFIED
         }
     }
 ?>

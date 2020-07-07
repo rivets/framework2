@@ -3,13 +3,12 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class that contains code to handle any /admin related requests.
  *
@@ -17,11 +16,11 @@
  */
     class Admin extends \Framework\SiteAction
     {
-        const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
-        const VIEWABLE = [FW::TABLE, FW::FORM];
-        const NOTMODEL = [FW::TABLE];
-        const HASH     = 'sha384';
-        
+        private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
+        private const VIEWABLE = [FW::TABLE, FW::FORM];
+        private const NOTMODEL = [FW::TABLE];
+        private const HASH     = 'sha384';
+
         use \Support\NoCache; // don't cache admin pages.
 /**
  * Calculate integrity checksums for local js and css files
@@ -29,6 +28,8 @@
  * @param \Support\Context   $context
  *
  * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function checksum(Context $context) : void
         {
@@ -73,8 +74,8 @@
 /**
  * Edit admin items
  *
- * @param \Support\Context    $context  The Context object
- * @param array     $rest     The rest of the URL
+ * @param Context           $context  The Context object
+ * @param array<string>     $rest     The rest of the URL
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\ParameterCount
@@ -144,8 +145,8 @@
 /**
  * View admin items
  *
- * @param \Support\Context    $context  The Context object
- * @param array     $rest     The rest of the URL
+ * @param Context           $context  The Context object
+ * @param array<string>     $rest     The rest of the URL
  *
  * @return string
  */
@@ -160,7 +161,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Not Viewable');
             }
-            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            if (in_array($kind, self::NOTMODEL))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
@@ -188,12 +189,13 @@
 /**
  * Check for version updates and update config info
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context    $context  The Context object
  *
  * @return string
  */
         private function update(Context $context) : string
         {
+            $doit = $context->formdata()->get('update', 0) == 1;
             $updated = [];
             $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
@@ -204,23 +206,9 @@
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
-                        if ($lval->local == 0)
-                        { // update if not locally set and there is a new value
-                            $change = FALSE;
-                            foreach ($cdata as $k => $v)
-                            {
-                                $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
-                                if ($lval->$k != $v)
-                                {
-                                    $lval->$k = $v;
-                                    $change = TRUE;
-                                }
-                            }
-                            if ($change)
-                            {
-                                \R::store($lval);
-                                $updated[$cname] = $cdata->value;
-                            }
+                        if (($upderr = $lval->doupdate($cdata, $base, $doit)) !== '')
+                        {
+                            $updated[$cname] = $upderr;
                         }
                     }
                     else
@@ -243,6 +231,7 @@
                 $context->local()->addval([
                     'version'   => $upd->version,
                     'updated'   => $updated,
+                    'done'      => $doit,
                     'current'   => trim(file_get_contents($context->local()->makebasepath('version.txt'))),
                 ]);
             }
@@ -253,7 +242,7 @@
  *
  * Remember that if you go offline rather than adminonly you have to remove the file by hand to get back online!
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context   $context    The Context object
  *
  * @return string
  */
@@ -269,7 +258,7 @@
                 $onlyadmin = $fdt->post('onlyadmin', 0);
                 $online = $fdt->post('online', 0);
                 if ($adminonly && ($online || $fdt->post('deladonly', 0) == 1))
-                {   
+                {
                     unlink($adon);
                 }
                 if ($online == 0)
@@ -289,9 +278,9 @@
 /**
  * Handle various admin operations /admin/xxxx
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {
@@ -299,8 +288,8 @@
             $context->setpages(); // most of the pages use pagination so get values if any
             switch ($rest[0])
             {
-            case 'beans':
-                $context->local()->addval('all', $context->hasadmin() && isset($_GET['all']));
+            case 'beans': // Look at the beans in the database
+                $context->local()->addval('all', $context->hasadmin() && $context->formdata()->hasget('all'));
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files
@@ -313,7 +302,7 @@
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';
                 break;
-            case 'edit' : // Edit something - forms, user, pages...
+            case 'edit': // Edit something - forms, user, pages...
                 $tpl = $this->edit($context, $rest);
                 break;
             case 'forms': // show and add forms
@@ -338,10 +327,10 @@
             case 'users': //show and add users
                 $tpl = '@admin/users.twig';
                 break;
-            case 'view' : // view something - forms only at the moment
+            case 'view': // view something - forms only at the moment
                 $tpl = $this->view($context, $rest);
                 break;
-            default :
+            default:
                 $tpl = '@admin/admin.twig';
                 break;
             }

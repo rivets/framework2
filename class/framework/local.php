@@ -3,91 +3,102 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
-    use \Config\Config as Config;
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Framework\Web\Web as Web;
-    use \Framework\Web\StatusCodes as StatusCodes;
+    use \Framework\Web\StatusCodes;
+    use \Framework\Web\Web;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
  * Template rendering is done in here also so TWIG is initialised in this class. This allows TWIG
  * to be used for things like generating nice offline pages.
- *
  */
     class Local
     {
         use \Framework\Utility\Singleton;
 
-        const ERROR     = 0;        # 'fwerrmessage';
-        const WARNING   = 1;        # 'fwwarnmessage';
-        const MESSAGE   = 2;        # 'fwmessage';
+        public const ERROR     = 0;        # 'fwerrmessage';
+        public const WARNING   = 1;        # 'fwwarnmessage';
+        public const MESSAGE   = 2;        # 'fwmessage';
+
+        private static $tellfields = [
+            'REQUEST_URI',
+            'HTTP_REFERER',
+            'HTTP_X_FORWARDED_FOR',
+            'REMOTE_ADDR',
+            'REQUEST_METHOD',
+            'REQUEST_SCHEME',
+            'QUERY_STRING',
+            'HTTP_COOKIE',
+            'HTTP_USER_AGENT',
+        ];
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
-        private  static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
+        private static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
 /**
- * @var	string		The absolute path to the site directory
+ * @var string    The absolute path to the site directory
  */
         private $basepath = '';
 /**
- * @var	string		The name of the site directory
+ * @var string  The name of the site directory
  */
-        private $basedname	= '';
+        private $basedname      = '';
 
 /**
- * @var	bool		If TRUE then ignore trapped errors
+ * @var bool    If TRUE then ignore trapped errors
  */
-        private $errignore	= FALSE;	# needed for checking preg expressions....
+        private $errignore      = FALSE;    # needed for checking preg expressions....
 /**
- * @var	bool		Set to TRUE if an error was trapped and ignored
+ * @var bool    Set to TRUE if an error was trapped and ignored
  */
-        private $wasignored	= FALSE;
+        private $wasignored     = FALSE;
 /**
- * @var array		A list of errors that have been emailed to the user. Only send a message once.
+ * @var array    A list of errors that have been emailed to the user. Only send a message once.
  */
-        private $senterrors	= [];
+        private $senterrors     = [];
 /**
- * @var	bool		If TRUE then we are doing debugging
+ * @var bool    If TRUE then we are doing debugging
  */
-        private $debug		= FALSE;
+        private $debug          = FALSE;
 /**
- * @var bool         If TRUE then we are handling an error
+ * @var bool   If TRUE then we are handling an error
  */
         private $error          = FALSE;
 /**
- * @var	bool		If TRUE then we are in developer mode
+ * @var bool    If TRUE then we are in developer mode
  */
-        private $devel		= FALSE;
+        private $devel          = FALSE;
 /**
- * @var	bool		If TRUE then we are in ajax code and so error reporting is different
+ * @var bool    If TRUE then we are in ajax code and so error reporting is different
  */
-        private $ajax		= FALSE;
+        private $ajax           = FALSE;
 /**
- * @var	array		An array of email addresses for system administrators
+ * @var array<string>    An array of email addresses for system administrators
  */
-        private $sysadmin	= [Config::SYSADMIN];
+        private $sysadmin       = [Config::SYSADMIN];
 /**
- * @var	?object		the Twig renderer
+ * @var ?object    the Twig renderer
  */
-        private $twig		= NULL;
+        private $twig           = NULL;
 /**
- * @var	array		Key/value array of data to pass into template renderer
+ * @var array    Key/value array of data to pass into template renderer
  */
-        private $tvals		= [];
+        private $tvals          = [];
 /**
- * @var array           Stash away messages so that messages.twig works
+ * @var array<array>    Stash away messages so that messages.twig works
  */
         private $messages       = [[], [], []];
 /**
- * @var string          Backtrace info - only used with errors
+ * @var string    Backtrace info - only used with errors
  */
-        private $back       = '';
+        private $back           = '';
 /**
- * @var array           Config values from database
+ * @var array               Config values from database
  */
         private $fwconfig       = [];
 /**
@@ -131,12 +142,12 @@
  */
         public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
         {
-            /** @psalm-suppress RedundantCondition **/
+            /** @psalm-suppress RedundantCondition */
             if (Config::USEPHPM || ini_get('sendmail_path') !== '')
             {
                 try
                 {
-                    $mail = new \Framework\Utility\FMailer;
+                    $mail = new \Framework\Utility\FMailer();
                     $mail->setFrom($other['from'] ?? Config::SITENOREPLY);
                     if (isset($other['replyto']))
                     {
@@ -173,7 +184,7 @@
                     $mail->msgHTML($msg);
                     foreach ($attach as $fl)
                     {
-                        $mail->addAttachment($fl); 
+                        $mail->addAttachment($fl);
                     }
                     return $mail->send() ? '' : $mail->ErrorInfo;
                 }
@@ -187,10 +198,10 @@
 /**
  * Tell sysadmin there was an error
  *
- * @param string	 $msg	An error messager
- * @param int|string $type	An error type
- * @param string 	 $file	file in which error happened
- * @param int    	 $line	Line at which it happened
+ * @param string        $msg    An error messager
+ * @param int|string    $type   An error type
+ * @param string        $file   file in which error happened
+ * @param int           $line    Line at which it happened
  *
  * @return string
  */
@@ -200,7 +211,7 @@
             $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
             $subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
             $origin = $subject.PHP_EOL.PHP_EOL;
-            foreach (['REQUEST_URI', 'HTTP_REFERER', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR', 'REQUEST_METHOD', 'REQUEST_SCHEME', 'QUERY_STRING', 'HTTP_COOKIE', 'HTTP_USER_AGENT'] AS $fld)
+            foreach (self::$tellfields as $fld)
             {
                 if (isset($_SERVER[$fld]))
                 {
@@ -217,7 +228,7 @@
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back .= ob_get_clean(); # will get used later in make500
                 }
-                /** @psalm-suppress RedundantCondition **/
+                /** @psalm-suppress RedundantCondition */
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
                 {
                     $err = $this->sendmail($this->sysadmin, $subject,
@@ -244,7 +255,7 @@
             { # haven't generated any output yet.
                 if ($this->devel || !$this->ajax)
                 { # not in an ajax page so try and send a pretty error
-                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : 'There has been an internal error');
+                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
                     if (!$this->ajax && is_object($this->twig))
                     { # we have twig so render a nice page
                         Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
@@ -290,7 +301,7 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @param \Throwable	$e
+ * @param \Throwable    $e
  */
         public function exceptionHandler(\Throwable $e) : void
         {
@@ -317,10 +328,10 @@
  * However, exception handling is a much much better way of dealing with this kind of thing
  * whenever possible.
  *
- * @param int           $errno
- * @param string	$errstr
- * @param string	$errfile
- * @param int   	$errline
+ * @param int       $errno
+ * @param string    $errstr
+ * @param string    $errfile
+ * @param int       $errline
  *
  * @return bool
  */
@@ -383,7 +394,7 @@
  *
  * @return void
  */
-        public function earlyFail(string $title, string $msg)
+        public function earlyFail(string $title, string $msg) : void
         {
             if (is_object($this->twig))
             { # we have twig so can render a template
@@ -400,9 +411,9 @@
  *
  * This always clears the wasignored flag
  *
- * @param bool       	$ignore	If TRUE then ignore the error otherwise stop ignoring
+ * @param bool    $ignore    If TRUE then ignore the error otherwise stop ignoring
  *
- * @return bool	The last value of the wasignored flag
+ * @return bool    The last value of the wasignored flag
  */
         public function eignore(bool $ignore)
         {
@@ -481,7 +492,7 @@
 /**
  * Initialise twig template engine
  *
- * @param bool       	$cache	if TRUE then enable the TWIG cache
+ * @param bool    $cache    if TRUE then enable the TWIG cache
  *
  * @return void
  */
@@ -547,8 +558,8 @@
 /**
  * Render a twig and return the string - do nothing if the template is the empty string
  *
- * @param string	$tpl	The template
- * @param array	        $vals	Values to set for the twig
+ * @param string    $tpl    The template
+ * @param array     $vals   Values to set for the twig
  *
  * @return string
  */
@@ -566,8 +577,8 @@
 /**
  * Render a twig - do nothing if the template is the empty string
  *
- * @param string	$tpl	The template
- * @param array	        $vals	Values to set for the twig
+ * @param string   $tpl  The template
+ * @param array    $vals Values to set for the twig
  */
         public function render(string $tpl, array $vals = []) : void
         {
@@ -579,9 +590,9 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array	$vname		The name to be used inside the twig or an array of value pairs
- * @param mixed		$value		The value to be stored or "" if an array in param 1
- * @param bool          $tglobal    If TRUE add this as a twig global variable
+ * @param string|array<mixed>   $vname    The name to be used inside the twig or an array of key/value pairs
+ * @param mixed                 $value    The value to be stored or "" if an array in param 1
+ * @param bool                  $tglobal  If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
  *
@@ -628,8 +639,8 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param int   	$kind		The kind of message
- * @param mixed		$value		The value to be stored or an array of values
+ * @param int                   $kind   The kind of message
+ * @param string|array<string>  $value  The value to be stored or an array of values
  *
  * @return void
  */
@@ -719,11 +730,11 @@
  *
  * The $loadrb parameter simplifies some of the unit testing for this class
  *
- * @param string	$basedir	The full path to the site directory
- * @param bool       	$ajax		If TRUE then this is an AJAX call
- * @param bool       	$devel		If TRUE then we are developing the system
- * @param bool       	$loadtwig	if TRUE then load in Twig.
- * @param bool       	$loadrb		if TRUE then load in RedBean
+ * @param string  $basedir    The full path to the site directory
+ * @param bool    $ajax       If TRUE then this is an AJAX call
+ * @param bool    $devel      If TRUE then we are developing the system
+ * @param bool    $loadtwig   If TRUE then load in Twig.
+ * @param bool    $loadrb     If TRUE then load in RedBean
  *
  * @return \Framework\Local
  */
@@ -742,9 +753,9 @@
         //    $bdr = [''];
         //    while ($bd != $_SERVER['DOCUMENT_ROOT'])
         //    { // keep stripping of the last component until we get to the document root
-        //	$pp = pathinfo($bd);
-        //	$bd = $pp['dirname'];
-        //	$bdr[] = $pp['basename'];
+        //        $pp = pathinfo($bd);
+        //        $bd = $pp['dirname'];
+        //        $bdr[] = $pp['basename'];
         //    }
         //    $this->basedname = implode('/', $bdr);
             $this->ajax = $ajax;
@@ -779,7 +790,7 @@
 /*
  * Initialise database access
  */
-            class_alias('\RedBeanPHP\R','\R');
+            class_alias('\RedBeanPHP\R', '\R');
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { # looks like there is a database configured
@@ -798,7 +809,7 @@
                 { # But what do we do?
                     $this->telladmin('Overload', 'Error', 'local.php', 791);
                     $this->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.');
-                    /* NOT REACHED */                 
+                    /* NOT REACHED */
                 }
                 if ($loadtwig)
                 {

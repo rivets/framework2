@@ -6,26 +6,25 @@
  * @copyright 2017-2020 Newcastle University
  */
     namespace Model;
-    
-    use \Framework\SiteAction as SiteAction;
-    use \Support\Context as Context;
+
     use \Config\Framework as FW;
-    use \Framework\Exception\BadValue as BadValue;
+    use \Framework\Dispatch;
+    use \Framework\Exception\BadValue;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
+ * @psalm-suppress UnusedClass
  */
     class Page extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private $roletype = FW::PAGEROLE;
-
-
-        use \ModelExtend\MakeGuard;
-        use \Framework\Support\HandleRole;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'name'          => [TRUE, FALSE],
@@ -41,6 +40,8 @@
         ];
 
         use \ModelExtend\FWEdit;
+        use \Framework\Support\HandleRole;
+        use \ModelExtend\MakeGuard;
 /**
  * Function called when a page bean is updated - do error checking in here
  *
@@ -71,17 +72,18 @@
             {
                 if (!$context->hasuser())
                 { # not logged in
-                    $context->divert('/login?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])));
+                    $context->divert('/login/?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
                 if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
                 { // there are roles to check
-                    $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from '.FW::USER.' as u inner join role as r on u.id = r.'.FW::USER.'_id inner join '.
-                        '(select * from '.FW::PAGEROLE.' where '.FW::PAGE.'_id=?) as p on p.'.FW::ROLENAME.'_id = r.'.FW::ROLENAME.
+                    $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from '.FW::USER.
+                        ' as u inner join role as r on u.id = r.'.FW::USER.'_id inner join (select * from '.
+                        FW::PAGEROLE.' where '.FW::PAGE.'_id=?) as p on p.'.FW::ROLENAME.'_id = r.'.FW::ROLENAME.
                         '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
                     if (!$match ||                                          // User does not have all the required roles
-                        ($this->bean->mobileonly && !$context->hastoken()))	// not mobile and logged in
+                        ($this->bean->mobileonly && !$context->hastoken())) // not mobile and logged in
                     {
                         $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                         exit;
@@ -122,7 +124,7 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd,'{# Uncomment this if your page uses AJAX
+                    fwrite($fd, '{# Uncomment this if your page uses AJAX
 {% set ajax = TRUE %}
 #}
 
@@ -217,13 +219,13 @@
                     fclose($fd);
                 }
             }
-       }
+        }
 /**
  * Add a Page
  *
  * This will be called from ajax.php
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return \RedBeanPHP\OODBBean
  */
@@ -264,7 +266,7 @@
                 $local = $context->local();
                 switch ($p->kind)
                 {
-                case SiteAction::OBJECT:
+                case Dispatch::OBJECT:
                     if (!preg_match('/\\\\/', $p->source))
                     { # no namespace so put it in \Pages
                         $p->source = '\\Pages\\'.$p->source;
@@ -286,10 +288,11 @@
 /**
  * A class that contains code to handle any requests for  /'.$p->name.'/
  */
-     namespace '.$namespace.';
+    namespace '.$namespace.';
 
-     use \\Support\\Context as Context;
-     use \\Config\\Config as Config;
+    use \\Config\\Config as Config;
+    use \\Support\\Context as Context;
+    use \R as R;
 /**
  * Support /'.$p->name.'/
  */
@@ -298,9 +301,9 @@
 /**
  * Handle '.$p->name.' operations
  *
- * @param object	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {
@@ -313,7 +316,7 @@
                     }
                     self::maketwig($context, $p->name, '@content/'.$lbase.'.twig');
                     break;
-                case SiteAction::TEMPLATE:
+                case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
                     { # add .twig to name
                         $p->source .= '.twig';
@@ -325,10 +328,10 @@
                     }
                     self::maketwig($context, $p->name, $p->source);
                     break;
-                case SiteAction::REDIRECT:
-                case SiteAction::REHOME:
-                case SiteAction::XREDIRECT:
-                case SiteAction::XREHOME:
+                case Dispatch::REDIRECT:
+                case Dispatch::REHOME:
+                case Dispatch::XREDIRECT:
+                case Dispatch::XREHOME:
                     break;
                 }
                 return $p;
@@ -342,9 +345,10 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context  The context object
- * 
+ * @param Context    $context  The context object
+ *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -352,7 +356,7 @@
 /**
  * Handle an edit form for this page
  *
- * @param \Support\Context   $context    The context object
+ * @param Context   $context    The context object
  *
  * @return array [TRUE if error, [error messages]]
  */

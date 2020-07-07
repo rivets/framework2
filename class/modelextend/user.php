@@ -6,11 +6,10 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2020 Newcastle University
- *
  */
     namespace ModelExtend;
-    
-    use \Support\Context as Context;
+
+    use \Support\Context;
 /**
  * User table stores info about users of the system
  */
@@ -37,9 +36,10 @@
  *
  * Returns an array of error messages or an empty array if OK
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
- * @return array
+ * @return array<string>
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function register($context) : array
         {
@@ -49,11 +49,12 @@
  * Called from the "add" function when a new user is created.
  * This allows you to do any extra operations that you want to when a user is added
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function addData(Context $context) :void
+        public function addData(Context $context) : void
         {
         }
 /**

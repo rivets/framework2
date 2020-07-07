@@ -3,78 +3,27 @@
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
-    use \Framework\Web\Web as Web;
-    use \Framework\Web\StatusCodes as StatusCodes;
-    use \Support\Context as Context;
+    use \Framework\Web\StatusCodes;
+    use \Framework\Web\Web;
+    use \Support\Context;
 /**
  * A class that all provides a base class for any class that wants to implement a site action
  *
  * Common functions used across the various sub-classes should go in here
- *
- * The constants are used in index.php to indicate how a particular URL should be handled
  */
     abstract class SiteAction
     {
-/*
- * Indicates that there is an Object that handles the call
- */
-        const OBJECT	= 1;
-/*
- * Indicates that there is only a template for this URL.
- */
-        const TEMPLATE	= 2;
-/*
- * Indicates that the URL should be temporarily redirected - 32
- */
-        const REDIRECT	= 3;
-/*
- * Indicates that the URL should be permanent redirected - 301
- */
-        const REHOME	= 4;
-/*
- * Indicates that the URL should be permanently redirected - 302
- */
-        const XREDIRECT	= 5;
-/*
- * Indicates that the URL should be temporarily redirected -301
- */
-        const XREHOME	= 6;
-/*
- * Indicates that the URL should be temporarily redirected - 303
- */
-        const YREDIRECT	= 7;
-/*
- * Indicates that the URL should be temporarily redirected - 303
- */
-        const YREHOME	= 8;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const ZREDIRECT	= 9;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const ZREHOME	= 10;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const AREDIRECT	= 11;
-/*
- * Indicates that the URL should be temporarily redirected - 307
- */
-        const AREHOME	= 12;
-
         use \Support\SiteAction;
 /**
  * Handle an action
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
- * @return string|array	A template name or an array [template name, mimetype, HTTP code]
+ * @return string|array     A template name or an array [template name, mimetype, HTTP code]
  *
  * @psalm-suppress InvalidReturnType
  */
@@ -110,7 +59,7 @@
  *
  * @return void
  */
-	public function ifmodcheck(Context $context) : void
+        public function ifmodcheck(Context $context) : void
         {
             $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
             if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
@@ -192,7 +141,7 @@
 /**
  * Format a time suitable for Last-Modified header
  *
- * @param int 	$time	The last modified time
+ * @param int   $time    The last modified time
  *
  * @return string
  */
@@ -229,13 +178,14 @@
  *
  * @todo This function could do a lot moreabout checking things....
  *
- * @param array    $rest
- * @param int      $start    The element to start at
- * @param int      $num      The number of params required
- * @param array    $format   Currently not used
+ * @param array<string>     $rest
+ * @param int               $start    The element to start at
+ * @param int               $num      The number of params required
+ * @param array             $format   Currently not used
  *
  * @throws \Framework\Exception\ParameterCount
- * @return array
+ * @return array<string>
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkRest(array $rest, int $start, int $num, $format = [])
         {

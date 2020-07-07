@@ -4,15 +4,15 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University
- *
  */
     namespace Support;
+
 /**
  * Utility class that returns generally useful information about parts of the site
  * The parent class (\Framework\SiteInfo) contains a set of functions that are used by the
  * admin pages of the site. q.v. for the utility functions it provides
  */
-    class SiteInfo extends \Framework\Support\SiteInfo
+    final class SiteInfo extends \Framework\Support\SiteInfo
     {
 /**
  * Any functions that you need for general site information go here.

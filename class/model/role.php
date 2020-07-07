@@ -4,11 +4,10 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2020 Newcastle University
- *
  */
     namespace Model;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Role beans
  */
@@ -17,20 +16,22 @@
 /**
  * Return rolename object
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolename() : ?object
+        public function rolename() : \RedBeanPHP\OODBBean
         {
-	    return $this->bean->rolename;
+            return $this->bean->rolename;
         }
 /**
  * Return rolecontext object
  *
- * @return object
+ * @return \RedBeanPHP\OODBBean
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolecontext() : ?object
+        public function rolecontext() : \RedBeanPHP\OODBBean
         {
-	    return $this->bean->rolecontext;
+            return $this->bean->rolecontext;
         }
 /**
  * Fixes up start values
@@ -41,7 +42,7 @@
  */
         private function checkstart(string $start) : string
         {
-            return ($start === '' || strtolower($start) == 'now') ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
+            return $start === '' || strtolower($start) == 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
 /**
  * Fixes up end values
@@ -52,21 +53,22 @@
  */
         private function checkend(string $end) : ?string
         {
-            return ($end === '' || strtolower($end) == 'never') ? NULL : Context::getinstance()->utcdate($end);
+            return $end === '' || strtolower($end) == 'never' ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
  * Update - called when a rolename bean is stored
  *
  * @throws \Framework\Exception\BadValue
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function update() : void
         {
             $this->bean->start = $this->checkstart($this->bean->start);
             $this->bean->end = $this->checkend($this->bean->end);
-            if ($this->bean->end !== '' && $this->bean->start > $this->bean->end)
+            if (!empty($this->bean->end) && $this->bean->start > $this->bean->end)
             {
-                throw new \Framework\Exception\BadValue('Start > End');
+                throw new \Framework\Exception\BadValue('Start > End ');
             }
         }
 /**
@@ -74,11 +76,12 @@
  * i.e. start < now < end (if end has a value)
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
-        public function valid()
+        public function valid() : bool
         {
             $now = Context::getinstance()->utcnow();
-            return $this->bean->start <= $now && ($this->bean->end === '' || $now <= $this->bean->end);
+            return $this->bean->start <= $now && (!empty($this->bean->end) || $now <= $this->bean->end);
         }
     }
 ?>

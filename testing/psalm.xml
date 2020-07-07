@@ -10,13 +10,15 @@
         <file name="devel/phpmmock.php" />
         <file name="devel/redmock.php" />
         <file name="devel/r.php" />
+
         <file name="class/config/framework.php" />
         <file name="class/framework/ajax.php" />
         <file name="class/framework/context.php" />
         <file name="class/framework/dispatch.php" />
-        <file name="class/framework/handlerole.php" />
         <file name="class/framework/local.php" />
         <file name="class/framework/siteaction.php" />
+
+        <file name="class/framework/ajax/beanlog.php" />
 
         <file name="class/framework/exception/badoperation.php" />
         <file name="class/framework/exception/badvalue.php" />
@@ -32,9 +34,11 @@
         <file name="class/framework/pages/developer.php" />
         <file name="class/framework/pages/getfile.php" />
         <file name="class/framework/pages/userlogin.php" />
+
         <file name="class/framework/support/debug.php" />
         <file name="class/framework/support/faiterator.php" />
         <file name="class/framework/support/formdata.php" />
+        <file name="class/framework/support/handlerole.php" />
         <file name="class/framework/support/siteinfo.php" />
         <file name="class/framework/support/table.php" />
 
@@ -85,6 +89,11 @@
         <file name="index.php" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="install" />
+            <directory name="testing" />
+            <file name="devel/hack.php" />
+            <file name="devel/testautoload.php" />
+            <file name="install.php" />
         </ignoreFiles>
     </projectFiles>
 

@@ -4,12 +4,11 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University
- *
  */
     namespace Framework\Support;
 
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -17,7 +16,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var string[]  A list of the Framework DB tables
+ * @var array<string>  A list of the Framework DB tables
  */
         protected static $fwtables = [
             FW::CONFIG,
@@ -37,7 +36,7 @@
         protected $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
- * 
+ *
  * @psalm-suppress PropertyTypeCoercion
  */
         protected function __construct()
@@ -202,15 +201,16 @@
         }
 /**
  * Get all users with a particular context/role
- * @param mixed     $rolecontext
- * @param mixed     $rolename
- * @param bool      $all            If TRUE do not check if role is currentyl active
- * @param int       $start      Start position - used for pagination
- * @param int       $count      The number to be fetched - used for pagination
- * @param string    $order      An order clause
- * @param bool      $collect    If TRUE then use collect not fetch
+ * @param string|\RedBeanPHP\OODBBean   $rolecontext
+ * @param string|\RedBeanPHP\OODBBean   $rolename
+ * @param bool                          $all        If TRUE do not check if role is currentyl active
+ * @param int                           $start      Start position - used for pagination
+ * @param int                           $count      The number to be fetched - used for pagination
+ * @param string                        $order      An order clause
+ * @param bool                          $collect    If TRUE then use collect not fetch
  *
  * @return array
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -253,6 +253,7 @@
  * @param string $table
  *
  * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isFWTable(string $table) : bool
         {
@@ -262,6 +263,7 @@
  * Number of tables
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public static function tablecount(bool $all = FALSE) : int
         {
@@ -274,6 +276,7 @@
  * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
  *
  * @return array
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
         {
@@ -296,11 +299,12 @@
  * @param array     $pars
  *
  * @return int
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function pagecount(string $table, int $pagesize, string $where = '', array $pars = []) : int
         {
             $count = \R::count($table, $where, $pars);
-            return (int) floor((($count % $pagesize > 0) ? ($count + $pagesize) : $count) / $pagesize);
+            return (int) floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
 ?>

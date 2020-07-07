@@ -4,23 +4,25 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2013-2020 Newcastle University
- *
  */
     namespace Model;
 
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for User beans
+ * @psalm-suppress UnusedClass
  */
     class User extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private $roletype = FW::ROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'email'     => [TRUE, FALSE],         # [NOTEMPTY]
@@ -33,10 +35,9 @@
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -70,11 +71,8 @@
                 $u->addData($context);
                 return $u;
             }
-            else
-            {
-                // bad password return
-                throw new \Framework\Exception\BadValue('Invalid Password');
-            }
+            // bad password return
+            throw new \Framework\Exception\BadValue('Invalid Password');
         }
 /**
  * Is this user an admin?
@@ -115,7 +113,7 @@
 /**
  * Set the user's password
  *
- * @param string	$pw	The password
+ * @param string    $pw The password
  *
  * @return void
  */
@@ -127,7 +125,7 @@
 /**
  * Check a password
  *
- * @param string	$pw The password
+ * @param string    $pw The password
  *
  * @return bool
  */
@@ -153,20 +151,23 @@
  * @param string    $device     Currently not used!!
  *
  * @return string
+ * @psalm-suppress UnusedVariable
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-	public function maketoken(string $url, string $device = '') : string
-	{
-	    $token = (object)['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
-        /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
-	    return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
-	}
+        public function maketoken(string $url, string $device = '') : string
+        {
+            $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
+            /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
+            return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
+        }
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context   The context object
+ * @param Context    $context   The context object
  * @param array               $rest      Any other values from the URL
- * 
+ *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -174,9 +175,9 @@
 /**
  * Handle an edit form for this user
  *
- * @param \Support\Context   $context    The context object
+ * @param Context   $context    The context object
  *
- * @return  array   [TRUE if error, [error messages]]
+ * @return array   [TRUE if error, [error messages]]
  */
         public function edit(Context $context) : array
         {
@@ -186,7 +187,7 @@
             $pw = $fdt->post('pw', '');
             if ($pw !== '')
             {
-                if ($pw == $fdt->post('rpw', ''))
+                if ($pw === $fdt->post('rpw', ''))
                 {
                     $this->setpw($pw); // setting the password will do a store
                 }

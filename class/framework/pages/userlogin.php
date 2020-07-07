@@ -3,18 +3,17 @@
  * Definition of Userlogin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
 
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Config\Config as Config;
-    use \Framework\Local as Local;
-    use \Support\Context as Context;
-    use \R as R;
+    use \Framework\Local;
+    use \R;
+    use \Support\Context;
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
- *
  */
     class UserLogin extends \Framework\SiteAction
     {
@@ -22,9 +21,9 @@
 /**
  * Find a user based on either a login or an email address
  *
- * @param string	$lg     A username or email address
+ * @param string  $lg   A username or email address
  *
- * @return ?\RedBeanPHP\OODBBean	The user or NULL
+ * @return ?\RedBeanPHP\OODBBean    The user or NULL
  */
         private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
@@ -33,9 +32,9 @@
 /**
  * Make a confirmation code and store it in the database
  *
- * @param \Support\Context	$context The context bean
- * @param object	$bn	 A User bean
- * @param string	$kind
+ * @param Context   $context The context bean
+ * @param object    $bn A User bean
+ * @param string    $kind
  *
  * @return string
  */
@@ -54,8 +53,8 @@
 /**
  * Mail a confirmation code
  *
- * @param \Support\Context	$context The context object
- * @param object	$bn	 A User bean
+ * @param Context   $context    The context object
+ * @param object    $bn         A User bean
  *
  * @return void
  */
@@ -72,8 +71,8 @@
 /**
  * Mail a password reset code
  *
- * @param \Support\Context	$context The context object
- * @param object	$bn	 A User bean
+ * @param Context  $context     The context object
+ * @param object   $bn          A User bean
  *
  * @return void
  */
@@ -90,11 +89,11 @@
 /**
  * Handle a login
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
  * @uses \Support\Login
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function login(Context $context) : string
         {
@@ -113,9 +112,9 @@
 /**
  * handle a registration
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function register(Context $context) : string
         {
@@ -159,16 +158,7 @@
                         $rerr = $x->register($context); // do any extra registration
                         if (empty($rerr))
                         {
-                            if ($context->constant('CONFEMAIL', FALSE))
-                            {
-                                $this->sendconfirm($context, $x);
-                                $context->local()->addval('regok', 'A confirmation link has been sent to your email address.');
-                            }
-                            else
-                            {
-                                $x->confirm = 1;
-                                R::store($x);
-                            }
+                            $this->confmessage($context, $x);
                         }
                         else
                         { // extra registration failed
@@ -185,19 +175,41 @@
                 {
                     $context->local()->message(Local::ERROR, $errmess);
                 }
-                else
-                {
-                    $context->divert('/login/');
-                }
             }
             return '@content/register.twig';
         }
 /**
+ * Handle confirmation
+ *
+ * @internal
+ *
+ * @param Context            $context
+ * @param \RedBean\OODBBean  $user
+ *
+ * @return void
+ */
+        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user)
+        {
+            if ($context->constant('CONFEMAIL', FALSE))
+            {
+                $this->sendconfirm($context, $user);
+                $msg = 'A confirmation link has been sent to your email address';
+            }
+            else
+            {
+                $user->confirm = 1;
+                R::store($user);
+                $msg = 'You have been registered on the system';
+            }
+            $context->local()->message(Local::MESSAGE, $msg);
+            $context->local()->addval('regok', TRUE);
+        }
+/**
  * Handle things to do with email address confirmation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function confirm(Context $context) : string
         {
@@ -256,9 +268,9 @@
 /**
  * Handle things to do with password reset
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function forgot(Context $context) : string
         {
@@ -349,9 +361,9 @@
 /**
  * Handle /login /logout /register /forgot /confirm
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

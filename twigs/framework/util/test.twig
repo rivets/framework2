@@ -1,0 +1,24 @@
+{% extends '@content/page.twig' %}
+
+{% block header %}
+    <section class="col-md-4 mr-auto">
+        <h1>Test/Tester Access Only</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-8 mr-auto">
+            {% if context.hasuser  and context.user.hasrole('Test', 'Tester') %}
+                <p>You are logged in as the  tester.</p>
+            {% else %}
+                <p>If you can see this then the page access permission checking system is not working!</p>
+                <p>Please report this to <a href="https://catless.ncl.ac.uk/framework/support/">the Developer</a>.</p>
+            {% endif %}
+            <p>Go <a href="{{base}}/">home</a></p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

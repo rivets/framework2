@@ -4,22 +4,22 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2019 Newcastle University
- *
  */
     namespace Pages;
 
-    use Support\Context as Context;
+    use \Support\Context;
 /**
  * Provide support for a nested static page structure
+ * @psalm-suppress UnusedClass
  */
     class Multi extends \Framework\SiteAction
     {
 /**
  * Handles static pages that are nested in depth /multi/level/page
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {

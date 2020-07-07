@@ -32,9 +32,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
  */
     namespace Framework\Utility;
+
 /**
  * The singleton trait
  */
@@ -44,7 +44,7 @@
  * The only instance of using class
  * @var object
  */
-        protected static $_instance = NULL;
+        protected static $instance = NULL;
 /**
  * Checks, instantiates and returns the only instance of the using class.
  *
@@ -58,11 +58,11 @@
  */
         public static function getinstance() : object
         {
-            if (!(static::$_instance instanceof static)) // cannot get this to work with namespaces for some reason
+            if (!(static::$instance instanceof static)) // cannot get this to work with namespaces for some reason
             {
-                static::$_instance = new static();
+                static::$instance = new static(); // @phpstan-ignore-line
             }
-            return static::$_instance;
+            return static::$instance;
         }
 /**
  * Class constructor. The concrete class using this trait can override it.
@@ -86,7 +86,7 @@
  * @internal
  * @throws \Framework\Exception\InternalError
  */
-        public function __sleep()
+        public function __sleep() : void
         {
             throw new \Framework\Exception\InternalError('Cannot serialize Singleton objects');
         }
@@ -94,10 +94,10 @@
  * Returns the only instance if is called as a function
  *
  * @internal
- * 
+ *
  * @template object
  * @psalm-return object
- * 
+ *
  * @return object
  */
         public function __invoke()

@@ -3,28 +3,31 @@
  * A model class for the RedBean object Form
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016 Newcastle University
- *
+ * @copyright 2016-2020 Newcastle University
  */
     namespace Model;
-    use Support\Context as Context;
+
+    use \Config\Config;
     use \Config\Framework as FW;
-    use \Config\Config as Config;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Form beans
+ * @psalm-suppress UnusedClass
  */
     class Form extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var string[] METHOD options for forms
+ * @var array<string> METHOD options for forms
  */
         private static $methods     = ['', 'GET', 'POST'];
 /**
- * @var string[] Attributes for inputs
+ * @var array<string> Attributes for inputs
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $attributes  = ['type', 'class', 'name', 'placeholder'];
 /**
- * @var array   Key is name of field and the array contains flags for checks
+ * @var array<array<bool>>   Key is name of field and the array contains flags for checks
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'name'            => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
@@ -73,7 +76,7 @@
 /**
  * Return the form's fields
  *
- * @return array
+ * @return array<string>
  */
         public function fields() : array
         {
@@ -84,7 +87,7 @@
  *
  * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
  *
- * @return array
+ * @return array<array<string>>
  */
         public function sequence() : array
         {
@@ -130,10 +133,11 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context The context object
- * @param array    $rest     Not used here at the moment
- * 
+ * @param Context           $context The context object
+ * @param array<string>     $rest     Not used here at the moment
+ *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
         {
@@ -178,10 +182,12 @@
 /**
  * View a form
  *
- * @param \Support\Context $context
- * @param array $rest
+ * @param Context           $context
+ * @param array<string>     $rest
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedParameter
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function view(Context $context, array $rest) : void
         {
@@ -189,8 +195,8 @@
 /**
  * Render a form
  *
- * @param array    $values Values to enter into form
- * @param bool  $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
+ * @param array     $values Values to enter into form
+ * @param bool      $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
  *
  * @return string
  */
@@ -200,9 +206,9 @@
             {
                 $form = '<form action="'.
                     ($this->bean->action === '' ? '#' : $this->bean->action).'" '.
-                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').' '.
-                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').' '.
-                    'method="'.self::$methods[$this->bean->method].'"'.
+                    ($this->bean->class !== '' ? (' class="'.$this->bean->class.'"') : '').
+                    ($this->bean->idval !== '' ? (' id="'.$this->bean->idval.'"') : '').
+                    ' method="'.self::$methods[$this->bean->method].'"'.
                     ($this->bean->multipart ? ' enctype="multipart/form-data"' : '').
                     ' role="form">'.PHP_EOL;
             }
@@ -232,6 +238,8 @@
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = '<label'.$fld->fieldAttr('', FALSE).'>'.$fld->label.'</label>'; // make the label
                     array_shift($flds); // pop off the label- the rest will be checkboxes or radios
+
+                    /* FALLTHROUGH */
                 case 'checkbox':
                 case 'radio':
                     $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
@@ -253,7 +261,7 @@
                     {
                         $form .= $this->doOption($option);
                     }
-                    /** @psalm-suppress TypeDoesNotContainType **/
+                    /** @psalm-suppress TypeDoesNotContainType */
                     if ($this->optgroup)
                     { # close any open optgroup
                         $form .= '</optgroup>';
@@ -263,15 +271,16 @@
                 case 'textarea':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
-                case 'recaptcha' :
-                    /** @psalm-suppress UndefinedConstant **/
+                case 'recaptcha':
+                    /** @psalm-suppress UndefinedConstant */
                     if (Config::RECAPTCHA != 0)
                     {
                         $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
                         break;
                     }
-            /********* FALLTHROUGH ********* when there is no recaptcha */
-                case 'submit' :
+
+                    /* FALLTHROUGH when there is no recaptcha */
+                case 'submit':
                 case 'button':
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
@@ -289,12 +298,12 @@
             {
                 $form .= '</fieldset>';
             }
-            return ($noform || $this->bean->method == 0) ? $form : ($form.'</form>');
+            return $noform || $this->bean->method == 0 ? $form : $form.'</form>';
         }
 /**
  * handle an option
  *
- * @param mixed $option
+ * @param object|array  $option
  *
  * @return string
  */
@@ -346,21 +355,21 @@
  *
  * @param string $value
  * @param string $text
- * @param boolean $selected
- * @param boolean $disabled
+ * @param bool   $selected
+ * @param bool   $disabled
  *
  * @return string
  */
         private function mkOption($value, $text, $selected, $disabled) : string
         {
-            return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected? ' selected="selected"' : '').'>'.$text.'</option>';
+            return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected ? ' selected="selected"' : '').'>'.$text.'</option>';
         }
 /**
  * Add a new form, called when adding a new form via ajax
  *
  * @see Framework\Ajax::bean
  *
- * @param \Support\Context    $context  The context object
+ * @param Context    $context  The context object
  *
  * @return \RedBeanPHP\OODBBean
  */

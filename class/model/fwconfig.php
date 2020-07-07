@@ -3,19 +3,21 @@
  * A model class for the RedBean object FWConfig
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
- *
+ * @copyright 2018-2020 Newcastle University
  */
     namespace Model;
-    use Support\Context as Context;
+
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
+ * @psalm-suppress UnusedClass
  */
     class FWConfig extends \RedBeanPHP\SimpleModel
     {
 /**
- * @var array   Key is name of field and the array contains flags for checks
+ * @var array<array<bool>>   Key is name of field and the array contains flags for checks
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
             'value'       => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
@@ -33,7 +35,6 @@
  * @param string   $type   For error message
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return void
  */
         public function checkURL(string $type) : void
@@ -94,7 +95,6 @@
  * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- *
  * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -120,18 +120,19 @@
  * Setup for an edit
  *
  * @param \Support\Context    $context   The context object
- * 
+ *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context) : void
         {
         }
 /**
  * Return the CSRFGuard inputs for inclusion in a form;
- * 
+ *
  * @return string
  */
-        public function guard() :string
+        public function guard() : string
         {
             return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
@@ -146,6 +147,41 @@
         {
             $emess = $this->dofields($context->formdata());
             return [!empty($emess), $emess];
+        }
+/**
+ * Handle an update from the page updater
+ *
+ * @param object $cdata  Update values from the json updater
+ *
+ * @return void
+ */
+        public function doupdate(object $cdata, string $base, bool $doit) : string
+        {
+            if ($this->bean->local == 0)
+            { // update if not locally set and there is a new value
+                $change = FALSE;
+                foreach ($cdata as $k => $v)
+                {
+                    $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
+                    if ($this->bean->$k != $v)
+                    {
+                        if ($doit)
+                        {
+                            $this->bean->$k = $v;
+                        }
+                        $change = TRUE;
+                    }
+                }
+                if ($change)
+                {
+                    if ($doit)
+                    {
+                        \R::store($this->bean);
+                    }
+                    return $cdata->value;
+                }
+            }
+            return '';
         }
     }
 ?>

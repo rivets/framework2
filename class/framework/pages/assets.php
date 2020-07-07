@@ -3,33 +3,30 @@
  * Handle assets access if that is what is wanted
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2019 Newcastle University
- *
+ * @copyright 2016-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Framework\Web\Web as Web;
-    use \Support\Context as Context;
-
+    use \Support\Context;
 /**
  * Handle all the cacheing stuff and maybe return a file
  */
     class Assets extends \Framework\SiteAction
     {
-/** @var string	The file name */
+/** @var string The file name */
         private $file = '';
-/** @var int	Last modified time for the file */
+/** @var int    Last modified time for the file */
         private $mtime = 0;
-/** @var array Mime type values */
+/** @var array<string> Mime type values */
         private static $mtypes = [
             ''      => 'text/plain',
-            'css'	=> 'text/css',
-            'js'	=> 'text/javascript',
-            'png'	=> 'image/png',
-            'jpg'	=> 'image/jpeg',
-            'jpeg'	=> 'image/jpeg',
-            'gif'	=> 'image/gif',
-            'ico'	=> 'image/x-icon',
+            'css'   => 'text/css',
+            'js'    => 'text/javascript',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpeg',
+            'jpeg'  => 'image/jpeg',
+            'gif'   => 'image/gif',
+            'ico'   => 'image/x-icon',
         ];
 /**
  * Handle access to things in assets
@@ -38,14 +35,14 @@
  * you really want to get cacheability to be complete you either have to go through hoops
  * in the Apache config or you code it in here!
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
- * @return string	A template name
+ * @return string   A template name
  */
         public function handle(Context $context)
         {
             chdir($context->local()->assetsdir());
-    
+
             $rest = $context->rest();
             $this->file = implode(DIRECTORY_SEPARATOR, $rest);
             $this->mtime = filemtime($this->file);
@@ -80,10 +77,10 @@
             $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([
-//              'Last-Modified'	=> $this->makemod($this->mtime),
-                'Etag'		=> '"'.$this->makeetag($context).'"',
-                'Expires'	=> $this->makemod(time()+$mag),
-                'Cache-Control'	=> 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
+//              'Last-Modified' => $this->makemod($this->mtime),
+                'Etag'          => '"'.$this->makeetag($context).'"',
+                'Expires'       => $this->makemod(time()+$mag),
+                'Cache-Control' => 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
             ]);
             $this->ifmodcheck($context);
             $web->sendfile($this->file, $fname, $mime);
@@ -92,46 +89,48 @@
 /**
  * Make an etag - overrides the function in SiteAction
  *
- * @param \Support\Context    $context   The context object for the site
+ * @param Context   $context   The context object for the site
  *
  * @return string
  */
         public function makeetag(Context $context) : string
         {
-            return sprintf("%u", crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
+            return sprintf('%u', crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
  * Check an etag to see if we need to send the page again or not.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$tag	The etag value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $tag        The etag value to check
  *
  * @return bool
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return substr($tag, 0, -1) == substr($this->makeetag($context), 0, -1);
+            return substr($tag, 0, -1) === substr($this->makeetag($context), 0, -1);
         }
 /**
  * Make a maximum age - overrides function in SiteAction
  *
  * An hour for the most recent volume and a year for everything else
  *
- * @param \Support\Context    $context   The context object for the site
+ * @param Context    $context   The context object for the site
  *
- * @return integer
+ * @return int
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
         {
-            return 3600*24*365; # make it a year
+            return 3600*24*365; // make it a year
         }
 /**
  * Check a timestamp to see if we need to send the page again or not - overriding method in SiteAction
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$time	The time value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
  *
- * @return boolean
+ * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {

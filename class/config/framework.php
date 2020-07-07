@@ -10,33 +10,36 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2019 Newcastle University
+ * @copyright 2015-2020 Newcastle University
  */
     namespace Config;
+
 /**
  * Class for doing initial setup of the Framework.
  */
-    class Framework
+    final class Framework
     {
-        const DBPREFIX	    = '';
-        const FWCONTEXT	    = self::DBPREFIX.'Site';
-        const TESTCONTEXT	= self::DBPREFIX.'Test';
-        const ADMINROLE	    = self::DBPREFIX.'Admin';
-        const DEVELROLE	    = self::DBPREFIX.'Developer';
-        const TESTROLE	    = self::DBPREFIX.'Tester';
-        const CONFIG	    = self::DBPREFIX.'fwconfig';
-        const CONFIRM	    = self::DBPREFIX.'confirm';
-        const FORM	        = self::DBPREFIX.'form';
-        const FORMFIELD	    = self::DBPREFIX.'formfield';
-        const PAGE	        = self::DBPREFIX.'page';
-        const PAGEROLE      = self::DBPREFIX.'pagerole';
-        const ROLE	        = self::DBPREFIX.'role';
-        const ROLECONTEXT	= self::DBPREFIX.'rolecontext';
-        const ROLENAME	    = self::DBPREFIX.'rolename';
-        const TABLE	        = self::DBPREFIX.'table';
-        const TEST	        = self::DBPREFIX.'fwtest';
-        const USER	        = self::DBPREFIX.'user';
-
+/*
+ * Constants that are used to get the names of the Framework's internal tables
+ */
+        public const DBPREFIX = '';
+        public const FWCONTEXT = self::DBPREFIX.'Site';
+        public const TESTCONTEXT = self::DBPREFIX.'Test';
+        public const ADMINROLE = self::DBPREFIX.'Admin';
+        public const DEVELROLE = self::DBPREFIX.'Developer';
+        public const TESTROLE = self::DBPREFIX.'Tester';
+        public const CONFIG = self::DBPREFIX.'fwconfig';
+        public const CONFIRM = self::DBPREFIX.'confirm';
+        public const FORM = self::DBPREFIX.'form';
+        public const FORMFIELD = self::DBPREFIX.'formfield';
+        public const PAGE = self::DBPREFIX.'page';
+        public const PAGEROLE = self::DBPREFIX.'pagerole';
+        public const ROLE = self::DBPREFIX.'role';
+        public const ROLECONTEXT = self::DBPREFIX.'rolecontext';
+        public const ROLENAME = self::DBPREFIX.'rolename';
+        public const TABLE = self::DBPREFIX.'table';
+        public const TEST = self::DBPREFIX.'fwtest';
+        public const USER = self::DBPREFIX.'user';
 /**
  * Initialise some standard things for any invocation of a page
  *
@@ -44,21 +47,21 @@
  */
         public static function initialise() : void
         {
-            error_reporting(E_ALL|E_STRICT);
+            error_reporting(E_ALL | E_STRICT);
 /*
  * Setup the autoloader
  */
-            $dir = dirname(dirname(__DIR__));
-            /** @psalm-suppress UnusedFunctionCall **/
+            $dir = dirname(__DIR__, 2);
+            /** @psalm-suppress UnusedFunctionCall */
             set_include_path(
                 implode(PATH_SEPARATOR, [
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
                     implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
-                    get_include_path()
+                    get_include_path(),
                 ])
             );
-            /** @psalm-suppress UnusedFunctionCall **/
+            /** @psalm-suppress UnusedFunctionCall */
             spl_autoload_extensions('.php');
             spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */

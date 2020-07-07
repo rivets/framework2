@@ -9,7 +9,7 @@
         <file name="devel/redmock.php" />
         <file name="devel/r.php" />
 
-        <file name="class/framework/siteaction.php"/>
+        <file name="class/framework/dispatch.php"/>
 
         <file name="install/errors/composer.php" />
         <file name="install/errors/noredbean.php" />
@@ -22,6 +22,7 @@
             <directory name="vendor" />
             <directory name="class" />
             <directory name="devel" />
+            <directory name="testing" />
         </ignoreFiles>
     </projectFiles>
 

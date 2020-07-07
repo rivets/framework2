@@ -4,13 +4,13 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2020 Newcastle University
- *
  */
     namespace Framework\Support;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * A class Table object
+ * @psalm-suppress UnusedClass
  */
     class Table
     {
@@ -35,9 +35,52 @@
             $this->table = $name;
         }
 /**
+ * Process new bean
+ *
+ * @internal
+ * @param Context   $context    The context object
+ * @param string    $bean       The bean type
+ *
+ * @return void
+ */
+        private static function makebean(Context $context, string $bean) : void
+        {
+            $fk = [];
+            $fd = $context->formdata();
+            $bn = \R::dispense($bean);
+            foreach ($fd->posta('field') as $ix => $field)
+            {
+                if ($field !== '')
+                {
+                    if (preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
+                    { # this is a special case for foreign keys
+                        $fkbn = \R::dispense($m[1]); // make a bean of the required type
+                        \R::store($fkbn);
+                        $bn->{$field} = $fkbn;
+                        $fk[] = $fkbn;  // remember this bean as it needs to be deleted later - see below
+                    }
+                    elseif (!preg_match('/^[a-z][a-z0-9]*/', $field))
+                    {
+                        $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
+                    }
+                    else
+                    {
+                        $bn->{$field} = $fd->post(['sample', $ix], '');
+                    }
+                }
+            }
+            \R::store($bn);
+            \R::exec('truncate '.$bean); // clean out the table
+            if (!empty($fk))
+            { # get rid of any extra beans we created for foreign keys
+                \R::trashAll($fk);
+            }
+            $context->local()->message(\Framework\Local::MESSAGE, $bean.' created');
+        }
+/**
  * Add a new table
  *
- * @param \Support\Context    $context  The context object
+ * @param Context    $context  The context object
  *
  * @return bool
  */
@@ -46,7 +89,6 @@
             $fd = $context->formdata();
             if ($fd->haspost('name'))
             {
-                $fk = [];
                 $name = strtolower($fd->mustpost('name'));
                 if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
@@ -54,35 +96,7 @@
                 }
                 else
                 {
-                    $bn = \R::dispense($name);
-                    foreach ($fd->posta('field') as $ix => $field)
-                    {
-                        if ($field !== '')
-                        {
-                            if (preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
-                            { # this is a special case for foreign keys
-                                $fkbn = \R::dispense($m[1]); // make a bean of the required type
-                                \R::store($fkbn);
-                                $bn->{$field} = $fkbn;
-                                $fk[] = $fkbn;  // remember this bean as it needs to be deleted later - see below
-                            }
-                            elseif (!preg_match('/^[a-z][a-z0-9]*/', $field))
-                            {
-                                $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
-                            }
-                            else
-                            {
-                                $bn->{$field} = $fd->post(['sample', $ix], '');
-                            }
-                        }
-                    }
-                    \R::store($bn);
-                    \R::exec('truncate '.$name); // clean out the table
-                    if (!empty($fk))
-                    { # get rid of any extra beans we created for foreign keys
-                        \R::trashAll($fk);
-                    }
-                    $context->local()->message(\Framework\Local::MESSAGE, $name.' created');
+                    self::makebean($context, $name);
                     return TRUE;
                 }
             }
@@ -91,7 +105,7 @@
 /**
  * Return the fields in this table
  *
- * @return string[]
+ * @return array<string>
  */
         public function fields() : array
         {
@@ -148,6 +162,7 @@
  * @param array               $rest
  *
  * @return array
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function edit(Context $context, array $rest) : array
         {

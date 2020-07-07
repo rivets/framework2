@@ -3,15 +3,15 @@
  * A model class for the RedBean object RoleContext
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
- *
+ * @copyright 2018-20120Newcastle University
  */
     namespace Model;
 
-    use \Support\Context as Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * A class implementing a RedBean model for RoleContext beans
+ * @psalm-suppress UnusedClass
  */
     class RoleContext extends \RedBeanPHP\SimpleModel
     {
@@ -31,7 +31,7 @@
 /**
  * Add a RoleContext from a form - invoked by the AJAX bean operation
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context  $context  The context object for the site
  *
  * @return \RedBeanPHP\OODBBean
  */

@@ -5,12 +5,11 @@
  * Add any new methods you want the Upload bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
- *
+ * @copyright 2018-2020 Newcastle University
  */
     namespace ModelExtend;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * Upload table stores info about files that have been uploaded...
  */
@@ -26,6 +25,7 @@
  * @param string   $op     r for read, u for update, d for delete
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function canaccess($user, string $op = 'r') : bool
         {
@@ -34,11 +34,12 @@
 /**
  * Hook for adding extra data to a file save.
  *
- * @param \Support\Context	$context  The context object for the site
- * @param int	                $index	  If you are reading data from an array fo files, this is the index
- *                                        in the file. You may have paralleld data arrays and need this index.
+ * @param Context   $context    The context object for the site
+ * @param int       $index      If you are reading data from an array fo files, this is the index
+ *                              in the file. You may have paralleld data arrays and need this index.
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function addData(Context $context, int $index) : void
         {
@@ -49,11 +50,12 @@
 /**
  * Hook for adding extra data to a file replace.
  *
- * @param \Support\Context	$context  The context object for the site
- * @param int	                $index	  If you are reading data from an array of files, this is the index
- *                                        in the file. You may have parallel data arrays and need this index.
+ * @param Context    $context   The context object for the site
+ * @param int        $index     If you are reading data from an array of files, this is the index
+ *                              in the file. You may have parallel data arrays and need this index.
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function updateData(Context $context, int $index = 0) : void
         {
@@ -64,9 +66,10 @@
 /**
  * Hook for doing something when a file is downloaded
  *
- * @param \Support\Context	$context  The context object for the site
+ * @param Context    $context   The context object for the site
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function downloaded(Context $context) : void
         {
@@ -77,15 +80,14 @@
 /**
  * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
  * @throws \Framework\Exception\Forbidden
- *
  * @return void
  */
         public function delete() : void
         {
-/**** Do not change this code *****/
+/* **** Do not change this code **** */
             $context = Context::getinstance();
             if (!$this->bean->canaccess($context->user(), 'd'))
             { // not allowed
@@ -93,7 +95,7 @@
             }
 // Now delete the associated file
             unlink($context->local()->basedir().$this->bean->fname);
-/**** Put any cleanup code of yours after this line ****/
+/* **** Put any cleanup code of yours after this line **** */
             /*
              * Your code goes here
              */

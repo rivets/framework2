@@ -3,15 +3,15 @@
  * A model class for the RedBean object RoleName
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
- *
+ * @copyright 2018-2020 Newcastle University
  */
     namespace Model;
 
-    use Support\Context as Context;
     use \Config\Framework as FW;
+    use Support\Context;
 /**
  * A class implementing a RedBean model for RoleName beans
+ * @psalm-suppress UnusedClass
  */
     class RoleName extends \RedBeanPHP\SimpleModel
     {
@@ -33,7 +33,7 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param \Support\Context	$context	The Context object for the site
+ * @param Context  $context  The Context object for the site
  *
  * @return \RedBeanPHP\OODBBean
  */

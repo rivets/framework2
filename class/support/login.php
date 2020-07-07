@@ -3,10 +3,10 @@
  * A trait that allows extending the UserLogin class for different authentication processes
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
- *
+ * @copyright 2019-2020 Newcastle University
  */
     namespace Support;
+
 /**
  * Allows developers to change the way logins and logouts are handled.
  */
@@ -20,7 +20,7 @@
  *
  * @used-by \Framework\Pages\UserLogin
  *
- * @param \Support\Context $context
+ * @param Context $context
  *
  * @return bool
  */
@@ -36,7 +36,7 @@
                     $user = \Framework\Pages\UserLogin::eorl($lg); // use either a login name or the email address - see framework/pages/userlogin.php
                     if (is_object($user) && $user->pwok($pw) && $user->confirm)
                     {
-                        if (session_status() != PHP_SESSION_ACTIVE)
+                        if (session_status() !== PHP_SESSION_ACTIVE)
                         { # no session started yet
                             session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
                         }
@@ -48,10 +48,7 @@
                 $context->local()->message(\Framework\Local::MESSAGE, 'Please try again.');
                 return FALSE;
             }
-            else
-            {
-                $page = $fdt->get('page', '');
-            }
+            $page = $fdt->get('page', '');
             $context->local()->addval('page', $page);
             return TRUE;
         }
@@ -62,13 +59,14 @@
  *
  * Code taken directly from the PHP session_destroy manual page
  *
- * @link	http://php.net/manual/en/function.session-destroy.php
+ * @link    http://php.net/manual/en/function.session-destroy.php
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @used-by \Framework\Pages\UserLogin
  *
  * @return void
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function logout(Context $context) : void
         {
@@ -80,11 +78,10 @@
             {
                 $params = session_get_cookie_params();
                 setcookie(session_name(), '', time() - 42000,
-                    $params["path"], $params["domain"],
-                    $params["secure"], $params["httponly"]
+                    $params['path'], $params['domain'], $params['secure'], $params['httponly']
                 );
             }
-            if (session_status() == PHP_SESSION_ACTIVE)
+            if (session_status() === PHP_SESSION_ACTIVE)
             { # no session started yet
                 session_destroy(); # Finally, destroy the -session.
             }

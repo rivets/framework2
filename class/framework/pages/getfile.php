@@ -18,12 +18,11 @@
  * would not be hard to add.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2018 Newcastle University
- *
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework\Pages;
 
-    use \Support\Context as Context;
+    use \Support\Context;
 /**
  * The Getfile class
  *
@@ -34,22 +33,20 @@
 /*
  * The name of the directory where files are kept
  */
-        const DATADIR	= 'private';
-
-/** @var string	The name of the file we are working on */
+        private const DATADIR   = 'private';
+/** @var string The name of the file we are working on */
         private $file = '';
-/** @var int	The last modified time for the file */
+/** @var int    The last modified time for the file */
         private $mtime = 0;
 
 /**
  * Return data files as requested
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
- *
- * @return string	- Always return empty string as the all the file sending is done internally.
+ * @return string   Always return empty string as all the file sending is done internally.
  */
         public function handle(Context $context) : string
         {
@@ -77,7 +74,6 @@
  * This all depends on your application and how you want to treat files and filenames and access of course!
  *
  * Always be careful that filenames do not have .. in them of course.
- *
  */
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
@@ -108,8 +104,8 @@
             $this->ifmodcheck($context); # check to see if we actually need to send anything
 
             $web->addheader([
-//                'Last-Modified'	=> $this->mtime,
-                'Etag'		=> '"'.$this->makeetag($context).'"',
+//                'Last-Modified'   => $this->mtime,
+                'Etag'      => '"'.$this->makeetag($context).'"',
             ]);
             $web->sendfile($this->file, $file->filename);
             return '';
@@ -120,9 +116,10 @@
  * This needs to be overridden by pages that can generate etag. Defaults
  * to the mtime value.
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return string
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeetag($context) : string
         {
@@ -134,9 +131,10 @@
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function may need to be overridden.
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return int
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function lastmodified($context) : int
         {
@@ -149,10 +147,11 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string 	$time	The time value to check
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
         {
@@ -165,10 +164,11 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do different value checking.
  *
- * @param \Support\Context    $context   The context object for the site
- * @param string	$tag	The etag value to check
+ * @param Context   $context   The context object for the site
+ * @param string    $tag       The etag value to check
  *
  * @return bool
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checketag(Context $context, string $tag) : bool
         {

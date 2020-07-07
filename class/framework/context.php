@@ -3,13 +3,12 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2020 Newcastle University
  */
     namespace Framework;
 
-    use Config\Config as Config;
-    use Config\Framework as FW;
-    use Framework\Web\Web as Web;
+    use \Config\Config;
+    use \Config\Framework as FW;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
@@ -19,27 +18,27 @@
 /**
  * The name of the authentication token field.
  */
-        private const TOKEN 	    = 'X-APPNAME-TOKEN';
+        private const TOKEN     = 'X-APPNAME-TOKEN';
 /**
  * The key used to encode the token validation
  */
-        private const KEY	        = 'Some string of text.....';
+        public const KEY       = 'Some string of text.....';
 
-/** @var ?object		NULL or an object decribing the current logged in User (if we have logins at all) */
-        protected $luser	= NULL;
-/** @var integer	Counter used for generating unique ids */
+/** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
+        protected $luser        = NULL;
+/** @var int    Counter used for generating unique ids */
         protected $idgen        = 0;
-/** @var string		The first component of the current URL */
-        protected $reqaction	= 'home';
-/** @var string[]		The rest of the current URL exploded at / */
-        protected $reqrest	= [];
-/** @var boolean    True if authenticated by token */
-        protected $tokauth	= FALSE;
-/** @var \RedBeanPHP\OODBBean[]		A cache for rolename beans */
+/** @var string The first component of the current URL */
+        protected $reqaction    = 'home';
+/** @var array<string>    The rest of the current URL exploded at / */
+        protected $reqrest      = [];
+/** @var bool   True if authenticated by token */
+        protected $tokauth      = FALSE;
+/** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
         protected $roles        = [];
-/** @var \RedBeanPHP\OODBBean[]		A cache for rolecontext beans */
+/** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
         protected $contexts     = [];
-/** @var string[][]		A cache for JS ons */
+/** @var array<array<string>>                   A cache for JS ons */
         protected $ons          = [];
 /*
  ***************************************
@@ -63,7 +62,7 @@
  * Note that if there is nothing after the action in the URL this function returns
  * an array with a single element containing an empty string.
  *
- * @return string[]
+ * @return array<string>
  */
         public function rest()
         {
@@ -74,7 +73,7 @@
  *
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param integer   $count  The number to check for
+ * @param int   $count  The number to check for
  *
  * @throws \Framework\Exception\ParameterCount
  *
@@ -98,21 +97,21 @@
 /**
  * Return the current logged in user if any
  *
- * @return ?object
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function user() : ?object
+        public function user() : ?\RedBeanPHP\OODBBean
         {
             return $this->luser;
         }
 /**
  * Return TRUE if the user in the parameter is the same as the current user
  *
- * @param object    $user
+ * @param \RedBeanPHP\OODBBean    $user
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function sameuser($user) : bool
+        public function sameuser(\RedBeanPHP\OODBBean $user) : bool
         {
              /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->equals($user);
@@ -122,16 +121,16 @@
  *
  * @return bool
  */
-        public function hasuser()
+        public function hasuser() : bool
         {
             return is_object($this->luser);
         }
 /**
  * Do we have a logged in admin user?
  *
- * @return boolean
+ * @return bool
  */
-        public function hasadmin()
+        public function hasadmin() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isadmin();
@@ -139,9 +138,9 @@
 /**
  * Do we have a logged in developer user?
  *
- * @return boolean
+ * @return bool
  */
-        public function hasdeveloper()
+        public function hasdeveloper() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasuser() && $this->user()->isdeveloper();
@@ -149,12 +148,12 @@
 /**
  * Find out if this was validated using a token, if so, it is coming from a device not a browser
  *
- * @return boolean
+ * @return bool
  */
-	public function hastoken()
-	{
-	    return $this->tokauth;
-	}
+        public function hastoken() : bool
+        {
+            return $this->tokauth;
+        }
 /**
  * Check for logged in and 403 if not
  *
@@ -196,7 +195,7 @@
         {
             if (!$this->hasdeveloper())
             {
-                throw new \Framework\Exception\Forbidden('Must be a developer');;
+                throw new \Framework\Exception\Forbidden('Must be a developer');
             }
         }
 /*
@@ -226,7 +225,7 @@
  * Set up pagination data
  *
  * @param ?int    $count If not NULL then set pages based on this
- * 
+ *
  * @return void
  */
         public function setpages($count = NULL) : void
@@ -235,18 +234,18 @@
             $psize = $form->filterget('pagesize', 10, FILTER_VALIDATE_INT);
             $values = [
                 'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
-                'pagesize'  => $psize
+                'pagesize'  => $psize,
             ];
             if ($count != NULL)
             {
-                $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);                
+                $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);
             }
             $this->local()->addval($values);
         }
 /**
  * Generates a new, unique, sequential id value
  *
- * @param string	$str The prefix for the id
+ * @param string    $str    The prefix for the id
  *
  * @return string
  * @psalm-suppress PossiblyUnusedMethod
@@ -275,6 +274,7 @@
  *
  * @return string
  * @psalm-suppress PossiblyUnusedMethod
+ * @phpcsSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
         public function getons()
         {
@@ -284,9 +284,9 @@
                 $xres = '';
                 foreach ($conds as $on => $fn)
                 {
-                    $xres .= ".on('".$on."', ".$fn.")";
+                    $xres .= ".on('".$on."', ".$fn.')';
                 }
-                $res = $res. "$('#".$id."')".$xres.";\n";
+                $res .= "$('#".$id."')".$xres.";\n";
             }
             return $res;
         }
@@ -337,8 +337,8 @@
 /**
  * Check to see if there is a session and return a specific value from it if it exists
  *
- * @param string	$var	The variable name
- * @param bool       	$fail	If TRUE then exit with an error return if the value  does not exist
+ * @param string  $var    The variable name
+ * @param bool    $fail   If TRUE then exit with an error return if the value  does not exist
  *
  * @return mixed
  */
@@ -346,7 +346,7 @@
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {
-                /** @psalm-suppress UnusedFunctionCall **/
+                /** @psalm-suppress UnusedFunctionCall */
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION[$var]))
                 {
@@ -358,16 +358,16 @@
 /**
  * Generate a Location header for within this site
  *
- * @param string		$where		The page to divert to
- * @param bool       		$temporary	TRUE if this is a temporary redirect
- * @param string		$msg		A message to send
- * @param bool       		$nochange	If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool       		$use303  	If TRUE then 303 will be used instead of 307
+ * @param string    $where      The page to divert to
+ * @param bool      $temporary  TRUE if this is a temporary redirect
+ * @param string    $msg        A message to send
+ * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool      $use303     If TRUE then 303 will be used instead of 307
  *
- * @psalm-return never-return
  * @return void
+ * @psalm-return never-return
  */
-        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE)
+        public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
         {
             $this->web()->relocate($this->local()->base().$where, $temporary, $msg, $nochange, $use303);
             /* NOT REACHED */
@@ -375,9 +375,9 @@
 /**
  * Load a bean
  *
- * @param string	$bean	    A bean type name
- * @param int    	$id	    A bean id
- * @param boolean       $forupdate  If TRUE then use loadforupdate
+ * @param string    $bean       A bean type name
+ * @param int       $id         A bean id
+ * @param bool      $forupdate  If TRUE then use loadforupdate
  *
  * R::load returns a new bean with id 0 if the given id does not exist.
  *
@@ -391,7 +391,7 @@
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
-                throw new \Framework\Exception\MissingBean('Missing '.$bean);                
+                throw new \Framework\Exception\MissingBean('Missing '.$bean);
             }
             return $foo;
         }
@@ -402,7 +402,7 @@
  *
  * @return \Framework\Local
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function local() : \Framework\Local
         {
@@ -413,7 +413,7 @@
  *
  * @return \Support\FormData
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function formdata() : \Support\FormData
         {
@@ -424,7 +424,7 @@
  *
  * @return \Framework\Web\Web
  * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType 
+ * @psalm-suppress MoreSpecificReturnType
  */
         public function web() : \Framework\Web\Web
         {
@@ -457,13 +457,16 @@
  ***************************************
  */
 /**
- * Initialise the context and return self
+ * Look for a mobile access token
  *
- * @return \Framework\Context
+ * @internal
+ *
+ * @return void
+ * @throws \Framework\Exception\InternalError
  */
-        public function setup() : \Framework\Context
+        private function mtoken() : void
         {
-            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
+            // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
             foreach (getallheaders() as $k => $v)
             {
                 if (self::TOKEN === strtoupper($k))
@@ -472,27 +475,39 @@
                     {
                         /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
                         $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                        if (is_object($this->luser))
-                        {
-                            if ($this->luser->getID() != $tok->sub)
-                            {
-                                throw new \Exception('User conflict');
-                            }
-                        }
-                        else
-                        {
-                            $this->luser = $this->load('user', $tok->sub);
-                        }
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.
                         $this->web()->noaccess($e->getMessage());
                         /* NOT REACHED */
                     }
+                    if (is_object($this->luser))
+                    {
+                        if ($this->luser->getID() != $tok->sub)
+                        {
+                            throw new \Framework\Exception\InternalError('User conflict');
+                            /* NOT REACHED */
+                        }
+                    }
+                    else
+                    {
+                        $this->luser = $this->load('user', $tok->sub);
+                    }
+
                     $this->tokauth = TRUE;
                     break;
                 }
             }
+        }
+/**
+ * Initialise the context and return self
+ *
+ * @return \Framework\Context
+ */
+        public function setup() : \Framework\Context
+        {
+            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
+            $this->mtoken();
 /**
  * Check to see if non-admin users are being excluded
  */

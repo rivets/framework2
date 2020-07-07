@@ -5,19 +5,17 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020 Newcastle University
- *
  */
     namespace Support;
 
-    use Support\Context as Context;
 /**
  * Handles AntiFlood calls
  */
-    class AntiFlood
+    final class AntiFlood
     {
-        const TABLE     = 'fwflood';
-        const KEEPTIME  = 60*60;
-        const DIVERSION = 'https://google.com';
+        private const TABLE     = 'fwflood';
+        private const KEEPTIME  = 60*60;
+        private const DIVERSION = 'https://google.com';
 /**
  * Check if an IP is flooding
  *
@@ -34,7 +32,7 @@
             $f = \R::findOne(self::TABLE, 'ip=?', [$ip]);
             if (is_object($f))
             {
-                $res =  ($now - $f->calltime) < $limit;
+                $res =  $now - $f->calltime < $limit;
             }
             else
             {

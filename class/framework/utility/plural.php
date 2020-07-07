@@ -3,7 +3,7 @@
  * Contains definition of Plural class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019 Newcastle University
+ * @copyright 2019-2020 Newcastle University
  */
     namespace Framework\Utility;
 
@@ -15,6 +15,7 @@
  * Required by Twig
  *
  * @return string
+ * @psalm-suppress PossiblyUnusedMethod
  */
         public function getName() : string
         {
@@ -32,7 +33,7 @@
         {
             return [
                 new \Twig\TwigFunction('splural', [$this, 'essify']),
-                new \Twig\TwigFunction('plural', [$this, 'makePlural'])
+                new \Twig\TwigFunction('plural', [$this, 'makePlural']),
             ];
         }
 /**
@@ -71,7 +72,8 @@
                 $res = $some;
                 break;
             }
-    
+
             return sprintf($res, $count);
         }
     }
+?>

@@ -10,11 +10,9 @@
  */
     namespace Framework;
 
-    use \R as R;
-    use \Support\Context as Context;
-    use \Config\Config as Config;
     use \Config\Framework as FW;
-    use \Support\Formdata as FormData;
+    use \R;
+    use \Support\Context;
 /**
  * Handle Ajax operations in this class
  */
@@ -22,7 +20,7 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array Allowed operation codes. Values indicate : [needs login, Roles that user must have]
+ * @var array<array> Allowed operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
             'bean'          => [TRUE,   []], // permission checks are done in the bean function
@@ -39,59 +37,98 @@
             'uniquenl'      => [FALSE,  []], // unique test with no login - used at least by user registration form
         ];
 /**
- * Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $beanperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::PAGEROLE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE        => [],
+                    FW::USER        => [],
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGEROLE    => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                ],
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for creating an audit log.
+ * @var array<string> Permissions array for creating an audit log.
  */
         private static $audit = [
 //          ['BeanName'...]]
         ];
 /**
- * Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
  */
         private static $sharedperms = [
             [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
+ * @var array<array> Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
  */
         private static $toggleperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => [], FW::USER => [], FW::CONFIG => [], FW::FORM => [],
-                FW::FORMFIELD => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE => [],
+                    FW::USER => [],
+                    FW::CONFIG => [],
+                    FW::FORM => [],
+                    FW::FORMFIELD => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME => [],
+                    FW::TABLE => [],
+                ],
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for table acccess.
+ * @var array<array> Permissions array for table acccess.
  */
         private static $tableperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG, FW::FORM, FW::FORMFIELD,
-                FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER],
+            ],
 //          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
         ];
 /**
- * Permissions array for tablesearch acccess.
+ * @var array<array> Permissions array for tablesearch acccess.
  */
         private static $tablesearchperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::CONFIG => [], FW::FORM => [], FW::FORMFIELD => [],
-                FW::PAGE => [], FW::ROLECONTEXT => [], FW::ROLENAME => [], FW::TABLE => [], FW::USER => []] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGE        => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                    FW::USER        => [],
+                ],
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
+ * @var array<array> Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
  */
         private static $uniqueperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']] ],
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']],
+            ],
 //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
         ];
 /**
- * Permissions array for unique access. This helps allow non-site admins use the AJAX functions
+ * @var array<string>   Permissions array for unique access. This helps allow non-site admins use the AJAX functions
  */
         private static $uniquenlperms = [
             FW::USER => ['login'],
@@ -113,42 +150,30 @@
             // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array   Values controlling whether or not search hint calls are allowed
+ * @var array<array>   Values controlling whether or not search hint calls are allowed
  */
         private static $hints = [
             // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
             // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
         ];
 /**
- * @var array Search ops
+ * @var array<string> Search ops
  */
-        private static $searchops = [
-            '',
-            '=',
-            '!=' ,
-            'like' ,
-            'contains' ,
-            '>' ,
-            '>=' ,
-            '<' ,
-            '<=',
-            'regexp',
-            'is NULL',
-            'is not NULL',
-        ];
+        private static $searchops = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
 /**
  * Config value operation
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param \Support\Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function config(Context $context) : void
+        final private function config(Context $context) : void
         {
             [$name] = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
@@ -205,7 +230,7 @@
  */
         private function fieldExists(string $type, string $field, bool $idok = FALSE) : bool
         {
-            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field == 'id'))
+            if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field === 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
                 /* NOT REACHED */
@@ -223,11 +248,12 @@
  * @throws \Framework\Exception\Forbidden
  * @return array
  */
-        protected final function findRow(Context $context, array $perms) : array
+        final protected function findRow(Context $context, array $perms) : array
         {
             $tables = [];
             foreach ($perms as $bpd)
             {
+                /** @phpcsSuppress  PHP_CodeSniffer.CodeAnalysis.EmptyStatement */
                 try
                 {
                     $this->checkPerms($context, $bpd[0]); // make sure we are allowed
@@ -235,7 +261,7 @@
                 }
                 catch (\Framework\Exception\Forbidden $e)
                 {
-                    // void go round and try the next item in the array
+                    NULL; // void go round and try the next item in the array
                 }
             }
             if (empty($tables))
@@ -247,7 +273,6 @@
  * since empty elements imply all fields and array_merge would overwrite empties.
  *
  * @todo Revisit the table design to be able to use some of the array functions
- *
  */
             $merged = [];
             foreach ($tables as $t)
@@ -258,14 +283,7 @@
                     {
                         if (!empty($merged[$k]))
                         {
-                            if (empty($v))
-                            {
-                                $merged[$k] = [];
-                            }
-                            else
-                            {
-                                $merged[$k] = array_merge($merged[$k], $v);
-                            }
+                            $merged[$k] = empty($v) ? [] : array_merge($merged[$k], $v);
                         }
                     }
                     else
@@ -283,12 +301,13 @@
  * simply changing a value.
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function toggle(Context $context) : void
+        final private function toggle(Context $context) : void
         {
             $rest = $context->rest();
             if (count($rest) > 2)
@@ -345,30 +364,6 @@
             return TRUE;
         }
 /**
- * make log entry
- *
- * @param \Support\Context	$context	The context object for the site
- * @param int $op
- * @param string $bean
- * @param int $id
- * @param string $field
- * @param mixed $value
- *
- * @return void
- */
-        private function mklog(Context $context, $op, string $bean, $id, string $field, $value)
-        {
-            $lg = \R::dispense('beanlog');
-            $lg->user = $context->user();
-            $lg->updated = $context->utcnow();
-            $lg->op = $op;
-            $lg->bean = $bean;
-            $lg->bid = $id;
-            $lg->field = $field;
-            $lg->value = $value;
-            \R::store($lg);
-        }
-/**
  * Carry out operations on beans
  *
  * @internal
@@ -380,8 +375,9 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function bean(Context $context) : void
+        final private function bean(Context $context) : void
         {
             $beans = $this->findRow($context, self::$beanperms);
             $rest = $context->rest();
@@ -416,7 +412,7 @@
                     $id = $class::add($context)->getID();
                     if ($log)
                     {
-                        $this->mklog($context, 0, $bean, $id, '*', NULL);
+                        \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::CREATE, $bean, $id, '*', NULL);
                     }
                     echo $id;
                 }
@@ -435,7 +431,7 @@
                 R::store($bn);
                 if ($log)
                 {
-                    $this->mklog($context, 1, $bean, $bn->getID(), $field, $old);
+                    \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
                 }
                 break;
             case 'DELETE': // /ajax/bean/KIND/ID/
@@ -447,7 +443,7 @@
                 $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    $this->mklog($context, 2, $bean, (int) $id, '*', json_encode($bn->export()));
+                    \Framework\Ajax\BeanLog::mklog($context, \Framework\Ajax\BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
                 /**
                  * @psalm-suppress RedundantCondition
@@ -476,8 +472,9 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function shared(Context $context) : void
+        final private function shared(Context $context) : void
         {
 
             [$b1, $id1, $b2, $id2] = $context->restcheck(4);
@@ -518,8 +515,9 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function table(Context $context) : void
+        final private function table(Context $context) : void
         {
             if (!$context->hasadmin())
             {
@@ -629,8 +627,9 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function tablesearch(Context $context) : void
+        final private function tablesearch(Context $context) : void
         {
             [$bean, $field, $op] = $context->restcheck(3);
             $fdt = $context->formdata();
@@ -655,7 +654,7 @@
             $fields = array_keys(\R::inspect($bean));
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
-                $bv = new \stdClass;
+                $bv = new \stdClass();
                 foreach ($fields as $f)
                 {
                     $bv->$f = $bn->$f;
@@ -668,14 +667,15 @@
  * Get a page of bean values
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function paging(Context $context) : void
+        final private function paging(Context $context) : void
         {
             $fdt = $context->formdata();
             $bean = $fdt->mustget('bean');
@@ -697,13 +697,14 @@
  * Get search hints for a bean
  *
  * @internal
- * @param \Support\Context	$context	The context object for the site
+ * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private final function hints(Context $context) : void
+        final private function hints(Context $context) : void
         {
             $rest = $context->rest();
             $bean = $rest[1];
@@ -751,7 +752,7 @@
                 foreach (\Support\SiteInfo::getinstance()->fetch($bean,
                     $field.' like ? group by '.$field.($order !== '' ? (' order by '.$order) : '').($limit !== '' ? (' limit '.$limit) : ''), [$search]) as $bn)
                 {
-                    $v = new \stdClass;
+                    $v = new \stdClass();
                     $v->value = $obj ? $bn->getID() : $bn->$ofield;
                     $v->text = $bn->$ofield;
                     $res[] = $v;
@@ -766,13 +767,14 @@
 /**
  * Add an operation
  *
- * @param mixed     $function   The name of a function or an array of names
- * @param array     $perms      [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
+ * @param string|array<string>     $function   The name of a function or an array of names
+ * @param array                     $perms     [TRUE if login needed, [roles needed]] where roles are ['context', 'role']
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        public final function operation($function, array $perms) : void
+        final public function operation($function, array $perms) : void
         {
             if (!is_array($function))
             {
@@ -791,7 +793,7 @@
  *
  * @return void
  */
-        public final function pageOrHint(array $paging, array $hints) : void
+        final public function pageOrHint(array $paging, array $hints) : void
         {
             self::$paging = array_merge(self::$paging, $paging);
             self::$hints = array_merge(self::$paging, $hints);
@@ -799,15 +801,15 @@
 /**
  * Add bean permissions to allow non site/admins to use the functions
  *
- * @param array     $bean
- * @param array     $toggle
- * @param array     $table
- * @param array     $audit
- * @param array     $tsearch
+ * @param array    $bean
+ * @param array    $toggle
+ * @param array    $table
+ * @param array    $audit
+ * @param array    $tsearch
  *
  * @return void
  */
-        public final function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
+        final public function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
         {
             self::$beanperms = array_merge(self::$beanperms, $bean);
             self::$toggleperms = array_merge(self::$toggleperms, $toggle);
@@ -819,14 +821,14 @@
 /**
  * Do a database check for uniqueness
  *
- * @param \Support\Context    $context  The Context object
+ * @param Context   $context  The Context object
  * @param string    $bean     The kind of bean
  * @param string    $field    The field to check
  * @param string    $value    The value to check
  *
  * @return void
  */
-        protected final function uniqCheck(Context $context, string $bean, string $field, string $value) : void
+        final protected function uniqCheck(Context $context, string $bean, string $field, string $value) : void
         {
             if (R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
@@ -842,6 +844,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function unique(Context $context) : void
         {
@@ -861,6 +864,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function uniquenl(Context $context) : void
         {
@@ -876,6 +880,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function tablecheck(Context $context) : void
         {
@@ -896,6 +901,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function pwcheck(Context $context) : void
         {
@@ -917,7 +923,7 @@
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        protected final function checkPerms(Context $context, array $perms) : void
+        final protected function checkPerms(Context $context, array $perms) : void
         {
             $user = $context->user();
             assert(!is_null($user)); // must have a user when checking
@@ -934,7 +940,7 @@
                     }
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
-                elseif (!is_object($user->hasrole($rcs[0], $rcs[1])))
+                if (!is_object($user->hasrole($rcs[0], $rcs[1])))
                 {
                     throw new \Framework\Exception\Forbidden('Permission denied');
                 }
@@ -970,7 +976,7 @@
 /**
  * Handle AJAX operations
  *
- * @param \Support\Context	$context	The context object for the site
+ * @param Context   $context    The context object for the site
  *
  * @return void
  */

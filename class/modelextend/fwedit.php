@@ -1,14 +1,14 @@
 <?php
 /**
- * A trait that allows extending the model class for edit functionality for 
+ * A trait that allows extending the model class for edit functionality for
  *
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2019 Newcastle University
- *
+ * @copyright 2018-2020 Newcastle University
  */
     namespace ModelExtend;
+
 /**
  * User table stores info about users of the syste,
  */
@@ -16,10 +16,10 @@
     {
 /**
  * Handle editing of beans
- * 
+ *
  * @param \Support\FormData    $fdt  The formdata object from the context
  *
- * @return string[]
+ * @return array<string>
  */
         private function dofields(\Support\FormData $fdt) : array
         {

@@ -4,16 +4,13 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2020 Newcastle University
- *
  */
     namespace Support;
-    
-    use \Support\Context as Context;
+
 /**
  * Adds functions for dealing with various cache control circumstances.
  * If you add code here then these will apply to all pages. You can override these
  * functions if you want to have special behaviour for a particular page.
- *
  */
     trait NoCache
     {
@@ -27,7 +24,7 @@
         public function setCache(Context $context) : void
         {
             $hdrs = [
-                'Expires'       => $this->makemod(time()) // expires now...
+                'Expires'       => $this->makemod(time()), // expires now...
             ];
             $context->web()->addheader($hdrs);
             $this->set304Cache($context);
@@ -46,7 +43,7 @@
                 'no-cache',
                 'must-revalidate',
                 'stale-while-revalidate=86400', // these are non-standard but used by some CDNs to give better service.
-                'stale-if-error=259200'
+                'stale-if-error=259200',
             ]);
         }
     }
