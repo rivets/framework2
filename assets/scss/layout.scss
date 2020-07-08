@@ -18,3 +18,9 @@ body {
 .notvalid {
     background-color:   #ddd
 }
+
+.fader {
+    opacity:            1;
+    -webkit-transition: opacity 1000ms linear;
+    transition:         opacity 1000ms linear;
+}
