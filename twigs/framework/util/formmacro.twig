@@ -4,7 +4,7 @@
 
 {% macro cd(cond, attr, value) %}{% if cond %} {{attr}}="{{value}}"{% endif %}{% endmacro cd %}
 
-{% macro cdb(cond, attr) %}{% if cond %} {{attr}}{% endif %}{% endmacro cd %}
+{% macro cdb(cond, attr) %}{% if cond %} {{attr}}{% endif %}{% endmacro cdb %}
 
 {% macro cdd(cond, attr, value, dflt) %}{% import _self as fx %}{% if cond %}{{fx.hvd(attr, value, dflt)}}{% endif %}{% endmacro cdd %}
 
