@@ -153,21 +153,23 @@
  */
         private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
         {
+            $result = $porg;
             while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
-                if (!isset($porg[$key]))
+                if (!isset($result[$key]))
                 {
                     if ($throw)
                     {
                         throw new BadValue('Missing form array item');
                     }
-                    return $default;
+                    $result = $default;
+                    break 1;
                 }
-                $val = $porg[$key];
+                $result = $part[$key];
                 if (empty($keys))
                 {
-                    return trim($val);
+                     !is_array($val) ? trim($val) : $val;
                 }
             }
             /* NOT REACHED */
@@ -621,7 +623,7 @@
  */
         public function filea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\Support\FAIterator($name) : new \ArrayIterator($dflt);
+            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new FAIterator($name) : new \ArrayIterator($dflt);
         }
 /**
  * Deal with a recaptcha
@@ -640,7 +642,7 @@
         {
             if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
-                if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+                if ($this->haspost('g-recaptcha-response'))
                 {
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,
@@ -652,8 +654,7 @@
                     $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
                     {
-                        $jd = json_decode($response->getBody());
-                        return $jd->success;
+                        return json_decode($response->getBody())->success;
                     }
                 }
                 return FALSE;

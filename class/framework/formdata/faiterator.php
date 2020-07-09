@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2020 Newcastle University
  */
-    namespace Framework\Support;
+    namespace Framework\FormData;
 
 /**
  * A class to iterate over array values in $_FILES and make them look like singletons
@@ -27,8 +27,7 @@
         {
             if (!isset($_FILES[$name]) || !is_array($_FILES[$name]['error']))
             {
-                throw new \Framework\Exception\InternalError('Not an array of files');
-                /* NOT REACHED */
+                throw new \Framework\Exception\BadValue('Not an array of files');
             }
             $this->far = $_FILES[$name];
 /*
