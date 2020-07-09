@@ -14,6 +14,8 @@
  */
     class Test
     {
+        private $local = NULL;
+        private $fdt   = NULL;
 /**
  * Test AJAX functions
  *
@@ -44,14 +46,160 @@
  *
  * @param Context $context  The site context object
  *
- * @return int
+ * @return string
  */
         public function fail(Context $context) : string
         {
             2 / 0;
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
-}
+        }
+/**
+ * OK if true
+ */
+        private function okIfTRUE(string $func, string $name) : void
+        {
+            try
+            {
+                if ($fdt->{$func}($name))
+                {
+                    $local->message(\Framework\Local::MESSAGE, $func.' OK');
+                }
+                else
+                {
+                    $local->message(\Framework\Local::ERROR, $func.' Failed');
+                }
+            }
+            catch (\Exception $e)
+            {
+                $local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
+            }
+        }
+/**
+ * OK if false
+ */
+        private function okIfFalse(string $func, string $name, bool $throwOK) : void
+        {
+            try
+            {
+                if (!$fdt->{$func}($name))
+                {
+                    $local->message(\Framework\Local::MESSAGE, $func.' OK');
+                }
+                else
+                {
+                    $local->message(\Framework\Local::ERROR, $func.' Failed');
+                }
+            }
+            catch (\Exception $e)
+            {
+                if ($throwOK)
+                {
+                    $local->message(\Framework\Local::MESSAGE, $func.' threw exception: '.$e->getMessage());
+                }
+                else
+                {
+                    $local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
+                }
+            }
+        }
+/**
+ * Test the FormData Get functions
+ *
+ * @param Context $context  The site context object
+ *
+ * @return string
+ */
+        public function get(Context $context) : string
+        {
+            $this->local = $context->local();
+            $this->fdt = $context->formdata('Get');
+            $this->okIfTrue('hasget', 'exist');
+            $this->okIfFalse('hasget', 'notexist');
+            $this->okIfTrue('mustget', 'exist', FALSE);
+            $this->okIfFalse('mustget', 'notexist', TRUE);
+            
+            if (($x = $this->get('exist', 0)) == 42)
+            {
+                $local->message(\Framework\Local::MESSAGE, 'get OK');
+            }
+            else
+            {
+                $local->message(\Framework\Local::ERROR, 'get returns '.$x);                
+            }
+
+            try
+            {
+                if (($x = $this->mustget('exist', 0)) == 42)
+                {
+                    $local->message(\Framework\Local::MESSAGE, 'mustget OK');
+                }
+                else
+                {
+                    $local->message(\Framework\Local::ERROR, 'mustget returns '.$x);                
+                }
+            }
+            catch(\Exception $e)
+            {
+                $local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
+            }
+            
+            return '@devel/devel.twig';
+        }
+/**
+ * Test the FormData Post functions
+ *
+ * @param Context $context  The site context object
+ *
+ * @return string
+ */
+        public function post(Context $context) : string
+        {
+            $this->local = $context->local();
+            $this->fdt = $context->formdata('Get');
+            $this->okIfTrue('haspost', 'exist');
+            $this->okIfFalse('haspost', 'notexist');
+            $this->okIfTrue('mustpost', 'exist', FALSE);
+            $this->okIfFalse('mustpost', 'notexist', TRUE);
+            return '@devel/devel.twig';
+        }
+/**
+ * Test the FormData Put functions
+ *
+ * @param Context $context  The site context object
+ *
+ * @return string
+ */
+        public function put(Context $context) : string
+        {
+            $fdt = $context->formdata('Put');
+            return '@devel/devel.twig';
+        }
+/**
+ * Test the FormData Cookie functions
+ *
+ * @param Context $context  The site context object
+ *
+ * @return string
+ */
+        public function cookie(Context $context) : string
+        {
+            $fdt = $context->formdata('Cookie');
+            return '@devel/devel.twig';
+        }
+/**
+ * Test the FormData File functions
+ *
+ * @param Context $context  The site context object
+ *
+ * @return string
+ */
+        public function file(Context $context) : string
+        {
+            $fdt = $context->formdata('File');
+            return '@devel/devel.twig';
+        }
+
 /**
  * Test mail
  *
