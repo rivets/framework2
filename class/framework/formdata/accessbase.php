@@ -130,7 +130,7 @@
  */
         public function getFiltered(string $name, $default, int $filter, $options = '')
         {
-            return $this->filter($name, $default, $filter, $options);
+            return $this->filter($name, $default, $filter, $options, FALSE);
         }
 /**
  * Look in the $_GET array for a key and apply filters
@@ -143,7 +143,7 @@
  */
         public function mustGetFiltered(string $name, int $filter, $options = '')
         {
-            return $this->mustfilter($name, $filter, $options);
+            return $this->filter($name, '', $filter, $options, TRUE);
         }
     }
 ?>

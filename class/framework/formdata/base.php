@@ -56,7 +56,7 @@
             case INPUT_SERVER:  return $_SERVER;
             case INPUT_ENV:     return $_ENV;
             }
-            throw BadValue('Invalid Superglobal constant');
+            throw new BadValue('Invalid Superglobal constant');
         }
  /**
  * Look in the specified array for a key and see if it exists
@@ -92,13 +92,22 @@
  * @param mixed     $default A default value
  * @param int       $filter  Filter values - see PHP manual
  * @param mixed     $options see PHP manual
+ * @param $bool     $throw   If TRUE then the throw an error if the cariable does not exist
  *
  * @return mixed
  */
-        final protected function filter(string $name, $default, int $filter, $options = '')
+        final protected function filter(string $name, $default, int $filter, $options = '', bool $throw = FALSE)
         {
             $res = filter_input($this->which, $name, $filter, $options);
-            return $res === FALSE || $res === NULL ? $default : $res;
+            if ($res === FALSE || $res === NUL)
+            {
+                if ($throw)
+                {
+                    throw new BadValue('Filter failure on: '.$name);
+                }
+                return $default;
+            }
+            return $res;
         }
 /**
  * Utility function to dig out an element from a possibly multi-dimensional array
