@@ -55,63 +55,6 @@
             return '@devel/devel.twig';
         }
 /**
- * OK if true
- */
-        private function okIfTRUE(string $func, string $name) : bool
-        {
-            try
-            {
-                if ($this->fdt->{$func}($name))
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
-                    return TRUE;
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, $func.' Failed');
-                }
-            }
-            catch (\Exception $e)
-            {
-                $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
-            }
-            return FALSE;
-        }
-/**
- * OK if false
- */
-        private function okIfFalse(string $func, string $name, bool $throwOK) : bool
-        {
-            try
-            {
-                if (!$this->fdt->{$func}($name))
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
-                    return TRUE;
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, $func.' Failed');
-                }
-            }
-            catch (\Framework\Exception\BadValue $e)
-            {
-                if ($throwOK)
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, $func.' throws exception: '.$e->getMessage());
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, $func.' throws exception: '.$e->getMessage());
-                }
-            }
-            catch(\Exception $e)
-            {
-                $this->local->message(\Framework\Local::ERROR, $func.' throws '.$e->getMessage());
-            }
-            return FALSE;
-        }
-/**
  * Test the FormData Get functions
  *
  * @param Context $context  The site context object
@@ -120,87 +63,18 @@
  */
         public function get(Context $context) : string
         {
-            $this->local = $context->local();
-            $this->fdt = $context->formdata('Get');
-            if ($this->okIfTrue('hasget', 'exist'))
-            { // has works and there is a form....
-                $this->okIfFalse('hasget', 'notexist', FALSE);
-                //$this->okIfTrue('mustHave', 'exist', FALSE); // next version tests....
-                //$this->okIfFalse('mustHave', 'notexist', TRUE);
-    
-                if (($x = $this->fdt->get('exist', 0)) == 42)
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, 'get exists OK');
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'get exists returns '.$x);
-                }
-    
-                try
-                {
-                    if (($x = $this->fdt->mustget('exist')) == 42)
-                    {
-                        $this->local->message(\Framework\Local::MESSAGE, 'mustget exist OK');
-                    }
-                    else
-                    {
-                        $this->local->message(\Framework\Local::ERROR, 'mustget exist returns '.$x);
-                    }
-                }
-                catch(\Exception $e)
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'mustget exist throws '.$e->getMessage());
-                }
-
-                if (($x = $this->fdt->get('notexist')) == 0)
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, 'get notexist OK');
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'get notexist returns '.$x);
-                }
-    
-                try
-                {
-                    $x = $this->fdt->mustget('notexist');
-                    $this->local->message(\Framework\Local::ERROR, 'mustget notexist returns '.$x);
-                }
-                catch(\Framework\Exception\BadValue $e)
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, 'mustget notexist throws '.$e->getMessage());
-                }
-                catch(\Exception $e)
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'mustget notexist throws '.$e->getMessage());
-                }
-
-                if (($x = $this->fdt->get(['aexist', 0], 0)) == 42)
-                {
-                    $this->local->message(\Framework\Local::MESSAGE, 'get aexist[0] OK');
-                }
-                else
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'get aexist[0] returns '.$x);
-                }
-    
-                try
-                {
-                    if (($x = $this->fdt->mustget(['aexist', 1])) == 42)
-                    {
-                        $this->local->message(\Framework\Local::MESSAGE, 'mustget aexist[1] OK');
-                    }
-                    else
-                    {
-                        $this->local->message(\Framework\Local::ERROR, 'mustget aexist[1] returns '.$x);
-                    }
-                }
-                catch(\Exception $e)
-                {
-                    $this->local->message(\Framework\Local::ERROR, 'mustget aexist[1] throws '.$e->getMessage());
-                }
-            }
+            $test = new \Framework\Support\TestSupport($context, 'GET', [
+                ['hasget', ['exist'], TRUE, TRUE],
+                ['hasget', ['notexist'], FALSE, FALSE],
+                ['get', ['exist', 0], 42, TRUE],
+                ['get', ['notexist', 0], 0, FALSE],
+                ['mustget', ['exist', 0], 42, TRUE],
+                ['mustget', ['notexist', 0], 42, FALSE],
+                ['get', [['aexist', 0], 0], 42, TRUE],
+                ['get', [['aexist', 3], 0], 0, FALSE],
+                ['mustget', [['aexist', 1], 0], 42, TRUE],
+                ['mustget', [['aexist', 3], 0], 42, FALSE],  
+            ]);
             return '@devel/get.twig';
         }
 /**
@@ -212,12 +86,6 @@
  */
         public function post(Context $context) : string
         {
-            $this->local = $context->local();
-            $this->fdt = $context->formdata('Get');
-            $this->okIfTrue('haspost', 'exist');
-            $this->okIfFalse('haspost', 'notexist', FALSE);
-            $this->okIfTrue('mustpost', 'exist', FALSE);
-            $this->okIfFalse('mustpost', 'notexist', TRUE);
             return '@devel/post.twig';
         }
 /**
@@ -229,7 +97,6 @@
  */
         public function put(Context $context) : string
         {
-            $fdt = $context->formdata('Put');
             return '@devel/devel.twig';
         }
 /**
@@ -241,7 +108,6 @@
  */
         public function cookie(Context $context) : string
         {
-            $fdt = $context->formdata('Cookie');
             return '@devel/devel.twig';
         }
 /**
@@ -253,7 +119,6 @@
  */
         public function file(Context $context) : string
         {
-            $fdt = $context->formdata('File');
             return '@devel/devel.twig';
         }
 
