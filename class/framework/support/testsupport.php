@@ -27,7 +27,7 @@
  */
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
-            $msg = $func.'('.implode(', ', array_map(function($ix, $v){
+            $msg = $func.'('.implode(', ', array_map(function($v){
                 if (is_array($v))
                 {
                     return '['.implode(', ', $v).']';
