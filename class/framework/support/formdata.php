@@ -623,7 +623,7 @@
  */
         public function filea(string $name, array $dflt = []) : \ArrayIterator
         {
-            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new FAIterator($name) : new \ArrayIterator($dflt);
+            return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new \Framework\FormData\FAIterator($name) : new \ArrayIterator($dflt);
         }
 /**
  * Deal with a recaptcha
