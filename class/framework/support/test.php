@@ -121,8 +121,8 @@
             if ($this->okIfTrue('hasget', 'exist'))
             { // has works and there is a form....
                 $this->okIfFalse('hasget', 'notexist', FALSE);
-                $this->okIfTrue('mustget', 'exist', FALSE);
-                $this->okIfFalse('mustget', 'notexist', TRUE);
+                //$this->okIfTrue('mustHave', 'exist', FALSE); // next version tests....
+                //$this->okIfFalse('mustHave', 'notexist', TRUE);
     
                 if (($x = $this->fdt->get('exist', 0)) == 42)
                 {
