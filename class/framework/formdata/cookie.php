@@ -8,7 +8,7 @@
     namespace Framework\FormData;
 
 /**
- * A class that provides helpers for accessing COOKIE data 
+ * A class that provides helpers for accessing COOKIE data
  */
     class Cookie extends AccessBase
     {

@@ -8,7 +8,7 @@
     namespace Framework\FormData;
 
 /**
- * A class that provides helpers for accessing GET form data 
+ * A class that provides helpers for accessing GET form data
  */
     class Post extends AccessBase
     {
@@ -39,7 +39,7 @@
                     $porg = $this->getSuper();
                     $srv = $this->getSuper(INPUT_SERVER);
                     $data = [
-                        'secret'    => $context->constant('RECAPTCHASECRET',''),
+                        'secret'    => $context->constant('RECAPTCHASECRET', ''),
                         'response'  => $porg['g-recaptcha-response'],
                         'remoteip'  => $srv['HTTP_X_FORWARDED_FOR'] ?? $srv['REMOTE_ADDR'],
                     ];

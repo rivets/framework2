@@ -8,7 +8,7 @@
     namespace Framework\FormData;
 
 /**
- * A class that provides helpers for accessing GET form data 
+ * A class that provides helpers for accessing GET form data
  */
     class Get extends AccessBase
     {

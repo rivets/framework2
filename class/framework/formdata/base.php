@@ -8,7 +8,6 @@
     namespace Framework\FormData;
 
     use \Framework\Exception\BadValue;
-    use \Support\Context;
 /**
  * A class that provides helpers for accessing form data
  */
@@ -23,7 +22,7 @@
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
  */
         protected $super;
-        
+
         public function __construct(?int $which)
         {
             $this->which = $which;
@@ -58,7 +57,7 @@
             }
             throw new BadValue('Invalid Superglobal constant');
         }
- /**
+/**
  * Look in the specified array for a key and see if it exists
  *
  * @internal
@@ -74,15 +73,23 @@
         {
             if (($this->which === NULL && !isset($this->super[$name])) || !filter_has_var($this->which, $name))
             {
-                throw new BadValue('Missing Form Item: '.$name);
+                if ($throw)
+                {
+                    throw new BadValue('Missing Form Item: '.$name);
+                }
+                return FALSE;
             }
             if ($isArray && !is_array($this->super[$name]))
             {
-                throw new BadValue('Form Item '.$name.' is not an array');
+                if ($throw)
+                {
+                    throw new BadValue('Form Item '.$name.' is not an array');
+                }
+                return FALSE;
             }
             return TRUE;
         }
- /**
+/**
  * Look in the specified array for a key and apply filters
  *
  * @internal
