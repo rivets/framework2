@@ -61,7 +61,7 @@
         {
             try
             {
-                if ($fdt->{$func}($name))
+                if ($this->fdt->{$func}($name))
                 {
                     $local->message(\Framework\Local::MESSAGE, $func.' OK');
                 }
@@ -82,7 +82,7 @@
         {
             try
             {
-                if (!$fdt->{$func}($name))
+                if (!$this->fdt->{$func}($name))
                 {
                     $local->message(\Framework\Local::MESSAGE, $func.' OK');
                 }
@@ -118,32 +118,32 @@
             $this->okIfFalse('hasget', 'notexist');
             $this->okIfTrue('mustget', 'exist', FALSE);
             $this->okIfFalse('mustget', 'notexist', TRUE);
-            
-            if (($x = $this->get('exist', 0)) == 42)
+
+            if (($x = $this->fdt->get('exist', 0)) == 42)
             {
                 $local->message(\Framework\Local::MESSAGE, 'get OK');
             }
             else
             {
-                $local->message(\Framework\Local::ERROR, 'get returns '.$x);                
+                $local->message(\Framework\Local::ERROR, 'get returns '.$x);
             }
 
             try
             {
-                if (($x = $this->mustget('exist', 0)) == 42)
+                if (($x = $this->fdt->mustget('exist', 0)) == 42)
                 {
                     $local->message(\Framework\Local::MESSAGE, 'mustget OK');
                 }
                 else
                 {
-                    $local->message(\Framework\Local::ERROR, 'mustget returns '.$x);                
+                    $local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
                 }
             }
             catch(\Exception $e)
             {
                 $local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
             }
-            
+
             return '@devel/get.twig';
         }
 /**
