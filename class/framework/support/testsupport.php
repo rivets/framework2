@@ -21,7 +21,6 @@
         {
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
-            $this->tests = $tests;
         }
 /**
  * OK if true
