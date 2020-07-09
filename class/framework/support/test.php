@@ -63,16 +63,16 @@
             {
                 if ($this->fdt->{$func}($name))
                 {
-                    $local->message(\Framework\Local::MESSAGE, $func.' OK');
+                    $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
                 }
                 else
                 {
-                    $local->message(\Framework\Local::ERROR, $func.' Failed');
+                    $this->local->message(\Framework\Local::ERROR, $func.' Failed');
                 }
             }
             catch (\Exception $e)
             {
-                $local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
+                $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
             }
         }
 /**
@@ -84,22 +84,22 @@
             {
                 if (!$this->fdt->{$func}($name))
                 {
-                    $local->message(\Framework\Local::MESSAGE, $func.' OK');
+                    $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
                 }
                 else
                 {
-                    $local->message(\Framework\Local::ERROR, $func.' Failed');
+                    $this->local->message(\Framework\Local::ERROR, $func.' Failed');
                 }
             }
             catch (\Exception $e)
             {
                 if ($throwOK)
                 {
-                    $local->message(\Framework\Local::MESSAGE, $func.' threw exception: '.$e->getMessage());
+                    $this->local->message(\Framework\Local::MESSAGE, $func.' threw exception: '.$e->getMessage());
                 }
                 else
                 {
-                    $local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
+                    $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
                 }
             }
         }
@@ -121,27 +121,27 @@
 
             if (($x = $this->fdt->get('exist', 0)) == 42)
             {
-                $local->message(\Framework\Local::MESSAGE, 'get OK');
+                $this->local->message(\Framework\Local::MESSAGE, 'get OK');
             }
             else
             {
-                $local->message(\Framework\Local::ERROR, 'get returns '.$x);
+                $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
             }
 
             try
             {
                 if (($x = $this->fdt->mustget('exist', 0)) == 42)
                 {
-                    $local->message(\Framework\Local::MESSAGE, 'mustget OK');
+                    $this->local->message(\Framework\Local::MESSAGE, 'mustget OK');
                 }
                 else
                 {
-                    $local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
+                    $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
                 }
             }
             catch(\Exception $e)
             {
-                $local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
+                $this->local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
             }
 
             return '@devel/get.twig';
