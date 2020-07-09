@@ -135,7 +135,7 @@
     
                 try
                 {
-                    if (($x = $this->fdt->mustget('exist', 0)) == 42)
+                    if (($x = $this->fdt->mustget('exist')) == 42)
                     {
                         $this->local->message(\Framework\Local::MESSAGE, 'mustget OK');
                     }
@@ -143,6 +143,25 @@
                     {
                         $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
                     }
+                }
+                catch(\Exception $e)
+                {
+                    $this->local->message(\Framework\Local::ERROR, 'mustget throws '.$e->getMessage());
+                }
+
+                if (($x = $this->fdt->get('notexist')) == 0)
+                {
+                    $this->local->message(\Framework\Local::MESSAGE, 'get OK');
+                }
+                else
+                {
+                    $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
+                }
+    
+                try
+                {
+                    $x = $this->fdt->mustget('notexist');
+                    $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
                 }
                 catch(\Exception $e)
                 {
