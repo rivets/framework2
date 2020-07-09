@@ -33,7 +33,7 @@
                     return '['.implode(', ', $v).']';
                 }
                 return $v;
-            }), $params).')';
+            }, $params)).')';
             try
             {
                 $res = $this->fdt->{$func}(...$params);
