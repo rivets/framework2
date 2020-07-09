@@ -13,22 +13,6 @@
     'label', 'fieldset', 'endfset', 'recaptcha'] %}
 
 {% block setup %}
-    function addmore(e)
-    {
-        e.preventDefault();
-        e.stopPropagation();
-        const m = $('#mrow');
-        m.before($('#example').clone());
-        $('input[type="text"]', m.prev()).val(''); // clear the inputs
-        $('option', m.prev()).prop('selected', false); // clear any selections
-        $('input[type="checkbox"]', m.prev()).prop('checked', false); // clear any checking
-        m.before($('#example').next().clone());
-        $('input[type="text"]', m.prev()).val(''); // clear the inputs
-        $('option', m.prev()).prop('selected', false); // clear any selections
-        $('input[type="checkbox"]', m.prev()).prop('checked', false); // clear any checking
-        $('#example').attr('id', '');
-    }
-
     function mkinline(type, name, msg, id, value)
     {
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
