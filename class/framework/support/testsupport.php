@@ -27,7 +27,13 @@
  */
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
-            $msg = $func.'('.implode(' ', $params).')';
+            $msg = $func.'('.implode(', ', array_map($params, function($v){
+                if (is_array($v))
+                {
+                    return '['.implode(', ', $v).']';
+                }
+                return $v;
+            }),).')';
             try
             {
                 $res = $this->fdt->{$func}(...$params);
