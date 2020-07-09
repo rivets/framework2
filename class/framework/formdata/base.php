@@ -72,11 +72,11 @@
  */
         final protected function exists(string $name, bool $throw, bool $isArray = FALSE) : bool
         {
-            if (($this->which === NULL && !isset($this->$super[$name])) || !filter_has_var($this->which, $name))
+            if (($this->which === NULL && !isset($this->super[$name])) || !filter_has_var($this->which, $name))
             {
                 throw new BadValue('Missing Form Item: '.$name);
             }
-            if ($isArray && !is_array($this->$super[$name]))
+            if ($isArray && !is_array($this->super[$name]))
             {
                 throw new BadValue('Form Item '.$name.' is not an array');
             }
@@ -140,10 +140,10 @@
                     $result = $default;
                     break 1;
                 }
-                $val = $p[$key];
+                $val = $part[$key];
                 if (empty($keys))
                 {
-                    $result = trim($val);
+                    $result = is_array($val) ? $val : trim($val);
                     break 1;
                 }
             }
@@ -168,7 +168,7 @@
             if (is_array($name))
             {
                 $n = array_shift($name); // shift off the variable name
-                if ($this->exists($which, $n, TRUE))
+                if ($this->exists($n, TRUE))
                 { // the entry is there
                     return $this->fetchFromSuper($this->super[$n], $name, NULL, $throw);
                 }

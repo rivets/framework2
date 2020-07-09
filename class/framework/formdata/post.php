@@ -31,14 +31,15 @@
  */
         public function recaptcha() : bool
         {
-            if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
+            $context = \Support\Context::getinstance();
+            if ($context->constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->exists('g-recaptcha-response', FALSE))
                 {
                     $porg = $this->getSuper();
                     $srv = $this->getSuper(INPUT_SERVER);
                     $data = [
-                        'secret'    => Config::RECAPTCHASECRET,
+                        'secret'    => $context->constant('RECAPTCHASECRET',''),
                         'response'  => $porg['g-recaptcha-response'],
                         'remoteip'  => $srv['HTTP_X_FORWARDED_FOR'] ?? $srv['REMOTE_ADDR'],
                     ];

@@ -153,11 +153,11 @@
  */
         private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
         {
-            $result = $porg;
+            $part = $porg;
             while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
-                if (!isset($result[$key]))
+                if (!isset($part[$key]))
                 {
                     if ($throw)
                     {
@@ -166,14 +166,14 @@
                     $result = $default;
                     break 1;
                 }
-                $result = $part[$key];
+                $val = $part[$key];
                 if (empty($keys))
                 {
-                     !is_array($val) ? trim($val) : $val;
+                    $result = is_array($val) ? $val : trim($val);
+                    break 1;
                 }
             }
-            /* NOT REACHED */
-            return ''; // to shut psalm up!!
+            return $result;
         }
 /**
  * Pick out and treat a value

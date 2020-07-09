@@ -45,7 +45,7 @@
             }
             if (!isset($this->super[$name]['name'][$key]))
             {
-                throw new BadValue('Missing _FILES element '.$name.'/'.$key);
+                throw new \Framework\Exception\BadValue('Missing _FILES element '.$name.'/'.$key);
             }
             return [
                 'name'     => $x['name'][$key],
