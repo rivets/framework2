@@ -94,16 +94,20 @@
                     $this->local->message(\Framework\Local::ERROR, $func.' Failed');
                 }
             }
-            catch (\Exception $e)
+            catch (\Framework\Exception\BadValue $e)
             {
                 if ($throwOK)
                 {
-                    $this->local->message(\Framework\Local::MESSAGE, $func.' threw exception: '.$e->getMessage());
+                    $this->local->message(\Framework\Local::MESSAGE, $func.' throws exception: '.$e->getMessage());
                 }
                 else
                 {
-                    $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
+                    $this->local->message(\Framework\Local::ERROR, $func.' throws exception: '.$e->getMessage());
                 }
+            }
+            catch(\Exception $e)
+            {
+                $this->local->message(\Framework\Local::ERROR, $func.' throws '.$e->getMessage());
             }
             return FALSE;
         }
@@ -126,46 +130,50 @@
     
                 if (($x = $this->fdt->get('exist', 0)) == 42)
                 {
-                    $this->local->message(\Framework\Local::MESSAGE, 'get OK');
+                    $this->local->message(\Framework\Local::MESSAGE, 'get exists OK');
                 }
                 else
                 {
-                    $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
+                    $this->local->message(\Framework\Local::ERROR, 'get exists returns '.$x);
                 }
     
                 try
                 {
                     if (($x = $this->fdt->mustget('exist')) == 42)
                     {
-                        $this->local->message(\Framework\Local::MESSAGE, 'mustget OK');
+                        $this->local->message(\Framework\Local::MESSAGE, 'mustget exist OK');
                     }
                     else
                     {
-                        $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
+                        $this->local->message(\Framework\Local::ERROR, 'mustget exist returns '.$x);
                     }
                 }
                 catch(\Exception $e)
                 {
-                    $this->local->message(\Framework\Local::ERROR, 'mustget throws '.$e->getMessage());
+                    $this->local->message(\Framework\Local::ERROR, 'mustget exist throws '.$e->getMessage());
                 }
 
                 if (($x = $this->fdt->get('notexist')) == 0)
                 {
-                    $this->local->message(\Framework\Local::MESSAGE, 'get OK');
+                    $this->local->message(\Framework\Local::MESSAGE, 'get notexist OK');
                 }
                 else
                 {
-                    $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
+                    $this->local->message(\Framework\Local::ERROR, 'get notexist returns '.$x);
                 }
     
                 try
                 {
                     $x = $this->fdt->mustget('notexist');
-                    $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
+                    $this->local->message(\Framework\Local::ERROR, 'mustget notexist returns '.$x);
+                }
+                catch(\Framework\Exception\BadValue $e)
+                {
+                    $this->local->message(\Framework\Local::MESSAGE, 'mustget notexist throws '.$e->getMessage());
                 }
                 catch(\Exception $e)
                 {
-                    $this->local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
+                    $this->local->message(\Framework\Local::ERROR, 'mustget notexist throws '.$e->getMessage());
                 }
             }
             return '@devel/get.twig';
