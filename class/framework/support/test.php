@@ -63,7 +63,7 @@
  */
         public function get(Context $context) : string
         {
-            $test = new \Framework\Support\TestSupport($context, 'GET', [
+            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
                 ['hasget', ['exist'], TRUE, TRUE],
                 ['hasget', ['notexist'], FALSE, FALSE],
                 ['get', ['exist', 0], 42, TRUE],
