@@ -144,7 +144,7 @@
                 $local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
             }
             
-            return '@devel/devel.twig';
+            return '@devel/get.twig';
         }
 /**
  * Test the FormData Post functions
@@ -161,7 +161,7 @@
             $this->okIfFalse('haspost', 'notexist');
             $this->okIfTrue('mustpost', 'exist', FALSE);
             $this->okIfFalse('mustpost', 'notexist', TRUE);
-            return '@devel/devel.twig';
+            return '@devel/post.twig';
         }
 /**
  * Test the FormData Put functions
