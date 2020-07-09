@@ -57,13 +57,14 @@
 /**
  * OK if true
  */
-        private function okIfTRUE(string $func, string $name) : void
+        private function okIfTRUE(string $func, string $name) : bool
         {
             try
             {
                 if ($this->fdt->{$func}($name))
                 {
                     $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
+                    return TRUE;
                 }
                 else
                 {
@@ -74,17 +75,19 @@
             {
                 $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
             }
+            return FALSE;
         }
 /**
  * OK if false
  */
-        private function okIfFalse(string $func, string $name, bool $throwOK) : void
+        private function okIfFalse(string $func, string $name, bool $throwOK) : bool
         {
             try
             {
                 if (!$this->fdt->{$func}($name))
                 {
                     $this->local->message(\Framework\Local::MESSAGE, $func.' OK');
+                    return TRUE;
                 }
                 else
                 {
@@ -102,6 +105,7 @@
                     $this->local->message(\Framework\Local::ERROR, $func.' threw exception: '.$e->getMessage());
                 }
             }
+            return FALSE;
         }
 /**
  * Test the FormData Get functions
@@ -114,36 +118,37 @@
         {
             $this->local = $context->local();
             $this->fdt = $context->formdata('Get');
-            $this->okIfTrue('hasget', 'exist');
-            $this->okIfFalse('hasget', 'notexist');
-            $this->okIfTrue('mustget', 'exist', FALSE);
-            $this->okIfFalse('mustget', 'notexist', TRUE);
-
-            if (($x = $this->fdt->get('exist', 0)) == 42)
-            {
-                $this->local->message(\Framework\Local::MESSAGE, 'get OK');
-            }
-            else
-            {
-                $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
-            }
-
-            try
-            {
-                if (($x = $this->fdt->mustget('exist', 0)) == 42)
+            if ($this->okIfTrue('hasget', 'exist'))
+            { // has works and there is a form....
+                $this->okIfFalse('hasget', 'notexist', FALSE);
+                $this->okIfTrue('mustget', 'exist', FALSE);
+                $this->okIfFalse('mustget', 'notexist', TRUE);
+    
+                if (($x = $this->fdt->get('exist', 0)) == 42)
                 {
-                    $this->local->message(\Framework\Local::MESSAGE, 'mustget OK');
+                    $this->local->message(\Framework\Local::MESSAGE, 'get OK');
                 }
                 else
                 {
-                    $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
+                    $this->local->message(\Framework\Local::ERROR, 'get returns '.$x);
+                }
+    
+                try
+                {
+                    if (($x = $this->fdt->mustget('exist', 0)) == 42)
+                    {
+                        $this->local->message(\Framework\Local::MESSAGE, 'mustget OK');
+                    }
+                    else
+                    {
+                        $this->local->message(\Framework\Local::ERROR, 'mustget returns '.$x);
+                    }
+                }
+                catch(\Exception $e)
+                {
+                    $this->local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
                 }
             }
-            catch(\Exception $e)
-            {
-                $this->local->message(\Framework\Local::MESSAGE, 'mustget throws '.$e->getMessage());
-            }
-
             return '@devel/get.twig';
         }
 /**
@@ -158,7 +163,7 @@
             $this->local = $context->local();
             $this->fdt = $context->formdata('Get');
             $this->okIfTrue('haspost', 'exist');
-            $this->okIfFalse('haspost', 'notexist');
+            $this->okIfFalse('haspost', 'notexist', FALSE);
             $this->okIfTrue('mustpost', 'exist', FALSE);
             $this->okIfFalse('mustpost', 'notexist', TRUE);
             return '@devel/post.twig';
