@@ -175,6 +175,31 @@
                 {
                     $this->local->message(\Framework\Local::ERROR, 'mustget notexist throws '.$e->getMessage());
                 }
+
+                if (($x = $this->fdt->get(['aexist', 0], 0)) == 42)
+                {
+                    $this->local->message(\Framework\Local::MESSAGE, 'get aexist[0] OK');
+                }
+                else
+                {
+                    $this->local->message(\Framework\Local::ERROR, 'get aexist[0] returns '.$x);
+                }
+    
+                try
+                {
+                    if (($x = $this->fdt->mustget(['aexist', 1])) == 42)
+                    {
+                        $this->local->message(\Framework\Local::MESSAGE, 'mustget aexist[1] OK');
+                    }
+                    else
+                    {
+                        $this->local->message(\Framework\Local::ERROR, 'mustget aexist[1] returns '.$x);
+                    }
+                }
+                catch(\Exception $e)
+                {
+                    $this->local->message(\Framework\Local::ERROR, 'mustget aexist[1] throws '.$e->getMessage());
+                }
             }
             return '@devel/get.twig';
         }
