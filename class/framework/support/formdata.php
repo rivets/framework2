@@ -193,7 +193,7 @@
                 $n = array_shift($name); // shift off the variable name
                 if (filter_has_var($filter, $n))
                 { // the entry is there
-                    return $this->getval($arr[$n], $name, NULL, $throw);
+                    return $this->getval($arr[$n], $name, $dflt, $throw);
                 }
                 if ($throw)
                 {
