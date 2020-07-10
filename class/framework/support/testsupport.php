@@ -28,7 +28,7 @@
             $res = var_export($v, TRUE);
             $res = preg_replace('/\s+/ims', ', ', $res);
             $res = preg_replace('/array\(/', '[', $res);
-            $res = preg_replace('/)/', ']', $res);
+            $res = preg_replace('/\)/', ']', $res);
             return $res;
             if (is_array($v))
             {
