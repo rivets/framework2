@@ -30,11 +30,6 @@
             $res = preg_replace('/array\(/', '[', $res);
             $res = preg_replace('/\)/', ']', $res);
             return $res;
-            if (is_array($v))
-            {
-                return '['.implode(', ', array_map($this->display, $v)).']';
-            }
-            return var_export($v, TRUE);
         }
 /**
  * OK if true
@@ -42,7 +37,7 @@
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
             $this->local->addval('array', var_export($_REQUEST, TRUE));
-            $msg = $func.'('.implode(', ', $this->display($params)).')';
+            $msg = $func.'('.$this->display($params).')';
             try
             {
                 $res = $this->fdt->{$func}(...$params);
