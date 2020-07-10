@@ -149,9 +149,9 @@
  *
  * @throws BadValue
  *
- * @return string
+ * @return string|array
  */
-        private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE) : string
+        private function getval(array $porg, array $keys, $default = NULL, bool $throw = FALSE)
         {
             $part = $porg;
             while (TRUE) // iterate over the array of keys
