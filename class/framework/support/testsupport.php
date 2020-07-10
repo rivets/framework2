@@ -32,7 +32,7 @@
             return $res;
             if (is_array($v))
             {
-                return '['.implode(', ', array_map(display, $v)).']';
+                return '['.implode(', ', array_map($this->display, $v)).']';
             }
             return var_export($v, TRUE);
         }
@@ -42,7 +42,7 @@
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
             $this->local->addval('array', var_export($_REQUEST, TRUE));
-            $msg = $func.'('.implode(', ', display($params)).')';
+            $msg = $func.'('.implode(', ', $this->display($params)).')';
             try
             {
                 $res = $this->fdt->{$func}(...$params);
