@@ -163,17 +163,14 @@
                     {
                         throw new BadValue('Missing form array item');
                     }
-                    $result = $default;
-                    break 1;
+                    return $default;
                 }
                 $val = $part[$key];
                 if (empty($keys))
                 {
-                    $result = is_array($val) ? $val : trim($val);
-                    break 1;
+                    return is_array($val) ? $val : trim($val);
                 }
             }
-            return $result;
         }
 /**
  * Pick out and treat a value

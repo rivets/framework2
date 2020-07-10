@@ -27,6 +27,7 @@
  */
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
+            $local->addval('array', var_export($_REQUEST));
             $msg = $func.'('.implode(', ', array_map(function($v){
                 if (is_array($v))
                 {

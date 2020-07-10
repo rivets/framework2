@@ -12,6 +12,7 @@
     <section class="row">
         <article class="ml-auto col-md-10">
             {% include '@util/message.twig' %}
+            <pre>{{array}}</pre>
             {{f.startform()}}
                 {{f.text({label: 'Simple', name: 'exist', value: 42})}}
                 {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
