@@ -66,14 +66,14 @@
             $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
                 ['hasget', ['exist'], TRUE, TRUE],
                 ['hasget', ['notexist'], FALSE, FALSE],
-                ['get', ['exist', 0], 42, TRUE],
+                ['get', ['exist', 0], '42', TRUE],
                 ['get', ['notexist', 0], 0, FALSE],
-                ['mustget', ['exist', 0], 42, TRUE],
-                ['mustget', ['notexist', 0], 42, FALSE],
-                ['get', [['aexist', 0], 0], 42, TRUE],
-                ['get', [['aexist', 3], 0], 0, FALSE],
-                ['mustget', [['aexist', 1], 0], 42, TRUE],
-                ['mustget', [['aexist', 3], 0], 42, FALSE],  
+                ['mustget', ['exist', 0], '42', TRUE],
+                ['mustget', ['notexist', 0], '42', FALSE],
+                ['get', [['aexist', 0], 0], '42', TRUE],
+                ['get', [['aexist', 3], 0], '0', FALSE],
+                ['mustget', [['aexist', 1], 0],'42', TRUE],
+                ['mustget', [['aexist', 3], 0], '42', FALSE],  
             ]);
             return '@devel/get.twig';
         }
