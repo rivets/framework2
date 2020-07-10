@@ -25,7 +25,7 @@
         
         private function display($v)
         {
-            $res = var_export($v);
+            $res = var_export($v, TRUE);
             $res = preg_replace('/\s+/ims', ', ', $res);
             $res = preg_replace('/array\(/', '[', $res);
             $res = preg_replace('/)/', ']', $res);
