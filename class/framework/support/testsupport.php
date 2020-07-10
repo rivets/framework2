@@ -22,6 +22,15 @@
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
         }
+        
+        private function display($v)
+        {
+            if (is_array($v))
+            {
+                return '['.implode(', ', array_map(display, $v)).']';
+            }
+            return var_export($v, TRUE);
+        }
 /**
  * OK if true
  */
