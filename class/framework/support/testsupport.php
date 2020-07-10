@@ -45,7 +45,7 @@
                 }
                 else
                 {
-                    $this->local->message(Local::ERROR, $msg.' expected '.$result.' got '.$res);
+                    $this->local->message(Local::ERROR, $msg.' expected '.var_export($result, TRUE).' got '.var_export($res, TRUE));
                 }
             }
             catch (\Framework\Exception\BadValue $e)
