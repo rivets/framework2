@@ -42,13 +42,7 @@
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
             $this->local->addval('array', var_export($_REQUEST, TRUE));
-            $msg = $func.'('.implode(', ', array_map(function($v){
-                if (is_array($v))
-                {
-                    return '['.implode(', ', $v).']';
-                }
-                return $v;
-            }, $params)).')';
+            $msg = $func.'('.implode(', ', display($params)).')';
             try
             {
                 $res = $this->fdt->{$func}(...$params);
