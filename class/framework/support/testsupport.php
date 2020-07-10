@@ -25,6 +25,11 @@
         
         private function display($v)
         {
+            $res = var_export($v);
+            $res = preg_replace('/\s+/ims', ', ', $res);
+            $res = preg_replace('/array\(/', '[', $res);
+            $res = preg_replace('/)/', ']', $res);
+            return $res;
             if (is_array($v))
             {
                 return '['.implode(', ', array_map(display, $v)).']';
