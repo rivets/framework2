@@ -73,7 +73,15 @@
                 ['get', [['aexist', 0], 0], '42', TRUE],
                 ['get', [['aexist', 3], 0], 0, FALSE],
                 ['mustget', [['aexist', 1], 0],'42', TRUE],
-                ['mustget', [['aexist', 3], 0], '42', FALSE],  
+                ['mustget', [['aexist', 3], 0], '42', FALSE],
+                ['get', [['nexist', 14], 0], '42', TRUE],
+                ['get', [['nexist', 13], 0], 0, FALSE],
+                ['mustget', [['aexist', 14], 0],'42', TRUE],
+                ['mustget', [['aexist', 13], 0], '42', FALSE],
+                ['get', [['kexist', 'key1'], 0], '42', TRUE],
+                ['get', [['kexist', 'key45'], 0], 0, FALSE],
+                ['mustget', [['kexist', 'key1'], 0],'42', TRUE],
+                ['mustget', [['kexist', 'key45'], 0], '42', FALSE],
             ]);
             return '@devel/get.twig';
         }
