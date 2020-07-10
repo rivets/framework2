@@ -40,7 +40,7 @@
                 $res = $this->fdt->{$func}(...$params);
                 if ($res === $result)
                 {
-                    $this->local->message(Local::MESSAGE, $msg.' OK &mdash; expected '.var_export($result, TRUE).' got '.var_export($res, TRUE));
+                    $this->local->message(Local::MESSAGE, $msg.' OK : expected '.var_export($result, TRUE).' got '.var_export($res, TRUE));
                     return TRUE;
                 }
                 else
