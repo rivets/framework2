@@ -51,7 +51,7 @@
                     else
                     {
                         $context->web()->bad();
-                        /* not reached */
+                        /* NOT REACHED */
                     }
                 }
                 break;

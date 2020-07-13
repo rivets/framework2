@@ -16,11 +16,13 @@
     {
         private $local;
         private $fdt;
+        private $noform = FALSE;
         
         public function __construct(Context $context, string $type)
         {
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
+            $this->noform = $context->web()->method() != 'GET' || !isset($_GET['exist']);
         }
         
         private function display($v)
@@ -36,6 +38,10 @@
  */
         private function test(string $func, array $params, $result, bool$throwOK) : bool
         {
+            if ($this->noform)
+            {
+                return TRUE;
+            }
             $this->local->addval('array', var_export($_REQUEST, TRUE));
             $msg = $func.'('.$this->display($params).')';
             try
