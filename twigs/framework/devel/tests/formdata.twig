@@ -4,7 +4,7 @@
 
 {% block header %}
     <section class="col-md-12 mt-5">
-        <h1>Developer tools</h1>
+        <h1>Test FormData calls for {{op}}/h1>
     </section>
 {% endblock header %}
 
@@ -22,7 +22,7 @@
                data.append(el.getAttribute('name'), el.value);
             });
             request.send(data);
-    console.log(request.response);
+    console.log(request.response.responseText);
             return false;
         });
     {% endif %}
@@ -49,7 +49,6 @@
             {% endif %}
         </article>
     </section>
-    {% include '@devel/tests/modalbody.twig' %}
 {% endblock main %}
 
 {% block pagefooter %}
