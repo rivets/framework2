@@ -21,6 +21,12 @@
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
                data.append(el.getAttribute('name'), el.value);
             });
+            request.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    document.getElementsByTagName('html')[0].innerHTML = this.responseText;
+                }
+            });
             request.send(data);
     console.log(request.response.responseText);
             return false;
