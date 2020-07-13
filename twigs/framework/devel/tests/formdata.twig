@@ -19,7 +19,7 @@
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             data = [];
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
-                data[el.attr('name')] = el.value;
+                data[el.getAttribute('name')] = el.value;
             });
             console.log(data);
             request.send(data);
