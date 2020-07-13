@@ -17,12 +17,12 @@
             var request = new XMLHttpRequest();
             request.open(putorpatch, '#', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-            data = [];
+            data = new FormData;
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
-                data[el.getAttribute('name')] = el.value;
+               data.append(el.getAttribute('name'), el.value);
             });
-            console.log(data);
             request.send(data);
+    console.log(request.response);
             return false;
         });
     {% endif %}
