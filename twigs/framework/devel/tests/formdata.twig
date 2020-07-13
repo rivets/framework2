@@ -12,12 +12,13 @@
     {% if op == 'put' %}
         {% set op = 'get' %}
         document.getElementById('tform').addEventListener('submit', function(e) {
-            console.log(e);
+            e.preventDefault();
+            e.stopPropagation();
             var request = new XMLHttpRequest();
             request.open(putorpatch, '#', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             data = [];
-            e.target.querySelector('input[type="text"]').forEach(function(el){
+            e.target.querySelectorAll('input[type="text"]').forEach(function(el){
                 data[el.attr('name')] = el.value;
             });
             console.log(data);
