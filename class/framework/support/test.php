@@ -13,9 +13,27 @@
  * A class that handles various site testing related things
  */
     class Test
-    {
-        private $local = NULL;
-        private $fdt   = NULL;
+    {    
+        static private $tests = [
+            ['has', ['exist'], TRUE, TRUE],
+            ['has', ['notexist'], FALSE, FALSE],
+            ['get', ['exist', 0], '42', TRUE],
+            ['get', ['notexist', 0], 0, FALSE],
+            ['mustget', ['exist', 0], '42', TRUE],
+            ['mustget', ['notexist', 0], '42', FALSE],
+            ['get', [['aexist', 0], 0], '42', TRUE],
+            ['get', [['aexist', 3], 0], 0, FALSE],
+            ['must', [['aexist', 1], 0],'42', TRUE],
+            ['mustget', [['aexist', 3], 0], '42', FALSE],
+            ['get', [['nexist', 14], 0], '42', TRUE],
+            ['get', [['nexist', 13], 0], 0, FALSE],
+            ['mustget', [['nexist', 14], 0],'42', TRUE],
+            ['mustget', [['nexist', 13], 0], '42', FALSE],
+            ['get', [['kexist', 'key1'], 0], '42', TRUE],
+            ['get', [['kexist', 'key45'], 0], 0, FALSE],
+            ['mustget', [['kexist', 'key1'], 0],'42', TRUE],
+            ['mustget', [['kexist', 'key45'], 0], '42', FALSE],
+        ];
 /**
  * Test AJAX functions
  *
@@ -83,7 +101,8 @@
                 ['mustget', [['kexist', 'key1'], 0],'42', TRUE],
                 ['mustget', [['kexist', 'key45'], 0], '42', FALSE],
             ]);
-            return '@devel/get.twig';
+            $context->local()->addval('op', 'get');
+            return '@devel/tests/formdata.twig';
         }
 /**
  * Test the FormData Post functions
@@ -94,7 +113,27 @@
  */
         public function post(Context $context) : string
         {
-            return '@devel/post.twig';
+            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+                ['haspost', ['exist'], TRUE, TRUE],
+                ['haspost', ['notexist'], FALSE, FALSE],
+                ['post', ['exist', 0], '42', TRUE],
+                ['post', ['notexist', 0], 0, FALSE],
+                ['mustpost', ['exist', 0], '42', TRUE],
+                ['mustpost', ['notexist', 0], '42', FALSE],
+                ['post', [['aexist', 0], 0], '42', TRUE],
+                ['post', [['aexist', 3], 0], 0, FALSE],
+                ['mustpost', [['aexist', 3], 0], '42', FALSE],
+                ['post', [['nexist', 14], 0], '42', TRUE],
+                ['post', [['nexist', 13], 0], 0, FALSE],
+                ['mustpost', [['nexist', 14], 0],'42', TRUE],
+                ['mustpost', [['nexist', 13], 0], '42', FALSE],
+                ['post', [['kexist', 'key1'], 0], '42', TRUE],
+                ['post', [['kexist', 'key45'], 0], 0, FALSE],
+                ['mustpost', [['kexist', 'key1'], 0],'42', TRUE],
+                ['mustpost', [['kexist', 'key45'], 0], '42', FALSE],
+            ]);
+            $context->local()->addval('op', 'post');
+            return '@devel/tests/formdata.twig';
         }
 /**
  * Test the FormData Put functions
@@ -105,7 +144,27 @@
  */
         public function put(Context $context) : string
         {
-            return '@devel/devel.twig';
+            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+                ['hasput', ['exist'], TRUE, TRUE],
+                ['hasput', ['notexist'], FALSE, FALSE],
+                ['put', ['exist', 0], '42', TRUE],
+                ['put', ['notexist', 0], 0, FALSE],
+                ['mustput', ['exist', 0], '42', TRUE],
+                ['mustput', ['notexist', 0], '42', FALSE],
+                ['put', [['aexist', 0], 0], '42', TRUE],
+                ['put', [['aexist', 3], 0], 0, FALSE],
+                ['mustput', [['aexist', 3], 0], '42', FALSE],
+                ['put', [['nexist', 14], 0], '42', TRUE],
+                ['put', [['nexist', 13], 0], 0, FALSE],
+                ['mustput', [['nexist', 14], 0],'42', TRUE],
+                ['mustput', [['nexist', 13], 0], '42', FALSE],
+                ['put', [['kexist', 'key1'], 0], '42', TRUE],
+                ['put', [['kexist', 'key45'], 0], 0, FALSE],
+                ['mustput', [['kexist', 'key1'], 0],'42', TRUE],
+                ['mustput', [['kexist', 'key45'], 0], '42', FALSE],
+            ]);
+            $context->local()->addval('op', 'put');
+            return '@devel/tests/formdata.twig';
         }
 /**
  * Test the FormData Cookie functions
@@ -116,7 +175,27 @@
  */
         public function cookie(Context $context) : string
         {
-            return '@devel/devel.twig';
+            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+                ['hascookie', ['exist'], TRUE, TRUE],
+                ['hascookie', ['notexist'], FALSE, FALSE],
+                ['cookie', ['exist', 0], '42', TRUE],
+                ['cookie', ['notexist', 0], 0, FALSE],
+                ['mustcookie', ['exist', 0], '42', TRUE],
+                ['mustcookie', ['notexist', 0], '42', FALSE],
+                ['cookie', [['aexist', 0], 0], '42', TRUE],
+                ['cookie', [['aexist', 3], 0], 0, FALSE],
+                ['mustcookie', [['aexist', 3], 0], '42', FALSE],
+                ['cookie', [['nexist', 14], 0], '42', TRUE],
+                ['cookie', [['nexist', 13], 0], 0, FALSE],
+                ['mustcookie', [['nexist', 14], 0],'42', TRUE],
+                ['mustcookie', [['nexist', 13], 0], '42', FALSE],
+                ['cookie', [['kexist', 'key1'], 0], '42', TRUE],
+                ['cookie', [['kexist', 'key45'], 0], 0, FALSE],
+                ['mustcookie', [['kexist', 'key1'], 0],'42', TRUE],
+                ['mustcookie', [['kexist', 'key45'], 0], '42', FALSE],
+            ]);
+            $context->local()->addval('op', 'cookie');
+            return '@devel/tests/formdata.twig';
         }
 /**
  * Test the FormData File functions
