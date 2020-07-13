@@ -11,6 +11,17 @@
 {% block onload %}
     {% if op == 'put' %}
         {% set op = 'get' %}
+        document.getElementById('tform').addEventListener('submit', function(e) {
+            var request = new XMLHttpRequest();
+            request.open('{{constant('Config\\Config::PUTORPATCH')}}', '#', true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            data = [];
+            e.target.querySelector('input[type="text"]').forEach(function(el){
+                data[el.attr('name')] = el.value;
+            });
+            request.send(data);
+            return FALSE;
+        });
     {% endif %}
     {% if op == 'cookie' %}
     {% endif %}
