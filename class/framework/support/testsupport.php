@@ -22,7 +22,7 @@
         {
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
-            $this->noform = $context->web()->method() != 'GET' || !isset($_GET['exist']);
+            $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']);
         }
         
         private function display($v)
