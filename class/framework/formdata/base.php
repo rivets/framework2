@@ -136,7 +136,7 @@
                     if (!is_array($part))
                     {
                         $part = trim($part);
-                        if ($filter !== NULL)
+                        if (!empty($filter))
                         {
                             $part = filter_var($part, $filter, $options);
                             if ($part === FALSE || $part === NULL)
