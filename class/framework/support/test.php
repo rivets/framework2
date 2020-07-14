@@ -112,9 +112,10 @@
         public function get(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
-            $test = $tester->run(array_map(function($item){
+            $tx = array_map(function($item){
                 return [$item[0].'get', $item[1], $item[2], $item[3]];
-            }, self::$oldtests));
+            }, self::$oldtests);
+            $test = $tester->run($tx, FALSE);
             $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
