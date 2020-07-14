@@ -130,30 +130,11 @@
         public function post(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
-            $test = $tester->run([
-                ['haspost', ['exist'], TRUE, TRUE],
-                ['haspost', ['notexist'], FALSE, FALSE],
-                ['post', ['exist', 3], '42', TRUE],
-                ['post', ['notexist', 3], 3, FALSE],
-                ['mustpost', ['exist', 3], '42', TRUE],
-                ['mustpost', ['notexist', 3], '42', FALSE],
-                ['post', [['aexist', 0], 3], '42', TRUE],
-                ['post', [['aexist', 3], 3], 3, FALSE],
-                ['mustpost', [['aexist', 3], 3], '42', FALSE],
-                ['post', [['nexist', 14], 3], '42', TRUE],
-                ['post', [['nexist', 13], 3], 3, FALSE],
-                ['mustpost', [['nexist', 14], 3],'42', TRUE],
-                ['mustpost', [['nexist', 13], 3], '42', FALSE],
-                ['post', [['kexist', 'key1'], 3], '42', TRUE],
-                ['post', [['kexist', 'key45'], 3], 3, FALSE],
-                ['mustpost', [['kexist', 'key1'], 3],'42', TRUE],
-                ['mustpost', [['kexist', 'key45'], 3], '42', FALSE],
-                ['filterpost', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-                ['mustfilterpost', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-                ['filterpost', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-                ['mustfilterpost', ['email', FILTER_VALIDATE_INT], 3, FALSE],
-            ]);
-            $test = $tester->run(self::$tests, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'post', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
+            $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'post');
             return '@devel/tests/formdata.twig';
         }
@@ -167,30 +148,11 @@
         public function put(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
-            $test = $tester->run([
-                ['hasput', ['exist'], TRUE, TRUE],
-                ['hasput', ['notexist'], FALSE, FALSE],
-                ['put', ['exist', 3], '42', TRUE],
-                ['put', ['notexist', 3], 3, FALSE],
-                ['mustput', ['exist', 3], '42', TRUE],
-                ['mustput', ['notexist', 3], '42', FALSE],
-                ['put', [['aexist', 0], 3], '42', TRUE],
-                ['put', [['aexist', 3], 3], 3, FALSE],
-                ['mustput', [['aexist', 3], 3], '42', FALSE],
-                ['put', [['nexist', 14], 3], '42', TRUE],
-                ['put', [['nexist', 13], 3], 3, FALSE],
-                ['mustput', [['nexist', 14], 3],'42', TRUE],
-                ['mustput', [['nexist', 13], 3], '42', FALSE],
-                ['put', [['kexist', 'key1'], 3], '42', TRUE],
-                ['put', [['kexist', 'key45'], 3], 3, FALSE],
-                ['mustput', [['kexist', 'key1'], 3],'42', TRUE],
-                ['mustput', [['kexist', 'key45'], 3], '42', TRUE],
-                ['filterput', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-                ['mustfilterput', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-                ['filterput', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-                ['mustfilterput', ['email', FILTER_VALIDATE_INT], 3, FALSE],
-            ]);
-            $test = $tester->run(self::$tests, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'put', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
+            $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'put');
             return '@devel/tests/formdata.twig';
         }
@@ -204,30 +166,11 @@
         public function cookie(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
-            $test = $tester->run([
-                ['hascookie', ['exist'], TRUE, TRUE],
-                ['hascookie', ['notexist'], FALSE, FALSE],
-                ['cookie', ['exist', 0], '42', TRUE],
-                ['cookie', ['notexist', 0], 0, FALSE],
-                ['mustcookie', ['exist', 0], '42', TRUE],
-                ['mustcookie', ['notexist', 0], '42', FALSE],
-                ['cookie', [['aexist', 0], 0], '42', TRUE],
-                ['cookie', [['aexist', 3], 0], 0, FALSE],
-                ['mustcookie', [['aexist', 3], 0], '42', FALSE],
-                ['cookie', [['nexist', 14], 0], '42', TRUE],
-                ['cookie', [['nexist', 13], 0], 0, FALSE],
-                ['mustcookie', [['nexist', 14], 0],'42', TRUE],
-                ['mustcookie', [['nexist', 13], 0], '42', FALSE],
-                ['cookie', [['kexist', 'key1'], 0], '42', TRUE],
-                ['cookie', [['kexist', 'key45'], 0], 0, FALSE],
-                ['mustcookie', [['kexist', 'key1'], 0],'42', TRUE],
-                ['mustcookie', [['kexist', 'key45'], 0], '42', FALSE],
-                ['filtercookie', ['email', 'nobody@nowhere.com', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-                ['mustfiltercookie', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-                ['filtercookie', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-                ['mustfiltercookie', ['email', FILTER_VALIDATE_INT], 'foo@bar.com', FALSE],
-            ]);
-            $test = $tester->run(self::$tests, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'cookie', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
+            $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'cookie');
             return '@devel/tests/formdata.twig';
         }
