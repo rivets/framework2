@@ -62,7 +62,7 @@
  */
         public function mustGet($name, $filter = NULL, $options = '')
         {
-            return $this->fetch($name, NULL, TRUE, $filter, $options)[1];
+            return $this->fetch($name, NULL, TRUE, FALSE, $filter, $options)[1];
         }
 /**
  * Look in the array for a key and return its trimmed value or a default value
@@ -76,7 +76,7 @@
  */
         public function get($name, $default = '', $filter = NULL, $options = '')
         {
-            return $this->fetch($name, $default, FALSE, $filter, $options)[1];
+            return $this->fetch($name, $default, FALSE, FALSE, $filter, $options)[1];
         }
 /**
  * Look in the array for a key that is an id for a bean
@@ -91,7 +91,7 @@
  */
         public function mustGetBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->fetch($name, NULL, TRUE, FILTER_VALIDATE_INT)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->fetch($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT)[1], $forupdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
