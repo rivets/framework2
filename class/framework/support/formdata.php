@@ -61,31 +61,27 @@
             {
                 if (\strpos($name, $t) === 0)
                 {
-                    if (!isset($this->getters[$t]))
-                    {
-                        $class = '\Framework\FormData\\'.ucfirst($t);
-                        $this->getters[$t] = new $class();
-                    }
                     $func = $func !== '' ? $func.\ucfirst($t) : $t;
                     switch (\substr($name, \strlen($t)))
                     {
                     case '':
-                        break;
-                    case 'a':
+                        $ix = $must ? 1 : 2;
+                        $res = $this->getter($t)->fetch($arguments[0], $must ? NULL : $arguments[1], $must, FALSE, $arguments[$ix] ?? NULL, $arguments[$ix+1] ?? '');
+                        return $has ? $res[0] : $res[1];
+                    case 'a': // get an array iterator
                         return $this->getter($t)->{$must ? 'mustGetArray' : 'getArray'}($arguments[0]);
                     case 'bean':
                         if (!$must)
-                        {
+                        { // bean has to be a must just now
                             break 2;
                         }
                         return $this->getter($t)->mustGetBean(...$arguments);
-                    case 'data':
-                        return $this->getter($t)->get([$arguments[0], $arguments[1]]);
+                    case 'data': // filedata call
+                        return $this->getter($t)->filedata([$arguments[0], $arguments[1]]);
                     default:
                         break 2;
                     }
-                    $res = $this->getter($t)->fetch($arguments[0], $arguments[1] ?? NULL, $must, FALSE, $arguments[2] ?? NULL, $arguments[3] ?? '');
-                    return $has ? $res[0] : $res[1];  
+                    /** NOT REACHED **/
                 }
             }
             throw new \Framework\Exception\InternalError('Bad FormData call: '.$calling);
