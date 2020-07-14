@@ -16,7 +16,7 @@
             e.stopPropagation();
             var request = new XMLHttpRequest();
             request.open(putorpatch, '#', true);
-            //request.setRequestHeader('Content-Type', 'multipart/form-data; charset=UTF-8');
+            request.setRequestHeader('Content-Type', 'multipart/form-data; charset=UTF-8');
             data = new FormData;
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
                data.append(el.getAttribute('name'), el.value);
@@ -33,6 +33,7 @@
     {% endif %}
     {% if op == 'cookie' %}
         document.cookie = 'exist=42';
+        document.cookie = 'email=foo@bar.com';
         document.cookie = 'aexist[]=42';
         document.cookie = 'aexist[]=42';
         document.cookie = 'nexist[14]=42';
@@ -50,6 +51,7 @@
             {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}
                 {% if op != 'cookie' %}
                     {{f.text({label: 'Simple', name: 'exist', value: 42})}}
+                    {{f.email({label: 'Email', name: 'email', value: 'foo@bar.com'})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
                     {{f.text({label: 'Array', name: 'nexist[14]', value: 42})}}

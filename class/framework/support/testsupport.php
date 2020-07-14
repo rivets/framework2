@@ -45,9 +45,9 @@
             return implode(', ', array_filter($res));
         }
 /**
- * OK if true
+ * RUn tests specified
  */
-        private function test(string $func, array $params, $result, bool$throwOK) : bool
+        private function test(string $func, array $params, $result, bool $throwOK, $filter) : bool
         {
             if ($this->noform)
             {
@@ -88,8 +88,8 @@
         {
             foreach ($tests as $test)
             {
-                [$func, $params, $result, $ok] = $test;
-                $this->test($func, $params, $result, !$ok);
+                [$func, $params, $result, $ok, $filter] = $test;
+                $this->test($func, $params, $result, !$ok, $filter);
             }
         }
     }
