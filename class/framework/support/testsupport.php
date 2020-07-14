@@ -74,7 +74,7 @@
         {
             foreach ($tests as $test)
             {
-                [$func, $params, $result, $ok, $d] = $test;
+                [$func, $params, $result, $ok] = $test;
                 $this->test($func, $params, $result, !$ok);
             }
         }
