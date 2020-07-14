@@ -27,23 +27,8 @@
         
         private function display($pars)
         {
-            return preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
-            $res = [];
-            foreach ($pars as $v)
-            {
-                $xp = var_export($v, TRUE);
-                if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/ims', $xp, $m))
-                {
-                    $aval = preg_replace('/\s*\d\s*=>/ims', '', $m[1]);
-                    $aval = preg_replace('/\s+/ims', ', ', trim($aval));
-                    $res[] = '['.$aval.']';
-                }
-                else
-                {
-                    $res[] = $xp;
-                }
-            }
-            return implode(', ', array_filter($res));
+            $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
+            return substr($x, 1, strlen($x)-2);
         }
 /**
  * Run tests specified
