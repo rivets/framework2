@@ -33,8 +33,9 @@
                 $xp = var_export($v, TRUE);
                 if (preg_match('/^\s*array\s*\(\s*(.*)\s*\)\s*$/ims', $xp, $m))
                 {
-                    $aval = preg_replace('/\s+/ims', ', ', trim($m[1]));
-                    $aval = preg_replace('/\s*\d\s*=>\s*/ims', '', $aval);
+                    $aval = preg_replace('/\s*\d\s*=>\s*/ims', '', $m[1]);
+                    $aval = preg_replace('/\s+/ims', ', ', trim($aval));
+
                     $res[] = '['.$aval.']';
                 }
                 else
