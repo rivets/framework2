@@ -25,14 +25,22 @@
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
         
-        private function display($v)
+        private function display($pars)
         {
-            $x = $res = var_export($v, TRUE);
-            $res = preg_replace('/\s+/ims', ' ', $res);
-            $res = preg_replace('/array\s*\(/ims', '[', $res);
-            $res = preg_replace('/\s*\)/ims', ']', $res);
-            $res = preg_replace('/\s/ims', ', ', $res);
-            return $x.PHP_EOL.$res;
+            $res = [];
+            foreach ($pars as $v)
+            {
+                $xp = var_export($v, TRUE);
+                if (preg_match('/^\s*array\s*\(\s*(.*\)\s*$/ims', $xp, $m))
+                {
+                    $res = '['.preg_replace('/\s+/ims', ', ', trim($m[1])).']';
+                }
+                else
+                {
+                    $res[] = $xp;
+                }
+            }
+            return implode(', ', $res);
         }
 /**
  * OK if true
