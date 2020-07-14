@@ -30,8 +30,8 @@
             if (!is_array($this->putdata))
             {
                 $data = file_get_contents('php://input');
-                $ct = trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? ''));
-                switch ($ct[0])
+                $ct = explode(';', $_SERVER['CONTENT_TYPE'] ?? '');
+                switch (trim($ct[0]))
                 {
                 case '':
                 case 'application/x-www-form-urlencoded':
