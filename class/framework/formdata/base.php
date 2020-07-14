@@ -116,14 +116,16 @@
         private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '') : string
         {
             $part = $this->super;
+            $etrack = [];
             while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
+                $etrack[] = $key;
                 if (!isset($part[$key]))
                 {
                     if ($throw)
                     {
-                        throw new BadValue('Missing form item');
+                        throw new BadValue('Missing form item: '.implode('/', $etrack));
                     }
                     $val = $default;
                     break 1;
