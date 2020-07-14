@@ -201,7 +201,7 @@
                 ['cookie', [['kexist', 'key45'], 0], 0, FALSE, ''],
                 ['mustcookie', [['kexist', 'key1'], 0],'42', TRUE, ''],
                 ['mustcookie', [['kexist', 'key45'], 0], '42', FALSE, ''],
-                ['filtercookie', ['email', '', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
+                ['filtercookie', ['email', 'nobody@nowhere.com', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
                 ['mustfiltercookie', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
                 ['filtercookie', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE, ''],
                 ['mustfiltercookie', ['email', FILTER_VALIDATE_INT], 'foo@bar.com', FALSE, ''],

@@ -45,7 +45,7 @@
             return implode(', ', array_filter($res));
         }
 /**
- * RUn tests specified
+ * Run tests specified
  */
         private function test(string $func, array $params, $result, bool $throwOK, $filter) : bool
         {
@@ -88,7 +88,7 @@
         {
             foreach ($tests as $test)
             {
-                [$func, $params, $result, $ok, $filter] = $test;
+                [$func, $params, $result, $ok, $d] = $test;
                 $this->test($func, $params, $result, !$ok, $filter);
             }
         }
