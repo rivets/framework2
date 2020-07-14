@@ -15,13 +15,16 @@
     class TestSupport
     {
         private $local;
+        private $fdtold;
         private $fdt;
+        private $fdtnew;
         private $noform = FALSE;
         
         public function __construct(Context $context, string $type)
         {
             $this->local = $context->local();
-            $this->fdt = $context->formdata($type);
+            $this->fdtold = $context->formdata();
+            $this->fdtnew = $context->formdata($type);
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
         
@@ -70,8 +73,9 @@
  *
  * @return void
  */
-        public function run(array $tests)
+        public function run(array $tests, bool $old = TRUE)
         {
+            $this->fdt = $old ? $this->fdtold : $this->fdtnew;
             foreach ($tests as $test)
             {
                 [$func, $params, $result, $ok] = $test;

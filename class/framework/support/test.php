@@ -87,7 +87,8 @@
  */
         public function get(Context $context) : string
         {
-            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $test = $tester->run([
                 ['hasget', ['exist'], TRUE, TRUE],
                 ['hasget', ['notexist'], FALSE, FALSE],
                 ['get', ['exist', 0], '42', TRUE],
@@ -111,6 +112,7 @@
                 ['filterget', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
                 ['mustfilterget', ['email', FILTER_VALIDATE_INT], 3, FALSE],
             ]);
+            $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
         }
@@ -123,7 +125,8 @@
  */
         public function post(Context $context) : string
         {
-            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $test = $tester->run([
                 ['haspost', ['exist'], TRUE, TRUE],
                 ['haspost', ['notexist'], FALSE, FALSE],
                 ['post', ['exist', 3], '42', TRUE],
@@ -146,6 +149,7 @@
                 ['filterpost', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
                 ['mustfilterpost', ['email', FILTER_VALIDATE_INT], 3, FALSE],
             ]);
+            $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'post');
             return '@devel/tests/formdata.twig';
         }
@@ -158,7 +162,8 @@
  */
         public function put(Context $context) : string
         {
-            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $test = $tester->run([
                 ['hasput', ['exist'], TRUE, TRUE],
                 ['hasput', ['notexist'], FALSE, FALSE],
                 ['put', ['exist', 3], '42', TRUE],
@@ -181,6 +186,7 @@
                 ['filterput', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
                 ['mustfilterput', ['email', FILTER_VALIDATE_INT], 3, FALSE],
             ]);
+            $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'put');
             return '@devel/tests/formdata.twig';
         }
@@ -193,7 +199,8 @@
  */
         public function cookie(Context $context) : string
         {
-            $test = (new \Framework\Support\TestSupport($context, 'GET'))->run([
+            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $test = $tester->run([
                 ['hascookie', ['exist'], TRUE, TRUE],
                 ['hascookie', ['notexist'], FALSE, FALSE],
                 ['cookie', ['exist', 0], '42', TRUE],
@@ -216,6 +223,7 @@
                 ['filtercookie', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
                 ['mustfiltercookie', ['email', FILTER_VALIDATE_INT], 'foo@bar.com', FALSE],
             ]);
+            $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'cookie');
             return '@devel/tests/formdata.twig';
         }

@@ -411,13 +411,15 @@
 /**
  * Return the Formdata object
  *
+ * @param ?string $which
+ *
  * @return \Support\FormData
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formdata() : \Support\FormData
+        public function formdata(?string $which = '') : \Support\FormData
         {
-            return \Support\FormData::getinstance();
+            return $which === '' ? \Support\FormData::getinstance() : \Support\FormData::getinstance()->getter($which);
         }
 /**
  * Return the Web object
