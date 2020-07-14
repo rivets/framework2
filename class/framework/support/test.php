@@ -115,8 +115,8 @@
             $tx = array_map(function($item){
                 return [$item[0].'get', $item[1], $item[2], $item[3]];
             }, self::$oldtests);
-            $test = $tester->run($tx, FALSE);
-            $test = $tester->run(self::$tests, TRUE);
+            $test = $tester->run($tx, TRUE);
+            $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
         }
