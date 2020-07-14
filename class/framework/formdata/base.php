@@ -130,16 +130,16 @@
                     $val = $default;
                     break 1;
                 }
-                $val = $part[$key];
+                $part = $part[$key];
                 if (empty($keys))
                 {
-                    if (!is_array($val))
+                    if (!is_array($part))
                     {
-                        $val = trim($val);
+                        $part = trim($part);
                         if ($filter != NULL)
                         {
-                            $val = filter_var($val, $filter, $options);
-                            if ($val === FALSE || $val === NULL)
+                            $part = filter_var($part, $filter, $options);
+                            if ($part === FALSE || $part === NULL)
                             {
                                 if ($throw)
                                 {
@@ -147,13 +147,13 @@
                                 }
                                 return $default;
                             }
-                            $val = trim($val);
+                            $part = trim($part);
                         }
                     }
                     break 1;
                 }
             }
-            return $val;
+            return $part;
         }
     }
 ?>
