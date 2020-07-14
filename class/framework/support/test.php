@@ -132,7 +132,7 @@
                 ['mustpost', [['nexist', 14], 3],'42', TRUE, ''],
                 ['mustpost', [['nexist', 13], 3], '42', FALSE, ''],
                 ['post', [['kexist', 'key1'], 3], '42', TRUE, ''],
-                ['post', [['kexist', 'key45'], 3], 0, FALSE, ''],
+                ['post', [['kexist', 'key45'], 3], 3, FALSE, ''],
                 ['mustpost', [['kexist', 'key1'], 3],'42', TRUE, ''],
                 ['mustpost', [['kexist', 'key45'], 3], '42', FALSE, ''],
                 ['filterpost', ['email', '', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
