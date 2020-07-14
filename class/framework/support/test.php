@@ -113,8 +113,7 @@
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
             $test = $tester->run(array_map(function($item){
-                $item[0] .= 'get';
-                return $item;
+                return [$item[0].'get', $item[1], $item[2], $item[3]];
             }, self::$oldtests));
             $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'get');
