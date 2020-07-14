@@ -28,7 +28,7 @@
         private function display($pars)
         {
             $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
-            return substr($x, 1, strlen($x)-2);
+            return preg_replace('/,/', ', ', substr($x, 1, strlen($x)-2));
         }
 /**
  * Run tests specified
