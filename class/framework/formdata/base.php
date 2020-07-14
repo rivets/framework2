@@ -143,7 +143,7 @@
                             {
                                 if ($throw)
                                 {
-                                    throw new BadValue('Filter failure');
+                                    throw new BadValue('Filter failure '.$filter);
                                 }
                                 return $default;
                             }
