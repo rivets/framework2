@@ -53,7 +53,8 @@
                 {
                     if (!isset($this->getters[$t]))
                     {
-                        $class = '\Framework\FormData\\'.$t;
+                        $class = '\Framework\FormData\\'.ucfirst($t);
+                        \Framework\Support\Debug::head($class);
                         $this->getters[$t] = new $class();
                     }
                     $func = $func !== '' ? $func.\ucfirst($t) : $t;
