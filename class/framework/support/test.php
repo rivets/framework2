@@ -14,7 +14,7 @@
  */
     class Test
     {    
-        static private $tests = [
+        static private $tests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
             ['exist', ['exist'], TRUE, TRUE],
             ['exist', ['notexist'], FALSE, FALSE],
             ['mustExist', ['exist'], TRUE, TRUE],
@@ -31,8 +31,8 @@
             ['get', [['nexist', 13], 3], 3, FALSE],
             ['mustGet', [['nexist', 14]],'42', TRUE],
             ['mustGet', [['nexist', 13]], '42', FALSE],
-            ['get', [['kexist', 'key1'], 0], '42', TRUE],
-            ['get', [['kexist', 'key45'], 0], 0, FALSE],
+            ['get', [['kexist', 'key1'], 3], '42', TRUE],
+            ['get', [['kexist', 'key45'], 3], 3, FALSE],
             ['mustGet', [['kexist', 'key1']],'42', TRUE],
             ['mustGet', [['kexist', 'key45']], '42', FALSE],
             ['get', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
@@ -41,7 +41,7 @@
             ['mustGet', ['email', FILTER_VALIDATE_INT], 3, FALSE],
         ];
 
-        private static $oldtests = [
+        private static $oldtests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
             ['has', ['exist'], TRUE, TRUE],
             ['has', ['notexist'], FALSE, FALSE],
             ['', ['exist', 3], '42', TRUE],
@@ -59,7 +59,7 @@
             ['', [['kexist', 'key1'], 3], '42', TRUE],
             ['', [['kexist', 'key45'], 3], 3, FALSE],
             ['must', [['kexist', 'key1']],'42', TRUE],
-            ['must', [['kexist', 'key45']], '42', TRUE],
+            ['must', [['kexist', 'key45']], '42', FALSE],
             ['filter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
             ['mustfilter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
             ['filter', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
