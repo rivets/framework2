@@ -47,7 +47,7 @@
         <article class="ml-auto col-md-10">
             {% include '@util/message.twig' %}
             <pre>{{array}}</pre>
-            {{f.startform({method: op, id: 'tform'})}}
+            {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}
                 {% if op != 'cookie' %}
                     {{f.text({label: 'Simple', name: 'exist', value: 42})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
@@ -56,6 +56,8 @@
                     {{f.text({label: 'Array', name: 'nexist[15]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key1]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key2]', value: 42})}}
+                {% else %}
+                    {{f.hidden({name: 'cookie', value: 1})}}
                 {% endif %}
                 {{f.submit({value: 'Test'})}}
             {{f.endform()}}
