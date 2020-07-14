@@ -21,7 +21,7 @@
             data =[];
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
                //data.append(el.getAttribute('name'), el.value);
-               data[] = el.getAttribute('name')+'='+el.value;
+               data.push(el.getAttribute('name')+'='+el.value);
             });
             data = data.join('&');
             request.onreadystatechange = function() {
