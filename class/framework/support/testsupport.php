@@ -24,7 +24,7 @@
         {
             $this->local = $context->local();
             $this->fdtold = $context->formdata();
-            $this->fdtnew = $context->formdata($type);
+            $this->fdtnew = $this->fdtold->getter($type);
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
         
