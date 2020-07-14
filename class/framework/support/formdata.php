@@ -84,7 +84,7 @@
                     /** NOT REACHED **/
                 }
             }
-            throw new \Framework\Exception\InternalError('Bad FormData call: '.$calling);
+            throw new \Framework\Exception\BadValue('Bad FormData call: '.$calling);
         }
 
         public function recaptcha() : bool
