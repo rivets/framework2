@@ -115,7 +115,6 @@
             $tx = array_map(function($item){
                 return [$item[0].'get', $item[1], $item[2], $item[3]];
             }, self::$oldtests);
-var_dump($tx); exit;
             $test = $tester->run($tx, TRUE);
             $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'get');
