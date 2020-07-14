@@ -18,11 +18,11 @@
         use \Framework\Utility\Singleton;
         
         private $map = [
-            'get'       => INPUT_GET,
-            'post'      => INPUT_POST,
-            'put'       => NULL,
-            'cookie'    => INPUT_COOKIE,
-            'file'      => NULL,
+            'cookie',
+            'file',
+            'get',
+            'post',
+            'put',
         ];
         
         private $getters = [];
@@ -47,7 +47,7 @@
             {
                 $name = \substr($name, 4);
             }
-            foreach (\array_keys($map) as $t)
+            foreach ($this->map as $t)
             {
                 if (\strpos($name, $t) === 0)
                 {
