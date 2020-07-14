@@ -111,7 +111,7 @@
  */
         public function get(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $tester = new \Framework\Support\TestSupport($context, 'get');
             //$tx = array_map(function($item){
             //    return [$item[0].'get', $item[1], $item[2], $item[3]];
             //}, self::$oldtests);
@@ -129,7 +129,7 @@
  */
         public function post(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $tester = new \Framework\Support\TestSupport($context, 'post');
             $tx = array_map(function($item){
                 return [$item[0].'post', $item[1], $item[2], $item[3]];
             }, self::$oldtests);
@@ -147,7 +147,7 @@
  */
         public function put(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $tester = new \Framework\Support\TestSupport($context, 'put');
             $tx = array_map(function($item){
                 return [$item[0].'put', $item[1], $item[2], $item[3]];
             }, self::$oldtests);
@@ -165,7 +165,7 @@
  */
         public function cookie(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'GET');
+            $tester = new \Framework\Support\TestSupport($context, 'cookie');
             $tx = array_map(function($item){
                 return [$item[0].'cookie', $item[1], $item[2], $item[3]];
             }, self::$oldtests);

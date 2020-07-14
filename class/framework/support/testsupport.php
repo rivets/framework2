@@ -20,7 +20,7 @@
         private $fdtnew;
         private $noform = FALSE;
         
-        public function __construct(Context $context, string $type)
+        public function __construct(Context $context, ?string $type)
         {
             $this->local = $context->local();
             $this->fdtold = $context->formdata('');
