@@ -27,11 +27,12 @@
         
         private function display($v)
         {
-            $res = var_export($v, TRUE);
-            $res = preg_replace('/\s+/ims', ', ', $res);
-            $res = preg_replace('/array\(/', '[', $res);
-            $res = preg_replace('/\)/', ']', $res);
-            return $res;
+            $x = $res = var_export($v, TRUE);
+            $res = preg_replace('/\s+/ims', ' ', $res);
+            $res = preg_replace('/array\s*\(/ims', '[', $res);
+            $res = preg_replace('/\s*\)/ims', ']', $res);
+            $res = preg_replace('/\s/ims', ', ', $res);
+            return $x.PHP_EOL.$res;
         }
 /**
  * OK if true
