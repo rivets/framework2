@@ -36,7 +36,7 @@
         document.cookie = 'exist=42';
         document.cookie = 'email=foo@bar.com';
         document.cookie = 'aexist[]=42';
-        document.cookie = 'aexist[]=42';
+        document.cookie = 'aexist[1]=42'; // two cookies with same name overwrite each other so [] doesnt work more than once
         document.cookie = 'nexist[14]=42';
         document.cookie = 'nexist[15]=42';
         document.cookie = 'kexist[key1]=42';
