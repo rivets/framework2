@@ -17,10 +17,13 @@
             var request = new XMLHttpRequest();
             request.open(putorpatch, '#', true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' /*'multipart/form-data; charset=UTF-8'*/);
-            data = new FormData;
+            //data = new FormData;
+            data =[];
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
-               data.append(el.getAttribute('name'), el.value);
+               //data.append(el.getAttribute('name'), el.value);
+               data[] = el.getAttribute('name')+'='+el.value;
             });
+            data = data.join('&');
             request.onreadystatechange = function() {
                 if (this.readyState == 4)
                 {
