@@ -514,7 +514,7 @@
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
  *
  * @param mixed   $name   The key
- * @param mixed    $dflt   Returned if the key does not exist
+ * @param mixed   $dflt   Returned if the key does not exist
  *
  * @return string
  */
