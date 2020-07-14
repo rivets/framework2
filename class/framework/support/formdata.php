@@ -61,7 +61,6 @@
             {
                 if (\strpos($name, $t) === 0)
                 {
-                    var_dump('here'); exit;
                     $func = $func !== '' ? $func.\ucfirst($t) : $t;
                     switch (\substr($name, \strlen($t)))
                     {
