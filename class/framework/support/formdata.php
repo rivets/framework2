@@ -29,7 +29,10 @@
         {
             if (!is_array($this->putdata))
             { /** @psalm-suppress NullArgument */
-                parse_str(file_get_contents('php://input'), $this->putdata);
+                if (!parse_str(file_get_contents('php://input'), $this->putdata))
+                {
+                    throw new \Framework\Exception\BadValue('Error parsing PUT/PATCH data');
+                }
             }
         }
 /*
