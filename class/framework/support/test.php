@@ -100,10 +100,10 @@
                 ['get', [['kexist', 'key45'], 0], 0, FALSE, ''],
                 ['mustget', [['kexist', 'key1'], 0],'42', TRUE, ''],
                 ['mustget', [['kexist', 'key45'], 0], '42', FALSE, ''],
-                ['filterget', ['email', ''], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['mustfilterget', ['email'], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['filterget', ['email', 3], 3, FALSE, FILTER_VALIDATE_INT],
-                ['mustfilterget', ['email'], 3, FALSE, FILTER_VALIDATE_INT],
+                ['filterget', ['email', '', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
+                ['mustfilterget', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
+                ['filterget', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE, ''],
+                ['mustfilterget', ['email', FILTER_VALIDATE_INT], 3, FALSE, ''],
             ]);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
@@ -135,10 +135,10 @@
                 ['post', [['kexist', 'key45'], 3], 0, FALSE, ''],
                 ['mustpost', [['kexist', 'key1'], 3],'42', TRUE, ''],
                 ['mustpost', [['kexist', 'key45'], 3], '42', FALSE, ''],
-                ['filterpost', ['email', ''], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['mustfilterpost', ['email'], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['filterpost', ['email', 3], 3, FALSE, FILTER_VALIDATE_INT],
-                ['mustfilterpost', ['email'], 3, FALSE, FILTER_VALIDATE_INT],
+                ['filterpost', ['email', '', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
+                ['mustfilterpost', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
+                ['filterpost', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE, ''],
+                ['mustfilterpost', ['email', FILTER_VALIDATE_INT], 3, FALSE, ''],
             ]);
             $context->local()->addval('op', 'post');
             return '@devel/tests/formdata.twig';
@@ -201,10 +201,10 @@
                 ['cookie', [['kexist', 'key45'], 0], 0, FALSE, ''],
                 ['mustcookie', [['kexist', 'key1'], 0],'42', TRUE, ''],
                 ['mustcookie', [['kexist', 'key45'], 0], '42', FALSE, ''],
-                ['filtercookie', ['email', ''], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['mustfiltercookie', ['email'], 'foo@bar.com', TRUE, FILTER_VALIDATE_EMAIL],
-                ['filtercookie', ['email', 3], 3, FALSE, FILTER_VALIDATE_INT],
-                ['mustfiltercookie', ['email'], 'foo@bar.com', FALSE, FILTER_VALIDATE_INT],
+                ['filtercookie', ['email', '', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
+                ['mustfiltercookie', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE, ''],
+                ['filtercookie', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE, ''],
+                ['mustfiltercookie', ['email', FILTER_VALIDATE_INT], 'foo@bar.com', FALSE, ''],
             ]);
             $context->local()->addval('op', 'cookie');
             return '@devel/tests/formdata.twig';
