@@ -40,6 +40,30 @@
             ['get', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
             ['mustGet', ['email', FILTER_VALIDATE_INT], 3, FALSE],
         ];
+
+        private static $oldtests = [
+            ['has', ['exist'], TRUE, TRUE],
+            ['has', ['notexist'], FALSE, FALSE],
+            ['put', ['exist', 3], '42', TRUE],
+            ['put', ['notexist', 3], 3, FALSE],
+            ['must', ['exist', 3], '42', TRUE],
+            ['must', ['notexist', 3], '42', FALSE],
+            ['put', [['aexist', 0], 3], '42', TRUE],
+            ['put', [['aexist', 3], 3], 3, FALSE],
+            ['must', [['aexist', 3], 3], '42', FALSE],
+            ['put', [['nexist', 14], 3], '42', TRUE],
+            ['put', [['nexist', 13], 3], 3, FALSE],
+            ['must', [['nexist', 14], 3],'42', TRUE],
+            ['must', [['nexist', 13], 3], '42', FALSE],
+            ['put', [['kexist', 'key1'], 3], '42', TRUE],
+            ['put', [['kexist', 'key45'], 3], 3, FALSE],
+            ['must', [['kexist', 'key1'], 3],'42', TRUE],
+            ['must', [['kexist', 'key45'], 3], '42', TRUE],
+            ['filter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
+            ['mustfilter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
+            ['filter', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
+            ['mustfilter', ['email', FILTER_VALIDATE_INT], 3, FALSE],
+        ];
 /**
  * Test AJAX functions
  *
@@ -88,30 +112,10 @@
         public function get(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'GET');
-            $test = $tester->run([
-                ['hasget', ['exist'], TRUE, TRUE],
-                ['hasget', ['notexist'], FALSE, FALSE],
-                ['get', ['exist', 0], '42', TRUE],
-                ['get', ['notexist', 0], 0, FALSE],
-                ['mustget', ['exist', 0], '42', TRUE],
-                ['mustget', ['notexist', 0], '42', FALSE],
-                ['get', [['aexist', 0], 0], '42', TRUE],
-                ['get', [['aexist', 3], 0], 0, FALSE],
-                ['mustget', [['aexist', 1], 0],'42', TRUE],
-                ['mustget', [['aexist', 3], 0], '42', FALSE],
-                ['get', [['nexist', 14], 0], '42', TRUE],
-                ['get', [['nexist', 13], 0], 0, FALSE],
-                ['mustget', [['nexist', 14], 0],'42', TRUE],
-                ['mustget', [['nexist', 13], 0], '42', FALSE],
-                ['get', [['kexist', 'key1'], 0], '42', TRUE],
-                ['get', [['kexist', 'key45'], 0], 0, FALSE],
-                ['mustget', [['kexist', 'key1'], 0],'42', TRUE],
-                ['mustget', [['kexist', 'key45'], 0], '42', FALSE],
-                ['filterget', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-                ['mustfilterget', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-                ['filterget', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-                ['mustfilterget', ['email', FILTER_VALIDATE_INT], 3, FALSE],
-            ]);
+            $test = $tester->run(array_map(function($item){
+                $item[0] .= 'get';
+                return $item;
+            }, self::$oldtests));
             $test = $tester->run(self::$tests, TRUE);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
