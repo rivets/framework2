@@ -14,7 +14,7 @@
  */
     class AccessBase extends Base
     {
-        public function __construct(int $which)
+        public function __construct(?int $which)
         {
             parent::__construct($which);
         }
