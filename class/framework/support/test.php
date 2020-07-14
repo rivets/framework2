@@ -25,7 +25,7 @@
             ['mustGet', ['notexist', 0], '42', FALSE],
             ['get', [['aexist', 0], 0], '42', TRUE],
             ['get', [['aexist', 3], 0], 0, FALSE],
-            ['must', [['aexist', 1], 0],'42', TRUE],
+            ['mustGet', [['aexist', 1], 0],'42', TRUE],
             ['mustGet', [['aexist', 3], 0], '42', FALSE],
             ['get', [['nexist', 14], 0], '42', TRUE],
             ['get', [['nexist', 13], 0], 0, FALSE],
@@ -38,7 +38,7 @@
             ['get', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
             ['mustGet', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
             ['get', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-            ['mustGet', ['email', FILTER_VALIDATE_INT], 3, TRUE],
+            ['mustGet', ['email', FILTER_VALIDATE_INT], 3, FALSE],
         ];
 /**
  * Test AJAX functions
