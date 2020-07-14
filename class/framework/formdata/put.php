@@ -94,7 +94,7 @@
 /**
  * Constructor
  */
-        public function _construct()
+        public function __construct()
         {
             parent::__construct(NULL);
             

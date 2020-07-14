@@ -12,7 +12,7 @@
  */
     class Cookie extends AccessBase
     {
-        public function _construct()
+        public function __construct()
         {
             parent::__construct(INPUT_COOKIE);
         }
