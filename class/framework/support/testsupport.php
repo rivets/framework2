@@ -42,7 +42,7 @@
                     $res[] = $xp;
                 }
             }
-            return implode(', ', $res);
+            return implode(', ', array_filter($res));
         }
 /**
  * OK if true
