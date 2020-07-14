@@ -52,7 +52,7 @@
             {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}
                 {% if op != 'cookie' %}
                     {{f.text({label: 'Simple', name: 'exist', value: 42})}}
-                    {{f.email({label: 'Email', name: 'email', value: 'foo@bar.com'})}}
+                    {{f.text({label: 'Email', name: 'email', value: 'foo@bar.com'})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
                     {{f.text({label: 'Array', name: 'nexist[14]', value: 42})}}
