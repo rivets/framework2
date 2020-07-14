@@ -47,7 +47,7 @@
 /**
  * Run tests specified
  */
-        private function test(string $func, array $params, $result, bool $throwOK, $filter) : bool
+        private function test(string $func, array $params, $result, bool $throwOK) : bool
         {
             if ($this->noform)
             {
@@ -89,7 +89,7 @@
             foreach ($tests as $test)
             {
                 [$func, $params, $result, $ok, $d] = $test;
-                $this->test($func, $params, $result, !$ok, $filter);
+                $this->test($func, $params, $result, !$ok);
             }
         }
     }
