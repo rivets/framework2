@@ -27,9 +27,9 @@
         
         private $getters = [];
 
-        public function __call($calling, $arguments)
+        public function __call(string $calling, array $arguments)
         {
-            $name = \strlower($calling);
+            $name = \strtolower($calling);
             $func = '';
             if (($must = (\strpos($name, 'must') === 0)))
             {
