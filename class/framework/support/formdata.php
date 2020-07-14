@@ -35,10 +35,7 @@
                 {
                 case '':
                 case 'application/x-www-form-urlencoded':
-                    if (!parse_str($data, $this->putdata))
-                    {
-                        throw new \Framework\Exception\BadValue('Error parsing PUT/PATCH data '.$ct[0].' "'.$data.'"'.' '.var_export($this->putdata, TRUE));
-                    }
+                    parse_str($data, $this->putdata);
                     break;
                 case 'multipart/form-data':
                     if (preg_match('/^(----[^\s]+)/', $data, $m))

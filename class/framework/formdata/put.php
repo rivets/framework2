@@ -12,14 +12,107 @@
  */
     class Put extends AccessBase
     {
+        private function parse() : array
+        {
+            $result = [];
+
+            //get raw input data
+            $data = file_get_contents('php://input');
+            if (empty($data))
+            {
+                return NULL;
+            }
+    
+            $contentType = $_SERVER['CONTENT_TYPE'];
+    
+            if (!preg_match('/boundary=(.*)$/is', $contentType, $m))
+            {
+                return NULL;
+            }
+    
+            $sep = $m[1];
+            $parts = preg_split('/\\R?-+' . preg_quote($sep, '/') . '/s', $data);
+            array_pop($parts);
+    
+            foreach ($parts as $part)
+            {
+                if (!empty($part))
+                {
+                    [$headers, $value] = preg_split('/\\R\\R/', $part, 2);
+                    $headers = $this->parseHeaders($headers);
+                    if (isset($headers['content-disposition']['name']))
+                    {
+                        $result[$headers['content-disposition']['name']] = $value;
+                    }
+                }
+            }
+            return $result;
+        }
+
+        /**
+         * Parses body param headers
+         * @param $headerContent
+         *
+         * @return array
+         */
+        private function parseHeaders(string $data) : array
+        {
+            $headers = [];
+            foreach (preg_split('/\\R/s', $data, -1, PREG_SPLIT_NO_EMPTY) as $part)
+            {
+                if (strpos($part, ':') !== FALSE)
+                {
+                    list($name, $value) = explode(':', $headerPart, 2);
+                    $name = strtolower(trim($name));
+                    $value = trim(value);
+                    if (strpos($value, ';') === FALSE)
+                    {
+                        $headers[$name] = $value;
+                    }
+                    else
+                    {
+                        $headers[$name] = [];
+                        foreach (explode(';', $value) as $part) {
+                            $part = trim($part);
+                            if (strpos($part, '=') === FALSE)
+                            {
+                                $headers[$headerName][] = $part;
+                            }
+                            else
+                            {
+                                [$sname, $svalue] = explode('=', $part, 2);
+                                $sname = strtolower(trim($sname));
+                                $svalue = trim(trim($svalue), '"');
+                                $headers[$name][$sname] = $svalue;
+                            }
+                        }
+                    }
+                }
+            }
+            return $headers;
+        }
 /**
  * Constructor
  */
         public function _construct()
         {
             parent::__construct(NULL);
-            /** @psalm-suppress NullArgument */
-            parse_str(file_get_contents('php://input'), $this->super);
+            
+            $data = file_get_contents('php://input');
+            $ct = explode(';', $_SERVER['CONTENT_TYPE'] ?? '');
+            switch (trim($ct[0]))
+            {
+            case '':
+            case 'application/x-www-form-urlencoded':
+                parse_str($data, $this->putdata);
+                break;
+            case 'multipart/form-data':
+                $this->super = $this->parse();
+                break;
+            default:
+                throw new \Framework\Exception\BadValue('Unknown encoding type PUT/PATCH: '.$_SERVER['CONTENT_TYPE']);
+                break;
+            }
         }
     }
 ?>
