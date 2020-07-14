@@ -26,6 +26,16 @@
         ];
         
         private $getters = [];
+        
+        public function getter($which)
+        {
+            if (!isset($this->getters[$which]))
+            {
+                $class = '\Framework\FormData\\'.ucfirst($t);
+                $this->getters[$which] = new $class();
+            }
+            return $this->getters[$which];
+        }
 
         public function __call(string $calling, array $arguments)
         {
@@ -62,19 +72,19 @@
                     case '':
                         break;
                     case 'a':
-                        return $this->getters[$t]->{$must ? 'mustGetArray' : 'getArray'}($arguments[0]);
+                        return $this->getter($t)->{$must ? 'mustGetArray' : 'getArray'}($arguments[0]);
                     case 'bean':
                         if (!$must)
                         {
                             break 2;
                         }
-                        return $this->getters[$t]->mustGetBean(...$arguments);
+                        return $this->getter($t)->mustGetBean(...$arguments);
                     case 'data':
-                        return $this->getters[$t]->get([$arguments[0], $arguments[1]]);
+                        return $this->getter($t)->get([$arguments[0], $arguments[1]]);
                     default:
                         break 2;
                     }
-                    $res = $this->getters[$t]->fetch($arguments[0], $arguments[1] ?? NULL, $must, FALSE, $arguments[2] ?? NULL, $arguments[3] ?? '');
+                    $res = $this->getter($t)->fetch($arguments[0], $arguments[1] ?? NULL, $must, FALSE, $arguments[2] ?? NULL, $arguments[3] ?? '');
                     return $has ? $res[0] : $res[1];  
                 }
             }
@@ -85,7 +95,7 @@
         {
             if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
-                if ($this->haspost('g-recaptcha-response'))
+                if ($this->getter('post')->exist('g-recaptcha-response'))
                 {
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,

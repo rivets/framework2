@@ -104,7 +104,7 @@
             {
             case '':
             case 'application/x-www-form-urlencoded':
-                parse_str($data, $this->putdata);
+                parse_str($data, $this->super);
                 break;
             case 'multipart/form-data':
                 $this->super = $this->parse();
