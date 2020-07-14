@@ -32,6 +32,13 @@
         });
     {% endif %}
     {% if op == 'cookie' %}
+        document.cookie = 'exist=42';
+        document.cookie = 'aexist[]=42';
+        document.cookie = 'aexist[]=42';
+        document.cookie = 'nexist[14]=42';
+        document.cookie = 'nexist[15]=42';
+        document.cookie = 'kexist[key1]=42';
+        document.cookie = 'kexist[key2]=42';
     {% endif %}
 {% endblock onload %}
 
@@ -40,8 +47,8 @@
         <article class="ml-auto col-md-10">
             {% include '@util/message.twig' %}
             <pre>{{array}}</pre>
-            {% if op != 'cookie' %}
-                {{f.startform({method: op, id: 'tform'})}}
+            {{f.startform({method: op, id: 'tform'})}}
+                {% if op != 'cookie' %}
                     {{f.text({label: 'Simple', name: 'exist', value: 42})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
                     {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
@@ -49,10 +56,10 @@
                     {{f.text({label: 'Array', name: 'nexist[15]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key1]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key2]', value: 42})}}
-                    {{f.submit({value: 'test'})}}
-                {{f.endform()}}
-            {% endif %}
-        </article>
+                {% endif %}
+                {{f.submit({value: 'Test'})}}
+            {{f.endform()}}
+    </article>
     </section>
 {% endblock main %}
 
