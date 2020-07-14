@@ -31,6 +31,7 @@
             { /** @psalm-suppress NullArgument */
                 parse_str(file_get_contents('php://input'), $this->putdata);
             }
+var_dump($this->putdata); exit;
         }
 /*
  *******************************************************************

@@ -22,13 +22,12 @@
                data.append(el.getAttribute('name'), el.value);
             });
             request.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200)
+                if (this.readyState == 4)
                 {
                     document.getElementsByTagName('html')[0].innerHTML = this.responseText;
                 }
             };
             request.send(data);
-    console.log(request.response.responseText);
             return false;
         });
     {% endif %}
