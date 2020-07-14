@@ -29,35 +29,35 @@
 
         public function __call($calling, $arguments)
         {
-            $name = strlower($calling);
+            $name = \strlower($calling);
             $func = '';
-            if (($must = (strpos($name, 'must') === 0)))
+            if (($must = (\strpos($name, 'must') === 0)))
             {
-                $name = substr($name, 4);
+                $name = \substr($name, 4);
             }
-            if (($filter = (strpos($name, 'filter') === 0)))
+            if (($filter = (\strpos($name, 'filter') === 0)))
             {
-                $name = substr($name, 6);
+                $name = \substr($name, 6);
             }
-            if (($has = (strpos($name, 'has') === 0)))
+            if (($has = (\strpos($name, 'has') === 0)))
             {
-                $name = substr($name, 3);
+                $name = \substr($name, 3);
             }
-            elseif (($has = (strpos($name, 'have') === 0)))
+            elseif (($has = (\strpos($name, 'have') === 0)))
             {
-                $name = substr($name, 4);
+                $name = \substr($name, 4);
             }
-            foreach (array_keys($map) as $t)
+            foreach (\array_keys($map) as $t)
             {
-                if (strpos($name, $t) === 0)
+                if (\strpos($name, $t) === 0)
                 {
                     if (!isset($this->getters[$t]))
                     {
                         $class = '\Framework\FormData\\'.$t;
                         $this->getters[$t] = new $class();
                     }
-                    $func = $func !== '' ? $func.ucfirst($t) : $t;
-                    switch (substr($name, strlen($t)))
+                    $func = $func !== '' ? $func.\ucfirst($t) : $t;
+                    switch (\substr($name, \strlen($t)))
                     {
                     case '':
                         break;
@@ -97,7 +97,7 @@
                     $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
                     {
-                        return json_decode($response->getBody())->success;
+                        return \json_decode($response->getBody())->success;
                     }
                 }
                 return FALSE;
