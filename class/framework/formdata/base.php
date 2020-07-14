@@ -22,7 +22,11 @@
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
  */
         protected $super;
-
+/**
+ * Constructor
+ *
+ * @param ?int  $which  The appropriate INPUT_ filter or NULL (which will be for PUT/PATCH...)
+ */
         public function __construct(?int $which)
         {
             $this->which = $which;
@@ -45,7 +49,7 @@
  *
  *  @return array
  */
-        final protected function getSuper(?int $which = NULL) : array
+        private function getSuper(?int $which = NULL) : array
         {
             switch($which ?? $this->which)
             {
@@ -63,58 +67,35 @@
  * @internal
  *
  * @param int       $which   The INPUT_... selector for the array
- * @param string    $name    The key
+ * @mixed string    $name    The key
  * @param bool      $throw   If TRUE then throw an execption if it does not exist
  * @param bool      $isArray If TRUE then check that this is an array
  *
- * @return bool
+ * @return booarrayl
  */
-        final protected function exists(string $name, bool $throw, bool $isArray = FALSE) : bool
+        final public function fetch($name, $default = NULL, bool $throw, bool $isArray = FALSE, $filter = NULL, $options = '') : array
         {
-            if (($this->which === NULL && !isset($this->super[$name])) || !filter_has_var($this->which, $name))
+            try
             {
+                $dt = $this->fetchFromSuper($this->super, is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
+            }
+            catch (BadValue $e)
+            { # does not exist
                 if ($throw)
                 {
-                    throw new BadValue('Missing Form Item: '.$name);
+                    throw $e;
                 }
-                return FALSE;
+                return [FALSE, $default];
             }
-            if ($isArray && !is_array($this->super[$name]))
+            if ($isArray && !is_array($dt))
             {
                 if ($throw)
                 {
                     throw new BadValue('Form Item '.$name.' is not an array');
                 }
-                return FALSE;
+                return [FALSE, $default];
             }
-            return TRUE;
-        }
-/**
- * Look in the specified array for a key and apply filters
- *
- * @internal
- *
- * @param int       $which   The INPUT_... selector for the array
- * @param string    $name    The key
- * @param mixed     $default A default value
- * @param int       $filter  Filter values - see PHP manual
- * @param mixed     $options see PHP manual
- * @param $bool     $throw   If TRUE then the throw an error if the cariable does not exist
- *
- * @return mixed
- */
-        final protected function filter(string $name, $default, int $filter, $options = '', bool $throw = FALSE)
-        {
-            $res = filter_input($this->which, $name, $filter, $options);
-            if ($res === FALSE || $res === NUL)
-            {
-                if ($throw)
-                {
-                    throw new BadValue('Filter failure on: '.$name);
-                }
-                return $default;
-            }
-            return $res;
+            return [TRUE, $dt];
         }
 /**
  * Utility function to dig out an element from a possibly multi-dimensional array
@@ -132,7 +113,7 @@
  *
  * @return string
  */
-        final protected function fetchFromSuper(array $super, array $keys, $default = NULL, bool $throw = FALSE) : string
+        final protected function fetchFromSuper(array $super, array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '') : string
         {
             $part = $super;
             while (TRUE) // iterate over the array of keys
@@ -142,54 +123,35 @@
                 {
                     if ($throw)
                     {
-                        throw new BadValue('Missing form array item');
+                        throw new BadValue('Missing form item');
                     }
-                    $result = $default;
+                    $val = $default;
                     break 1;
                 }
                 $val = $part[$key];
                 if (empty($keys))
                 {
-                    $result = is_array($val) ? $val : trim($val);
+                    if (!is_array($val))
+                    {
+                        $val = trim($val);
+                        if ($filter != NULL)
+                        {
+                            $val = filter_var($val, $filter, $options);
+                            if ($val === FALSE || $val === NULL)
+                            {
+                                if ($throw)
+                                {
+                                    throw new BadValue('Filter failure');
+                                }
+                                return $default;
+                            }
+                            $val = trim($val);
+                        }
+                    }
                     break 1;
                 }
             }
-            return $result;
-        }
-/**
- * Pick out and treat a value
- *
- * @internal
- *
- * @param int           $which      The Superglobal required
- * @param array         $arr        The array to pick value from
- * @param string|array  $name       The string name of the entry or [name, selector,...]
- * @param mixed         $dflt       A default value to return
- * @param bool          $throw      If TRUE throw an error if not defined
- *
- * @throws BadValue
- * @return mixed
- */
-        final protected function fetchValue($name, bool $throw, $dflt = '')
-        {
-            if (is_array($name))
-            {
-                $n = array_shift($name); // shift off the variable name
-                if ($this->exists($n, TRUE))
-                { // the entry is there
-                    return $this->fetchFromSuper($this->super[$n], $name, NULL, $throw);
-                }
-                $msg = 'Missing item '.$n.'['.$name[0].']';
-            }
-            elseif ($this->exists($name, $throw))
-            {
-                return is_array($this->super[$name]) ? $this->super[$name] : trim($this->super[$name]);
-            }
-            if ($throw)
-            {
-                throw new BadValue($msg ?? 'Missing form item '.$name);
-            }
-            return $dflt;
+            return $val;
         }
     }
 ?>

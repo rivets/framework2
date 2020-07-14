@@ -29,23 +29,22 @@
 /**
  * Make arrays of files work more like singletons
  *
- * @param string    $name
- * @param mixed     $key
+ * @param mixed    $name
+ * @param mixed    $key
  *
  * @throws BadValue
  * @return array
  */
-        public function filedata(string $name, $key = '') : array
+        public function filedata($name, $key = '') : array
         {
-            $this->exists($name, TRUE, TRUE); // will not return if it does not
-            $x = $this->super[$name];
+            $x = $this->fetch($name, NULL, TRUE, TRUE); // will not return if it does not
             if ($key === '')
             {
                 return $x;
             }
-            if (!isset($this->super[$name]['name'][$key]))
+            if (!isset($x['name'][$key]))
             {
-                throw new \Framework\Exception\BadValue('Missing _FILES element '.$name.'/'.$key);
+                throw new \Framework\Exception\BadValue('Missing _FILES element');
             }
             return [
                 'name'     => $x['name'][$key],
@@ -62,7 +61,7 @@
  *
  * @return \ArrayIterator
  */
-        public function filea(string $name, array $dflt = []) : \ArrayIterator
+        public function getArray(string $name, array $dflt = []) : \ArrayIterator
         {
             return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new FAIterator($name) : new \ArrayIterator($dflt);
         }

@@ -62,7 +62,7 @@
             {
                 if (strpos($part, ':') !== FALSE)
                 {
-                    list($name, $value) = explode(':', $headerPart, 2);
+                    list($name, $value) = explode(':', $part, 2);
                     $name = strtolower(trim($name));
                     $value = trim(value);
                     if (strpos($value, ';') === FALSE)
@@ -76,7 +76,7 @@
                             $part = trim($part);
                             if (strpos($part, '=') === FALSE)
                             {
-                                $headers[$headerName][] = $part;
+                                $headers[$name][] = $part;
                             }
                             else
                             {
