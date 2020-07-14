@@ -30,7 +30,7 @@
         public function __construct(?int $which)
         {
             $this->which = $which;
-            if ($this->which != NULL)
+            if ($this->which !== NULL)
             {
                 $this->super = $this->getSuper($this->which);
             }
@@ -77,7 +77,7 @@
         {
             try
             {
-                $dt = $this->fetchFromSuper($this->super, is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
+                $dt = $this->fetchFrom(is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
             }
             catch (BadValue $e)
             { # does not exist
@@ -113,9 +113,9 @@
  *
  * @return string
  */
-        final protected function fetchFromSuper(array $super, array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '') : string
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '') : string
         {
-            $part = $super;
+            $part = $this->super;
             while (TRUE) // iterate over the array of keys
             {
                 $key = array_shift($keys);
