@@ -502,23 +502,23 @@
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or fail
  *
- * @param string     $name The cookie name
+ * @param mixed     $name The cookie name
  *
  * @return string
  */
-        public function mustcookie(string $name) : string
+        public function mustcookie($name) : string
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, NULL, TRUE);
         }
 /**
  * Look in the $_COOKIE array for a key and return its trimmed value or a default value
  *
- * @param string   $name   The key
+ * @param mixed   $name   The key
  * @param mixed    $dflt   Returned if the key does not exist
  *
  * @return string
  */
-        public function cookie(string $name, $dflt = '') : string
+        public function cookie($name, $dflt = '') : string
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
