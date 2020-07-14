@@ -25,7 +25,7 @@
             ['mustGet', ['notexist', 0], '42', FALSE],
             ['get', [['aexist', 0], 0], '42', TRUE],
             ['get', [['aexist', 3], 0], 0, FALSE],
-            ['mustGet', [['aexist', 1], 0],'42', TRUE],
+            ['mustGet', [['aexist', 1], 0],'66', TRUE],
             ['mustGet', [['aexist', 3], 0], '42', FALSE],
             ['get', [['nexist', 14], 0], '42', TRUE],
             ['get', [['nexist', 13], 0], 0, FALSE],
@@ -44,19 +44,20 @@
         private static $oldtests = [
             ['has', ['exist'], TRUE, TRUE],
             ['has', ['notexist'], FALSE, FALSE],
-            ['put', ['exist', 3], '42', TRUE],
-            ['put', ['notexist', 3], 3, FALSE],
+            ['', ['exist', 3], '42', TRUE],
+            ['', ['notexist', 3], 3, FALSE],
             ['must', ['exist', 3], '42', TRUE],
             ['must', ['notexist', 3], '42', FALSE],
-            ['put', [['aexist', 0], 3], '42', TRUE],
-            ['put', [['aexist', 3], 3], 3, FALSE],
+            ['', [['aexist', 0], 3], '42', TRUE],
+            ['', [['aexist', 3], 3], 3, FALSE],
+            ['must', [['aexist', 1], 0],'66', TRUE],
             ['must', [['aexist', 3], 3], '42', FALSE],
-            ['put', [['nexist', 14], 3], '42', TRUE],
-            ['put', [['nexist', 13], 3], 3, FALSE],
+            ['', [['nexist', 14], 3], '42', TRUE],
+            ['', [['nexist', 13], 3], 3, FALSE],
             ['must', [['nexist', 14], 3],'42', TRUE],
             ['must', [['nexist', 13], 3], '42', FALSE],
-            ['put', [['kexist', 'key1'], 3], '42', TRUE],
-            ['put', [['kexist', 'key45'], 3], 3, FALSE],
+            ['', [['kexist', 'key1'], 3], '42', TRUE],
+            ['', [['kexist', 'key45'], 3], 3, FALSE],
             ['must', [['kexist', 'key1'], 3],'42', TRUE],
             ['must', [['kexist', 'key45'], 3], '42', TRUE],
             ['filter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
@@ -112,10 +113,10 @@
         public function get(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'get');
-            //$tx = array_map(function($item){
-            //    return [$item[0].'get', $item[1], $item[2], $item[3]];
-            //}, self::$oldtests);
-            //$test = $tester->run($tx, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'get', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
             $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'get');
             return '@devel/tests/formdata.twig';
@@ -130,10 +131,10 @@
         public function post(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'post');
-            //$tx = array_map(function($item){
-            //    return [$item[0].'post', $item[1], $item[2], $item[3]];
-            //}, self::$oldtests);
-            //$test = $tester->run($tx, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'post', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
             $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'post');
             return '@devel/tests/formdata.twig';
@@ -148,10 +149,10 @@
         public function put(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'put');
-            //$tx = array_map(function($item){
-            //    return [$item[0].'put', $item[1], $item[2], $item[3]];
-            //}, self::$oldtests);
-            //$test = $tester->run($tx, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'put', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
             $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'put');
             return '@devel/tests/formdata.twig';
@@ -166,10 +167,10 @@
         public function cookie(Context $context) : string
         {
             $tester = new \Framework\Support\TestSupport($context, 'cookie');
-            //$tx = array_map(function($item){
-            //    return [$item[0].'cookie', $item[1], $item[2], $item[3]];
-            //}, self::$oldtests);
-            //$test = $tester->run($tx, TRUE);
+            $tx = array_map(function($item){
+                return [$item[0].'cookie', $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+            $test = $tester->run($tx, TRUE);
             $test = $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', 'cookie');
             return '@devel/tests/formdata.twig';
