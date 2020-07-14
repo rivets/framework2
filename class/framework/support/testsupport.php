@@ -20,11 +20,11 @@
         private $fdtnew;
         private $noform = FALSE;
         
-        public function __construct(Context $context, ?string $type)
+        public function __construct(Context $context, string $type)
         {
             $this->local = $context->local();
             $this->fdtold = $context->formdata('');
-            $this->fdtnew = $this->fdtold->getter($type);
+            $this->fdtnew = $context->formdata($type);
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
         
