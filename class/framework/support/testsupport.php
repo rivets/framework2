@@ -27,6 +27,7 @@
         
         private function display($pars)
         {
+            return preg_replace('/\s+/ims', '', var_export($pars, TRUE));
             $res = [];
             foreach ($pars as $v)
             {
