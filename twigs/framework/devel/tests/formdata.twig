@@ -16,7 +16,7 @@
             e.stopPropagation();
             var request = new XMLHttpRequest();
             request.open(putorpatch, '#', true);
-            request.setRequestHeader('Content-Type', 'multipart/form-data; charset=UTF-8');
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' /*'multipart/form-data; charset=UTF-8'*/);
             data = new FormData;
             e.target.querySelectorAll('input[type="text"]').forEach(function(el){
                data.append(el.getAttribute('name'), el.value);

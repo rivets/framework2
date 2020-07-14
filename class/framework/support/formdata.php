@@ -28,10 +28,29 @@
         private function setput() : void
         {
             if (!is_array($this->putdata))
-            { /** @psalm-suppress NullArgument */
-                if (!parse_str(file_get_contents('php://input'), $this->putdata))
+            {
+                $data = file_get_contents('php://input');
+                switch ($_SERVER['CONTENT_TYPE'] ?? '')
                 {
-                    throw new \Framework\Exception\BadValue('Error parsing PUT/PATCH data');
+                case '':
+                case 'application/x-www-form-urlencoded':
+                    if (!parse_str($data, $this->putdata))
+                    {
+                        throw new \Framework\Exception\BadValue('Error parsing PUT/PATCH data');
+                    }
+                    break;
+                case 'multipart/form-data':
+                    if (preg_match('/^(----[^\s]+)/', $data, $m))
+                    { # this is mulitpart/form-data format
+                        foreach (explode($m[1], $data) as $ln)
+                        {
+                            
+                        }
+                    }
+                    break;
+                default:
+                    throw new \Framework\Exception\BadValue('Unknown encoding type: '.$_SERVER['CONTENT_TYPE']);
+                    break;
                 }
             }
         }
