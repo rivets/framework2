@@ -516,9 +516,9 @@
  * @param mixed   $name   The key
  * @param mixed   $dflt   Returned if the key does not exist
  *
- * @return string
+ * @return mixed
  */
-        public function cookie($name, $dflt = '') : string
+        public function cookie($name, $dflt = '')
         {
             return $this->fetchit(INPUT_COOKIE, $_COOKIE, $name, $dflt, FALSE);
         }
