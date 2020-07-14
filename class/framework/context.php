@@ -413,11 +413,11 @@
  *
  * @param ?string $which
  *
- * @return \Support\FormData
+ * @return object
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formdata(?string $which = '') : \Support\FormData
+        public function formdata(?string $which = '') : object
         {
             return $which === '' ? \Support\FormData::getinstance() : \Support\FormData::getinstance()->getter($which);
         }
