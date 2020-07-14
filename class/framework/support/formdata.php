@@ -31,7 +31,7 @@
         {
             if (!isset($this->getters[$which]))
             {
-                $class = '\Framework\FormData\\'.ucfirst($t);
+                $class = '\Framework\FormData\\'.ucfirst($which);
                 $this->getters[$which] = new $class();
             }
             return $this->getters[$which];
