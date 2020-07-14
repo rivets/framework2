@@ -23,7 +23,7 @@
             ['get', ['notexist', 3], 3, FALSE],
             ['mustGet', ['exist'], '42', TRUE],
             ['mustGet', ['notexist'], '42', FALSE],
-            ['get', [['aexist', 3], 3], '42', TRUE],
+            ['get', [['aexist', 0], 3], '42', TRUE],
             ['get', [['aexist', 3], 3], 3, FALSE],
             ['mustGet', [['aexist', 1]],'66', TRUE],
             ['mustGet', [['aexist', 3]], '42', FALSE],
