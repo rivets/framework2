@@ -49,7 +49,7 @@
  *
  *  @return array
  */
-        private function getSuper(?int $which = NULL) : array
+        protected function getSuper(?int $which = NULL) : array
         {
             switch($which ?? $this->which)
             {
@@ -58,6 +58,7 @@
             case INPUT_COOKIE:  return $_COOKIE;
             case INPUT_SERVER:  return $_SERVER;
             case INPUT_ENV:     return $_ENV;
+            case NULL:          return $this->super;
             }
             throw new BadValue('Invalid Superglobal constant');
         }
