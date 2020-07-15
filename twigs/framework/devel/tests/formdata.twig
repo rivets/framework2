@@ -43,6 +43,9 @@
         document.cookie = 'kexist[key2]=43';
         document.cookie = 'beanid={{context.user.getID}}';
     {% endif %}
+    {% if remote is defined %}
+        document.getElementById('tform').submit();
+    {% endif %}
 {% endblock onload %}
 
 {% block main %}

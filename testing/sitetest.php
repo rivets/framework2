@@ -146,9 +146,9 @@
        'fail' => [
            ['/nosuchpage', 404, 0, ''],
            ['/test', 403, 0, ''],
-           ['/devel/test/assert', 500, 0, ''],
-           ['/devel/test/fail', 500, 0, ''],
-           ['/devel/test/toss', 500, 0, ''],
+           ['/devel/test/assert', 500, 1, ''],
+           ['/devel/test/fail', 500, 1, ''],
+           ['/devel/test/toss', 500, 1, ''],
        ]
     ];
     

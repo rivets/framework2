@@ -137,6 +137,10 @@
             $tester->run(self::mapping($type), TRUE);
             $tester->run(self::$tests, FALSE);
             $context->local()->addval('op', $type);
+            if (filter_has_var(INPUT_GET, 'remote'))
+            {
+                $context->local()->addval('remote', TRUE);
+            }
             return '@devel/tests/formdata.twig';
         }
 /**
