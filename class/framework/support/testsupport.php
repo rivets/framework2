@@ -33,7 +33,7 @@
         private function display($pars, $all = FALSE)
         {
             $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
-            return $all ? $x : preg_replace('/,/', ', ', substr($x, 1, strlen($x)-2));
+            return preg_replace('/,/', ', ', $all ? $x : substr($x, 1, strlen($x)-2));
         }
 /**
  * Run tests specified
