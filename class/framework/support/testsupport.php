@@ -95,6 +95,11 @@
                 $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
                 return $throwOK;
             }
+            catch (\Framework\Exception\MissingBean $e)
+            {
+                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                return $throwOK;
+            }
             catch (\Exception $e)
             {
                 $this->local->message(Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
