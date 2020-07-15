@@ -32,7 +32,7 @@
  */
         public function filedata($name, $key = '') : array
         {
-            $x = $this->fetch($name, NULL, TRUE, TRUE); // will not return if it does not
+            $x = $this->getValue($name, NULL, TRUE, TRUE); // will not return if it does not
             if ($key === '')
             {
                 return $x;
