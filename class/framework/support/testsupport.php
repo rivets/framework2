@@ -57,7 +57,7 @@
                 {
                     if ($res instanceOf \ArrayIterator)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.display($res, TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.class_name($res));
                         return TRUE;
                     }
                     $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.class_name($res));
@@ -66,19 +66,19 @@
                 {
                     if (is_array($res) && empty(array_diff($res, $result)))
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.display($result, TRUE).' got '.display($res, TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                         return TRUE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.display($result, TRUE).' got '.display($res, TRUE));
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                 }
                 else
                 {
                     if ($res === $result)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.display($result, TRUE).' got '.display($res, TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->$thisdisplay($result, TRUE).' got '.$this->display($res, TRUE));
                         return TRUE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : display($result, TRUE)).' got '.display($res, TRUE));
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : $this->display($result, TRUE)).' got '.$this->display($res, TRUE));
                 }
             }
             catch (\Framework\Exception\BadValue $e)
