@@ -112,14 +112,13 @@
             return '@devel/devel.twig';
         }
 /**
- * mapping
+ * mapping old tests
  *
  * @param string $type
- * @param array $tests
  *
  * @return array
  */
-        private static function mapping(string $type, array $tests)
+        private static function mapping(string $type)
         {
             return array_map(function ($item) use ($type) {
                 return [$item[0].$type, $item[1], $item[2], $item[3]];
@@ -154,7 +153,7 @@
             //$tester->run($tx, TRUE);
             //$tester->run(self::$tests, FALSE);
             //$context->local()->addval('op', 'get');
-            return self::dotest('get');
+            return self::dotest($context, 'get');
         }
 /**
  * Test the FormData Post functions
@@ -165,7 +164,7 @@
  */
         public function post(Context $context) : string
         {
-            return self::dotest('post');
+            return self::dotest($context, 'post');
         }
 /**
  * Test the FormData Put functions
@@ -176,7 +175,7 @@
  */
         public function put(Context $context) : string
         {
-            return self::dotest('put');
+            return self::dotest($context, 'put');
         }
 /**
  * Test the FormData Cookie functions
@@ -187,7 +186,7 @@
  */
         public function cookie(Context $context) : string
         {
-            return self::dotest('cookie');
+            return self::dotest($context, 'cookie');
         }
 /**
  * Test the FormData File functions
@@ -202,7 +201,6 @@
             $context->local()->addval('op', 'file');
             return '@devel/devel.twig';
         }
-
 /**
  * Test mail
  *
