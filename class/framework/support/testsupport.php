@@ -53,14 +53,26 @@
             try
             {
                 $res = $this->fdt->{$func}(...$params);
-                if ($result == 'iterator')
+                if (is_object($res))
                 {
-                    if ($res instanceOf \ArrayIterator)
+                    if ($result == 'iterator')
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res)); //.' '.$this->display($res, TRUE));
+                        if ($res instanceOf \ArrayIterator)
+                        {
+                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res));
+                            return TRUE;
+                        }
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res));
+                    }
+                    elseif ($res instanceOf \RedBeanPHP\OODBBean)
+                    {
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
                         return TRUE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res)); //.' '.$this->display($res, TRUE));
+                    else
+                    {
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                    }
                 }
                 elseif (is_array($result))
                 {
@@ -70,15 +82,6 @@
                         return TRUE;
                     }
                     $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
-                }
-                elseif (is_object($res))
-                {
-                    if ($res instanceOf \RedBeanPHP\OODBBean)
-                    {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
-                        return TRUE;
-                    }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
                 }
                 else
                 {
