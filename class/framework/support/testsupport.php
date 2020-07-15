@@ -55,10 +55,23 @@
                 $res = $this->fdt->{$func}(...$params);
                 if (is_object($res))
                 {
-                    if ($result == 'iterator')
+                    if (is_array($result) && $result[0] == 'iterator')
                     {
                         if ($res instanceOf \ArrayIterator)
                         {
+                            foreach ($res as $key => $value)
+                            {
+                                if (!isset($result[1][$key]))
+                                {
+                                    $this->local->message(Local::ERROR, $msg.' FAIL : got ArrayIterator with incorrect key '.$key.'/'.$value);
+                                    return FALSE;
+                                }
+                                if ($value != $result[1][$key])
+                                {
+                                    $this->local->message(Local::ERROR, $msg.' FAIL : got ArrayIterator expected '.$key.'/'.$result[1][$key].' got '.$key.'/'.$value);
+                                    return FALSE;
+                                }
+                            }
                             $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res));
                             return TRUE;
                         }
