@@ -42,10 +42,11 @@
             ['mustFetchBean', ['beanid', 'user'], 'userid', TRUE],
             ['mustFetchBean', ['notbeanid', 'user'], 'userid', FALSE],
             ['mustFetchBean', ['badbeanid', 'user'], 'userid', FALSE],
+            ['mustFetchBean', ['badbeanid2', 'user'], 'userid', FALSE],
             ['fetchArray', ['kexist'], 'iterator', TRUE],
             ['mustFetchArray', ['kexist'], 'iterator', TRUE],
-            ['fetchArray', ['knotexist'], [], TRUE],
-            ['mustFetchArray', ['knotexist'], 'iterator', TRUE],
+            ['fetchArray', ['knotexist'], [], FALSE],
+            ['mustFetchArray', ['knotexist'], 'iterator', FALSE],
         ];
 
         private static $oldtests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
