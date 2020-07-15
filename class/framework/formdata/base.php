@@ -110,10 +110,9 @@
  * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  *
  * @throws BadValue
- *
- * @return string
+ * @return mixed
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '') : string
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '')
         {
             $part = $this->super;
             $etrack = [];
