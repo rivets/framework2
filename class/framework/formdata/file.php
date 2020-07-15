@@ -21,11 +21,6 @@
             /** @psalm-suppress NullArgument */
             $this->super = $_FILES;
         }
-/*
- ******************************
- * $_FILES helper functions
- ******************************
- */
 /**
  * Make arrays of files work more like singletons
  *

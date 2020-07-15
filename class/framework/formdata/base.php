@@ -154,5 +154,33 @@
             }
             return $part;
         }
+/*
+ *******************************************************************
+ * Existence checking functions
+ *******************************************************************
+ */
+/**
+ * Is the key in the array?
+ *
+ * @param mixed    $name   The keys
+ *
+ * @return bool
+ */
+        public function exists($name) : bool
+        {
+            return $this->getValue($name, NULL, FALSE)[0];
+        }
+/**
+ * Is the key in the $_GET array?
+ *
+ * @param mixed    $name   The keys
+ *
+ * @throws BadValue
+ * @return bool
+ */
+        public function mustExist($name) : bool
+        {
+            return $this->getValue($name, NULL, TRUE)[0];
+        }
     }
 ?>
