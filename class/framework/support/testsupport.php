@@ -71,6 +71,15 @@
                     }
                     $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                 }
+                elseif (is_object($res))
+                {
+                    if ($res instanceOf \RedBeanPHP\OODBBean)
+                    {
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                        return TRUE;
+                    }
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                }
                 else
                 {
                     if ($res === $result)
