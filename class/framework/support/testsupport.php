@@ -45,7 +45,7 @@
                 return TRUE;
             }
             $this->local->addval('array', var_export($_REQUEST, TRUE));
-            $msg = $func.'('.$this->display($params).')';
+            $msg = $func.'('.$this->display($params).')'.' : '.$this->display($result, TRUE);
             if ($result == 'userid')
             {
                 $result = $this->context->user()->getID();
