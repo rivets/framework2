@@ -114,9 +114,9 @@
            ],
            'fail' => [
                ['/nosuchpage', 404, 0, ''],
-               ['/admin', 200, 1, '/login/?page=/admin'],
-               ['/devel', 200, 1, '/login/?page=/devel'],
-               ['/test', 200, 1, '/login/?page=/test'],
+               ['/admin', 200, 1, '/login/?goto=/admin'],
+               ['/devel', 200, 1, '/login/?goto=/devel'],
+               ['/test', 200, 1, '/login/?goto=/test'],
            ]
     ];
       
