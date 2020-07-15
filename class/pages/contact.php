@@ -25,11 +25,11 @@
  */
         public function handle(Context $context)
         {
-            $fd = $context->formdata();
-            if (($msg = $fd->post('message', '')) !== '')
+            $fd = $context->formdata('post');
+            if (($msg = $fd->fetch('message', '')) !== '')
             { # there is a post
-                $subj = $fd->post('subject', '');
-                $sender = $fd->filterpost('sender', '', FILTER_VALIDATE_EMAIL);
+                $subj = $fd->fetch('subject', '');
+                $sender = $fd->fetch('sender', '', FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
                 {
                     $context->local()->sendmail(

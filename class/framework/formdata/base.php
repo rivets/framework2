@@ -73,7 +73,7 @@
  *
  * @return booarrayl
  */
-        final public function fetch($name, $default = NULL, bool $throw, bool $isArray = FALSE, ?int $filter = NULL, $options = '') : array
+        final public function getValue($name, $default = NULL, bool $throw, bool $isArray = FALSE, ?int $filter = NULL, $options = '') : array
         {
             try
             {

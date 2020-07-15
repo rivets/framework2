@@ -69,13 +69,13 @@
                         $res = $this->getter($t)->fetch($arguments[0], $must ? NULL : ($arguments[1] ?? NULL), $must, FALSE, $arguments[$ix] ?? NULL, $arguments[$ix+1] ?? '');
                         return $has ? $res[0] : $res[1];
                     case 'a': // get an array iterator
-                        return $this->getter($t)->{$must ? 'mustGetArray' : 'getArray'}($arguments[0]);
+                        return $this->getter($t)->{$must ? 'mustFetchArray' : 'fetchArray'}($arguments[0]);
                     case 'bean':
                         if (!$must)
                         { // bean has to be a must just now
                             break 2;
                         }
-                        return $this->getter($t)->mustGetBean(...$arguments);
+                        return $this->getter($t)->mustFetchBean(...$arguments);
                     case 'data': // filedata call
                         return $this->getter($t)->filedata([$arguments[0], $arguments[1]]);
                     default:
@@ -91,7 +91,7 @@
         {
             if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
-                if ($this->getter('post')->exist('g-recaptcha-response'))
+                if ($this->getter('post')->exists('g-recaptcha-response'))
                 {
                     $data = [
                         'secret'    => Config::RECAPTCHASECRET,

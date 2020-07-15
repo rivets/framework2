@@ -15,30 +15,37 @@
     class Test
     {    
         static private $tests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
-            ['exist', ['exist'], TRUE, TRUE],
-            ['exist', ['notexist'], FALSE, FALSE],
+            ['exists', ['exist'], TRUE, TRUE],
+            ['exists', ['notexist'], FALSE, FALSE],
             ['mustExist', ['exist'], TRUE, TRUE],
             ['mustExist', ['notexist'], FALSE, FALSE],
-            ['get', ['exist', 3], '42', TRUE],
-            ['get', ['notexist', 3], 3, FALSE],
-            ['mustGet', ['exist'], '42', TRUE],
-            ['mustGet', ['notexist'], '42', FALSE],
-            ['get', [['aexist', 0], 3], '42', TRUE],
-            ['get', [['aexist', 3], 3], 3, FALSE],
-            ['mustGet', [['aexist', 1]],'66', TRUE],
-            ['mustGet', [['aexist', 3]], '42', FALSE],
-            ['get', [['nexist', 14], 3], '42', TRUE],
-            ['get', [['nexist', 13], 3], 3, FALSE],
-            ['mustGet', [['nexist', 14]],'42', TRUE],
-            ['mustGet', [['nexist', 13]], '42', FALSE],
-            ['get', [['kexist', 'key1'], 3], '42', TRUE],
-            ['get', [['kexist', 'key45'], 3], 3, FALSE],
-            ['mustGet', [['kexist', 'key1']],'42', TRUE],
-            ['mustGet', [['kexist', 'key45']], '42', FALSE],
-            ['get', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-            ['mustGet', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-            ['get', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-            ['mustGet', ['email', FILTER_VALIDATE_INT], 3, FALSE],
+            ['fetch', ['exist', 3], '42', TRUE],
+            ['fetch', ['notexist', 3], 3, FALSE],
+            ['mustFetch', ['exist'], '42', TRUE],
+            ['mustFetch', ['notexist'], '42', FALSE],
+            ['fetch', [['aexist', 0], 3], '42', TRUE],
+            ['fetch', [['aexist', 3], 3], 3, FALSE],
+            ['mustFetch', [['aexist', 1]],'66', TRUE],
+            ['mustFetch', [['aexist', 3]], '42', FALSE],
+            ['fetch', [['nexist', 14], 3], '42', TRUE],
+            ['fetch', [['nexist', 13], 3], 3, FALSE],
+            ['mustFetch', [['nexist', 14]],'42', TRUE],
+            ['mustFetch', [['nexist', 13]], '42', FALSE],
+            ['fetch', [['kexist', 'key1'], 3], '42', TRUE],
+            ['fetch', [['kexist', 'key45'], 3], 3, FALSE],
+            ['mustFetch', [['kexist', 'key1']],'42', TRUE],
+            ['mustFetch', [['kexist', 'key45']], '42', FALSE],
+            ['fetch', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
+            ['mustFetch', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
+            ['fetch', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
+            ['mustFetch', ['email', FILTER_VALIDATE_INT], 3, FALSE],
+            ['mustFetchBean', ['beanid', FILTER_VALIDATE_INT], 'userid', TRUE],
+            ['mustFetchBean', ['notbeanid', FILTER_VALIDATE_INT], 'userid', FALSE],
+            ['mustFetchBean', ['badbeanid', FILTER_VALIDATE_INT], 'userid', FALSE],
+            ['fetchArray', ['kexist'], 'iterator', TRUE],
+            ['mustFetchArray', ['kexist'], 'iterator', TRUE],
+            ['fetchArray', ['knotexist'], [], TRUE],
+            ['mustFetchArray', ['knotexist'], 'iterator', TRUE],
         ];
 
         private static $oldtests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
@@ -251,13 +258,13 @@
  */
         public function upload(Context $context) : string
         {
-            $fd = $context->formdata();
+            $fdt = $context->formdata('file');
             try
             {
-                if ($fd->hasfile('upload'))
+                if ($fdt->exists('upload'))
                 {
                     $upl = \R::dispense('upload');
-                    $upl->savefile($context, $fd->filedata('upload'), FALSE, $context->user(), 0);
+                    $upl->savefile($context, $fdt->filedata('upload'), FALSE, $context->user(), 0);
                     $context->local()->addval('download', $upl->getID());
                 }
                 $rest = $context->rest();

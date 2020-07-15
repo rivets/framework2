@@ -23,15 +23,15 @@
  */
         public function handle(Context $context)
         {
-            $fd = $context->formdata();
-            if ($fd->hasfile('uploads'))
+            $fdt = $context->formdata('file');
+            if ($fdt->exists('uploads'))
             {
                 if (Config::UPUBLIC && Config::UPRIVATE)
                 { # need to check the flag could be either private or public
-                    foreach ($fd->posta('public') as $ix => $public)
+                    foreach ($fdt->fetchArray('public') as $ix => $public)
                     {
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fd->filedata('uploads', $ix), $public, $context->user(), $ix);
+                        $upl->savefile($context, $fdt->filedata('uploads', $ix), $public, $context->user(), $ix);
                     }
                 }
                 else

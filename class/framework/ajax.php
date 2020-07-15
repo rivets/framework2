@@ -177,7 +177,6 @@
         {
             [$name] = $context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
-            $fdt = $context->formdata();
             switch ($context->web()->method())
             {
             case 'POST':
@@ -185,10 +184,11 @@
                 {
                     throw new \Framework\Exception\BadValue('Item already exists');
                 }
+                $fdt = $context->formdata('post');
                 $v = R::dispense(FW::CONFIG);
                 $v->name = $name;
-                $v->value = $fdt->mustpost('value');
-                $v->type = $fdt->mustpost('type');
+                $v->value = $fdt->mustFetch('value');
+                $v->type = $fdt->mustFetch('type');
                 R::store($v);
                 break;
             case 'PATCH':
@@ -197,7 +197,7 @@
                 {
                     throw new \Framework\Exception\BadValue('No such item');
                 }
-                $v->value = $fdt->mustput('value');
+                $v->value = $context->formdata('put')->mustFetch('value');
                 R::store($v);
                 break;
             case 'DELETE':
@@ -316,10 +316,10 @@
             }
             else // this is legacy
             {
-                $fdt = $context->formdata();
-                $type = $fdt->mustpost('bean');
-                $field = $fdt->mustpost('field');
-                $bid = $fdt->mustpost('id');
+                $fdt = $context->formdata('post');
+                $type = $fdt->mustFetch('bean');
+                $field = $fdt->mustFetch('field');
+                $bid = $fdt->mustFetch('id');
             }
             $beans = $this->findRow($context, self::$toggleperms);
             $this->beancheck($beans, $type, $field);
@@ -427,7 +427,7 @@
                 $this->beanCheck($beans, $bean, $field);
                 $bn = $context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
-                $bn->$field = empty($more) ? $context->formdata()->mustput('value') : $bn->{$more[0]}($context->formdata()->mustput('value'));
+                $bn->$field = empty($more) ? $context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($context->formdata('put')->mustFetch('value'));
                 R::store($bn);
                 if ($log)
                 {
@@ -532,7 +532,6 @@
             }
             $table = strtolower($rest[1]);
             $method = $context->web()->method();
-            $fdt = $context->formdata();
             if ($method == 'POST')
             {
                 if (\Support\SiteInfo::tableExists($table))
@@ -545,13 +544,14 @@
                     throw new \Framework\Exception\BadValue('Table name should be alphanumeric');
                     /* NOT REACHED */
                 }
+                $fdt = $context->formdata('post');
                 $bn = \R::dispense($table);
-                foreach ($fdt->posta('field') as $ix => $fname)
+                foreach ($fdt->fetchArray('field') as $ix => $fname)
                 {
                     $fname = strtolower($fname);
                     if (preg_match('/[a-z][a-z0-9]*/', $fname))
                     {
-                        $bn->$fname = $fdt->post(['sample', $ix], '');
+                        $bn->$fname = $fdt->fetch(['sample', $ix], '');
                     }
                 }
                 \R::store($bn);
@@ -580,7 +580,7 @@
                     break;
                 case 'PATCH':
                 case 'PUT': // change a field
-                    $value = $fdt->mustput('value');
+                    $value = $context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
                     if (\Support\SiteInfo::hasField($table, $f1))
                     {
@@ -632,10 +632,9 @@
         final private function tablesearch(Context $context) : void
         {
             [$bean, $field, $op] = $context->restcheck(3);
-            $fdt = $context->formdata();
             $beans = $this->findRow($context, self::$tablesearchperms);
             $this->beanCheck($beans, $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
-            $value = $fdt->get('value', '');
+            $value = $context->formdata('get')->fetch('value', '');
             $incv = ' ?';
             if ($op == '4')
             {
@@ -677,14 +676,14 @@
  */
         final private function paging(Context $context) : void
         {
-            $fdt = $context->formdata();
-            $bean = $fdt->mustget('bean');
+            $fdt = $context->formdata('get');
+            $bean = $fdt->mustFetch('bean');
             if (isset(self::$paging[$bean]))
             { // pagination is allowed for this bean
                 $this->checkPerms($context, self::$paging[$bean][1]); // make sure we are allowed
-                $order = $fdt->get('order', '');
-                $page = $fdt->mustget('page');
-                $pagesize = $fdt->mustget('pagesize');
+                $order = $fdt->fetch('order', '');
+                $page = $fdt->mustFetch('page');
+                $pagesize = $fdt->mustFetch('pagesize');
                 $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order by '.$order) : ''), [], $page, $pagesize);
                 $context->web()->sendJSON($res);
             }
@@ -740,14 +739,14 @@
                 $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $ofield = $field;
                 $field = '`'.$field.'`';
-                $fdt = $context->formdata();
-                $order = $fdt->get('order', $field);
+                $fdt = $context->formdata('get');
+                $order = $fdt->fetch('order', $field);
                 if ($order !== $field)
                 { // strop the fieldname if it occurs in the order spec
                     $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
                 }
-                $limit = $fdt->get('limit', 10);
-                $search = $fdt->get('search', '%');
+                $limit = $fdt->fetch('limit', 10);
+                $search = $fdt->fetch('search', '%');
                 $res = [];
                 foreach (\Support\SiteInfo::getinstance()->fetch($bean,
                     $field.' like ? group by '.$field.($order !== '' ? (' order by '.$order) : '').($limit !== '' ? (' limit '.$limit) : ''), [$search]) as $bn)
@@ -906,7 +905,7 @@
         private function pwcheck(Context $context) : void
         {
             /** @psalm-suppress PossiblyNullReference */
-            if (($pw = $context->formdata()->get('pw', '')) === '' || !$context->user()->pwok($pw))
+            if (($pw = $context->formdata('get')->fetch('pw', '')) === '' || !$context->user()->pwok($pw))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }

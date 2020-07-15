@@ -116,7 +116,7 @@
             if (is_object($obj))
             {
                 $obj->startEdit($context, $rest); // do any special setup that the edit requires
-                if (($bid = $context->formdata()->post('bean', '')) !== '')
+                if (($bid = $context->formdata('post')->fetch('bean', '')) !== '')
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
@@ -195,7 +195,7 @@
  */
         private function update(Context $context) : string
         {
-            $doit = $context->formdata()->get('update', 0) == 1;
+            $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
             $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
@@ -251,13 +251,13 @@
             $local = $context->local();
             $adon = $local->makebasepath('admin', 'adminonly');
             $adminonly = file_exists($adon);
-            $fdt = $context->formdata();
-            if ($fdt->haspost('msg'))
+            $fdt = $context->formdata('post');
+            if ($fdt->exists('msg'))
             {
-                $msg = $fdt->mustpost('msg');
-                $onlyadmin = $fdt->post('onlyadmin', 0);
-                $online = $fdt->post('online', 0);
-                if ($adminonly && ($online || $fdt->post('deladonly', 0) == 1))
+                $msg = $fdt->mustFetch('msg');
+                $onlyadmin = $fdt->fetch('onlyadmin', 0);
+                $online = $fdt->fetch('online', 0);
+                if ($adminonly && ($online || $fdt->fetch('deladonly', 0) == 1))
                 {
                     unlink($adon);
                 }
@@ -289,7 +289,7 @@
             switch ($rest[0])
             {
             case 'beans': // Look at the beans in the database
-                $context->local()->addval('all', $context->hasadmin() && $context->formdata()->hasget('all'));
+                $context->local()->addval('all', $context->hasadmin() && $context->formdata('get')->exists('all'));
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files

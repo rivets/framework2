@@ -230,10 +230,10 @@
  */
         public function setpages($count = NULL) : void
         {
-            $form = $this->formdata();
-            $psize = $form->filterget('pagesize', 10, FILTER_VALIDATE_INT);
+            $fdt = $this->formdata('get');
+            $psize = $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
             $values = [
-                'page'      => $form->filterget('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
+                'page'      => $fdt->fetch('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
                 'pagesize'  => $psize,
             ];
             if ($count != NULL)

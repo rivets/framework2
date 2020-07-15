@@ -28,10 +28,10 @@
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
         
-        private function display($pars)
+        private function display($pars, $all = FALSE)
         {
             $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
-            return preg_replace('/,/', ', ', substr($x, 1, strlen($x)-2));
+            return $all ? $x : preg_replace('/,/', ', ', substr($x, 1, strlen($x)-2));
         }
 /**
  * Run tests specified
@@ -44,17 +44,39 @@
             }
             $this->local->addval('array', var_export($_REQUEST, TRUE));
             $msg = $func.'('.$this->display($params).')';
+            if ($result == 'userid')
+            {
+                $result = $context->user()->getID();
+            }
             try
             {
                 $res = $this->fdt->{$func}(...$params);
-                if ($res === $result)
+                if ($result == 'iterator')
                 {
-                    $this->local->message(Local::MESSAGE, $msg.' OK : expected '.var_export($result, TRUE).' got '.var_export($res, TRUE));
-                    return TRUE;
+                    if ($res instanceOf \ArrayIterator)
+                    {
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.display($res, TRUE));
+                        return TRUE;
+                    }
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.class_name($res));
+                }
+                elseif (is_array($result))
+                {
+                    if (is_array($res) && empty(array_diff($res, $result)))
+                    {
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.display($result, TRUE).' got '.display($res, TRUE));
+                        return TRUE;
+                    }
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.display($result, TRUE).' got '.display($res, TRUE));
                 }
                 else
                 {
-                    $this->local->message(Local::ERROR, $msg.' expected '.($throwOK ? 'exception' : var_export($result, TRUE)).' got '.var_export($res, TRUE));
+                    if ($res === $result)
+                    {
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.display($result, TRUE).' got '.display($res, TRUE));
+                        return TRUE;
+                    }
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : display($result, TRUE)).' got '.display($res, TRUE));
                 }
             }
             catch (\Framework\Exception\BadValue $e)

@@ -41,6 +41,7 @@
         document.cookie = 'nexist[15]=42';
         document.cookie = 'kexist[key1]=42';
         document.cookie = 'kexist[key2]=42';
+        document.cookie = 'beanid={{context.user.getID}}';
     {% endif %}
 {% endblock onload %}
 
@@ -59,6 +60,8 @@
                     {{f.text({label: 'Array', name: 'nexist[15]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key1]', value: 42})}}
                     {{f.text({label: 'Array', name: 'kexist[key2]', value: 42})}}
+                    {{f.text({label: 'Bean', name: 'beanid', value: context.user.getID})}}
+                    {{f.text({label: 'Bad Bean', name: 'badbeanid', value: 0})}}
                 {% else %}
                     {{f.hidden({name: 'cookie', value: 1})}}
                 {% endif %}

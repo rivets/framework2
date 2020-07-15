@@ -43,18 +43,18 @@
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $now = $context->utcnow(); # make sure time is in UTC
-            $fdt = $context->formdata();
-            $pw = $fdt->mustpost('password'); // make sure we have a password...
+            $fdt = $context->formdata('post');
+            $pw = $fdt->mustFetch('password'); // make sure we have a password...
             if (self::pwValid($pw))
             {
-                $login = $fdt->mustpost('login');
+                $login = $fdt->mustFetch('login');
                 if (is_object(\R::findOne('user', 'login=?', [$login])))
                 {
                     throw new \Framework\Exception\BadValue('Login name already exists');
                 }
                 $u = \R::dispense('user');
                 $u->login = $login;
-                $u->email = $fdt->mustpost('email');
+                $u->email = $fdt->mustFetch('email');
                 $u->active = 1;
                 $u->confirm = 1;
                 $u->joined = $now;
@@ -181,13 +181,13 @@
  */
         public function edit(Context $context) : array
         {
-            $fdt = $context->formdata();
+            $fdt = $context->formdata('post');
             $emess = $this->dofields($fdt);
 
-            $pw = $fdt->post('pw', '');
+            $pw = $fdt->fetch('pw', '');
             if ($pw !== '')
             {
-                if ($pw === $fdt->post('rpw', ''))
+                if ($pw === $fdt->fetch('rpw', ''))
                 {
                     $this->setpw($pw); // setting the password will do a store
                 }

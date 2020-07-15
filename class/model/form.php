@@ -154,23 +154,23 @@
  */
         public function edit(Context $context) : array
         {
-            $fdt = $context->formdata();
+            $fdt = $context->formdata('post');
             $emess = $this->dofields($fdt);
 
-            foreach ($fdt->posta('new') as $ix => $fid)
+            foreach ($fdt->fetchArray('new') as $ix => $fid)
             {
-                if (($type = $fdt->post(['type', $ix], '')) !== '')
+                if (($type = $fdt->fetch(['type', $ix], '')) !== '')
                 {
                     $fld = \R::dispense(FW::FORMFIELD);
                     $fld->type = $type;
                     foreach (['label', 'name', 'class', 'idval', 'placeholder', 'value', 'other', 'seqn'] as $fname)
                     {
-                        $fld->$fname = $fdt->post(['fld'.$fname, $ix], '');
+                        $fld->$fname = $fdt->fetch(['fld'.$fname, $ix], '');
                     }
                     $fld->flags = 0;
                     foreach (self::$flags as $fn => $fv)
                     {
-                        $fld->flags |= $fdt->post(['fld'.$fn, $ix], 0);
+                        $fld->flags |= $fdt->fetch(['fld'.$fn, $ix], 0);
                     }
                     \R::store($fld);
                     $this->bean->xownForm[] = $fld;
@@ -375,14 +375,14 @@
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
-            $fdt = $context->formdata();
+            $fdt = $context->formdata('post');
             $p = \R::dispense(FW::FORM);
-            $p->name = $fdt->mustpost('name');
-            $p->action = $fdt->mustpost('action');
-            $p->class = $fdt->mustpost('class');
-            $p->idval = $fdt->mustpost('idval');
-            $p->method = $fdt->mustpost('method');
-            $p->multipart = $fdt->post('multipart', 0);
+            $p->name = $fdt->mustFetch('name');
+            $p->action = $fdt->mustFetch('action');
+            $p->class = $fdt->mustFetch('class');
+            $p->idval = $fdt->mustFetch('idval');
+            $p->method = $fdt->mustFetch('method');
+            $p->multipart = $fdt->fetch('multipart', 0);
             \R::store($p);
             return $p;
         }

@@ -30,7 +30,7 @@
  *
  * @return bool
  */
-        public function exist($name) : bool
+        public function exists($name) : bool
         {
             return $this->fetch($name, NULL, FALSE)[0];
         }
@@ -60,7 +60,7 @@
  *
  * @return mixed
  */
-        public function mustGet($name, $filter = NULL, $options = '')
+        public function mustFetch($name, $filter = NULL, $options = '')
         {
             return $this->fetch($name, NULL, TRUE, FALSE, $filter, $options)[1];
         }
@@ -74,9 +74,9 @@
  *
  * @return mixed
  */
-        public function get($name, $default = '', $filter = NULL, $options = '')
+        public function fetch($name, $default = '', $filter = NULL, $options = '')
         {
-            return $this->fetch($name, $default, FALSE, FALSE, $filter, $options)[1];
+            return $this->getValue($name, $default, FALSE, FALSE, $filter, $options)[1];
         }
 /**
  * Look in the array for a key that is an id for a bean
@@ -89,9 +89,9 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function mustGetBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->fetch($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT)[1], $forupdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
@@ -101,9 +101,9 @@
  * @throws BadValue
  * @return \ArrayIterator
  */
-        public function mustGetArray($name) : \ArrayIterator
+        public function mustFetchArray($name) : \ArrayIterator
         {
-            return new \ArrayIterator($this->fetch($name, NULL, TRUE, TRUE)[1]);
+            return new \ArrayIterator($this->getValue($name, NULL, TRUE, TRUE)[1]);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
@@ -113,9 +113,9 @@
  *
  * @return \ArrayIterator
  */
-        public function getArray($name, array $default = []) : \ArrayIterator
+        public function fetchArray($name, array $default = []) : \ArrayIterator
         {
-            return new \ArrayIterator($this->fetch($name, $default, FALSE, TRUE)[1]);
+            return new \ArrayIterator($this->getValue($name, $default, FALSE, TRUE)[1]);
         }
     }
 ?>
