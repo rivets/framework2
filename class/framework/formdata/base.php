@@ -127,7 +127,7 @@
                     {
                         throw new BadValue('Missing form item: '.implode('/', $etrack));
                     }
-                    $val = $default;
+                    $part = $default;
                     break 1;
                 }
                 $part = $part[$key];

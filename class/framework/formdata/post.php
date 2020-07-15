@@ -36,7 +36,7 @@
             { # if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->exists('g-recaptcha-response', FALSE))
                 {
-                    $porg = $this->getSuper();
+                    $porg = $this->getSuper(INPUT_POST);
                     $srv = $this->getSuper(INPUT_SERVER);
                     $data = [
                         'secret'    => $context->constant('RECAPTCHASECRET', ''),

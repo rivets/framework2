@@ -15,30 +15,29 @@
         private function parse() : array
         {
             $result = [];
-
             //get raw input data
             $data = file_get_contents('php://input');
             if (empty($data))
             {
                 return NULL;
             }
-    
+
             $contentType = $_SERVER['CONTENT_TYPE'];
-    
+
             if (!preg_match('/boundary=(.*)$/is', $contentType, $m))
             {
                 return NULL;
             }
-    
+
             $sep = $m[1];
-            $parts = preg_split('/\\R?-+' . preg_quote($sep, '/') . '/s', $data);
+            $parts = preg_split('/\R?-+/' . preg_quote($sep, '/') . '/s', $data);
             array_pop($parts);
-    
+
             foreach ($parts as $part)
             {
                 if (!empty($part))
                 {
-                    [$headers, $value] = preg_split('/\\R\\R/', $part, 2);
+                    [$headers, $value] = preg_split('/\R\R/', $part, 2);
                     $headers = $this->parseHeaders($headers);
                     if (isset($headers['content-disposition']['name']))
                     {
@@ -62,7 +61,7 @@
             {
                 if (strpos($part, ':') !== FALSE)
                 {
-                    list($name, $value) = explode(':', $part, 2);
+                    [$name, $value] = explode(':', $part, 2);
                     $name = strtolower(trim($name));
                     $value = trim(value);
                     if (strpos($value, ';') === FALSE)
@@ -72,7 +71,8 @@
                     else
                     {
                         $headers[$name] = [];
-                        foreach (explode(';', $value) as $part) {
+                        foreach (explode(';', $value) as $part)
+                        {
                             $part = trim($part);
                             if (strpos($part, '=') === FALSE)
                             {
@@ -97,7 +97,7 @@
         public function __construct()
         {
             parent::__construct(NULL);
-            
+
             $data = file_get_contents('php://input');
             $ct = explode(';', $_SERVER['CONTENT_TYPE'] ?? '');
             switch (trim($ct[0]))

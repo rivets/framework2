@@ -16,7 +16,7 @@
     class FormData
     {
         use \Framework\Utility\Singleton;
-        
+
         private $map = [
             'cookie',
             'file',
@@ -24,9 +24,9 @@
             'post',
             'put',
         ];
-        
+
         private $getters = [];
-        
+
         public function getter($which)
         {
             if (!isset($this->getters[$which]))
@@ -45,7 +45,7 @@
             {
                 $name = \substr($name, 4);
             }
-            if (($filter = (\strpos($name, 'filter') === 0)))
+            if (\strpos($name, 'filter') === 0)
             {
                 $name = \substr($name, 6);
             }
@@ -81,7 +81,7 @@
                     default:
                         break 2;
                     }
-                    /** NOT REACHED **/
+                    /** NOT REACHED */
                 }
             }
             throw new \Framework\Exception\BadValue('Bad FormData call: '.$calling);

@@ -13,8 +13,8 @@
  * A class that handles various site testing related things
  */
     class Test
-    {    
-        static private $tests = [ // function, paramters, expected result, if FALSE then failure is expected and result may be default or an exception
+    {
+        private static $tests = [ // function, paramters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, FALSE],
             ['mustExist', ['exist'], TRUE, TRUE],
@@ -112,6 +112,35 @@
             return '@devel/devel.twig';
         }
 /**
+ * mapping
+ *
+ * @param string $type
+ * @param array $tests
+ *
+ * @return array
+ */
+        private static function mapping(string $type, array $tests)
+        {
+            return array_map(function ($item) use ($type) {
+                return [$item[0].$type, $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
+        }
+/**
+ * Do test
+ *
+ * @param string $type
+ *
+ * @return string
+ */
+        private static function dotest(Context $context, string$type) : string
+        {
+            $tester = new \Framework\Support\TestSupport($context, $type);
+            $tester->run(self::mapping($type), TRUE);
+            $tester->run(self::$tests, FALSE);
+            $context->local()->addval('op', $type);
+            return '@devel/tests/formdata.twig';
+        }
+/**
  * Test the FormData Get functions
  *
  * @param Context $context  The site context object
@@ -120,14 +149,12 @@
  */
         public function get(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'get');
-            $tx = array_map(function($item){
-                return [$item[0].'get', $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-            $test = $tester->run($tx, TRUE);
-            $test = $tester->run(self::$tests, FALSE);
-            $context->local()->addval('op', 'get');
-            return '@devel/tests/formdata.twig';
+            //$tester = new \Framework\Support\TestSupport($context, 'get');
+            //$tx = self::mapping('get');
+            //$tester->run($tx, TRUE);
+            //$tester->run(self::$tests, FALSE);
+            //$context->local()->addval('op', 'get');
+            return self::dotest('get');
         }
 /**
  * Test the FormData Post functions
@@ -138,14 +165,7 @@
  */
         public function post(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'post');
-            $tx = array_map(function($item){
-                return [$item[0].'post', $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-            $test = $tester->run($tx, TRUE);
-            $test = $tester->run(self::$tests, FALSE);
-            $context->local()->addval('op', 'post');
-            return '@devel/tests/formdata.twig';
+            return self::dotest('post');
         }
 /**
  * Test the FormData Put functions
@@ -156,14 +176,7 @@
  */
         public function put(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'put');
-            $tx = array_map(function($item){
-                return [$item[0].'put', $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-            $test = $tester->run($tx, TRUE);
-            $test = $tester->run(self::$tests, FALSE);
-            $context->local()->addval('op', 'put');
-            return '@devel/tests/formdata.twig';
+            return self::dotest('put');
         }
 /**
  * Test the FormData Cookie functions
@@ -174,14 +187,7 @@
  */
         public function cookie(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'cookie');
-            $tx = array_map(function($item){
-                return [$item[0].'cookie', $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-            $test = $tester->run($tx, TRUE);
-            $test = $tester->run(self::$tests, FALSE);
-            $context->local()->addval('op', 'cookie');
-            return '@devel/tests/formdata.twig';
+            return self::dotest('cookie');
         }
 /**
  * Test the FormData File functions
@@ -192,6 +198,8 @@
  */
         public function file(Context $context) : string
         {
+            $tester = new \Framework\Support\TestSupport($context, 'file');
+            $context->local()->addval('op', 'file');
             return '@devel/devel.twig';
         }
 
