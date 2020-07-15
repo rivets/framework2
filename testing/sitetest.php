@@ -43,7 +43,11 @@
             {
                 if(preg_match('/^https/i', $resurl))
                 {
-                    if ($resurl == $https.$rdurl || $resurl == $https.$rdurl.'/')
+                    if ($resurl == $prefix.$rdurl.'/')
+                    {
+                        echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
+                    }
+                    elseif ($resurl == $https.$rdurl || $resurl == $https.$rdurl.'/')
                     {
                         echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
                     }
@@ -51,10 +55,6 @@
                     {
                         echo '-- "'.$url.'" ('.$resurl.') redirected more than expected'.PHP_EOL;
                     }
-                }
-                elseif ($resurl == $prefix.$rdurl.'/')
-                {
-                    echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
                 }
                 else
                 {
