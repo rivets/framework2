@@ -131,7 +131,7 @@
  *
  * @return string
  */
-        private static function dotest(Context $context, string$type) : string
+        private static function dotest(Context $context, string $type) : string
         {
             $tester = new \Framework\Support\TestSupport($context, $type);
             $tester->run(self::mapping($type), TRUE);
