@@ -57,10 +57,10 @@
                 {
                     if ($res instanceOf \ArrayIterator)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res).' '.$this->display($res, TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res)); //.' '.$this->display($res, TRUE));
                         return TRUE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res).' '.$this->display($res, TRUE));
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res)); //.' '.$this->display($res, TRUE));
                 }
                 elseif (is_array($result))
                 {
