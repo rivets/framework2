@@ -98,7 +98,7 @@
                 }
                 else
                 {
-                    if ($res === $result)
+                    if ($res == $result)
                     {
                         $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                         return TRUE;
