@@ -142,6 +142,9 @@
             '/admin/checksum',
             '/admin/update',
             '/admin/offline',
+            '/deve/test/get',
+            '/devel/test/post',
+            '/devel/test/cookie',
        ],
        'fail' => [
            ['/nosuchpage', 404, 0, ''],
