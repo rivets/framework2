@@ -15,6 +15,7 @@
     class TestSupport
     {
         private $local;
+        private $context;
         private $fdt;
         private $fdtold;
         private $fdtnew;
@@ -22,6 +23,7 @@
         
         public function __construct(Context $context, string $type)
         {
+            $this->context = $context;
             $this->local = $context->local();
             $this->fdtold = $context->formdata('');
             $this->fdtnew = $context->formdata($type);
@@ -46,7 +48,7 @@
             $msg = $func.'('.$this->display($params).')';
             if ($result == 'userid')
             {
-                $result = $context->user()->getID();
+                $result = $this->context->user()->getID();
             }
             try
             {
