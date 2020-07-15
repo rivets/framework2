@@ -71,7 +71,7 @@
                     }
                     else
                     {
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res));
                     }
                 }
                 elseif (is_array($result))
