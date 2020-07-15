@@ -32,7 +32,7 @@
  */
         public function exists($name) : bool
         {
-            return $this->fetch($name, NULL, FALSE)[0];
+            return $this->getValue($name, NULL, FALSE)[0];
         }
 /**
  * Is the key in the $_GET array?
@@ -44,7 +44,7 @@
  */
         public function mustExist($name) : bool
         {
-            return $this->fetch($name, NULL, TRUE)[0];
+            return $this->getValue($name, NULL, TRUE)[0];
         }
 /*
  ***************************************
@@ -62,7 +62,7 @@
  */
         public function mustFetch($name, $filter = NULL, $options = '')
         {
-            return $this->fetch($name, NULL, TRUE, FALSE, $filter, $options)[1];
+            return $this->getValue($name, NULL, TRUE, FALSE, $filter, $options)[1];
         }
 /**
  * Look in the array for a key and return its trimmed value or a default value
