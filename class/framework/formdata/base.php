@@ -67,12 +67,14 @@
  *
  * @internal
  *
- * @param int       $which   The INPUT_... selector for the array
- * @mixed string    $name    The key
- * @param bool      $throw   If TRUE then throw an execption if it does not exist
- * @param bool      $isArray If TRUE then check that this is an array
+ * @mixed string    $name       The key
+ * @param bool      $throw      If TRUE then throw an execption if it does not exist
+ * @param bool      $isArray    If TRUE then check that this is an array
+ * @param ?int      $filter     Filter to apply or NULL
+ * @param mixed     $options    Filter options
+ * @param bool      $allowArray If TRUE then allow return of array elements rather than just a value
  *
- * @return booarrayl
+ * @return array
  */
         final public function getValue($name, $default = NULL, bool $throw, bool $isArray = FALSE, ?int $filter = NULL, $options = '') : array
         {

@@ -28,27 +28,33 @@
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed $name   The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param string|array  $name     The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
+ * @param ?int          $filter   Filter to apply
+ * @param mixed         $options  Filter options
+ * @param bool          $isArray  Expect an array ratherthan a simple value
  *
  * @return mixed
  */
-        public function mustFetch($name, $filter = NULL, $options = '')
+        public function mustFetch($name, $filter = NULL, $options = '', bool $isArray = FALSE)
         {
-            return $this->getValue($name, NULL, TRUE, FALSE, $filter, $options)[1];
+            return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
 /**
  * Look in the array for a key and return its trimmed value or a default value
  *
  * N.B. This function assumes the value is a string and will fail if used on array values
  *
- * @param mixed $name   The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
- * @param mixed $dflt   Returned if the key does not exist
+ * @param string|array  $name     The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
+ * @param mixed         $default  Returned if the key does not exist
+ * @param ?int          $filter   Filter to apply
+ * @param mixed         $options  Filter options
+ * @param bool          $isArray  If TRUE then expect an array rather than a simple value
  *
  * @return mixed
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = '')
+        public function fetch($name, $default = '', $filter = NULL, $options = '', bool $isArray = FALSE)
         {
-            return $this->getValue($name, $default, FALSE, FALSE, $filter, $options)[1];
+            return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
 /**
  * Look in the array for a key that is an id for a bean
@@ -63,7 +69,7 @@
  */
         public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT, FALSE)[1], $forupdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
