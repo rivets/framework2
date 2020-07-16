@@ -9,7 +9,6 @@
 
     use \Config\Config;
     use \Config\Framework as FW;
-    use \Framework\Web\StatusCodes;
     use \Framework\Web\Web;
 /**
  * This is a class that maintains values about the local environment and does error handling
@@ -24,18 +23,6 @@
         public const ERROR     = 0;        # 'fwerrmessage';
         public const WARNING   = 1;        # 'fwwarnmessage';
         public const MESSAGE   = 2;        # 'fwmessage';
-
-        private static $tellfields = [
-            'REQUEST_URI',
-            'HTTP_REFERER',
-            'HTTP_X_FORWARDED_FOR',
-            'REMOTE_ADDR',
-            'REQUEST_METHOD',
-            'REQUEST_SCHEME',
-            'QUERY_STRING',
-            'HTTP_COOKIE',
-            'HTTP_USER_AGENT',
-        ];
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
