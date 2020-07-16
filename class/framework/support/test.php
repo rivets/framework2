@@ -27,7 +27,7 @@
             ['fetch', [['aexist', 3], 3], 3, FALSE],
             ['fetch', ['aexist', 3, NULL, '', FALSE], 3, FALSE],
             ['fetch', ['aexist', 3, NULL, '', TRUE], ['42', '66'], TRUE],
-            ['mustFetch', ['aexist', NULL, '', TRUE], 3, FALSE],
+            ['mustFetch', ['aexist', NULL, '', FALSE], 3, FALSE],
             ['mustFetch', ['aexist', NULL, '', TRUE], ['42', '66'], TRUE],
             ['mustFetch', [['aexist', 1]],'66', TRUE],
             ['mustFetch', [['aexist', 3]], '42', FALSE],
