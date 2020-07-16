@@ -40,6 +40,8 @@
         protected $contexts     = [];
 /** @var array<array<string>>                   A cache for JS ons */
         protected $ons          = [];
+/** @var array<\Framework\FormData\Base>        FormData handler cache */
+        protected $getters      = [];
 /*
  ***************************************
  * URL and REST support functions
@@ -409,7 +411,7 @@
             return \Framework\Local::getinstance();
         }
 /**
- * Return the Formdata object
+ * Return a Formdata object
  *
  * @param ?string $which
  *
@@ -417,9 +419,18 @@
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formdata(?string $which = '') : object
+        public function formdata(?string $which = NULL) : object
         {
-            return $which === '' ? \Support\FormData::getinstance() : \Support\FormData::getinstance()->getter($which);
+            if ($which == NULL)
+            { # this is backward compatibility and will be removed in the future
+                return \Framework\Support\FormData::getinstance();
+            }
+            if (!isset($this->getters[$which]))
+            {
+                $class = '\Framework\FormData\\'.ucfirst($which);
+                $this->getters[$which] = new $class();
+            }
+            return $this->getters[$which];
         }
 /**
  * Return the Web object

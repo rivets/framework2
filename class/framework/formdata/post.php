@@ -7,6 +7,7 @@
  */
     namespace Framework\FormData;
 
+    use \Config\Framework as CFW;
 /**
  * A class that provides helpers for accessing GET form data
  */
@@ -32,20 +33,17 @@
         public function recaptcha() : bool
         {
             $context = \Support\Context::getinstance();
-            if ($context->constant('RECAPTCHA', 0) != 0)
+            if (CFW::constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->exists('g-recaptcha-response', FALSE))
                 {
-                    $porg = $this->getSuper(INPUT_POST);
-                    $srv = $this->getSuper(INPUT_SERVER);
                     $data = [
-                        'secret'    => $context->constant('RECAPTCHASECRET', ''),
-                        'response'  => $porg['g-recaptcha-response'],
-                        'remoteip'  => $srv['HTTP_X_FORWARDED_FOR'] ?? $srv['REMOTE_ADDR'],
+                        'secret'    => CFW::constant('RECAPTCHASECRET', ''), // probably don't need to use CFW::constant here but just in case...
+                        'response'  => $this->mustFetch('g-recaptcha-response'),
+                        'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'],
                     ];
 
-                    $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
-                    $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
+                    $response = (new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']))->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
                     {
                         return json_decode($response->getBody())->success;

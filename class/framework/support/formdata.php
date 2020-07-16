@@ -88,7 +88,7 @@
 
         public function recaptcha() : bool
         {
-            if (Context::getinstance()->constant('RECAPTCHA', 0) != 0)
+            if (\Config\Framework::constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->getter('post')->exists('g-recaptcha-response'))
                 {

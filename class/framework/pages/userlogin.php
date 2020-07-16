@@ -188,9 +188,9 @@
  *
  * @return void
  */
-        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user)
+        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
-            if ($context->constant('CONFEMAIL', FALSE))
+            if (\Config\Framework::constant('CONFEMAIL', FALSE))
             {
                 $this->sendconfirm($context, $user);
                 $msg = 'A confirmation link has been sent to your email address';

@@ -20,7 +20,7 @@
         private $context;
 /** @var object */
         private $fdt;
-/** @var \Support\FormData */
+/** @var \Framework\Support\FormData */
         private $fdtold;
 /** @var \Framework\FormData\AccesBase */
         private $fdtnew;

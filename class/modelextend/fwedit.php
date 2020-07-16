@@ -17,7 +17,7 @@
 /**
  * Handle editing of beans
  *
- * @param \Support\FormData    $fdt  The formdata object from the context
+ * @param \Framework\FormData\AccessBase   $fdt  The formdata object from the context
  *
  * @return array<string>
  */
