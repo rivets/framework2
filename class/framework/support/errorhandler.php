@@ -192,7 +192,7 @@
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
                     if (!$this->ajax && $this->local->hasTwig())
                     { # we have twig so render a nice page
-                        Web::getinstance()->sendstring($this->local->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
+                        $this->local->render('@error/500.twig', ['errdata' => $str], Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
                     { # no twig or ajax so just dump

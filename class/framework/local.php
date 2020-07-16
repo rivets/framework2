@@ -40,10 +40,6 @@
  */
         private $errorHandler   = NULL;
 /**
- * @var array<string>    An array of email addresses for system administrators
- */
-        private $sysadmin       = [Config::SYSADMIN];
-/**
  * @var ?object    the Twig renderer
  */
         private $twig           = NULL;
@@ -330,14 +326,18 @@
 /**
  * Render a twig - do nothing if the template is the empty string
  *
- * @param string   $tpl  The template
- * @param array    $vals Values to set for the twig
+ * @param string   $tpl       The template
+ * @param array    $vals      Values to set for the twig
+ * @param string   $mimeType
+ * @param int      $status
+ *
+ * @return void
  */
-        public function render(string $tpl, array $vals = []) : void
+        public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
             if ($tpl !== '')
             {
-                Web::getinstance()->sendstring($this->getrender($tpl, $vals), 'text/html; charset="utf-8"');
+                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimetype, $status);
             }
         }
 /**
