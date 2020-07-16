@@ -246,7 +246,7 @@
  */
         final public function beanFindCheck(Context $context,string $arrayName, string $bean, string $field, bool $idok = FALSE) : bool
         {
-            return $this->beanCheck($this->findRow($context, $arrayName), $bean, $field, $idOK);
+            return $this->beanCheck($this->findRow($context, $arrayName), $bean, $field, $idok);
         }
 /**
  * Add pagination or searching tables
