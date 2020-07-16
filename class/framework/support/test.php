@@ -14,7 +14,7 @@
  */
     class Test
     {
-        private static $tests = [ // function, paramters, expected result, if FALSE then failure is expected and result may be default or an exception
+        private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, FALSE],
             ['mustExist', ['exist'], TRUE, TRUE],
@@ -25,6 +25,8 @@
             ['mustFetch', ['notexist'], '42', FALSE],
             ['fetch', [['aexist', 0], 3], '42', TRUE],
             ['fetch', [['aexist', 3], 3], 3, FALSE],
+            ['fetch', ['aexist', 3, NULL, '', FALSE], 3, FALSE],
+            ['mustfetch', ['aexist', 3, NULL, '', FALSE], 3, TRUE],
             ['mustFetch', [['aexist', 1]],'66', TRUE],
             ['mustFetch', [['aexist', 3]], '42', FALSE],
             ['fetch', [['nexist', 14], 3], '42', TRUE],
