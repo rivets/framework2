@@ -11,7 +11,7 @@
     namespace Framework\Ajax;
 
     use \Config\Framework as FW;
-    use \R;
+    use \Framework\Exception\Forbidden;
     use \Support\Context;
 /**
  * Handle Ajax operations in this class
@@ -123,7 +123,7 @@
  * The key to both the array fields is the name of the bean type you are working with.
  */
 /**
- * @var array   Values controlling whether or not pagination calls are allowed
+ * @var array<array>   Values controlling whether or not pagination calls are allowed
  */
         private static $paging = [
             FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
@@ -162,9 +162,9 @@
  * row that is OK
  *
  * @param Context  $context  The context object
- * @param array   $perms    The array with permissions in the first element
+ * @param array    $perms    The array with permissions in the first element
  *
- * @throws \Framework\Exception\Forbidden
+ * @throws Forbidden
  * @return array
  */
         final public function findRow(Context $context, array $perms) : array
@@ -178,14 +178,14 @@
                     $this->checkPerms($context, $bpd[0]); // make sure we are allowed
                     $tables[] = $bpd[1];
                 }
-                catch (\Framework\Exception\Forbidden $e)
+                catch (Forbidden $e)
                 {
                     NULL; // void go round and try the next item in the array
                 }
             }
             if (empty($tables))
             {
-                throw new \Framework\Exception\Forbidden('Permission Denied');
+                throw new Forbidden('Permission Denied');
             }
 /**
  * Need to merge all the tables together. We can't use array_merge
@@ -216,12 +216,12 @@
 /**
  * Check if a bean/field combination is allowed and the field exists and is not id
  *
- * @param array   $beans
- * @param string  $bean
- * @param string  $field
- * @param bool    $idok    Allow the id field
+ * @param array<string>   $beans
+ * @param string          $bean
+ * @param string          $field
+ * @param bool            $idok    Allow the id field
  *
- * @throws \Framework\Exception\Forbidden
+ * @throws Forbidden
  * @return bool
  */
         final public function beanCheck(array $beans, string $bean, string $field, bool $idok = FALSE) : bool
@@ -229,7 +229,7 @@
             $this->fieldExists($bean, $field, $idok);
             if (!isset($beans[$bean]) || (!empty($beans[$bean]) && !in_array($field, $beans[$bean])))
             { // no permission to update this field or it doesn't exist
-                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean.'::'.$field);
+                throw new Forbidden('Permission denied: '.$bean.'::'.$field);
             }
             return TRUE;
         }
@@ -272,7 +272,7 @@
  * @param Context   $context  The Context bject
  * @param array     $perms    The permission array
  *
- * @throws \Framework\Exception\Forbidden
+ * @throws Forbidden
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
@@ -291,11 +291,11 @@
                             continue 2;
                         }
                     }
-                    throw new \Framework\Exception\Forbidden('Permission denied');
+                    throw new Forbidden('Permission denied');
                 }
                 if (!is_object($user->hasrole($rcs[0], $rcs[1])))
                 {
-                    throw new \Framework\Exception\Forbidden('Permission denied');
+                    throw new Forbidden('Permission denied');
                 }
             }
         }
