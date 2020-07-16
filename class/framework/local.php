@@ -48,35 +48,10 @@
  * @var string  The name of the site directory
  */
         private $basedname      = '';
-
 /**
- * @var bool    If TRUE then ignore trapped errors
+ * @var ?\Framework\Support\ErrorHandler
  */
-        private $errignore      = FALSE;    # needed for checking preg expressions....
-/**
- * @var bool    Set to TRUE if an error was trapped and ignored
- */
-        private $wasignored     = FALSE;
-/**
- * @var array    A list of errors that have been emailed to the user. Only send a message once.
- */
-        private $senterrors     = [];
-/**
- * @var bool    If TRUE then we are doing debugging
- */
-        private $debug          = FALSE;
-/**
- * @var bool   If TRUE then we are handling an error
- */
-        private $error          = FALSE;
-/**
- * @var bool    If TRUE then we are in developer mode
- */
-        private $devel          = FALSE;
-/**
- * @var bool    If TRUE then we are in ajax code and so error reporting is different
- */
-        private $ajax           = FALSE;
+        private $errorHandler   = NULL;
 /**
  * @var array<string>    An array of email addresses for system administrators
  */
@@ -94,10 +69,6 @@
  */
         private $messages       = [[], [], []];
 /**
- * @var string    Backtrace info - only used with errors
- */
-        private $back           = '';
-/**
  * @var array               Config values from database
  */
         private $fwconfig       = [];
@@ -114,19 +85,6 @@
                 $this->addval(self::$msgnames[$ix], $vals);
             }
             $this->clearmessages();
-        }
-/**
- * Rewrite error string
- *
- * @param string $origin HTTP details
- *
- * @return string
- */
-        private function eRewrite(string $origin = '') : string
-        {
-            return '<pre>'.
-                str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($origin)).
-                str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
         }
 /**
  * Send mail if possible
@@ -196,205 +154,16 @@
             return 'No mailer configured';
         }
 /**
- * Tell sysadmin there was an error
- *
- * @param string        $msg    An error messager
- * @param int|string    $type   An error type
- * @param string        $file   file in which error happened
- * @param int           $line    Line at which it happened
- *
- * @return string
- */
-        private function telladmin(string $msg, $type, string $file, int $line) : string
-        {
-            $this->error = TRUE; // flag that we are handling an error
-            $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
-            $subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
-            $origin = $subject.PHP_EOL.PHP_EOL;
-            foreach (self::$tellfields as $fld)
-            {
-                if (isset($_SERVER[$fld]))
-                {
-                    $origin .= $fld.': '.$_SERVER[$fld].PHP_EOL;
-                }
-            }
-            if (!isset($this->senterrors[$ekey]))
-            {
-                $this->senterrors[$ekey] = TRUE;
-                if (isset($_GET['fwtrace']))
-                {
-                    $this->debug = TRUE;
-                    ob_start();
-                    debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
-                    $this->back .= ob_get_clean(); # will get used later in make500
-                }
-                /** @psalm-suppress RedundantCondition */
-                if (Config::USEPHPM || ini_get('sendmail_path') !== '')
-                {
-                    $err = $this->sendmail($this->sysadmin, $subject,
-                        $this->eRewrite($origin), $origin.PHP_EOL.'Type : '.$type.PHP_EOL.$file.' Line '.$line.PHP_EOL.$this->back,
-                        ['from' => Config::SITENOREPLY]);
-                    if ($err !== '')
-                    {
-                        $ekey .= $this->eRewrite($origin);
-                    }
-                }
-            }
-            return $ekey;
-        }
-/**
- * Generate a 500 and possibly an error page
- *
- * @param $ekey    string    Error information string
- *
- * @return void
- */
-        private function make500(string $ekey) : void
-        {
-            if (!headers_sent())
-            { # haven't generated any output yet.
-                if ($this->devel || !$this->ajax)
-                { # not in an ajax page so try and send a pretty error
-                    $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
-                    if (!$this->ajax && is_object($this->twig))
-                    { # we have twig so render a nice page
-                        Web::getinstance()->sendstring($this->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
-                    }
-                    else
-                    { # no twig or ajax so just dump
-                        Web::getinstance()->internal($str);
-                    }
-                }
-                else
-                {
-                    header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
-                }
-            }
-        }
-/**
- * Shutdown function - this is used to catch certain errors that are not otherwise trapped and
- * generate a clean screen as well as an error report to the developers.
- *
- * It also closes the RedBean connection
- */
-        public function shutdown() : void
-        {
-            if ($error = error_get_last())
-            { # are we terminating with an error?
-                if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
-                { # tell the developers about this
-                    $ekey = $this->telladmin(
-                        $error['message'],
-                        $error['type'],
-                        $error['file'],
-                        $error['line']
-                    );
-                    $this->make500($ekey);
-                }
-                else
-                {
-                    echo '<h2>There has been a system error</h2>';
-                }
-            }
-            \R::close(); # close RedBean connection
-        }
-/**
- * Deal with untrapped exceptions - see PHP documentation
- *
- * @param \Throwable    $e
- */
-        public function exceptionHandler(\Throwable $e) : void
-        {
-            if ($this->error)
-            { // try and ignore errors within errors
-                return;
-            }
-            $this->back = $e->getTraceAsString();
-            $ekey = $this->telladmin(
-                get_class($e).': '.$e->getMessage(),
-                0,
-                $e->getFile(),
-                $e->getLine()
-            );
-            $this->make500($ekey);
-            exit;
-            /* NOT REACHED */
-        }
-/**
- * Called when a PHP error is detected - see PHP documentation for details
- *
- * Note that we can chose to ignore errors. At the moment his is a fairly rough mechanism.
- * It could be made more subtle by allowing the user to specifiy specific errors to ignore.
- * However, exception handling is a much much better way of dealing with this kind of thing
- * whenever possible.
- *
- * @param int       $errno
- * @param string    $errstr
- * @param string    $errfile
- * @param int       $errline
- *
- * @return bool
- */
-        public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
-        {
-            if ($this->errignore)
-            { # wanted to ignore this so just return
-                $this->wasignored = TRUE; # remember we did ignore though
-                return TRUE;
-            }
-            if ($this->error)
-            { // already handling an error so just carry on
-                return TRUE;
-            }
-            $ekey = $this->telladmin(
-                'Error '.$errno.' '.$errstr,
-                $errno,
-                $errfile,
-                $errline
-            );
-            if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
-            { # this is an internal error or we are debugging, so we need to stop
-                $this->make500($ekey);
-                exit;
-                /* NOT REACHED */
-            }
-/*
- * If we get here it's a warning or a notice, so we arent stopping
- *
- * Change this to an exit if you don't want to continue on any errors
- */
-            return TRUE;
-        }
-/**
- * Handle an expectation failure
- *
- * @param string    $file    File name
- * @param int       $line      Line number in file
- * @param string    $message    Message
- *
- * @return void
- */
-        public function assertFail($file, $line, $message) : void
-        {
-            $ekey = $this->telladmin(
-                'Assertion Failure: '.$message,
-                0,
-                $file,
-                $line
-            );
-            $this->make500($ekey);
-            exit;
-            /* NOT REACHED */
-        }
-/**
  * Generate a message page for early failures
+ *
+ * @internal
  *
  * @param string    $title    Page title and heading
  * @param string    $msg      The message to be displayed
  *
  * @return void
  */
-        public function earlyFail(string $title, string $msg) : void
+        private function earlyFail(string $title, string $msg) : void
         {
             if (is_object($this->twig))
             { # we have twig so can render a template
@@ -415,12 +184,9 @@
  *
  * @return bool    The last value of the wasignored flag
  */
-        public function eignore(bool $ignore)
+        public function eIgnore(bool $ignore) : bool
         {
-            $this->errignore = $ignore;
-            $wi = $this->wasignored;
-            $this->wasignored = FALSE;
-            return $wi;
+            return $this->errorHandler->eIgnore($ignore);
         }
 /**
  * Join the arguments with DIRECTORY_SEPARATOR to make a path name
@@ -712,17 +478,32 @@
 /**
  * Put the system into debugging mode
  *
- * @psalm-suppress PossiblyNullReference
- *
  * @return void
+ * @psalm-suppress PossiblyNullReference
  */
         public function enabledebug() : void
         {
-            $this->debug = TRUE;
+            $this->errorHandler->enablDebug();
             if ($this->hastwig())
             { // now we know we have twig - hence suppress above
                 $this->twig->addExtension(new \Twig\Extension\DebugExtension());
                 $this->twig->enableDebug();
+            }
+        }
+/**
+ * Check to see if non-admin users are being excluded
+ *
+ * @param bool $admin
+ *
+ * @return void
+ */
+        public function adminOnly(bool $admin) : void
+        {
+            $offl = $this->makebasepath('admin', 'adminonly');
+            if (file_exists($offl) && !$admin)
+            { # go offline before we try to do anything else as we are not an admin
+                $this->earlyFail('OFFLINE', file_get_contents($offl));
+                /* NOT REACHED */
             }
         }
 /**
@@ -740,7 +521,6 @@
  */
         public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : \Framework\Local
         {
-            $this->devel = $devel;
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
 /*
@@ -758,23 +538,7 @@
         //        $bdr[] = $pp['basename'];
         //    }
         //    $this->basedname = implode('/', $bdr);
-            $this->ajax = $ajax;
- /*
- * Set up all the system error handlers
- */
-            /** @psalm-suppress ArgumentTypeCoercion */
-            set_exception_handler([$this, 'exceptionHandler']);
-            set_error_handler([$this, 'errorHandler']);
-            /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
-            /** @psalm-suppress ArgumentTypeCoercion */
-            register_shutdown_function([$this, 'shutdown']);
-            if ($devel)
-            { // set up expectation handling if in developer mode
-                assert_options(ASSERT_ACTIVE, $devel);
-                assert_options(ASSERT_WARNING, 0);
-                assert_options(ASSERT_QUIET_EVAL, 1);
-                assert_options(ASSERT_CALLBACK, [$this, 'assertFail']);
-            }
+            $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $debug, $this);
 
             if ($loadtwig)
             { # we want twig - there are some autoloader issues out there that adding twig seems to fix....
@@ -807,7 +571,7 @@
                 }
                 catch (\Exception $e)
                 { # But what do we do?
-                    $this->telladmin('Overload', 'Error', 'local.php', 791);
+                    $this->errorHandler->tellAdmin('Overload', 'Error', 'local.php', 791);
                     $this->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.');
                     /* NOT REACHED */
                 }
