@@ -129,7 +129,7 @@
  */
         public function earlyFail(string $title, string $msg, bool $tellAdmin) : void
         {
-            if ($tyellAdmin)
+            if ($tellAdmin)
             {
                 $this->tellAdmin($title.' - '.$msg, 'Error', 'local.php', 0);
             }
