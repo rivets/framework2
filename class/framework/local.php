@@ -56,20 +56,6 @@
  */
         private $fwconfig       = [];
 /**
- * See if there are any messages and add them into the Twig values
- * and then clear the messages array.
- *
- * @return void
- */
-        private function addmessages() : void
-        {
-            foreach ($this->messages as $ix => $vals)
-            {
-                $this->addval(self::$msgnames[$ix], $vals);
-            }
-            $this->clearmessages();
-        }
-/**
  * Send mail if possible
  *
  * @parm array    $to       An array of people to send to.
@@ -318,7 +304,11 @@
             { // no template so no output
                 return '';
             }
-            $this->addmessages(); # add in any messages
+            foreach ($this->messages as $ix => $vals)
+            {
+                $this->addval(self::$msgnames[$ix], $vals);
+            }
+            $this->clearmessages();
             $this->addval($vals); # set up any values that have been passed
             /** @psalm-suppress PossiblyNullReference */
             return $this->twig->render($tpl, $this->tvals);
@@ -456,11 +446,7 @@
  */
         public function debase(string $url)
         {
-            if ($this->base() !== '')
-            {
-                $url = preg_replace('#^'.$this->base().'#', '', $url);
-            }
-            return $url;
+            return $this->base() !== '' ? preg_replace('#^'.$this->base().'#', '', $url) : $url;
         }
 /**
  * Put the system into debugging mode
