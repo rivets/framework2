@@ -90,7 +90,18 @@
                 }
                 return [FALSE, $default];
             }
-            if ($isArray && !is_array($dt))
+            if (is_array($dt))
+            {
+                if (!$isArray)
+                {
+                    if ($throw)
+                    {
+                        throw new BadValue('Form Item '.$name.' is an array');
+                    }
+                    return [FALSE, $default];
+                }
+            }
+            elseif ($isArray)
             {
                 if ($throw)
                 {
