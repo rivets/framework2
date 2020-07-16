@@ -206,24 +206,6 @@
  ***************************************
  */
 /**
- * Get the value of a Configuration constant. Rather than accessing constants directly
- * This uses refelection to check for the value. This allows the framework to add new
- * constants and not break old code.
- *
- * @param string $name        The constant name - all in upper case
- * @param mixed  $default     A default value for if it is not defined
- *
- * @return mixed
- */
-        public function constant($name, $default = '')
-        {
-            if (defined('\\Config\\Config::'.$name))
-            {
-                return constant('\\Config\\Config::'.$name);
-            }
-            return $default;
-        }
-/**
  * Set up pagination data
  *
  * @param ?int    $count If not NULL then set pages based on this
