@@ -44,6 +44,7 @@
         <file name="class/framework/pages/userlogin.php" />
 
         <file name="class/framework/support/debug.php" />
+        <file name="class/framework/support/formdata.php" />
         <file name="class/framework/support/handlerole.php" />
         <file name="class/framework/support/siteinfo.php" />
         <file name="class/framework/support/table.php" />
@@ -84,7 +85,6 @@
 
         <file name="class/support/ajax.php" />
         <file name="class/support/context.php" />
-        <file name="class/support/formdata.php" />
         <file name="class/support/login.php" />
         <file name="class/support/nocache.php" />
         <file name="class/support/setup.php" />
