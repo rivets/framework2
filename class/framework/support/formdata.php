@@ -98,7 +98,7 @@
                         'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'],
                     ];
 
-                    $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']);
+                    $client = new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']); //@phpstan-ignore-line
                     $response = $client->request('POST', '/recaptcha/api/siteverify', $data);
                     if ($response->getStatusCode() == 200)
                     {

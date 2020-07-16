@@ -43,7 +43,7 @@
                         'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'],
                     ];
 
-                    $response = (new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']))->request('POST', '/recaptcha/api/siteverify', $data);
+                    $response = (new \GuzzleHttp\Client(['base_uri' => 'https://www.google.com']))->request('POST', '/recaptcha/api/siteverify', $data); //@phpstan-ignore-line
                     if ($response->getStatusCode() == 200)
                     {
                         return json_decode($response->getBody())->success;
