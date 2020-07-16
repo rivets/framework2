@@ -107,12 +107,18 @@
                 }
                 elseif (is_array($result))
                 {
-                    if (is_array($res) && empty(array_diff($res, $result)))
+                    if (is_array($res))
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
-                        return TRUE;
+                        $diff = array_diff($res, $result);
+                        if (empty($diff))
+                        {
+                            $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
+                            return TRUE;
+                        }
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE).' diff '.$this->display($diff, TRUE));
+                        return FALSE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
+                    $this->local->message(Local::ERROR, $msg.' FAIL : expected array '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                 }
                 else
                 {
