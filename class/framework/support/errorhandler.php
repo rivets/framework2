@@ -67,12 +67,11 @@
  * @param bool $devel
  * @param \Framework\Local
  */
-        public function __construct(bool $devel, bool $ajax, bool $debug, \Framework\Local $local)
+        public function __construct(bool $devel, bool $ajax, \Framework\Local $local)
         {
             $this->local = $local;
             $this->devel = $devel;
             $this->ajax = $ajax;
-            $this->debug = $debug;
  /*
  * Set up all the system error handlers
  */

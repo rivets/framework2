@@ -538,7 +538,7 @@
         //        $bdr[] = $pp['basename'];
         //    }
         //    $this->basedname = implode('/', $bdr);
-            $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $debug, $this);
+            $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $this);
 
             if ($loadtwig)
             { # we want twig - there are some autoloader issues out there that adding twig seems to fix....
