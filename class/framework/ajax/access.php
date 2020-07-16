@@ -167,10 +167,10 @@
  * @throws Forbidden
  * @return array
  */
-        final public function findRow(Context $context, array $perms) : array
+        public function findRow(Context $context, string $arrayName) : array
         {
             $tables = [];
-            foreach ($perms as $bpd)
+            foreach (self::$$arrayName as $bpd)
             {
                 /** @phpcsSuppress  PHP_CodeSniffer.CodeAnalysis.EmptyStatement */
                 try
@@ -232,6 +232,21 @@
                 throw new Forbidden('Permission denied: '.$bean.'::'.$field);
             }
             return TRUE;
+        }
+/**
+ * Check if a bean/field combination is allowed and the field exists and is not id
+ *
+ * @param string  $arrayName The array to look in
+ * @param string  $bean
+ * @param string  $field
+ * @param bool    $idok      Allow the id field
+ *
+ * @throws Forbidden
+ * @return bool
+ */
+        final public function beanFindCheck(Context $context,string $arrayName, string $bean, string $field, bool $idok = FALSE) : bool
+        {
+            return $this->beanCheck($this->findRow($context, $arrayName), $bean, $field, $idOK);
         }
 /**
  * Add pagination or searching tables

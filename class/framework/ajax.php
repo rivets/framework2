@@ -130,7 +130,7 @@
                 $field = $fdt->mustFetch('field');
                 $bid = $fdt->mustFetch('id');
             }
-            $this->access->beanCheck($this->access->findRow($context, self::$toggleperms), $type, $field);
+            $this->access->beanFindCheck($context, 'toggleperms', $type, $field);
             $bn = $context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
@@ -165,7 +165,7 @@
  */
         final private function bean(Context $context) : void
         {
-            $beans = $this->access->findRow($context, self::$beanperms);
+            $beans = $this->access->findRow($context, 'beanperms');
             $rest = $context->rest();
             $bean = $rest[1];
             if (!isset($beans[$bean]))
@@ -266,7 +266,7 @@
             [$b1, $id1, $b2, $id2] = $context->restcheck(4);
             $bn1 = $context->load($b1, (int) $id1);
             $bn2 = $context->load($b2, (int) $id2);
-            $beans = $this->access->findRow($context, self::$sharedperms);
+            $beans = $this->access->findRow($context, 'sharedperms');
 /**
  * @todo This check is not right as the array format is slightly different for sharedperms
  *       Fix when this gets properly implemented.
@@ -418,7 +418,7 @@
         final private function tablesearch(Context $context) : void
         {
             [$bean, $field, $op] = $context->restcheck(3);
-            $this->access->beanCheck($this->access->findRow($context, self::$tablesearchperms), $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
+            $this->access->beanFindCheck($context, 'tablesearchperms', $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
             $value = $context->formdata('get')->fetch('value', '');
             $incv = ' ?';
             if ($op == '4')
@@ -600,7 +600,7 @@
         private function unique(Context $context) : void
         {
             [$bean, $field, $value] = $context->restcheck(3);
-            $this->access->beanCheck($this->access->findRow($context, self::$uniqueperms), $bean, $field);
+            $this->access->beanFindCheck($context, 'uniqueperms', $bean, $field);
             $this->uniqCheck($context, $bean, $field, $value);
         }
 /**
