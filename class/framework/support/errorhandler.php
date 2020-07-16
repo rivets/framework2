@@ -8,6 +8,7 @@
     namespace Framework\Support;
 
     use \Config\Config;
+    use \Framework\Web\StatusCodes;
     use \Framework\Web\Web;
 /**
  * Class for error handling
@@ -189,7 +190,7 @@
                 if ($this->devel || !$this->ajax)
                 { # not in an ajax page so try and send a pretty error
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
-                    if (!$this->ajax && $local->hasTwig())
+                    if (!$this->ajax && $this->local->hasTwig())
                     { # we have twig so render a nice page
                         Web::getinstance()->sendstring($this->local->getrender('@error/500.twig', ['errdata' => $str]), Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
