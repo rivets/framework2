@@ -470,7 +470,7 @@
  */
         public function enabledebug() : void
         {
-            $this->errorHandler->enablDebug();
+            $this->errorHandler->enableDebug();
             if ($this->hastwig())
             { // now we know we have twig - hence suppress above
                 $this->twig->addExtension(new \Twig\Extension\DebugExtension());
