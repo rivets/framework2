@@ -117,6 +117,33 @@
             $this->debug = TRUE;
         }
 /**
+ * Generate a message page for early failures
+ *
+ * @internal
+ *
+ * @param string    $title      Page title and heading
+ * @param string    $msg        The message to be displayed
+ * @param bool      $tellAdmin  If TRUE then mail admin
+ *
+ * @return void
+ */
+        public function earlyFail(string $title, string $msg, bool $tellAdmin) : void
+        {
+            if ($tyellAdmin)
+            {
+                $this->tellAdmin($title.' - '.$msg, 'Error', 'local.php', 0);
+            }
+            if ($this->local->hasTwig())
+            { # we have twig so can render a template
+                $this->local->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
+            }
+            else
+            { # generate a very simple page...
+                echo '<!doctype html><html><head><title>'.$title.'</title></head><body><h1>'.$title.'</h1><p>'.$msg.'</p></body></html>';
+            }
+            exit;
+        }
+/**
  * Rewrite error string
  *
  * @param string $origin HTTP details
@@ -139,7 +166,7 @@
  *
  * @return string
  */
-        public function tellAdmin(string $msg, $type, string $file, int $line) : string
+        private function tellAdmin(string $msg, $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;

@@ -123,28 +123,6 @@
             return 'No mailer configured';
         }
 /**
- * Generate a message page for early failures
- *
- * @internal
- *
- * @param string    $title    Page title and heading
- * @param string    $msg      The message to be displayed
- *
- * @return void
- */
-        private function earlyFail(string $title, string $msg) : void
-        {
-            if (is_object($this->twig))
-            { # we have twig so can render a template
-                $this->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
-            }
-            else
-            { # generate a very simple page...
-                echo '<!doctype html><html><head><title>'.$title.'</title></head><body><h1>'.$title.'</h1><p>'.$msg.'</p></body></html>';
-            }
-            exit;
-        }
-/**
  * Allow system to ignore errors
  *
  * This always clears the wasignored flag
@@ -308,7 +286,7 @@
             {
                 $this->addval(self::$msgnames[$ix], $vals);
             }
-            $this->clearmessages();
+            $this->clearMessages();
             $this->addval($vals); # set up any values that have been passed
             /** @psalm-suppress PossiblyNullReference */
             return $this->twig->render($tpl, $this->tvals);
@@ -401,11 +379,11 @@
 /**
  * Clear out messages
  *
- * @param string    $kind   Either empty for all messages or a specific kind
+ * @param ?int    $kind   Either NULL for all messages or a specific kind
  *
  * @return void
  */
-        public function clearmessages(string $kind = '') : void
+        public function clearMessages(?int $kind = NULL) : void
         {
             if ($kind === '')
             {
@@ -475,7 +453,7 @@
             $offl = $this->makebasepath('admin', 'adminonly');
             if (file_exists($offl) && !$admin)
             { # go offline before we try to do anything else as we are not an admin
-                $this->earlyFail('OFFLINE', file_get_contents($offl));
+                $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
         }
@@ -521,7 +499,7 @@
             $offl = $this->makebasepath('admin', 'offline');
             if (file_exists($offl))
             { # go offline before we try to do anything else...
-                $this->earlyFail('OFFLINE', file_get_contents($offl));
+                $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
 /*
@@ -544,8 +522,7 @@
                 }
                 catch (\Exception $e)
                 { # But what do we do?
-                    $this->errorHandler->tellAdmin('Overload', 'Error', 'local.php', 791);
-                    $this->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.');
+                    $this->errorHandler->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.', TRUE);
                     /* NOT REACHED */
                 }
                 if ($loadtwig)
