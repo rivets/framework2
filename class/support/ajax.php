@@ -89,7 +89,7 @@
 /* ***** Your code goes here  ***** */
             //$this->operation(['yourop', ...], [TRUE, [['ContextName', 'RoleName'],...]]);
             // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
-/* ******************************************* */
+/* ****** do not change below here ***** */
             $this->access->pageOrHint(self::$allowPaging, self::$allowHints);
             $this->access->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable, self::$audit, self::$allowTSearch, self::$allowUniquenl);
             parent::handle($context);
