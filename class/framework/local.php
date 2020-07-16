@@ -337,7 +337,7 @@
         {
             if ($tpl !== '')
             {
-                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimetype, $status);
+                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimeType, $status);
             }
         }
 /**
