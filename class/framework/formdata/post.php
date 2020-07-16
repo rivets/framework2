@@ -32,7 +32,6 @@
  */
         public function recaptcha() : bool
         {
-            $context = \Support\Context::getinstance();
             if (CFW::constant('RECAPTCHA', 0) != 0)
             { # if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->exists('g-recaptcha-response', FALSE))
