@@ -26,8 +26,6 @@
 
 /** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser        = NULL;
-/** @var int    Counter used for generating unique ids */
-        protected $idgen        = 0;
 /** @var string The first component of the current URL */
         protected $reqaction    = 'home';
 /** @var array<string>    The rest of the current URL exploded at / */
@@ -225,19 +223,6 @@
                 $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);
             }
             $this->local()->addval($values);
-        }
-/**
- * Generates a new, unique, sequential id value
- *
- * @param string    $str    The prefix for the id
- *
- * @return string
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public function newid(string $str = 'id')
-        {
-            $this->idgen += 1;
-            return $str.$this->idgen;
         }
 /**
  * Save values into the on cache
