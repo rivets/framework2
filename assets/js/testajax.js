@@ -89,7 +89,7 @@
             }
             else
             {
-                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Non-existent login fails - '+res[0]+'</p>'+res[1]);
             }
             t.append('<p>Test Complete</p>');
         },
