@@ -134,7 +134,7 @@
  */
         protected function restcheck(int $count) : array
         {
-            $rest = $this->context($rest);
+            $rest = $this->context->rest();
             if (count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
             {
                 throw new \Framework\Exception\ParameterCount();
