@@ -128,66 +128,33 @@
             return $this->beanCheck($this->findRow($context, $array), $bean, $field, $idok);
         }
 /**
- * Add pagination or searching tables
- *
- * @param array     $paging     Values for pagination - see above for format
- * @param array     $hints      Values for hints - see above for format
- *
- * @return void
- */
-        final public function pageOrHint(array $paging, array $hints) : void
-        {
-            self::$paging = array_merge(self::$paging, $paging);
-            self::$hints = array_merge(self::$paging, $hints);
-        }
-/**
- * Add bean permissions to allow non site/admins to use the functions
- *
- * @param array    $bean
- * @param array    $toggle
- * @param array    $table
- * @param array    $audit
- * @param array    $tsearch
- *
- * @return void
- */
-        final public function beanAccess(array $bean, array $toggle, array $table, array $audit, array $tsearch, array $uniquenl) : void
-        {
-            self::$beanperms = array_merge(self::$beanperms, $bean);
-            self::$toggleperms = array_merge(self::$toggleperms, $toggle);
-            self::$tableperms = array_merge(self::$tableperms, $table);
-            self::$audit = array_merge(self::$audit, $audit);
-            self::$tablesearchperms = array_merge(self::$tablesearchperms, $tsearch);
-            self::$uniquenlperms = array_merge(self::$uniquenlperms, $uniquenl);
-        }
-/**
  * Check that user has the permissions that are specified in an array
  *
  * @param Context   $context  The Context bject
- * @param array     $perms    The permission array
+ * @param array     $pairs    The permission array
  *
  * @throws Forbidden
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        final public function checkPerms(Context $context, array $perms) : void
+        final public function checkPerms(Context $context, array $pairs) : void
         {
             $user = $context->user();
             assert(!is_null($user)); // must have a user when checking
-            foreach ($perms as $rcs)
+            foreach ($pairs as $rcs)
             {
                 if (is_array($rcs[0]))
                 { // this is an OR
                     foreach ($rcs as $orv)
                     {
-                        if (is_object($user->hasrole($orv[0], $orv[1])))
+                        if (is_object($user->hasRole($orv[0], $orv[1])))
                         {
                             continue 2;
                         }
                     }
                     throw new Forbidden('Permission denied');
                 }
-                if (!is_object($user->hasrole($rcs[0], $rcs[1])))
+                if (!is_object($user->hasRole($rcs[0], $rcs[1])))
                 {
                     throw new Forbidden('Permission denied');
                 }

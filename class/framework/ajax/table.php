@@ -40,11 +40,6 @@
  */
         final public function handle() : void
         {
-            if (!$this->context->hasadmin())
-            {
-                throw new Forbidden('Permission denied');
-                /* NOT REACHED */
-            }
             $rest = $this->context->rest();
             if (count($rest) < 2)
             {
@@ -103,7 +98,7 @@
                 case 'PUT': // change a field
                     $value = $this->context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
-                    $this->access->fieldExists($bean, $f1); 
+                    $this->access->fieldExists($table, $f1); 
                     switch ($rest[3])
                     {
                     case 'name':

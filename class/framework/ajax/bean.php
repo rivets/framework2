@@ -40,13 +40,14 @@
  */
         final public function handle() : void
         {
-            $beans = $this->access->findRow($this->context, $this->controller->permissions('bean', self::$permissions));
             $rest = $this->context->rest();
             $bean = $rest[1];
-            if (!isset($beans[$bean]))
+            $perms = $this->controller->permissions('bean', self::$permissions);
+            if (!isset($perms[$bean]))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
+            $beans = $this->access->findRow($this->context, $perms[$bean] ?? NULL);
             $log = $this->controller->log($bean);
             $method = $this->context->web()->method();
             /** @psalm-suppress UndefinedConstant */
