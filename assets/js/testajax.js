@@ -10,7 +10,7 @@
                 rcode = jx.status;
                 rdata = jx.responseText;
             });
-            return [rdata, rcode];
+            return [rcode, rdata];
         },
         testbean: function (){
             let t = $(this).parent();
