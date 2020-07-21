@@ -47,7 +47,7 @@
                 /* NOT REACHED */
             }
             $table = strtolower($rest[1]);
-            $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
             $method = $this->context->web()->method();
             if ($method == 'POST')
             {

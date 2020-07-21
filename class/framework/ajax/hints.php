@@ -35,7 +35,7 @@
             $rest = $this->context->rest();
 
             [1 => $bean, 2 => $field] = $rest;
-            $this->checkAccess($this->context->user(), $this->controller->permissions('hints'), $bean, $field);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class), $bean, $field);
             $obj = TRUE;
             if (isset($rest[3]))
             {

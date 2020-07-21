@@ -41,7 +41,7 @@
         final public function handle() : void
         {
             [$bean] = $this->context->restCheck(1);
-            $this->checkAccess($this->context->user(), $this->controller->permissions('paging', self::$permissions), $bean);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
             $fdt = $this->context->formdata('get');
             $order = $fdt->fetch('order', '');
             $page = $fdt->mustFetch('page');

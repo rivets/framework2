@@ -21,18 +21,18 @@
  * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
-            'bean',
-            'config',
-            'hints',
-            'paging',
-            'pwcheck',
-            'shared',
-            'table',
-            'tablecheck',
-            'tablesearch',
-            'toggle',
-            'unique',
-            'uniquenl',
+            'bean'          => Ajax\Bean::class,
+            'config'        => Ajax\Config::class,
+            'hints'         => Ajax\Hints::class,
+            'paging'        => Ajax\Paging::class,
+            'pwcheck'       => Ajax\PwCheck::class,
+            'shared'        => Ajax\Shared::class,
+            'table'         => Ajax\Table::class,
+            'tablecheck'    => Ajax\TableCheck::class,
+            'tablesearch'   => Ajax\TableSearch::class,
+            'toggle'        => Ajax\Toggle::class,
+            'unique'        => Ajax\Unique::class,
+            'uniquenl'      => Ajax\UniqueNl::class,
         ];
 /**
  * Return the log requirements array from the child
@@ -67,15 +67,18 @@
         {
             $rest = $context->rest();
             $op = $rest[0];
-            $class = "\\Ajax\\".$op;
-            if (in_array($op, self::$restops))
+            if (isset(self::$restops[$op]))
             { # a Framework Ajax operation
-                $class = '\Framework'.$class;
+                $class = self::$restops[$op];
             }
-            elseif (!class_exists($class))
-            { # not a developer provided ajax op
-                $context->web()->bad('No such operation');
-                /* NOT REACHED */
+            else
+            {
+                $class = "\\Ajax\\".$op;
+                if (!class_exists($class))
+                { # not a developer provided ajax op
+                    $context->web()->bad('No such operation');
+                    /* NOT REACHED */
+                }
             }
             try
             {

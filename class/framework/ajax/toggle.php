@@ -51,7 +51,7 @@
                 $field = $fdt->mustFetch('field');
                 $bid = $fdt->mustFetch('id');
             }
-            $this->checkAccess($this->context->user(), $this->controller->permissions('toggle', self::$permissions), $type, $field);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $this->context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator

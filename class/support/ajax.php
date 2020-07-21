@@ -7,6 +7,7 @@
  */
     namespace Support;
 
+    use \Framework\Ajax as FWAjax;
 /**
  * Handles Ajax Calls.
  */
@@ -28,16 +29,16 @@
  *                   If you want an OR then you need to group the pairs to be ORed in yet another nested array.
  */
         protected static $fwPermissions = [
-            'bean'          => [],
-            'hints'         => [],
-            'paging'        => [],
-            'pwcheck'       => [],
-            'shared'        => [],
-            'table'         => [],
-            'tablesearch'   => [],
-            'toggle'        => [],
-            'unique'        => [],
-            'uniquenl'      => [],
+            FWAjax\Bean::class          => [],
+            FWAjax\Hints::class         => [],
+            FWAjax\Paging::class        => [],
+            FWAjax\PwCheck::class       => [],
+            FWAjax\Shared::class        => [],
+            FWAjax\Table::class         => [],
+            FWAjax\TableSearch::class   => [],
+            FWAjax\Toggle::class        => [],
+            FWAjax\Unique::class        => [],
+            FWAjax\UniqueNl::class      => [],
         ];
 /**
  * @var array<string> A list of bean names for which logging is required
