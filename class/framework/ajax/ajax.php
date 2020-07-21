@@ -29,7 +29,12 @@
         {
             $this->context = $context;
             $this->controller = $controller;
-            $this->checkPerms($context->user(), $this->requires());
+            [$login, $perms] = $this->requires();
+            if ($login && !$context->hasUser())
+            {
+                throw new Forbidden('Access denied');
+            }
+            $this->checkPerms($context->user(), $this->requires()[1]);
         }
 /**
  * Check that a bean has a field. Do not allow id field to be manipulated.
@@ -84,8 +89,8 @@
 /**
  * Check that user has the permissions that are specified in an array
  *
- * @param ?\RedBeanPHP\OODBBean  $user      The current user or NULL
- * @param array                 $pairs     The permission array
+ * @param ?\RedBeanPHP\OODBBean  $user   The current user or NULL
+ * @param array                  $pairs  The permission array
  *
  * @throws Forbidden
  * @return void
@@ -94,7 +99,7 @@
         final private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
             if (!empty($pairs) && $user == NULL)
-            {
+            { # you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }
             foreach ($pairs as $rcs)
@@ -123,7 +128,7 @@
  */
         public function requires()
         {
-            return [TRUE, []]; // default to requiring login
+            return [TRUE, []]; // default to requiring login but no specific context/role
         }
 /**
  * Handle AJAX operations
