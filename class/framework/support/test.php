@@ -124,7 +124,7 @@
  */
         private static function mapping(string $type)
         {
-            return array_map(function ($item) use ($type) {
+            return array_map(static function ($item) use ($type) {
                 return [$item[0].$type, $item[1], $item[2], $item[3]];
             }, self::$oldtests);
         }
@@ -156,11 +156,6 @@
  */
         public function get(Context $context) : string
         {
-            //$tester = new \Framework\Support\TestSupport($context, 'get');
-            //$tx = self::mapping('get');
-            //$tester->run($tx, TRUE);
-            //$tester->run(self::$tests, FALSE);
-            //$context->local()->addval('op', 'get');
             return self::dotest($context, 'get');
         }
 /**
