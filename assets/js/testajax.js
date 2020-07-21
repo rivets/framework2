@@ -2,18 +2,11 @@
 
         ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
 
-        makecall : function (url, data){
+        makecall : function (url, data, cdone, cfail){
             var rdata = '';
             var rcode = 200;
             data.async = true;
-            $.ajax(base+'/ajax/'+url, data).done(function(data, textStatus, jqXHR){
-                rdata = data;
-            console.log(jqXHR);
-                rcode = jQXHR.status;
-            }).fail(function(jx){
-                rcode = jx.status;
-                rdata = jx.responseText;
-            });
+            $.ajax(base+'/ajax/'+url, data).done(cdone).cfail(fail)
             return [rcode, rdata];
         },
         testbean: function (){
@@ -73,20 +66,18 @@
     
         testuniquenl :function (bean){
             let t = $(this).parent();
-            let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' });
-console.log(res);
-            if (res[0] == 200)
-            {
+            let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(res){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
-            }
-            else if (res[0] == 404)
-            {
-               t.append('<p>Existing login OK</p>');
-            }
-            else
-            {
-                t.append('<p>Existing login fails - '+res[0]+'</p>'+res[1]);
-            }
+            }, function(jx){
+                if (jx.status == 404)
+                {
+                   t.append('<p>Existing login OK</p>');
+                }
+                else
+                {
+                    t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
+                }
+            });
             res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' });
             if (res[0] == 200)
             {
