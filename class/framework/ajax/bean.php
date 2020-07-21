@@ -42,12 +42,6 @@
         {
             $rest = $this->context->rest();
             $bean = $rest[1];
-            $perms = $this->controller->permissions('bean', self::$permissions);
-            if (!isset($perms[$bean]))
-            {
-                throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
-            }
-            $beans = $this->access->findRow($this->context, $perms[$bean] ?? NULL);
             $log = $this->controller->log($bean);
             $method = $this->context->web()->method();
             /** @psalm-suppress UndefinedConstant */
@@ -68,6 +62,7 @@
                  * @psalm-suppress RedundantCondition
                  * @psalm-suppress ArgumentTypeCoercion
                  */
+                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -87,7 +82,7 @@
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
                 [$bean, $id, $field, $more] = $this->context->restcheck(3);
-                $this->access->beanCheck($beans, $bean, $field);
+                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table, $field);
                 $bn = $this->context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
                 $bn->$field = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
@@ -99,6 +94,7 @@
                 break;
 
             case 'DELETE': // /ajax/bean/KIND/ID/
+                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
                 $id = $rest[2] ?? 0; // get the id from the URL
                 if ($id <= 0)
                 {

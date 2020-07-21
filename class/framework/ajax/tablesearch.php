@@ -30,7 +30,7 @@
 /**
  * @var array<string> Search ops
  */
-        private static $searchops = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
+        private static $searchOps = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
 /**
  * Return permission requirements
  *
@@ -38,7 +38,7 @@
  */
         public function requires()
         {
-            return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site Admins to do this
+            return [FALSE, []]; // Permission check done in handle
         }
 /**
  * Search a table
@@ -48,7 +48,7 @@
         final public function handle() : void
         {
             [$bean, $field, $op] = $this->context->restcheck(3);
-            $this->access->beanFindCheck($this->context, 'tablesearchperms', $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
+            $this->checkAccess($this->context->user(), $this->controller->permissions('tablesearch', self::$permissions), $table, $field, TRUE);
             $value = $this->context->formdata('get')->fetch('value', '');
             $incv = ' ?';
             if ($op == '4')
@@ -62,7 +62,7 @@
                 { // no value on a NULL test
                     $incv = '';
                 }
-                $op = self::$searchops[$op];
+                $op = self::$searchOps[$op];
             }
             $res = [];
             $fields = array_keys(\R::inspect($bean));

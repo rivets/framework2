@@ -41,13 +41,9 @@
             [$b1, $id1, $b2, $id2] = $this->context->restcheck(4);
             $bn1 = $this->context->load($b1, (int) $id1);
             $bn2 = $this->context->load($b2, (int) $id2);
-            $beans = $this->access->findRow($this->context, $this->controller->permissions('shared', self::$permissions));
-/**
- * @todo This check is not right as the array format is slightly different for sharedperms
- *       Fix when this gets properly implemented.
- */
-            $this->access->beanCheck($beans, $bn1->getMeta('type'), '');
-            $this->access->beanCheck($beans, $bn2->getMeta('type'), '');
+            $perms = $this->controller->permissions('shared', self::$permissions);
+            $this->checkAccess($this->context->user(), $perms, $bn1->getMeta('type')); // check we can access both beans
+            $this->checkAccess($this->context->user(), $perms, $bn2->getMeta('type'));
             switch ($this->context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2

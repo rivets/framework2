@@ -6,7 +6,7 @@
  * @copyright 2020 Newcastle University
  */
     namespace Framework\Ajax;
-
+    
     use \Config\Framework as FW;
 /**
  * Paging database tables
@@ -40,14 +40,9 @@
  */
         final public function handle() : void
         {
+            [$bean] = $this->context->restCheck(1);
+            $this->checkAccess($this->context->user(), $this->controller->permissions('paging', self::$permissions), $bean);
             $fdt = $this->context->formdata('get');
-            $bean = $fdt->mustFetch('bean');
-            $paging = $this->controller->permissions('paging', self::$permissions);
-            if (!isset($paging[$bean]))
-            { // pagination is NOT allowed for this bean
-                throw new \Framework\Exception\Forbidden('Permission denied');
-            }
-            $this->access->checkPerms($this->context, $paging[$bean][1]); // make sure we are allowed
             $order = $fdt->fetch('order', '');
             $page = $fdt->mustFetch('page');
             $pagesize = $fdt->mustFetch('pagesize');

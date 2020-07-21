@@ -47,6 +47,7 @@
                 /* NOT REACHED */
             }
             $table = strtolower($rest[1]);
+            $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
             $method = $this->context->web()->method();
             if ($method == 'POST')
             {
@@ -98,7 +99,7 @@
                 case 'PUT': // change a field
                     $value = $this->context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
-                    $this->access->fieldExists($table, $f1);
+                    $this->fieldExists($table, $f1);
                     switch ($rest[3])
                     {
                     case 'name':
