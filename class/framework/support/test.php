@@ -121,13 +121,11 @@
  * @param string $type
  *
  * @return array
+ * @phpcsSuppress PhpCs.Import.SingleImportPerStatementFixer
  */
         private static function mapping(string $type)
         {
-            /** @phpcsSuppress PhpCs.Fixer.Import.SingleImportPerStatementFixer */
-            return array_map(static function ($item) use ($type) {
-                return [$item[0].$type, $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
+            return array_map(static function ($item) use ($type) { return [$item[0].$type, $item[1], $item[2], $item[3]]; }, self::$oldtests);
         }
 /**
  * Do test
