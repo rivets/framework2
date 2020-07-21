@@ -17,28 +17,31 @@
  */
 /**
  * If you are using the predefined features of the Framework then you will amost certainly need to
- * add some appropriate values to support permissions
- *
- * The key to both the array fields is the name of the bean type you are working with.
+ * add some appropriate values to support permissions for the operation named as the key.
+ * Not all Framework AJAX operations are available.
  */
 /**
- * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
+ * @var array<array> Allowed Framework operation codes. Values indicate:
+ *                   'bean' => [ Must Login, [[['ContextName', 'RoleName']], [...fields...]]]
+ *                   Empty fields array means all fields (except id which is always special)
+ *                   Evaluation of multiple context/role pairs is a logical AND.
+ *                   If you want an OR then you need to group the pairs to be ORed in yet another nested array.
  */
         protected static $fwPermissions = [
-            'bean'          => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-            'hints'         => [], // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
-            'paging'        => [], // ['bean' => [TRUE, [['ContextName', 'RoleName']]]] array of roles required in form [['context name', 'role name']...] (can be empty)
+            'bean'          => [],
+            'hints'         => [],
+            'paging'        => [],
             'pwcheck'       => [],
             'shared'        => [],
-            'table'         => [], // [[['ContextName', 'RoleName']], [ 'bean', ....]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-            'tablesearch'   => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-            'toggle'        => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'table'         => [],
+            'tablesearch'   => [],
+            'toggle'        => [],
             'unique'        => [],
-            'uniquenl'      => [], // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
+            'uniquenl'      => [],
         ];
  /**
  * @var array<string> A list of bean names for which logging is required
- */       
+ */
         protected static $log = []; // ['bean'..... A list of bean names]
 /**
  * Handle AJAX operations

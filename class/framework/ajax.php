@@ -35,14 +35,14 @@
             'unique',
             'uniquenl',
         ];
-/*
- * Return the audit requirements array from the child
+/**
+ * Return the log requirements array from the child
  *
- * @return array<string>
+ * @return bool
  */
-        final public function audit()
+        final public function log() : bool
         {
-            return static::$audit;
+            return in_array($bean, static::$log);
         }
 /**
  * Return the permission requirements array from the child
@@ -51,7 +51,7 @@
  *
  * @return array<string>
  */
-        final public function permissions(string $which)
+        final public function permissions(string $which) : array
         {
             return static::$permissions[$which];
         }

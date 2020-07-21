@@ -18,7 +18,7 @@
  * @var array
  */
         private static $permissions = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ]
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ]; //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
 /**
  * Carry out operations on RB shared lists

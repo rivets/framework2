@@ -53,7 +53,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
-            $log = in_array($bean, $this->controller->audit());
+            $log = $this->controller->log($bean);
             $method = $this->context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;

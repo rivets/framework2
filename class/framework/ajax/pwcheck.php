@@ -1,6 +1,7 @@
 <?php
 /**
-pwcheck *
+ * Check password
+ * 
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020 Newcastle University
  */
@@ -11,15 +12,6 @@ pwcheck *
  */
     class PwCheck extends Ajax
     {
-/**
- * Return permission requirements
- *
- * @return array
- */
-        public function requires()
-        {
-            return [FALSE, []]; // does not require login
-        }
 /**
  * Do a password verification
  *
