@@ -60,7 +60,7 @@
                 }
                 try
                 {
-                    (new $class())->handle($context);
+                    (new $class($context))->handle($context);
                 }
                 catch(Exception\Forbidden $e)
                 {

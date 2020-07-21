@@ -20,7 +20,7 @@
 /**
  * Constructor
  */
-        public function __construct()
+        public function __construct(Context $context)
         {
             $this->access = new Access();
             [$login, $permissions] = $this->requires();
