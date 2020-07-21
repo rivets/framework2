@@ -33,8 +33,8 @@
         final public function handle() : void
         {
             $rest = $this->context->rest();
-            /** @phpcsSuppress SlevomatCodingStandard\Sniffs\Variables\UnusedVariableSniff */
-            [$_, $bean, $field] = $rest;
+            
+            [1 => $bean, 2 => $field] = $rest;
             $this->checkAccess($this->context->user(), $this->controller->permissions('hints'), $bean, $field);
             $obj = TRUE;
             if (isset($rest[3]))
