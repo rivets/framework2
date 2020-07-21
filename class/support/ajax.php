@@ -39,7 +39,7 @@
             'unique'        => [],
             'uniquenl'      => [],
         ];
- /**
+/**
  * @var array<string> A list of bean names for which logging is required
  */
         protected static $log = []; // ['bean'..... A list of bean names]

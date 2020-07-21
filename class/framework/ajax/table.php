@@ -98,7 +98,7 @@
                 case 'PUT': // change a field
                     $value = $this->context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
-                    $this->access->fieldExists($table, $f1); 
+                    $this->access->fieldExists($table, $f1);
                     switch ($rest[3])
                     {
                     case 'name':

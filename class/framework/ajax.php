@@ -37,9 +37,11 @@
 /**
  * Return the log requirements array from the child
  *
+ * @param string $bean  The name of a bean
+ *
  * @return bool
  */
-        final public function log() : bool
+        final public function log(string $bean) : bool
         {
             return in_array($bean, static::$log);
         }

@@ -6,7 +6,7 @@
  * @copyright 2020 Newcastle University
  */
     namespace Framework\Ajax;
-    
+
     use \Config\Framework as FW;
 /**
  * Paging database tables
