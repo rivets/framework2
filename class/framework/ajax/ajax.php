@@ -139,8 +139,8 @@
             {
                 throw new \Framework\Exception\ParameterCount();
             }
-            $res = array_slice($this->reqrest, 1, $count);
-            $res[] = array_slice($this->reqrest, $count+1); // return anything left - there might be optional parameters.
+            $res = array_slice($rest, 1, $count);
+            $res[] = array_slice($rest, $count+1); // return anything left - there might be optional parameters.
             return $res;
         }
 /**
