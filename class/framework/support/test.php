@@ -121,7 +121,6 @@
  * @param string $type
  *
  * @return array
- * @phpcsSuppress PhpCs.Import.SingleImportPerStatementFixer
  */
         private static function mapping(string $type)
         {

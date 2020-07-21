@@ -99,6 +99,7 @@ return [
         PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer::class,
         PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class, // buggy?
         PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer::class, // this one seems to be buggy
+        PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer::class, // this one also seems buggy
         PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer::class, // this one seems to be buggy
         PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer::class,
         PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer::class, // complains about correct formatting...
