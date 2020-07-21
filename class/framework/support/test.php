@@ -124,7 +124,7 @@
  */
         private static function mapping(string $type)
         {
-            /** @phpcsSuppress PhpCsFixer.Fixer.Import.SingleImportPerStatementFixer */
+            /** @phpcsSuppress PhpCs.Fixer.Import.SingleImportPerStatementFixer */
             return array_map(static function ($item) use ($type) {
                 return [$item[0].$type, $item[1], $item[2], $item[3]];
             }, self::$oldtests);
