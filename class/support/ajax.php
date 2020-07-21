@@ -13,62 +13,39 @@
     final class Ajax extends \Framework\Ajax
     {
 /**
- * Add functions that implement your AJAX operations as class in clss/framework/ajax. See the sample.txt file there.
+ * Add functions that implement your AJAX operations as classes in class/framework/ajax. See the sample.txt file there.
  */
 /**
- * If you are using the predefined features of the framework then you may need to
- * add some appropriate vaues into these arrays.
+ * If you are using the predefined features of the Framework then you will amost certainly need to
+ * add some appropriate values to support permissions
  *
  * The key to both the array fields is the name of the bean type you are working with.
  */
 /**
- * @var array<array>   Values controlling whether or not pagination calls are allowed
+ * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $allowPaging = [
-            // 'bean' => [TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+        private static $fwPermissions = [
+            'bean'          => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'hints'         => [], // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'paging'        => [], // ['bean' => [TRUE, [['ContextName', 'RoleName']]]] array of roles required in form [['context name', 'role name']...] (can be empty)
+            'pwcheck'       => [],
+            'shared'        => [],
+            'table'         => [], // [[['ContextName', 'RoleName']], [ 'bean', ....]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'tablesearch'   => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'toggle'        => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
+            'unique'        => [],
+            'uniquenl'      => [], // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
+            'audit'         => [], // ['bean'..... A list of bean names]
         ];
 /**
- * @var array<array>   Values controlling whether or not search hint calls are allowed
+ * Constructor
+ *
+ * @param array $permissions    An array of permission sdata - see above;
  */
-        private static $allowHints = [
-            // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the bean operation are allowed
- */
-        private static $allowBean = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the toggle operation are allowed
- */
-        private static $allowToggle = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the table operation are allowed
- */
-        private static $allowTable = [
-            // [[['ContextName', 'RoleName']], [ 'bean', ....]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the table operation are allowed
- */
-        private static $allowTSearch = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array<string>>   Values controlling whether or not calls on the uniquenl operation are allowed
- */
-        private static $allowUniquenl = [
-            // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
-        ];
-/**
- * @var array<string>   Values controlling whether or not bean operations are logged for certain beans
- */
-        private static $audit = [
-            // 'bean'..... A list of bean names
-        ];
+        public function __construct(array $fwPermissions)
+        {
+            parent::__construct($fwPermissions);
+        }
 /**
  * Handle AJAX operations
  *
@@ -78,9 +55,6 @@
  */
         public function handle(Context $context) : void
         {
-            parent::__construct();
-            $this->access->pageOrHint(self::$allowPaging, self::$allowHints);
-            $this->access->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable, self::$audit, self::$allowTSearch, self::$allowUniquenl);
             parent::handle($context);
         }
     }
