@@ -67,14 +67,14 @@
             bootbox.alert('Unique operation test complete');
         },
     
-        testuniquenl :function (){
+        testuniquenl :function (bean){
             let t = $(this).parent();
-            var res = testing.makecall('uniquenl/user/login/'+goodlogin, { method: 'GET' });
+            var res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' });
             if (res[0] == 200)
             {
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }
-            else if (jx.status == 404)
+            else if (res[0] == 404)
             {
                t.append('<p>Existing login OK</p>');
             }
@@ -82,7 +82,7 @@
             {
                 t.append('<p>Existing login fails - '+res[0]+'</p>'+res[1]);
             }
-            res = testing.makecall('uniquenl/user/login/'+goodlogin+'XXXXX', { method: 'GET' });
+            res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' });
             if (res[0] == 200)
             {
                 t.append('<p>Non-existent login OK</p>');

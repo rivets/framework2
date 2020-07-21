@@ -14,7 +14,8 @@
 {% endblock scripts %}
 
 {% block setup %}
-    var goodlogin = '{{context.user.login}}';
+    let goodlogin = '{{context.user.login}}';
+    let userbean = '{{constant('Config\\Framework::USER')}}';
 {% endblock setup %}
 
 {% block onload %}
