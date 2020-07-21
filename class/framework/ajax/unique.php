@@ -7,12 +7,21 @@
  */
     namespace Framework\Ajax;
 
-    use \Support\Context;
 /**
  * Parsely unique check that does require a login.
  */
     class Unique extends Ajax
     {
+ /**
+ * @var array
+ */
+        private static $permissions = [
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']],
+            ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
 /**
  * Return permission requirements
  *
@@ -26,19 +35,17 @@
  * Do a parsley uniqueness check
  * Send a 404 if it exists (That's how parsley works)
  *
- * @param Context    $context
- *
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
  *
  * @return void
  */
-        private function unique(Context $context) : void
+        private function unique() : void
         {
-            [$bean, $field, $value] = $context->restcheck(3);
-            $this->access->beanCheck('uniqueperms', $bean, $field);
+            [$bean, $field, $value] = $this->context->restcheck(3);
+            $this->access->beanCheck($this->controller->permissions('unique'), $bean, $field);
             if (\R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
-                $context->web()->notfound(); // error if it exists....
+                $this->context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
             }
         }

@@ -22,21 +22,21 @@
  * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
         private static $restops = [
-            'bean',          //=> [TRUE,   []], // permission checks are done in the bean function
-            'config',        //=> [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            'hints',         //=> [FALSE,  []], // permission checks are done in the hints function
-            'paging',        //=> [FALSE,  []], // permission checks are done in the paging function
-            'pwcheck',       //=> [TRUE,   []], // permission checks are done in the pwcheck function
-            'shared',        //=> [TRUE,   []], // permission checks are done in the shared function
-            'table',         //=> [TRUE,   []], // permission checks are done in the table function
-            'tablecheck',    //=> [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            'tablesearch',   //=> [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            'toggle',        //=> [TRUE,   []], // permission checks are done in the toggle function
-            'unique',        //=> [TRUE,   []], // test if a bean field value is unique
-            'uniquenl',      //=> [FALSE,  []], // unique test with no login - used at least by user registration form
+            'bean',
+            'config',
+            'hints',
+            'paging',
+            'pwcheck',
+            'shared',
+            'table',
+            'tablecheck',
+            'tablesearch',
+            'toggle',
+            'unique',
+            'uniquenl', 
         ];
-/**
- * Return the audit requirements array form the child
+/*
+ * Return the audit requirements array from the child
  *
  * @return array<string>
  */
@@ -45,13 +45,15 @@
             return static::$audit;
         }
 /**
- * Return the permission requirements array form the child
+ * Return the permission requirements array from the child
+ *
+ * @param string $which The permissions required
  *
  * @return array<string>
  */
-        final public function permissions()
+        final public function permissions(string $which)
         {
-            return static::$permissions;
+            return static::$permissions[$which];
         }
 /**
  * Handle AJAX operations
@@ -62,39 +64,36 @@
  */
         public function handle(Context $context) : void
         {
-            if ($context->action() == 'ajax')
-            { # REST style AJAX call
-                $rest = $context->rest();
-                $op = $rest[0];
-                $class = "\\Ajax\\".$op;;
-                if (isset(self::$restops[$op]))
-                { # a valid Framework Ajax operation
-                    $class = '\Framework'.$class;
-                }
-                elseif (!class_exists($class))
-                { # not a developer provided ajax op
-                    $context->web()->bad('No such operation');
-                    /* NOT REACHED */
-                }
-                try
-                {
-                    (new $class($context, $this))->handle($context);
-                }
-                catch(Exception\Forbidden $e)
-                {
-                    $context->web()->noaccess($e->getMessage());
-                }
-                catch(Exception\BadValue |
-                      Exception\BadOperation |
-                      Exception\MissingBean |
-                      Exception\ParameterCount $e)
-                {
-                    $context->web()->bad($e->getMessage());
-                }
-                catch(\Exception $e)
-                { // any other exception - this will be a framework internal error
-                    $context->web()->internal($e->getMessage());
-                }
+            $rest = $context->rest();
+            $op = $rest[0];
+            $class = "\\Ajax\\".$op;;
+            if (in_array($op, self::$restops))
+            { # a Framework Ajax operation
+                $class = '\Framework'.$class;
+            }
+            elseif (!class_exists($class))
+            { # not a developer provided ajax op
+                $context->web()->bad('No such operation');
+                /* NOT REACHED */
+            }
+            try
+            {
+                (new $class($context, $this))->handle($context);
+            }
+            catch(Exception\Forbidden $e)
+            {
+                $context->web()->noaccess($e->getMessage());
+            }
+            catch(Exception\BadValue |
+                  Exception\BadOperation |
+                  Exception\MissingBean |
+                  Exception\ParameterCount $e)
+            {
+                $context->web()->bad($e->getMessage());
+            }
+            catch(\Exception $e)
+            { // any other exception - this will be a framework internal error
+                $context->web()->internal($e->getMessage());
             }
         }
     }

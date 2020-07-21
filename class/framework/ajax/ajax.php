@@ -18,10 +18,20 @@
  */
         protected $access;
 /**
+ * @var Ajax
+ */
+        protected $controller;
+/**
+ * @var Context
+ */
+        protected $context;
+/**
  * Constructor
  */
-        public function __construct(Context $context)
+        public function __construct(Context $context, Ajax $controller)
         {
+            $this->context = $context;
+            $this->controller = $controller;
             $this->access = new Access();
             [$login, $permissions] = $this->requires();
             if ($login)
@@ -50,11 +60,9 @@
 /**
  * Handle AJAX operations
  *
- * @param Context   $context    The context object for the site
- *
  * @return void
  */
-        abstract public function handle(Context $context) : void;
+        abstract public function handle() : void;
     }
 ?>
     

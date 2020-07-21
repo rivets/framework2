@@ -8,12 +8,30 @@
     namespace Framework\Ajax;
 
     use \Framework\Exception\BadValue;
-    use \Support\Context;
 /**
  * Toggle a flag field in a bean
  */
     class Toggle extends Ajax
     {
+/**
+ * @var array
+ */
+        private static $permissions = [
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE => [],
+                    FW::USER => [],
+                    FW::CONFIG => [],
+                    FW::FORM => [],
+                    FW::FORMFIELD => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME => [],
+                    FW::TABLE => [],
+                ],
+            ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
 /**
  * Toggle a flag field in a bean
  *
@@ -25,23 +43,23 @@
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            $rest = $context->rest();
+            $rest = $this->context->rest();
             if (count($rest) > 2)
             {
-                [$type, $bid, $field] = $context->restcheck(3);
+                [$type, $bid, $field] = $this->context->restcheck(3);
             }
             else // this is legacy
             {
-                $fdt = $context->formdata('post');
+                $fdt = $this->context->formdata('post');
                 $type = $fdt->mustFetch('bean');
                 $field = $fdt->mustFetch('field');
                 $bid = $fdt->mustFetch('id');
             }
-            $this->access->beanFindCheck($context, 'toggleperms', $type, $field);
-            $bn = $context->load($type, (int) $bid);
-            if ($type === 'user' && ctype_upper($field[0]) && $context->hasadmin())
+            $this->access->beanFindCheck($this->context, 'toggleperms', $type, $field);
+            $bn = $this->context->load($type, (int) $bid);
+            if ($type === 'user' && ctype_upper($field[0]) && $this->context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
@@ -49,7 +67,7 @@
                 }
                 else
                 {
-                    $bn->addrole(FW::FWCONTEXT, $field, '', $context->utcnow());
+                    $bn->addrole(FW::FWCONTEXT, $field, '', $this->context->utcnow());
                 }
             }
             else

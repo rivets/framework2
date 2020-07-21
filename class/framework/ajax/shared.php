@@ -8,12 +8,17 @@
     namespace Framework\Ajax;
 
     use \Framework\Exception\BadValue;
-    use \Support\Context;
 /**
  * Operate on RedBean shared lists
  */
     class Shared extends Ajax
     {
+/**
+ * @var array
+ */
+        private static $permissions = [
+            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ]
+        ]; //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
 /**
  * Carry out operations on RB shared lists
  *
@@ -22,13 +27,13 @@
  * @throws \Framework\Exception\BadOperation
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
 
-            [$b1, $id1, $b2, $id2] = $context->restcheck(4);
-            $bn1 = $context->load($b1, (int) $id1);
-            $bn2 = $context->load($b2, (int) $id2);
-            $beans = $this->access->findRow($context, 'sharedperms');
+            [$b1, $id1, $b2, $id2] = $this->context->restcheck(4);
+            $bn1 = $this->context->load($b1, (int) $id1);
+            $bn2 = $this->context->load($b2, (int) $id2);
+            $beans = $this->access->findRow($this->context, $this->controller->permissions('shared'));
 /**
  * @todo This check is not right as the array format is slightly different for sharedperms
  *       Fix when this gets properly implemented.
@@ -51,7 +56,7 @@
             case 'PATCH':
             case 'GET':
             default:
-                throw new \Framework\Exception\BadOperation($context->web()->method().' not supported');
+                throw new \Framework\Exception\BadOperation($this->context->web()->method().' not supported');
             }
         }
     }

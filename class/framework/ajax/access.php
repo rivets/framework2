@@ -19,126 +19,6 @@
     class Access
     {
 /**
- * @var array<array> Permissions array for bean acccess. This helps allow non-site admins use the AJAX bean functions
- */
-        private static $beanperms = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [
-                    FW::PAGE        => [],
-                    FW::USER        => [],
-                    FW::CONFIG      => [],
-                    FW::FORM        => [],
-                    FW::FORMFIELD   => [],
-                    FW::PAGEROLE    => [],
-                    FW::ROLECONTEXT => [],
-                    FW::ROLENAME    => [],
-                    FW::TABLE       => [],
-                ],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
-        ];
-/**
- * @var array<string> Permissions array for creating an audit log.
- */
-        private static $audit = [
-//          ['BeanName'...]]
-        ];
-/**
- * @var array<array> Permissions array for creating RedBean shares. This helps allow non-site admins use the AJAX bean functions
- */
-        private static $sharedperms = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
-        ];
-/**
- * @var array<array> Permissions array for toggle acccess. This helps allow non-site admins use the AJAX bean functions
- */
-        private static $toggleperms = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [
-                    FW::PAGE => [],
-                    FW::USER => [],
-                    FW::CONFIG => [],
-                    FW::FORM => [],
-                    FW::FORMFIELD => [],
-                    FW::ROLECONTEXT => [],
-                    FW::ROLENAME => [],
-                    FW::TABLE => [],
-                ],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
-        ];
-/**
- * @var array<array> Permissions array for table acccess.
- */
-        private static $tableperms = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER],
-            ],
-//          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
-        ];
-/**
- * @var array<array> Permissions array for tablesearch acccess.
- */
-        private static $tablesearchperms = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [
-                    FW::CONFIG      => [],
-                    FW::FORM        => [],
-                    FW::FORMFIELD   => [],
-                    FW::PAGE        => [],
-                    FW::ROLECONTEXT => [],
-                    FW::ROLENAME    => [],
-                    FW::TABLE       => [],
-                    FW::USER        => [],
-                ],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
-        ];
-/**
- * @var array<array> Permissions array for unique acccess. This helps allow non-site admins use the AJAX functions
- */
-        private static $uniqueperms = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
-        ];
-/**
- * @var array<string>   Permissions array for unique access. This helps allow non-site admins use the AJAX functions
- */
-        private static $uniquenlperms = [
-            FW::USER => ['login'],
-// 'bean' => [...fields...], ... // an array of beans and fields that can be accessed
-        ];
-/**
- * If you are using the pagination or search hinting features of the framework then you need to
- * add some appropriate vaues into these arrays. You do this in support/ajax.php. Not her.
- *
- * The key to both the array fields is the name of the bean type you are working with.
- */
-/**
- * @var array<array>   Values controlling whether or not pagination calls are allowed
- */
-        private static $paging = [
-            FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
-            // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not search hint calls are allowed
- */
-        private static $hints = [
-            // 'beanname' => ['field', TRUE, [['ContextName', 'RoleName']]]
-            // name of field being searched, TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
  * Check that a bean has a field. Do not allow id field to be manipulated.
  *
  * @param string    $type    The type of bean
@@ -167,10 +47,10 @@
  * @throws Forbidden
  * @return array
  */
-        public function findRow(Context $context, string $arrayName) : array
+        public function findRow(Context $context, array $array) : array
         {
             $tables = [];
-            foreach (self::$$arrayName as $bpd)
+            foreach ($array as $bpd)
             {
                 /** @phpcsSuppress  PHP_CodeSniffer.CodeAnalysis.EmptyStatement */
                 try
@@ -236,17 +116,18 @@
 /**
  * Check if a bean/field combination is allowed and the field exists and is not id
  *
- * @param string  $arrayName The array to look in
- * @param string  $bean
- * @param string  $field
- * @param bool    $idok      Allow the id field
+ * @param Context $context  The contetx object
+ * @param string  $array    The array to look in
+ * @param string  $bean     The bean type
+ * @param string  $field    The field in the bean
+ * @param bool    $idok     Allow the id field
  *
  * @throws Forbidden
  * @return bool
  */
-        final public function beanFindCheck(Context $context,string $arrayName, string $bean, string $field, bool $idok = FALSE) : bool
+        final public function beanFindCheck(Context $context, array $array, string $bean, string $field, bool $idok = FALSE) : bool
         {
-            return $this->beanCheck($this->findRow($context, $arrayName), $bean, $field, $idok);
+            return $this->beanCheck($this->findRow($context, $array), $bean, $field, $idok);
         }
 /**
  * Add pagination or searching tables

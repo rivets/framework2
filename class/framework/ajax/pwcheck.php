@@ -6,7 +6,6 @@ pwcheck *
  */
     namespace Framework\Ajax;
 
-    use \Support\Context;
 /**
  * Operations on beans
  */
@@ -30,10 +29,10 @@ pwcheck *
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
             /** @psalm-suppress PossiblyNullReference */
-            if (($pw = $context->formdata('get')->fetch('pw', '')) === '' || !$context->user()->pwok($pw))
+            if (($pw = $this->context->formdata('get')->fetch('pw', '')) === '' || !$this->context->user()->pwok($pw))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }

@@ -8,7 +8,6 @@
     namespace Framework\Ajax;
 
     use \Framework\Exception\Forbidden;
-    use \Support\Context;
 /**
  * Get search hints for beans
  */
@@ -31,14 +30,15 @@
  * @throws Forbidden
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            $rest = $context->rest();
+            $rest = $this->context->rest();
             $bean = $rest[1];
-            if (isset(self::$hints[$bean]))
+            $hints = $this->controller->permissions('hints');
+            if (isset($hints[$bean]))
             { // hinting is allowed for this bean
-                $this->access->checkPerms($context, self::$hints[$bean][2]); // make sure we are allowed
-                $field = self::$hints[$bean][0];
+                $this->access->checkPerms($this->context, $hints[$bean][2]); // make sure we are allowed
+                $field = $hints[$bean][0];
                 $tix = 2;
                 if (is_array($field))
                 {
@@ -67,7 +67,7 @@
                 $this->access->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
                 $ofield = $field;
                 $field = '`'.$field.'`';
-                $fdt = $context->formdata('get');
+                $fdt = $this->context->formdata('get');
                 $order = $fdt->fetch('order', $field);
                 if ($order !== $field)
                 { // strop the fieldname if it occurs in the order spec
@@ -84,7 +84,7 @@
                     $v->text = $bn->$ofield;
                     $res[] = $v;
                 }
-                $context->web()->sendJSON($res);
+                $this->context->web()->sendJSON($res);
             }
             else
             {

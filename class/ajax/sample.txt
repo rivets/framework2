@@ -7,14 +7,16 @@
  */
     namespace Framework\Ajax;
 
-    use \Framework\Exception\BadOperation;
-    use \R;
-    use \Support\Context;
 /**
  * SAMPLE operation
  */
     class Sample extends Ajax
     {
+/**
+ * @var array If you want to use the permission checking functions. If you just want to control access
+ *            then just put the list of contextname/rolename pairs in the result of requires.
+ */
+         private static $permissions = [];
 /**
  * Return permission requirements. The version in the base class requires logins and adds nothing else.
  * If that is what you need then you can remove this method. This function is called from the base
@@ -24,16 +26,14 @@
  */
         public function requires()
         {
-            return [FALSE, []]; // does not require login
+            return [FALSE, [/* [contextname/rolename],... */]]; // does not require login, no contextname/rolename checks
         }
 /**
  * Carry out SAMPLE operation
  *
- * @param \Support\Context    $context The context object
- *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
         }
     }

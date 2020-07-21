@@ -7,12 +7,20 @@
  */
     namespace Framework\Ajax;
 
-    use \Support\Context;
 /**
  * Paging database tables
  */
     class Paging extends Ajax
     {
+/**
+ * @var array
+ */
+        private static $permissions = [
+            FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
+            // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
+            // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
+        ];
 /**
  * Return permission requirements
  *
@@ -31,15 +39,16 @@
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            $fdt = $context->formdata('get');
+            $fdt = $this->context->formdata('get');
             $bean = $fdt->mustFetch('bean');
-            if (!isset(self::$paging[$bean]))
+            $paging = $this->controller->permissions('paging');
+            if (!isset($paging[$bean]))
             { // pagination is NOT allowed for this bean
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
-            $this->access->checkPerms($context, self::$paging[$bean][1]); // make sure we are allowed
+            $this->access->checkPerms($context, $paging[$bean][1]); // make sure we are allowed
             $order = $fdt->fetch('order', '');
             $page = $fdt->mustFetch('page');
             $pagesize = $fdt->mustFetch('pagesize');

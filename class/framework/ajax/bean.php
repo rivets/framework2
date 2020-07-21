@@ -7,18 +7,36 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
     use \Framework\Exception\BadOperation;
     use \R;
-    use \Support\Context;
 /**
  * Operations on beans
  */
     class Bean extends Ajax
     {
 /**
+ * @var array
+ */
+        private static $permissions = [
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::PAGE        => [],
+                    FW::USER        => [],
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGEROLE    => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                ],
+            ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
+/**
  * Carry out operations on beans
- *
- * @param \Support\Context    $context The context object
  *
  * @throws BadOperation
  * @throws \Framework\Exception\BadValue
@@ -26,17 +44,17 @@
  *
  * @return void
  */
-        final public function handle(Context $context, Ajax $controller) : void
+        final public function handle() : void
         {
-            $beans = $this->access->findRow($context, 'beanperms');
-            $rest = $context->rest();
+            $beans = $this->access->findRow($context, $this->controller->permissions('beanperms'));
+            $rest = $this->context->rest();
             $bean = $rest[1];
             if (!isset($beans[$bean]))
             {
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
-            $log = in_array($bean, $controller->audit());
-            $method = $context->web()->method();
+            $log = in_array($bean, $this->controller->audit());
+            $method = $this->context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
             /**
@@ -46,7 +64,7 @@
             if (method_exists($class, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
-                $class::canAjaxBean($context, $method);
+                $class::canAjaxBean($this->context, $method);
             }
             switch ($method)
             {
@@ -58,10 +76,10 @@
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
-                    $id = $class::add($context)->getID();
+                    $id = $class::add($this->context)->getID();
                     if ($log)
                     {
-                        BeanLog::mklog($context, BeanLog::CREATE, $bean, $id, '*', NULL);
+                        BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
                     }
                     echo $id;
                 }
@@ -73,15 +91,15 @@
 
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
-                [$bean, $id, $field, $more] = $context->restcheck(3);
+                [$bean, $id, $field, $more] = $this->context->restcheck(3);
                 $this->access->beanCheck($beans, $bean, $field);
-                $bn = $context->load($bean, (int) $id, TRUE);
+                $bn = $this->context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
-                $bn->$field = empty($more) ? $context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($context->formdata('put')->mustFetch('value'));
+                $bn->$field = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
                 R::store($bn);
                 if ($log)
                 {
-                    BeanLog::mklog($context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
+                    BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
                 }
                 break;
 
@@ -94,7 +112,7 @@
                 $bn = $context->load($bean, (int) $id);
                 if ($log)
                 {
-                    BeanLog::mklog($context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
+                    BeanLog::mklog($this->context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
                 }
                 /**
                  * @psalm-suppress RedundantCondition
@@ -102,7 +120,7 @@
                  */
                 if (method_exists($class, 'delete')) // call the clean-up function if it has one
                 {
-                    $bn->delete($context);
+                    $bn->delete($$this->context);
                 }
                 R::trash($bn);
                 break;

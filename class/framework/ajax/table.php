@@ -7,42 +7,48 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
     use \Framework\Exception\Forbidden;
-    use \Support\Context;
 /**
  * Operations on database tables
  */
     class Table extends Ajax
     {
 /**
+ * @var array
+ */
+        private static $permissions = [
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [FW::CONFIG, FW::FORM, FW::FORMFIELD, FW::PAGE, FW::ROLECONTEXT, FW::ROLENAME, FW::TABLE, FW::USER],
+            ],
+//          [ [Roles], ['Table Name'...]]]    table name == bean name of course.
+        ];
+/**
  * Carry out operations on tables
  *
- * @internal
- * @param \Support\Context   $context The context object
  *
- * @throws \Framework\Exception\Forbidden
- * @throws \Framework\Exception\BadOperation
+ * @throws Forbidden
+ * @throws BadOperation
  *
  * @return void
- * @psalm-suppress UnusedMethod
- * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            if (!$context->hasadmin())
+            if (!$this->context->hasadmin())
             {
                 throw new Forbidden('Permission denied');
                 /* NOT REACHED */
             }
-            $rest = $context->rest();
+            $rest = $this->context->rest();
             if (count($rest) < 2)
             {
                 throw new BadValue('No table name');
                 /* NOT REACHED */
             }
             $table = strtolower($rest[1]);
-            $method = $context->web()->method();
+            $method = $this->context->web()->method();
             if ($method == 'POST')
             {
                 if (\Support\SiteInfo::tableExists($table))
@@ -55,7 +61,7 @@
                     throw new BadValue('Table name should be alphanumeric');
                     /* NOT REACHED */
                 }
-                $fdt = $context->formdata('post');
+                $fdt = $this->context->formdata('post');
                 $bn = \R::dispense($table);
                 foreach ($fdt->fetchArray('field') as $ix => $fname)
                 {
@@ -91,7 +97,7 @@
                     break;
                 case 'PATCH':
                 case 'PUT': // change a field
-                    $value = $context->formdata('put')->mustFetch('value');
+                    $value = $this->context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
                     if (\Support\SiteInfo::hasField($table, $f1))
                     {

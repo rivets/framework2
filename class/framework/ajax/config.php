@@ -27,9 +27,6 @@
 /**
  * Config value operation
  *
- * @internal
- * @param \Support\Context    $context    The context object for the site
- *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
  *
@@ -39,16 +36,16 @@
  */
         final public function handle(Context $context) : void
         {
-            [$name] = $context->restcheck(1);
+            [$name] = $this->context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
-            switch ($context->web()->method())
+            switch ($this->context->web()->method())
             {
             case 'POST':
                 if (is_object($v))
                 {
                     throw new BadValue('Item already exists');
                 }
-                $fdt = $context->formdata('post');
+                $fdt = $this->context->formdata('post');
                 $v = R::dispense(FW::CONFIG);
                 $v->name = $name;
                 $v->value = $fdt->mustFetch('value');
@@ -62,7 +59,7 @@
                 {
                     throw new BadValue('No such item');
                 }
-                $v->value = $context->formdata('put')->mustFetch('value');
+                $v->value = $this->context->formdata('put')->mustFetch('value');
                 R::store($v);
                 break;
 
@@ -83,7 +80,7 @@
                 break;
 
             default:
-                throw new \Framework\Exception\BadOperation($context->web()->method().' is not supported');
+                throw new \Framework\Exception\BadOperation($this->context->web()->method().' is not supported');
             }
         }
     }

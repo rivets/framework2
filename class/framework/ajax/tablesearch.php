@@ -7,14 +7,30 @@
  */
     namespace Framework\Ajax;
 
-    use \Framework\Exception\BadValue;
-    use \Framework\Exception\Forbidden;
-    use \Support\Context;
 /**
  * Search database tables
  */
     class TableSearch extends Ajax
     {
+/**
+ * @var array
+ */
+        private static $permissions = [
+            [
+                [[FW::FWCONTEXT, FW::ADMINROLE]],
+                [
+                    FW::CONFIG      => [],
+                    FW::FORM        => [],
+                    FW::FORMFIELD   => [],
+                    FW::PAGE        => [],
+                    FW::ROLECONTEXT => [],
+                    FW::ROLENAME    => [],
+                    FW::TABLE       => [],
+                    FW::USER        => [],
+                ],
+            ],
+//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+        ];
 /**
  * @var array<string> Search ops
  */
@@ -31,15 +47,13 @@
 /**
  * Search a table
  *
- * @param \Support\Context   $context The context object
- *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            [$bean, $field, $op] = $context->restcheck(3);
-            $this->access->beanFindCheck($context, 'tablesearchperms', $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
-            $value = $context->formdata('get')->fetch('value', '');
+            [$bean, $field, $op] = $this->context->restcheck(3);
+            $this->access->beanFindCheck($this->context, 'tablesearchperms', $bean, $field, TRUE); // make sure we are allowed to search this bean/field and that it exists
+            $value = $this->context->formdata('get')->fetch('value', '');
             $incv = ' ?';
             if ($op == '4')
             {
@@ -65,7 +79,7 @@
                 }
                 $res[] = $bv;
             }
-            $context->web()->sendJSON($res);
+            $this->context->web()->sendJSON($res);
         }
     }
 ?>

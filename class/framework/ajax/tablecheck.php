@@ -7,8 +7,7 @@
  */
     namespace Framework\Ajax;
 
-    use \Framework\Exception\BadOperation;
-    use \Support\Context;
+    use \Config\Framework as FW;
 /**
  * Parsley table check
  */
@@ -30,12 +29,12 @@
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
-            [$name] = $context->restcheck(1);
+            [$name] = $this->context->restcheck(1);
             if (\Support\SiteInfo::tableExists($name))
             {
-                $context->web()->notfound(); // error if it exists....
+                $this->context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
             }
         }
