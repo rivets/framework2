@@ -54,7 +54,7 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return array_merge(static::$permissions[$which], $system);
+            return array_merge(static::$fwPermissions[$which], $system);
         }
 /**
  * Handle AJAX operations
