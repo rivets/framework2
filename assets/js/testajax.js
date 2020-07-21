@@ -66,7 +66,7 @@
     
         testuniquenl :function (bean){
             let t = $(this).parent();
-            let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(res){
+            let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }, function(jx){
                 if (jx.status == 404)
