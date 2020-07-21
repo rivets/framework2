@@ -1,0 +1,40 @@
+<?php
+/**
+ * Class to handle the FrameworkFramework AJAX SAMPLE operation
+ *
+ * @author You <You@You.org>
+ * @copyright 2020 You
+ */
+    namespace Framework\Ajax;
+
+    use \Framework\Exception\BadOperation;
+    use \R;
+    use \Support\Context;
+/**
+ * SAMPLE operation
+ */
+    class Sample extends Ajax
+    {
+/**
+ * Return permission requirements. The version in the base class requires logins and adds nothign else.
+ * If that is what you need then you can remove this method. This function is called from the base
+ * class constructor when it does some permission checking.
+ *
+ * @return array
+ */
+        public function requires()
+        {
+            return [FALSE, []]; // does not require login
+        }
+/**
+ * Carry out SAMPLE operation
+ *
+ * @param \Support\Context    $context The context object
+ *
+ * @return void
+ */
+        final public function handle(Context $context) : void
+        {
+        }
+    }
+?>
