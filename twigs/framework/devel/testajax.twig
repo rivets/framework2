@@ -20,7 +20,7 @@
 {% block onload %}
     for (var op of testing.ajaxops)
     {
-        document.getElementById('op').addEventListener('click', 'testing.test'+op);
+        document.getElementById(op).addEventListener('click', 'testing.test'+op);
     }
 {% endblock onload %}
 
