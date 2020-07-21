@@ -13,15 +13,14 @@
  */
     class Unique extends Ajax
     {
- /**
+/**
  * @var array
  */
         private static $permissions = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [ FW::PAGE => ['name'], FW::USER => ['login'], FW::ROLECONTEXT => ['name'], FW::ROLENAME => ['name']],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
+            FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
+            FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
+            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['login'] ],
         ];
 /**
  * Return permission requirements

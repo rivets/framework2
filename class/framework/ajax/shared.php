@@ -8,7 +8,6 @@
     namespace Framework\Ajax;
 
     use \Config\Framework as FW;
-    use \Framework\Exception\BadValue;
 /**
  * Operate on RedBean shared lists
  */
@@ -18,7 +17,15 @@
  * @var array
  */
         private static $permissions = [
-            [ [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::PAGEROLE    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ]; //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
 /**
  * Carry out operations on RB shared lists

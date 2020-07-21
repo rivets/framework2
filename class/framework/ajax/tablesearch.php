@@ -17,20 +17,15 @@
  * @var array
  */
         private static $permissions = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [
-                    FW::CONFIG      => [],
-                    FW::FORM        => [],
-                    FW::FORMFIELD   => [],
-                    FW::PAGE        => [],
-                    FW::ROLECONTEXT => [],
-                    FW::ROLENAME    => [],
-                    FW::TABLE       => [],
-                    FW::USER        => [],
-                ],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+            FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::PAGEROLE    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
  * @var array<string> Search ops

@@ -10,7 +10,6 @@
  */
     namespace Framework\Ajax;
 
-    use \Config\Framework as FW;
     use \Framework\Exception\Forbidden;
     use \Support\Context;
 /**

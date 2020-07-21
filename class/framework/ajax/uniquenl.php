@@ -17,8 +17,7 @@
  * @var array
  */
         private static $permissions = [
-            FW::USER => ['login'],
-// 'bean' => [...fields...], ... // an array of beans and fields that can be accessed
+            FW::USER => [ FALSE, [], ['name'] ],
         ];
 /**
  * Return permission requirements

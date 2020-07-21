@@ -17,10 +17,8 @@
  * @var array
  */
         private static $permissions = [
-            FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]]],
-            // 'beanname' => [TRUE, [['ContextName', 'RoleName']]]
-            // TRUE if login needed, an array of roles required in form [['context name', 'role name']...] (can be empty)
+            FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
+            FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
         ];
 /**
  * Return permission requirements

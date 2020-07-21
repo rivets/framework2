@@ -8,7 +8,6 @@
     namespace Framework\Ajax;
 
     use \Config\Framework as FW;
-    use \Framework\Exception\BadValue;
 /**
  * Toggle a flag field in a bean
  */
@@ -18,20 +17,14 @@
  * @var array
  */
         private static $permissions = [
-            [
-                [[FW::FWCONTEXT, FW::ADMINROLE]],
-                [
-                    FW::PAGE => [],
-                    FW::USER => [],
-                    FW::CONFIG => [],
-                    FW::FORM => [],
-                    FW::FORMFIELD => [],
-                    FW::ROLECONTEXT => [],
-                    FW::ROLENAME => [],
-                    FW::TABLE => [],
-                ],
-            ],
-//          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
  * Toggle a flag field in a bean
@@ -58,7 +51,7 @@
                 $field = $fdt->mustFetch('field');
                 $bid = $fdt->mustFetch('id');
             }
-            $this->access->beanFindCheck($this->context, 'toggleperms', $type, $field);
+            $this->access->beanFindCheck($this->context, $this->controller->permissions('toggle'), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
             if ($type === 'user' && ctype_upper($field[0]) && $this->context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator

@@ -10,7 +10,6 @@
     use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
     use \R;
-    use \Support\Context;
 /**
  * Manipulate config data via Ajax
  */
