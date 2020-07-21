@@ -49,12 +49,12 @@
             { // pagination is NOT allowed for this bean
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
-            $this->access->checkPerms($context, $paging[$bean][1]); // make sure we are allowed
+            $this->access->checkPerms($this->context, $paging[$bean][1]); // make sure we are allowed
             $order = $fdt->fetch('order', '');
             $page = $fdt->mustFetch('page');
             $pagesize = $fdt->mustFetch('pagesize');
             $res = \Support\SiteInfo::getinstance()->fetch($bean, ($order !== '' ? ('order by '.$order) : ''), [], $page, $pagesize);
-            $context->web()->sendJSON($res);
+            $this->context->web()->sendJSON($res);
         }
     }
 ?>

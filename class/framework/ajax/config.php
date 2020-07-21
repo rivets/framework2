@@ -9,6 +9,7 @@
 
     use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
+    use \R;
     use \Support\Context;
 /**
  * Manipulate config data via Ajax
@@ -34,7 +35,7 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        final public function handle(Context $context) : void
+        final public function handle() : void
         {
             [$name] = $this->context->restcheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);

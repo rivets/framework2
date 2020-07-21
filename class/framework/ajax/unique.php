@@ -40,7 +40,7 @@
  *
  * @return void
  */
-        private function unique() : void
+        final public function handle() : void
         {
             [$bean, $field, $value] = $this->context->restcheck(3);
             $this->access->beanCheck($this->controller->permissions('unique'), $bean, $field);

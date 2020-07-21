@@ -46,7 +46,7 @@
  */
         final public function handle() : void
         {
-            $beans = $this->access->findRow($context, $this->controller->permissions('beanperms'));
+            $beans = $this->access->findRow($this->context, $this->controller->permissions('beanperms'));
             $rest = $this->context->rest();
             $bean = $rest[1];
             if (!isset($beans[$bean]))
@@ -109,7 +109,7 @@
                 {
                     throw new \Framework\Exception\BadValue('Missing value');
                 }
-                $bn = $context->load($bean, (int) $id);
+                $bn = $this->context->load($bean, (int) $id);
                 if ($log)
                 {
                     BeanLog::mklog($this->context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));

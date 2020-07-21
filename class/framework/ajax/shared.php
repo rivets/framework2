@@ -41,7 +41,7 @@
  */
             $this->access->beanCheck($beans, $bn1->getMeta('type'), '');
             $this->access->beanCheck($beans, $bn2->getMeta('type'), '');
-            switch ($context->web()->method())
+            switch ($this->context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
                 $bn1->noload()->{'shared'.ucfirst($b2).'List'}[] = $bn2;

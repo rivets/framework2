@@ -74,7 +74,7 @@
             else
             {
                 $bn->$field = $bn->$field == 1 ? 0 : 1;
-                R::store($bn);
+                \R::store($bn);
             }
         }
     }
