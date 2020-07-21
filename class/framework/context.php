@@ -154,50 +154,6 @@
         {
             return $this->tokauth;
         }
-/**
- * Check for logged in and 403 if not
- *
- * @throws \Framework\Exception\Forbidden
- *
- * @return void
- */
-        public function mustbeuser() : void
-        {
-            if (!$this->hasuser())
-            {
-                throw new \Framework\Exception\Forbidden('Must be logged in');
-            }
-        }
-/**
- * Check for an admin and 403 if not
- *
- * @throws \Framework\Exception\Forbidden
- *
- * @return void
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public function mustbeadmin() : void
-        {
-            if (!$this->hasadmin())
-            {
-                throw new \Framework\Exception\Forbidden('Must be an admin');
-            }
-        }
-/**
- * Check for an developer and 403 if not
- *
- * @throws \Framework\Exception\Forbidden
- *
- * @return void
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public function mustbedeveloper() : void
-        {
-            if (!$this->hasdeveloper())
-            {
-                throw new \Framework\Exception\Forbidden('Must be a developer');
-            }
-        }
 /*
  ***************************************
  * Miscellaneous utility functions
