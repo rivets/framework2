@@ -6,7 +6,11 @@
             var rdata = '';
             var rcode = 200;
             data.async = true;
-            $.ajax(base+'/ajax/'+url, data).done(function(data){ rdata = data; }).fail(function(jx){
+            $.ajax(base+'/ajax/'+url, data).done(function(data, textStatus, jqXHR){
+                rdata = data;
+            console.log(jqXHR);
+                rcode = jQXHR.status;
+            }).fail(function(jx){
                 rcode = jx.status;
                 rdata = jx.responseText;
             });
