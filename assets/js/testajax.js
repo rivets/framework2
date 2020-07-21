@@ -78,15 +78,10 @@
                     t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
                 }
             });
-            res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' });
-            if (res[0] == 200)
-            {
+            res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent login OK</p>');
-            }
-            else
-            {
-                t.append('<p>Non-existent login fails - '+res[0]+'</p>'+res[1]);
-            }
-            t.append('<p>Test Complete</p>');
+            }, function(jx) {
+                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+            });
         },
     };
