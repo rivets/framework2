@@ -50,9 +50,9 @@
  *
  * @return array<string>
  */
-        final public function permissions(string $which) : array
+        final public function permissions(string $which, array $system = []) : array
         {
-            return static::$permissions[$which];
+            return array_merge(static::$permissions[$which], $system);
         }
 /**
  * Handle AJAX operations

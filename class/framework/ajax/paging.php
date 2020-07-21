@@ -42,7 +42,7 @@
         {
             $fdt = $this->context->formdata('get');
             $bean = $fdt->mustFetch('bean');
-            $paging = $this->controller->permissions('paging');
+            $paging = $this->controller->permissions('paging', self::$permissions);
             if (!isset($paging[$bean]))
             { // pagination is NOT allowed for this bean
                 throw new \Framework\Exception\Forbidden('Permission denied');

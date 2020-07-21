@@ -37,25 +37,24 @@
             return TRUE;
         }
 /**
- * Check down an array with permissions in the first field and return the first
- * row that is OK
+ * Check down an array with permissions and return the first row that is OK
  *
  * @param Context  $context  The context object
- * @param array    $perms    The array with permissions in the first element
+ * @param array    $perms    The array with permission info ([login?, [roles...], [fields...]
  *
  * @throws Forbidden
  * @return array
  */
-        public function findRow(Context $context, array $array) : array
+        public function findRow(Context $context, array $permissions) : array
         {
             $tables = [];
-            foreach ($array as $bpd)
+            foreach ($permissions as $bpd)
             {
                 /** @phpcsSuppress  PHP_CodeSniffer.CodeAnalysis.EmptyStatement */
                 try
                 {
-                    $this->checkPerms($context, $bpd[0]); // make sure we are allowed
-                    $tables[] = $bpd[1];
+                    $this->checkPerms($context, $bpd[1]); // make sure we are allowed
+                    $tables[] = $bpd[2];
                 }
                 catch (Forbidden $e)
                 {

@@ -40,7 +40,7 @@
  */
         final public function handle() : void
         {
-            $beans = $this->access->findRow($this->context, $this->controller->permissions('beanperms'));
+            $beans = $this->access->findRow($this->context, $this->controller->permissions('bean', self::$permissions));
             $rest = $this->context->rest();
             $bean = $rest[1];
             if (!isset($beans[$bean]))

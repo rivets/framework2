@@ -41,7 +41,7 @@
             [$b1, $id1, $b2, $id2] = $this->context->restcheck(4);
             $bn1 = $this->context->load($b1, (int) $id1);
             $bn2 = $this->context->load($b2, (int) $id2);
-            $beans = $this->access->findRow($this->context, $this->controller->permissions('shared'));
+            $beans = $this->access->findRow($this->context, $this->controller->permissions('shared', self::$permissions));
 /**
  * @todo This check is not right as the array format is slightly different for sharedperms
  *       Fix when this gets properly implemented.

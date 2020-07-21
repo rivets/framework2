@@ -103,11 +103,7 @@
                 case 'PUT': // change a field
                     $value = $this->context->formdata('put')->mustFetch('value');
                     $f1 = $rest[2];
-                    if (\Support\SiteInfo::hasField($table, $f1))
-                    {
-                        throw new BadValue('Bad field name');
-                        /* NOT REACHED */
-                    }
+                    $this->access->fieldExists($bean, $f1); 
                     switch ($rest[3])
                     {
                     case 'name':
@@ -128,7 +124,14 @@
                         throw new BadValue('No such change');
                         /* NOT REACHED */
                     }
-                    \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
+                    try
+                    {
+                        \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
+                    }
+                    catch (\Exception $e)
+                    {
+                        throw new \Framework\Exception\BadValue($e->getMessage());
+                    }
                     break;
                 case 'GET':
                 default:

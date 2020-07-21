@@ -42,7 +42,7 @@
         final public function handle() : void
         {
             [$bean, $field, $value] = $this->context->restcheck(3);
-            $this->access->beanCheck($this->controller->permissions('unique'), $bean, $field);
+            $this->access->beanCheck($this->controller->permissions('unique', self::$permissions), $bean, $field);
             if (\R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $this->context->web()->notfound(); // error if it exists....
