@@ -7,6 +7,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Framework\Exception\Forbidden;
     use \Support\Context;
 /**
  * Ajax operation base class
@@ -52,14 +53,14 @@
 /**
  * Check access to a bean
  *
- * @param ?\RedBeanHP\OODBBean  $user
+ * @param ?\RedBeanPHP\OODBBean  $user
  * @param array                 $permissions
  * @param string                $bean
  * @param string                $field
  *
  * @return void
  */
-        final protected function checkAccess(?\RedBeanHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
+        final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
         {
             if (isset($permissions[$bean]))
             { # there are some permissions
@@ -83,14 +84,14 @@
 /**
  * Check that user has the permissions that are specified in an array
  *
- * @param ?\RedBeanHP\OODBBean  $user      The current user or NULL
+ * @param ?\RedBeanPHP\OODBBean  $user      The current user or NULL
  * @param array                 $pairs     The permission array
  *
  * @throws Forbidden
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        final private function checkPerms(?\RedBeanHP\OODBBean $user, array $pairs) : void
+        final private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
             if (!empty($pairs) && $user == NULL)
             {

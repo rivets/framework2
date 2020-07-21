@@ -62,7 +62,7 @@
                  * @psalm-suppress RedundantCondition
                  * @psalm-suppress ArgumentTypeCoercion
                  */
-                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
+                $this->checkAccess($this->context->user(), $this->controller->permissions('bean', self::$permissions), $bean);
                 if (method_exists($class, 'add'))
                 {
                     /** @psalm-suppress InvalidStringClass */
@@ -82,7 +82,7 @@
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
                 [$bean, $id, $field, $more] = $this->context->restcheck(3);
-                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table, $field);
+                $this->checkAccess($this->context->user(), $this->controller->permissions('bean', self::$permissions), $bean, $field);
                 $bn = $this->context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
                 $bn->$field = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
@@ -94,7 +94,7 @@
                 break;
 
             case 'DELETE': // /ajax/bean/KIND/ID/
-                $this->checkAccess($this->context->user(), $this->controller->permissions('table', self::$permissions), $table);
+                $this->checkAccess($this->context->user(), $this->controller->permissions('bean', self::$permissions), $bean);
                 $id = $rest[2] ?? 0; // get the id from the URL
                 if ($id <= 0)
                 {

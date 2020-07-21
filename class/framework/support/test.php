@@ -205,7 +205,7 @@
  */
         public function file(Context $context) : string
         {
-            $tester = new \Framework\Support\TestSupport($context, 'file');
+            // $tester = new \Framework\Support\TestSupport($context, 'file');
             $context->local()->addval('op', 'file');
             return '@devel/devel.twig';
         }
