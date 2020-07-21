@@ -33,7 +33,7 @@
         final public function handle() : void
         {
             $rest = $this->context->rest();
-            
+
             [1 => $bean, 2 => $field] = $rest;
             $this->checkAccess($this->context->user(), $this->controller->permissions('hints'), $bean, $field);
             $obj = TRUE;
