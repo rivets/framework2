@@ -25,7 +25,7 @@
 /**
  * Constructor
  */
-        public function __construct(Context $context, Ajax $controller)
+        public function __construct(Context $context, \Support\Ajax $controller)
         {
             $this->context = $context;
             $this->controller = $controller;
