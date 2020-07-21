@@ -10,7 +10,6 @@
  */
     namespace Framework;
 
-    use \Framework\Exception;
     use \Support\Context;
 /**
  * Handle Ajax operations in this class
