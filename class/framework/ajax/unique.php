@@ -7,6 +7,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
 /**
  * Parsely unique check that does require a login.
  */

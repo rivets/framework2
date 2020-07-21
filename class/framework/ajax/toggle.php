@@ -7,6 +7,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
 /**
  * Toggle a flag field in a bean

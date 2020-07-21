@@ -7,6 +7,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
 /**
  * Parsely unique check that does not need a login.
  */
@@ -24,7 +25,7 @@
  *
  * @return array
  */
-        public function requires()
+        final public function requires()
         {
             return [FALSE, []]; // does not require login
         }
@@ -37,7 +38,7 @@
  *
  * @return void
  */
-        private function uniquenl() : void
+        final public function handle() : void
         {
             [$bean, $field, $value] = $this->context->restcheck(3);
             $this->access->beanCheck($this->controller->permissions('uniquenl'), $bean, $field);
