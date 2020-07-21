@@ -33,7 +33,7 @@
             'tablesearch',
             'toggle',
             'unique',
-            'uniquenl', 
+            'uniquenl',
         ];
 /*
  * Return the audit requirements array from the child
@@ -66,7 +66,7 @@
         {
             $rest = $context->rest();
             $op = $rest[0];
-            $class = "\\Ajax\\".$op;;
+            $class = "\\Ajax\\".$op;
             if (in_array($op, self::$restops))
             { # a Framework Ajax operation
                 $class = '\Framework'.$class;
