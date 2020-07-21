@@ -17,7 +17,7 @@
  * @var array
  */
         private static $permissions = [
-            FW::USER => [ FALSE, [], ['name'] ],
+            FW::USER => [ FALSE, [], ['login'] ],
         ];
 /**
  * Return permission requirements
