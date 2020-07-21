@@ -15,7 +15,7 @@
 /**
  * Handle Ajax operations in this class
  */
-    class Ajax
+    abstract class Ajax
     {
         use \Framework\Utility\Singleton;
 /**
@@ -35,6 +35,24 @@
             'unique',        //=> [TRUE,   []], // test if a bean field value is unique
             'uniquenl',      //=> [FALSE,  []], // unique test with no login - used at least by user registration form
         ];
+/**
+ * Return the audit requirements array form the child
+ *
+ * @return array<string>
+ */
+        final public function audit()
+        {
+            return static::$audit;
+        }
+/**
+ * Return the permission requirements array form the child
+ *
+ * @return array<string>
+ */
+        final public function permissions()
+        {
+            return static::$permissions;
+        }
 /**
  * Handle AJAX operations
  *
@@ -60,7 +78,7 @@
                 }
                 try
                 {
-                    (new $class($context))->handle($context);
+                    (new $class($context, $this))->handle($context);
                 }
                 catch(Exception\Forbidden $e)
                 {

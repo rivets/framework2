@@ -26,7 +26,7 @@
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle(Context $context, Ajax $controller) : void
         {
             $beans = $this->access->findRow($context, 'beanperms');
             $rest = $context->rest();
@@ -35,7 +35,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
-            $log = in_array($bean, static::$audit);
+            $log = in_array($bean, $controller->audit());
             $method = $context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
