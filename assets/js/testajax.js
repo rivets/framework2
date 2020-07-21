@@ -6,7 +6,7 @@
             var rdata = '';
             var rcode = 200;
             data.async = true;
-            $.ajax(base+'/ajax/'+url, data).done(cdone).cfail(fail)
+            $.ajax(base+'/ajax/'+url, data).done(cdone).fail(cfail)
             return [rcode, rdata];
         },
         testbean: function (){
