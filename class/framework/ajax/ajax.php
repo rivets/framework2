@@ -122,6 +122,28 @@
             }
         }
 /**
+ * Check URL string for n parameter values and pull them out
+ *
+ * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
+ *
+ * @param int   $count  The number to check for
+ *
+ * @throws \Framework\Exception\ParameterCount
+ *
+ * @return array The parameter values in an array indexed from 0 with last parameter, anything left in an array
+ */
+        protected function restcheck(int $count) : array
+        {
+            $rest = $this->context($rest);
+            if (count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
+            {
+                throw new \Framework\Exception\ParameterCount();
+            }
+            $res = array_slice($this->reqrest, 1, $count);
+            $res[] = array_slice($this->reqrest, $count+1); // return anything left - there might be optional parameters.
+            return $res;
+        }
+/**
  * Return permission requirements
  *
  * @return array
