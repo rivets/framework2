@@ -29,7 +29,7 @@
         {
             $this->context = $context;
             $this->controller = $controller;
-            $this->checkPerms($context->user, $this->requires());
+            $this->checkPerms($context->user(), $this->requires());
         }
 /**
  * Check that a bean has a field. Do not allow id field to be manipulated.
