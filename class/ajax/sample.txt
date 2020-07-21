@@ -16,7 +16,7 @@
     class Sample extends Ajax
     {
 /**
- * Return permission requirements. The version in the base class requires logins and adds nothign else.
+ * Return permission requirements. The version in the base class requires logins and adds nothing else.
  * If that is what you need then you can remove this method. This function is called from the base
  * class constructor when it does some permission checking.
  *
