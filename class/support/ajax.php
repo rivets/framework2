@@ -24,7 +24,7 @@
 /**
  * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $fwPermissions = [
+        protected static $fwPermissions = [
             'bean'          => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
             'hints'         => [], // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
             'paging'        => [], // ['bean' => [TRUE, [['ContextName', 'RoleName']]]] array of roles required in form [['context name', 'role name']...] (can be empty)
@@ -35,17 +35,11 @@
             'toggle'        => [], // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
             'unique'        => [],
             'uniquenl'      => [], // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
-            'audit'         => [], // ['bean'..... A list of bean names]
         ];
-/**
- * Constructor
- *
- * @param array $permissions    An array of permission sdata - see above;
- */
-        public function __construct(array $fwPermissions)
-        {
-            parent::__construct($fwPermissions);
-        }
+ /**
+ * @var array<string> A list of bean names for which logging is required
+ */       
+        protected static $log = []; // ['bean'..... A list of bean names]
 /**
  * Handle AJAX operations
  *

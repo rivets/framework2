@@ -20,13 +20,11 @@
  *
  * @param \Support\Context    $context The context object
  *
- * @throws \Framework\Exception\BadOperation
+ * @throws BadOperation
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
- * @psalm-suppress UnusedMethod
- * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final public function handle(Context $context) : void
         {
@@ -37,7 +35,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Permission denied: '.$bean);
             }
-            $log = in_array($bean, self::$audit);
+            $log = in_array($bean, static::$audit);
             $method = $context->web()->method();
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
