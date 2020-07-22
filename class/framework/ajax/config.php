@@ -121,14 +121,11 @@
             [$name] = $this->restCheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             $method = strtolower($this->context->web()->method());
-            if (method_exists(self::class, $method))
-            {
-                $this->{$method}($v, $name);
-            }
-            else
+            if (!method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
+            $this->{$method}($v, $name);
         }
     }
 ?>
