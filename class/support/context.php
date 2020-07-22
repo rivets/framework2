@@ -14,6 +14,42 @@
     final class Context extends \Framework\Context
     {
 /**
+ * First some functions that are useful for access checking etc. Some of these are used by the Framework itself
+ */
+/**
+ * Return TRUE if the user in the parameter is the same as the current user
+ *
+ * @param \RedBeanPHP\OODBBean    $user
+ *
+ * @return bool
+ * @psalm-suppress PossiblyUnusedMethod
+ */
+        public function sameUser(\RedBeanPHP\OODBBean $user) : bool
+        {
+             /** @psalm-suppress PossiblyNullReference */
+            return $this->hasuser() && $this->user()->equals($user);
+        }
+/**
+ * Do we have a logged in admin user?
+ *
+ * @return bool
+ */
+        public function hasAdmin() : bool
+        {
+            /** @psalm-suppress PossiblyNullReference */
+            return $this->hasuser() && $this->user()->isadmin();
+        }
+/**
+ * Do we have a logged in developer user?
+ *
+ * @return bool
+ */
+        public function hasDeveloper() : bool
+        {
+            /** @psalm-suppress PossiblyNullReference */
+            return $this->hasuser() && $this->user()->isdeveloper();
+        }
+/**
  * Any functions that you need to be available through context.
  */
     }

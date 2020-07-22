@@ -83,53 +83,20 @@
             return $this->luser;
         }
 /**
- * Return TRUE if the user in the parameter is the same as the current user
- *
- * @param \RedBeanPHP\OODBBean    $user
- *
- * @return bool
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public function sameuser(\RedBeanPHP\OODBBean $user) : bool
-        {
-             /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->equals($user);
-        }
-/**
  * Do we have a logged in user?
  *
  * @return bool
  */
-        public function hasuser() : bool
+        public function hasUser() : bool
         {
             return is_object($this->luser);
-        }
-/**
- * Do we have a logged in admin user?
- *
- * @return bool
- */
-        public function hasadmin() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isadmin();
-        }
-/**
- * Do we have a logged in developer user?
- *
- * @return bool
- */
-        public function hasdeveloper() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isdeveloper();
         }
 /**
  * Find out if this was validated using a token, if so, it is coming from a device not a browser
  *
  * @return bool
  */
-        public function hastoken() : bool
+        public function hasToken() : bool
         {
             return $this->tokauth;
         }
@@ -237,27 +204,6 @@
                 $this->contexts[$name] = $bn;
             }
             return $this->contexts[$name];
-        }
-/**
- * Check to see if there is a session and return a specific value from it if it exists
- *
- * @param string  $var    The variable name
- * @param bool    $fail   If TRUE then exit with an error return if the value  does not exist
- *
- * @return mixed
- */
-        public function sessioncheck(string $var)
-        {
-            if (isset($_COOKIE[Config::SESSIONNAME]))
-            {
-                /** @psalm-suppress UnusedFunctionCall */
-                session_start(['name' => Config::SESSIONNAME]);
-                if (isset($_SESSION[$var]))
-                {
-                    return $_SESSION[$var];
-                }
-            }
-            return NULL;
         }
 /**
  * Generate a Location header for within this site
@@ -421,7 +367,15 @@
  */
         public function setup() : \Framework\Context
         {
-            $this->luser = $this->sessioncheck('user'); # see if there is a user variable in the session....
+            if (isset($_COOKIE[Config::SESSIONNAME]))
+            {# see if there is a user variable in the session....
+                /** @psalm-suppress UnusedFunctionCall */
+                session_start(['name' => Config::SESSIONNAME]);
+                if (isset($_SESSION['user']))
+                {
+                    $this->luser =  $_SESSION['user'];
+                }
+            }
             $this->mtoken();
 /**
  * Check to see if non-admin users are being excluded

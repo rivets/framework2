@@ -83,9 +83,9 @@
                         '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
                     if (!$match ||                                          // User does not have all the required roles
-                        ($this->bean->mobileonly && !$context->hastoken())) // not mobile and logged in
+                        ($this->bean->mobileonly && !$context->hasToken())) // not mobile and logged in
                     {
-                        $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
+                        $context->web()->sendString($context->local()->getRender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                         exit;
                     }
                 }
