@@ -20,7 +20,7 @@
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.append('<p>Read config item OK '+data+'</p>');
                     testing.makecall('config/testconfig', { method: putorpatch, data: {value: 345} }, function(data){
-                        t.append('<p>Update config item OK '+data+'</p>');
+                        t.append('<p>Update config item OK returns '+data+'</p>');
                         testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                             if (data == 345)
                             {
