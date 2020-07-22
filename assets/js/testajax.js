@@ -96,19 +96,18 @@
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
                 t.append('<p>Toggle OK : '+data+'</p>');
                 tstate = data;
-            }, function(jx) {
-                t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
-            });
-            testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
-
-                if (tstate != data)
-                {
-                    t.append('<p>Toggle OK : '+data+'</p>');
-                }
-                else
-                {
-                    t.append('<p>Toggle fails, expected '+tstate+' got '+data+'</p>');
-                }
+                testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
+                    if (tstate != data)
+                    {
+                        t.append('<p>Toggle OK : '+data+'</p>');
+                    }
+                    else
+                    {
+                        t.append('<p>Toggle fails, have '+tstate+' got '+data+'</p>');
+                    }
+                }, function(jx) {
+                    t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
+                });
             }, function(jx) {
                 t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
             });
