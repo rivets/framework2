@@ -31,6 +31,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function post(?\RedBeanPHP\OODBBean $v, string $name) : void
         {
@@ -52,6 +53,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function patch(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -79,6 +81,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function delete(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -95,6 +98,7 @@
  *
  * @return void
  * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function get(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -111,8 +115,6 @@
  * @throws \Framework\Exception\BadValue
  *
  * @return void
- * @psalm-suppress UnusedMethod
- * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         final public function handle() : void
         {
