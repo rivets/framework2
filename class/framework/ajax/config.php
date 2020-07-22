@@ -60,26 +60,21 @@
                     throw new BadValue('No such item');
                 }
                 $fdt = $this->context->formdata('post');
-                if ($fdt->exists('value'))
+                foreach (['value', 'type', 'name'] as $fld)
                 {
-                    $old = $v->value;
-                    $v->value = $fdt->mustFetch('value');
+                    if ($fdt->exists($fld))
+                    {
+                        $old = $v->{$fld};
+                        $v->{$fld} = $fdt->mustFetch($fld);
+                        break;
+                    }
                 }
-                elseif ($fdt->exists('type'))
-                if ($fdt->exists('value'))
-                {
-                    $old = $v->type;
-                    $v->type = $fdt->mustFetch('type');
-                }
-                else
+                if (!isset($old))
                 {
                     throw new BadValue('Bad field name');
                 }
                 R::store($v);
-                if (isset($old))
-                {
-                    echo $old;
-                }
+                echo $old;
                 break;
 
             case 'DELETE':
