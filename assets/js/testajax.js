@@ -49,9 +49,13 @@
             bootbox.alert('Tablecheck operation test complete');
         },
     
-        testablesearch: function (){
+        testtablesearch: function (){
             let t = $(this).parent();
-            bootbox.alert('Tablesearch operation test complete');
+            res = testing.makecall('tablesearch/'+userbean+'/login/1?value='+goodlogin, { method: 'GET' }, function(data){
+                t.append('<p>Search for login OK : '+data+'</p>');
+            }, function(jx) {
+                t.append('<p>Search for login Fails- '+jx.status+'</p>'+js.responseText);
+            });
         },
     
         testoggle : function(){
