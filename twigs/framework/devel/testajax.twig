@@ -16,6 +16,8 @@
 {% block setup %}
     let goodlogin = '{{context.user.login}}';
     let userbean = '{{constant('Config\\Framework::USER')}}';
+    let testtable = '{{constant('Config\\Framework::TEST')}}';
+    let testbeanid = {{bean.getID}};
 {% endblock setup %}
 
 {% block onload %}
