@@ -92,8 +92,23 @@
     
         testtoggle : function(){
             let t = $(this).parent();
+            let tstate = 2;
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
-                t.append('<p>Toggle OK : '+data.length+'</p>');
+                t.append('<p>Toggle OK : '+data+'</p>');
+                tstate = data;
+            }, function(jx) {
+                t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
+            });
+            testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
+
+                if (tstate != data)
+                {
+                    t.append('<p>Toggle OK : '+data+'</p>');
+                }
+                else
+                {
+                    t.append('<p>Toggle fails, expected '+tstate+' got '+data+'</p>');
+                }
             }, function(jx) {
                 t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
             });
