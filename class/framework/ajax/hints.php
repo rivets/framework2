@@ -42,16 +42,7 @@
             $rest = $this->context->rest();
             [1 => $bean, 2 => $field] = $rest;
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
-            $obj = TRUE;
-            if (isset($rest[3]))
-            {
-                switch ($rest[3])
-                {
-                case 'text':
-                    $obj = FALSE;
-                    break;
-                }
-            }
+            $obj = ($rest[3] ?? '') != 'text'; // if there is rest[3] and itr has teh valyue text then we don't want an object
             $this->fieldExists($bean, $field); // checks field exists - this implies the the field value is not dangerous to pass directly into the query,
             $ofield = $field;
             $field = '`'.$field.'`';
