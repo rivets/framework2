@@ -60,11 +60,11 @@
                 $u->joined = $now;
                 \R::store($u);
                 $u->setpw($pw); // set the password
-                if ($fdt->post('admin', 0) == 1)
+                if ($fdt->fetch('admin', 0) == 1)
                 {
                     $u->addrole(FW::FWCONTEXT, FW::ADMINROLE, '', $now);
                 }
-                if ($fdt->post('devel', 0) == 1)
+                if ($fdt->fetch('devel', 0) == 1)
                 {
                     $u->addrole(FW::FWCONTEXT, FW::DEVELROLE, '', $now);
                 }
