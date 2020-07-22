@@ -14,6 +14,12 @@
     class Hints extends Ajax
     {
 /**
+ * @var array
+ */
+        private static $permissions = [
+            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['f1'] ], // table does not always exist
+        ];
+/**
  * Return permission requirements
  *
  * @return array
@@ -33,9 +39,8 @@
         final public function handle() : void
         {
             $rest = $this->context->rest();
-
             [1 => $bean, 2 => $field] = $rest;
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class), $bean, $field);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
             $obj = TRUE;
             if (isset($rest[3]))
             {

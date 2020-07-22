@@ -66,7 +66,23 @@
     
         testhints: function (){
             let t = $(this).parent();
-            bootbox.alert('Hints operation test complete');
+            testing.makecall('hints/'+testtable+'/tog/text?search=str', { method: 'GET' }, function(data){
+                t.append('<p>Hints OK: '+data.length+'</p>');
+            }, function(jx) {
+                t.append('<p>Hints failed - '+jx.status+' '+jx.responseText+'</p>');
+            });
+            testing.makecall('hints/'+testtable+'/tog/text', { method: 'GET' }, function(data){
+                t.append('<p>Toggle non-hintable field FAILS returns 200: '+data.length+'</p>');
+            }, function(jx) {
+                if (jx.status == 403)
+                {
+                    t.append('<p>Toggle non-hintable field OK - '+jx.status+' '+jx.responseText+'</p>');
+                }
+                else
+                {
+                    t.append('<p>Toggle non-hintable field fails - '+jx.status+' '+jx.responseText+'</p>');
+                }
+            });
         },
 
         testpaging: function (){
