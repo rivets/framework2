@@ -7,6 +7,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
     use \Framework\Exception\Forbidden;
 /**
  * Get search hints for beans
