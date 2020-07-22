@@ -40,86 +40,117 @@
         protected $ons          = [];
 /** @var array<\Framework\FormData\Base>        FormData handler cache */
         protected $getters      = [];
-/*
- ***************************************
- * URL and REST support functions
- ***************************************
- */
 /**
- * Return the main action part of the URL as set by .htaccess
- *
- * @return string
+ * use __call to reduce the number of defined methods
  */
-        public function action()
+        public function __call(string $name, array $args)
         {
-            return $this->reqaction;
+            switch (strlower($name))
+            {
+            case 'action':
+                return $this->reqaction;
+            case 'rest':
+                return $this->reqrest;
+            case 'user':
+                return $this->luser;
+            case 'hasuser':
+                return is_object($this->luser);
+            case 'hasadmin':
+                return $this->hasuser() && $this->user()->isadmin();
+            case 'hasdeveloper':
+                return $this->hasuser() && $this->user()->isdeveloper();
+            case 'hastoken':
+                return $this->tokauth;
+            case 'local':
+                return \Framework\Local::getinstance();
+            case 'web':
+                return \Framework\Web\Web::getinstance();
+            case 'utcnow':
+                /** @psalm-suppress InvalidOperand */
+                return \R::isodatetime(time() - date('Z'));
+            }
+            throw \Framework\Exception\InternalError('Bad context call : '.$name);
         }
-/**
- * Return the part of the URL after the main action as set by .htaccess
- *
- * See setup() below for how the URL is processed to create the result array.
- *
- * Note that if there is nothing after the action in the URL this function returns
- * an array with a single element containing an empty string.
- *
- * @return array<string>
- */
-        public function rest()
-        {
-            return $this->reqrest;
-        }
-/**
- ***************************************
- * User related functions
- ***************************************
- */
-/**
- * Return the current logged in user if any
- *
- * @return ?\RedBeanPHP\OODBBean
- */
-        public function user() : ?\RedBeanPHP\OODBBean
-        {
-            return $this->luser;
-        }
-/**
- * Do we have a logged in user?
- *
- * @return bool
- */
-        public function hasUser() : bool
-        {
-            return is_object($this->luser);
-        }
-/**
- * Do we have a logged in admin user?
- *
- * @return bool
- */
-        public function hasAdmin() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isadmin();
-        }
-/**
- * Do we have a logged in developer user?
- *
- * @return bool
- */
-        public function hasDeveloper() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isdeveloper();
-        }
-/**
- * Find out if this was validated using a token, if so, it is coming from a device not a browser
- *
- * @return bool
- */
-        public function hasToken() : bool
-        {
-            return $this->tokauth;
-        }
+///*
+// ***************************************
+// * URL and REST support functions
+// ***************************************
+// */
+///**
+// * Return the main action part of the URL as set by .htaccess
+// *
+// * @return string
+// */
+//        public function action()
+//        {
+//            return $this->reqaction;
+//        }
+///**
+// * Return the part of the URL after the main action as set by .htaccess
+// *
+// * See setup() below for how the URL is processed to create the result array.
+// *
+// * Note that if there is nothing after the action in the URL this function returns
+// * an array with a single element containing an empty string.
+// *
+// * @return array<string>
+// */
+//        public function rest()
+//        {
+//            return $this->reqrest;
+//        }
+///**
+// ***************************************
+// * User related functions
+// ***************************************
+// */
+///**
+// * Return the current logged in user if any
+// *
+// * @return ?\RedBeanPHP\OODBBean
+// */
+//        public function user() : ?\RedBeanPHP\OODBBean
+//        {
+//            return $this->luser;
+//        }
+///**
+// * Do we have a logged in user?
+// *
+// * @return bool
+// */
+//        public function hasUser() : bool
+//        {
+//            return is_object($this->luser);
+//        }
+///**
+// * Do we have a logged in admin user?
+// *
+// * @return bool
+// */
+//        public function hasAdmin() : bool
+//        {
+//            /** @psalm-suppress PossiblyNullReference */
+//            return $this->hasuser() && $this->user()->isadmin();
+//        }
+///**
+// * Do we have a logged in developer user?
+// *
+// * @return bool
+// */
+//        public function hasDeveloper() : bool
+//        {
+//            /** @psalm-suppress PossiblyNullReference */
+//            return $this->hasuser() && $this->user()->isdeveloper();
+//        }
+///**
+// * Find out if this was validated using a token, if so, it is coming from a device not a browser
+// *
+// * @return bool
+// */
+//        public function hasToken() : bool
+//        {
+//            return $this->tokauth;
+//        }
 /*
  ***************************************
  * Miscellaneous utility functions
@@ -265,19 +296,19 @@
             }
             return $foo;
         }
-/**
- * Return the local object
- *
- * @psalm-suppress MoreSpecificReturnType
- *
- * @return \Framework\Local
- * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType
- */
-        public function local() : \Framework\Local
-        {
-            return \Framework\Local::getinstance();
-        }
+///**
+// * Return the local object
+// *
+// * @psalm-suppress MoreSpecificReturnType
+// *
+// * @return \Framework\Local
+// * @psalm-suppress LessSpecificReturnStatement
+// * @psalm-suppress MoreSpecificReturnType
+// */
+//        public function local() : \Framework\Local
+//        {
+//            return \Framework\Local::getinstance();
+//        }
 /**
  * Return a Formdata object
  *
@@ -300,26 +331,26 @@
             }
             return $this->getters[$which];
         }
-/**
- * Return the Web object
- *
- * @return \Framework\Web\Web
- * @psalm-suppress LessSpecificReturnStatement
- * @psalm-suppress MoreSpecificReturnType
- */
-        public function web() : \Framework\Web\Web
-        {
-            return \Framework\Web\Web::getinstance();
-        }
-/**
- * Return an iso formatted time for NOW  in UTC
- *
- * @return string
- */
-        public function utcnow() : string
-        { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(time() - date('Z'));
-        }
+///**
+// * Return the Web object
+// *
+// * @return \Framework\Web\Web
+// * @psalm-suppress LessSpecificReturnStatement
+// * @psalm-suppress MoreSpecificReturnType
+// */
+//        public function web() : \Framework\Web\Web
+//        {
+//            return \Framework\Web\Web::getinstance();
+//        }
+///**
+// * Return an iso formatted time for NOW  in UTC
+// *
+// * @return string
+// */
+//        public function utcnow() : string
+//        { /** @psalm-suppress InvalidOperand */
+//            return \R::isodatetime(time() - date('Z'));
+//        }
 /**
  * Return an iso formatted time in UTC
  *
