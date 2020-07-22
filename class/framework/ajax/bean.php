@@ -53,7 +53,7 @@
                 throw new BadOperation('Cannot add a '.$bean);
             }
             /** @psalm-suppress InvalidStringClass */
-            $id = $class::add($this->context)->getID();
+            $id = $this->class::add($this->context)->getID();
             if ($log)
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
@@ -148,7 +148,7 @@
             if (method_exists($this->class, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
-                $class::canAjaxBean($this->context, $method);
+                $this->class::canAjaxBean($this->context, $method);
             }
             $this->{$method}($bean, $rest, $this->controller->log($bean));
         }
