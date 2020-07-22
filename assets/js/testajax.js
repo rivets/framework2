@@ -15,7 +15,7 @@
     
         testconfig : function (){
             let t = $(this).parent();
-            testing.makecall('config/testconfig?value=123&type=js', { method: 'POST' }, function(){
+            testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'js'} }, function(){
                 t.append('<p>Create config item OK</p>');
             }, function(jx){
                 t.append('<p>Create config item fails - '+jx.status+' '+jx.responseText+'</p>');
@@ -25,7 +25,7 @@
             }, function(jx){
                 t.append('<p>Read config item fails - '+jx.status+' '+jx.responseText+'</p>');
             });
-            testing.makecall('config/testconfig?value=234', { method: putporpatch }, function(){
+            testing.makecall('config/testconfig?value=234', { method: putporpatch, data: {value: 123} }, function(){
                 t.append('<p>Update config item OK '+data.length+'</p>');
             }, function(jx){
                 t.append('<p>Update config item fails - '+jx.status+' '+jx.responseText+'</p>');

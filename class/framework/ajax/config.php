@@ -59,7 +59,20 @@
                 {
                     throw new BadValue('No such item');
                 }
-                $v->value = $this->context->formdata('put')->mustFetch('value');
+                $fdt = $this->context->formdata('post');
+                if ($fdt->exists('value'))
+                {
+                    $v->value = $fdt->mustFetch('value');
+                }
+                elseif ($fdt->exists('type'))
+                if ($fdt->exists('value'))
+                {
+                    $v->type = $fdt->mustFetch('type');
+                }
+                else
+                {
+                    throw new BadValue('Bad field name');
+                }
                 R::store($v);
                 break;
 
