@@ -30,26 +30,6 @@
             return $this->hasuser() && $this->user()->equals($user);
         }
 /**
- * Do we have a logged in admin user?
- *
- * @return bool
- */
-        public function hasAdmin() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isadmin();
-        }
-/**
- * Do we have a logged in developer user?
- *
- * @return bool
- */
-        public function hasDeveloper() : bool
-        {
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isdeveloper();
-        }
-/**
  * Any functions that you need to be available through context.
  */
     }

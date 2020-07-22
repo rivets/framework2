@@ -92,6 +92,26 @@
             return is_object($this->luser);
         }
 /**
+ * Do we have a logged in admin user?
+ *
+ * @return bool
+ */
+        public function hasAdmin() : bool
+        {
+            /** @psalm-suppress PossiblyNullReference */
+            return $this->hasuser() && $this->user()->isadmin();
+        }
+/**
+ * Do we have a logged in developer user?
+ *
+ * @return bool
+ */
+        public function hasDeveloper() : bool
+        {
+            /** @psalm-suppress PossiblyNullReference */
+            return $this->hasuser() && $this->user()->isdeveloper();
+        }
+/**
  * Find out if this was validated using a token, if so, it is coming from a device not a browser
  *
  * @return bool
