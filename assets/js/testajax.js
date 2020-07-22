@@ -15,7 +15,7 @@
     
         testconfig : function (){
             let t = $(this).parent();
-            testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'js'} }, function(){
+            testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'string'} }, function(){
                 t.append('<p>Create config item OK</p>');
                 testing.makecall('config/testconfig', { method: 'GET' }, function(){
                     t.append('<p>Read config item OK '+data.length+'</p>');
