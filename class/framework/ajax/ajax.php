@@ -34,7 +34,7 @@
             {
                 throw new Forbidden('Access denied');
             }
-            $this->checkPerms($context->user(), $this->requires()[1]);
+            $this->checkPerms($context->user(), $perms);
         }
 /**
  * Check that a bean has a field. Do not allow id field to be manipulated.
