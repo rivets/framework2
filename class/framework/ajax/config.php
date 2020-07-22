@@ -64,17 +64,10 @@
                 {
                     if ($fdt->exists($fld))
                     {
-                        $old = $v->{$fld};
                         $v->{$fld} = $fdt->mustFetch($fld);
-                        break;
                     }
                 }
-                if (!isset($old))
-                {
-                    throw new BadValue('Bad field name');
-                }
                 R::store($v);
-                echo $old;
                 break;
 
             case 'DELETE':
