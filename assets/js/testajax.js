@@ -17,12 +17,12 @@
             let t = $(this).parent();
             testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'string'} }, function(){
                 t.append('<p>Create config item OK</p>');
-                testing.makecall('config/testconfig', { method: 'GET' }, function(){
+                testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.append('<p>Read config item OK '+data.length+'</p>');
-                    testing.makecall('config/testconfig?value=234', { method: putorpatch, data: {value: 123} }, function(){
-                        t.append('<p>Update config item OK '+data.length+'</p>');
+                    testing.makecall('config/testconfig?value=234', { method: putorpatch, data: {value: 123} }, function(data){
+                        t.append('<p>Update config item OK</p>');
                         testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
-                            t.append('<p>Delete config item OK '+data.length+'</p>');
+                            t.append('<p>Delete config item OK</p>');
                         }, function(jx){
                             t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
                         });
