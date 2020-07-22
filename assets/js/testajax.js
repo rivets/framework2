@@ -54,13 +54,13 @@
                 }
                 else
                 {
-                    t.append('<p>Existing table fails - '+jx.status+'</p>'+jx.responseText);
+                    t.append('<p>Existing table fails - '+jx.status+' '+jx.responseText+'</p>');
                 }
             });
             testing.makecall('tablecheck/'+testtable+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent table OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent table fails - '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Non-existent table fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
     
@@ -69,16 +69,28 @@
             testing.makecall('tablesearch/'+testtable+'/f1/4?value=string', { method: 'GET' }, function(data){
                 t.append('<p>Search for string OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Search for string Fails- '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Search for string Fails- '+jx.status+' '+jx.responseText+'</p>');
             });
             testing.makecall('tablesearch/'+testtable+'/f1/4?value=abcdefg', { method: 'GET' }, function(data){
                 t.append('<p>Search for non-existent value OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Search for non-existent value Fails - '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Search for non-existent value Fails - '+jx.status+' '+jx.responseText+'</p>');
+            });
+            testing.makecall('tablesearch/'+testtable+'/tog/1?value=1', { method: 'GET' }, function(data){
+                t.append('<p>Search on no-access field fails with 200 : '+data.length+'</p>');
+            }, function(jx) {
+                if (jx.status == 403)
+                {
+                   t.append('<p>Search on no-access field OK - 403</p>');
+                }
+                else
+                {
+                    t.append('<p>Search on no-access field fails- '+jx.status+' '+jx.responseText+'</p>');
+                }
             });
         },
     
-        testoggle : function(){
+        testtoggle : function(){
             let t = $(this).parent();
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
                 t.append('<p>Toggle OK : '+data.length+'</p>');
@@ -88,7 +100,7 @@
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/f1', { method: 'POST' }, function(data){
                 t.append('<p>Toggle non-toggleable field OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Toggle non-toggleable field Fails - '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Toggle non-toggleable field Fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
     
@@ -103,13 +115,13 @@
                 }
                 else
                 {
-                    t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
+                    t.append('<p>Existing login fails - '+jx.status+' '+jx.responseText+'</p>');
                 }
             });
             testing.makecall('unique/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent login OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
     
@@ -124,13 +136,13 @@
                 }
                 else
                 {
-                    t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
+                    t.append('<p>Existing login fails - '+jx.status+' '+jx.responseText+'</p>');
                 }
             });
             res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent login OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
     };
