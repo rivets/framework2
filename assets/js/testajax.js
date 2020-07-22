@@ -59,9 +59,9 @@
                 }
             });
             res = testing.makecall('tablecheck/fwconfig'+'XXXXX', { method: 'GET' }, function(){
-                t.append('<p>Non-existent login OK</p>');
+                t.append('<p>Non-existent table OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Non-existent table fails - '+jx.status+'</p>'+js.responseText);
             });
         },
     
