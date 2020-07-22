@@ -59,7 +59,7 @@
                 {
                     throw new BadValue('No such item');
                 }
-                $fdt = $this->context->formdata('post');
+                $fdt = $this->context->formdata('put');
                 foreach (['value', 'type', 'name'] as $fld)
                 {
                     if ($fdt->exists($fld))
