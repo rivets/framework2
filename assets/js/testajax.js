@@ -19,12 +19,29 @@
                 t.append('<p>Create config item OK</p>');
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.append('<p>Read config item OK '+data+'</p>');
-                    testing.makecall('config/testconfig', { method: putorpatch, data: {value: 123} }, function(data){
+                    testing.makecall('config/testconfig', { method: putorpatch, data: {value: 345} }, function(data){
                         t.append('<p>Update config item OK '+data+'</p>');
-                        testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
-                            t.append('<p>Delete config item OK</p>');
+                        testing.makecall('config/testconfig', { method: 'GET' }, function(data){
+                            if (data == 345)
+                            {
+                                t.append('<p>Read config item OK '+data+'</p>');
+                            }
+                            else
+                            {
+                                t.append('<p>Read config item unexpected result '+data+'</p>');
+                            }
+                            testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
+                                t.append('<p>Delete config item OK</p>');
+                            }, function(jx){
+                                t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                            });
                         }, function(jx){
-                            t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                            t.append('<p>Read config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                            testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
+                                t.append('<p>Delete config item OK</p>');
+                            }, function(jx){
+                                t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                            });
                         });
                     }, function(jx){
                         t.append('<p>Update config item fails - '+jx.status+' '+jx.responseText+'</p>');
