@@ -75,6 +75,17 @@
             $this->context->web()->sendJSON($res);
         }
 /**
+ * Map put onto patch
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function put(?\RedBeanPHP\OODBBean $v) : void
+        {
+            $this->patch($v);
+        }
+/**
  * Handle DELETE
  *
  * @param ?\RedBeanPHP\OODBBean $v

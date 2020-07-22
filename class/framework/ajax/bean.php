@@ -30,6 +30,94 @@
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
+ *  make a new one /ajax/bean/KIND/
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function post(string $bean, array $rest, bool $log) : void
+        {
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
+/*
+ * @psalm-suppress RedundantCondition
+ * @psalm-suppress ArgumentTypeCoercion
+ */
+            if (!method_exists($class, 'add'))
+            { // operation not supported
+                throw new BadOperation('Cannot add a '.$bean);
+            }
+            /** @psalm-suppress InvalidStringClass */
+            $id = $class::add($this->context)->getID();
+            if ($log)
+            {
+                BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
+            }
+            echo $id;
+        }
+/**
+ * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
+ * 
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function patch(string $bean, array $rest, bool $log) : void
+        {
+            [$id, $field] = $rest;
+            $more = $rest[2] ?? NULL;
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
+            $bn = $this->context->load($bean, (int) $id, TRUE);
+            $old = $bn->{$field};
+            $bn->{$field} = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
+            R::store($bn);
+            if ($log)
+            {
+                BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
+            }
+        }
+/**
+ * Map put onto patch
+ * 
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function put(string $bean, array $rest, bool $log) : void
+        {
+            $this->patch($bean, $log);
+        }
+/**
+ * DELETE /ajax/bean/KIND/ID/
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function delete(string $bean, array $rest, bool $log) : void
+        {
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
+            $id = $rest[0] ?? 0; // get the id from the URL
+            if ($id <= 0)
+            {
+                throw new \Framework\Exception\BadValue('Missing value');
+            }
+            $bn = $this->context->load($bean, (int) $id);
+            if ($log)
+            {
+                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
+            }
+            /**
+             * @psalm-suppress RedundantCondition
+             * @psalm-suppress ArgumentTypeCoercion
+             */
+            if (method_exists($class, 'delete')) // call the clean-up function if it has one
+            {
+                $bn->delete($$this->context);
+            }
+            R::trash($bn);
+        }
+/**
  * Carry out operations on beans
  *
  * @throws BadOperation
@@ -40,10 +128,12 @@
  */
         final public function handle() : void
         {
-            $rest = $this->context->rest();
-            $bean = $rest[1];
-            $log = $this->controller->log($bean);
-            $method = $this->context->web()->method();
+            [$bean, $rest] = $this->restcheck(1);
+            $method = strtolower($this->context->web()->method());
+            if (!method_exists(self::class, $method))
+            {
+                throw new \Framework\Exception\BadOperation($method.' is not supported');
+            }
             /** @psalm-suppress UndefinedConstant */
             $class = REDBEAN_MODEL_PREFIX.$bean;
             /**
@@ -55,71 +145,7 @@
                 /** @psalm-suppress InvalidStringClass */
                 $class::canAjaxBean($this->context, $method);
             }
-            switch ($method)
-            {
-            case 'POST': // make a new one /ajax/bean/KIND/
-                /**
-                 * @psalm-suppress RedundantCondition
-                 * @psalm-suppress ArgumentTypeCoercion
-                 */
-                $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
-                if (method_exists($class, 'add'))
-                {
-                    /** @psalm-suppress InvalidStringClass */
-                    $id = $class::add($this->context)->getID();
-                    if ($log)
-                    {
-                        BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
-                    }
-                    echo $id;
-                }
-                else
-                { // operation not supported
-                    throw new BadOperation('Cannot add a '.$bean);
-                }
-                break;
-
-            case 'PATCH':
-            case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
-                [$bean, $id, $field, $more] = $this->restCheck(3);
-                $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
-                $bn = $this->context->load($bean, (int) $id, TRUE);
-                $old = $bn->$field;
-                $bn->$field = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
-                R::store($bn);
-                if ($log)
-                {
-                    BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
-                }
-                break;
-
-            case 'DELETE': // /ajax/bean/KIND/ID/
-                $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
-                $id = $rest[2] ?? 0; // get the id from the URL
-                if ($id <= 0)
-                {
-                    throw new \Framework\Exception\BadValue('Missing value');
-                }
-                $bn = $this->context->load($bean, (int) $id);
-                if ($log)
-                {
-                    BeanLog::mklog($this->context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
-                }
-                /**
-                 * @psalm-suppress RedundantCondition
-                 * @psalm-suppress ArgumentTypeCoercion
-                 */
-                if (method_exists($class, 'delete')) // call the clean-up function if it has one
-                {
-                    $bn->delete($$this->context);
-                }
-                R::trash($bn);
-                break;
-
-            case 'GET':
-            default:
-                throw new BadOperation($method.' not supported');
-            }
+            $this->{$method}($bean, $rest, $this->controller->log($bean));
         }
     }
 ?>
