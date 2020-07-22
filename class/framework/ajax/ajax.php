@@ -51,7 +51,6 @@
             if (!\Support\SiteInfo::hasField($type, $field) || (!$idok && $field === 'id'))
             {
                 throw new \Framework\Exception\BadValue('Bad field: '.$field);
-                /* NOT REACHED */
             }
             return TRUE;
         }
@@ -84,7 +83,6 @@
                 }
             }
             throw new Forbidden('Permission denied: '.$bean);
-            /* NOT REACHED */
         }
 /**
  * Check that user has the permissions that are specified in an array
