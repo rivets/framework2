@@ -25,7 +25,7 @@
             }, function(jx){
                 t.append('<p>Read config item fails - '+jx.status+' '+jx.responseText+'</p>');
             });
-            testing.makecall('config/testconfig?value=234', { method: putporpatch, data: {value: 123} }, function(){
+            testing.makecall('config/testconfig?value=234', { method: putorpatch, data: {value: 123} }, function(){
                 t.append('<p>Update config item OK '+data.length+'</p>');
             }, function(jx){
                 t.append('<p>Update config item fails - '+jx.status+' '+jx.responseText+'</p>');
