@@ -28,9 +28,19 @@
                         });
                     }, function(jx){
                         t.append('<p>Update config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                        testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
+                            t.append('<p>Delete config item OK</p>');
+                        }, function(jx){
+                            t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                        });
                     });
                 }, function(jx){
                     t.append('<p>Read config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                    testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
+                        t.append('<p>Delete config item OK</p>');
+                    }, function(jx){
+                        t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
+                    });
                 });
             }, function(jx){
                 t.append('<p>Create config item fails - '+jx.status+' '+jx.responseText+'</p>');
