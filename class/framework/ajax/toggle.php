@@ -17,15 +17,15 @@
  * @var array
  */
         private static $permissions = [
-            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['needlogin', 'mobileonly', 'active', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] ],
-            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['active', 'confirm'] ],
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['local', 'fixed', 'defer', 'async'] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['multipart'] ],
             // FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['needlogin', 'mobileonly', 'active', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] ],
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             // FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['toggle'] ], // table does not always exist
+            FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['active', 'confirm', FW::ADMIN, FW::DEVELOPER] ], // the latter are special see below
         ];
 /**
  * Toggle a flag field in a bean
@@ -54,7 +54,7 @@
             }
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
-            if ($type === 'user' && ctype_upper($field[0]) && $this->context->hasadmin())
+            if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())
             { # not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
