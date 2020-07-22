@@ -95,7 +95,7 @@
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
                 t.append('<p>Toggle OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Toggle Fails- '+jx.status+'</p>'+jx.responseText);
+                t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
             });
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/f1', { method: 'POST' }, function(data){
                 t.append('<p>Toggle non-toggleable field OK : '+data.length+'</p>');
