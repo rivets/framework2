@@ -59,16 +59,18 @@
                 {
                     throw new BadValue('No such item');
                 }
+                $res = new stdClass;
                 $fdt = $this->context->formdata('put');
                 foreach (['value', 'type', 'name'] as $fld)
                 {
                     if ($fdt->exists($fld))
                     {
-                        echo $fld.' : '.$v->{$fld}.PHP_EOL;
+                        $res->{$fld} = $v->{$fld};
                         $v->{$fld} = $fdt->mustFetch($fld);
                     }
                 }
                 R::store($v);
+                $context->web->sendJSON($res);
                 break;
 
             case 'DELETE':
