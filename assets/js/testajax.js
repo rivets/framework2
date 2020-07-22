@@ -46,7 +46,23 @@
     
         testtablecheck: function (){
             let t = $(this).parent();
-            bootbox.alert('Tablecheck operation test complete');
+            let res = testing.makecall('tablecheck/fwconfig', { method: 'GET' }, function(){
+                t.append('<p>Existing table fails - 200 on existing login</p>');
+            }, function(jx){
+                if (jx.status == 404)
+                {
+                   t.append('<p>Existing table OK</p>');
+                }
+                else
+                {
+                    t.append('<p>Existing table fails - '+jx.status+'</p>'+jx.responseText);
+                }
+            });
+            res = testing.makecall('tablecheck/fwconfig'+'XXXXX', { method: 'GET' }, function(){
+                t.append('<p>Non-existent login OK</p>');
+            }, function(jx) {
+                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+            });
         },
     
         testtablesearch: function (){
