@@ -70,7 +70,7 @@
                     }
                 }
                 R::store($v);
-                $this->context->web->sendJSON($res);
+                $this->context->web()->sendJSON($res);
                 break;
 
             case 'DELETE':
