@@ -71,6 +71,11 @@
             }, function(jx) {
                 t.append('<p>Hints failed - '+jx.status+' '+jx.responseText+'</p>');
             });
+            testing.makecall('hints/'+testtable+'/f1/text?search=a%', { method: 'GET' }, function(data){
+                t.append('<p>Hints OK: '+data.length+' '+data[0].value+' '+data[0].text+'</p>');
+            }, function(jx) {
+                t.append('<p>Hints failed - '+jx.status+' '+jx.responseText+'</p>');
+            });
             testing.makecall('hints/'+testtable+'/tog/text', { method: 'GET' }, function(data){
                 t.append('<p>Toggle non-hintable field FAILS returns 200: '+data.length+'</p>');
             }, function(jx) {
