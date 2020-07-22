@@ -132,7 +132,7 @@
  *
  * @return array The parameter values in an array indexed from 0 with last parameter, anything left in an array
  */
-        protected function restcheck(int $count) : array
+        protected function restCheck(int $count) : array
         {
             $rest = $this->context->rest();
             if (count($rest) <= $count) // there is always the AJAX op in there as well as its parameters

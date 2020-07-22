@@ -31,7 +31,7 @@
  */
         final public function handle() : void
         {
-            [$name] = $this->context->restcheck(1);
+            [$name] = $this->restCheck(1);
             if (\Support\SiteInfo::tableExists($name))
             {
                 $this->context->web()->notfound(); // error if it exists....

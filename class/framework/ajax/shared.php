@@ -38,7 +38,7 @@
         final public function handle() : void
         {
 
-            [$b1, $id1, $b2, $id2] = $this->context->restcheck(4);
+            [$b1, $id1, $b2, $id2] = $this->restCheck(4);
             $bn1 = $this->context->load($b1, (int) $id1);
             $bn2 = $this->context->load($b2, (int) $id2);
             $perms = $this->controller->permissions(static::class, self::$permissions);

@@ -42,7 +42,7 @@
             $rest = $this->context->rest();
             if (count($rest) > 2)
             {
-                [$type, $bid, $field] = $this->context->restcheck(3);
+                [$type, $bid, $field] = $this->restCheck(3);
             }
             else // this is legacy
             {

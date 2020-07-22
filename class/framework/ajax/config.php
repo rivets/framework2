@@ -36,7 +36,7 @@
  */
         final public function handle() : void
         {
-            [$name] = $this->restcheck(1);
+            [$name] = $this->restCheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
             switch ($this->context->web()->method())
             {

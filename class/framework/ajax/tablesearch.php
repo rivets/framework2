@@ -47,7 +47,7 @@
  */
         final public function handle() : void
         {
-            [$bean, $field, $op] = $this->context->restcheck(3);
+            [$bean, $field, $op] = $this->restCheck(3);
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field, TRUE);
             $value = $this->context->formdata('get')->fetch('value', '');
             $incv = ' ?';

@@ -40,7 +40,7 @@
  */
         final public function handle() : void
         {
-            [$bean] = $this->context->restCheck(1);
+            [$bean] = $this->restCheck(1);
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
             $fdt = $this->context->formdata('get');
             $order = $fdt->fetch('order', '');

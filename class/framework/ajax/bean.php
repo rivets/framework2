@@ -81,7 +81,7 @@
 
             case 'PATCH':
             case 'PUT': // update a field   /ajax/bean/KIND/ID/FIELD/[FN]
-                [$bean, $id, $field, $more] = $this->context->restcheck(3);
+                [$bean, $id, $field, $more] = $this->restCheck(3);
                 $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
                 $bn = $this->context->load($bean, (int) $id, TRUE);
                 $old = $bn->$field;
