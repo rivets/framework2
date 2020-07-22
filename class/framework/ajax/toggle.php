@@ -59,17 +59,20 @@
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
                     $bn->delrole(FW::FWCONTEXT, $field);
+                    $res = 0;
                 }
                 else
                 {
                     $bn->addrole(FW::FWCONTEXT, $field, '', $this->context->utcnow());
+                    $res = 1;
                 }
             }
             else
             {
-                $bn->$field = $bn->$field == 1 ? 0 : 1;
+                $res = $bn->$field = $bn->$field == 1 ? 0 : 1;
                 \R::store($bn);
             }
+            echo $res;
         }
     }
 ?>
