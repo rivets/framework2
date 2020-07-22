@@ -61,12 +61,12 @@
                 if (cl.contains('htick'))
                 { // this is not yet created so tick the hidden box
                     const n = x.nextElementSibling;
-                    n.val(n.val() == 1 ? 0 : 1);
+                    n.value = n.value == 1 ? 0 : 1;
                     framework.toggle(x);
                 }
                 else
                 { // toggle at the other end
-                    const tr = x.parent().parent();
+                    const tr = $(x).parent().parent();
                     $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
                         method: putorpatch,
                     }).done(function(){
@@ -197,7 +197,7 @@
                 let [cls, fn, par] = value;
                 if (x.hasClass(cls))
                 {
-                    fn(event, x, event.data.bean, par);
+                    fn(event, event.target, event.data.bean, par);
                 }
             });
         },
