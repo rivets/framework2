@@ -35,21 +35,6 @@
             }, function(jx){
                 t.append('<p>Create config item fails - '+jx.status+' '+jx.responseText+'</p>');
             });
-            testing.makecall('config/testconfig', { method: 'GET' }, function(){
-                t.append('<p>Read config item OK '+data.length+'</p>');
-            }, function(jx){
-                t.append('<p>Read config item fails - '+jx.status+' '+jx.responseText+'</p>');
-            });
-            testing.makecall('config/testconfig?value=234', { method: putorpatch, data: {value: 123} }, function(){
-                t.append('<p>Update config item OK '+data.length+'</p>');
-            }, function(jx){
-                t.append('<p>Update config item fails - '+jx.status+' '+jx.responseText+'</p>');
-            });
-            testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
-                t.append('<p>Delete config item OK '+data.length+'</p>');
-            }, function(jx){
-                t.append('<p>Delete config item fails - '+jx.status+' '+jx.responseText+'</p>');
-            });
         },
     
         testhints: function (){
