@@ -1,9 +1,12 @@
     var framework = {
+        dejq: function(el){
+            console.log(el);
+        },
 /**
  * Generate HTML for a font-awesome toggle icon
  *
  * @param {string} tclass - class (or classes) to be added to this toggle
- * @param {bool} v - if true then toggle is on otherwise off
+ * @param {bool}   v      - if true then toggle is on otherwise off
  *
  * @return {string}
  */
@@ -25,13 +28,14 @@
 /**
  * Turn a toggle from on to off or vice-versa
  *
- * @param {object} x - a jQuery object
+ * @param {object} x - a dom object
  *
  * @return {void}
  */
         toggle: function(x)
         {
-            x.toggleClass('fa-toggle-off').toggleClass('fa-toggle-on');
+            x.classList.toggle('fa-toggle-off');
+            x.classList.toggle('fa-toggle-on');
         },
 /**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
@@ -51,11 +55,12 @@
         {
             e.preventDefault();
             e.stopPropagation();
-            if (!x.hasClass('fadis'))
+            let cl = x.classList;
+            if (!cl.contains('fadis'))
             {
-                if (x.hasClass('htick'))
+                if (cl.contains('htick'))
                 { // this is not yet created so tick the hidden box
-                    const n = x.next();
+                    const n = x.nextElementSibling;
                     n.val(n.val() == 1 ? 0 : 1);
                     framework.toggle(x);
                 }
@@ -118,18 +123,47 @@
             });
         },
 /**
- * Turn background of the jQuery dom object yellow and then fade to white.
+ * Remove a node. If it has a rowspan then remove the next rows as well
  *
- * @param {object} tr - a jQuery dom object
+ * @param {object} tr - a dom object
+ *
+ * @return void
+ */
+        removeNode: function(node){
+            var nodes = [node];
+            if (node.hasAttribute('rowspan'))
+            {
+                let rs = parseInt(node.getAttribute('rowspan'))-1;
+                while (rs > 0)
+                {
+                    nodes[rs] = nodes[rs-1].elementSibling;
+                }
+            }
+            for (let x of nodes)
+            {
+                x.parentNode.removeChild(x);
+            }
+        },
+/**
+ * Turn background of the dom object yellow and then fade to white.
+ *
+ * @param {object} tr - a  dom object
  *
  * @return void
  */
         fadetodel: function(tr){
-               tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
+            tr.classList.add('fader');
+            tr.style.opacity = '0';
+            setTimeout(function(){
+                framework.removeNode(tr);
+            }, 1500);
         },
 /**
  * Use deletebean to ask user and possibly delete a bean.
  * Provides a yes function and gets the id value.
+ *
+ * This function assumes that the delete buttin is embedded in a td inside a tr and
+ * that the whole tr is to be removed from the screen.
  *
  * @see dotoggle above for info about data-id usage
  *
@@ -143,7 +177,7 @@
         dodelbean: function(e, x, bean, msg = '')
         {
             let tr = $(x).parent().parent();
-            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);}, msg);
+            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(x.parentNode.parentNode);}, msg);
         },
 /**
  * When a table detects a click call this. Expects there to be an
