@@ -20,7 +20,7 @@
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.append('<p>Read config item OK '+data+'</p>');
                     testing.makecall('config/testconfig?value=234', { method: putorpatch, data: {value: 123} }, function(data){
-                        t.append('<p>Update config item OK '+data+</p>');
+                        t.append('<p>Update config item OK '+data+'</p>');
                         testing.makecall('config/testconfig', { method: 'DELETE' }, function(){
                             t.append('<p>Delete config item OK</p>');
                         }, function(jx){
