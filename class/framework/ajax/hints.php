@@ -18,7 +18,7 @@
  * @var array
  */
         private static $permissions = [
-            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['f1'] ], // table does not always exist
+            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
         ];
 /**
  * Return permission requirements
