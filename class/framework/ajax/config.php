@@ -62,11 +62,13 @@
                 $fdt = $this->context->formdata('post');
                 if ($fdt->exists('value'))
                 {
+                    $old = $v->value;
                     $v->value = $fdt->mustFetch('value');
                 }
                 elseif ($fdt->exists('type'))
                 if ($fdt->exists('value'))
                 {
+                    $old = $v->type;
                     $v->type = $fdt->mustFetch('type');
                 }
                 else
@@ -74,6 +76,10 @@
                     throw new BadValue('Bad field name');
                 }
                 R::store($v);
+                if (isset($old))
+                {
+                    echo $old;
+                }
                 break;
 
             case 'DELETE':
