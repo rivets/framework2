@@ -67,7 +67,7 @@
         testhints: function (){
             let t = $(this).parent();
             testing.makecall('hints/'+testtable+'/f1?search=a%', { method: 'GET' }, function(data){
-                t.append('<p>Hints OK: '+data.length+'</p>');
+                t.append('<p>Hints OK: '+data.length+' '+data[0].value+' '+data[0].text+'</p>');
             }, function(jx) {
                 t.append('<p>Hints failed - '+jx.status+' '+jx.responseText+'</p>');
             });
