@@ -30,8 +30,9 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
-        private function post(?\RedBeanPHP\OODBBean $v) : void
+        private function post(?\RedBeanPHP\OODBBean $v, string $name) : void
         {
             if (is_object($v))
             {
@@ -50,6 +51,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function patch(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -76,6 +78,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function delete(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -91,6 +94,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @psalm-suppress UnusedMethod
  */
         private function get(?\RedBeanPHP\OODBBean $v) : void
         {
@@ -117,7 +121,7 @@
             $method = strtolower($this->context->web()->method());
             if (method_exists(self::class, $method))
             {
-                $this->{$method}($v);
+                $this->{$method}($v, $name);
             }
             else
             {
