@@ -54,12 +54,12 @@
             res = testing.makecall('tablesearch/'+userbean+'/login/1?value='+goodlogin, { method: 'GET' }, function(data){
                 t.append('<p>Search for login OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Search for login Fails- '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Search for login Fails- '+jx.status+'</p>'+jx.responseText);
             });
             res = testing.makecall('tablesearch/'+userbean+'/login/1?value='+goodlogin+'XXXX', { method: 'GET' }, function(data){
                 t.append('<p>Search for non-existent login OK : '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Search for non-existent login Fails - '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Search for non-existent login Fails - '+jx.status+'</p>'+jx.responseText);
             });
         },
     
@@ -85,7 +85,7 @@
             res = testing.makecall('unique/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent login OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+jx.responseText);
             });
         },
     
