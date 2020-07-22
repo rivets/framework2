@@ -131,9 +131,9 @@
                 t.append('<p>Toggle Fails- '+jx.status+' '+jx.responseText+'</p>');
             });
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/f1', { method: 'POST' }, function(data){
-                t.append('<p>Toggle non-toggleable field OK : '+data.length+'</p>');
+                t.append('<p>Toggle non-toggleable field FAILS returns 200: '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Toggle non-toggleable field Fails - '+jx.status+' '+jx.responseText+'</p>');
+                t.append('<p>Toggle non-toggleable field OK - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
     
