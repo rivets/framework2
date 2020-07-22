@@ -124,7 +124,9 @@
  */
         private static function mapping(string $type)
         {
-            return array_map(static function ($item) use ($type) { return [$item[0].$type, $item[1], $item[2], $item[3]]; }, self::$oldtests);
+            return array_map(static function ($item) use ($type) {
+                return [$item[0].$type, $item[1], $item[2], $item[3]];
+            }, self::$oldtests);
         }
 /**
  * Do test
