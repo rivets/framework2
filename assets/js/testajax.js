@@ -61,7 +61,23 @@
     
         testunique: function (){
             let t = $(this).parent();
-            bootbox.alert('Unique operation test complete');
+            let res = testing.makecall('unique/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
+                t.append('<p>Existing login fails - 200 on existing login</p>');
+            }, function(jx){
+                if (jx.status == 404)
+                {
+                   t.append('<p>Existing login OK</p>');
+                }
+                else
+                {
+                    t.append('<p>Existing login fails - '+jx.status+'</p>'+jx.responseText);
+                }
+            });
+            res = testing.makecall('unique/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
+                t.append('<p>Non-existent login OK</p>');
+            }, function(jx) {
+                t.append('<p>Non-existent login fails - '+jx.status+'</p>'+js.responseText);
+            });
         },
     
         testuniquenl :function (bean){
