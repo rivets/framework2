@@ -70,7 +70,7 @@ return [
     'remove' => [
         NunoMaduro\PhpInsights\Domain\Insights\Composer\ComposerLockMustBeFresh::class,
         NunoMaduro\PhpInsights\Domain\Insights\Composer\ComposerMustBeValid::class,
-        NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class,  // might re-enable this later
+        // NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class,
         NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineGlobalConstants::class,
         NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class,
         NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class,
