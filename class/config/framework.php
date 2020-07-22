@@ -25,9 +25,9 @@
         public const DBPREFIX = '';
         public const FWCONTEXT = self::DBPREFIX.'Site';
         public const TESTCONTEXT = self::DBPREFIX.'Test';
-        public const ADMINROLE = self::DBPREFIX.'Admin';
-        public const DEVELROLE = self::DBPREFIX.'Developer';
-        public const TESTROLE = self::DBPREFIX.'Tester';
+        public const ADMINROLE = 'Admin';
+        public const DEVELROLE = 'Developer';
+        public const TESTROLE = 'Tester';
         public const CONFIG = self::DBPREFIX.'fwconfig';
         public const CONFIRM = self::DBPREFIX.'confirm';
         public const FORM = self::DBPREFIX.'form';

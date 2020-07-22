@@ -25,6 +25,7 @@
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             // FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['toggle'] ], // table does not always exist
         ];
 /**
  * Toggle a flag field in a bean
