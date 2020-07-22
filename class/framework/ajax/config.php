@@ -64,6 +64,7 @@
                 {
                     if ($fdt->exists($fld))
                     {
+                        echo $fld.' : '.$v->{$fld}.PHP_EOL;
                         $v->{$fld} = $fdt->mustFetch($fld);
                     }
                 }
