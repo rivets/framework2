@@ -30,11 +30,16 @@
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
+ * @var string
+ */
+        private $class = '';
+/**
  *  make a new one /ajax/bean/KIND/
  *
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ * @phpcsSuppress SlevomatCodingStandard.Sniffs.Functions.UnusedParameterSniff
  */
         private function post(string $bean, array $rest, bool $log) : void
         {
@@ -43,7 +48,7 @@
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (!method_exists($class, 'add'))
+            if (!method_exists($this->class, 'add'))
             { // operation not supported
                 throw new BadOperation('Cannot add a '.$bean);
             }
@@ -57,7 +62,7 @@
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
- * 
+ *
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -78,14 +83,14 @@
         }
 /**
  * Map put onto patch
- * 
+ *
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private function put(string $bean, array $rest, bool $log) : void
         {
-            $this->patch($bean, $log);
+            $this->patch($bean, $rest, $log);
         }
 /**
  * DELETE /ajax/bean/KIND/ID/
@@ -111,9 +116,9 @@
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion
              */
-            if (method_exists($class, 'delete')) // call the clean-up function if it has one
+            if (method_exists($this->class, 'delete')) // call the clean-up function if it has one
             {
-                $bn->delete($$this->context);
+                $bn->delete($this->context);
             }
             R::trash($bn);
         }
@@ -135,12 +140,12 @@
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
             /** @psalm-suppress UndefinedConstant */
-            $class = REDBEAN_MODEL_PREFIX.$bean;
+            $this->class = REDBEAN_MODEL_PREFIX.$bean;
             /**
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion
              */
-            if (method_exists($class, 'canAjaxBean'))
+            if (method_exists($this->class, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
                 $class::canAjaxBean($this->context, $method);
