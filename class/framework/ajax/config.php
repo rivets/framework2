@@ -59,7 +59,7 @@
                 {
                     throw new BadValue('No such item');
                 }
-                $res = new stdClass;
+                $res = new \stdClass;
                 $fdt = $this->context->formdata('put');
                 foreach (['value', 'type', 'name'] as $fld)
                 {
