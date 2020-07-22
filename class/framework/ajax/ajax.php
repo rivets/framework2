@@ -67,24 +67,24 @@
  */
         final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
         {
-            if (isset($permissions[$bean]))
+            if (!isset($permissions[$bean]))
             { # there are some permissions
-                $access = $permissions[$bean];
-                if (is_object($user) || !$access[0])
-                { # either we have a user or no login required
-                    $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
-                    foreach ($checks as $check)
+                throw new Forbidden('Permission denied: '.$bean);
+                /* NOT REACHED */
+            }
+            $access = $permissions[$bean];
+            if (is_object($user) || !$access[0])
+            { # either we have a user or no login required
+                $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
+                foreach ($checks as $check)
+                {
+                    $this->checkPerms($user, $check[0]); // check user plays the right roles
+                    if ($field === '' || empty($check[1]) || (in_array($field, $check[1]) && ($field != 'id' || $idOK)))
                     {
-                        $this->checkPerms($user, $check[0]); // check user plays the right roles
-                        if ($field === '' || empty($check[1]) || (in_array($field, $check[1]) && ($field != 'id' || $idOK)))
-                        {
-                            return;
-                        }
+                        return;
                     }
                 }
             }
-            throw new Forbidden('Permission denied: '.$bean);
-            /* NOT REACHED */
         }
 /**
  * Check that user has the permissions that are specified in an array
