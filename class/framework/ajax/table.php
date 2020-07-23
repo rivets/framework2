@@ -30,7 +30,7 @@
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
- *  make a new one 
+ *  make a new one
  *
  * @return void
  * @psalm-suppress UnusedMethod
@@ -64,7 +64,7 @@
             \R::exec('truncate `'.$table.'`');
         }
 /**
- * update a field   
+ * update a field
  *
  * @return void
  * @psalm-suppress UnusedMethod
@@ -122,7 +122,7 @@
             $this->patch($table, $rest);
         }
 /**
- * DELETE 
+ * DELETE
  *
  * @return void
  * @psalm-suppress UnusedMethod
