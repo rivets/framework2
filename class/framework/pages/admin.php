@@ -31,46 +31,46 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function checksum(Context $context) : void
-        {
-            chdir($context->local()->basedir()); // make sure we are in the root of the site
-            $base = $context->local()->base();
-            foreach ($context->local()->allconfig() as $fwc)
-            {
-                switch ($fwc->type)
-                {
-                case 'css':
-                case 'js':
-                    if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
-                    {
-                        $fname = $fwc->value;
-                        if ($base != '/' && $base !== '')
-                        { // if there are sub directories then we need to remove them as we are there already...
-                            if (preg_match('#^'.$base.'(.*)#', $fname, $m))
-                            {
-                                $fname = $m[1];
-                                $fv = '%BASE%'.$fname;
-                            }
-                            else
-                            {
-                                $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname.' ('.$base.')');
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            $fv = $fname;
-                        }
-                        $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
-                        $fwc->value = $fv;
-                        $fwc->integrity = self::HASH.'-'.base64_encode($hash);
-                        $fwc->crossorigin = 'anonymous';
-                        \R::store($fwc);
-                    }
-                    break;
-                }
-            }
-        }
+        //private function checksum(Context $context) : void
+        //{
+        //    chdir($context->local()->basedir()); // make sure we are in the root of the site
+        //    $base = $context->local()->base();
+        //    foreach ($context->local()->allconfig() as $fwc)
+        //    {
+        //        switch ($fwc->type)
+        //        {
+        //        case 'css':
+        //        case 'js':
+        //            if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
+        //            {
+        //                $fname = $fwc->value;
+        //                if ($base != '/' && $base !== '')
+        //                { // if there are sub directories then we need to remove them as we are there already...
+        //                    if (preg_match('#^'.$base.'(.*)#', $fname, $m))
+        //                    {
+        //                        $fname = $m[1];
+        //                        $fv = '%BASE%'.$fname;
+        //                    }
+        //                    else
+        //                    {
+        //                        $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname.' ('.$base.')');
+        //                        break;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    $fv = $fname;
+        //                }
+        //                $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
+        //                $fwc->value = $fv;
+        //                $fwc->integrity = self::HASH.'-'.base64_encode($hash);
+        //                $fwc->crossorigin = 'anonymous';
+        //                \R::store($fwc);
+        //            }
+        //            break;
+        //        }
+        //    }
+        //}
 /**
  * Edit admin items
  *
