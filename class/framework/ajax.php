@@ -43,7 +43,7 @@
  */
         final public function log(string $bean) : bool
         {
-            return in_array($bean, static::$log);
+            return in_array($bean, static::$log); // @phpstan-ignore-line
         }
 /**
  * Return the permission requirements array from the child
@@ -54,7 +54,7 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return array_merge(static::$fwPermissions[$which], $system);
+            return array_merge(static::$fwPermissions[$which], $system); //@phpstan-ignore-line
         }
 /**
  * Handle AJAX operations
