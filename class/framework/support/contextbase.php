@@ -304,9 +304,9 @@
 /**
  * Initialise the context and return self
  *
- * @return \Framework\Context
+ * @return \Framework\Support\ContextBase
  */
-        public function setup() : \Framework\Support\Context
+        public function setup() : \Framework\Support\ContextBase
         {
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {# see if there is a user variable in the session....
