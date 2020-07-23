@@ -107,7 +107,7 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function saveon($id, $on, $fn) : void
+        public function saveOn($id, $on, $fn) : void
         {
             $this->ons[$id][$on] = $fn;
         }
@@ -118,7 +118,7 @@
  * @psalm-suppress PossiblyUnusedMethod
  * @phpcsSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
-        public function getons()
+        public function getOns()
         {
             $res = '';
             foreach ($this->ons as $id => $conds)
@@ -142,7 +142,7 @@
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolename(string $name) : \RedBeanPHP\OODBBean
+        public function roleName(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -164,7 +164,7 @@
  * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolecontext(string $name) : \RedBeanPHP\OODBBean
+        public function roleContext(string $name) : \RedBeanPHP\OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -210,7 +210,7 @@
  */
         public function local() : \Framework\Local
         {
-            return \Framework\Local::getinstance();
+            return \Framework\Local::getInstance();
         }
 /**
  * Return a Formdata object
@@ -221,11 +221,11 @@
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formdata(?string $which = NULL) : object
+        public function formData(?string $which = NULL) : object
         {
             if ($which == NULL)
             { # this is backward compatibility and will be removed in the future
-                return \Framework\Support\FormData::getinstance();
+                return \Framework\Support\FormData::getInstance();
             }
             if (!isset($this->getters[$which]))
             {
@@ -243,7 +243,7 @@
  */
         public function web() : \Framework\Web\Web
         {
-            return \Framework\Web\Web::getinstance();
+            return \Framework\Web\Web::getInstance();
         }
 /*
  ***************************************
@@ -261,36 +261,36 @@
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            foreach (getallheaders() as $k => $v)
-            {
-                if (FW::AUTHTOKEN === strtoupper($k))
-                { // we have mobile authentication in use
-                    try
+            $auth = array_filter(getallheaders(), function($key) {
+                return FW::AUTHTOKEN === strtoupper($key);
+            }, ARRAY_FILTER_USE_KEY);
+            if (!empty($auth))
+            { // we have mobile authentication in use
+                try
+                {
+                    /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
+                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($v), FW::AUTHKEY);
+                }
+                catch (\Exception $e)
+                { // token error of some kind so return no access.
+                    $this->web()->noaccess($e->getMessage());
+                    /* NOT REACHED */
+                }
+                if (is_object($this->luser))
+                {
+                    if ($this->luser->getID() != $tok->sub)
                     {
-                        /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                        $tok = \Framework\Utility\JWT\JWT::decode($v, FW::AUTHKEY);
-                    }
-                    catch (\Exception $e)
-                    { // token error of some kind so return no access.
-                        $this->web()->noaccess($e->getMessage());
+                        throw new \Framework\Exception\InternalError('User conflict');
                         /* NOT REACHED */
                     }
-                    if (is_object($this->luser))
-                    {
-                        if ($this->luser->getID() != $tok->sub)
-                        {
-                            throw new \Framework\Exception\InternalError('User conflict');
-                            /* NOT REACHED */
-                        }
-                    }
-                    else
-                    {
-                        $this->luser = $this->load('user', $tok->sub);
-                    }
-
-                    $this->tokauth = TRUE;
-                    break;
                 }
+                else
+                {
+                    $this->luser = $this->load('user', $tok->sub);
+                }
+
+                $this->tokauth = TRUE;
+                break;
             }
         }
 /**

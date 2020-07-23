@@ -46,7 +46,7 @@
  */
         public function setpages($count = NULL) : void
         {
-            $fdt = $this->formdata('get');
+            $fdt = $this->formData('get');
             $psize = $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
             $values = [
                 'page'      => $fdt->fetch('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on

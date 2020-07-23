@@ -79,7 +79,7 @@
  *
  * @return bool
  */
-        public function isadmin() : bool
+        public function isAdmin() : bool
         {
             return is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
         }
@@ -88,7 +88,7 @@
  *
  * @return bool
  */
-        public function isactive() : bool
+        public function isActive() : bool
         {
             return $this->bean->active;
         }
@@ -97,7 +97,7 @@
  *
  * @return bool
  */
-        public function isconfirmed() : bool
+        public function isConfirmed() : bool
         {
             return $this->bean->confirm;
         }
@@ -106,9 +106,9 @@
  *
  * @return bool
  */
-        public function isdeveloper() : bool
+        public function isDeveloper() : bool
         {
-            return is_object($this->hasrole(FW::FWCONTEXT, FW::DEVELROLE));
+            return is_object($this->hasRole(FW::FWCONTEXT, FW::DEVELROLE));
         }
 /**
  * Set the user's password
@@ -117,7 +117,7 @@
  *
  * @return void
  */
-        public function setpw(string $pw) : void
+        public function setPW(string $pw) : void
         {
             $this->bean->password = password_hash($pw, PASSWORD_DEFAULT);
             \R::store($this->bean);
@@ -129,7 +129,7 @@
  *
  * @return bool
  */
-        public function pwok(string $pw) : bool
+        public function pwOK(string $pw) : bool
         {
             return password_verify($pw, $this->bean->password);
         }
@@ -138,7 +138,7 @@
  *
  * @return void
  */
-        public function doconfirm() : void
+        public function doConfirm() : void
         {
             $this->bean->active = 1;
             $this->bean->confirm = 1;
@@ -154,7 +154,7 @@
  * @psalm-suppress UnusedVariable
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function maketoken(string $url, string $device = '') : string
+        public function makeToken(string $url, string $device = '') : string
         {
             $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
             /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
@@ -163,8 +163,8 @@
 /**
  * Setup for an edit
  *
- * @param Context    $context   The context object
- * @param array               $rest      Any other values from the URL
+ * @param Context       $context   The context object
+ * @param array<string> $rest      Any other values from the URL
  *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -175,14 +175,14 @@
 /**
  * Handle an edit form for this user
  *
- * @param Context   $context    The context object
+ * @param Context $context    The context object
  *
- * @return array   [TRUE if error, [error messages]]
+ * @return array  [TRUE if error, [error messages]]
  */
         public function edit(Context $context) : array
         {
-            $fdt = $context->formdata('post');
-            $emess = $this->dofields($fdt);
+            $fdt = $context->formData('post');
+            $emess = $this->doFields($fdt);
 
             $pw = $fdt->fetch('pw', '');
             if ($pw !== '')
