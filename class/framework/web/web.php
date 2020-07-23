@@ -138,7 +138,7 @@
                     }
                 }
             }
-            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $msg);
+            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, '');
             /* NOT REACHED */
         }
 /**
