@@ -221,7 +221,10 @@
  *
  * @param string $source
  *
- * @ return void
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static function checkObject(string $source)
         {
@@ -235,7 +238,10 @@
  *
  * @param string $source
  *
- * @ return void
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static function checkTemplate(string $source)
         {
@@ -249,7 +255,10 @@
  *
  * @param string $source
  *
- * @ return void
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static function checkRedirect(string $source)
         {
@@ -263,7 +272,10 @@
  *
  * @param string $source
  *
- * @ return void
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static function checkXRedirect(string $source)
         {
@@ -279,7 +291,6 @@
  * @param string $source
  *
  * @throws BadValue
- *
  * @return void
  */
         public static function check(int $kind, string $source) : void
