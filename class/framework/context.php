@@ -7,12 +7,10 @@
  */
     namespace Framework;
 
-    use \Config\Config;
-    use \Config\Framework as FW;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
-    class Context extends \Framework\Support\ContextBase
+    class Context extends Support\ContextBase
     {
 /**
  * Do we have a logged in admin user?
