@@ -170,7 +170,7 @@
  *
  * @return array<\RedBeanPHP\OODBBean>
  */
-        public function siteconfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
+        public function siteConfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
             return $this->{$collect ? 'collect' : 'fetch'}(FW::CONFIG, $order, [], $start, $count);
         }
