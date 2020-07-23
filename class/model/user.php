@@ -158,7 +158,7 @@
         {
             $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
             /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
-            return \Framework\Utility\JWT\JWT::encode($token, \Framework\Context::KEY);
+            return \Framework\Utility\JWT\JWT::encode($token, FW::AUTHKEY);
         }
 /**
  * Setup for an edit

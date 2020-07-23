@@ -22,13 +22,16 @@
 /*
  * Constants that are used to get the names of the Framework's internal tables
  */
-        public const DBPREFIX = '';
-        public const FWCONTEXT = self::DBPREFIX.'Site';
-        public const TESTCONTEXT = self::DBPREFIX.'Test';
-        public const ADMINROLE = 'Admin';
+        public const ADMINROLE = 'Admin'; // role names
         public const DEVELROLE = 'Developer';
         public const TESTROLE = 'Tester';
-        public const CONFIG = self::DBPREFIX.'fwconfig';
+
+        public const DBPREFIX = '';
+
+        public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
+        public const TESTCONTEXT = self::DBPREFIX.'Test';
+
+        public const CONFIG = self::DBPREFIX.'fwconfig'; // table names
         public const CONFIRM = self::DBPREFIX.'confirm';
         public const FORM = self::DBPREFIX.'form';
         public const FORMFIELD = self::DBPREFIX.'formfield';
@@ -40,6 +43,8 @@
         public const TABLE = self::DBPREFIX.'table';
         public const TEST = self::DBPREFIX.'fwtest';
         public const USER = self::DBPREFIX.'user';
+
+        public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
 /**
  * Initialise some standard things for any invocation of a page
  *

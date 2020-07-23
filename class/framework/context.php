@@ -15,10 +15,6 @@
     class Context extends \Framework\Support\ContextBase
     {
 /**
- * The key used to encode the token validation
- */
-        public const KEY       = 'Some string of text.....';
-/**
  * Do we have a logged in admin user?
  *
  * @return bool

@@ -15,14 +15,6 @@
     class ContextBase
     {
         use \Framework\Utility\Singleton;
-/**
- * The name of the authentication token field.
- */
-        private const TOKEN     = 'X-APPNAME-TOKEN';
-/**
- * The key used to encode the token validation
- */
-        public const KEY       = 'Some string of text.....';
 
 /** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser        = NULL;
@@ -271,12 +263,12 @@
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
             foreach (getallheaders() as $k => $v)
             {
-                if (self::TOKEN === strtoupper($k))
+                if (FW::AUTHTOKEN === strtoupper($k))
                 { // we have mobile authentication in use
                     try
                     {
                         /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                        $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
+                        $tok = \Framework\Utility\JWT\JWT::decode($v, FW::AUTHKEY);
                     }
                     catch (\Exception $e)
                     { // token error of some kind so return no access.
