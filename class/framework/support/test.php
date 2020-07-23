@@ -21,7 +21,7 @@
             ['mustExist', ['notexist'], FALSE, FALSE],
             ['fetch', ['exist', 3], '42', TRUE],
             ['fetch', ['notexist', 3], 3, FALSE],
-            ['mustFetch', ['notarray'], 3, TRUE],
+            ['mustFetch', ['notarray'], 3, FALSE],
             ['mustFetch', ['exist'], '42', TRUE],
             ['mustFetch', ['notexist'], '42', FALSE],
             ['fetch', [['aexist', 0], 3], '42', TRUE],
