@@ -309,14 +309,11 @@
                 self::XREHOME       => 'checkXRedirect',
                 self::XREHOME8      => 'checkXRedirect',
             ];
-            if (isset($map[$kind]))
-            {
-                self::{$map[$kind]}($source);
-            }
-            else
+            if (!isset($map[$kind]))
             {
                 throw new BadValue('Invalid page type');
             }
+            self::{$map[$kind]}($source);
         }
     }
 ?>
