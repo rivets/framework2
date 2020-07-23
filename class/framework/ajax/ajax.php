@@ -85,8 +85,6 @@
             throw new Forbidden('Permission denied: '.$bean);
         }
 /**
- * check an array of context/roles for access
-/**
  * Check that user has the permissions that are specified in an array
  *
  * @param ?\RedBeanPHP\OODBBean  $user   The current user or NULL
@@ -106,14 +104,16 @@
             {
                 if (is_array($rcs[0]))
                 { // this is an OR
-                    if (empty(array_filter($rcs, static function (array $orv) use ($user) {
-                        return is_object($user->hasRole($orv[0], $orv[1]));
-                    })))
+                    foreach ($rcs as $orv)
                     {
-                        throw new Forbidden('Permission denied');
+                        if (is_object($user->hasRole($orv[0], $orv[1])))
+                        {
+                            continue 2;
+                        }
                     }
+                    throw new Forbidden('Permission denied');
                 }
-                elseif (!is_object($user->hasRole($rcs[0], $rcs[1])))
+                if (!is_object($user->hasRole($rcs[0], $rcs[1])))
                 {
                     throw new Forbidden('Permission denied');
                 }
