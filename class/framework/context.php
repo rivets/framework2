@@ -14,7 +14,6 @@
  */
     class Context extends \Framework\Support\ContextBase
     {
-        use \Framework\Utility\Singleton;
 /**
  * The key used to encode the token validation
  */
