@@ -45,6 +45,7 @@
         public const USER = self::DBPREFIX.'user';
 
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
+        public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 /**
  * Initialise some standard things for any invocation of a page
  *
