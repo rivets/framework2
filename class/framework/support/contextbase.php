@@ -261,7 +261,7 @@
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            $auth = array_filter(getallheaders(), static function($key) {
+            $auth = array_filter(getallheaders(), static function ($key) {
                 return FW::AUTHTOKEN === strtoupper($key);
             }, ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
