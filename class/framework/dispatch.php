@@ -81,6 +81,23 @@
             self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
         ];
 /**
+ * @var array<string>
+ */
+        private static $checks = [
+            self::OBJECT        => 'checkObject',
+            self::TEMPLATE      => 'checkTemplate',
+            self::REDIRECT      => 'checkRedirect',
+            self::REDIRECT3     => 'checkRedirect',
+            self::REDIRECT7     => 'checkRedirect',
+            self::REHOME        => 'checkRedirect',
+            self::REHOME8       => 'checkRedirect',
+            self::XREDIRECT     => 'checkXRedirect',
+            self::XREDIRECT3    => 'checkXRedirect',
+            self::XREDIRECT7    => 'checkXRedirect',
+            self::XREHOME       => 'checkXRedirect',
+            self::XREHOME8      => 'checkXRedirect',
+        ];
+/**
  * @var array $configs Constants that might be defined in the configuration that
  * need to be passed into twigs.
  */
@@ -295,25 +312,11 @@
  */
         public static function check(int $kind, string $source) : void
         {
-            $map = [
-                self::OBJECT        => 'checkObject',
-                self::TEMPLATE      => 'checkTemplate',
-                self::REDIRECT      => 'checkRedirect',
-                self::REDIRECT3     => 'checkRedirect',
-                self::REDIRECT7     => 'checkRedirect',
-                self::REHOME        => 'checkRedirect',
-                self::REHOME8       => 'checkRedirect',
-                self::XREDIRECT     => 'checkXRedirect',
-                self::XREDIRECT3    => 'checkXRedirect',
-                self::XREDIRECT7    => 'checkXRedirect',
-                self::XREHOME       => 'checkXRedirect',
-                self::XREHOME8      => 'checkXRedirect',
-            ];
-            if (!isset($map[$kind]))
+            if (!isset(self::$checks[$kind]))
             {
                 throw new BadValue('Invalid page type');
             }
-            self::{$map[$kind]}($source);
+            self::{self::$checks[$kind]}($source);
         }
     }
 ?>
