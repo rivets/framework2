@@ -14,6 +14,7 @@
  */
     Class Developer extends \Framework\SiteAction
     {
+        use \Support\NoCache; // don't cache developer pages.
 /**
  * Handle various admin operations /devel/xxxx
  *
