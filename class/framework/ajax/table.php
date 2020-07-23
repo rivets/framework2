@@ -30,6 +30,122 @@
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
+ *  make a new one 
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+ */
+        private function post(string $table, array $rest) : void
+        {
+            if (\Support\SiteInfo::tableExists($table))
+            {
+                throw new Forbidden('Table exists');
+                /* NOT REACHED */
+            }
+            if (!preg_match('/[a-z][a-z0-9]*/', $table))
+            {
+                throw new BadValue('Table name should be alphanumeric');
+                /* NOT REACHED */
+            }
+            $fdt = $this->context->formdata('post');
+            $bn = \R::dispense($table);
+            foreach ($fdt->fetchArray('field') as $ix => $fname)
+            {
+                $fname = strtolower($fname);
+                if (preg_match('/[a-z][a-z0-9]*/', $fname))
+                {
+                    $bn->$fname = $fdt->fetch(['sample', $ix], '');
+                }
+            }
+            \R::store($bn);
+            \R::trash($bn);
+            \R::exec('truncate `'.$table.'`');
+        }
+/**
+ * update a field   
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function patch(string $table, array $rest) : void
+        {
+            if (\Support\SiteInfo::isFWTable($table))
+            { # you can't alter framework tables
+                throw new Forbidden('Permission Denied');
+                /* NOT REACHED */
+            }
+            $value = $this->context->formdata('put')->mustFetch('value');
+            $f1 = $rest[2];
+            $this->fieldExists($table, $f1);
+            switch ($rest[3])
+            {
+            case 'name':
+                if (\Support\SiteInfo::hasField($table, $value))
+                {
+                    throw new BadValue('Field already exists');
+                    /* NOT REACHED */
+                }
+                $f2 = $value;
+                $fields = \R::inspect($table);
+                $type = $fields[$f1];
+                break;
+            case 'type':
+                $f2 = $f1;
+                $type = $value;
+                break;
+            default:
+                throw new BadValue('No such change');
+                /* NOT REACHED */
+            }
+            try
+            {
+                \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
+            }
+            catch (\Exception $e)
+            {
+                throw new \Framework\Exception\BadValue($e->getMessage());
+            }
+        }
+/**
+ * Map put onto patch
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+ */
+        private function put(string $table, array $rest) : void
+        {
+            $this->patch($table, $rest);
+        }
+/**
+ * DELETE 
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function delete(string $table, array $rest) : void
+        {
+            if (\Support\SiteInfo::isFWTable($table))
+            { # you cannot delete framework tables
+                throw new Forbidden('Permission Denied');
+                /* NOT REACHED */
+            }
+            try
+            {
+                \R::exec('drop table `'.$table.'`');
+            }
+            catch (\Exception $e)
+            {
+                throw new Forbidden($e->getMessage());
+                /* NOT REACHED */
+            }
+        }
+/**
  * Carry out operations on tables
  *
  *
@@ -48,93 +164,12 @@
             }
             $table = strtolower($rest[1]);
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
-            $method = $this->context->web()->method();
-            if ($method == 'POST')
+            $method = strtolower($this->context->web()->method());
+            if (!method_exists(self::class, $method))
             {
-                if (\Support\SiteInfo::tableExists($table))
-                {
-                    throw new Forbidden('Table exists');
-                    /* NOT REACHED */
-                }
-                if (!preg_match('/[a-z][a-z0-9]*/', $table))
-                {
-                    throw new BadValue('Table name should be alphanumeric');
-                    /* NOT REACHED */
-                }
-                $fdt = $this->context->formdata('post');
-                $bn = \R::dispense($table);
-                foreach ($fdt->fetchArray('field') as $ix => $fname)
-                {
-                    $fname = strtolower($fname);
-                    if (preg_match('/[a-z][a-z0-9]*/', $fname))
-                    {
-                        $bn->$fname = $fdt->fetch(['sample', $ix], '');
-                    }
-                }
-                \R::store($bn);
-                \R::trash($bn);
-                \R::exec('truncate `'.$table.'`');
+                throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
-            else
-            {
-                if (\Support\SiteInfo::isFWTable($table))
-                {
-                    throw new Forbidden('Permission Denied');
-                    /* NOT REACHED */
-                }
-                switch ($method)
-                {
-                case 'DELETE':
-                    try
-                    {
-                        \R::exec('drop table `'.$table.'`');
-                    }
-                    catch (\Exception $e)
-                    {
-                        throw new Forbidden($e->getMessage());
-                        /* NOT REACHED */
-                    }
-                    break;
-                case 'PATCH':
-                case 'PUT': // change a field
-                    $value = $this->context->formdata('put')->mustFetch('value');
-                    $f1 = $rest[2];
-                    $this->fieldExists($table, $f1);
-                    switch ($rest[3])
-                    {
-                    case 'name':
-                        if (\Support\SiteInfo::hasField($table, $value))
-                        {
-                            throw new BadValue('Field already exists');
-                            /* NOT REACHED */
-                        }
-                        $f2 = $value;
-                        $fields = \R::inspect($table);
-                        $type = $fields[$f1];
-                        break;
-                    case 'type':
-                        $f2 = $f1;
-                        $type = $value;
-                        break;
-                    default:
-                        throw new BadValue('No such change');
-                        /* NOT REACHED */
-                    }
-                    try
-                    {
-                        \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
-                    }
-                    catch (\Exception $e)
-                    {
-                        throw new \Framework\Exception\BadValue($e->getMessage());
-                    }
-                    break;
-                case 'GET':
-                default:
-                    throw new \Framework\Exception\BadOperation('Operation not supported');
-                    /* NOT REACHED */
-                }
-            }
+            $this->{$method}($table, $rest);
         }
     }
 ?>
