@@ -59,6 +59,7 @@
         <file name="class/framework/support/contextbase.php" />
         <file name="class/framework/support/debug.php" />
         <file name="class/framework/support/errorhandler.php" />
+        <file name="class/framework/support/errorhandlerbase.php" />
         <file name="class/framework/support/formdata.php" />
         <file name="class/framework/support/handlerole.php" />
         <file name="class/framework/support/siteinfo.php" />

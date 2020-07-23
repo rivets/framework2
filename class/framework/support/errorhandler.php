@@ -7,9 +7,6 @@
  */
     namespace Framework\Support;
 
-    use \Config\Config;
-    use \Framework\Web\StatusCodes;
-    use \Framework\Web\Web;
 /**
  * Class for error handling
  */
