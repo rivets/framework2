@@ -223,7 +223,7 @@
  *
  * @ return void
  */
-        private function checkObject(string $source)
+        private static function checkObject(string $source)
         {
             if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
             {
@@ -237,7 +237,7 @@
  *
  * @ return void
  */
-        private function checkTemplate(string $source)
+        private static function checkTemplate(string $source)
         {
             if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
             {
@@ -251,7 +251,7 @@
  *
  * @ return void
  */
-        private function checkRedirect(string $source)
+        private static function checkRedirect(string $source)
         {
             if (!preg_match('#^(/.*?)+#i', $source))
             {
@@ -265,7 +265,7 @@
  *
  * @ return void
  */
-        private function checkXRedirect(string $source)
+        private static function checkXRedirect(string $source)
         {
             if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
             {
@@ -300,7 +300,7 @@
             ];
             if (isset($map[$kind]))
             {
-                $this->{$map[$kind]}($source);
+                self::{$map[$kind]}($source);
             }
             else
             {
