@@ -269,7 +269,7 @@
                 try
                 {
                     /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($v), FW::AUTHKEY);
+                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($auth), FW::AUTHKEY);
                 }
                 catch (\Exception $e)
                 { // token error of some kind so return no access.
