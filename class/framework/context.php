@@ -108,49 +108,6 @@
  ***************************************
  */
 /**
- * Look for a mobile access token
- *
- * @internal
- *
- * @return void
- * @throws \Framework\Exception\InternalError
- */
-        private function mtoken() : void
-        {
-            // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            foreach (getallheaders() as $k => $v)
-            {
-                if (self::TOKEN === strtoupper($k))
-                { // we have mobile authentication in use
-                    try
-                    {
-                        /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                        $tok = \Framework\Utility\JWT\JWT::decode($v, self::KEY);
-                    }
-                    catch (\Exception $e)
-                    { // token error of some kind so return no access.
-                        $this->web()->noaccess($e->getMessage());
-                        /* NOT REACHED */
-                    }
-                    if (is_object($this->luser))
-                    {
-                        if ($this->luser->getID() != $tok->sub)
-                        {
-                            throw new \Framework\Exception\InternalError('User conflict');
-                            /* NOT REACHED */
-                        }
-                    }
-                    else
-                    {
-                        $this->luser = $this->load('user', $tok->sub);
-                    }
-
-                    $this->tokauth = TRUE;
-                    break;
-                }
-            }
-        }
-/**
  * Initialise the context and return self
  *
  * @return \Framework\Context
