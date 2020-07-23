@@ -39,7 +39,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
- * @phpcsSuppress SlevomatCodingStandard.Sniffs.Functions.UnusedParameterSniff
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameterSniff
  */
         private function post(string $bean, array $rest, bool $log) : void
         {
