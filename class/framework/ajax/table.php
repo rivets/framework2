@@ -127,6 +127,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         private function delete(string $table, array $rest) : void
         {
