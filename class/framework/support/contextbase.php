@@ -23,7 +23,7 @@
 /** @var array<string>    The rest of the current URL exploded at / */
         protected $reqrest      = [];
 /** @var bool   True if authenticated by token */
-        protected $tokauth      = FALSE;
+        protected $tokenAuth    = FALSE;
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
         protected $roles        = [];
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
@@ -90,7 +90,7 @@
  */
         public function hasToken() : bool
         {
-            return $this->tokauth;
+            return $this->tokenAuth;
         }
 /*
  ***************************************
@@ -288,9 +288,7 @@
                 {
                     $this->luser = $this->load('user', $tok->sub);
                 }
-
-                $this->tokauth = TRUE;
-                break;
+                $this->tokenAuth = TRUE;
             }
         }
 /**
