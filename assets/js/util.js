@@ -62,7 +62,7 @@
                     options.always(this.repsonse);
                 }
             };
-            request.send(makeQString(data));
+            request.send(options.hasOwnProperty('data') ? makeQString(options.data) : '');
         },
 /**
  * get JSON
