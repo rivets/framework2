@@ -133,7 +133,7 @@
  */
         final public function handle() : void
         {
-            [$bean, $rest] = $this->restcheck(1);
+            [$bean, $rest] = $this->restCheck(1);
             $method = strtolower($this->context->web()->method());
             if (!method_exists(self::class, $method))
             {
