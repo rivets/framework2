@@ -188,10 +188,10 @@
             bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    $.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
+                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
                         method: 'DELETE',
-                    }).done(yes).fail(function(jx){
-                        bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                        success: yes,
+                        fail : function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); },
                     });
                 }
             });
