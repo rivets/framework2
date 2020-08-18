@@ -293,9 +293,9 @@
  *
  * @return void
  */
-        goedit: function(e, x, t)
+        goedit: function(e, x, t, ntype = 'tr')
         {
-            window.location.href = base+'/admin/edit/'+t+'/' + x.parent().parent().data('id') + '/';
+            window.location.href = base+'/admin/edit/'+t+'/' + x.closest(ntype).getAttribute('data-id') + '/';
         },
 /**
  * Relocate to an admin view URL - used by the framework admin interface
