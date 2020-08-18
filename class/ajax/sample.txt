@@ -5,12 +5,12 @@
  * @author You <You@You.org>
  * @copyright 2020 You
  */
-    namespace Framework\Ajax;
+    namespace Ajax;
 
 /**
  * SAMPLE operation
  */
-    class Sample extends Ajax
+    class Sample extends \Framework\Ajax\Ajax
     {
 /**
  * @var array If you want to use the permission checking functions. If you just want to control access
