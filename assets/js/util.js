@@ -26,9 +26,9 @@
  * @param {string} url    - the URL to invoke
  * @param {object} data   - the data to pass
  */
-        rcall: function (options) {
+        rcall: function (url, options) {
             var request = new XMLHttpRequest();
-            request.open(options.op, options.url, true);
+            request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
             request.setRequestHeader('Content-Type', options.hasOwnProperty('type') ? options.type : 'application/x-www-form-urlencoded; charset=UTF-8');
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400)
