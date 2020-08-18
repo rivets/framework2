@@ -150,14 +150,14 @@
                 }
                 else
                 { // toggle at the other end
-                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+'/'+fld, {
+                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
                     //    method: putorpatch,
                     //}).done(function(){
                     //   framework.toggle(x);
                     //}).fail(function(jx){
                     //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
                     //});
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+x.closest(ntype).getAttribute('data-id')+'/'+'/'+fld, {
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+x.closest(ntype).getAttribute('data-id')+'/'+fld, {
                         method: putorpatch,
                         success: function(){ framework.toggle(x); },
                         fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
