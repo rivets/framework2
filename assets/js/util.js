@@ -29,7 +29,10 @@
         ajax: function (url, options) {
             var request = new XMLHttpRequest();
             request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
-            request.setRequestHeader('Content-Type', options.hasOwnProperty('type') ? options.type : 'application/x-www-form-urlencoded; charset=UTF-8');
+            if (options.hasOwnProperty('type'))
+            {
+                request.setRequestHeader('Content-Type', options.type /* 'application/x-www-form-urlencoded; charset=UTF-8' */);
+            }
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400)
                 {
@@ -132,7 +135,7 @@
  *
  * @return {void}
  */
-        dotoggle: function(e, x, bean, fld)
+        dotoggle: function(e, x, bean, fld, ntype = 'tr')
         {
             e.preventDefault();
             e.stopPropagation();
@@ -147,13 +150,17 @@
                 }
                 else
                 { // toggle at the other end
-                    const tr = $(x).parent().parent();
-                    $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
+                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+'/'+fld, {
+                    //    method: putorpatch,
+                    //}).done(function(){
+                    //   framework.toggle(x);
+                    //}).fail(function(jx){
+                    //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                    //});
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+x.closest(ntype).getAttribute('data-id')+'/'+'/'+fld, {
                         method: putorpatch,
-                    }).done(function(){
-                       framework.toggle(x);
-                    }).fail(function(jx){
-                        bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                        success: function(){ framework.toggle(x); },
+                        fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
                     });
                 }
             }
