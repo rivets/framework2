@@ -26,7 +26,7 @@
  * @param {string} url    - the URL to invoke
  * @param {object} data   - the data to pass
  */
-        rcall: function (url, options) {
+        ajax: function (url, options) {
             var request = new XMLHttpRequest();
             request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
             request.setRequestHeader('Content-Type', options.hasOwnProperty('type') ? options.type : 'application/x-www-form-urlencoded; charset=UTF-8');
