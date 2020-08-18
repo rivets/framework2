@@ -3,6 +3,87 @@
             console.log(el);
         },
 /**
+ * encode object into a query string
+ *
+ * @param {object} data   - the object to encode
+ */
+        makeQString: function(data){
+            var enc = '';
+            for (var prop in data) {
+                if (object.hasOwnProperty(prop)) {
+                    if (enc.length > 0) {
+                        enc += '&';
+                    }
+                    enc += encodeURI(prop + '=' + object[prop]);
+                }
+            }
+            return enc;
+        },
+/**
+ * non-jquery post function
+ *
+ * @param {string} op     - the operation to use
+ * @param {string} url    - the URL to invoke
+ * @param {object} data   - the data to pass
+ */
+        rcall: function (options) {
+            var request = new XMLHttpRequest();
+            request.open(options.op, options.url, true);
+            request.setRequestHeader('Content-Type', options.hasOwnProperty('type') ? options.type : 'application/x-www-form-urlencoded; charset=UTF-8');
+            request.onload = function() {
+                if (this.status >= 200 && this.status < 400)
+                {
+                    // Success!
+                    if (options.hasOwnProperty('success'))
+                    {
+                        options.success(this.response);
+                    }
+                }
+                else if (options.hasOwnProperty('fail'))
+                {
+                    options.fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                {
+                    options.always(this.response);
+                }
+            };
+            request.onerror = function() {
+              // There was a connection error of some sort
+                if (options.hasOwnProperty('fail'))
+                {
+                    fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                {
+                    options.always(this.repsonse);
+                }
+            };
+            request.send(makeQString(data));
+        },
+/**
+ * get JSON
+ */
+        getJSON : function(url, success, fail){
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.onload = function() {
+              if (this.status >= 200 && this.status < 400) {
+                // Success!
+                success(JSON.parse(this.response));
+                
+              } else {
+                // We reached our target server, but it returned an error
+                fail(this);
+              }
+            };
+            request.onerror = function() {
+              // There was a connection error of some sort
+              fail(this);
+            };
+            request.send();
+        },
+/**
  * Generate HTML for a font-awesome toggle icon
  *
  * @param {string} tclass - class (or classes) to be added to this toggle
@@ -162,7 +243,7 @@
  * Use deletebean to ask user and possibly delete a bean.
  * Provides a yes function and gets the id value.
  *
- * This function assumes that the delete buttin is embedded in a td inside a tr and
+ * This function assumes that the delete button is embedded in a td inside a tr and
  * that the whole tr is to be removed from the screen.
  *
  * @see dotoggle above for info about data-id usage
@@ -174,10 +255,10 @@
  *
  * @return {void}
  */
-        dodelbean: function(e, x, bean, msg = '')
+        dodelbean: function(e, x, bean, msg = '', ntype = 'tr')
         {
-            let tr = $(x).parent().parent();
-            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(x.parentNode.parentNode);}, msg);
+            let pnode = x.closest(ntype);
+            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){framework.fadetodel(pnode);}, msg);
         },
 /**
  * When a table detects a click call this. Expects there to be an
