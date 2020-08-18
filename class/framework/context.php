@@ -103,9 +103,9 @@
 /**
  * Initialise the context and return self
  *
- * @return \Framework\Context
+ * @return \Framework\Support\ContextBase
  */
-        public function setup() : \Framework\Context
+        public function setup() : \Framework\Support\ContextBase
         {
             parent::setup();
 /**

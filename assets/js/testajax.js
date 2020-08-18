@@ -104,6 +104,7 @@
         },
     
         testtablecheck: function (){
+            let t = $(this).parent();
             testing.makecall('tablecheck/'+testtable, { method: 'GET' }, function(){
                 t.append('<p>Existing table fails - 200 on existing login</p>');
             }, function(jx){
