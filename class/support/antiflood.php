@@ -32,7 +32,7 @@
             $f = \R::findOne(self::TABLE, 'ip=?', [$ip]);
             if (is_object($f))
             {
-                $res =  $now - $f->calltime < $limit;
+                $res =  ($now - $f->calltime) < $limit;
             }
             else
             {
