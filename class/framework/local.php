@@ -284,7 +284,10 @@
             }
             foreach ($this->messages as $ix => $vals)
             {
-                $this->addval(self::$msgnames[$ix], $vals);
+                if (!empty($vals))
+                {
+                    $this->addval(self::$msgnames[$ix], $vals);
+                }
             }
             $this->clearMessages();
             $this->addval($vals); # set up any values that have been passed
