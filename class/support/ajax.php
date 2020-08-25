@@ -23,7 +23,8 @@
  */
 /**
  * @var array<array> Allowed Framework operation codes. Values indicate:
- *                   'bean' => [ Must Login, [[['ContextName', 'RoleName']], [...fields...]]]
+ *                   'bean' => [ Must Login (TRUE/FALSE) , [['ContextName', 'RoleName']...], [...field names or empty for all...] ]
+ *
  *                   Empty fields array means all fields (except id which is always special)
  *                   Evaluation of multiple context/role pairs is a logical AND.
  *                   If you want an OR then you need to group the pairs to be ORed in yet another nested array.
