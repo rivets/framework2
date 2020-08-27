@@ -13,6 +13,9 @@ changed (though there is still a compatibility layer for the moment) and AJAX su
 See the documentation at the website above. There are some internal structural changes as well to reduce code
 complexity but these are mostly internal to the framework support code.
 
+The framework JavaScript functions currently use jQuery but I am phasing this out in preparation for the release
+of BootStrap 5. This is an continuing process at the moment.
+
 ## Vagrant
 
 To use Vagrant for The Framework, you can do so with the following commands:
