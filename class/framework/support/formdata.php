@@ -75,7 +75,7 @@
                         }
                         return $this->getter($t)->mustFetchBean(...$arguments);
                     case 'data': // filedata call
-                        return $this->getter($t)->filedata([$arguments[0], $arguments[1]]);
+                        return $this->getter($t)->fileData([$arguments[0], $arguments[1]]);
                     default:
                         break 2;
                     }
