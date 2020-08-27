@@ -118,17 +118,17 @@
  */
         public function register(Context $context) : string
         {
-            $fdt = $context->formdata();
-            $login = $fdt->post('login', '');
+            $fdt = $context->formdata('post');
+            $login = $fdt->fetch('login', '');
             if ($login !== '')
             {
                 $errmess = [];
                 $x = R::findOne('user', 'login=?', [$login]);
                 if (!is_object($x))
                 {
-                    $pw = $fdt->mustpost('password');
-                    $rpw = $fdt->mustpost('repeat');
-                    $email = $fdt->mustpost('email');
+                    $pw = $fdt->mustFetch('password');
+                    $rpw = $fdt->mustFetch('repeat');
+                    $email = $fdt->mustFetch('email');
                     if ($pw != $rpw)
                     {
                         $errmess[] = 'The passwords do not match';
@@ -188,9 +188,9 @@
  *
  * @return void
  */
-        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user)
+        private function confmessage(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
-            if ($context->constant('CONFEMAIL', FALSE))
+            if (\Config\Framework::constant('CONFEMAIL', FALSE))
             {
                 $this->sendconfirm($context, $user);
                 $msg = 'A confirmation link has been sent to your email address';
@@ -222,7 +222,7 @@
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
             { # asking for resend
-                $lg = $context->formdata()->post('eorl', '');
+                $lg = $context->formdata('post')->fetch('eorl', '');
                 if ($lg === '')
                 { # show the form
                     $tpl = '@users/resend.twig';
@@ -281,12 +281,12 @@
                 $local->message(Local::WARNING, 'You are already logged in');
                 return '@users/reset.twig';
             }
-            $fdt = $context->formdata();
+            $fdt = $context->formdata('post');
             $tpl = 'index.twig';
             $rest = $context->rest();
             if ($rest[0] === '')
             {
-                $lg = $fdt->post('eorl', '');
+                $lg = $fdt->fetch('eorl', '');
                 $tpl = '@users/reset.twig';
                 if ($lg !== '')
                 {
@@ -307,16 +307,16 @@
             elseif ($rest[0] === 'reset')
             {
                 $tpl = '@users/pwreset.twig';
-                $user = $fdt->mustpostbean('uid', 'user');
-                $code = $fdt->mustpost('code');
+                $user = $fdt->mustFetchBean('uid', 'user');
+                $code = $fdt->mustFetch('code');
                 $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
                 {
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($xc->issued));
                     if ($interval->days <= 1)
                     {
-                        $pw = $fdt->mustpost('password');
-                        if ($pw === $fdt->mustpost('repeat'))
+                        $pw = $fdt->mustFetch('password');
+                        if ($pw === $fdt->mustFetch('repeat'))
                         {
                             $xc->user->setpw($pw);
                             R::trash($xc);

@@ -26,11 +26,11 @@
  */
         public function checkLogin(Context $context) : bool
         {
-            $fdt = $context->formdata();
-            if (($lg = $fdt->post('login', '')) !== '')
+            $fdt = $context->formdata('post');
+            if (($lg = $fdt->fetch('login', '')) !== '')
             {
-                $page = $fdt->post('page', '');
-                $pw = $fdt->post('password', '');
+                $page = $fdt->fetch('goto', '');
+                $pw = $fdt->fetch('password', '');
                 if ($pw !== '')
                 {
                     $user = \Framework\Pages\UserLogin::eorl($lg); // use either a login name or the email address - see framework/pages/userlogin.php
@@ -48,8 +48,7 @@
                 $context->local()->message(\Framework\Local::MESSAGE, 'Please try again.');
                 return FALSE;
             }
-            $page = $fdt->get('page', '');
-            $context->local()->addval('page', $page);
+            $context->local()->addval('goto', $context->formdata('get')->fetch('goto', ''));
             return TRUE;
         }
 /**

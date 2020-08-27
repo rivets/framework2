@@ -43,7 +43,11 @@
             {
                 if(preg_match('/^https/i', $resurl))
                 {
-                    if ($resurl == $https.$rdurl || $resurl == $https.$rdurl.'/')
+                    if ($resurl == $prefix.$rdurl.'/')
+                    {
+                        echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
+                    }
+                    elseif ($resurl == $https.$rdurl || $resurl == $https.$rdurl.'/')
                     {
                         echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
                     }
@@ -51,10 +55,6 @@
                     {
                         echo '-- "'.$url.'" ('.$resurl.') redirected more than expected'.PHP_EOL;
                     }
-                }
-                elseif ($resurl == $prefix.$rdurl.'/')
-                {
-                    echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
                 }
                 else
                 {
@@ -114,9 +114,9 @@
            ],
            'fail' => [
                ['/nosuchpage', 404, 0, ''],
-               ['/admin', 200, 1, '/login/?page=/admin'],
-               ['/devel', 200, 1, '/login/?page=/devel'],
-               ['/test', 200, 1, '/login/?page=/test'],
+               ['/admin', 200, 1, '/login/?goto=/admin'],
+               ['/devel', 200, 1, '/login/?goto=/devel'],
+               ['/test', 200, 1, '/login/?goto=/test'],
            ]
     ];
       
@@ -131,6 +131,9 @@
             '/devel/test',
             '/devel/test/upload',
             '/devel/test/ajax',
+            '/devel/test/get?remote=1',
+            '/devel/test/post?remote=1',
+            '/devel/test/cookie?remote=1',
             '/admin/info',
             '/admin/pages',
             '/admin/users',
@@ -144,11 +147,11 @@
             '/admin/offline',
        ],
        'fail' => [
-           ['/nosuchpage', 404, 0, ''],
-           ['/test', 403, 0, ''],
            ['/devel/test/assert', 500, 0, ''],
            ['/devel/test/fail', 500, 0, ''],
            ['/devel/test/toss', 500, 0, ''],
+           ['/nosuchpage', 404, 0, ''],
+           ['/test', 403, 0, ''],
        ]
     ];
     

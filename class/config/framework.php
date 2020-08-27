@@ -22,13 +22,16 @@
 /*
  * Constants that are used to get the names of the Framework's internal tables
  */
+        public const ADMINROLE = 'Admin'; // role names
+        public const DEVELROLE = 'Developer';
+        public const TESTROLE = 'Tester';
+
         public const DBPREFIX = '';
-        public const FWCONTEXT = self::DBPREFIX.'Site';
+
+        public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
         public const TESTCONTEXT = self::DBPREFIX.'Test';
-        public const ADMINROLE = self::DBPREFIX.'Admin';
-        public const DEVELROLE = self::DBPREFIX.'Developer';
-        public const TESTROLE = self::DBPREFIX.'Tester';
-        public const CONFIG = self::DBPREFIX.'fwconfig';
+
+        public const CONFIG = self::DBPREFIX.'fwconfig'; // table names
         public const CONFIRM = self::DBPREFIX.'confirm';
         public const FORM = self::DBPREFIX.'form';
         public const FORMFIELD = self::DBPREFIX.'formfield';
@@ -40,6 +43,9 @@
         public const TABLE = self::DBPREFIX.'table';
         public const TEST = self::DBPREFIX.'fwtest';
         public const USER = self::DBPREFIX.'user';
+
+        public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
+        public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 /**
  * Initialise some standard things for any invocation of a page
  *
@@ -66,6 +72,24 @@
             spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php';
+        }
+/**
+ * Get the value of a Configuration constant. Rather than accessing constants directly
+ * This uses refelection to check for the value. This allows the framework to add new
+ * constants and not break old code.
+ *
+ * @param string $name        The constant name - all in upper case
+ * @param mixed  $default     A default value for if it is not defined
+ *
+ * @return mixed
+ */
+        public static function constant($name, $default = '')
+        {
+            if (defined('\\Config\\Config::'.$name))
+            {
+                return constant('\\Config\\Config::'.$name);
+            }
+            return $default;
         }
     }
 ?>

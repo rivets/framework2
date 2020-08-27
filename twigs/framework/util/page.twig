@@ -46,16 +46,18 @@
         <script {{h.urlattr(fwurls.vuejs)}}></script>
         <script {{h.urlattr(fwurls.bootvuejs)}}></script>
     {% else %}
-        {% if ajax %}
-            <script {{h.urlattr(fwurls.jquery)}}></script>
-        {% elseif usejquery %}
-            <script {{h.urlattr(fwurls.jqueryslim)}}></script>
+        {% if usejquery %}
+            {% if ajax %}
+                <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
+            {% else %}
+                <script {{h.urlattr(fwurls.jqueryslim)}}></script>
+            {% endif %}
         {% endif %}
-        {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use BS JS and fwutils uses bootbox #}
+        {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
             <script {{h.urlattr(fwurls.popperjs)}}></script>
             <script {{h.urlattr(fwurls.bootjs)}}></script>
         {% endif %}
-        {% if usebootbox or fwutils %} {# fwutils uses bootbox#}
+        {% if usebootbox or fwutils %} {# fwutils uses bootbox #}
             <script {{h.urlattr(fwurls.bootbox)}}></script>
         {% endif %}
         {% if fwutils %}
@@ -88,7 +90,7 @@
     {% if block('setup') is defined %}{% set sjs = sjs ~ block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
         {% set ojs = ojs~block('onload')|trim %}
-        {% if ojs|length > 0 %}{% set ojs = '$(function(){'~ojs~'});' %}{% endif %}
+        {% if ojs|length > 0 %}{% set ojs = 'document.addEventListener(\'DOMContentLoaded\', function(){'~ojs~'});' %}{% endif %}
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}

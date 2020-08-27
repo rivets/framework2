@@ -7,75 +7,44 @@
  */
     namespace Support;
 
+    use \Framework\Ajax as FWAjax;
 /**
  * Handles Ajax Calls.
  */
     final class Ajax extends \Framework\Ajax
     {
 /**
- * Add functions that implement your AJAX operations here and register them
- * in the handle method below.
- */
-/*
-        public function yourop(Context $context)
-        {
-            // your code
-        }
+ * Add functions that implement your AJAX operations as classes in class/framework/ajax. See the sample.txt file there.
  */
 /**
- * If you are using the predefined features of the framework then you may need to
- * add some appropriate vaues into these arrays.
+ * If you are using the predefined features of the Framework then you will amost certainly need to
+ * add some appropriate values to support permissions for the operation named as the key.
+ * Not all Framework AJAX operations are available.
+ */
+/**
+ * @var array<array> Allowed Framework operation codes. Values indicate:
+ *                   'bean' => [ Must Login (TRUE/FALSE) , [['ContextName', 'RoleName']...], [...field names or empty for all...] ]
  *
- * The key to both the array fields is the name of the bean type you are working with.
+ *                   Empty fields array means all fields (except id which is always special)
+ *                   Evaluation of multiple context/role pairs is a logical AND.
+ *                   If you want an OR then you need to group the pairs to be ORed in yet another nested array.
  */
-/**
- * @var array<array>   Values controlling whether or not pagination calls are allowed
- */
-        private static $allowPaging = [
-            // 'bean' => [TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
+        protected static $fwPermissions = [
+            FWAjax\Bean::class          => [],
+            FWAjax\Hints::class         => [],
+            FWAjax\Paging::class        => [],
+            FWAjax\PwCheck::class       => [],
+            FWAjax\Shared::class        => [],
+            FWAjax\Table::class         => [],
+            FWAjax\TableSearch::class   => [],
+            FWAjax\Toggle::class        => [],
+            FWAjax\Unique::class        => [],
+            FWAjax\UniqueNl::class      => [],
         ];
 /**
- * @var array<array>   Values controlling whether or not search hint calls are allowed
+ * @var array<string> A list of bean names for which logging is required
  */
-        private static $allowHints = [
-            // 'bean' => ['field', TRUE, [['ContextName', 'RoleName']]] // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the bean operation are allowed
- */
-        private static $allowBean = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the toggle operation are allowed
- */
-        private static $allowToggle = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the table operation are allowed
- */
-        private static $allowTable = [
-            // [[['ContextName', 'RoleName']], [ 'bean', ....]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array>   Values controlling whether or not calls on the table operation are allowed
- */
-        private static $allowTSearch = [
-            // [[['ContextName', 'RoleName']], [ 'bean' => [...fields...], ...]] // an array of roles required in form [['context name', 'role name']...] (can be empty)
-        ];
-/**
- * @var array<array<string>>   Values controlling whether or not calls on the uniquenl operation are allowed
- */
-        private static $allowUniquenl = [
-            // ['bean' => [...fields...], ...] // an array of beans and fields that can be accessed
-        ];
-/**
- * @var array<string>   Values controlling whether or not bean operations are logged for certain beans
- */
-        private static $audit = [
-            // 'bean'..... A list of bean names
-        ];
+        protected static $log = []; // ['bean'..... A list of bean names]
 /**
  * Handle AJAX operations
  *
@@ -85,10 +54,6 @@
  */
         public function handle(Context $context) : void
         {
-            //$this->operation(['yourop', ...], [TRUE, [['ContextName', 'RoleName'],...]]);
-            // TRUE if login needed, then an array of roles required in form [['context name', 'role name']...] (can be empty)
-            $this->pageOrHint(self::$allowPaging, self::$allowHints);
-            $this->beanAccess(self::$allowBean, self::$allowToggle, self::$allowTable, self::$audit, self::$allowTSearch, self::$allowUniquenl);
             parent::handle($context);
         }
     }

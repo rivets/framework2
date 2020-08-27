@@ -1,9 +1,96 @@
     var framework = {
+        dejq: function(el){
+            console.log(el);
+        },
+/**
+ * encode object into a query string
+ *
+ * @param {object} data   - the object to encode
+ */
+        makeQString: function(data){
+            var enc = '';
+            for (var prop in data) {
+                if (object.hasOwnProperty(prop)) {
+                    if (enc.length > 0) {
+                        enc += '&';
+                    }
+                    enc += encodeURI(prop + '=' + object[prop]);
+                }
+            }
+            return enc;
+        },
+/**
+ * non-jquery post function
+ *
+ * @param {string} op     - the operation to use
+ * @param {string} url    - the URL to invoke
+ * @param {object} data   - the data to pass
+ */
+        ajax: function (url, options) {
+            var request = new XMLHttpRequest();
+            request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
+            if (options.hasOwnProperty('type'))
+            {
+                request.setRequestHeader('Content-Type', options.type /* 'application/x-www-form-urlencoded; charset=UTF-8' */);
+            }
+            request.onload = function() {
+                if (this.status >= 200 && this.status < 400)
+                {
+                    // Success!
+                    if (options.hasOwnProperty('success'))
+                    {
+                        options.success(this.response);
+                    }
+                }
+                else if (options.hasOwnProperty('fail'))
+                {
+                    options.fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                {
+                    options.always(this.response);
+                }
+            };
+            request.onerror = function() {
+              // There was a connection error of some sort
+                if (options.hasOwnProperty('fail'))
+                {
+                    fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                {
+                    options.always(this.repsonse);
+                }
+            };
+            request.send(options.hasOwnProperty('data') ? makeQString(options.data) : '');
+        },
+/**
+ * get JSON
+ */
+        getJSON : function(url, success, fail){
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.onload = function() {
+              if (this.status >= 200 && this.status < 400) {
+                // Success!
+                success(JSON.parse(this.response));
+                
+              } else {
+                // We reached our target server, but it returned an error
+                fail(this);
+              }
+            };
+            request.onerror = function() {
+              // There was a connection error of some sort
+              fail(this);
+            };
+            request.send();
+        },
 /**
  * Generate HTML for a font-awesome toggle icon
  *
  * @param {string} tclass - class (or classes) to be added to this toggle
- * @param {bool} v - if true then toggle is on otherwise off
+ * @param {bool}   v      - if true then toggle is on otherwise off
  *
  * @return {string}
  */
@@ -25,13 +112,14 @@
 /**
  * Turn a toggle from on to off or vice-versa
  *
- * @param {object} x - a jQuery object
+ * @param {object} x - a dom object
  *
  * @return {void}
  */
         toggle: function(x)
         {
-            x.toggleClass('fa-toggle-off').toggleClass('fa-toggle-on');
+            x.classList.toggle('fa-toggle-off');
+            x.classList.toggle('fa-toggle-on');
         },
 /**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
@@ -47,27 +135,32 @@
  *
  * @return {void}
  */
-        dotoggle: function(e, x, bean, fld)
+        dotoggle: function(e, x, bean, fld, ntype = 'tr')
         {
             e.preventDefault();
             e.stopPropagation();
-            if (!x.hasClass('fadis'))
+            let cl = x.classList;
+            if (!cl.contains('fadis'))
             {
-                if (x.hasClass('htick'))
+                if (cl.contains('htick'))
                 { // this is not yet created so tick the hidden box
-                    const n = x.next();
-                    n.val(n.val() == 1 ? 0 : 1);
+                    const n = x.nextElementSibling;
+                    n.value = n.value == 1 ? 0 : 1;
                     framework.toggle(x);
                 }
                 else
                 { // toggle at the other end
-                    const tr = x.parent().parent();
-                    $.ajax(base+'/ajax/toggle/'+bean+'/'+tr.data('id')+'/'+'/'+fld, {
+                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
+                    //    method: putorpatch,
+                    //}).done(function(){
+                    //   framework.toggle(x);
+                    //}).fail(function(jx){
+                    //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                    //});
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+x.closest(ntype).getAttribute('data-id')+'/'+fld, {
                         method: putorpatch,
-                    }).done(function(){
-                       framework.toggle(x);
-                    }).fail(function(jx){
-                        bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
+                        success: function(){ framework.toggle(x); },
+                        fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
                     });
                 }
             }
@@ -95,10 +188,10 @@
             bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    $.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
+                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
                         method: 'DELETE',
-                    }).done(yes).fail(function(jx){
-                        bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                        success: yes,
+                        fail : function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); },
                     });
                 }
             });
@@ -118,18 +211,47 @@
             });
         },
 /**
- * Turn background of the jQuery dom object yellow and then fade to white.
+ * Remove a node. If it has a rowspan then remove the next rows as well
  *
- * @param {object} tr - a jQuery dom object
+ * @param {object} tr - a dom object
+ *
+ * @return void
+ */
+        removeNode: function(node){
+            var nodes = [node];
+            if (node.hasAttribute('rowspan'))
+            {
+                let rs = parseInt(node.getAttribute('rowspan'))-1;
+                while (rs > 0)
+                {
+                    nodes[rs] = nodes[rs-1].elementSibling;
+                }
+            }
+            for (let x of nodes)
+            {
+                x.parentNode.removeChild(x);
+            }
+        },
+/**
+ * Turn background of the dom object yellow and then fade to white.
+ *
+ * @param {object} tr - a  dom object
  *
  * @return void
  */
         fadetodel: function(tr){
-               tr.css('background-color', 'yellow').fadeOut(1500, function(){ tr.remove(); });
+            tr.classList.add('fader');
+            tr.style.opacity = '0';
+            setTimeout(function(){
+                framework.removeNode(tr);
+            }, 1500);
         },
 /**
  * Use deletebean to ask user and possibly delete a bean.
  * Provides a yes function and gets the id value.
+ *
+ * This function assumes that the delete button is embedded in a td inside a tr and
+ * that the whole tr is to be removed from the screen.
  *
  * @see dotoggle above for info about data-id usage
  *
@@ -140,10 +262,10 @@
  *
  * @return {void}
  */
-        dodelbean: function(e, x, bean, msg = '')
+        dodelbean: function(e, x, bean, msg = '', ntype = 'tr')
         {
-            let tr = $(x).parent().parent();
-            framework.deletebean(e, x, bean, tr.data('id'), function(){framework.fadetodel(tr);}, msg);
+            let pnode = x.closest(ntype);
+            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){framework.fadetodel(pnode);}, msg);
         },
 /**
  * When a table detects a click call this. Expects there to be an
@@ -163,7 +285,7 @@
                 let [cls, fn, par] = value;
                 if (x.hasClass(cls))
                 {
-                    fn(event, x, event.data.bean, par);
+                    fn(event, event.target, event.data.bean, par);
                 }
             });
         },
@@ -178,9 +300,9 @@
  *
  * @return void
  */
-        goedit: function(e, x, t)
+        goedit: function(e, x, t, ntype = 'tr')
         {
-            window.location.href = base+'/admin/edit/'+t+'/' + x.parent().parent().data('id') + '/';
+            window.location.href = base+'/admin/edit/'+t+'/' + x.closest(ntype).getAttribute('data-id') + '/';
         },
 /**
  * Relocate to an admin view URL - used by the framework admin interface

@@ -3,14 +3,14 @@
 
     class SimpleModel
     {
-        /** @var \RedBeanPHP\OODBBean */
+        /** @var OODBBean */
         /** @psalm-suppress MissingConstructor  */
         public $bean;
     }
 
     class OODBBean
     {
-        /** @var \RedBeanPHP\OODBBean */
+        /** @var OODBBean */
         private static $dummy;
  /** @psalm-suppress PossiblyUnusedParam */
         public function __get(string $name)
@@ -44,23 +44,23 @@
         }
 /**
  * @param string $x
- * @return \RedBeanPHP\OODBBean
+ * @return OODBBean
  * @psalm-suppress PossiblyUnusedParam
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function with(string $x) : \RedBeanPHP\OODBBean
+        public function with(string $x) : OODBBean
         {
-             return self::$dummy;
+             return $this;
         }
 /**
  * @param string $x
- * @return \RedBeanPHP\OODBBean
+ * @return OODBBean
  * @psalm-suppress PossiblyUnusedParam
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function withCondition(string $x) : \RedBeanPHP\OODBBean
+        public function withCondition(string $x) : OODBBean
         {
-             return self::$dummy;
+             return $this;
         }
 /**
  * @return string

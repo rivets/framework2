@@ -46,9 +46,9 @@
         private static function makebean(Context $context, string $bean) : void
         {
             $fk = [];
-            $fd = $context->formdata();
+            $fdt = $context->formdata('post');
             $bn = \R::dispense($bean);
-            foreach ($fd->posta('field') as $ix => $field)
+            foreach ($fdt->fetchArray('field') as $ix => $field)
             {
                 if ($field !== '')
                 {
@@ -65,7 +65,7 @@
                     }
                     else
                     {
-                        $bn->{$field} = $fd->post(['sample', $ix], '');
+                        $bn->{$field} = $fdt->fetch(['sample', $ix], '');
                     }
                 }
             }
@@ -86,10 +86,10 @@
  */
         public static function add(Context $context) : bool
         {
-            $fd = $context->formdata();
-            if ($fd->haspost('name'))
+            $fdt = $context->formdata('post');
+            if ($fdt->exists('name'))
             {
-                $name = strtolower($fd->mustpost('name'));
+                $name = strtolower($fdt->mustFetch('name'));
                 if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'You must provide a valid bean name');

@@ -1,0 +1,40 @@
+<?php
+/**
+ * Class to handle the FrameworkFramework AJAX SAMPLE operation
+ *
+ * @author You <You@You.org>
+ * @copyright 2020 You
+ */
+    namespace Ajax;
+
+/**
+ * SAMPLE operation
+ */
+    class Sample extends \Framework\Ajax\Ajax
+    {
+/**
+ * @var array If you want to use the permission checking functions. If you just want to control access
+ *            then just put the list of contextname/rolename pairs in the result of requires.
+ */
+         private static $permissions = [];
+/**
+ * Return permission requirements. The version in the base class requires logins and adds nothing else.
+ * If that is what you need then you can remove this method. This function is called from the base
+ * class constructor when it does some permission checking.
+ *
+ * @return array
+ */
+        public function requires()
+        {
+            return [FALSE, [/* [contextname/rolename],... */]]; // does not require login, no contextname/rolename checks
+        }
+/**
+ * Carry out SAMPLE operation
+ *
+ * @return void
+ */
+        final public function handle() : void
+        {
+        }
+    }
+?>

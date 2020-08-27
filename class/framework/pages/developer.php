@@ -14,6 +14,7 @@
  */
     Class Developer extends \Framework\SiteAction
     {
+        use \Support\NoCache; // don't cache developer pages.
 /**
  * Handle various admin operations /devel/xxxx
  *
@@ -34,14 +35,12 @@
                 break;
 
             case 'hack': // execute some code.
-                \R::freeze(FALSE); // turn off freezing so that you can fiddle with the database....
                 /** @psalm-suppress UnresolvableInclude */
                 include $context->local()->makebasepath('devel', 'hack.php');
                 break;
             
             case 'test':
                 $test = new \Framework\Support\Test();
-                $rest = $context->rest();
                 if (count($rest) > 1)
                 {
                     if (method_exists($test, $rest[1]))
@@ -51,7 +50,7 @@
                     else
                     {
                         $context->web()->bad();
-                        /* not reached */
+                        /* NOT REACHED */
                     }
                 }
                 break;

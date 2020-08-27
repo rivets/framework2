@@ -179,29 +179,26 @@
  */
         public function editroles(\Support\Context $context) : void
         {
-            $fdt = $context->formdata();
-            if ($fdt->haspost('exist'))
+            $fdt = $context->formdata('post');
+            if ($fdt->exists('exist'))
             {
-                foreach ($fdt->posta('exist') as $ix => $rid)
+                foreach ($fdt->fetchArray('exist') as $ix => $rid)
                 {
                     $rl = $context->load($this->roletype, $rid, TRUE);
-                    $start = $fdt->post(['xstart', $ix]);
-                    $end = $fdt->post(['xend', $ix]);
-                    $other = $fdt->post(['xotherinfo', $ix]);
-                    $rl->start = $start;
-                    $rl->end = $end;
-                    $rl->otherinfo = $other;
+                    $rl->start = $fdt->fetch(['xstart', $ix]);
+                    $rl->end = $fdt->fetch(['xend', $ix]);
+                    $rl->otherinfo = $fdt->fetch(['xotherinfo', $ix]);
                     \R::store($rl);
                 }
             }
-            foreach ($fdt->posta('context') as $ix => $cn)
+            foreach ($fdt->fetchArray('context') as $ix => $cn)
             {
-                $rn = $fdt->post(['role', $ix]);
+                $rn = $fdt->fetch(['role', $ix]);
                 if ($rn !== '' && $cn !== '')
                 {
-                    $end = $fdt->post(['end', $ix]);
-                    $start = $fdt->post(['start', $ix]);
-                    $info = $fdt->post(['otherinfo', $ix]);
+                    $end = $fdt->fetch(['end', $ix]);
+                    $start = $fdt->fetch(['start', $ix]);
+                    $info = $fdt->fetch(['otherinfo', $ix]);
 
                     $rcb = $context->load(FW::ROLECONTEXT, $cn);
                     $rnb = $context->load(FW::ROLENAME, $rn);

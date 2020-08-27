@@ -77,7 +77,7 @@
  * @param int       $start      Start position - used for pagination
  * @param int       $count      The number to be fetched - used for pagination
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function fetch(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : array
         {
@@ -109,10 +109,10 @@
  *
  * @param int     $start      Start position - used for pagination
  * @param int     $count      The number to be fetched - used for pagination
- * @param string    $order      An order clause
- * @param bool      $collect    If TRUE then use collect not fetch
+ * @param string  $order      An order clause
+ * @param bool    $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function users(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -126,7 +126,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function pages(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -140,7 +140,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function roles(int $start = -1, int $count = -1, string $order = '', $collect = FALSE) : array
         {
@@ -154,7 +154,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function contexts(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -168,9 +168,9 @@
  * @param string    $order      An order clause
  * @param bool          $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
-        public function siteconfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
+        public function siteConfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
             return $this->{$collect ? 'collect' : 'fetch'}(FW::CONFIG, $order, [], $start, $count);
         }
@@ -182,7 +182,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function forms(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -193,9 +193,9 @@
  *
  * @param string       $name     The name of the form
  *
- * @return ?object
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function form(string $name) : ?object
+        public function form(string $name) : ?\RedBeanPHP\OODBBean
         {
             return \R::findOne(FW::FORM, 'name=?', [$name]);
         }
@@ -209,7 +209,7 @@
  * @param string                        $order      An order clause
  * @param bool                          $collect    If TRUE then use collect not fetch
  *
- * @return array
+ * @return array<\RedBeanPHP\OODBBean>
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array

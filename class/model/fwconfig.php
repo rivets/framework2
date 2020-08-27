@@ -99,8 +99,8 @@
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
-            $fdt = $context->formdata();
-            $name = $fdt->mustpost('name');
+            $fdt = $context->formdata('post');
+            $name = $fdt->mustFetch('name');
             $bn = \R::findOne(FW::CONFIG, 'name=?', [$name]);
             if (is_object($bn))
             {
@@ -108,8 +108,8 @@
             }
             $bn = \R::dispense(FW::CONFIG);
             $bn->name = $name;
-            $bn->value = $fdt->mustpost('value');
-            $bn->local = $fdt->post('local', 0);
+            $bn->value = $fdt->mustFetch('value');
+            $bn->local = $fdt->fetch('local', 0);
             $bn->fixed = 0;
             $bn->integrity = '';
             $bn->defer = 0;
@@ -145,7 +145,7 @@
  */
         public function edit(Context $context) : array
         {
-            $emess = $this->dofields($context->formdata());
+            $emess = $this->dofields($context->formdata('post'));
             return [!empty($emess), $emess];
         }
 /**

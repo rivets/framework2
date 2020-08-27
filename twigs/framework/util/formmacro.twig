@@ -4,15 +4,17 @@
 
 {% macro cd(cond, attr, value) %}{% if cond %} {{attr}}="{{value}}"{% endif %}{% endmacro cd %}
 
+{% macro cdb(cond, attr) %}{% if cond %} {{attr}}{% endif %}{% endmacro cdb %}
+
 {% macro cdd(cond, attr, value, dflt) %}{% import _self as fx %}{% if cond %}{{fx.hvd(attr, value, dflt)}}{% endif %}{% endmacro cdd %}
 
 {% macro cv(value)%} class="form-control{% if value != '' %} {{value}}{% endif %}"{% endmacro cv %}
 
-{% macro fv(opts)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{fx.cd(opts[v], v, v)}}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
+{% macro fv(opts)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{fx.cdb(opts[v], v)}}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
-{% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{% endif %}{% endmacro fileopts %}
+{% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{{fx.cdb(opts.multiple, 'multiple')}}{% endif %}{% endmacro fileopts %}
 
 {% macro data(opts) %}{% for k,v in opts %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
 
@@ -64,7 +66,7 @@
         <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
 	    <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="mr-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
-            {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}{{fx.cd(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled', 'disabled')}}/>
+            {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
@@ -78,7 +80,7 @@
         <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
 	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}
-            {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cd(opts.check[ix] is defined and opts.check[ix], 'checked', 'checked')}}{{fx.cd(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled', 'disabled')}}/>
+            {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
         {{opts.labels[ix]|raw}}
         </label>
     {% endfor %}
@@ -92,7 +94,7 @@
 {% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
-    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.on(opts)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cd(opts.multiple, 'multiple', 'multiple')}}{{fx.hv('size', opts.size)}}>
+    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.on(opts)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cdb(opts.multiple, 'multiple')}}{{fx.hv('size', opts.size)}}>
         {% for ov in opts.options %}
             <option value="{{ov.value is defined ? ov.value : ov.text}}"{{fx.slct(opts, ov)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}

@@ -18,7 +18,19 @@
         <file name="class/framework/local.php" />
         <file name="class/framework/siteaction.php" />
 
+        <file name="class/framework/ajax/ajax.php" />
+        <file name="class/framework/ajax/bean.php" />
         <file name="class/framework/ajax/beanlog.php" />
+        <file name="class/framework/ajax/config.php" />
+        <file name="class/framework/ajax/hints.php" />
+        <file name="class/framework/ajax/paging.php" />
+        <file name="class/framework/ajax/pwcheck.php" />
+        <file name="class/framework/ajax/shared.php" />
+        <file name="class/framework/ajax/table.php" />
+        <file name="class/framework/ajax/tablecheck.php" />
+        <file name="class/framework/ajax/tablesearch.php" />
+        <file name="class/framework/ajax/unique.php" />
+        <file name="class/framework/ajax/uniquenl.php" />
 
         <file name="class/framework/exception/badoperation.php" />
         <file name="class/framework/exception/badvalue.php" />
@@ -26,6 +38,15 @@
         <file name="class/framework/exception/internalerror.php" />
         <file name="class/framework/exception/missingbean.php" />
         <file name="class/framework/exception/parametercount.php" />
+        
+        <file name="class/framework/formdata/accessbase.php" />
+        <file name="class/framework/formdata/base.php" />
+        <file name="class/framework/formdata/cookie.php" />
+        <file name="class/framework/formdata/faiterator.php" />
+        <file name="class/framework/formdata/file.php" />
+        <file name="class/framework/formdata/get.php" />
+        <file name="class/framework/formdata/post.php" />
+        <file name="class/framework/formdata/put.php" />
 
         <file name="class/framework/pages/admin.php" />
         <file name="class/framework/pages/assets.php" />
@@ -35,12 +56,16 @@
         <file name="class/framework/pages/getfile.php" />
         <file name="class/framework/pages/userlogin.php" />
 
+        <file name="class/framework/support/contextbase.php" />
         <file name="class/framework/support/debug.php" />
-        <file name="class/framework/support/faiterator.php" />
+        <file name="class/framework/support/errorhandler.php" />
+        <file name="class/framework/support/errorhandlerbase.php" />
         <file name="class/framework/support/formdata.php" />
         <file name="class/framework/support/handlerole.php" />
         <file name="class/framework/support/siteinfo.php" />
         <file name="class/framework/support/table.php" />
+        <file name="class/framework/support/test.php" />
+        <file name="class/framework/support/testsupport.php" />
 
         <file name="class/framework/utility/csrfguard.php" />
         <file name="class/framework/utility/fmailer.php" />
@@ -78,7 +103,6 @@
 
         <file name="class/support/ajax.php" />
         <file name="class/support/context.php" />
-        <file name="class/support/formdata.php" />
         <file name="class/support/login.php" />
         <file name="class/support/nocache.php" />
         <file name="class/support/setup.php" />

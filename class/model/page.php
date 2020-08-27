@@ -72,7 +72,7 @@
             {
                 if (!$context->hasuser())
                 { # not logged in
-                    $context->divert('/login/?page='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
+                    $context->divert('/login/?goto='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
                 if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
@@ -83,9 +83,9 @@
                         '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
                     if (!$match ||                                          // User does not have all the required roles
-                        ($this->bean->mobileonly && !$context->hastoken())) // not mobile and logged in
+                        ($this->bean->mobileonly && !$context->hasToken())) // not mobile and logged in
                     {
-                        $context->web()->sendstring($context->local()->getrender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
+                        $context->web()->sendString($context->local()->getRender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                         exit;
                     }
                 }
@@ -231,35 +231,29 @@
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
-            $fdt = $context->formdata();
+            $fdt = $context->formdata('post');
             $p = \R::dispense('page');
-            //$p->name = $fdt->mustpost('name');
-            //$p->kind = $fdt->mustpost('kind');
-            //$p->source = $fdt->mustpost('source');
-            //$p->active = $fdt->mustpost('active');
-            //$p->needlogin = $fdt->mustpost('login');
-            //$p->mobileonly = $fdt->mustpost('mobile');
             foreach (['name', 'kind', 'source'] as $fld)
             { # mandatory
-                $p->{$fld} = $fdt->mustpost($fld);
+                $p->{$fld} = $fdt->mustFetch($fld);
             }
             foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
             { # optional flags
-                $p->{$fld} = $fdt->post($fld, 0);
+                $p->{$fld} = $fdt->fetch($fld, 0);
             }
             try
             {
                 \R::store($p);
-                foreach ($fdt->posta('context') as $ix => $cid)
+                foreach ($fdt->fetchArray('context') as $ix => $cid)
                 { // context, role, start, end, otherinfo
                     if ($cid !== '')
                     {
                         $p->addrolebybean(
                             $context->load(FW::ROLECONTEXT, $cid),                         // the context id
-                            $context->load(FW::ROLENAME, $fdt->mustpost(['role', $ix])),   // the rolename id
-                            $fdt->mustpost(['otherinfo', $ix]),
-                            $fdt->mustpost(['start', $ix]),
-                            $fdt->mustpost(['end', $ix])
+                            $fdt->mustFetchBean(['role', $ix], FW::ROLENAME),   // the rolename id
+                            $fdt->mustFetch(['otherinfo', $ix]),
+                            $fdt->mustFetch(['start', $ix]),
+                            $fdt->mustFetch(['end', $ix])
                         );
                     }
                 }
@@ -362,8 +356,7 @@
  */
         public function edit(Context $context) : array
         {
-            $fdt = $context->formdata();
-            $emess = $this->dofields($fdt);
+            $emess = $this->dofields($context->formdata('post'));
 
             $this->editroles($context);
             $admin = $this->hasrole(FW::FWCONTEXT, FW::ADMINROLE);

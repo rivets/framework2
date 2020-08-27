@@ -17,22 +17,22 @@
 /**
  * Handle editing of beans
  *
- * @param \Support\FormData    $fdt  The formdata object from the context
+ * @param \Framework\FormData\AccessBase   $fdt  The formdata object from the context
  *
  * @return array<string>
  */
-        private function dofields(\Support\FormData $fdt) : array
+        private function dofields(\Framework\FormData\AccessBase $fdt) : array
         {
             $emess = [];
             foreach (self::$editfields as $fld => $flags)
             {
                 if ($flags[1])
                 { // this is a checkbox - they can't be required
-                    $val = $fdt->post($fld, 0);
+                    $val = $fdt->fetch($fld, 0);
                 }
                 else
                 {
-                    $val = $fdt->post($fld, '');
+                    $val = $fdt->fetch($fld, '');
                     if ($flags[0] && $val === '')
                     { // this is an error as this is a required field
                         $emess[] = $fld.' is required';

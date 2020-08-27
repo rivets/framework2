@@ -70,24 +70,25 @@ return [
     'remove' => [
         NunoMaduro\PhpInsights\Domain\Insights\Composer\ComposerLockMustBeFresh::class,
         NunoMaduro\PhpInsights\Domain\Insights\Composer\ComposerMustBeValid::class,
+        // NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class,
         NunoMaduro\PhpInsights\Domain\Insights\ForbiddenDefineGlobalConstants::class,
-	NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class,
-	NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class,
-	NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits::class,
+        NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class,
+        NunoMaduro\PhpInsights\Domain\Insights\ForbiddenNormalClasses::class,
+        NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits::class,
         NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff::class,
 
         PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\UselessOverridingMethodSniff::class, // gives error pages nopage.php
-	PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\NoSilencedErrorsSniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\NoSilencedErrorsSniff::class,
         PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff::class, // this might be buggy
         PHP_CodeSniffer\Standards\PSR1\Sniffs\Files\SideEffectsSniff::class,
-	PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\SwitchDeclarationSniff::class,
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\ControlStructures\SwitchDeclarationSniff::class,
 
-	ObjectCalisthenics\Sniffs\NamingConventions\ElementNameMinimalLengthSniff::class,
+        ObjectCalisthenics\Sniffs\NamingConventions\ElementNameMinimalLengthSniff::class,
 
         PHP_CodeSniffer\Standards\Generic\Sniffs\Commenting\TodoSniff::class,
-	PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\ClosingTagSniff::class,
-	PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff::class,
-	PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff::class,
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\ClosingTagSniff::class,
+        PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Formatting\SpaceAfterNotSniff::class,
         PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\LowerCaseConstantSniff::class,
 
         PhpCsFixer\Fixer\Basic\BracesFixer::class,   // complains about correctly positioned comments....
@@ -98,24 +99,25 @@ return [
         PhpCsFixer\Fixer\ControlStructure\NoBreakCommentFixer::class,
         PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer::class, // buggy?
         PhpCsFixer\Fixer\FunctionNotation\VoidReturnFixer::class, // this one seems to be buggy
+        PhpCsFixer\Fixer\Import\SingleImportPerStatementFixer::class, // this one also seems buggy
         PhpCsFixer\Fixer\Operator\TernaryOperatorSpacesFixer::class, // this one seems to be buggy
-	PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer::class,
+        PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer::class,
         PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer::class, // complains about correct formatting...
 
-	//SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff::class,
-	SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff::class,
-	SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff::class,
+        //SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff::class,
+        SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff::class,
+        SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff::class,
         SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff::class,
         SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff::class,
         SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff::class,
-	SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
-	SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff::class,
-	SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff::class,
 
     ],
 
@@ -123,18 +125,18 @@ return [
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff::class => [
            'spacesCountBeforeColon' => 1,
         ],
-	NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class => [
-	    'exclude' => [
-	    	'framework/utility/*',
-		'framework/ajax.php',
-	        'framework/pages/*',
-		'model/*',
-		'modelextend/*',
-		'config/*',
-		'pages/*',
-		'support/*',
-	    ],
-	],
+        NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class => [
+            'exclude' => [
+                'framework/utility/*',
+                'framework/ajax.php',
+                'framework/pages/*',
+                'model/*',
+                'modelextend/*',
+                'config/*',
+                'pages/*',
+                'support/*',
+            ],
+        ],
         PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class => [
             'lineLimit' => 190,
             'absoluteLineLimit' => 190

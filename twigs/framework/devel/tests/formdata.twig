@@ -1,0 +1,81 @@
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Test FormData calls for {{op}}</h1>
+    </section>
+{% endblock header %}
+
+{% block onload %}
+    {% if op == 'put' %}
+        {% set op = 'get' %}
+        document.getElementById('tform').addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var request = new XMLHttpRequest();
+            request.open(putorpatch, '#', true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' /*'multipart/form-data; charset=UTF-8'*/);
+            data =[];
+            e.target.querySelectorAll('input[type="text"]').forEach(function(el){
+               //data.append(el.getAttribute('name'), el.value);
+               data.push(el.getAttribute('name')+'='+el.value);
+            });
+            request.onreadystatechange = function() {
+                if (this.readyState == 4)
+                {
+                    document.getElementsByTagName('html')[0].innerHTML = this.responseText;
+                }
+            };
+            request.send(data.join('&'));
+            return false;
+        });
+    {% endif %}
+    {% if op == 'cookie' %}
+        document.cookie = 'exist=42';
+        document.cookie = 'email=foo@bar.com';
+        document.cookie = 'notarray=43;
+        document.cookie = 'aexist[0]=42';
+        document.cookie = 'aexist[1]=66'; // two cookies with same name overwrite each other so [] doesnt work more than once
+        document.cookie = 'nexist[14]=42';
+        document.cookie = 'nexist[15]=42';
+        document.cookie = 'kexist[key1]=42';
+        document.cookie = 'kexist[key2]=43';
+        document.cookie = 'beanid={{context.user.getID}}';
+    {% endif %}
+    {% if remote is defined %}
+        document.getElementById('tform').submit();
+    {% endif %}
+{% endblock onload %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10">
+            {% include '@util/message.twig' %}
+            <pre>{{array}}</pre>
+            {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}
+                {% if op != 'cookie' %}
+                    {{f.text({label: 'Exist', name: 'exist', value: 42})}}
+                    {{f.text({label: 'Email', name: 'email', value: 'foo@bar.com'})}}
+                    {{f.text({label: 'Not Array', name: 'notarray[]', value: 43})}}
+                    {{f.text({label: 'Array', name: 'aexist[]', value: 42})}}
+                    {{f.text({label: 'Array', name: 'aexist[]', value: 66})}}
+                    {{f.text({label: 'Array', name: 'nexist[14]', value: 42})}}
+                    {{f.text({label: 'Array', name: 'nexist[15]', value: 43})}}
+                    {{f.text({label: 'Array', name: 'kexist[key1]', value: 42})}}
+                    {{f.text({label: 'Array', name: 'kexist[key2]', value: 43})}}
+                    {{f.text({label: 'Bean', name: 'beanid', value: context.user.getID})}}
+                    {{f.text({label: 'Bad Bean', name: 'badbeanid', value: 0})}}
+                    {{f.text({label: 'Bad Bean', name: 'badbeanid2', value: 'id'})}}
+                {% else %}
+                    {{f.hidden({name: 'cookie', value: 1})}}
+                {% endif %}
+                {{f.submit({value: 'Test'})}}
+            {{f.endform()}}
+    </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

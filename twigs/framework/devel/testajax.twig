@@ -1,5 +1,6 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set usebootbox = TRUE %}
 
 {% extends '@content/page.twig' %}
 
@@ -13,13 +14,16 @@
 {% endblock scripts %}
 
 {% block setup %}
-    var goodlogin = '{{context.user.login}}';
+    let goodlogin = '{{context.user.login}}';
+    let userbean = '{{constant('Config\\Framework::USER')}}';
+    let testtable = '{{constant('Config\\Framework::TEST')}}';
+    let testbeanid = {{bean.getID}};
 {% endblock setup %}
 
 {% block onload %}
-    for (var op in testing.ajaxops)
+    for (var op of testing.ajaxops)
     {
-        $('#'+op).on('click', 'testing.test'+op);
+        document.getElementById(op).addEventListener('click', testing['test'+op]);
     }
 {% endblock onload %}
 
@@ -36,10 +40,10 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="ml-auto col-md-10 mr-auto mt-4">
             {% for x in ops %}
-                <div>
-                    <p><button class="btn btn-info" id="{{x}}">Test {{x}}</button></p>
+                <div class="mb-3">
+                    <button class="btn btn-info" id="{{x}}">Test {{x}}</button>
                 </div>
             {% endfor %}
         </article>

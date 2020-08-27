@@ -71,8 +71,8 @@
  */
                 $code = $nochange ? StatusCodes::HTTP_PERMANENT_REDIRECT : StatusCodes::HTTP_MOVED_PERMANENTLY;
             }
-            $this->addheader('Location', $where);
-            $this->sendstring($msg, self::HTMLMIME, $code);
+            $this->addHeader('Location', $where);
+            $this->sendString($msg, self::HTMLMIME, $code);
             exit;
         }
 /**
@@ -84,7 +84,7 @@
  * @return void
  * @psalm-return never-return
  */
-        private function sendhead(int $code, string $msg) : void
+        private function sendHead(int $code, string $msg) : void
         {
             if ($msg !== '')
             {
@@ -117,7 +117,7 @@
  * @psalm-suppress PossiblyInvalidOperand
  * @psalm-suppress InvalidNullableReturnType
  */
-        public function hasrange(int $size, $code = StatusCodes::HTTP_OK) : array
+        public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
             if (!isset($_SERVER['HTTP_RANGE']))
             {
@@ -133,12 +133,12 @@
                     }
                     if ($rng[2] < $size)
                     { # end is before end of file
-                        $this->addheader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
+                        $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
                         return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], $rng[2]-$rng[1]+1];
                     }
                 }
             }
-            $this->notsatisfiable();
+            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, '');
             /* NOT REACHED */
         }
 /**
@@ -146,12 +146,12 @@
  *
  * @param int       $code   The HTTP return code
  * @param string    $mtype  The mime-type of the file
- * @param ?int      $length The length of the data
+ * @param ?int      $length The length of the data or NULL
  * @param string    $name   A file name
  *
  * @return void
  */
-        public function sendheaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
+        public function sendHeaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
         {
             header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
@@ -199,9 +199,9 @@
  * @psalm-return never-return
  * @return void
  */
-        public function noaccess(string $msg = '') : void
+        public function noAccess(string $msg = '') : void
         {
-            $this->sendhead(StatusCodes::HTTP_FORBIDDEN, $msg);
+            $this->sendHead(StatusCodes::HTTP_FORBIDDEN, $msg);
         }
 /**
  * Generate a 404 Not Found error return
@@ -211,21 +211,9 @@
  * @psalm-return never-return
  * @return void
  */
-        public function notfound(string $msg = '') : void
+        public function notFound(string $msg = '') : void
         {
-            $this->sendhead(StatusCodes::HTTP_NOT_FOUND, $msg);
-        }
-/**
- * Generate a 416 Not Satisfiable error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function notsatisfiable(string $msg = '') : void
-        {
-            $this->sendhead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, $msg);
+            $this->sendHead(StatusCodes::HTTP_NOT_FOUND, $msg);
         }
 /**
  * Generate a 500 Internal Error error return
@@ -237,7 +225,7 @@
  */
         public function internal(string $msg = '') : void
         {
-            $this->sendhead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
+            $this->sendHead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
         }
 /**
  * Deliver a file as a response.
@@ -248,7 +236,7 @@
  *
  * @return void
  */
-        public function sendfile(string $path, string $name = '', string $mime = '') : void
+        public function sendFile(string $path, string $name = '', string $mime = '') : void
         {
             [$code, $range, $length] = $this->hasrange(filesize($path));
             if ($mime === '')
@@ -260,8 +248,8 @@
                 }
                 finfo_close($finfo);
             }
-    //      $this->addheader(['Content-Description' => 'File Transfer']);
-            $this->sendheaders($code, $mime, $length, $name);
+    //      $this->addHeader(['Content-Description' => 'File Transfer']);
+            $this->sendHeaders($code, $mime, $length, $name);
             $this->debuffer();
             if (!empty($range))
             {
@@ -284,11 +272,11 @@
  *
  * @return void
  */
-        public function sendstring(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
+        public function sendString(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
-            [$code, $range, $length] = $this->hasrange(strlen($value), $code);
-            $this->sendheaders($code, $mime, $length);
+            [$code, $range, $length] = $this->hasRange(strlen($value), $code);
+            $this->sendHeaders($code, $mime, $length);
             echo empty($range) ? $value : substr($value, $range[0], $length);
         }
 /**
@@ -301,7 +289,7 @@
  */
         public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
         {
-            $this->sendstring(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
+            $this->sendString(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
 /**
  * Add a header to the header list.
@@ -314,7 +302,7 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function addheader($key, string $value = '') : void
+        public function addHeader($key, string $value = '') : void
         {
             if (!is_array($key))
             {
@@ -330,7 +318,7 @@
  *
  * @return void
  */
-        private function putheaders() : void
+        private function putHeaders() : void
         {
             foreach ($this->headers as $name => $vals)
             {
@@ -369,7 +357,7 @@
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function ispost() : bool
+        public function isPost() : bool
         {
             return $this->method() == 'POST';
         }

@@ -19,7 +19,7 @@
         private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
         private const VIEWABLE = [FW::TABLE, FW::FORM];
         private const NOTMODEL = [FW::TABLE];
-        private const HASH     = 'sha384';
+        //private const HASH     = 'sha384';
 
         use \Support\NoCache; // don't cache admin pages.
 /**
@@ -31,46 +31,46 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function checksum(Context $context) : void
-        {
-            chdir($context->local()->basedir()); // make sure we are in the root of the site
-            $base = $context->local()->base();
-            foreach ($context->local()->allconfig() as $fwc)
-            {
-                switch ($fwc->type)
-                {
-                case 'css':
-                case 'js':
-                    if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
-                    {
-                        $fname = $fwc->value;
-                        if ($base != '/' && $base !== '')
-                        { // if there are sub directories then we need to remove them as we are there already...
-                            if (preg_match('#^'.$base.'(.*)#', $fname, $m))
-                            {
-                                $fname = $m[1];
-                                $fv = '%BASE%'.$fname;
-                            }
-                            else
-                            {
-                                $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname.' ('.$base.')');
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            $fv = $fname;
-                        }
-                        $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
-                        $fwc->value = $fv;
-                        $fwc->integrity = self::HASH.'-'.base64_encode($hash);
-                        $fwc->crossorigin = 'anonymous';
-                        \R::store($fwc);
-                    }
-                    break;
-                }
-            }
-        }
+        //private function checksum(Context $context) : void
+        //{
+        //    chdir($context->local()->basedir()); // make sure we are in the root of the site
+        //    $base = $context->local()->base();
+        //    foreach ($context->local()->allconfig() as $fwc)
+        //    {
+        //        switch ($fwc->type)
+        //        {
+        //        case 'css':
+        //        case 'js':
+        //            if (!preg_match('#^(//|htt)#', $fwc->value)) // this is a local file
+        //            {
+        //                $fname = $fwc->value;
+        //                if ($base != '/' && $base !== '')
+        //                { // if there are sub directories then we need to remove them as we are there already...
+        //                    if (preg_match('#^'.$base.'(.*)#', $fname, $m))
+        //                    {
+        //                        $fname = $m[1];
+        //                        $fv = '%BASE%'.$fname;
+        //                    }
+        //                    else
+        //                    {
+        //                        $context->local()->message(\Framework\Local::ERROR, 'Could not de-base '.$fname.' ('.$base.')');
+        //                        break;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    $fv = $fname;
+        //                }
+        //                $hash = hash(self::HASH, file_get_contents('.'.$fname), TRUE);
+        //                $fwc->value = $fv;
+        //                $fwc->integrity = self::HASH.'-'.base64_encode($hash);
+        //                $fwc->crossorigin = 'anonymous';
+        //                \R::store($fwc);
+        //            }
+        //            break;
+        //        }
+        //    }
+        //}
 /**
  * Edit admin items
  *
@@ -116,7 +116,7 @@
             if (is_object($obj))
             {
                 $obj->startEdit($context, $rest); // do any special setup that the edit requires
-                if (($bid = $context->formdata()->post('bean', '')) !== '')
+                if (($bid = $context->formdata('post')->fetch('bean', '')) !== '')
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
                     { # something odd...
@@ -195,7 +195,7 @@
  */
         private function update(Context $context) : string
         {
-            $doit = $context->formdata()->get('update', 0) == 1;
+            $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
             $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
@@ -251,13 +251,13 @@
             $local = $context->local();
             $adon = $local->makebasepath('admin', 'adminonly');
             $adminonly = file_exists($adon);
-            $fdt = $context->formdata();
-            if ($fdt->haspost('msg'))
+            $fdt = $context->formdata('post');
+            if ($fdt->exists('msg'))
             {
-                $msg = $fdt->mustpost('msg');
-                $onlyadmin = $fdt->post('onlyadmin', 0);
-                $online = $fdt->post('online', 0);
-                if ($adminonly && ($online || $fdt->post('deladonly', 0) == 1))
+                $msg = $fdt->mustFetch('msg');
+                $onlyadmin = $fdt->fetch('onlyadmin', 0);
+                $online = $fdt->fetch('online', 0);
+                if ($adminonly && ($online || $fdt->fetch('deladonly', 0) == 1))
                 {
                     unlink($adon);
                 }
@@ -289,7 +289,7 @@
             switch ($rest[0])
             {
             case 'beans': // Look at the beans in the database
-                $context->local()->addval('all', $context->hasadmin() && $context->formdata()->hasget('all'));
+                $context->local()->addval('all', $context->hasadmin() && $context->formdata('get')->exists('all'));
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files

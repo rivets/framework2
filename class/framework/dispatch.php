@@ -81,6 +81,23 @@
             self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
         ];
 /**
+ * @var array<string>
+ */
+        private static $checks = [
+            self::OBJECT        => 'checkObject',
+            self::TEMPLATE      => 'checkTemplate',
+            self::REDIRECT      => 'checkRedirect',
+            self::REDIRECT3     => 'checkRedirect',
+            self::REDIRECT7     => 'checkRedirect',
+            self::REHOME        => 'checkRedirect',
+            self::REHOME8       => 'checkRedirect',
+            self::XREDIRECT     => 'checkXRedirect',
+            self::XREDIRECT3    => 'checkXRedirect',
+            self::XREDIRECT7    => 'checkXRedirect',
+            self::XREHOME       => 'checkXRedirect',
+            self::XREHOME8      => 'checkXRedirect',
+        ];
+/**
  * @var array $configs Constants that might be defined in the configuration that
  * need to be passed into twigs.
  */
@@ -217,54 +234,89 @@
             //}
         }
 /**
+ * Check OBJECT
+ *
+ * @param string $source
+ *
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private static function checkObject(string $source)
+        {
+            if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
+            {
+                throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
+            }
+        }
+/**
+ * Check TEMPLATE
+ *
+ * @param string $source
+ *
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private static function checkTemplate(string $source)
+        {
+            if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
+            {
+                throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
+            }
+        }
+/**
+ * Check REDIRECT - internal so no http
+ *
+ * @param string $source
+ *
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private static function checkRedirect(string $source)
+        {
+            if (!preg_match('#^(/.*?)+#i', $source))
+            {
+                throw new BadValue('Invalid source for page type (local path)');
+            }
+        }
+/**
+ * Check XREDIRECT - external so must be a url
+ *
+ * @param string $source
+ *
+ * @throws BadValue
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private static function checkXRedirect(string $source)
+        {
+            if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
+            {
+                throw new BadValue('Invalid source for page type (URL)');
+            }
+        }
+/**
  * Check if a value is appropriate for the dispatch kind
  *
  * @param int    $kind
  * @param string $source
  *
  * @throws BadValue
- *
  * @return void
  */
         public static function check(int $kind, string $source) : void
         {
-            switch ($kind)
+            if (!isset(self::$checks[$kind]))
             {
-            case self::OBJECT:
-                if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
-                {
-                    throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
-                }
-                break;
-            case self::TEMPLATE:
-                if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
-                {
-                    throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
-                }
-                break;
-            case self::REDIRECT: // these need a local URL, i.e. no http
-            case self::REDIRECT3:
-            case self::REDIRECT7:
-            case self::REHOME:
-            case self::REHOME8:
-                if (!preg_match('#^(/.*?)+#i', $source))
-                {
-                    throw new BadValue('Invalid source for page type (local path)');
-                }
-                break;
-            case self::XREDIRECT: // these need a URL
-            case self::XREDIRECT3:
-            case self::XREDIRECT7:
-            case self::XREHOME:
-            case self::XREHOME8:
-                if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
-                {
-                    throw new BadValue('Invalid source for page type (URL)');
-                }
-                break;
-            default:
                 throw new BadValue('Invalid page type');
             }
+            self::{self::$checks[$kind]}($source);
         }
     }
 ?>
