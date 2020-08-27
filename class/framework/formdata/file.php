@@ -30,7 +30,7 @@
  * @throws BadValue
  * @return array
  */
-        public function filedata($name, $key = '') : array
+        public function fileData($name, $key = '') : array
         {
             $x = $this->getValue($name, NULL, TRUE, TRUE)[1]; // will not return if it does not
             if ($key === '')
@@ -56,7 +56,7 @@
  *
  * @return \ArrayIterator
  */
-        public function getArray(string $name, array $dflt = []) : \ArrayIterator
+        public function fileArray(string $name, array $dflt = []) : \ArrayIterator
         {
             return isset($_FILES[$name]) && is_array($_FILES[$name]['error']) ? new FAIterator($name) : new \ArrayIterator($dflt);
         }
