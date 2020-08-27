@@ -275,7 +275,7 @@
                 if ($fdt->exists('upload'))
                 {
                     $upl = \R::dispense('upload');
-                    $upl->savefile($context, $fdt->filedata('upload'), FALSE, $context->user(), 0);
+                    $upl->savefile($context, $fdt->fileData('upload'), FALSE, $context->user(), 0);
                     $context->local()->addval('download', $upl->getID());
                 }
                 $rest = $context->rest();
