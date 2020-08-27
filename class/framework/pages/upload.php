@@ -31,12 +31,12 @@
                     foreach ($fdt->fetchArray('public') as $ix => $public)
                     {
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fdt->filedata('uploads', $ix), $public, $context->user(), $ix);
+                        $upl->savefile($context, $fdt->fileData('uploads', $ix), $public, $context->user(), $ix);
                     }
                 }
                 else
                 {
-                    foreach(new \Framework\FormData\FAIterator('uploads') as $ix => $fa)
+                    foreach($fdt->fileArray('uploads') as $ix => $fa)
                     { # we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
                         $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
