@@ -306,20 +306,20 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.13.0/css/all.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.14.0/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
-        'jquery'        => ['https://code.jquery.com/jquery-3.4.1.min.js', 1, '', '', 0, 0, 'js'],
-        'jqueryslim'    => ['https://code.jquery.com/jquery-3.4.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
+        'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
         'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
         'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
@@ -621,7 +621,7 @@
             ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
             " : '')."]);
         }".PHP_EOL.PHP_EOL);
-                  
+
             fputs($fd, '
         public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
@@ -635,15 +635,15 @@
                 fputs($fd, '
         function getallheaders() // code taken from PHP getallheaders manual page
         { // Apache only function so provide a definition of it. Used in \\Framework\\Context
-            $headers = []; 
-            foreach ($_SERVER as $name => $value) 
-            { 
+            $headers = [];
+            foreach ($_SERVER as $name => $value)
+            {
                 if (substr($name, 0, 5) == \'HTTP_\')
-                { 
+                {
                     $headers[str_replace(\' \', \'-\', ucwords(strtolower(str_replace(\'_\', \' \', substr($name, 5)))))] = $value;
-                } 
-            } 
-            return $headers; 
+                }
+            }
+            return $headers;
          }'.PHP_EOL.PHP_EOL);
             }
             fputs($fd, '?>');
