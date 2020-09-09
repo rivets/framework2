@@ -37,6 +37,12 @@
 
     {% block head %}
     {% endblock head %}
+    {% if block('style') is defined %}
+        {% set nonce = context.web.makeNonce() %}
+        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        <style nonce="{{nonce}}">{{block('style')}}</style>
+    {% endif %}
+
 </head>
 <body lang="{{deflang is defined ? deflang : 'en-GB'}}">
     {% block body %}
