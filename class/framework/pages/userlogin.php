@@ -218,7 +218,7 @@
                 $context->divert('/');
             }
             $local = $context->local();
-            $tpl = '@content/index.twig';
+            $tpl = '@users/reset.twig';
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
             { # asking for resend
@@ -275,14 +275,14 @@
         public function forgot(Context $context) : string
         {
             $local = $context->local();
+            $tpl = '@users/reset.twig';
             if ($context->hasuser())
             { # logged in, so this stupid....
                 $local->addval('done', TRUE);
                 $local->message(Local::WARNING, 'You are already logged in');
-                return '@users/reset.twig';
+                return $tpl;
             }
             $fdt = $context->formdata('post');
-            $tpl = '@content/index.twig';
             $rest = $context->rest();
             if ($rest[0] === '')
             {
@@ -290,7 +290,6 @@
                 if ($lg !== '')
                 {
                     $user = self::eorl($lg);
-                    $tpl = '@users/reset.twig';
                     if (is_object($user))
                     {
                         $this->sendreset($context, $user);
