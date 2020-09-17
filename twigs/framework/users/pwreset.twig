@@ -23,7 +23,7 @@
                     <a class="btn btn-info" href="{{base}}/login/">Login</a>
                 </div>
             {% else %}
-                {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'well'})}}
+                {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'jumbotron'})}}
                     {{f.hidden({name: 'uid', value: pwuser.getID})}}
                     {{f.hidden({name: 'code', value: code})}}
                     {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
