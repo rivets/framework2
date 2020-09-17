@@ -2,34 +2,35 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@util/formmacro.twig' as f %}
+
 {% block onload %}
     $('#pwform').parsley()
 {% endblock onload %}
 
-{% block pageheader %}
-{% endblock pageheader %}
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1 class="text-center">Set Your New Password</h1>
+    </section>
+{% endblock header %}
 
 {% block main %}
-    <section class="row" id="frontpage">
+    <section class="row">
         <article class="ml-auto col-md-6 mr-auto mt-5">
             {% include '@util/message.twig' %}
-            <form action="{{base}}/forgot/reset" method="post" class="well">
-                <input type="hidden" value="{{pwuser.getID}}" name="uid"/>
-                <input type="hidden" value="{{code}}" name="code"/>
-                <fieldset>
-                    <legend>Set Your New Password</legend>
-                    <div class="form-group">
-                        <label for="pw" class="control-label">Password</label>
-                        <input type="password" id="pw" name="password" placeholder="***********" class="form-control" required="required  data-parsley-equalto="#rpw""/>
-                    </div>
-                    <div class="form-group">
-                        <label for="rpw" class="control-label">Repeat Password</label>
-                        <input type="password" id="rpw" name="repeat" placeholder="***********" class="form-control" required="required"
-                            data-parsley-trigger="change" data-parsley-equalto="#pw"/>
-                    </div>
-                    <button class="btn btn-primary btn-sm" type="submit">Set</button>
-                </fieldset>
-            </form>
+            {% if done %}
+                <div class="text-center">
+                    <a class="btn btn-info" href="{{base}}/login/">Login</a>
+                </div>
+            {% else %}
+                {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'well'})}}
+                    {{f.hidden({name: 'uid', value: pwuser.getID})}}
+                    {{f.hidden({name: 'code', value: code})}}
+                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
+                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {'equal-to': '#pw', trigger: 'change'} })}}
+                    {{f.submit({value: 'Set'})}}
+                {{f.endform()}}
+            {% endif %}
         </article>
     </section>
 {% endblock main %}
