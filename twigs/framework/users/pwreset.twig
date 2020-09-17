@@ -8,8 +8,11 @@
     $('#pwform').parsley()
 {% endblock onload %}
 
-{% block pageheader %}
-{% endblock pageheader %}
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1 class="text-center">Set Your New Password</h1>
+    </section>
+{% endblock header %}
 
 {% block main %}
     <section class="row">
@@ -23,11 +26,9 @@
                 {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'well'})}}
                     {{f.hidden({name: 'uid', value: pwuser.getID})}}
                     {{f.hidden({name: 'code', value: code})}}
-                    {{f.startfset({legend: 'Set Your New Password'})}}
-                        {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
-                        {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {'equal-to': '#pw', trigger: 'change'} })}}
-                        {{f.submit({value: 'Set'})}}
-                    {{f.endfset()}}
+                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
+                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {'equal-to': '#pw', trigger: 'change'} })}}
+                    {{f.submit({value: 'Set'})}}
                 {{f.endform()}}
             {% endif %}
         </article>
