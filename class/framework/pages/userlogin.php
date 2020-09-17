@@ -218,7 +218,7 @@
                 $context->divert('/');
             }
             $local = $context->local();
-            $tpl = 'index.twig';
+            $tpl = '@content/index.twig';
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
             { # asking for resend
@@ -282,7 +282,7 @@
                 return '@users/reset.twig';
             }
             $fdt = $context->formdata('post');
-            $tpl = 'index.twig';
+            $tpl = '@content/index.twig';
             $rest = $context->rest();
             if ($rest[0] === '')
             {
@@ -321,7 +321,7 @@
                             $xc->user->setpw($pw);
                             R::trash($xc);
                             $local->message(Local::MESSAGE, 'You have reset your password. You can now login.');
-                            $tpl = 'index.twig';
+                            $tpl = '@content/index.twig';
                         }
                         else
                         {
