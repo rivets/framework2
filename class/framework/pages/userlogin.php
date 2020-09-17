@@ -344,8 +344,10 @@
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 1)
                     {
-                        $local->addval('pwuser', $x->user);
-                        $local->addval('code', $x->code);
+                        $local->addval([
+                            'pwuser' => $x->user,
+                            'code'   => $x->code
+                        ]);
                         $tpl = '@users/pwreset.twig';
                     }
                     else
