@@ -16,6 +16,9 @@
         <article class="ml-auto col-md-6 mr-auto mt-5">
             {% include '@util/message.twig' %}
             {% if done %}
+                <div class="text-center">
+                    <a class="btn btn-info" href="{{base}}/login/">Login</a>
+                </div>
             {% else %}
                 {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'well'})}}
                     {{f.hidden({name: 'uid', value: pwuser.getID})}}
