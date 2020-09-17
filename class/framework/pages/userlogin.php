@@ -287,7 +287,6 @@
             if ($rest[0] === '')
             {
                 $lg = $fdt->fetch('eorl', '');
-                $tpl = '@users/reset.twig';
                 if ($lg !== '')
                 {
                     $user = self::eorl($lg);
@@ -321,7 +320,7 @@
                             $xc->user->setpw($pw);
                             R::trash($xc);
                             $local->message(Local::MESSAGE, 'You have reset your password. You can now login.');
-                            $tpl = '@content/index.twig';
+                            $local->addval('done', TRUE);
                         }
                         else
                         {
