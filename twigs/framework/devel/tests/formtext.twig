@@ -22,4 +22,7 @@
         {{f.textarea({label: 'Textarea', id : 'taid4', name: 'ta4', ph: 'Textarea disabled with value', value: 'with value', disabled: TRUE, required: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid5', name: 'ta5', ph: 'Textarea readonly', required: TRUE, readonly: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid6', name: 'ta6', ph: 'Textarea readonly with value', value: 'with value', required: TRUE, readonly: TRUE})}}
+        {{f.startfset({legend: 'Frameset', class: 'jumbotron'})}}
+                {{f.text({label: 'Text', id : 'textid7', name: 'text1', ph: 'Inside a frameset', required: TRUE, data: {test: 'test'}})}}
+        {{f.endfset()}}
     {{f.endform()}}
