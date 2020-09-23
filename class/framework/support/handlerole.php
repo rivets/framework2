@@ -41,6 +41,7 @@
  *
  * @param string    $contextname    The name of a context...
  * @param string    $rolename       The name of a role - if this is the empty string then having the context is enough
+
  *
  * @return ?object
  */
@@ -56,7 +57,7 @@
             {
                 return NULL;
             }
-            return $this->hasrolebybean($rolecontextbean, $rolenamebean);
+            return $this->hasRoleByBean($rolecontextbean, $rolenamebean);
         }
 /**
  * Check for a role by bean
@@ -66,7 +67,7 @@
  *
  * @return ?object
  */
-        public function hasrolebybean(\RedBeanPHP\OODBBean $rolecontext, ?\RedBeanPHP\OODBBean $rolename) : ?object
+        public function hasRoleByBean(\RedBeanPHP\OODBBean $rolecontext, ?\RedBeanPHP\OODBBean $rolename) : ?object
         {
             return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::USER.'_id=? '.
                 (!is_null($rolename) ? 'and '.FW::ROLENAME.'_id=? ' : '').
@@ -113,7 +114,7 @@
             string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $cont = \Support\Context::getinstance();
-            return $this->addrolebybean($cont->rolecontext($contextname), $cont->rolename($rolename),
+            return $this->addRoleByBean($cont->rolecontext($contextname), $cont->rolename($rolename),
                 $otherinfo, $start, $end);
         }
 /**
@@ -127,7 +128,7 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function addrolebybean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename,
+        public function addRoleByBean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename,
             string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
         {
             $r = \R::dispense($this->roletype);
@@ -190,7 +191,7 @@
 
                     $rcb = $context->load(FW::ROLECONTEXT, $cn);
                     $rnb = $context->load(FW::ROLENAME, $rn);
-                    $prole = $this->hasrolebybean($rcb, $rnb);
+                    $prole = $this->hasRoleByBean($rcb, $rnb);
                     if (is_object($prole))
                     { # exists already...
                         $prole->start = $start;
@@ -200,7 +201,7 @@
                     }
                     else
                     {
-                        $this->addrolebybean($rcb, $rnb, $info, $start, $end);
+                        $this->addRoleByBean($rcb, $rnb, $info, $start, $end);
                     }
                 }
             }
