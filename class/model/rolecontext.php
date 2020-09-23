@@ -4,6 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-20120Newcastle University
+ * @package The_Framework
  */
     namespace Model;
 
