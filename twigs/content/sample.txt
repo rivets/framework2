@@ -45,6 +45,11 @@
 {% set description = 'A PHP framework for building RESTfuk systems' %}
 #}
 
+{#
+   You can set a schema that describes the page with this variable - see http://schema.org for what values are available
+{% set schema = 'itemscope="" itemtype="http://schema.org/AboutPage"' %}
+#}
+
 {% extends '@content/page.twig' %}
 
 {# this brings in some useful macros for making forms
