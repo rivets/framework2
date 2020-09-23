@@ -124,98 +124,7 @@
                 $fd = fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd, '{# Uncomment this if your page uses AJAX
-{% set ajax = TRUE %}
-#}
-
-{% extends \'@content/page.twig\' %}
-
-{# this brings in some useful macros for making forms
-{% import \'@util/formmacro.twig\' as f %}
-#}
-
-{# this brings in some useful macros for making bootstrap modals
-{% import \'@util/modalmacro.twig\' as f %}
-#}
-
-{# put a string in this block that will appear as the title of the page
-{% block title %}
-{% endblock title %}
-#}
-
-{% block links %}
-{# <link> for non-css and non-type things#}
-{% endblock links %}
-
-{% block type %}
-{# <link> for webfonts #}
-{% endblock type %}
-
-{% block css %}
-{# <link> for any other CSS files you need #}
-{% endblock css %}
-
-{% block scripts %}
-{# <script src=""></script> for any other JS files you need #}
-{% endblock scripts %}
-
-{% block setup %}
-{# Any javascript you need that is NOT run on load goes in this block. NB you don\'t need <script></script> tags  here #}
-{% endblock setup %}
-
-{% block onload %}
-{# Any javascript you need that MUST run on load goes in this block. NB you don\'t need <script></script> tags  here #}
-{% endblock onload %}
-
-{# If you include this, then the navigation bar in @util/page.twig will **NOT** appear
-{% block navigation %}
-{% endblock navigation %}
-#}
-
-{#
-    Edit the file navbar.twig to change the appearance of the
-    navigation bar. It is included by default from @util/page.twig
-#}
-
-{# uncomment this and delete header block to remove the <header> tag altogether
-{% block pageheader %}
-{% endblock pageheader %}
-#}
-
-{#
-    If you have a standard header for all (most) pages then put the
-    content in the file header.twig. It is included by @util/page.twig by
-    default. You then don\'t need to have a header block either.
-#}
-
-{% block header %}
-    <article class="col-md-12 mt-5">
-        <h1 class="text-center">'.strtoupper($page).'</h1>
-    </article>
-{% endblock header %}
-
-{% block main %}
-    <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
-            <p>Coming soon</p>
-        </article>
-    </section>
-{% endblock main %}
-
-{# uncomment this  and delete footer block to remove the <footer> tag altogether
-{% block pagefooter %}
-{% endblock pagefooter %}
-#}
-
-{#
-    If you have a standard footer for all (most) pages then put the
-    content in the file footer.twig. It is included by @util/page.twig by
-    default. You then don\'t need to have a footer block either.
-#}
-
-{% block footer %}
-{% endblock footer %}
-');
+                    fwrite($fd, file_get_contents($context->local()->makebasepath('twigs', 'content', 'sample.txt')));
                     fclose($fd);
                 }
             }
@@ -281,12 +190,13 @@
                             fwrite($fd, '<?php
 /**
  * A class that contains code to handle any requests for  /'.$p->name.'/
+ *
+ * @author Your Name <Your@email.org>
+ * @copyright year You
  */
     namespace '.$namespace.';
 
-    use \\Config\\Config as Config;
     use \\Support\\Context as Context;
-    use \R as R;
 /**
  * Support /'.$p->name.'/
  */
@@ -297,7 +207,7 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return string   A template name
+ * @return string|array   A template name
  */
         public function handle(Context $context)
         {
