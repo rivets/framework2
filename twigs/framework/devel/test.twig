@@ -1,3 +1,8 @@
+{% set breadcrumbs = [{link: base~'/devel', text: 'Developer'}, {link: base~'/devel/test/', text: 'Test'}, {text: 'Test Page'}] %}
+{% set title = 'The Framework: Test Page' %}
+{% set keywords = 'framework, test' %}
+{% set description = 'A page that tests various features of the Framework' %}
+
 {% extends '@content/page.twig' %}
 
 {% import '@util/accmacro.twig' as a %}
