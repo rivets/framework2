@@ -29,6 +29,7 @@
         ];
 
         use \ModelExtend\FWEdit;
+        use \ModelExtend\MakeGuard;
 /**
  * Check for a URL or // URL or a local filename - return value or throw
  *
@@ -126,15 +127,6 @@
  */
         public function startEdit(Context $context) : void
         {
-        }
-/**
- * Return the CSRFGuard inputs for inclusion in a form;
- *
- * @return string
- */
-        public function guard() : string
-        {
-            return \Framework\Utility\CSRFGuard::getinstance()->inputs();
         }
 /**
  * Handle an edit form for this fwconfig item
