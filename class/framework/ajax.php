@@ -73,7 +73,7 @@
             }
             else
             {
-                $class = "\\Ajax\\".$op;
+                $class = '\\Ajax\\'.$op;
                 if (!class_exists($class))
                 { # not a developer provided ajax op
                     $context->web()->bad('No such operation');
