@@ -43,25 +43,30 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({
-        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: framework.editcall
-    });
-    $('#npform').on('submit', false).parsley();
-    $('#npkind').on('change', function(e) {
-        var pn = $('#npname').val().toLowerCase();
+    for (var p in document.getElementsByClassName('ppedit'))
+    {
+        p.editable({
+            ajaxOptions: {
+                type: '{{constant('Config\\Config::PUTORPATCH')}}' },
+                params: paramset,
+                source: kname,
+                onblur: 'cancel',
+                url: framework.editcall
+        });
+    }
+    document.getElementById('npform').addEventListener('submit', false)
+    document.getElementById('npform').parsley();
+    document.getElementById('#npkind').addEventListener('change', function(e) {
+        var pn = document.getElementById('npname').value.toLowerCase();
         if (pn != '')
         {
-            switch ($(this).val())
+            switch (this.value)
             {
             case '1':
-                $('#npsrc').val('\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1));
+                document.getElementById('npsrc').value = '\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1);
                 break;
             case '2':
-                $('#npsrc').val('@content/'+pn+'.twig');
+                document.getElementById('npsrc').value = '@content/'+pn+'.twig';
                 break;
             }
         }
