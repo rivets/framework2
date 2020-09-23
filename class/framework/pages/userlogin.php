@@ -346,7 +346,7 @@
                     {
                         $local->addval([
                             'pwuser' => $x->user,
-                            'code'   => $x->code
+                            'code'   => $x->code,
                         ]);
                         $tpl = '@users/pwreset.twig';
                     }

@@ -96,12 +96,11 @@
  * Make a twig file if we have permission
  *
  * @param \Support\Context    $context    The Context object
- * @param string    $page       The name of the page
  * @param string    $name       The name of the twig
  *
  * @return void
  */
-        private static function maketwig(Context $context, string $page, string $name) : void
+        private static function maketwig(Context $context, string $name) : void
         {
             if (preg_match('%@content/(.*)%', $name, $m))
             {
@@ -219,7 +218,7 @@
                             fclose($fd);
                         }
                     }
-                    self::maketwig($context, $p->name, '@content/'.$lbase.'.twig');
+                    self::maketwig($context, '@content/'.$lbase.'.twig');
                     break;
                 case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
