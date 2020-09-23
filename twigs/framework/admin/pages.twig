@@ -115,7 +115,7 @@
         const mobile = $('#npmobile').is(':checked') ? 1 : 0;
         $('#npage').modal('hide');
         var fn = function(data){
-                const htm = '<tr><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+                const htm = '<tr data-id="'+data+'"><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
@@ -239,7 +239,7 @@
                     {value: 9,  text: 'In-site 307'},
                     {value: 10,  text: 'External 307'},
                     {value: 11,  text: 'Internal 308'},
-                    {value: 12,  text: 'External 308'},                   
+                    {value: 12,  text: 'External 308'},
             ]})}}
             {{f.text({label: 'Source', id: 'npsrc', ph: 'page.twig, class name, /local/redirection or URL', required: TRUE})}}
             {{f.checkbox({labels: ['Active'], values:[1], ids: ['npactive']})}}
