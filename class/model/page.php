@@ -85,6 +85,7 @@
                     if (!$match ||                                          // User does not have all the required roles
                         ($this->bean->mobileonly && !$context->hasToken())) // not mobile and logged in
                     {
+                        \Framework\Dispatch::basicSetup($context, 'error');
                         $context->web()->sendString($context->local()->getRender('@error/403.twig'), \Framework\Web\Web::HTMLMIME, \Framework\Web\StatusCodes::HTTP_FORBIDDEN);
                         exit;
                     }

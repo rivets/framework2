@@ -103,9 +103,44 @@
  */
         private static $configs = ['lang', 'keywords', 'description'];
 /**
+ * Setup basic values
+ *
+ * @param Context   $context
+ * @param string    $action
+ *
+ * @return void
+ */
+        public function basicSetup(Context $context, string $action) : void
+        {
+            $basicvals = [
+                'context'           => $context,
+                'action'            => $action,
+                'siteinfo'          => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
+                'ajax'              => FALSE,                            // Mark pages as not using AJAX by default
+                'usejquery'         => TRUE,
+                'usebootstrapcss'   => TRUE,
+                'usebootstrapjs'    => TRUE,
+                'usebootbox'        => TRUE,
+                'usevue'            => FALSE,
+            ];
+            foreach (self::$configs as $cf)
+            {
+                try
+                {
+                    $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
+                    $basicvals[$cf] = $constant_reflex->getValue();
+                }
+                catch (\ReflectionException $e)
+                {
+                    NULL; // void
+                }
+            }
+            $context->local()->addval($basicvals, '', TRUE);
+        }
+/**
  * Handle dispatch of a page.
  *
- * @param \Support\Context    $context
+ * @param Context   $context
  * @param string    $action
  *
  * @psalm-suppress PossiblyUndefinedMethod
@@ -142,30 +177,7 @@
                 $page->check($context);
             }
 
-            $basicvals = [
-                'context'           => $context,
-                'action'            => $action,
-                'siteinfo'          => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
-                'ajax'              => FALSE,                            // Mark pages as not using AJAX by default
-                'usejquery'         => TRUE,
-                'usebootstrapcss'   => TRUE,
-                'usebootstrapjs'    => TRUE,
-                'usebootbox'        => TRUE,
-                'usevue'            => FALSE,
-            ];
-            foreach (self::$configs as $cf)
-            {
-                try
-                {
-                    $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
-                    $basicvals[$cf] = $constant_reflex->getValue();
-                }
-                catch (\ReflectionException $e)
-                {
-                    NULL; // void
-                }
-            }
-            $local->addval($basicvals, '', TRUE);
+            self::basicSetup($context, $action);
 
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
