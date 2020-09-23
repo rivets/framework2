@@ -42,8 +42,6 @@
  * @param string    $contextname    The name of a context...
  * @param string    $rolename       The name of a role - if this is the empty string then having the context is enough
  *
- * @todo possibly rewrite this to do a join rather than 2/3 calls on the DB
- *
  * @return ?object
  */
         public function hasrole(string $contextname, string $rolename) : ?object
@@ -52,14 +50,7 @@
             try
             {
                 $rolecontextbean = $cont->rolecontext($contextname);
-                if ($rolename === '')
-                { # we only are checking for a context
-                    $rolenamebean = NULL;
-                }
-                else
-                {
-                    $rolenamebean = $cont->rolename($rolename);
-                }
+                $rolenamebean = $rolename === '' ? NULL : $cont->rolename($rolename); // if === '' then only checking for a context
             }
             catch (\Framework\Exception\InternalError $e)
             {
