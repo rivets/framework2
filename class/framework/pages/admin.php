@@ -268,6 +268,10 @@
                     fputs($fd, $msg);
                     fclose($fd);
                 }
+                else
+                {
+                    $adminonly = FALSE;
+                }
                 $local->message(\Framework\Local::MESSAGE, 'Done');
             }
             $local->addval([
