@@ -11,7 +11,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2020 Newcastle University
- * @package The_Framework
+ * @package Framework
  */
     namespace Config;
 
