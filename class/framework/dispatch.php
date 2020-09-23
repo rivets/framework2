@@ -110,7 +110,7 @@
  *
  * @return void
  */
-        public function basicSetup(Context $context, string $action) : void
+        public static function basicSetup(Context $context, string $action) : void
         {
             $basicvals = [
                 'context'           => $context,
