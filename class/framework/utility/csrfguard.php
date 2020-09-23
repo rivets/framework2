@@ -56,7 +56,7 @@
             }
             $token = $_SESSION[$uname];
             unset($_SESSION[$uname]);
-            return $token == $tocheck;
+            return hash_equals($token, $tocheck); // constant time string comparison
         }
 /**
  * Generate a name and a token
