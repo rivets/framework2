@@ -34,11 +34,7 @@
                 $res[] = $this->hasrole(...$rc);
             }
             $res = array_filter($res); // get rid of any null entries
-            if ($or)
-            {
-                return $res;
-            }
-            return count($res) === count($roles) ? $res : []; // for an "and" you have to have all of them.
+            return $or ? $res : (count($res) === count($roles) ? $res : []); // for an "and" you have to have all of them.
         }
 /**
  * Check for a role
