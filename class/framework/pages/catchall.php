@@ -47,6 +47,7 @@
 
             default:
                 $local->addval('page', $_SERVER['REQUEST_URI']);
+                \Framework\Dispatch::basicSetup($context, 'error');
                 return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
             }
             return $tpl;

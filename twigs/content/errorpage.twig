@@ -1,7 +1,4 @@
-{% set usebootstrapcss = TRUE %}
-{% set usebootstrapjs = TRUE %}
-
-{% set title = heading %}
+{% set title = fwurls.sitename.value|upper ~ ': ' ~ heading %}
 
 {% extends '@content/page.twig' %}
 
@@ -9,7 +6,7 @@
 
 {% block header %}
     <section class="ml-auto col-md-8 mr-auto mt-5 text-center">
-        <h1>{{heading}}</h1>
+        <h1 class="text-center">{{heading}}</h1>
     </section>
 {% endblock header %}
 
