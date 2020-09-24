@@ -11,6 +11,7 @@
     $('#nopu').on('click', function(e){
         $(this).toggleClass('btn-primary').toggleClass('btn-warning');
     })
+    {{a.caretJS('acc1')}}
 {% endblock onload %}
 
 {% block header %}
@@ -28,7 +29,7 @@
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
                 {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},
                 {id: 'modal', title: 'Modals', file: '@devel/tests/modal.twig'},
-            ])}}
+            ], TRUE)}}
         </article>
     </section>
     {% include '@devel/tests/modalbody.twig' %}

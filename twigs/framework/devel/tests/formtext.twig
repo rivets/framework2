@@ -5,7 +5,7 @@
         {{f.text({label: 'Text', id : 'textid2', name: 'text2', ph: 'text type required', value: 'with value', required: TRUE})}}
         {{f.text({label: 'Text', id : 'textid3', name: 'text3', ph: 'text type disabled', disabled: TRUE})}}
         {{f.text({label: 'Text', id : 'textid4', name: 'text4', ph: 'text type disabled', value: 'with value disabled', disabled: TRUE})}}
-        {{f.text({label: 'Text', id : 'textid5', name: 'text5', ph: 'text type readonly', readonly: TRUE})}}
+        {{f.text({label: 'Text', id : 'textid5', name: 'text5', ph: 'text type readonly', readonly: TRUE, help: 'This is readonly'})}}
         {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', value: 'with value readonly', readonly: TRUE})}}
         {{f.password({label: 'Password', id : 'pwid1', name: 'pw1', ph: 'password type'})}}
         {{f.password({label: 'Password', id : 'pwid2', name: 'pw2', ph: 'password type disabled', disabled: TRUE})}}
@@ -20,7 +20,7 @@
         {{f.textarea({label: 'Textarea', id : 'taid2', name: 'ta2', ph: 'Textarea with value', value: 'with value', required: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid3', name: 'ta3', ph: 'Textarea disabled', required: TRUE, disabled: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid4', name: 'ta4', ph: 'Textarea disabled with value', value: 'with value', disabled: TRUE, required: TRUE})}}
-        {{f.textarea({label: 'Textarea', id : 'taid5', name: 'ta5', ph: 'Textarea readonly', required: TRUE, readonly: TRUE})}}
+        {{f.textarea({label: 'Textarea', id : 'taid5', name: 'ta5', ph: 'Textarea readonly', required: TRUE, readonly: TRUE, help: 'This is readonly'})}}
         {{f.textarea({label: 'Textarea', id : 'taid6', name: 'ta6', ph: 'Textarea readonly with value', value: 'with value', required: TRUE, readonly: TRUE})}}
         {{f.startfset({legend: 'Frameset', class: 'jumbotron'})}}
                 {{f.text({label: 'Text', id : 'textid7', name: 'text1', ph: 'Inside a frameset', required: TRUE, data: {test: 'test'}})}}
