@@ -28,6 +28,6 @@
         $('i.fa', $('#'+ch)).removeClass('caret-right').addClass('caret-down');
     }).on('hide.bs.collapse', function(e) {
         let ch = $(e.target).attr('aria-labelledby');
-        $('i.fa', $('#'+ch)h).removeClass('caret-down').addClass('caret-right');
+        $('i.fa', $('#'+ch)).removeClass('caret-down').addClass('caret-right');
     });
 {% endmacro caretJS %}
