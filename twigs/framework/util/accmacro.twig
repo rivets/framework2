@@ -1,11 +1,11 @@
 {% import '@content/iconmacro.twig as fa %}
-{% macro accordion(id, tabs) %}
+{% macro accordion(id, tabs, carets = FALSE) %}
     <div class="accordion" id="{{id}}">
         {% for t in tabs %}
             <div class="card">
                 <div class="card-header" id="{{t.id}}">
                     <h4 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">{{t.title}} {{fa.fa('caret-right')}}</button>
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">{{t.title}}{% if carets %} {{fa.fa('caret-right')}}{% endif %}</button>
                     </h4>
                 </div>
                 <div id="col{{t.id}}" class="collapse" aria-labelledby="{{t.id}}" data-parent="#{{id}}">
