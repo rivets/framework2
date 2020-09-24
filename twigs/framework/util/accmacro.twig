@@ -1,5 +1,5 @@
-{% import '@content/iconmacro.twig' as fa %}
 {% macro accordion(id, tabs, carets = FALSE) %}
+    {% import '@content/iconmacro.twig' as fa %}
     <div class="accordion" id="{{id}}">
         {% for t in tabs %}
             <div class="card">
