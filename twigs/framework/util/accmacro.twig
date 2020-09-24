@@ -21,3 +21,11 @@
         {% endfor %}
     </div>
 {% endmacro accordion %}
+
+{% macro caretJS(id) %}
+    $('#{{id}}').on('show.bs.collapse', function(e){
+    console.log(e.target);
+    }).on('hide.bs.collapse, function(e) {
+    console.log(e.target);
+    })
+{% endmacro caretjs %}
