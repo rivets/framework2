@@ -25,10 +25,10 @@
 {% macro caretJS(id) %}
     $('#{{id}}').on('show.bs.collapse', function(e){
         let ch = $(e.target).attr('aria-labelledby');
-        console.log(ch);
-        $('i.fa-caret-right', $('#'+ch)).removeClass('caret-right').addClass('caret-down');
+        console.log($('#'+ch));
+        $('.fa-caret-right', $('#'+ch)).removeClass('caret-right').addClass('caret-down');
     }).on('hide.bs.collapse', function(e) {
         let ch = $(e.target).attr('aria-labelledby');
-        $('i.fa-caret-down', $('#'+ch)).removeClass('caret-down').addClass('caret-right');
+        $('.fa-caret-down', $('#'+ch)).removeClass('caret-down').addClass('caret-right');
     });
 {% endmacro caretJS %}
