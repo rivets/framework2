@@ -74,7 +74,7 @@
               if (this.status >= 200 && this.status < 400) {
                 // Success!
                 success(JSON.parse(this.response));
-                
+
               } else {
                 // We reached our target server, but it returned an error
                 fail(this);
@@ -174,7 +174,7 @@
  * @param {int} id - the id of the bean to be deleted
  * @param {function} yes - the function to call on success
  * @param {string} msg - included in part of the "do you want to delete" prompt
- * 
+ *
  * @return {void}
  */
         deletebean: function(e, x, bean, id, yes, msg = '')
@@ -265,6 +265,10 @@
         dodelbean: function(e, x, bean, msg = '', ntype = 'tr')
         {
             let pnode = x.closest(ntype);
+            if (pnode instanceof jQuery)
+            {
+                pnode = pnode[0];
+            }
             framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){framework.fadetodel(pnode);}, msg);
         },
 /**
