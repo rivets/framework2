@@ -177,16 +177,22 @@
 /**
  * Is the key in the array?
  *
+ * @TODO Fix the need for two calls. They are there because getval does an array check which is
+ *       not relevant for an existence check. We need a three valued boolean :-)
+ *
  * @param mixed    $name   The keys
  *
  * @return bool
  */
         public function exists($name) : bool
         {
-            return $this->getValue($name, NULL, FALSE)[0];
+            return $this->getValue($name, NULL, FALSE, FALSE)[0] || $this->getValue($name, NULL, FALSE, TRUE)[0];
         }
 /**
- * Is the key in the $_GET array?
+ * Is the key in the array?
+ *
+ * @TODO Fix the need for two calls. They are there because getval does an array check which is
+ *       not relevant for an existence check. We need a three valued boolean :-)
  *
  * @param mixed    $name   The keys
  *
@@ -195,7 +201,7 @@
  */
         public function mustExist($name) : bool
         {
-            return $this->getValue($name, NULL, TRUE)[0];
+            return $this->getValue($name, NULL, TRUE, FALSE)[0] || $this->getValue($name, NULL, TRUE, TRUE)[0];
         }
     }
 ?>
