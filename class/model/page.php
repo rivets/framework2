@@ -72,7 +72,7 @@
             if ($this->bean->needlogin)
             {
                 if (!$context->hasuser())
-                { # not logged in
+                { // not logged in
                     $context->divert('/login/?goto='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
@@ -144,11 +144,11 @@
             $fdt = $context->formdata('post');
             $p = \R::dispense('page');
             foreach (['name', 'kind', 'source'] as $fld)
-            { # mandatory
+            { // mandatory
                 $p->{$fld} = $fdt->mustFetch($fld);
             }
             foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
-            { # optional flags
+            { // optional flags
                 $p->{$fld} = $fdt->fetch($fld, 0);
             }
             try
@@ -172,7 +172,7 @@
                 {
                 case Dispatch::OBJECT:
                     if (!preg_match('/\\\\/', $p->source))
-                    { # no namespace so put it in \Pages
+                    { // no namespace so put it in \Pages
                         $p->source = '\\Pages\\'.$p->source;
                         \R::store($p);
                     }
@@ -223,11 +223,11 @@
                     break;
                 case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
-                    { # add .twig to name
+                    { // add .twig to name
                         $p->source .= '.twig';
                     }
                     if (!preg_match('/^@/', $p->source))
-                    { # no namespace so put it in @content
+                    { // no namespace so put it in @content
                         $p->source = '@content/'.$p->source;
                         \R::store($p);
                     }

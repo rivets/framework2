@@ -28,7 +28,7 @@
         {
             $fd = $context->formdata('post');
             if (($msg = $fd->fetch('message', '')) !== '')
-            { # there is a post
+            { // there is a post
                 $subj = $fd->fetch('subject', '');
                 $sender = $fd->fetch('sender', '', FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)

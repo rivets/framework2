@@ -56,7 +56,7 @@
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
             if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())
-            { # not simple toggling... and can only be done by the Site Administrator
+            { // not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
                     $bn->delrole(FW::FWCONTEXT, $field);

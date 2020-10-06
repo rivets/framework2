@@ -31,11 +31,11 @@
                 $this->tellAdmin($title.' - '.$msg, 'Error', 'local.php', 0);
             }
             if ($this->local->hasTwig())
-            { # we have twig so can render a template
+            { // we have twig so can render a template
                 $this->local->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
             }
             else
-            { # generate a very simple page...
+            { // generate a very simple page...
                 echo '<!doctype html><html><head><title>'.$title.'</title></head><body><h1>'.$title.'</h1><p>'.$msg.'</p></body></html>';
             }
             exit;
@@ -49,9 +49,9 @@
         public function shutdown() : void
         {
             if ($error = error_get_last())
-            { # are we terminating with an error?
+            { // are we terminating with an error?
                 if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
-                { # tell the developers about this
+                { // tell the developers about this
                     $ekey = $this->tellAdmin(
                         $error['message'],
                         $error['type'],
@@ -65,7 +65,7 @@
                     echo '<h2>There has been a system error</h2>';
                 }
             }
-            \R::close(); # close RedBean connection
+            \R::close(); // close RedBean connection
         }
 /**
  * Deal with untrapped exceptions - see PHP documentation
@@ -107,8 +107,8 @@
         public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
         {
             if ($this->errignore)
-            { # wanted to ignore this so just return
-                $this->wasignored = TRUE; # remember we did ignore though
+            { // wanted to ignore this so just return
+                $this->wasignored = TRUE; // remember we did ignore though
                 return TRUE;
             }
             if ($this->error)
@@ -122,7 +122,7 @@
                 $errline
             );
             if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
-            { # this is an internal error or we are debugging, so we need to stop
+            { // this is an internal error or we are debugging, so we need to stop
                 $this->make500($ekey);
                 exit;
                 /* NOT REACHED */

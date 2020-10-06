@@ -90,9 +90,9 @@
     function shutdown()
     {
         if ($error = error_get_last())
-        { # are we terminating with an error?
+        { // are we terminating with an error?
             if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
-            { # tell the developers about this
+            { // tell the developers about this
                 echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
             }
             else
@@ -103,7 +103,7 @@
         }
         if (class_exists('R'))
         {
-            \R::close(); # close RedBean connection
+            \R::close(); // close RedBean connection
         }
     }
 /**
@@ -144,7 +144,7 @@
         echo '</pre>';
 
         if (in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
-        { # this is an internal error so we need to stop
+        { // this is an internal error so we need to stop
             cleanup();
             exit;
             /** NOT REACHED **/
@@ -188,9 +188,9 @@
         $role = \R::dispense($type);
         $role->otherinfo = '-';
         $role->start = $now;
-        $role->end = $now; # this makes RedBean make it a datetime field
+        $role->end = $now; // this makes RedBean make it a datetime field
         \R::store($role);
-        $role->end = NULL; # clear end date as we don't want to time limit admin
+        $role->end = NULL; // clear end date as we don't want to time limit admin
         \R::store($role);
         $xown = 'xown'.ucfirst($type);
         $owner->{$xown}[] = $role;
@@ -238,7 +238,7 @@
     set_error_handler('error_handler');
     register_shutdown_function('shutdown');
 
-    set_time_limit(120); # some people have very slow laptops and they run out of time on the installer.
+    set_time_limit(120); // some people have very slow laptops and they run out of time on the installer.
 /*
  * Initialise template engine - check to see if it is installed!!
  *
@@ -258,10 +258,10 @@
  *
  * DOCUMENT_ROOT should be a substring of __DIR__ in a non-linked situation.
  */
-    $dn = preg_replace('#\\\\#', '/', __DIR__); # windows installers have \ in the name
-    $sdir = preg_replace('#/+$#', '', $_SERVER['DOCUMENT_ROOT']); # remove any trailing / characters
+    $dn = preg_replace('#\\\\#', '/', __DIR__); // windows installers have \ in the name
+    $sdir = preg_replace('#/+$#', '', $_SERVER['DOCUMENT_ROOT']); // remove any trailing / characters
     while (strpos($dn, $sdir) === FALSE)
-    { # ugh - not on the same path
+    { // ugh - not on the same path
         $sdn = $sdir;
         $sdr = [];
         while (!is_link($sdn) && $sdn != '/')
@@ -271,7 +271,7 @@
             $sdr[] = $pp['basename'];
         }
         if (is_link($sdn))
-        { # not a symbolic link clearly.
+        { // not a symbolic link clearly.
             $sdir = preg_replace('#/+$#', '', readlink($sdn).'/'.implode('/', $sdr));
         }
         else
@@ -361,7 +361,7 @@
     $tpl = 'install.twig';
     $host = $_SERVER['HTTP_HOST'];
     switch ($host)
-    { # makes for a proper looking fake email address....
+    { // makes for a proper looking fake email address....
     case 'localhost':
     case '127.0.0.1':
         $host = 'localhost.org';
@@ -465,9 +465,9 @@
 //    $vals['hasconfig'] = $hasconfig;
 //    $vals['hashtaccess'] =  $hashtaccess;
     if (!$fail && filter_has_var(INPUT_POST, 'sitename'))
-    { # this is an installation attempt
+    { // this is an installation attempt
         $cvars = [
-            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string', 'mysql'],  # name of const, add to DB?, non-optional?, type, default
+            'dbtype'        => ['DBTYPE', FALSE, TRUE, 'string', 'mysql'],  // name of const, add to DB?, non-optional?, type, default
             'dbhost'        => ['DBHOST', FALSE, TRUE, 'string', 'localhost'],
             'dbname'        => ['DB', FALSE, TRUE, 'string', ''],
             'dbuser'        => ['DBUSER', FALSE, TRUE, 'string', ''],
@@ -559,7 +559,7 @@
             foreach ($cvars as $fld => $pars)
             {
                 if ($pars[0] !== '')
-                { # Only save relevant values - see above
+                { // Only save relevant values - see above
                     fputs($fd, "        public const ".$pars[0]."\t= ");
                     switch($pars[3])
                     {
@@ -612,8 +612,8 @@
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
             'Date'                   => gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-Target'          => '_top',      # deframes things
-            'X-Frame-Options'	     => 'DENY',      # deframes things: SAMEORIGIN would allow this site to use frames
+            'Window-Target'          => '_top',      // deframes things
+            'X-Frame-Options'	     => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
             'Content-Language'	     => 'en',
             'Vary'                   => 'Accept-Encoding',
             'X-Content-Type-Options' => 'nosniff',
@@ -679,12 +679,12 @@
      */
             try
             {
-                $now = \R::isodatetime(time() - (int) date('Z')); # make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
+                $now = \R::isodatetime(time() - (int) date('Z')); // make sure the timestamp is in UTC (this should fix a problem with some XAMPP installations where the timezone is not local)
                 $vals['dbtype'] = $cvalue['dbtype'];
                 $vals['dbhost'] = $cvalue['dbhost'];
                 $vals['dbname'] = $cvalue['dbname'];
                 $vals['dbuser'] = $cvalue['dbuser'];
-                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); # mysql initialiser
+                \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); // mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
                 $user = R::dispense(DBPREFIX.'user');
@@ -756,7 +756,7 @@
                 $pages = [
                     'about'         => [\Framework\Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
                     'admin'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
-                    'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], # not active - really only needed when total cacheability is needed
+                    'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
                     'contact'       => [\Framework\Dispatch::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
                     'cspreport'     => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
@@ -798,7 +798,7 @@
                 $tpl = 'success.twig';
             }
             catch (Exception $e)
-            { # something went wrong - so cleanup and try again...
+            { // something went wrong - so cleanup and try again...
                 $vals['dberror'] = $e->getMessage();
                 $vals['fail'] = TRUE;
                 cleanup();

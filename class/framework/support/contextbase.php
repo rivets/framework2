@@ -225,7 +225,7 @@
         public function formData(?string $which = NULL) : object
         {
             if ($which == NULL)
-            { # this is backward compatibility and will be removed in the future
+            { // this is backward compatibility and will be removed in the future
                 return \Framework\Support\FormData::getInstance();
             }
             if (!isset($this->getters[$which]))
@@ -323,10 +323,10 @@
                 $uri = $_SERVER['REQUEST_URI'];
             }
             if ($_SERVER['QUERY_STRING'] !== '')
-            { # there is a query string so get rid it of it from the URI
+            { // there is a query string so get rid it of it from the URI
                 [$uri] = explode('?', $uri);
             }
-            $req = array_filter(explode('/', $uri)); # array_filter removes empty elements - trailing / or multiple /
+            $req = array_filter(explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
@@ -336,15 +336,15 @@
  * this then optimise the hell out of it.
  */
             if ($this->local()->base() !== '')
-            { # we are in at least one sub-directory
+            { // we are in at least one sub-directory
                 $bsplit = array_filter(explode('/', $this->local()->base()));
                 foreach (range(1, count($bsplit)) as $c)
                 {
-                    array_shift($req); # pop off the directory name...
+                    array_shift($req); // pop off the directory name...
                 }
             }
             if (!empty($req))
-            { # there was something after the domain name so split it into action and rest...
+            { // there was something after the domain name so split it into action and rest...
                 $this->reqaction = strtolower(array_shift($req));
                 $this->reqrest = empty($req) ? [''] : array_values($req);
             }

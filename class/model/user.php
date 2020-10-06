@@ -26,7 +26,7 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
-            'email'     => [TRUE, FALSE],         # [NOTEMPTY]
+            'email'     => [TRUE, FALSE],         // [NOTEMPTY]
         ];
 
         use \ModelExtend\User;
@@ -43,7 +43,7 @@
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
-            $now = $context->utcnow(); # make sure time is in UTC
+            $now = $context->utcnow(); // make sure time is in UTC
             $fdt = $context->formdata('post');
             $pw = $fdt->mustFetch('password'); // make sure we have a password...
             if (self::pwValid($pw))

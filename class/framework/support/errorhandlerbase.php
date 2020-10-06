@@ -30,7 +30,7 @@
 /**
  * @var bool    If TRUE then ignore trapped errors
  */
-        protected $errignore      = FALSE;    # needed for checking preg expressions....
+        protected $errignore      = FALSE;    // needed for checking preg expressions....
 /**
  * @var bool    Set to TRUE if an error was trapped and ignored
  */
@@ -161,7 +161,7 @@
                     $this->debug = TRUE;
                     ob_start();
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
-                    $this->back .= ob_get_clean(); # will get used later in make500
+                    $this->back .= ob_get_clean(); // will get used later in make500
                 }
                 /** @psalm-suppress RedundantCondition */
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
@@ -187,17 +187,17 @@
         protected function make500(string $ekey) : void
         {
             if (!headers_sent())
-            { # haven't generated any output yet.
+            { // haven't generated any output yet.
                 if ($this->devel || !$this->ajax)
-                { # not in an ajax page so try and send a pretty error
+                { // not in an ajax page so try and send a pretty error
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
                     if (!$this->ajax && $this->local->hasTwig())
-                    { # we have twig so render a nice page
+                    { // we have twig so render a nice page
                         \Framework\Dispatch::basicSetup(\Framework\Context::getinstance(), 'error');
                         $this->local->render('@error/500.twig', ['errdata' => $str], Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
-                    { # no twig or ajax so just dump
+                    { // no twig or ajax so just dump
                         Web::getinstance()->internal($str);
                     }
                 }

@@ -21,9 +21,9 @@
     {
         use \Framework\Utility\Singleton;
 
-        public const ERROR     = 0;        # 'fwerrmessage';
-        public const WARNING   = 1;        # 'fwwarnmessage';
-        public const MESSAGE   = 2;        # 'fwmessage';
+        public const ERROR     = 0;        // 'fwerrmessage';
+        public const WARNING   = 1;        // 'fwwarnmessage';
+        public const MESSAGE   = 2;        // 'fwmessage';
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
@@ -161,7 +161,7 @@
  */
         public function assets()
         {
-            return $this->base().'/assets'; # for HTML so the / is OK to use here
+            return $this->base().'/assets'; // for HTML so the / is OK to use here
         }
 /**
  * Return a filesystem path to the assets directory
@@ -291,7 +291,7 @@
                 }
             }
             $this->clearMessages();
-            $this->addval($vals); # set up any values that have been passed
+            $this->addval($vals); // set up any values that have been passed
             /** @psalm-suppress PossiblyNullReference */
             return $this->twig->render($tpl, $this->tvals);
         }
@@ -456,7 +456,7 @@
         {
             $offl = $this->makebasepath('admin', 'adminonly');
             if (file_exists($offl) && !$admin)
-            { # go offline before we try to do anything else as we are not an admin
+            { // go offline before we try to do anything else as we are not an admin
                 $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
@@ -496,13 +496,13 @@
             $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $this);
 
             if ($loadtwig)
-            { # we want twig - there are some autoloader issues out there that adding twig seems to fix....
+            { // we want twig - there are some autoloader issues out there that adding twig seems to fix....
                 $this->setuptwig(FALSE);
             }
 
             $offl = $this->makebasepath('admin', 'offline');
             if (file_exists($offl))
-            { # go offline before we try to do anything else...
+            { // go offline before we try to do anything else...
                 $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
@@ -512,12 +512,12 @@
             class_alias('\RedBeanPHP\R', '\R');
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
-            { # looks like there is a database configured
-                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); # mysql initialiser
-                \R::freeze(!$devel); # freeze DB for production systems
+            { // looks like there is a database configured
+                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                \R::freeze(!$devel); // freeze DB for production systems
                 $this->fwconfig = [];
                 try
-                { # sometimes RB does not get a connection
+                { // sometimes RB does not get a connection
                     foreach (\R::findAll(FW::CONFIG) as $cnf)
                     {
                         $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
@@ -525,14 +525,14 @@
                     }
                 }
                 catch (\Exception $e)
-                { # But what do we do?
+                { // But what do we do?
                     $this->errorHandler->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.', TRUE);
                     /* NOT REACHED */
                 }
                 if ($loadtwig)
                 {
                     /** @psalm-suppress PossiblyNullReference */
-                    $this->twig->addGlobal('fwurls', $this->fwconfig); # Package URL values for use in Twigs
+                    $this->twig->addGlobal('fwurls', $this->fwconfig); // Package URL values for use in Twigs
                 }
             }
             return $this;

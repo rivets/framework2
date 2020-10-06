@@ -69,14 +69,14 @@
             $rest = $context->rest();
             $op = $rest[0];
             if (isset(self::$restops[$op]))
-            { # a Framework Ajax operation
+            { // a Framework Ajax operation
                 $class = self::$restops[$op];
             }
             else
             {
                 $class = '\\Ajax\\'.$op;
                 if (!class_exists($class))
-                { # not a developer provided ajax op
+                { // not a developer provided ajax op
                     $context->web()->bad('No such operation');
                     /* NOT REACHED */
                 }

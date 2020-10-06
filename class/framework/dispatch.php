@@ -164,11 +164,11 @@
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
             catch (\Exception $e)
-            { # You catch DB errors from hacky URL values here.
+            { // You catch DB errors from hacky URL values here.
                 $page = NULL;
             }
             if (!is_object($page))
-            { # No such page or it is marked as inactive
+            { // No such page or it is marked as inactive
                $page = new \stdClass();
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
@@ -221,12 +221,12 @@
 
             default:
                 if (!isset(self::$actions[$page->kind]))
-                { # check value is OK
+                { // check value is OK
                     $context->web()->internal('Bad page kind');
                     /* NOT REACHED */
                 }
                 if (self::$actions[$page->kind][0])
-                { # local diversion
+                { // local diversion
                     $context->divert($page->source, ...self::$actions[$page->kind][1]);
                     /* NOT REACHED */
                 }
@@ -235,7 +235,7 @@
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
             if ($tpl !== '')
-            { # an empty template string means generate no output here...
+            { // an empty template string means generate no output here...
                 $html = $local->getrender($tpl);
                 /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
                 $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.

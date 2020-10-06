@@ -21,7 +21,7 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
-            'value'       => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
+            'value'       => [TRUE, FALSE],         // [NOTEMPTY, CHECK/RADIO]
             'integrity'   => [FALSE, FALSE],
             'crossorigin' => [FALSE, FALSE],
             'defer'       => [FALSE, TRUE],
@@ -42,7 +42,7 @@
         public function checkURL(string $type) : void
         {
             if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
-            { # not a straightforward URL
+            { // not a straightforward URL
                 if (!preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
                 { // not a canonical URL
                     throw new \Framework\Exception\BadValue('Invalid value for '.$type.' item');
