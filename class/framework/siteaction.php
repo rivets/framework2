@@ -29,7 +29,7 @@
  * @psalm-suppress InvalidReturnType
  */
         public function handle(Context $context)
-        { # should never get called really
+        { // should never get called really
             $context->divert('/');
             /* NOT REACHED */
         }
@@ -62,7 +62,7 @@
  */
         public function ifmodcheck(Context $context) : void
         {
-            $ifms = TRUE; # the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
+            $ifms = TRUE; // the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
             if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
             {
                 $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
@@ -72,14 +72,14 @@
                 }
                 $st = strtotime($ifmod);
                 /** @psalm-suppress InvalidScalarArgument */
-                $ifms = $st !== FALSE && $this->checkmodtime($context, $st); # will 304 later if there is no NONE_MATCH or nothing matches
+                $ifms = $st !== FALSE && $this->checkmodtime($context, $st); // will 304 later if there is no NONE_MATCH or nothing matches
             }
             if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
             {
                 if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
                 {
                     if ($this->exists($context))
-                    { # this request would generate a page and has not been modified
+                    { // this request would generate a page and has not been modified
                         $this->etagmatched($context);
                         /* NOT REACHED */
                     }
@@ -88,17 +88,17 @@
                 {
                     foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
                     {
-                        if ($this->checketag($context, substr(trim($etag), 1, -1))) # extract the ETag from its surrounding quotes
-                        { # We have matched the etag and file has not been modified
+                        if ($this->checketag($context, substr(trim($etag), 1, -1))) // extract the ETag from its surrounding quotes
+                        { // We have matched the etag and file has not been modified
                             $this->etagmatched($context);
                             /* NOT REACHED */
                         }
                     }
                 }
-                $ifms = TRUE; # no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
+                $ifms = TRUE; // no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
             }
             if (!$ifms)
-            { # we dont need to send the page
+            { // we dont need to send the page
                 $this->etagmatched($context);
                 /* NOT REACHED */
             }
@@ -113,11 +113,11 @@
                 {
                     foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
                     {
-                        $match |= $this->checketag($context, substr(trim($etag), 1, -1)); # extract the ETag from its surrounding quotes
+                        $match |= $this->checketag($context, substr(trim($etag), 1, -1)); // extract the ETag from its surrounding quotes
                     }
                 }
                 if (!$match)
-                { # nothing matched or did not exist
+                { // nothing matched or did not exist
                     $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
                     exit;
                     /* NOT REACHED */
@@ -130,7 +130,7 @@
                 {
                     $ifus = $m[1];
                 }
-                $st = strtotime($ifus); # ignore if not a valid time
+                $st = strtotime($ifus); // ignore if not a valid time
                 if ($st !== FALSE && $st < $this->lastmodified($context))
                 {
                     $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
@@ -164,7 +164,7 @@
             $web = $context->web();
             $rqm = $web->method();
             if ($rqm != 'GET' && $rqm != 'HEAD')
-            { # fail if not a GET or HEAD - see W3C specification
+            { // fail if not a GET or HEAD - see W3C specification
                 $web->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
             }
             else

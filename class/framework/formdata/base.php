@@ -84,7 +84,7 @@
                 $dt = $this->fetchFrom(is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
             }
             catch (BadValue $e)
-            { # does not exist
+            { // does not exist
                 if ($throw)
                 {
                     throw $e;

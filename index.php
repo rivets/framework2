@@ -14,22 +14,22 @@
 
     include 'class/config/framework.php';
     \Config\Framework::initialise();
-    \Config\Config::setup(); # add default headers etc. - anything that the user choses to add to the code.
+    \Config\Config::setup(); // add default headers etc. - anything that the user choses to add to the code.
 
-    $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, TRUE); # Not Ajax, developer mode on, load twig, load RB
+    $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, TRUE); // Not Ajax, developer mode on, load twig, load RB
     $context = \Support\Context::getinstance()->setup();
 
-    $local->enabledebug(); # turn debugging on
+    $local->enabledebug(); // turn debugging on
 
-    $mfl = $local->makebasepath('maintenance'); # maintenance mode indicator file
+    $mfl = $local->makebasepath('maintenance'); // maintenance mode indicator file
     if (file_exists($mfl) && !$context->hasadmin())
-    { # only let administrators in as we are doing maintenance. Could have a similar feature for other roles
+    { // only let administrators in as we are doing maintenance. Could have a similar feature for other roles
         $context->web()->sendtemplate('support/maintenance.twig', \Framework\Web\StatusCodes::HTTP_OK, 'text/html', ['msg' => file_get_contents($mfl)]);
         exit;
     }
     $action = $context->action();
     if ($action === '')
-    { # default to home if there is nothing
+    { // default to home if there is nothing
         $action = 'home';
     }
     \Framework\Dispatch::handle($context, $action);

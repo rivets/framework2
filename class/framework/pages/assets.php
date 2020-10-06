@@ -70,7 +70,7 @@
             {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 if (($mime = finfo_file($finfo, $this->file)) === FALSE)
-                { # there was an error of some kind.
+                { // there was an error of some kind.
                     $mime = '';
                 }
                 finfo_close($finfo);

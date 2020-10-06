@@ -43,13 +43,13 @@
         public function savefile(Context $context, array $da, bool $public, $owner = NULL, $index = 0) : bool
         {
             if ($da['size'] == 0 || $da['error'] != UPLOAD_ERR_OK)
-            { # 0 length file or there was an error so ignore
+            { // 0 length file or there was an error so ignore
                 return FALSE;
             }
             if (!$public && !is_object($owner))
             {
                 if (!$context->hasuser())
-                { # no logged in user! This should never happen...
+                { // no logged in user! This should never happen...
                     throw new \Framework\Exception\InternalError('No user');
                 }
                 $owner = $context->user();
@@ -69,7 +69,7 @@
             $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
             if (!@chdir($dir))
-            { # go back to where we were in the file system
+            { // go back to where we were in the file system
                 throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
             return TRUE;
@@ -102,7 +102,7 @@
             \R::store($this->bean);
             unlink($context->local()->basedir().$oldfile);
             if (!@chdir($dir))
-            { # go back to where we were in the file system
+            { // go back to where we were in the file system
                 throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
         }
@@ -122,7 +122,7 @@
             chdir($context->local()->basedir());
             $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')];
             foreach ($pname as $pd)
-            { # walk the path cding and making if needed
+            { // walk the path cding and making if needed
                 $this->mkch($pd);
             }
             return [$dir, $pname, uniqid('', TRUE).'.'.pathinfo($da['name'], PATHINFO_EXTENSION)];

@@ -68,10 +68,10 @@
         final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
         {
             if (isset($permissions[$bean]))
-            { # there are some permissions
+            { // there are some permissions
                 $access = $permissions[$bean];
                 if (is_object($user) || !$access[0])
-                { # either we have a user or no login required
+                { // either we have a user or no login required
                     $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
                     foreach ($checks as $check)
                     {
@@ -98,7 +98,7 @@
         final private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
             if (!empty($pairs) && $user == NULL)
-            { # you can't have permissions without a user
+            { // you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }
             foreach ($pairs as $rcs)

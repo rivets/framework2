@@ -51,13 +51,13 @@
  */
         public function handle(Context $context) : string
         {
-            $web = $context->web(); # it's used all over the place so grab it once
+            $web = $context->web(); // it's used all over the place so grab it once
 
             chdir($context->local()->basedir());
             $fpt = $context->rest();
 
             if (count($fpt) == 2 && $fpt[0] == 'file')
-            { # this is access by upload ID
+            { // this is access by upload ID
                 $file = \R::load('upload', (int) $fpt[1]);
                 if ($file->getID() == 0)
                 {
@@ -78,7 +78,7 @@
  */
                 $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
-                { # filename constructed is not the right format
+                { // filename constructed is not the right format
                     throw new \Framework\Exception\BadValue('Illegal filename');
                 }
 /*
@@ -86,13 +86,13 @@
  */
                 $file = \R::findOne('upload', 'fname=?', [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
                 if (!is_object($file))
-                { # not recorded in the database so 404 it
+                { // not recorded in the database so 404 it
                     $web->notfound();
                     /* NOT REACHED */
                 }
             }
             if (!$file->canaccess($context->user(), 'r'))
-            { # current user cannot access the file
+            { // current user cannot access the file
                 throw new \Framework\Exception\Forbidden('No access');
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
@@ -102,7 +102,7 @@
                 /* NOT REACHED */
             }
             $file->downloaded($context);
-            $this->ifmodcheck($context); # check to see if we actually need to send anything
+            $this->ifmodcheck($context); // check to see if we actually need to send anything
 
             $web->addheader([
 //                'Last-Modified'   => $this->mtime,

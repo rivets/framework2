@@ -51,7 +51,7 @@
         private function validate($uname, $tocheck) : bool
         {
             if (!isset($_SESSION[$uname]))
-            { # no token in there so we are not checking so it's valid
+            { // no token in there so we are not checking so it's valid
                 return TRUE;
             }
             $token = $_SESSION[$uname];

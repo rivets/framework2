@@ -32,7 +32,7 @@
         const RECAPTCHAKEY = 'aaaaaa';
         const RECAPTCHASECRET = 'aaaaaa';
         const SMTPPORT = 1;
-        const PROTOCOL = 'tls';   
+        const PROTOCOL = 'tls';
         const SMTPUSER = 'user';
         const SMTPPW = 'pw';
 
@@ -40,8 +40,8 @@
         {
             \Framework\Web\Web::getinstance()->addheader([
                 'Date'              => gmstrftime('%b %d %Y %H:%M:%S', time()),
-                'Window-target'     => '_top',      # deframes things
-                'X-Frame-Options'	=> 'DENY',      # deframes things
+                'Window-target'     => '_top',      // deframes things
+                'X-Frame-Options'	=> 'DENY',  // deframes things
                 'Content-Language'	=> 'en',
                 'Vary'              => 'Accept-Encoding',
                 'X-Clacks-Overhead' => 'GNU Terry Pratchett',

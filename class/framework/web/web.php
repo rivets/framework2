@@ -125,15 +125,15 @@
                 return [$code, [], $size];
             }
             if (preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
-            { # split the range request
+            { // split the range request
                 if ($rng[1] <= $size)
-                { # start is before end of file
+                { // start is before end of file
                     if (!isset($rng[2]) || $rng[2] === '')
-                    { # no top value specified, so use the filesize (-1 of course!!)
+                    { // no top value specified, so use the filesize (-1 of course!!)
                         $rng[2] = $size - 1;
                     }
                     if ($rng[2] < $size)
-                    { # end is before end of file
+                    { // end is before end of file
                         $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
                         return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], $rng[2]-$rng[1]+1];
                     }
@@ -244,7 +244,7 @@
             {
                 $finfo = finfo_open(FILEINFO_MIME_TYPE);
                 if (($mime = finfo_file($finfo, $path)) === FALSE)
-                { # there was an error of some kind.
+                { // there was an error of some kind.
                     $mime = '';
                 }
                 finfo_close($finfo);
@@ -254,7 +254,7 @@
             $this->debuffer();
             if (!empty($range))
             {
-                $fd = fopen($path, 'r'); # open the file, seek to the required place and read and return the required amount.
+                $fd = fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
                 fseek($fd, $range[0]);
                 echo fread($fd, $length);
                 fclose($fd);
@@ -371,7 +371,7 @@
         public function debuffer() : void
         {
             while (ob_get_length() > 0)
-            { # just in case we are inside some buffering
+            { // just in case we are inside some buffering
                 ob_end_clean();
             }
         }

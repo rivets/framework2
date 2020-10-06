@@ -28,7 +28,7 @@
             if ($fdt->exists('uploads'))
             {
                 if (Config::UPUBLIC && Config::UPRIVATE)
-                { # need to check the flag could be either private or public
+                { // need to check the flag could be either private or public
                     foreach ($fdt->fetchArray('public') as $ix => $public)
                     {
                         $upl = \R::dispense('upload');
@@ -38,7 +38,7 @@
                 else
                 {
                     foreach($fdt->fileArray('uploads') as $ix => $fa)
-                    { # we only support private or public in this case so there is no flag
+                    { // we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
                         $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
                     }

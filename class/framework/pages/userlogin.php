@@ -101,7 +101,7 @@
             $local = $context->local();
             $local->addval('register', Config::REGISTER);
             if ($context->hasuser())
-            { # already logged in
+            { // already logged in
                 $local->message(Local::WARNING, 'Please log out before trying to login');
             }
             else
@@ -215,21 +215,21 @@
         public function confirm(Context $context) : string
         {
             if ($context->hasuser())
-            { # logged in, so this stupid....
+            { // logged in, so this stupid....
                 $context->divert('/');
             }
             $local = $context->local();
             $tpl = '@users/reset.twig';
             $rest = $context->rest();
             if ($rest[0] === '' || $rest[0] == 'resend')
-            { # asking for resend
+            { // asking for resend
                 $lg = $context->formdata('post')->fetch('eorl', '');
                 if ($lg === '')
-                { # show the form
+                { // show the form
                     $tpl = '@users/resend.twig';
                 }
                 else
-                { # handle the form
+                { // handle the form
                     $user = self::eorl($lg);
                     if (!is_object($user))
                     {
@@ -247,7 +247,7 @@
                 }
             }
             else
-            { # confirming the email
+            { // confirming the email
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
                 if (is_object($x))
                 {
@@ -278,7 +278,7 @@
             $local = $context->local();
             $tpl = '@users/reset.twig';
             if ($context->hasuser())
-            { # logged in, so this stupid....
+            { // logged in, so this stupid....
                 $local->addval('done', TRUE);
                 $local->message(Local::WARNING, 'You are already logged in');
                 return $tpl;
@@ -368,7 +368,7 @@
  */
         public function handle(Context $context)
         {
-            $action = $context->action(); # the validity of the action value has been checked before we get here
+            $action = $context->action(); // the validity of the action value has been checked before we get here
             assert(method_exists($this, $action));
             return $this->$action($context);
         }

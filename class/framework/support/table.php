@@ -54,7 +54,7 @@
                 if ($field !== '')
                 {
                     if (preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
-                    { # this is a special case for foreign keys
+                    { // this is a special case for foreign keys
                         $fkbn = \R::dispense($m[1]); // make a bean of the required type
                         \R::store($fkbn);
                         $bn->{$field} = $fkbn;
@@ -73,7 +73,7 @@
             \R::store($bn);
             \R::exec('truncate '.$bean); // clean out the table
             if (!empty($fk))
-            { # get rid of any extra beans we created for foreign keys
+            { // get rid of any extra beans we created for foreign keys
                 \R::trashAll($fk);
             }
             $context->local()->message(\Framework\Local::MESSAGE, $bean.' created');

@@ -67,7 +67,7 @@
         {
             $attrs = self::$attributes;
             if ($doValue)
-            { # include the value in the attributes
+            { // include the value in the attributes
                 $attrs[] = 'value';
             }
             switch ($this->bean->type)
@@ -79,13 +79,13 @@
                 $attrs[] = 'type';
                 break;
             }
-            $res = ['']; # ensures a space at the start of the result
+            $res = ['']; // ensures a space at the start of the result
             if ($this->bean->idval !== '')
             {
                 $res[] = 'id="'.$this->bean->idval.'"';
             }
             if ($class !== '')
-            { # add a standard class
+            { // add a standard class
                 $this->bean->class = trim($class.' '.$this->bean->class);
             }
             foreach ($attrs as $atr)

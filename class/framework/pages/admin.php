@@ -120,7 +120,7 @@
                 if (($bid = $context->formdata('post')->fetch('bean', '')) !== '')
                 { // this is a post
                     if (($notmodel && $bid != $kind) || $bid != $obj->getID())
-                    { # something odd...
+                    { // something odd...
                         throw new \Framework\Exception\BadValue('Bean param');
                     }
                     \Framework\Utility\CSRFGuard::getinstance()->check();
@@ -314,7 +314,7 @@
                 $tpl = '@admin/forms.twig';
                 break;
             case 'info': // generate phpinfo page
-                $_SERVER['PHP_AUTH_PW'] = '*************'; # hide the password in case it is showing.
+                $_SERVER['PHP_AUTH_PW'] = '*************'; // hide the password in case it is showing.
                 phpinfo();
                 exit; // phpinfo display is all we need
             case 'offline':

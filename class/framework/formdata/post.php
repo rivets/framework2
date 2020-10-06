@@ -34,7 +34,7 @@
         public function recaptcha() : bool
         {
             if (CFW::constant('RECAPTCHA', 0) != 0)
-            { # if this is non-zero we can assume SECRET and KEY are defined also
+            { // if this is non-zero we can assume SECRET and KEY are defined also
                 if ($this->exists('g-recaptcha-response', FALSE))
                 {
                     $data = [

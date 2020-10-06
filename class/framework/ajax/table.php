@@ -74,7 +74,7 @@
         private function patch(string $table, array $rest) : void
         {
             if (\Support\SiteInfo::isFWTable($table))
-            { # you can't alter framework tables
+            { // you can't alter framework tables
                 throw new Forbidden('Permission Denied');
                 /* NOT REACHED */
             }
@@ -133,7 +133,7 @@
         private function delete(string $table, array $rest) : void
         {
             if (\Support\SiteInfo::isFWTable($table))
-            { # you cannot delete framework tables
+            { // you cannot delete framework tables
                 throw new Forbidden('Permission Denied');
                 /* NOT REACHED */
             }

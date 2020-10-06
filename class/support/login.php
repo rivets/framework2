@@ -38,11 +38,11 @@
                     if (is_object($user) && $user->pwok($pw) && $user->confirm)
                     {
                         if (session_status() !== PHP_SESSION_ACTIVE)
-                        { # no session started yet
+                        { // no session started yet
                             session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
                         }
                         $_SESSION['user'] = $user;
-                        $context->divert($page === '' ? '/' : $page); # success - divert to home page
+                        $context->divert($page === '' ? '/' : $page); // success - divert to home page
                         /* NOT REACHED */
                     }
                 }
@@ -70,10 +70,10 @@
  */
         public function logout(Context $context) : void
         {
-            $_SESSION = []; # Unset all the session variables.
+            $_SESSION = []; // Unset all the session variables.
 
-            # If it's desired to kill the session, also delete the session cookie.
-            # Note: This will destroy the session, and not just the session data!
+            // If it's desired to kill the session, also delete the session cookie.
+            // Note: This will destroy the session, and not just the session data!
             if (ini_get('session.use_cookies'))
             {
                 $params = session_get_cookie_params();
@@ -82,8 +82,8 @@
                 );
             }
             if (session_status() === PHP_SESSION_ACTIVE)
-            { # no session started yet
-                session_destroy(); # Finally, destroy the -session.
+            { // no session started yet
+                session_destroy(); // Finally, destroy the -session.
             }
             $context->divert('/');
         }

@@ -31,7 +31,7 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $editfields = [
-            'name'            => [TRUE, FALSE],         # [NOTEMPTY, CHECK/RADIO]
+            'name'            => [TRUE, FALSE],         // [NOTEMPTY, CHECK/RADIO]
             'action'          => [TRUE, FALSE],
             'method'          => [TRUE, FALSE],
             'idval'           => [FALSE, FALSE],
@@ -251,7 +251,7 @@
                             $fld->checked = 1;
                         }
                         $input = '<input'.$fld->fieldAttr('', TRUE).'/> ';
-                        $form .= $fld->doLabel(FALSE, 'form-check-label mr-2', $input); # need to do this first as it might set the label field in $fld
+                        $form .= $fld->doLabel(FALSE, 'form-check-label mr-2', $input); // need to do this first as it might set the label field in $fld
                     }
                     $form .= '</div></div>';
                     break;
@@ -264,7 +264,7 @@
                     }
                     /** @psalm-suppress TypeDoesNotContainType */
                     if ($this->optgroup)
-                    { # close any open optgroup
+                    { // close any open optgroup
                         $form .= '</optgroup>';
                     }
                     $form .= '</select></div>';
@@ -285,7 +285,7 @@
                 case 'button':
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
-                default: # all the other types are very much the same.
+                default: // all the other types are very much the same.
                     if (isset($values[$fld->name]))
                     {
                         $fld->value = $values[$fld->name];
@@ -316,10 +316,10 @@
                 if (isset($option->optgroup))
                 {
                     if ($this->optgroup)
-                    { # one open already so close it
+                    { // one open already so close it
                         $form = '</optgroup>';
                     }
-                    if ($option->optgroup !== '') # If the name is empty then we want to close an open optgroup without startng a new one
+                    if ($option->optgroup !== '') // If the name is empty then we want to close an open optgroup without startng a new one
                     {
                         $this->optgroup = TRUE;
                         return $form.'<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
@@ -335,10 +335,10 @@
                 if ($option[0] === NULL)
                 {
                     if ($this->optgroup)
-                    { # one open already so close it
+                    { // one open already so close it
                         $form = '</optgroup>';
                     }
-                    if ($option[1] !== NULL) # If the name is also NULL then we want to close an open optgroup without startng a new one
+                    if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without startng a new one
                     {
                         $this->optgroup = TRUE;
                         return $form.'<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';

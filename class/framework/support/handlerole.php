@@ -193,7 +193,7 @@
                     $rnb = $context->load(FW::ROLENAME, $rn);
                     $prole = $this->hasRoleByBean($rcb, $rnb);
                     if (is_object($prole))
-                    { # exists already...
+                    { // exists already...
                         $prole->start = $start;
                         $prole->end = $end;
                         $prole->otherinfo = $info;
