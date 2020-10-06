@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8"/>
 
-    <title>OFFINE</title>
+    <title>{% if title is not defined %}OFFLINE{% else %}{{title}}{% endif %}</title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="{{assets}}/css/msgpage.css"/>
 </head>
 <body lang="en-GB">
-    <h1>{% if title is defined %}OFFLINE{% else %}{{title}}{% endif %}</h1>
+    <h1>{% if title is not defined %}OFFLINE{% else %}{{title}}{% endif %}</h1>
     <p>
         {% if msg is defined %}
             {{msg}}
