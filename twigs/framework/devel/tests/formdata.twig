@@ -51,7 +51,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10">
+        <article class="ml-auto col-md-10 mb-5">
             {% include '@util/message.twig' %}
             <pre>{{array}}</pre>
             {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}
