@@ -22,7 +22,7 @@
 /**
  * @var int - the default maxage for a page. This is a static because you can't have consts in a trait....
  */
-        private static $maxage = 3600; // 1 hour
+        protected static $maxage = 3600; // 1 hour
 /**
  * Set any cache headers that are wanted for a normal page delivery
  *
