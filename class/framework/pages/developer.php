@@ -8,8 +8,8 @@
  */
     namespace Framework\Pages;
 
-    use \Config\Framework as FW;   
-    use \Support\Context as Context;
+    use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * Class for developer hacks and helpers...
  */
@@ -39,7 +39,7 @@
                 /** @psalm-suppress UnresolvableInclude */
                 include $context->local()->makebasepath('devel', 'hack.php');
                 break;
-            
+
             case 'test':
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
