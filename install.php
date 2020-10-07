@@ -133,7 +133,7 @@
  * @param string	$errfile
  * @param int    	$errline
  *
- * @return boolean
+ * @return bool
  */
     function error_handler(int $errno, string $errstr, string $errfile, int $errline) : bool
     {
