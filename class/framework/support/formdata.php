@@ -15,7 +15,9 @@
     class FormData
     {
         use \Framework\Utility\Singleton;
-
+/**
+ * @var string Parameter values that indicate which data we want
+ */
         private $map = [
             'cookie',
             'file',
@@ -23,9 +25,17 @@
             'post',
             'put',
         ];
-
+/**
+ * @var array<object> An array of all the getters for forms
+ */
         private $getters = [];
-
+/**
+ * Return the getter for this particular form type
+ *
+ * @param string $which  The getter we want.
+ *
+ * @return object
+ */
         public function getter($which)
         {
             if (!isset($this->getters[$which]))
@@ -35,7 +45,16 @@
             }
             return $this->getters[$which];
         }
-
+/**
+ * Map old formadata calls onto new style calls
+ *
+ * @deprecated
+ *
+ * @param string $calling    The function name
+ * @param array  $arguments  The parameters
+ *
+ * @return string|array
+ */
         public function __call(string $calling, array $arguments)
         {
             $name = \strtolower($calling);
@@ -85,7 +104,19 @@
             }
             throw new \Framework\Exception\BadValue('Bad FormData call: '.$calling);
         }
-
+/**
+ * Deal with a recaptcha
+ *
+ * For this to work, you need three constants defined in \Config\Config :
+ *
+ * RECAPTCHA - the kind of RECAPTCHA: 2 or 3 (0 means no RECAPTCHA)
+ * RECAPTCHAKEY - the key given by google
+ * RECAPTCHASECRET - the secret key given by google
+ *
+ * @return bool
+ * @psalm-suppress UndefinedClass
+ * @psalm-suppress UndefinedConstant
+ */
         public function recaptcha() : bool
         {
             if (\Config\Framework::constant('RECAPTCHA', 0) != 0)
