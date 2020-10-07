@@ -13,7 +13,7 @@
         private $https;
         private $prefix;
 
-        public function __construct($verbose, $https, $prefix)
+        public function __construct(string $verbose, string $https, string $prefix)
         {
             $this->verbose = $verbose;
             $this->https = $https;
