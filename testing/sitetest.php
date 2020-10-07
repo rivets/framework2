@@ -6,94 +6,103 @@
  * @copyright 2020 Newcastle University
  */
     include_once 'devel/curl.php';
-    
-    function success(string $url) : void
-    {
-        global $verbose, $ssl, $https, $http, $prefix;
 
-        $url = $prefix.$url;
-        $data = Curl::fetch($url);
-        $info = Curl::code();
-        if ($info['http_code'] != 200 && $info['redirect_count'] == 0)
-        {
-            echo '** "'.$url.'" returns '.$info['http_code'].PHP_EOL;
-        }
-        elseif ($verbose)
-        {
-            echo '"'.$url.'" '.$info['http_code'].' OK'.PHP_EOL;
-        }
-    }
-    
-    function fail(array $test) : void
+    class Tester
     {
-        global $verbose, $ssl, $https, $http, $prefix;
+        private $verbose;
+        private $https;
+        private $prefix;
 
-        [$turl, $code, $rdcount, $rdurl] = $test;
-        $url = $prefix.$turl;
-        $data = Curl::fetch($url);
-        $info = Curl::code();
-        $resurl = urldecode($info['url']);
-        if ($info['http_code'] != $code)
+        public function __construct($verbose, $https, $prefix)
         {
-            echo '** "'.$url.'" ('.$resurl.') returns '.$info['http_code'].' with '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').PHP_EOL;
+            $this->verbose = $verbose;
+            $this->https = $https;
+            $this->prefix = $prefix;
         }
-        elseif ($info['redirect_count'] != $rdcount)
+
+        private function success(string $url) : void
         {
-            if ($info['redirect_count'] == $rdcount + 1)
+
+            $url = $this->prefix.$url;
+            $data = Curl::fetch($url);
+            $info = Curl::code();
+            if ($info['http_code'] != 200 && $info['redirect_count'] == 0)
             {
-                if(preg_match('/^https/i', $resurl))
+                echo '** "'.$url.'" returns '.$info['http_code'].PHP_EOL;
+            }
+            elseif ($this->verbose)
+            {
+                echo '"'.$url.'" '.$info['http_code'].' OK'.PHP_EOL;
+            }
+        }
+
+        private function fail(array $test) : void
+        {
+            [$turl, $code, $rdcount, $rdurl] = $test;
+            $url = $this->prefix.$turl;
+            $data = Curl::fetch($url);
+            $info = Curl::code();
+            $resurl = urldecode($info['url']);
+            if ($info['http_code'] != $code)
+            {
+                echo '** "'.$url.'" ('.$resurl.') returns '.$info['http_code'].' with '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').PHP_EOL;
+            }
+            elseif ($info['redirect_count'] != $rdcount)
+            {
+                if ($info['redirect_count'] == $rdcount + 1)
                 {
-                    if ($resurl == $prefix.$rdurl.'/')
+                    if(preg_match('/^https/i', $resurl))
                     {
-                        echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
-                    }
-                    elseif ($resurl == $https.$rdurl || $resurl == $https.$rdurl.'/')
-                    {
-                        echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
+                        if ($resurl == $this->prefix.$rdurl.'/')
+                        {
+                            echo '-- "'.$url.'" ('.$resurl.') redirected to add trailing /'.PHP_EOL;
+                        }
+                        elseif ($resurl == $this->https.$rdurl || $resurl == $this->https.$rdurl.'/')
+                        {
+                            echo '-- "'.$url.'" ('.$resurl.') redirected to https'.PHP_EOL;
+                        }
+                        else
+                        {
+                            echo '-- "'.$url.'" ('.$resurl.') redirected more than expected'.PHP_EOL;
+                        }
                     }
                     else
                     {
-                        echo '-- "'.$url.'" ('.$resurl.') redirected more than expected'.PHP_EOL;
+                        echo '!! "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.' and '.$this->prefix.$rdurl.PHP_EOL;
                     }
                 }
                 else
                 {
-                    echo '!! "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.' and '.$prefix.$rdurl.PHP_EOL;
+                    echo '** "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.' and '.$this->prefix.$rdurl.PHP_EOL;
                 }
             }
-            else
+            elseif ($rdcount > 0 && $this->prefix.$rdurl != $resurl)
             {
-                echo '** "'.$url.'" ('.$resurl.') has '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').', expecting '.$rdcount.' and '.$prefix.$rdurl.PHP_EOL;
+                echo '** "'.$url.'" ('.$resurl.') expecting '.$this->prefix.$rdurl.PHP_EOL;
+            }
+            elseif ($this->verbose)
+            {
+                echo '"'.$url.'" '.$info['http_code'].' ('.$resurl.') OK'.PHP_EOL;
             }
         }
-        elseif ($rdcount > 0 && $prefix.$rdurl != $resurl)
-        {
-            echo '** "'.$url.'" ('.$resurl.') expecting '.$prefix.$rdurl.PHP_EOL;
-        }
-        elseif ($verbose)
-        {
-            echo '"'.$url.'" '.$info['http_code'].' ('.$resurl.') OK'.PHP_EOL;
-        }
-    }
-    
-    function runtest(array $test) : void
-    {
-        global $verbose, $ssl, $https, $http, $prefix;
 
-        foreach ($test['success'] as $url)
+        public function runtest(array $test) : void
         {
-            success($url);
-            success($url.'/');
-        }
-        foreach ($test['fail'] as $test)
-        {
-            fail($test);
-            $test[0] .= '/';
-            $test[3] .= '/';
-            fail($test);
+            foreach ($test['success'] as $url)
+            {
+                $this->success($url);
+                $this->success($url.'/');
+            }
+            foreach ($test['fail'] as $test)
+            {
+                $this->fail($test);
+                $test[0] .= '/';
+                $test[3] .= '/';
+                $this->fail($test);
+            }
         }
     }
-    
+
     $options = getopt('h:u::p::vb::s', ['base::host:', 'user::', 'password::', 'verbose', 'ssl']);
     $host = $options['h'] ?? 'localhost';
     $user = $options['u'] ?? '';
@@ -101,11 +110,12 @@
     $verbose = isset($options['v']);
     $base = $options['b'] ?? '';
     $ssl = isset($options['s']);
-    
+
     $http = 'http://'.$host.($base !== '' ? '/'.$base : '');
     $https = 'https://'.$host.($base !== '' ? '/'.$base : '');
     $prefix = $ssl ? $https : $http;
-    
+
+    $tester = new Tester($verbose, $https, $prefix);
     $nologin = [
        'success' => [
                '/',
@@ -119,7 +129,7 @@
                ['/test', 200, 1, '/login/?goto=/test'],
            ]
     ];
-      
+
     $login = [
         'success' => [
             '/',
@@ -154,8 +164,8 @@
            ['/test', 403, 0, ''],
        ]
     ];
-    
-    runtest($nologin);
+
+    $trester->runtest($nologin);
 
     if ($user !== '' && $password !== '')
     {
@@ -164,12 +174,12 @@
         $info = Curl::code();
         if ($info['http_code'] == 200)
         {
-            runtest($login);
+            $tester->runtest($login);
         }
         else
         {
             echo '** login failed'.PHP_EOL;
-        }           
+        }
     }
     Curl::cleanup();
 ?>
