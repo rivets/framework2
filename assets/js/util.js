@@ -262,9 +262,9 @@
  *
  * @return {void}
  */
-        dodelbean: function(e, x, bean, msg = '', ntype = 'tr')
+        dodelbean: function(e, x, bean, msg = '')
         {
-            let pnode = x.closest(ntype);
+            let pnode = x.closest('[data-id]');
             if (pnode instanceof jQuery)
             {
                 pnode = pnode[0];
