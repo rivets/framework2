@@ -13,7 +13,7 @@
 /**
  * Class for developer hacks and helpers...
  */
-    Class Developer extends \Framework\SiteAction
+    class Developer extends \Framework\SiteAction
     {
         use \Support\NoCache; // don't cache developer pages.
 /**
