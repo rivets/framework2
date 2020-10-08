@@ -87,8 +87,8 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
- * @return array
+ * @param string[] $y
+ * @return \RedBeanPHP\OODBBean[]
  */
     public static function find(string $b, string $x = '', array $y = []) : array
     {
@@ -97,8 +97,8 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
- * @return array
+ * @param string[] $y
+ * @return \RedBeanPHP\OODBBean[]
  */
     public static function findAll(string $b, string $x = '', array $y = []) : array
     {
@@ -107,7 +107,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
+ * @param string[] $y
  *
  * @return ?\RedBeanPHP\OODBBean
  */
@@ -117,7 +117,7 @@ class R
     }
 /**
  * @param string $b
- * @param array $y
+ * @param string[] $y
  * @param string $s
  *
  * @return \RedBeanPHP\OODBBean
@@ -129,7 +129,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
+ * @param string[] $y
  * @return int
  */
     public static function count(string $b, string $x = '', array $y = []) : int
@@ -139,7 +139,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
+ * @param string[] $y
  * @return array
  */
     public static function findCollection(string $b, string $x = '', array $y = []) : array
@@ -149,7 +149,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array $y
+ * @param string[] $y
  * @return array
  */
     public static function findMulti(string $b, string $x = '', array $y = []) : array
@@ -158,7 +158,7 @@ class R
     }
 /**
  * @param string $b
- * @param array $y
+ * @param string[] $y
  * @return mixed
  */
     public static function getCell(string $b,  array $y = [])
@@ -167,7 +167,7 @@ class R
     }
 /**
  * @param string $b
- * @param array $y
+ * @param string[] $y
  * @return int
  */
     public static function exec(string $b,  array $y = []) : int
@@ -206,7 +206,7 @@ class R
     }
 /**
  * @param string $x
- * @return array
+ * @return string[]
  */
     public static function inspect(string $x = '') : array
     {
