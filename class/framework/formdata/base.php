@@ -120,8 +120,8 @@
  *
  * @internal
  *
- * @param array     $porg       The array of values from the appropriate Superglobal
- * @param array     $keys       An array of keys
+ * @param mixed[]   $porg       The array of values from the appropriate Superglobal
+ * @param string[]  $keys       An array of keys
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  *
