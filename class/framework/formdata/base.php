@@ -120,15 +120,12 @@
  *
  * @internal
  *
- * @param mixed[]   $porg       The array of values from the appropriate Superglobal
  * @param string[]  $keys       An array of keys
- * @param mixed     $default    A value to return if the item is missing and we are not failing
- * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  *
+ * @return mixed;
  * @throws BadValue
- * @return mixed
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '')
+        private function find(array $keys)
         {
             $part = $this->super;
             $etrack = [];
@@ -138,34 +135,59 @@
                 $etrack[] = $key;
                 if (!isset($part[$key]))
                 { // missing item so fail or return default
-                    if ($throw)
-                    {
-                        throw new BadValue('Missing form item: '.implode('/', $etrack));
-                    }
-                    $part = $default;
-                    break 1;
+                    throw new BadValue('Missing form item: '.implode('/', $etrack));
                 }
                 $part = $part[$key];
                 if (empty($keys))
                 {
-                    if (!is_array($part))
-                    { // don't try and trim an array!
-                        $part = trim($part);
-                        if (!empty($filter))
-                        { // need to apply a filter to the value
-                            $part = filter_var($part, $filter, $options);
-                            if ($part === FALSE || $part === NULL)
-                            { // it failed
-                                if ($throw)
-                                {
-                                    throw new BadValue('Filter failure '.$filter);
-                                }
-                                return $default;
-                            }
-                            $part = trim($part);
-                        }
-                    }
                     break 1;
+                }
+            }
+            return $part;
+        }
+/**
+ * Utility function to fetch an element from a possibly multi-dimensional array
+ *
+ * @internal
+ *
+ * @param string[]  $keys       An array of keys
+ * @param mixed     $default    A value to return if the item is missing and we are not failing
+ * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
+ * @param ?int      $filter     A PHP filter
+ * @param mixed     $options    Filter options
+ *
+ * @throws BadValue
+ * @return mixed
+ */
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '')
+        {
+            try
+            {
+                $part = $this->find($keys);
+            }
+            catch (BadValue $e)
+            { // not there
+                if ($throw)
+                {
+                    throw $e;
+                }
+                return $default;
+            }
+            if (!is_array($part))
+            { // don't try and trim an array!
+                $part = trim($part);
+                if (!empty($filter))
+                { // need to apply a filter to the value
+                    $part = filter_var($part, $filter, $options);
+                    if ($part === FALSE || $part === NULL)
+                    { // it failed
+                        if ($throw)
+                        {
+                            throw new BadValue('Filter failure '.$filter);
+                        }
+                        return $default;
+                    }
+                    $part = trim($part);
                 }
             }
             return $part;
@@ -187,7 +209,15 @@
  */
         public function exists($name) : bool
         {
-            return $this->getValue($name, NULL, FALSE, FALSE)[0] || $this->getValue($name, NULL, FALSE, TRUE)[0];
+            try
+            {
+                $part = $this->find(is_array($name) ? $keys : [$name]);
+            }
+            catch (BadValue $e)
+            { // not there
+                return FALSE;
+            }
+            return TRUE;
         }
 /**
  * Is the key in the array?
@@ -202,7 +232,8 @@
  */
         public function mustExist($name) : bool
         {
-            return $this->getValue($name, NULL, TRUE, FALSE)[0] || $this->getValue($name, NULL, TRUE, TRUE)[0];
+            $part = $this->find(is_array($name) ? $keys : [$name]);
+            return TRUE;
         }
     }
 ?>
