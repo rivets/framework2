@@ -197,6 +197,8 @@
  *
  * @author Your Name <Your@email.org>
  * @copyright year You
+ * @package Framework
+ * @subpackage UserPages
  */
     namespace '.$namespace.';
 
