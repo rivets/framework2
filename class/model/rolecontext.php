@@ -2,9 +2,12 @@
 /**
  * A model class for the RedBean object RoleContext
  *
+ * This is a Framework system class - do not edit!
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-20120Newcastle University
  * @package Framework
+ * @subpackage SystemModel
  */
     namespace Model;
 

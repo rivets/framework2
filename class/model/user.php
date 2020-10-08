@@ -2,9 +2,12 @@
 /**
  * A model class for the RedBean object User
  *
+ * This is a Framework system class - do not edit!
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2013-2020 Newcastle University
  * @package Framework
+ * @subpackage SystemModel
  */
     namespace Model;
 

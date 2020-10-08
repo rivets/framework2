@@ -2,9 +2,12 @@
 /**
  * A model class for the RedBean object Form
  *
+ * This is a Framework system class - do not edit!
+ *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University
  * @package Framework
+ * @subpackage SystemModel
  */
     namespace Model;
 
@@ -49,8 +52,7 @@
             'required'      => ['Required', FALSE, 0x10],
         ];
 /**
- * @var bool flag to indicate inside optgroup.
- * @todo can we have nested optgroups? Maybe this needs to be a count rather than a flag.
+ * @var bool flag to indicate inside optgroup - nested optgroups are NOT supported (at the moment)
  */
         private $optgroup = FALSE;
 
