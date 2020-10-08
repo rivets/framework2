@@ -19,6 +19,9 @@
         private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, FALSE],
+            ['exists', [['aexist', 0]], TRUE, TRUE],
+            ['exists', [['aexist', 3]], TRUE, FALSE],
+            ['exists', [['nexist', 0]], TRUE, FALSE],
             ['mustExist', ['exist'], TRUE, TRUE],
             ['mustExist', ['notexist'], FALSE, FALSE],
             ['fetch', ['exist', 3], '42', TRUE],
@@ -56,7 +59,7 @@
             ['mustFetchArray', ['knotexist'], ['iterator', []], FALSE],
         ];
 
-        private static $oldtests = [ // function, paramters, expected result, if TRUE then failure is expected and result may be default or an exception
+        private static $oldtests = [ // function, parameters, expected result, if TRUE then failure is expected and result may be default or an exception
             ['has', ['exist'], TRUE, TRUE],
             ['has', ['notexist'], FALSE, FALSE],
             ['', ['exist', 3], '42', TRUE],
