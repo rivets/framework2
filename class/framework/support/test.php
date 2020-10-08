@@ -18,10 +18,10 @@
     {
         private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
-            ['exists', ['notexist'], FALSE, FALSE],
+            ['exists', ['notexist'], FALSE, TRUE],
             ['exists', [['aexist', 0]], TRUE, TRUE],
-            ['exists', [['aexist', 3]], TRUE, FALSE],
-            ['exists', [['nexist', 0]], TRUE, FALSE],
+            ['exists', [['aexist', 3]], FALSE, TRUE],
+            ['exists', [['nexist', 0]], FALSE, TRUE],
             ['mustExist', ['exist'], TRUE, TRUE],
             ['mustExist', ['notexist'], FALSE, FALSE],
             ['fetch', ['exist', 3], '42', TRUE],
