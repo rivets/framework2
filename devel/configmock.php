@@ -5,36 +5,36 @@
 */
     class Config
     {
-        const BASEDNAME	= '/xxx';
-        const SESSIONNAME	= 'PSIxx';
-        const PUTORPATCH    = 'PATCH';
-        const DBTYPE	= 'mysql';
-        const DBHOST	= 'xx';
-        const DB	= 'xx';
-        const DBUSER	= 'xxx';
-        const DBPW	= 'xxx';
-        const SITENAME	= 'xxx';
-        const SITENOREPLY	= 'noreply@y.z';
-        const SYSADMIN	= 'x@y.z';
-        const DBRX	= FALSE;
-        const REGISTER  = FALSE;
-        const UPUBLIC	= FALSE;
-        const UPRIVATE	= FALSE;
-        const USEPHPM	= FALSE;
-        const SMTPHOST = 'xxx';
-        const FWCONTEXT = 'Site';
-        const TESTCONTEXT = 'Test';
-        const ADMINROLE = 'Admin';
-        const DEVELROLE = 'Developer';
-        const TESTROLE = 'Tester';
-        const CONFIG = 'fwconfig';
-        const RECAPTCHA = 0;
-        const RECAPTCHAKEY = 'aaaaaa';
-        const RECAPTCHASECRET = 'aaaaaa';
-        const SMTPPORT = 1;
-        const PROTOCOL = 'tls';
-        const SMTPUSER = 'user';
-        const SMTPPW = 'pw';
+        public const BASEDNAME	= '/xxx';
+        public const SESSIONNAME	= 'PSIxx';
+        public const PUTORPATCH    = 'PATCH';
+        public const DBTYPE	= 'mysql';
+        public const DBHOST	= 'xx';
+        public const DB	= 'xx';
+        public const DBUSER	= 'xxx';
+        public const DBPW	= 'xxx';
+        public const SITENAME	= 'xxx';
+        public const SITENOREPLY	= 'noreply@y.z';
+        public const SYSADMIN	= 'x@y.z';
+        public const DBRX	= FALSE;
+        public const REGISTER  = FALSE;
+        public const UPUBLIC	= FALSE;
+        public const UPRIVATE	= FALSE;
+        public const USEPHPM	= FALSE;
+        public const SMTPHOST = 'xxx';
+        public const FWCONTEXT = 'Site';
+        public const TESTCONTEXT = 'Test';
+        public const ADMINROLE = 'Admin';
+        public const DEVELROLE = 'Developer';
+        public const TESTROLE = 'Tester';
+        public const CONFIG = 'fwconfig';
+        public const RECAPTCHA = 0;
+        public const RECAPTCHAKEY = 'aaaaaa';
+        public const RECAPTCHASECRET = 'aaaaaa';
+        public const SMTPPORT = 1;
+        public const PROTOCOL = 'tls';
+        public const SMTPUSER = 'user';
+        public const SMTPPW = 'pw';
 
         public static function setup() : void
         {

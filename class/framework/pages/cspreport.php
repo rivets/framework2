@@ -1,11 +1,12 @@
 <?php
- /**
-  * Class for handling csp error report messages
-  *
-  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2018-2020 Newcastle University
+/**
+ * Class for handling csp error report messages
+ *
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2018-2020 Newcastle University
  * @package Framework
-  */
+ * @subpackage SystemPages
+ */
     namespace Framework\Pages;
 
     use \Config\Config;

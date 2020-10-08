@@ -6,6 +6,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2016-2020 Newcastle University
  * @package Framework
+ * @subpackage UserPages
  */
     namespace Pages;
 

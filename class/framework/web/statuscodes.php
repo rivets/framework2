@@ -7,7 +7,6 @@
  * @author Kris Jordan
  * @license MIT
  * @package recess.http
- *
  */
 /* Modfied by LFM to separate the message text from the code number */
     namespace Framework\Web;
