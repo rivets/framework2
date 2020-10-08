@@ -62,6 +62,9 @@
         private static $oldtests = [ // function, parameters, expected result, if TRUE then failure is expected and result may be default or an exception
             ['has', ['exist'], TRUE, TRUE],
             ['has', ['notexist'], FALSE, FALSE],
+            ['has', [['aexist', 0]], TRUE, TRUE],
+            ['has', [['aexist', 3]], FALSE, TRUE],
+            ['has', [['nexist', 0]], FALSE, TRUE],
             ['', ['exist', 3], '42', TRUE],
             ['', ['notexist', 3], 3, FALSE],
             ['must', ['exist'], '42', TRUE],
