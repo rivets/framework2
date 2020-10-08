@@ -59,12 +59,12 @@
 /**
  * Send mail if possible
  *
- * @parm array    $to       An array of people to send to.
- * @param string  $subject  The subject
- * @param string  $msg      The message - if $alt is not empty then this is assumed to be HTML.
- * @param string  $alt      The alt message - plain text
- * @param array   $other    From, cc, bcc etc. etc.
- * @param array   $attach   Any Attachments
+ * @param string[]       $to       An array of people to send to.
+ * @param string     $subject  The subject
+ * @param string     $msg      The message - if $alt is not empty then this is assumed to be HTML.
+ * @param string     $alt      The alt message - plain text
+ * @param string[]   $other    From, cc, bcc etc. etc.
+ * @param string[]   $attach   Any Attachments
  *
  * @return string
  */
@@ -273,7 +273,7 @@
  * Render a twig and return the string - do nothing if the template is the empty string
  *
  * @param string    $tpl    The template
- * @param array     $vals   Values to set for the twig
+ * @param mixed[]   $vals   Values to set for the twig
  *
  * @return string
  */
@@ -299,7 +299,7 @@
  * Render a twig - do nothing if the template is the empty string
  *
  * @param string   $tpl       The template
- * @param array    $vals      Values to set for the twig
+ * @param mixed[]  $vals      Values to set for the twig
  * @param string   $mimeType
  * @param int      $status
  *

@@ -475,7 +475,7 @@
 /**
  * Add an item for use in a Cache-Control header
  *
- * @param array  $items  An array of items
+ * @param string[]  $items  An array of items
  *
  * @return void
  */

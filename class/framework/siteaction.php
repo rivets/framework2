@@ -183,7 +183,7 @@
  * @param array<string>     $rest
  * @param int               $start    The element to start at
  * @param int               $num      The number of params required
- * @param array             $format   Currently not used
+ * @param string[]          $format   Currently not used
  *
  * @throws \Framework\Exception\ParameterCount
  * @return array<string>
