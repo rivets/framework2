@@ -211,7 +211,7 @@
         {
             try
             {
-                $part = $this->find(is_array($name) ? $keys : [$name]);
+                $part = $this->find(is_array($name) ? $name : [$name]);
             }
             catch (BadValue $e)
             { // not there
@@ -232,7 +232,7 @@
  */
         public function mustExist($name) : bool
         {
-            $part = $this->find(is_array($name) ? $keys : [$name]);
+            $part = $this->find(is_array($name) ? $name : [$name]);
             return TRUE;
         }
     }
