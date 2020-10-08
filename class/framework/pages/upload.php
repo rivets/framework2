@@ -5,6 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2020 Newcastle University
  * @package Framework
+ * @subpackage SystemPages
  */
     namespace Framework\Pages;
 

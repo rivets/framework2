@@ -5,6 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2020 Newcastle University
  * @package Framework
+ * @subpackage SystemSupport
  */
     namespace Framework\Support;
 
@@ -41,7 +42,7 @@
  *
  * @param string    $contextname    The name of a context...
  * @param string    $rolename       The name of a role - if this is the empty string then having the context is enough
-
+ *
  *
  * @return ?object
  */

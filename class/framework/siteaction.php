@@ -40,6 +40,7 @@
  * but individual pages may wish to extend or restrict these.
  *
  * @return void
+ * @phpcsSuppress NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff
  */
         public function setCSP() : void
         {
