@@ -107,19 +107,19 @@
         private static function maketwig(Context $context, string $name) : void
         {
             if (preg_match('%@content/(.*)%', $name, $m))
-            {
+            { // this is in the User twig content directory
                 $name = 'content/'.$m[1];
             }
             elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
-            {
+            { // this is using a system twig
                 $name = 'framework/'.$m[1].'/'.$m[2];
             }
             if (!preg_match('/\.twig$/', $name))
-            {
+            { // doesn't end in .twig
                 $name .= '.twig';
             }
             else
-            {
+            { // sometimes tehre are extra .twig extensions...
                 $name = preg_replace('/(\.twig)+$/', '.twig', $name); // this removes extra .twigs .....
             }
             $file = $context->local()->makebasepath('twigs', $name);
