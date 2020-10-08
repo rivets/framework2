@@ -112,7 +112,7 @@ return [
         SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff::class,
         SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff::class,
         SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff::class,
-        //SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff::class,
