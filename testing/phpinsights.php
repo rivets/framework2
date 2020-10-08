@@ -104,7 +104,7 @@ return [
         PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer::class,
         PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer::class, // complains about correct formatting...
 
-        //SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff::class,
+        SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff::class,
         SlevomatCodingStandard\Sniffs\Commenting\DocCommentSpacingSniff::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff::class,
@@ -115,6 +115,7 @@ return [
         SlevomatCodingStandard\Sniffs\TypeHints\DeclareStrictTypesSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\DisallowArrayTypeHintSyntaxSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff::class,
