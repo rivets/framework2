@@ -137,7 +137,7 @@
                 $key = array_shift($keys);
                 $etrack[] = $key;
                 if (!isset($part[$key]))
-                {
+                { // missing item so fail or return default
                     if ($throw)
                     {
                         throw new BadValue('Missing form item: '.implode('/', $etrack));
@@ -149,13 +149,13 @@
                 if (empty($keys))
                 {
                     if (!is_array($part))
-                    {
+                    { // don't try and trim an array!
                         $part = trim($part);
                         if (!empty($filter))
-                        {
+                        { // need to apply a filter to the value
                             $part = filter_var($part, $filter, $options);
                             if ($part === FALSE || $part === NULL)
-                            {
+                            { // it failed
                                 if ($throw)
                                 {
                                     throw new BadValue('Filter failure '.$filter);
