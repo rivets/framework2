@@ -4,6 +4,8 @@
  *
  * @author You <You@You.org>
  * @copyright 2020 You
+ * @package Framework
+ * @subpackage UserAjax
  */
     namespace Ajax;
 
