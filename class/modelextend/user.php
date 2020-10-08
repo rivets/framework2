@@ -7,6 +7,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2020 Newcastle University
  * @package Framework
+ * @subpackage ModelExtend
  */
     namespace ModelExtend;
 
