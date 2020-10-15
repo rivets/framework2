@@ -300,6 +300,9 @@
  */
         public function setup() : \Framework\Support\ContextBase
         {
+            ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
+            ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
+            ini_set('session.cookie_httponly', 1);
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {# see if there is a user variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
