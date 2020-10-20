@@ -122,7 +122,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-8 mr-auto">
-            <p class='"text-center">Coming Soon</a>
+            <p class="text-center">Coming Soon</a>
         </article>
     </section>
 {% endblock main %}
