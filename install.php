@@ -768,7 +768,7 @@
                     'logout'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
                     'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
                     'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
-                    'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', FALSE, TRUE, FALSE, 1, TRUE],
+                    'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
                     'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 0, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)
@@ -790,8 +790,8 @@
                     { // must be a developer
                         makerole(DBPREFIX.'pagerole', $now, $page, $cname, $drname);
                     }
-                    if ($data[5])
-                    { // must be a developer
+                    if ($data[6])
+                    { // must be a tester
                         makerole(DBPREFIX.'pagerole', $now, $page, $tname, $trname);
                     }
                 }
