@@ -2,7 +2,7 @@
   The fa macro is used by default so you can change which style it uses - regular (free), solid or duotone.
   fab is for brand icons and is also free.
 #}
-{% macro fa(icon, other='') %}<i class="far fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fa %}
+{% macro fa(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fa %}
 {% macro far(icon, other='') %}<i class="far fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro far %}
 {% macro fas(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fas %}
 {% macro fad(icon, other='') %}<i class="fad fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fad %}
