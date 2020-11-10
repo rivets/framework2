@@ -45,6 +45,11 @@
         {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('style')}}</style>
     {% endif %}
+    {% if block('criticalCSS') is defined %}
+        {% set nonce = context.web.makeNonce() %}
+        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        <style nonce="{{nonce}}">{{block('criticalCSS')}}</style>
+    {% endif %}
 
 </head>
 <body lang="{{deflang is defined ? deflang : 'en-GB'}}">
