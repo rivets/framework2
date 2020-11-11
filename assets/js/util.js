@@ -1,5 +1,5 @@
     var framework = {
-        dejq: function(el){
+        dejq: function(el) {
             console.log(el);
         },
 /**
@@ -7,14 +7,15 @@
  *
  * @param {object} data   - the object to encode
  */
-        makeQString: function(data){
+        makeQString: function(data) {
             var enc = '';
-            for (var prop in data) {
-                if (object.hasOwnProperty(prop)) {
-                    if (enc.length > 0) {
-                        enc += '&';
-                    }
-                    enc += encodeURI(prop + '=' + object[prop]);
+            let amp = '';
+            for (var prop in data)
+            {
+                if (data.hasOwnProperty(prop))
+                {
+                    enc += amp + encodeURI(prop + '=' + data[prop]);
+                    amp = '&';
                 }
             }
             return enc;
@@ -35,19 +36,18 @@
             }
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400)
-                {
-                    // Success!
+                { // Success!
                     if (options.hasOwnProperty('success'))
                     {
                         options.success(this.response);
                     }
                 }
                 else if (options.hasOwnProperty('fail'))
-                {
+                { // something went wrong
                     options.fail(this.response);
                 }
                 if (options.hasOwnProperty('always'))
-                {
+                { // always do this
                     options.always(this.response);
                 }
             };
@@ -55,14 +55,14 @@
               // There was a connection error of some sort
                 if (options.hasOwnProperty('fail'))
                 {
-                    fail(this.response);
+                    options.fail(this.response);
                 }
                 if (options.hasOwnProperty('always'))
                 {
                     options.always(this.repsonse);
                 }
             };
-            request.send(options.hasOwnProperty('data') ? makeQString(options.data) : '');
+            request.send(options.hasOwnProperty('data') ? framework.makeQString(options.data) : '');
         },
 /**
  * get JSON
@@ -181,7 +181,7 @@
         {
             e.preventDefault();
             e.stopPropagation();
-            if (msg == '')
+            if (msg === '')
             {
                 msg = 'this '+bean;
             }
