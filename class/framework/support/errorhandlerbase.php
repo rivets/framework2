@@ -163,6 +163,10 @@
                     ob_start();
                     debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
                     $this->back .= ob_get_clean(); // will get used later in make500
+                    if (isset($_GET['fwdump']))
+                    { // save the error message to a file in /debug
+                        Debug::show($this->back);
+                    }
                 }
                 /** @psalm-suppress RedundantCondition */
                 if (Config::USEPHPM || ini_get('sendmail_path') !== '')
