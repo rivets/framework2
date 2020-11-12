@@ -283,11 +283,11 @@
             { // no template so no output
                 return '';
             }
-            foreach ($this->messages as $ix => $vals)
+            foreach ($this->messages as $ix => $mvals)
             {
-                if (!empty($vals))
+                if (!empty($mvals))
                 {
-                    $this->addval(self::$msgnames[$ix], $vals);
+                    $this->addval(self::$msgnames[$ix], $mvals);
                 }
             }
             $this->clearMessages();
