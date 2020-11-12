@@ -1,4 +1,4 @@
-{% if context.hasadmin %}
+{% if context.hasAdmin or context.hasDevleoper %}
     {% include '@content/errorpage.twig' with {heading: 'Internal Error', message: errdata, left: TRUE, raw: TRUE} %}
 {% else %}
     {% include '@content/errorpage.twig' with {heading: 'Internal Error', message: 'Sorry, there has been an internal error'} %}
