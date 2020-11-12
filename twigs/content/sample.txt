@@ -42,7 +42,7 @@
 
 {#
    If you want a <meta> Description tag set this
-{% set description = 'A PHP framework for building RESTfuk systems' %}
+{% set description = 'A PHP framework for building RESTful systems' %}
 #}
 
 {#
