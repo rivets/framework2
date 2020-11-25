@@ -29,7 +29,7 @@
                     {{f.text({label: 'User Name', id: 'un', ph: 'User name - alphanumeric characters only',
                         parsley: {trigger: 'change',  'remote-reverse': 'false', remote: base~'/ajax/uniquenl/user/login/{value}',
                         'remote-message': 'That user name is not available', type: 'alphanum'}, required: TRUE})}}
-                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '*********', required: TRUE)}}
+                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '*********', required: TRUE})}}
                     {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '*********', parsley: {trigger: 'change', equalTo: '#pw'}, required: TRUE})}}
                     {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.org', parsley: {trigger: 'change'}, required: TRUE})}}
                     <p class="mt-4">
