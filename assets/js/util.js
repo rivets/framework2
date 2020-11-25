@@ -236,14 +236,19 @@
  * Turn background of the dom object yellow and then fade to white.
  *
  * @param {object} tr - a  dom object
+ * @param {?function} atend - a function called after fade finishes or null
  *
  * @return void
  */
-        fadetodel: function(tr){
+        fadetodel: function(tr, atend = null){
             tr.classList.add('fader');
             tr.style.opacity = '0';
             setTimeout(function(){
                 framework.removeNode(tr);
+                if (atend !== null)
+                {
+                    atend();
+                }
             }, 1500);
         },
 /**
@@ -262,14 +267,14 @@
  *
  * @return {void}
  */
-        dodelbean: function(e, x, bean, msg = '')
+        dodelbean: function(e, x, bean, msg = '', success = null)
         {
             let pnode = x.closest('[data-id]');
             if (pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
-            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){framework.fadetodel(pnode);}, msg);
+            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){ framework.fadetodel(pnode, success);}, msg);
         },
 /**
  * When a table detects a click call this. Expects there to be an
