@@ -86,7 +86,7 @@
  * @internal
  * @throws \Framework\Exception\InternalError
  */
-        public function __sleep() : void
+        public function __sleep() : array
         {
             throw new \Framework\Exception\InternalError('Cannot serialize Singleton objects');
         }
@@ -100,7 +100,7 @@
  *
  * @return object
  */
-        public function __invoke()
+        public function __invoke() : object
         {
             return static::getInstance();
         }
