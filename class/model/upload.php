@@ -122,8 +122,8 @@
         private function mkpath(\Support\Context $context, ?object $owner, bool $public, array $da) : array
         {
             $dir = getcwd();
-            chdir($public ? $context->local()->assetsdir() : $context->local()->basedir());
-            $pname = [$public ? 'public' : 'private', is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')];
+            chdir($context->local()->basedir());
+            $pname = array_merge($public ? ['assets', 'public'] : ['private'], [is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')]);
             foreach ($pname as $pd)
             { // walk the path cding and making if needed
                 $this->mkch($pd);
