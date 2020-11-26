@@ -82,7 +82,7 @@
 
 {# If you want some inline CSS then put it in this block - no <style> tags - it is better NOT to use this though!!
 {% block style %}
-{% endblock stytle %}
+{% endblock style %}
 #}
 
 {# If you want to add critical CSS then put it in this block - no <style> tags
