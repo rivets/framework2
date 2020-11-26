@@ -66,7 +66,7 @@
                     echo '<h2>There has been a system error</h2>';
                 }
             }
-            if (class_exists('R'))
+            if (class_exists('\R'))
             { // in case error happens before RedBean is loaded...
                 \R::close(); // close RedBean connection
             }
