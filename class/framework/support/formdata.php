@@ -85,7 +85,7 @@
                     {
                     case '':
                         $ix = $must ? 1 : 2;
-                        $res = $this->getter($t)->getValue($arguments[0], $must ? NULL : ($arguments[1] ?? NULL), $must, FALSE, $arguments[$ix] ?? NULL, $arguments[$ix+1] ?? '');
+                        $res = $this->getter($t)->getValue($arguments[0], $must ? NULL : ($arguments[1] ?? NULL), $must, FALSE, $arguments[$ix] ?? NULL, $arguments[$ix+1] ?? []);
                         return $has ? $res[0] : $res[1];
                     case 'a': // get an array iterator
                         return $this->getter($t)->{$must ? 'mustFetchArray' : 'fetchArray'}($arguments[0]);
