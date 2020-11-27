@@ -168,7 +168,7 @@
  */
         public function roleContext(string $name) : \RedBeanPHP\OODBBean
         {
-            if (!isset($this->roles[$name]))
+            if (!isset($this->contexts[$name]))
             {
                 if (!is_object($bn = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name])))
                 {
