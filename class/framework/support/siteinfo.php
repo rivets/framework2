@@ -55,9 +55,9 @@
  * @param int       $count  The number wanted.
  *
  * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
- * @return mixed
+ * @return \Generator
  */
-        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0)
+        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : \Generator
         {
             if ($start >= 0)
             {
@@ -233,8 +233,7 @@
   */
         public static function tableExists(string $table) : bool
         {
-            $tbs = \R::inspect();
-            return in_array(strtolower($table), $tbs);
+            return in_array(strtolower($table), \R::inspect());
         }
  /**
   * Check to see if a table has a given field
@@ -269,8 +268,8 @@
  */
         public static function tablecount(bool $all = FALSE) : int
         {
-            $x = \R::inspect();
-            return $all ? count($x) : count($x) - count(self::$fwtables);
+            $x = count(\R::inspect());
+            return $all ? $x : $x - count(self::$fwtables);
         }
 /**
  * Return bean table data
