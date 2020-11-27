@@ -54,8 +54,8 @@
  */
         public function update() : void
         {
-            $this->bean->name = strtolower($this->bean->name);
-            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
+            $this->bean->name = \strtolower($this->bean->name);
+            if (!\preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
                 throw new BadValue('Invalid page name');
             }
@@ -76,7 +76,7 @@
             {
                 if (!$context->hasuser())
                 { // not logged in
-                    $context->divert('/login/?goto='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
+                    $context->divert('/login/?goto='.\urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
                 if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
@@ -106,30 +106,30 @@
  */
         private static function maketwig(Context $context, string $name) : void
         {
-            if (preg_match('%@content/(.*)%', $name, $m))
+            if (\preg_match('%@content/(.*)%', $name, $m))
             { // this is in the User twig content directory
                 $name = 'content/'.$m[1];
             }
-            elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
+            elseif (\preg_match('%@([a-z]+)/(.*)%', $name, $m))
             { // this is using a system twig
                 $name = 'framework/'.$m[1].'/'.$m[2];
             }
-            if (!preg_match('/\.twig$/', $name))
+            if (!\strEndsWith($name, '.twig'))
             { // doesn't end in .twig
                 $name .= '.twig';
             }
             else
-            { // sometimes tehre are extra .twig extensions...
-                $name = preg_replace('/(\.twig)+$/', '.twig', $name); // this removes extra .twigs .....
+            { // sometimes there are extra .twig extensions...
+                $name = \preg_replace('/(\.twig)+$/', '.twig', $name); // this removes extra .twigs .....
             }
             $file = $context->local()->makebasepath('twigs', $name);
-            if (!file_exists($file))
+            if (!\file_exists($file))
             { // make the file
-                $fd = fopen($file, 'w');
+                $fd = \fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    fwrite($fd, file_get_contents($context->local()->makebasepath('twigs', 'content', 'sample.txt')));
-                    fclose($fd);
+                    \fwrite($fd, \file_get_contents($context->local()->makebasepath('twigs', 'content', 'sample.txt')));
+                    \fclose($fd);
                 }
             }
         }
@@ -174,24 +174,24 @@
                 switch ($p->kind)
                 {
                 case Dispatch::OBJECT:
-                    if (!preg_match('/\\\\/', $p->source))
+                    if (!\preg_match('/\\\\/', $p->source))
                     { // no namespace so put it in \Pages
                         $p->source = '\\Pages\\'.$p->source;
                         \R::store($p);
                     }
-                    $tl = strtolower($p->source);
-                    $tspl = explode('\\', $p->source);
-                    $base = array_pop($tspl);
-                    $lbase = strtolower($base);
-                    $namespace = implode('\\', array_filter($tspl));
-                    $src = preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
+                    $tl = \strtolower($p->source);
+                    $tspl = \explode('\\', $p->source);
+                    $base = \array_pop($tspl);
+                    $lbase = \strtolower($base);
+                    $namespace = \implode('\\', \array_filter($tspl));
+                    $src = \preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
                     $file = $local->makebasepath('class', $src);
-                    if (!file_exists($file))
+                    if (!\file_exists($file))
                     { // make the file
-                        $fd = fopen($file, 'w');
+                        $fd = \fopen($file, 'w');
                         if ($fd !== FALSE)
                         {
-                            fwrite($fd, '<?php
+                            \fwrite($fd, '<?php
 /**
  * A class that contains code to handle any requests for  /'.$p->name.'/
  *
@@ -221,17 +221,17 @@
         }
     }
 ?>');
-                            fclose($fd);
+                            \fclose($fd);
                         }
                     }
                     self::maketwig($context, '@content/'.$lbase.'.twig');
                     break;
                 case Dispatch::TEMPLATE:
-                    if (!preg_match('/\.twig$/', $p->source))
+                    if (!\preg_match('/\.twig$/', $p->source))
                     { // add .twig to name
                         $p->source .= '.twig';
                     }
-                    if (!preg_match('/^@/', $p->source))
+                    if (!\preg_match('/^@/', $p->source))
                     { // no namespace so put it in @content
                         $p->source = '@content/'.$p->source;
                         \R::store($p);

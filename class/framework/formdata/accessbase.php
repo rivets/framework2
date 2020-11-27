@@ -37,9 +37,9 @@
  *
  * @return mixed
  */
-        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function mustFetch(string|array $name, $filter = NULL, int|array $options = [], bool $isArray = FALSE) : mixed
         {
-            return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
+            return $this->getValue(name: $name, isArray: $isArray, filter: $filter, options: $options)[1];
         }
 /**
  * Look in the array for a key and return its trimmed value or a default value
@@ -49,12 +49,12 @@
  * @param string|array  $name     The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  * @param mixed         $default  Returned if the key does not exist
  * @param ?int          $filter   Filter to apply
- * @param mixed         $options  Filter options
+ * @param int|array     $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
  *
  * @return mixed
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function fetch(string|array $name, mixed $default = '', ?int $filter = NULL, int|array $options = [], bool $isArray = FALSE)
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
@@ -69,9 +69,9 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function mustFetchBean(string|array $name, string $bean, bool $forUpdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT, FALSE)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->getValue(name: $name, filter: FILTER_VALIDATE_INT)[1], $forUpdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
@@ -81,9 +81,9 @@
  * @throws BadValue
  * @return \ArrayIterator
  */
-        public function mustFetchArray($name) : \ArrayIterator
+        public function mustFetchArray(string|array $name) : \ArrayIterator
         {
-            return new \ArrayIterator($this->getValue($name, NULL, TRUE, TRUE)[1]);
+            return new \ArrayIterator($this->getValue(name: $name, isArray: TRUE)[1]);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
@@ -93,9 +93,9 @@
  *
  * @return \ArrayIterator
  */
-        public function fetchArray($name, array $default = []) : \ArrayIterator
+        public function fetchArray(string|array $name, array $default = []) : \ArrayIterator
         {
-            return new \ArrayIterator($this->getValue($name, $default, FALSE, TRUE)[1]);
+            return new \ArrayIterator($this->getValue(name: $name, default: $default, throw: FALSE, isArray: TRUE)[1]);
         }
     }
 ?>

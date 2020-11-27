@@ -17,11 +17,11 @@
 /**
  * @var \resource|false    The file descriptor
  */
-        private static $fd = FALSE;
+        private static ?object  $fd = NULL;
 /**
  * @var int     header count
  */
-        private static $hcount = 0;
+        private static int $hcount = 0;
 /**
  * Set up the debug text file
  *
@@ -29,9 +29,9 @@
  */
         private static function setup() : void
         {
-            if (self::$fd === FALSE)
+            if (is_null(self::$fd))
             {
-                self::$fd = fopen(\Framework\Local::getinstance()->makebasepath('debug', 'debug.txt'), 'a');
+                self::$fd = \fopen(\Support\Context::getinstance()->local()->makebasepath('debug', 'debug.txt'), 'a');
             }
         }
 /**
@@ -45,7 +45,7 @@
         {
             self::setup();
             /** @psalm-suppress PossiblyFalseArgument  */
-            fputs(self::$fd, $str."\n");
+            \fputs(self::$fd, $str.PHP_EOL);
         }
 /**
  * Dump a variable - uses buffering to grab the output.
@@ -54,14 +54,14 @@
  *
  * @return void
  */
-        public static function vdump(...$vars) : void
+        public static function vdump(mixed ...$vars) : void
         {
             self::setup();
-            ob_start();
+            \ob_start();
             /** @psalm-suppress ForbiddenCode */
-            var_dump(...$vars);
+            \var_dump(...$vars);
             /** @psalm-suppress PossiblyFalseArgument  */
-            fputs(self::$fd, ob_get_clean());
+            \fputs(self::$fd, ob_get_clean());
         }
 /**
  * Flush the output stream
@@ -70,10 +70,10 @@
  */
         public static function flush() : void
         {
-            if (self::$fd !== FALSE)
+            if (!is_null(self::$fd))
             {
                 /** @psalm-suppress PossiblyFalseArgument  */
-                fflush(self::$fd);
+                \fflush(self::$fd);
             }
         }
 /**
@@ -86,7 +86,7 @@
         public static function head(string $str) : void
         {
             self::$hcount += 1;
-            header('X-DEBUG-INFO'.self::$hcount.': '.$str);
+            \header('X-DEBUG-INFO'.self::$hcount.': '.$str);
         }
     }
 ?>

@@ -146,14 +146,7 @@
  */
         public function roleName(string $name) : \RedBeanPHP\OODBBean
         {
-            if (!isset($this->roles[$name]))
-            {
-                if (!is_object($bn = \R::findOne(FW::ROLENAME, 'name=?', [$name])))
-                {
-                    throw new \Framework\Exception\InternalError('Missing role name: '.$name);
-                }
-                $this->roles[$name] = $bn;
-            }
+            $this->roles[$name] ??= \R::findOne(FW::ROLENAME, 'name=?', [$name]) ?? throw new \Framework\Exception\InternalError('Missing role name: '.$name);
             return $this->roles[$name];
         }
 /**
@@ -168,14 +161,7 @@
  */
         public function roleContext(string $name) : \RedBeanPHP\OODBBean
         {
-            if (!isset($this->roles[$name]))
-            {
-                if (!is_object($bn = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name])))
-                {
-                    throw new \Framework\Exception\InternalError('Missing context name: '.$name);
-                }
-                $this->contexts[$name] = $bn;
-            }
+            $this->contexts[$name] ??= \R::findOne(FW::ROLECONTEXT, 'name=?', [$name]) ?? throw new \Framework\Exception\InternalError('Missing context name: '.$name);
             return $this->contexts[$name];
         }
 /**
@@ -263,15 +249,13 @@
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            $auth = array_filter(getallheaders(), static function ($key) {
-                return FW::AUTHTOKEN === strtoupper($key);
-            }, ARRAY_FILTER_USE_KEY);
+            $auth = \array_filter(\getallheaders(), static fn($key) => FW::AUTHTOKEN === \strtoupper($key), ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
             { // we have mobile authentication in use
                 try
                 {
                     /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($auth), FW::AUTHKEY);
+                    $tok = \Framework\Utility\JWT\JWT::decode(\array_shift($auth), FW::AUTHKEY);
                 }
                 catch (\Exception $e)
                 { // token error of some kind so return no access.
@@ -300,13 +284,13 @@
  */
         public function setup() : \Framework\Support\ContextBase
         {
-            ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
-            ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
-            ini_set('session.cookie_httponly', 1);
+            \ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
+            \ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
+            \ini_set('session.cookie_httponly', 1);
             if (isset($_COOKIE[Config::SESSIONNAME]))
             {# see if there is a user variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
-                session_start(['name' => Config::SESSIONNAME]);
+                \session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION['user']))
                 {
                     $this->luser =  $_SESSION['user'];
@@ -314,13 +298,13 @@
             }
             $this->mtoken();
 
-            if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
+            if (isset($_SERVER['REDIRECT_URL']) && !\preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
             {
 /*
  *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
  *  Older versions will not have this so the code will do nothing.
  */
-                $uri = preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
+                $uri = \preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
             }
             else
             {
@@ -328,9 +312,9 @@
             }
             if ($_SERVER['QUERY_STRING'] !== '')
             { // there is a query string so get rid it of it from the URI
-                [$uri] = explode('?', $uri);
+                [$uri] = \explode('?', $uri);
             }
-            $req = array_filter(explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
+            $req = \array_filter(\explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
@@ -341,16 +325,16 @@
  */
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
-                $bsplit = array_filter(explode('/', $this->local()->base()));
-                foreach (range(1, count($bsplit)) as $c)
+                $bsplit = \array_filter(\explode('/', $this->local()->base()));
+                foreach (\range(1, count($bsplit)) as $c)
                 {
-                    array_shift($req); // pop off the directory name...
+                    \array_shift($req); // pop off the directory name...
                 }
             }
             if (!empty($req))
             { // there was something after the domain name so split it into action and rest...
-                $this->reqaction = strtolower(array_shift($req));
-                $this->reqrest = empty($req) ? [''] : array_values($req);
+                $this->reqaction = \strtolower(\array_shift($req));
+                $this->reqrest = empty($req) ? [''] : \array_values($req);
             }
             return $this;
         }

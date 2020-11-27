@@ -9,23 +9,20 @@
 
     class Tester
     {
-        private $verbose;
-        private $https;
-        private $prefix;
-
-        public function __construct(string $verbose, string $https, string $prefix)
+        public function __construct(
+            private string $verbose = '',
+            private string $https = '',
+            private string $prefix = ''
+        )
         {
-            $this->verbose = $verbose;
-            $this->https = $https;
-            $this->prefix = $prefix;
         }
 
         private function success(string $url) : void
         {
 
             $url = $this->prefix.$url;
-            $data = Curl::fetch($url);
-            $info = Curl::code();
+            $data = \Curl::fetch($url);
+            $info = \Curl::code();
             if ($info['http_code'] != 200 && $info['redirect_count'] == 0)
             {
                 echo '** "'.$url.'" returns '.$info['http_code'].PHP_EOL;
@@ -40,9 +37,9 @@
         {
             [$turl, $code, $rdcount, $rdurl] = $test;
             $url = $this->prefix.$turl;
-            $data = Curl::fetch($url);
-            $info = Curl::code();
-            $resurl = urldecode($info['url']);
+            $data = \Curl::fetch($url);
+            $info = \Curl::code();
+            $resurl = \urldecode($info['url']);
             if ($info['http_code'] != $code)
             {
                 echo '** "'.$url.'" ('.$resurl.') returns '.$info['http_code'].' with '.$info['redirect_count'].' redirect'.($info['redirect_count'] != 1 ? 's' : '').PHP_EOL;
@@ -51,7 +48,7 @@
             {
                 if ($info['redirect_count'] == $rdcount + 1)
                 {
-                    if(preg_match('/^https/i', $resurl))
+                    if(\strStartsWith('https', \strtolower($resurl)))
                     {
                         if ($resurl == $this->prefix.$rdurl.'/')
                         {
@@ -103,7 +100,7 @@
         }
     }
 
-    $options = getopt('h:u::p::vb::s', ['base::host:', 'user::', 'password::', 'verbose', 'ssl']);
+    $options = \getopt('h:u::p::vb::s', ['base::host:', 'user::', 'password::', 'verbose', 'ssl']);
     $host = $options['h'] ?? 'localhost';
     $user = $options['u'] ?? '';
     $password = $options['p'] ?? '';
@@ -170,8 +167,8 @@
     if ($user !== '' && $password !== '')
     {
         echo '-------------------------------- Test with Login --------------------------------'.PHP_EOL;
-        $data = Curl::post($prefix.'/login/',['login' => $user, 'password' => $password], '', TRUE);
-        $info = Curl::code();
+        $data = \Curl::post($prefix.'/login/',['login' => $user, 'password' => $password], '', TRUE);
+        $info = \Curl::code();
         if ($info['http_code'] == 200)
         {
             $tester->runtest($login);
@@ -181,5 +178,5 @@
             echo '** login failed'.PHP_EOL;
         }
     }
-    Curl::cleanup();
+    \Curl::cleanup();
 ?>

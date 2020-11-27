@@ -11,6 +11,7 @@
 
     use \Config\Framework as FW;
     use \Support\Context;
+    use \RedBeanPHP\OODBBean as Bean;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -55,9 +56,9 @@
  * @param int       $count  The number wanted.
  *
  * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
- * @return mixed
+ * @return \Generator
  */
-        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0)
+        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : \Generator
         {
             if ($start >= 0)
             {
@@ -79,7 +80,7 @@
  * @param int       $start      Start position - used for pagination
  * @param int       $count      The number to be fetched - used for pagination
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function fetch(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : array
         {
@@ -114,7 +115,7 @@
  * @param string  $order      An order clause
  * @param bool    $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function users(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -128,7 +129,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function pages(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -142,7 +143,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function roles(int $start = -1, int $count = -1, string $order = '', $collect = FALSE) : array
         {
@@ -156,7 +157,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function contexts(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -168,9 +169,9 @@
  * @param int       $start      Start position - used for pagination
  * @param int       $count      The number to be fetched - used for pagination
  * @param string    $order      An order clause
- * @param bool          $collect    If TRUE then use collect not fetch
+ * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function siteConfig(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -184,7 +185,7 @@
  * @param string    $order      An order clause
  * @param bool      $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  */
         public function forms(int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
@@ -195,26 +196,26 @@
  *
  * @param string       $name     The name of the form
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @return ?Bean
  */
-        public function form(string $name) : ?\RedBeanPHP\OODBBean
+        public function form(string $name) : ?Bean
         {
             return \R::findOne(FW::FORM, 'name=?', [$name]);
         }
 /**
  * Get all users with a particular context/role
- * @param string|\RedBeanPHP\OODBBean   $rolecontext
- * @param string|\RedBeanPHP\OODBBean   $rolename
- * @param bool                          $all        If TRUE do not check if role is currentyl active
- * @param int                           $start      Start position - used for pagination
- * @param int                           $count      The number to be fetched - used for pagination
- * @param string                        $order      An order clause
- * @param bool                          $collect    If TRUE then use collect not fetch
+ * @param string|Bean   $rolecontext
+ * @param string|Bean   $rolename
+ * @param bool          $all        If TRUE do not check if role is currentyl active
+ * @param int           $start      Start position - used for pagination
+ * @param int           $count      The number to be fetched - used for pagination
+ * @param string        $order      An order clause
+ * @param bool          $collect    If TRUE then use collect not fetch
  *
- * @return array<\RedBeanPHP\OODBBean>
+ * @return array<Bean>
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function usersWith($rolecontext, $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
+        public function usersWith(string|Bean $rolecontext, string|Bean $rolename, bool $all = FALSE, int $start = -1, int $count = -1, string $order = '', bool $collect = FALSE) : array
         {
             $rnid = is_object($rolename) ? $rolename->getID() : $this->context->rolename($rolename)->getID();
             $rcid = is_object($rolecontext) ? $rolecontext->getID() : $this->context->rolecontext($rolecontext)->getID();
@@ -233,8 +234,7 @@
   */
         public static function tableExists(string $table) : bool
         {
-            $tbs = \R::inspect();
-            return in_array(strtolower($table), $tbs);
+            return in_array(needle: strtolower($table), haystack: \R::inspect());
         }
  /**
   * Check to see if a table has a given field
@@ -259,7 +259,7 @@
  */
         public static function isFWTable(string $table) : bool
         {
-            return in_array($table, self::$fwtables);
+            return in_array(needle: $table, haystack: self::$fwtables);
         }
 /**
  * Number of tables
@@ -269,8 +269,8 @@
  */
         public static function tablecount(bool $all = FALSE) : int
         {
-            $x = \R::inspect();
-            return $all ? count($x) : count($x) - count(self::$fwtables);
+            $x = \count(\R::inspect());
+            return $all ? $x : $x - count(self::$fwtables);
         }
 /**
  * Return bean table data
@@ -290,7 +290,7 @@
                     $beans[] = new \Framework\Support\Table($tab);
                 }
             }
-            return $start < 0 ? $beans : array_slice($beans, ($start - 1) * $count, $count);
+            return $start < 0 ? $beans : \array_slice($beans, ($start - 1) * $count, $count);
         }
 /**
  * Do a page count calculation for a table
@@ -307,6 +307,27 @@
         {
             $count = \R::count($table, $where, $pars);
             return (int) floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
+        }
+/**
+ * Get a mimetype for file
+ *
+ * @param string $path
+ * @param string $mime
+ *
+ * @return string;
+ */
+        public function fileType(string $path, string $mime = '')
+        {
+            if ($mime !== '')
+            {
+                $finfo = \finfo_open(FILEINFO_MIME_TYPE);
+                if (($mime = \finfo_file($finfo, $path)) === FALSE)
+                { // there was an error of some kind.
+                    $mime = '';
+                }
+                \finfo_close($finfo);
+            }
+            return $mime;
         }
     }
 ?>

@@ -17,17 +17,17 @@
     class TestSupport
     {
 /** @var Local */
-        private $local;
+        private Local $local;
 /** @varContext */
-        private $context;
+        private Context $context;
 /** @var object */
-        private $fdt;
+        private \Framework\FormData\Base $fdt;
 /** @var \Framework\Support\FormData */
-        private $fdtold;
+        private \Framework\Support\FormData $fdtold;
 /** @var \Framework\FormData\AccesBase */
-        private $fdtnew;
+        private \Framework\FormData\AccesBase $fdtnew;
 /** @var bool */
-        private $noform = FALSE;
+        private bool $noform = FALSE;
 /**
  * Constructor
  *
@@ -50,7 +50,7 @@
  *
  * @return string
  */
-        private function display($pars, $all = FALSE) : string
+        private function display(mixed $pars, bool $all = FALSE) : string
         {
             $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
             return preg_replace('/\[\)/', '[]', preg_replace('/,/', ', ', $all ? $x : substr($x, 1, strlen($x)-2)));
@@ -58,7 +58,7 @@
 /**
  * Run tests specified
  */
-        private function test(string $func, array $params, $result, bool $throwOK) : bool
+        private function test(string $func, array $params, string|array $result, bool $throwOK) : bool
         {
             if ($this->noform)
             {
@@ -92,19 +92,19 @@
                                     return FALSE;
                                 }
                             }
-                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res));
+                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.$res::class);
                             return TRUE;
                         }
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res));
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.$res::class);
                     }
                     elseif ($res instanceof \RedBeanPHP\OODBBean)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.$res::class.' id='.$this->display($res->getID(), TRUE));
                         return TRUE;
                     }
                     else
                     {
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res));
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.$res::class);
                     }
                 }
                 elseif (is_array($result))
@@ -134,17 +134,17 @@
             }
             catch (\Framework\Exception\BadValue $e)
             {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;
             }
             catch (\Framework\Exception\MissingBean $e)
             {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;
             }
             catch (\Exception $e)
             {
-                $this->local->message(Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message(Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
             }
             return FALSE;
         }
@@ -153,7 +153,7 @@
  *
  * @return void
  */
-        public function run(array $tests, bool $old = TRUE)
+        public function run(array $tests, bool $old = TRUE) : void
         {
             $this->fdt = $old ? $this->fdtold : $this->fdtnew;
             foreach ($tests as $test)

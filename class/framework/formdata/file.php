@@ -27,12 +27,12 @@
  * Make arrays of files work more like singletons
  *
  * @param mixed    $name
- * @param mixed    $key
+ * @param string|int    $key
  *
  * @throws BadValue
  * @return array
  */
-        public function fileData($name, $key = '') : array
+        public function fileData(mixed $name, string|int $key = '') : array
         {
             $x = $this->getValue($name, NULL, TRUE, TRUE)[1]; // will not return if it does not
             if ($key === '')

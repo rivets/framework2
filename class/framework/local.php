@@ -27,35 +27,35 @@
 /**
  * @var array Contains string names for the message constants - used for Twig variables
  */
-        private static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
+        private static array $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
 /**
  * @var string    The absolute path to the site directory
  */
-        private $basepath = '';
+        private string $basepath = '';
 /**
  * @var string  The name of the site directory
  */
-        private $basedname      = '';
+        private string $basedname      = '';
 /**
  * @var ?\Framework\Support\ErrorHandler
  */
-        private $errorHandler   = NULL;
+        private ?\Framework\Support\ErrorHandler $errorHandler   = NULL;
 /**
  * @var ?object    the Twig renderer
  */
-        private $twig           = NULL;
+        private ?\Twig\Environment $twig     = NULL;
 /**
  * @var array    Key/value array of data to pass into template renderer
  */
-        private $tvals          = [];
+        private array $tvals          = [];
 /**
  * @var array<array>    Stash away messages so that messages.twig works
  */
-        private $messages       = [[], [], []];
+        private array $messages       = [[], [], []];
 /**
  * @var array               Config values from database
  */
-        private $fwconfig       = [];
+        private array $fwconfig       = [];
 /**
  * Send mail if possible
  *
@@ -116,7 +116,7 @@
                     }
                     return $mail->send() ? '' : $mail->ErrorInfo;
                 }
-                catch (\Exception $e)
+                catch (\Exception)
                 {
                     return $mail->ErrorInfo;
                 }
@@ -141,18 +141,18 @@
  *
  * @return string
  */
-        public function makepath()
+        public function makepath(string ...$dirs)
         {
-            return implode(DIRECTORY_SEPARATOR, func_get_args());
+            return implode(DIRECTORY_SEPARATOR, $dirs);
         }
 /**
  * Join the arguments with DIRECTORY_SEPARATOR to make a path name and prepend the path to the base directory
  *
  * @return string
  */
-        public function makebasepath()
+        public function makebasepath(string ...$dirs)
         {
-            return $this->basedir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, func_get_args());
+            return $this->basedir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $dirs);
         }
 /**
  * Return a path to the assets directory suitable for use in links
@@ -216,7 +216,7 @@
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
-                    $loader->addPath($twigdir.'/framework/'.$tns, $tns);
+                $loader->addPath($twigdir.'/framework/'.$tns, $tns);
             }
             foreach (['content', 'info', 'surround'] as $tns)
             {
@@ -224,7 +224,7 @@
             }
             foreach (['util'] as $tns)
             {
-                    $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
+                $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
             }
             foreach (['content'] as $tns)
             {
@@ -323,7 +323,7 @@
  *
  * @return void
  */
-        public function addval($vname, $value = '', $tglobal = FALSE) : void
+        public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
             assert(is_object($this->twig)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
@@ -369,7 +369,7 @@
  *
  * @return void
  */
-        public function message(int $kind, $value) : void
+        public function message(int $kind, string|array $value) : void
         {
             if (is_array($value))
             {
@@ -389,7 +389,7 @@
  */
         public function clearMessages(?int $kind = NULL) : void
         {
-            if ($kind === '')
+            if (is_null($kind))
             {
                 $this->messages = [[], [], []];
             }
@@ -428,7 +428,7 @@
  */
         public function debase(string $url)
         {
-            return $this->base() !== '' ? preg_replace('#^'.$this->base().'#', '', $url) : $url;
+            return $this->base() !== '' ? \preg_replace('#^'.$this->base().'#', '', $url) : $url;
         }
 /**
  * Put the system into debugging mode
@@ -509,7 +509,7 @@
 /*
  * Initialise database access
  */
-            class_alias('\RedBeanPHP\R', '\R');
+            \class_alias('\RedBeanPHP\R', '\R');
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { // looks like there is a database configured
@@ -524,7 +524,7 @@
                         $this->fwconfig[$cnf->name] = $cnf;
                     }
                 }
-                catch (\Exception $e)
+                catch (\Exception)
                 { // But what do we do?
                     $this->errorHandler->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.', TRUE);
                     /* NOT REACHED */

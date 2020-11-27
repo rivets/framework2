@@ -21,23 +21,23 @@
 /**
  * @var array   Holds values for headers that are required. Keyed by the name of the header
  */
-        private $headers    = [];
+        private array $headers    = [];
 /**
  * @var array   Holds values that need to be added to CSP headers.
  */
-        private $csp        = [];
+        private array $csp        = [];
 /**
  * @var array   Holds values that need to be removed from CSP headers.
  */
-        private $nocsp      = [];
+        private array $nocsp      = [];
 /**
  * @var array   Holds values for Cache-Control headers
  */
-        private $cache      = [];
+        private array $cache      = [];
 /**
  * @var object   The Context object
  */
-        private $context;
+        private Context $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
@@ -86,12 +86,12 @@
  * @return void
  * @psalm-return never-return
  */
-        private function sendHead(int $code, string $msg) : void
+        private function sendHead(int $code, string $msg = '') : void
         {
             if ($msg !== '')
             {
                 $msg = '<p>'.$msg.'</p>';
-                $length = strlen($msg);
+                $length = \strlen($msg);
             }
             else
             {
@@ -110,8 +110,8 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param int           $size    The size of the output data
- * @param string|int    $code    The HTTP return code or ''
+ * @param int    $size    The size of the output data
+ * @param int    $code    The HTTP return code
  *
  * @return array<mixed>
  *
@@ -119,7 +119,7 @@
  * @psalm-suppress PossiblyInvalidOperand
  * @psalm-suppress InvalidNullableReturnType
  */
-        public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array
+        public function hasRange(int $size, int $code = StatusCodes::HTTP_OK) : array
         {
             if (!isset($_SERVER['HTTP_RANGE']))
             {
@@ -140,7 +140,7 @@
                     }
                 }
             }
-            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE, '');
+            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
             /* NOT REACHED */
         }
 /**
@@ -155,19 +155,19 @@
  */
         public function sendHeaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
         {
-            header(StatusCodes::httpHeaderFor($code));
+            \header(StatusCodes::httpHeaderFor($code));
             $this->putheaders();
             if ($mtype !== '')
             {
-                header('Content-Type: '.$mtype);
+                \header('Content-Type: '.$mtype);
             }
             if ($length !== NULL)
             {
-                header('Content-Length: '.$length);
+                \header('Content-Length: '.$length);
             }
             if ($name !== '')
             {
-                header('Content-Disposition: attachment; filename="'.$name.'"');
+                \header('Content-Disposition: attachment; filename="'.$name.'"');
             }
         }
 /**
@@ -241,28 +241,19 @@
         public function sendFile(string $path, string $name = '', string $mime = '') : void
         {
             [$code, $range, $length] = $this->hasrange(filesize($path));
-            if ($mime === '')
-            {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                if (($mime = finfo_file($finfo, $path)) === FALSE)
-                { // there was an error of some kind.
-                    $mime = '';
-                }
-                finfo_close($finfo);
-            }
     //      $this->addHeader(['Content-Description' => 'File Transfer']);
-            $this->sendHeaders($code, $mime, $length, $name);
+            $this->sendHeaders($code, \Support\SiteInfo::getinstance()->fileType($path, $mime), $length, $name);
             $this->debuffer();
             if (!empty($range))
             {
-                $fd = fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
-                fseek($fd, $range[0]);
-                echo fread($fd, $length);
-                fclose($fd);
+                $fd = \fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
+                \fseek($fd, $range[0]);
+                echo \fread($fd, $length);
+                \fclose($fd);
             }
             else
             {
-                readfile($path);
+                \readfile($path);
             }
         }
 /**
@@ -274,12 +265,12 @@
  *
  * @return void
  */
-        public function sendString(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
+        public function sendString(string $value, string $mime = '', int $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
             [$code, $range, $length] = $this->hasRange(strlen($value), $code);
             $this->sendHeaders($code, $mime, $length);
-            echo empty($range) ? $value : substr($value, $range[0], $length);
+            echo empty($range) ? $value : \substr($value, $range[0], $length);
         }
 /**
  * Deliver JSON response.
@@ -289,9 +280,9 @@
  *
  * @return void
  */
-        public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
+        public function sendJSON(mixed $res, int $code = StatusCodes::HTTP_OK) : void
         {
-            $this->sendString(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
+            $this->sendString(\json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
 /**
  * Add a header to the header list.
@@ -304,7 +295,7 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function addHeader($key, string $value = '') : void
+        public function addHeader(string|array $key, string $value = '') : void
         {
             if (!is_array($key))
             {
@@ -326,12 +317,12 @@
             {
                 foreach ($vals as $v)
                 {
-                    header($name.': '.$v);
+                    \header($name.': '.$v);
                 }
             }
             if (!empty($this->cache))
             {
-                header(trim('Cache-Control: '.implode(',', $this->cache)));
+                \header(trim('Cache-Control: '.implode(',', $this->cache)));
             }
         }
 /**
@@ -341,8 +332,8 @@
  */
         public function acceptgzip() : bool
         {
-            return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') &&
-                substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') > 0;
+            return \filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') &&
+                \substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') > 0;
         }
 /**
  * What kind of request was this?
@@ -371,9 +362,9 @@
  */
         public function debuffer() : void
         {
-            while (ob_get_length() > 0)
+            while (\ob_get_length() > 0)
             { // just in case we are inside some buffering
-                ob_end_clean();
+                \ob_end_clean();
             }
         }
 /**
@@ -387,7 +378,7 @@
  */
         public function saveCSP(string $type, string $string) : string
         {
-            $hash = 'sha256-'.base64_encode(hash('sha256', $string, TRUE));
+            $hash = 'sha256-'.\base64_encode(\hash('sha256', $string, TRUE));
             $this->addCSP($type, "'".$hash."'");
             return $hash;
         }
@@ -399,7 +390,7 @@
  *
  * @return void
  */
-        public function addCSP($type, string $host = '') : void
+        public function addCSP(string|array $type, string $host = '') : void
         {
             if (!is_array($type))
             {
@@ -420,7 +411,7 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function removeCSP($type, string $host = '') : void
+        public function removeCSP(string|array $type, string $host = '') : void
         {
             if (!is_array($type))
             {
@@ -455,7 +446,7 @@
                     }
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key]) ? ' '.implode(' ', $this->csp[$key]) : '').';';
+                        $csp .= ' '.$key.' '.\implode(' ', $val).(isset($this->csp[$key]) ? ' '.\implode(' ', $this->csp[$key]) : '').';';
                     }
                 }
                 if ($local->configval('reportcsp'))
@@ -481,7 +472,7 @@
  */
         public function addCache(array $items) : void
         {
-            $this->cache = array_merge($this->cache, $items);
+            $this->cache = \array_merge($this->cache, $items);
         }
 /**
  * Check a recaptcha value
@@ -497,7 +488,7 @@
         {
             if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
             {
-                $data = http_build_query([
+                $data = \http_build_query([
                     'secret'    => $secret,
                     'response'  => $_POST['g-recaptcha-response'],
                     'remoteip'  => $_SERVER['REMOTE_ADDR'],
@@ -509,11 +500,11 @@
                         'content' => $data,
                     ],
                 ];
-                $context  = stream_context_create($opts);
-                $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
+                $context  = \stream_context_create($opts);
+                $result = \file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
                 if ($result !== FALSE)
                 {
-                    $check = json_decode($result, TRUE);
+                    $check = \json_decode($result, TRUE);
                     return $check->success;
                 }
             }
@@ -527,10 +518,11 @@
         public function makeNonce()
         {
             $rand = '';
-            for ($i = 0; $i < 32; $i++) {
-                $rand .= chr(mt_rand(0, 255));
+            for ($i = 0; $i < 32; $i++)
+            {
+                $rand .= \chr(\mt_rand(0, 255));
             }
-            return hash('sha512', $rand);
+            return \hash('sha512', $rand);
         }
     }
 ?>

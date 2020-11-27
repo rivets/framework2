@@ -69,7 +69,7 @@
 /**
  * @var array<array> $actions Values for determining handling of above codes
  */
-        private static $actions = [
+        private static array $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
             self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
             self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
@@ -84,7 +84,7 @@
 /**
  * @var array<string>
  */
-        private static $checks = [
+        private static array $checks = [
             self::OBJECT        => 'checkObject',
             self::TEMPLATE      => 'checkTemplate',
             self::REDIRECT      => 'checkRedirect',
@@ -102,7 +102,7 @@
  * @var array $configs Constants that might be defined in the configuration that
  * need to be passed into twigs.
  */
-        private static $configs = ['lang', 'keywords', 'description'];
+        private static array $configs = ['lang', 'keywords', 'description'];
 /**
  * Setup basic values
  *
@@ -131,9 +131,9 @@
                     $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
-                catch (\ReflectionException $e)
+                catch (\ReflectionException)
                 {
-                    NULL; // void
+                    // void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
@@ -193,12 +193,12 @@
                     $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context); // set up cache-control headers.
                 }
-                catch(\Framework\Exception\Forbidden $e)
+                catch (\Framework\Exception\Forbidden $e)
                 {
                     $context->web()->noaccess($e->getMessage());
                     /* NOT REACHED */
                 }
-                catch(BadValue |
+                catch (BadValue |
                       \Framework\Exception\BadOperation |
                       \Framework\Exception\MissingBean |
                       \Framework\Exception\ParameterCount $e)
@@ -258,7 +258,7 @@
  */
         private static function checkObject(string $source)
         {
-            if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
+            if (!\preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
             {
                 throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
             }
@@ -275,7 +275,7 @@
  */
         private static function checkTemplate(string $source)
         {
-            if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
+            if (!\preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
             {
                 throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
             }
@@ -292,7 +292,7 @@
  */
         private static function checkRedirect(string $source)
         {
-            if (!preg_match('#^(/.*?)+#i', $source))
+            if (!\preg_match('#^(/.*?)+#i', $source))
             {
                 throw new BadValue('Invalid source for page type (local path)');
             }
@@ -309,7 +309,7 @@
  */
         private static function checkXRedirect(string $source)
         {
-            if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
+            if (\filter_var($source, FILTER_VALIDATE_URL) === FALSE)
             {
                 throw new BadValue('Invalid source for page type (URL)');
             }
