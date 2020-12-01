@@ -32,12 +32,12 @@
  *
  * @param string|array  $name     The key or if it is an array then the key and the fields that are needed $_GET['xyz'][0]
  * @param ?int          $filter   Filter to apply
- * @param mixed         $options  Filter options
+ * @param array|int     $options  Filter options
  * @param bool          $isArray  Expect an array ratherthan a simple value
  *
  * @return mixed
  */
-        public function mustFetch($name, $filter = NULL, $options = '', bool $isArray = FALSE)
+        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
         {
             return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
@@ -54,7 +54,7 @@
  *
  * @return mixed
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = '', bool $isArray = FALSE)
+        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE)
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }

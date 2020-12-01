@@ -86,10 +86,13 @@
             register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
-                assert_options(ASSERT_ACTIVE, $devel);
-                assert_options(ASSERT_WARNING, 0);
-                assert_options(ASSERT_QUIET_EVAL, 1);
-                assert_options(ASSERT_CALLBACK, [$this, 'assertFail']);
+                if (defined(\ASSERT_ACTIVE))
+                {
+                    assert_options(\ASSERT_ACTIVE, $devel);
+                    assert_options(\ASSERT_WARNING, 0);
+                    assert_options(\ASSERT_QUIET_EVAL, 1);
+                    assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
+                }
             }
         }
 /**

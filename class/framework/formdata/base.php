@@ -69,7 +69,8 @@
  *
  * @internal
  *
- * @mixed string    $name       The key
+ * @param string    $name       The key
+ * @param mixed     $default    The default value if needed
  * @param bool      $throw      If TRUE then throw an execption if it does not exist
  * @param bool      $isArray    If TRUE then check that this is an array
  * @param ?int      $filter     Filter to apply or NULL
@@ -78,7 +79,7 @@
  *
  * @return array
  */
-        final public function getValue($name, $default = NULL, bool $throw, bool $isArray = FALSE, ?int $filter = NULL, $options = '') : array
+        final public function getValue($name, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
         {
             try
             {
@@ -159,7 +160,7 @@
  * @throws BadValue
  * @return mixed
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = '')
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = [])
         {
             try
             {

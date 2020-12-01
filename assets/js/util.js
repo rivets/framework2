@@ -28,11 +28,16 @@
  * @param {object} data   - the data to pass
  */
         ajax: function (url, options) {
-            var request = new XMLHttpRequest();
-            request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
+            let request = new XMLHttpRequest();
+            let method = options.hasOwnProperty('method') ? options.method : 'GET';
+            request.open(method, url, true);
             if (options.hasOwnProperty('type'))
             {
                 request.setRequestHeader('Content-Type', options.type /* 'application/x-www-form-urlencoded; charset=UTF-8' */);
+            }
+            else if (method == 'post')
+            {
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
             }
             request.onload = function() {
                 if (this.status >= 200 && this.status < 400)

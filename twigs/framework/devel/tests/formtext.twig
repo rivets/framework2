@@ -9,19 +9,19 @@
         {{f.text({label: 'Text', id : 'textid6', name: 'text6', ph: 'text type readonly', value: 'with value readonly', readonly: TRUE})}}
         {{f.password({label: 'Password', id : 'pwid1', name: 'pw1', ph: 'password type'})}}
         {{f.password({label: 'Password', id : 'pwid2', name: 'pw2', ph: 'password type disabled', disabled: TRUE})}}
-        {{f.password({label: 'Password', id : 'pwid3', name: 'pw3', ph: 'password type readonly', readonly: TRUE})}}
+        {{f.password({label: 'Password', id : 'pwid3', name: 'pw3', ph: 'password type readonly', readonly: TRUE, help: 'This is readonly'})}}
         {{f.email({label: 'Email', id : 'emid1', name: 'em1', ph: 'email type'})}}
         {{f.email({label: 'Email', id : 'emid2', name: 'em2', ph: 'email type with value', value: 'with value'})}}
         {{f.email({label: 'Email', id : 'emid3', name: 'em3', ph: 'email type disabled', disabled: TRUE})}}
         {{f.email({label: 'Email', id : 'emid4', name: 'em4', ph: 'email type disabled with value', value: 'with value', disabled: TRUE})}}
         {{f.email({label: 'Email', id : 'emid5', name: 'em5', ph: 'email type readonly', readonly: TRUE})}}
-        {{f.email({label: 'Email', id : 'emid6', name: 'em6', ph: 'email type readonly with value', vaue: 'with value', readonly: TRUE})}}
+        {{f.email({label: 'Email', id : 'emid6', name: 'em6', ph: 'email type readonly with value', vaue: 'with value', readonly: TRUE, help: 'This is readonly'})}}
         {{f.textarea({label: 'Textarea', id : 'taid1', name: 'ta1', ph: 'Textarea', required: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid2', name: 'ta2', ph: 'Textarea with value', value: 'with value', required: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid3', name: 'ta3', ph: 'Textarea disabled', required: TRUE, disabled: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid4', name: 'ta4', ph: 'Textarea disabled with value', value: 'with value', disabled: TRUE, required: TRUE})}}
         {{f.textarea({label: 'Textarea', id : 'taid5', name: 'ta5', ph: 'Textarea readonly', required: TRUE, readonly: TRUE, help: 'This is readonly'})}}
-        {{f.textarea({label: 'Textarea', id : 'taid6', name: 'ta6', ph: 'Textarea readonly with value', value: 'with value', required: TRUE, readonly: TRUE})}}
+        {{f.textarea({label: 'Textarea', id : 'taid6', name: 'ta6', ph: 'Textarea readonly with value', value: 'with value', required: TRUE, readonly: TRUE, help: 'This is readonly'})}}
         {{f.startfset({legend: 'Frameset', class: 'jumbotron'})}}
                 {{f.text({label: 'Text', id : 'textid7', name: 'text1', ph: 'Inside a frameset', required: TRUE, data: {test: 'test'}})}}
         {{f.endfset()}}
