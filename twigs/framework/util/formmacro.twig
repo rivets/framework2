@@ -26,7 +26,7 @@
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
-<input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.fileopts(type, opts)}}{{fx.numopts(type, opts)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}{{fx.descby(opts)}}/>
+<input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.fileopts(type, opts)}}{{fx.numopts(type, opts)}}{{fx.data(opts.data)}}{{fx.parsley(opts.parsley)}}/>
 {% endmacro input %}
 
 {% macro bsl(opts) %}{% import _self as fx %}<div class="form-group">
@@ -45,21 +45,19 @@
 </div>
 {% endmacro bse%}
 
-{% macro descby(opts) %}{% if opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro descby %}
-
 {% macro slct(opts, ov) %}{% if (opts.multiple and ov.value in opts.selected) or opts.selected == ov.value %} selected="selected"{% endif %}{% endmacro slct %}
 
-{% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro text(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('text', opts)}}{{fx.bse(opts)}}{% endmacro text %}
 
-{% macro email(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('email', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro email(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('email', opts)}}{{fx.bse(opts)}}{% endmacro email %}
 
-{% macro password(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('password', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro password(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('password', opts)}}{{fx.bse(opts)}}{% endmacro password %}
 
 {% macro number(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('number', opts)}}{{fx.bse(opts)}}{% endmacro %}
 
-{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('range', opts)}}{{fx.bse(opts)}}{% endmacro %}
+{% macro range(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('range', opts)}}{{fx.bse(opts)}}{% endmacro range %}
 
-{% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro %}
+{% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro hidden %}
 
 {% macro checkbox(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
@@ -73,7 +71,7 @@
         </label>
     {% endfor %}
     {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}
-{% endmacro %}
+{% endmacro checkbox %}
 
 {% macro radio(opts) %}
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
@@ -87,16 +85,16 @@
         </label>
     {% endfor %}
     {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}
-{% endmacro %}
+{% endmacro radio %}
 
-{% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('rows', opts.rows)}}{{fx.hv('cols', opts.cols)}}{{fx.hv('placeholder', opts.ph)}}{{fx.on(opts)}}{{fx.data(opts.data)}}{{fx.descby(opts)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
+{% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('rows', opts.rows)}}{{fx.hv('cols', opts.cols)}}{{fx.hv('placeholder', opts.ph)}}{{fx.on(opts)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
 
 {% macro file(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('file', opts)}}{{fx.bse(opts)}}{% endmacro file %}
 
 {% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
-    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.on(opts)}}{{fx.help(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cdb(opts.multiple, 'multiple')}}{{fx.hv('size', opts.size)}}{{fx.descby(opts)}}>
+    <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.on(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cdb(opts.multiple, 'multiple')}}{{fx.hv('size', opts.size)}}>
         {% for ov in opts.options %}
             <option value="{{ov.value is defined ? ov.value : ov.text}}"{{fx.slct(opts, ov)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
