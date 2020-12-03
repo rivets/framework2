@@ -50,6 +50,7 @@
                 $this->context->web()->notfound(); // error if it exists....
                 /* NOT REACHED */
             }
+            $this->context->web()->noContent();
         }
     }
 ?>

@@ -30,6 +30,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Permission denied');
             }
+            $this->context->web()->noContent();
         }
     }
 ?>

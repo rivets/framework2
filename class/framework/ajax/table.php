@@ -64,6 +64,7 @@
             \R::store($bn);
             \R::trash($bn);
             \R::exec('truncate `'.$table.'`');
+            $this->context->web()->created('');
         }
 /**
  * update a field
@@ -110,6 +111,7 @@
             {
                 throw new \Framework\Exception\BadValue($e->getMessage());
             }
+            $this->context->web()->noContent();
         }
 /**
  * Map put onto patch
@@ -147,6 +149,7 @@
                 throw new Forbidden($e->getMessage());
                 /* NOT REACHED */
             }
+            $this->context->web()->noContent();
         }
 /**
  * Carry out operations on tables

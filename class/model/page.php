@@ -104,25 +104,9 @@
  *
  * @return void
  */
-        private static function maketwig(Context $context, string $name) : void
+        private static function maketwig(Context $context, array $name) : void
         {
-            if (preg_match('%@content/(.*)%', $name, $m))
-            { // this is in the User twig content directory
-                $name = 'content/'.$m[1];
-            }
-            elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
-            { // this is using a system twig
-                $name = 'framework/'.$m[1].'/'.$m[2];
-            }
-            if (!preg_match('/\.twig$/', $name))
-            { // doesn't end in .twig
-                $name .= '.twig';
-            }
-            else
-            { // sometimes tehre are extra .twig extensions...
-                $name = preg_replace('/(\.twig)+$/', '.twig', $name); // this removes extra .twigs .....
-            }
-            $file = $context->local()->makebasepath('twigs', $name);
+            $file = $context->local()->makebasepath('twigs', ...$name);
             if (!file_exists($file))
             { // make the file
                 $fd = fopen($file, 'w');
@@ -224,19 +208,32 @@
                             fclose($fd);
                         }
                     }
-                    self::maketwig($context, '@content/'.$lbase.'.twig');
+                    self::maketwig($context, ['content', $lbase.'.twig']);
                     break;
                 case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
-                    { // add .twig to name
+                    { // doesn't end in .twig
                         $p->source .= '.twig';
+                    }
+                    else
+                    { // sometimes there are extra .twig extensions...
+                        $p->source = preg_replace('/(\.twig)+$/', '.twig', $p->source); // this removes extra .twigs .....
                     }
                     if (!preg_match('/^@/', $p->source))
                     { // no namespace so put it in @content
                         $p->source = '@content/'.$p->source;
+                        $name = ['content', $p->source];
                         \R::store($p);
                     }
-                    self::maketwig($context, $p->name, $p->source);
+                    elseif (preg_match('%^@content/(.*)%', $p->source, $m))
+                    { // this is in the User twig content directory
+                        $name = ['content', $m[1]];
+                    }
+                    elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
+                    { // this is using a system twig
+                        $name = ['framework', $m[1], $m[2]];
+                    }
+                    self::maketwig($context, $name);
                     break;
                 case Dispatch::REDIRECT:
                 case Dispatch::REHOME:
