@@ -35,7 +35,7 @@
     {% if op == 'cookie' %}
         document.cookie = 'exist=42';
         document.cookie = 'email=foo@bar.com';
-        document.cookie = 'notarray=43;
+        document.cookie = 'notarray=43';
         document.cookie = 'aexist[0]=42';
         document.cookie = 'aexist[1]=66'; // two cookies with same name overwrite each other so [] doesnt work more than once
         document.cookie = 'nexist[14]=42';
