@@ -22,7 +22,13 @@
 
     function golink(e, x, t)
     {
-        window.location.href = base+'/'+t+'/';
+        let pnode = x.closest('.pname');
+        if (pnode instanceof jQuery)
+        {
+            pnode = pnode[0];
+        }
+        let pnode.parentNode.querySelector('.pname')
+        window.location.href = base+'/'+pnode.innerHTML+'/';
     }
 
     function paramset(params)
