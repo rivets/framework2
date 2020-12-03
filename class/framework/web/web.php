@@ -171,6 +171,15 @@
             }
         }
 /**
+ * Send a 204 response - OK but no contet
+ *
+ * @return void
+ */
+        public function send204() : void
+        {
+            $this->sendheaders(StatusCodes::HTTP_NO_CONTENT);
+        }
+/**
  * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
  *
  * @see \Support\SiteAction
