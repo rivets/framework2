@@ -14,7 +14,7 @@
 /**
  * A class that provides some basic Web operations and Constants.
  */
-    class WebBase
+    abstract class WebBase
     {
         use \Framework\Utility\Singleton;
 
@@ -23,14 +23,6 @@
  * @var array   Holds values for headers that are required. Keyed by the name of the header
  */
         protected $headers    = [];
-/**
- * @var array   Holds values that need to be added to CSP headers.
- */
-        protected $csp        = [];
-/**
- * @var array   Holds values that need to be removed from CSP headers.
- */
-        protected $nocsp      = [];
 /**
  * @var array   Holds values for Cache-Control headers
  */

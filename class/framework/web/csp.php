@@ -14,6 +14,14 @@
     trait CSP
     {
 /**
+ * @var array   Holds values that need to be added to CSP headers.
+ */
+        private $csp        = [];
+/**
+ * @var array   Holds values that need to be removed from CSP headers.
+ */
+        private $nocsp      = [];
+/**
  * compute, save and return a hash for use in a CSP header
  *
  * @param string  $type    What the hash is for (script-src, css-src etc.)
