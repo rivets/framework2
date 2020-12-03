@@ -9,7 +9,6 @@
  */
     namespace Framework\Web;
 
-    use \Support\Context;
 /**
  * A class that handles various web related things.
  */
