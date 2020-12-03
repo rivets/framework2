@@ -25,14 +25,14 @@
  * compute, save and return a hash for use in a CSP header
  *
  * @param string  $type    What the hash is for (script-src, css-src etc.)
- * @param string  $string  The data to be hashed
+ * @param string  $data    The data to be hashed
  *
  * @return string Returns the hash
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function saveCSP(string $type, string $string) : string
+        public function saveCSP(string $type, string $data) : string
         {
-            $hash = 'sha256-'.base64_encode(hash('sha256', $string, TRUE));
+            $hash = \Framework\Support\Security::hash($data);
             $this->addCSP($type, "'".$hash."'");
             return $hash;
         }
