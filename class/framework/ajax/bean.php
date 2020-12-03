@@ -82,7 +82,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
             }
-            $this->context->web()>noContent();
+            $this->context->web()->noContent();
         }
 /**
  * Map put onto patch
