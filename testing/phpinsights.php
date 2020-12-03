@@ -153,7 +153,7 @@ return [
             'position_after_functions_and_oop_constructs' => 'next', // possible values ['same', 'next']
         ],
         ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff::class => [
-            'maxNestingLevel' => 4,
+            'maxNestingLevel' => 6,
         ],
         SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff::class => [
             'linesCountBeforeFirstUse' => 1,
@@ -161,7 +161,7 @@ return [
             'linesCountAfterLastUse' => 0,
         ],
         NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
-             'maxComplexity' => 10,
+             'maxComplexity' => 20,
         ],
         ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff::class => [
             'maxLength' => 600,
