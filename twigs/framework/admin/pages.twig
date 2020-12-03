@@ -20,6 +20,11 @@
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
     }
 
+    function golink(e, x, t, ntype = 'tr')
+    {
+        window.location.href = base+'/'+t+ '/';
+    }
+
     function paramset(params)
     {
         params.id = params.pk;
@@ -39,6 +44,7 @@
         ['logn', framework.dotoggle, 'needlogin'],
         ['mobo', framework.dotoggle, 'mobileonly'],
         ['editb', framework.goedit]
+        ['linkb', golink]
     ]
 {% endblock setup %}
 
@@ -121,7 +127,7 @@
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
                 '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
-                '<td><a href="'+base+'/'+pn+'">{{i.link('')}}</a></td>'+
+                '<td><a href="'+base+'/'+pn+'">{{i.link('linkb')}}</a></td>'+
                 '<td>{{i.edit('editb')}}</td>'+
                 '<td>{{i.delete('delb')}}</td></tr>';
                 let nx
@@ -209,7 +215,7 @@
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
-                            <td><a href="{{base}}/{{p.name}}">{{i.link('')}}</a></td>
+                            <td><a href="{{base}}/{{p.name}}">{{i.link('linkb')}}</a></td>
                             <td>{{i.edit('editb')}}</td>
                             <td>{{i.delete('delb')}}</td>
                         </tr>
