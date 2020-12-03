@@ -41,12 +41,12 @@
     {% block head %}
     {% endblock head %}
     {% if block('style') is defined %}
-        {% set nonce = context.web.makeNonce() %}
+        {% set nonce = security.makeNonce() %}
         {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('style')}}</style>
     {% endif %}
     {% if block('criticalCSS') is defined %}
-        {% set nonce = context.web.makeNonce() %}
+        {% set nonce = security.makeNonce() %}
         {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('criticalCSS')}}</style>
     {% endif %}

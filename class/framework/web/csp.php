@@ -32,7 +32,7 @@
  */
         public function saveCSP(string $type, string $data) : string
         {
-            $hash = \Framework\Support\Security::hash($data);
+            $hash = \Framework\Support\Security::getinstance()->hash($data);
             $this->addCSP($type, "'".$hash."'");
             return $hash;
         }

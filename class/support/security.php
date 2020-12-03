@@ -14,13 +14,15 @@
  */
     class Security
     {
+        use \Framework\Utility\Singleton;
+
         private const ALGORITHM = 'sha256';
 /**
  * Make a nonce value for including inline CSS
  *
  * @return string
  */
-        public static function makeNonce()
+        public function makeNonce()
         {
             $rand = '';
             for ($i = 0; $i < 32; $i++) {
@@ -35,7 +37,7 @@
  *
  * @return string
  */
-        public static function hash(string $data)
+        public function hash(string $data)
         {
             return self::ALGORITHM.'-'.base64_encode(hash(self::ALGORITHM, $data, TRUE));
         }
