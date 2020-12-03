@@ -60,7 +60,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
             }
-            echo $id;
+            $this->context->web()->sendString($id, 'text/plain; charset=UTF-8', \Framework\Web\Statuscodes::HTTP_CREATED); // 201 return code
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
@@ -82,6 +82,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
             }
+            $this->context()->web()>noContent();
         }
 /**
  * Map put onto patch
@@ -123,6 +124,7 @@
                 $bn->delete($this->context);
             }
             R::trash($bn);
+            $this->context()->web()->send204();
         }
 /**
  * Carry out operations on beans

@@ -175,7 +175,7 @@
  *
  * @return void
  */
-        public function send204() : void
+        public function noContent() : void
         {
             $this->sendheaders(StatusCodes::HTTP_NO_CONTENT);
         }

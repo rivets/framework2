@@ -47,6 +47,7 @@
             $v->value = $fdt->mustFetch('value');
             $v->type = $fdt->mustFetch('type');
             R::store($v);
+            $this->context()->web()->send204();
         }
 /**
  * Handle PUT or PATCH
@@ -103,6 +104,7 @@
                 throw new BadValue('No such item');
             }
             R::trash($v);
+            $this->context()->web()->send204();
         }
 /**
  * Handle GET
