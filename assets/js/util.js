@@ -20,35 +20,6 @@
             }
             return enc;
         },
-
-        onloaded: function(rq, options){
-            if (rq.status >= 200 && rq.status < 400)
-            { // Success!
-                if (options.hasOwnProperty('success'))
-                {
-                    options.success(rq.response);
-                }
-            }
-            else if (options.hasOwnProperty('fail'))
-            { // something went wrong
-                options.fail(rq.response);
-            }
-            if (options.hasOwnProperty('always'))
-            { // always do this
-                options.always(rq.response);
-            }
-        },
-        onfailed: function(req, options){
-            // There was a connection error of some sort
-              if (options.hasOwnProperty('fail'))
-              {
-                  options.fail(rq.response);
-              }
-              if (options.hasOwnProperty('always'))
-              {
-                  options.always(rq.response);
-              }
-        },
 /**
  * non-jquery post function
  *
@@ -59,17 +30,44 @@
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
-            let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
-            let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
             request.open(method, url, true);
-            request.setRequestHeader('Content-Type', type);
+            if (options.hasOwnProperty('type'))
+            {
+                request.setRequestHeader('Content-Type', options.type /* 'application/x-www-form-urlencoded; charset=UTF-8' */);
+            }
+            else if (method == 'post')
+            {
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            }
             request.onload = function() {
-                framework.onloaded(this, options);
+                if (this.status >= 200 && this.status < 400)
+                { // Success!
+                    if (options.hasOwnProperty('success'))
+                    {
+                        options.success(this.response);
+                    }
+                }
+                else if (options.hasOwnProperty('fail'))
+                { // something went wrong
+                    options.fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                { // always do this
+                    options.always(this.response);
+                }
             };
             request.onerror = function() {
-                framework.onfailed(this, options);
+              // There was a connection error of some sort
+                if (options.hasOwnProperty('fail'))
+                {
+                    options.fail(this.response);
+                }
+                if (options.hasOwnProperty('always'))
+                {
+                    options.always(this.repsonse);
+                }
             };
-            request.send(data);
+            request.send(options.hasOwnProperty('data') ? framework.makeQString(options.data) : '');
         },
 /**
  * get JSON

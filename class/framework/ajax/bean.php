@@ -60,7 +60,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
             }
-            $this->context->web()->sendString($id, 'text/plain; charset=UTF-8', \Framework\Web\Statuscodes::HTTP_CREATED); // 201 return code
+            echo $id;
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
