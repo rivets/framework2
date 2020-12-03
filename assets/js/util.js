@@ -77,6 +77,7 @@
         getJSON : function(url, success, fail){
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
+            request.setRequestHeader('Accept', 'application/json');
             request.onload = function() {
               if (this.status >= 200 && this.status < 400) {
                 // Success!
@@ -157,13 +158,6 @@
                 }
                 else
                 { // toggle at the other end
-                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                    //    method: putorpatch,
-                    //}).done(function(){
-                    //   framework.toggle(x);
-                    //}).fail(function(jx){
-                    //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
-                    //});
                     let pnode = x.closest('[data-id]');
                     if (pnode instanceof jQuery)
                     {
@@ -217,7 +211,7 @@
  */
         editcall: function(params) {
             const url = base + '/ajax/' + params.op + '/' + params.bean + '/' + params.pk + '/'+params.name+'/';
-            return $.ajax(url, {
+            return framework.ajax(url, {
                 method: putorpatch,
                 data: { value: params.value }
             });
@@ -301,10 +295,10 @@
         tableClick: function(event)
         {
             event.preventDefault();
-            const x = $(event.target);
+            const clist = event.target.classList;
             event.data.clicks.forEach(function(value){
                 let [cls, fn, par] = value;
-                if (x.hasClass(cls))
+                if (clist.contains(cls))
                 {
                     fn(event, event.target, event.data.bean, par);
                 }
@@ -358,10 +352,16 @@
  */
         beanCreate: function(bean, data, fn, button)
         {
-            $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
-                bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
-            }).always(function(){
-                $(button).attr('disabled', false);
+            framework.ajax(base+'/ajax/bean/'+bean+'/', {
+                method: 'POST',
+                data: data,
+                success: fn,
+                fail : function(jx){
+                    bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+                },
+                always: function(){
+                    document.getElementById(button).setAttribute('disabled', false);
+                }
             });
         },
 /**
@@ -374,9 +374,22 @@
         addMore: function(e)
         {
             e.preventDefault();
-            $('#mrow').before($('#example').clone());
-            $('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
-            $('option', $('#mrow').prev()).prop('selected', false); // clear any selections
+            const clone = document.getElementById('example').cloneNode(true);
+            for (var node of clone.getElementsByTagName('input'))
+            {
+                node.setAttribute('value', '');
+            }
+            for (node of clone.getElementsByTagName('textarea'))
+            {
+                node.innerHTML = '';
+            }
+            for (node of clone.getElementsByTagName('option'))
+            {
+                node.setAttribute('selected', false);
+            }
+            document.getElementById('mrow').insertBefore(clone);
+            //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
+            //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
         },
 /**
  * Used by doBGFade to calculate the next value in a progressive fade

@@ -44,7 +44,7 @@
                 '<td>{{i.delete('delb')}}</td></tr>'
             );
             framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
-        }, '#addb');
+        }, 'addb');
     });
     $('#utab').on('click', {bean: 'user', clicks: clicks}, framework.tableClick);
 {% endblock onload %}

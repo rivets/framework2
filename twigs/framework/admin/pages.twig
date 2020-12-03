@@ -174,7 +174,7 @@
                 dt[sv+'['+inx+']'] = $(this).val();
             });
         }
-        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, '#addb');
+        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
     $('#ptab').on('click', {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}, framework.tableClick);
     $('#npage').on('show.bs.modal', function(e){
