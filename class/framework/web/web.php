@@ -35,7 +35,7 @@
  */
         public function created(string $value, string $mime = 'text/plain; charset=UTF-8') : void
         {
-            $this->sendString($value, $mime, \Framework\Web\Statuscodes::HTTP_CREATED);
+            $this->sendString($value, $mime, \Framework\Web\StatusCodes::HTTP_CREATED);
         }
 /**
  * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class

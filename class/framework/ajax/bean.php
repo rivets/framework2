@@ -82,7 +82,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
             }
-            $this->context()->web()>noContent();
+            $this->context->web()>noContent();
         }
 /**
  * Map put onto patch
@@ -124,7 +124,7 @@
                 $bn->delete($this->context);
             }
             R::trash($bn);
-            $this->context()->web()->noContent();
+            $this->context->web()->noContent();
         }
 /**
  * Carry out operations on beans
