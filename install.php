@@ -306,16 +306,16 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['//stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.14.0/css/all.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v5.15.1/css/all.css', 1, '', '', 0, 0, 'css'],
         'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['//stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
-        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
@@ -387,8 +387,8 @@
         'default-src'   => ["'self'"],
         'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
-        'script-src'    => ["'self'", 'stackpath.bootstrapcdn.com', 'cdnjs.cloudflare.com', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
-        'style-src'     => ["'self'", '*.fontawesome.com', 'stackpath.bootstrapcdn.com'],
+        'script-src'    => ["'self'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
+        'style-src'     => ["'self'", 'cdn.jsdelivr.net', '*.fontawesome.com'],
     ];
 /*
  * See if we have a sendmail setting in the php.ini file

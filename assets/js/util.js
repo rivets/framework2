@@ -20,6 +20,35 @@
             }
             return enc;
         },
+
+        onloaded: function(rq, options){
+            if (rq.status >= 200 && rq.status < 400)
+            { // Success!
+                if (options.hasOwnProperty('success'))
+                {
+                    options.success(rq.response);
+                }
+            }
+            else if (options.hasOwnProperty('fail'))
+            { // something went wrong
+                options.fail(rq.response);
+            }
+            if (options.hasOwnProperty('always'))
+            { // always do this
+                options.always(rq.response);
+            }
+        },
+        onfailed: function(rq, options){
+            // There was a connection error of some sort
+              if (options.hasOwnProperty('fail'))
+              {
+                  options.fail(rq.response);
+              }
+              if (options.hasOwnProperty('always'))
+              {
+                  options.always(rq.response);
+              }
+        },
 /**
  * non-jquery post function
  *
@@ -28,41 +57,19 @@
  * @param {object} data   - the data to pass
  */
         ajax: function (url, options) {
-            var request = new XMLHttpRequest();
-            request.open(options.hasOwnProperty('method') ? options.method : 'GET', url, true);
-            if (options.hasOwnProperty('type'))
-            {
-                request.setRequestHeader('Content-Type', options.type /* 'application/x-www-form-urlencoded; charset=UTF-8' */);
-            }
+            let request = new XMLHttpRequest();
+            let method = options.hasOwnProperty('method') ? options.method : 'GET';
+            let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
+            let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
+            request.open(method, url, true);
+            request.setRequestHeader('Content-Type', type);
             request.onload = function() {
-                if (this.status >= 200 && this.status < 400)
-                { // Success!
-                    if (options.hasOwnProperty('success'))
-                    {
-                        options.success(this.response);
-                    }
-                }
-                else if (options.hasOwnProperty('fail'))
-                { // something went wrong
-                    options.fail(this.response);
-                }
-                if (options.hasOwnProperty('always'))
-                { // always do this
-                    options.always(this.response);
-                }
+                framework.onloaded(this, options);
             };
             request.onerror = function() {
-              // There was a connection error of some sort
-                if (options.hasOwnProperty('fail'))
-                {
-                    options.fail(this.response);
-                }
-                if (options.hasOwnProperty('always'))
-                {
-                    options.always(this.repsonse);
-                }
+                framework.onfailed(this, options);
             };
-            request.send(options.hasOwnProperty('data') ? framework.makeQString(options.data) : '');
+            request.send(data);
         },
 /**
  * get JSON
@@ -135,7 +142,7 @@
  *
  * @return {void}
  */
-        dotoggle: function(e, x, bean, fld, ntype = 'tr')
+        dotoggle: function(e, x, bean, fld)
         {
             e.preventDefault();
             e.stopPropagation();
@@ -157,7 +164,12 @@
                     //}).fail(function(jx){
                     //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
                     //});
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+x.closest(ntype).getAttribute('data-id')+'/'+fld, {
+                    let pnode = x.closest('[data-id]');
+                    if (pnode instanceof jQuery)
+                    {
+                        pnode = pnode[0];
+                    }
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
                         method: putorpatch,
                         success: function(){ framework.toggle(x); },
                         fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
@@ -279,7 +291,7 @@
 /**
  * When a table detects a click call this. Expects there to be an
  * field in the event data called clicks which is an array of 3 element arrays
- * containing a classname, a function, and a paaramter to pass  to the function.
+ * containing a classname, a function, and a paramter to pass  to the function.
  * If the item within the table that was clicked has the class name then the function is called.
  *
  * @param {object} event - a jQuery event object
@@ -309,9 +321,14 @@
  *
  * @return void
  */
-        goedit: function(e, x, t, ntype = 'tr')
+        goedit: function(e, x, t)
         {
-            window.location.href = base+'/admin/edit/'+t+'/' + x.closest(ntype).getAttribute('data-id') + '/';
+            let pnode = x.closest('[data-id]');
+            if (pnode instanceof jQuery)
+            {
+                pnode = pnode[0];
+            }
+            window.location.href = base+'/admin/edit/'+t+'/' + pnode.getAttribute('data-id') + '/';
         },
 /**
  * Relocate to an admin view URL - used by the framework admin interface

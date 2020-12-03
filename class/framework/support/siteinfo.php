@@ -234,7 +234,7 @@
   */
         public static function tableExists(string $table) : bool
         {
-            return in_array(needle: strtolower($table), haystack: \R::inspect());
+            return in_array(\strtolower($table), \R::inspect());
         }
  /**
   * Check to see if a table has a given field
