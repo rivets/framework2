@@ -83,9 +83,7 @@
                             else
                             {
                                 [$sname, $svalue] = explode('=', $part, 2);
-                                $sname = strtolower(trim($sname));
-                                $svalue = trim(trim($svalue), '"');
-                                $headers[$name][$sname] = $svalue;
+                                $headers[$name][strtolower(trim($sname))] = trim($svalue, "\" \t\n\r\0\x0B");
                             }
                         }
                     }
