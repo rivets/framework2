@@ -111,7 +111,7 @@
             {
                 throw new \Framework\Exception\BadValue($e->getMessage());
             }
-            $this->context()->web()->send204();
+            $this->context()->web()->noContent();
         }
 /**
  * Map put onto patch
@@ -149,7 +149,7 @@
                 throw new Forbidden($e->getMessage());
                 /* NOT REACHED */
             }
-            $this->context()->web()->send204();
+            $this->context()->web()->noContent();
         }
 /**
  * Carry out operations on tables

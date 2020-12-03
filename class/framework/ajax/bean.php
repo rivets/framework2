@@ -60,7 +60,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
             }
-            $this->context->web()->sendString($id, 'text/plain; charset=UTF-8', \Framework\Web\Statuscodes::HTTP_CREATED); // 201 return code
+            $this->context->web()->created($id); // 201 return code
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
@@ -124,7 +124,7 @@
                 $bn->delete($this->context);
             }
             R::trash($bn);
-            $this->context()->web()->send204();
+            $this->context()->web()->noContent();
         }
 /**
  * Carry out operations on beans
