@@ -18,7 +18,7 @@
     document.querySelectorAll('#uform')[0].on('submit', function(e){
         return $(this).parsley().validate()
     });
-    document.querySelectorAll('.delb')[0]..on('click', function(e){
+    document.querySelectorAll('.delb')[0].on('click', function(e){
         framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
     });
 {% endblock onload %}
