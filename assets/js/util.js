@@ -371,10 +371,11 @@
  *
  * @return void
  */
-        addMore: function(e)
+        addMore: function(e, extra = null)
         {
             e.preventDefault();
-            const clone = document.getElementById('example').cloneNode(true);
+            const prev = e.target.parentNode.previousSibling;
+            const clone = prev.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
             {
                 node.setAttribute('value', '');
@@ -386,6 +387,10 @@
             for (node of clone.getElementsByTagName('option'))
             {
                 node.setAttribute('selected', false);
+            }
+            if (extra !== null)
+            {
+                extra(clone);
             }
             document.getElementById('mrow').insertBefore(clone);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
