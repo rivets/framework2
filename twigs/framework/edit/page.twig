@@ -18,9 +18,12 @@
     document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
         return $(this).parsley().validate()
     });
-    document.querySelectorAll('.delb')[0].addEventListener('click', function(e){
-        framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
-    });
+    for (var node of document.querySelectorAll('.delb'))
+    {
+        node.addEventListener('click', function(e){
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
+        });
+    }
 {% endblock onload %}
 
 {% block header %}
