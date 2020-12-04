@@ -4,16 +4,12 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as icon %}
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
     document.getElementById('more').addEventListener('click', function(e){
-        framework.addMore(e, function(clone){
-            clone.querySelectorAll('.delb')[0].addEventListener('click', function(e){
-                framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
-            });
-        });
-
+        framework.addMore(e);
     });
     document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
         return $(this).parsley().validate()
