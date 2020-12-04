@@ -374,8 +374,8 @@
         addMore: function(e, extra = null)
         {
             e.preventDefault();
-            const prev = e.target.parentNode.previousSibling;
-            const clone = prev.cloneNode(true);
+            const mrow = document.getElementById('#mrow');
+            const clone = mrow.previousSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
             {
                 node.setAttribute('value', '');
@@ -392,7 +392,7 @@
             {
                 extra(clone);
             }
-            document.getElementById('mrow').insertBefore(clone);
+            mrow.insertBefore(clone);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
             //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
         },
