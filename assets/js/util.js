@@ -371,10 +371,11 @@
  *
  * @return void
  */
-        addMore: function(e, extra = null)
+        addMore: function(e)
         {
             e.preventDefault();
-            const mrow = document.getElementById('#mrow');
+            e.stopPropagation();
+            const mrow = document.getElementById('mrow');
             const clone = mrow.previousSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
             {
