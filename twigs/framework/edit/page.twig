@@ -7,7 +7,7 @@
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
-    document.getElementById('#more').addEventListener('click', function(e){
+    document.getElementById('more').addEventListener('click', function(e){
         framework.addMore(e, function(clone){
             clone.querySelectorAll('.delb')[0].addEventListener('click', function(e){
                 framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
