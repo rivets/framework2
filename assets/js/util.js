@@ -376,7 +376,7 @@
             e.preventDefault();
             e.stopPropagation();
             const mrow = document.getElementById('mrow');
-            const clone = mrow.previousSibling.cloneNode(true);
+            const clone = mrow.previousElementSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
             {
                 if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
