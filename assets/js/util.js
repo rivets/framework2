@@ -396,7 +396,7 @@
             {
                 node.setAttribute('selected', false);
             }
-            mrow.insertBefore(clone);
+            mrow.parentNode.insertBefore(clone, mrow);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
             //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
         },
