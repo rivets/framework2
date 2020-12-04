@@ -396,6 +396,10 @@
             {
                 node.setAttribute('selected', false);
             }
+            for (node of clone.getElementsByTagName('select'))
+            {
+                node.children[0].setAttribute('selected', true);
+            }
             mrow.parentNode.insertBefore(clone, mrow);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
             //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
