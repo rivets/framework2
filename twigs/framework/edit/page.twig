@@ -9,16 +9,16 @@
 {% block onload %}
     $('#more').on('click', function(e){
         framework.addMore(e, function(clone){
-            clone.querySelectorAll('.delb')[0].on('click', function(e){
+            clone.querySelectorAll('.delb')[0].addEventListener('click', function(e){
                 framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
             });
         });
 
     });
-    document.querySelectorAll('#uform')[0].on('submit', function(e){
+    document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
         return $(this).parsley().validate()
     });
-    document.querySelectorAll('.delb')[0].on('click', function(e){
+    document.querySelectorAll('.delb')[0].addEventListener('click', function(e){
         framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
     });
 {% endblock onload %}
