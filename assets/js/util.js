@@ -378,7 +378,14 @@
             const clone = mrow.previousSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
             {
-                node.setAttribute('value', '');
+                if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
+                {
+                    node.setAttribute('checked', false);
+                }
+                else
+                {
+                    node.setAttribute('value', '');
+                }
             }
             for (node of clone.getElementsByTagName('textarea'))
             {
