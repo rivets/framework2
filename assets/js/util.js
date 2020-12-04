@@ -381,7 +381,7 @@
             {
                 if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
                 {
-                    node.setAttribute('checked', false);
+                    node.removeAttribute('checked');
                 }
                 else
                 {
@@ -394,11 +394,11 @@
             }
             for (node of clone.getElementsByTagName('option'))
             {
-                node.setAttribute('selected', false);
+                node.removeAttribute('selected', false);
             }
             for (node of clone.getElementsByTagName('select'))
             {
-                node.children[0].setAttribute('selected', true);
+                node.children[0].setAttribute('selected', 'selected');
             }
             mrow.parentNode.insertBefore(clone, mrow);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
