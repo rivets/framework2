@@ -9,7 +9,7 @@
 {% endblock header %}
 
 {% block onload %}
-    framework.ajax(base+'/', {}).done(function(d) { console.log(d); });
+    framework.ajax(base+'/', {}).done(function(d) { console.log(d); }).always(function(d) { console.log('always')});
 {% endblock onload %}
 
 {% block main %}
