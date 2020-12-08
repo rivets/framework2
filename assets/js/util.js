@@ -1,9 +1,8 @@
    class FWAjaxRQ
    {
-        constructor(rq, options)
+        constructor(rq)
         {
             this.request = rq;
-            this.options = options;
         }
 /**
  * called when loaded
@@ -48,19 +47,19 @@
 
         done(fn)
         {
-            this.options.success = fn;
+            this.request.options.success = fn;
             return this;
         }
 
         fail(fn)
         {
-            this.options.fail= fn;
+            this.request.options.fail= fn;
             return this;
         }
 
         always(fn)
         {
-            this.options.always = fn;
+            this.request.options.always = fn;
             return this;
         }
     }
@@ -95,7 +94,8 @@
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
             let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
-            let ajaxObj = new FWAjaxRQ(request, options);
+            let ajaxObj = new FWAjaxRQ(request);
+            request.options = options;
             request.open(method, url, true);
             request.setRequestHeader('Content-Type', type);
             request.onload = ajaxObj.onloaded;
