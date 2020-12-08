@@ -18,7 +18,7 @@
         bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
-                $.ajax(base+'/ajax/table/'+table, {
+                framework.ajax(base+'/ajax/table/'+table, {
                     method: 'DELETE',
                 }).done(function(){
                     framework.fadetodel(tr);

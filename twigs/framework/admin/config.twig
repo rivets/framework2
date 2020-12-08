@@ -14,12 +14,11 @@
     function setlocal(e)
     {
         e.preventDefault();
-        const t = $(this);
-        const id = t.parent().parent().parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
+        const id = e.target.closest('[data-id]').getAttribute('data-id');
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
             method: '{{patch}}', // because we are updating an item
             data: {
-                value: t.is(':checked') ? 1 : 0
+                value: e.target.checked ? 1 : 0
             }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
@@ -33,28 +32,28 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#inval').hide();
-    $('#cfr').on('submit', false);
-    $('.delb').on('click', framework.delbean)
+    document.getElementById('inval').style.display = 'none';
+    document.getElementById('cfr').addEventListener('submit', false);
+    document.getElementByClass('.delb').on('click', framework.delbean)
     $('.lval').on('change', setlocal)
     $('.cval').on('blur', function(e){
         e.preventDefault();
         const t = $(this);
         const id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
             method: '{{patch}}', // because we are updating an item
             data: { value: t.val() }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
             method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
             method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
@@ -78,7 +77,7 @@
             }
             else
             {
-                $('#inval').show();
+                document.getElementById('inval').style.display = '';
                 $('#Xnewval').focus();
             }
         }
@@ -89,11 +88,11 @@
         const name = $('.nname').val();
         const value = t.val();
         const local = $('#Xnewlocal').is(':checked') ? 1 : 0;
-        $.ajax('{{base}}/ajax/bean/{{config}}/', {
+        framework.ajax('{{base}}/ajax/bean/{{config}}/', {
             method: 'POST', // because we are creating a new item
             data: {
-                name: name,
-                value: value,
+                name,
+                value,
                 local: 0
             }
         }).done(function(data){
@@ -111,7 +110,7 @@
             $('.nlval').on('change', setlocal).removeClass('nlval')
             $('.nname').val('');
             t.val('');
-            $('#inval').hide();
+            document.getElementById('inval').style.display = 'none';
         }).fail(function(jx){
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });

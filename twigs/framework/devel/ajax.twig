@@ -1,5 +1,3 @@
-{% set fwutils = TRUE %}
-
 {% extends '@content/page.twig' %}
 
 {% block header %}
@@ -7,10 +5,6 @@
         <h1>Setup Ajax</h1>
     </section>
 {% endblock header %}
-
-{% block onload %}
-    framework.ajax(base+'/', {}).done(function(d) { console.log(d); }).always(function(d) { console.log('always')});
-{% endblock onload %}
 
 {% block main %}
     <section class="row">

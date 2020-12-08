@@ -195,11 +195,9 @@
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                        method: putorpatch,
-                        success: function(){ framework.toggle(x); },
-                        fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
-                    });
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {method: putorpatch})
+                    .done(function(){ framework.toggle(x); })
+                    .fail(function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
@@ -226,11 +224,9 @@
             bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
-                        method: 'DELETE',
-                        success: yes,
-                        fail : function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); },
-                    });
+                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {method: 'DELETE'})
+                    .done(yes)
+                    .fail(function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -384,16 +380,13 @@
  */
         beanCreate: function(bean, data, fn, button)
         {
-            framework.ajax(base+'/ajax/bean/'+bean+'/', {
-                method: 'POST',
-                data: data,
-                success: fn,
-                fail : function(jx){
-                    bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
-                },
-                always: function(){
-                    document.getElementById(button).setAttribute('disabled', false);
-                }
+            framework.ajax(base+'/ajax/bean/'+bean+'/', {method: 'POST', data})
+            .done(fn)
+            .fail(function(jx){
+                bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+            })
+            .always(function(){
+                document.getElementById(button).setAttribute('disabled', false);
             });
         },
 /**
