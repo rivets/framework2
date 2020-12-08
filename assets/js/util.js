@@ -9,11 +9,13 @@
         done(fn)
         {
             this.request.onload = fn;
+            return this;
         }
 
         fail(fn)
         {
             this.request.onerror = fn;
+            return this;
         }
 
         always(fn)
@@ -28,6 +30,7 @@
             {
                 this.request.onerror = function(rq) { fail(rq.response); fn(rq.response); };
             }
+            return this;
         }
     }
 
