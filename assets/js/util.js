@@ -5,31 +5,62 @@
             this.request = rq;
             this.options = options;
         }
+/**
+ * called when loaded
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
+        onloaded(rq, options){
+            if (rq.status >= 200 && rq.status < 400)
+            { // Success!
+                if (options.hasOwnProperty('success'))
+                {
+                    options.success(rq.response);
+                }
+            }
+            else if (options.hasOwnProperty('fail'))
+            { // something went wrong
+                options.fail(rq.response);
+            }
+            if (options.hasOwnProperty('always'))
+            { // always do this
+                options.always(rq.response);
+            }
+        }
+/**
+ * called when there is a send error
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
+        onfailed(rq, options){
+            // There was a connection error of some sort
+              if (options.hasOwnProperty('fail'))
+              {
+                  options.fail(rq.response);
+              }
+              if (options.hasOwnProperty('always'))
+              {
+                  options.always(rq.response);
+              }
+        }
 
         done(fn)
         {
-            this.request.onload = fn;
+            this.options.success = fn;
             return this;
         }
 
         fail(fn)
         {
-            this.request.onerror = fn;
+            this.options.fail= fn;
             return this;
         }
 
         always(fn)
         {
-            let succ = this.request.onload;
-            let fail = this.request.onerror;
-            if (succ !== null)
-            {
-                this.request.onload = function(rq) { succ(rq.response); fn(rq.response); };
-            }
-            if (fail !== null)
-            {
-                this.request.onerror = function(rq) { fail(rq.response); fn(rq.response); };
-            }
+            this.options.always = fn;
             return this;
         }
     }
@@ -53,47 +84,7 @@
             }
             return enc;
         },
-/**
- * called when loaded
- *
- * @param {object} rq   - request object
- * @param {object} options - options object
- */
-        onloaded: function(rq, options){
-            if (rq.status >= 200 && rq.status < 400)
-            { // Success!
-                if (options.hasOwnProperty('success'))
-                {
-                    options.success(rq.response);
-                }
-            }
-            else if (options.hasOwnProperty('fail'))
-            { // something went wrong
-                options.fail(rq.response);
-            }
-            if (options.hasOwnProperty('always'))
-            { // always do this
-                options.always(rq.response);
-            }
-        },
-/**
- * called when there is a send error
- *
- * @param {object} rq   - request object
- * @param {object} options - options object
- */
-        onfailed: function(rq, options){
-            // There was a connection error of some sort
-              if (options.hasOwnProperty('fail'))
-              {
-                  options.fail(rq.response);
-              }
-              if (options.hasOwnProperty('always'))
-              {
-                  options.always(rq.response);
-              }
-        },
-/**
+/*
  * non-jquery ajax function
  *
  * @param {string} url    - the URL to invoke
@@ -104,16 +95,13 @@
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
             let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
+            let ajaxObj = new FWAjaxRQ(request, options);
             request.open(method, url, true);
             request.setRequestHeader('Content-Type', type);
-            request.onload = function() {
-                framework.onloaded(this, options);
-            };
-            request.onerror = function() {
-                framework.onfailed(this, options);
-            };
+            request.onload = ajaxObj.onloaded;
+            request.onerror = ajaxObj.onfailed;
             request.send(data);
-            return new FWAjaxRQ(request, options);
+            return ajaxObj;
         },
 /**
  * get JSON
