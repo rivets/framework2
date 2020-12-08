@@ -58,7 +58,7 @@
                 $owner = $context->user();
             }
             [$dir, $pname, $fname] = $this->mkpath($context, $owner, $public, $da);
-            $mime = \Framework\Support\Security::getinstance()->mimetype($da['tmp_name']);
+            $mimetype = \Framework\Support\Security::getinstance()->mimetype($da['tmp_name']);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
