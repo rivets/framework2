@@ -58,6 +58,7 @@
                 $owner = $context->user();
             }
             [$dir, $pname, $fname] = $this->mkpath($context, $owner, $public, $da);
+            $mime = \Framework\Support\Security::getinstance()->mimetype($da['tmp_name']);
             if (!@move_uploaded_file($da['tmp_name'], $fname))
             {
                 @chdir($dir);
@@ -69,6 +70,7 @@
             $this->bean->filename = $da['name'];
             $this->bean->public = $public ? 1 : 0;
             $this->bean->user = $owner;
+            $this->bean->mimetype = $mimetype;
             $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
             if (!@chdir($dir))
