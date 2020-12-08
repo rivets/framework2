@@ -1,7 +1,37 @@
+   class FWAjaxRQ
+   {
+        constructor(rq, options)
+        {
+            this.request = rq;
+            this.options = options;
+        }
+
+        done(fn)
+        {
+            this.request.onload = fn;
+        }
+
+        fail(fn)
+        {
+            this.request.onerror = fn;
+        }
+
+        always(fn)
+        {
+            let succ = this.request.onload;
+            let fail = this.request.onerror;
+            if (succ !== null)
+            {
+                this.request.onload = function(rq) { succ(rq.response); fn(rq.response); };
+            }
+            if (fail !== null)
+            {
+                this.request.onerror = function(rq) { fail(rq.response); fn(rq.response); };
+            }
+        }
+    }
+
     var framework = {
-        dejq: function(el) {
-            console.log(el);
-        },
 /**
  * encode object into a query string
  *
@@ -20,7 +50,12 @@
             }
             return enc;
         },
-
+/**
+ * called when loaded
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
         onloaded: function(rq, options){
             if (rq.status >= 200 && rq.status < 400)
             { // Success!
@@ -38,6 +73,12 @@
                 options.always(rq.response);
             }
         },
+/**
+ * called when there is a send error
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
         onfailed: function(rq, options){
             // There was a connection error of some sort
               if (options.hasOwnProperty('fail'))
@@ -50,7 +91,7 @@
               }
         },
 /**
- * non-jquery post function
+ * non-jquery ajax function
  *
  * @param {string} op     - the operation to use
  * @param {string} url    - the URL to invoke
@@ -70,6 +111,7 @@
                 framework.onfailed(this, options);
             };
             request.send(data);
+            return new FWAjaxRQ(request, options);
         },
 /**
  * get JSON
