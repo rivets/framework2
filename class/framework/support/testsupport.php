@@ -156,6 +156,7 @@
         public function run(array $tests, bool $old = TRUE)
         {
             $this->fdt = $old ? $this->fdtold : $this->fdtnew;
+            $this->local->message(Local::MESSAGE, 'hasForm returns '.$this->fdt->hasForm() ? 'TRUE' : 'FALSE');
             foreach ($tests as $test)
             {
                 [$func, $params, $result, $ok] = $test;

@@ -236,5 +236,15 @@
             $this->find(is_array($name) ? $name : [$name]);
             return TRUE;
         }
+/**
+ * Return TRUE of the  related Superglobal is not empty
+ * Not 100% reliable for cookies but good for GET and POST
+ *
+ * @return bool
+ */
+        public function hasForm() : bool
+        {
+            return count($this->super);
+        }
     }
 ?>
