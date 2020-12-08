@@ -158,7 +158,7 @@
             $this->fdt = $old ? $this->fdtold : $this->fdtnew;
             if ($this->fdt instanceof \Framework\FormData\Base)
             {
-                $this->local->message(Local::MESSAGE, 'hasForm returns '.$this->fdt->hasForm() ? 'TRUE' : 'FALSE');
+                $this->local->message(Local::MESSAGE, 'hasForm returns '.$this->fdt->hasForm() ? 'TRUE' : 'FALSE'.' for '.get_class($this->fdt));
             }
             foreach ($tests as $test)
             {
