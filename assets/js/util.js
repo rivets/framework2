@@ -93,7 +93,6 @@
 /**
  * non-jquery ajax function
  *
- * @param {string} op     - the operation to use
  * @param {string} url    - the URL to invoke
  * @param {object} data   - the data to pass
  */
