@@ -10,21 +10,21 @@
  * @param {object} rq   - request object
  * @param {object} options - options object
  */
-        onloaded(rq){
-            if (rq.status >= 200 && rq.status < 400)
+        onloaded(){
+            if (this.status >= 200 && this.status < 400)
             { // Success!
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(rq.response);
+                    this.options.success(this.response);
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
             { // something went wrong
-                this.options.fail(rq.response);
+                this.options.fail(this.response);
             }
             if (this.options.hasOwnProperty('always'))
             { // always do this
-                this.options.always(rq.response);
+                this.options.always(this.response);
             }
         }
 /**
@@ -33,15 +33,15 @@
  * @param {object} rq   - request object
  * @param {object} options - options object
  */
-        onfailed(rq){
+        onfailed(){
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
-                  this.options.fail(rq.response);
+                  this.options.fail(this.response);
               }
               if (this.options.hasOwnProperty('always'))
               {
-                  this.options.always(rq.response);
+                  this.options.always(this.response);
               }
         }
 
