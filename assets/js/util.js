@@ -71,7 +71,7 @@
  * @param {object} data   - the object to encode
  */
         makeQString: function(data) {
-            var enc = '';
+            let enc = '';
             let amp = '';
             for (var prop in data)
             {
@@ -92,7 +92,7 @@
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
-            let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
+            let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
             let ajaxObj = new FWAjaxRQ(request);
             request.options = options;
