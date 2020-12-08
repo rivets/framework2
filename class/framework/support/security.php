@@ -41,5 +41,22 @@
         {
             return self::ALGORITHM.'-'.base64_encode(hash(self::ALGORITHM, $data, TRUE));
         }
+/**
+ * Get mimetype for a file
+ *
+ * @param string $path  The path to the file
+ *
+ * @return string
+ */
+        public function mimetype(string $path) : string
+        {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            if (($mime = finfo_file($finfo, $path)) === FALSE)
+            { // there was an error of some kind.
+                $mime = '';
+            }
+            finfo_close($finfo);
+            return $mime;
+        }
     }
 ?>
