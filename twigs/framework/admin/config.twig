@@ -33,7 +33,7 @@
 
 {% block onload %}
     document.getElementById('inval').style.display = 'none';
-    fwdom.on('#cfr', 'submit', function(e){ return false; });
+    document.getElementById('cfr').submit(function(e){ e.preventDefault(); });
     fwdom.on('.delb', 'click', delbean);
     fwdom.on('.lval', 'change', setlocal)
     fwdom.on('.cval', 'blur', function(e){
