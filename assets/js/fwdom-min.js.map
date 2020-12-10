@@ -1,0 +1,1 @@
+{"version":3,"sources":["fwdom.js"],"names":["fwdom","handle","selector","op","func","parent","d","document","querySelectorAll","addEventHandler"],"mappings":"AAGI,IAAIA,MAAQ,CACRC,OAAQ,SAASC,EAAUC,EAAIC,EAAMC,EAAS,MAC1C,IAAK,IAAIC,KAAiB,OAAXD,EAAkBA,EAASE,UAAUC,iBAAiBN,GAEjEI,EAAEG,gBAAgBN,EAAIC,GAAM"}
