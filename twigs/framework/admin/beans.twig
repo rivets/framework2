@@ -32,7 +32,7 @@
 {% block onload %}
     const nbf = document.getElementById('nbform');
     nbf.addEventListener('submit', function(e){ e.preventDefault();});
-    nbf.parsley();
+    $('#nbform').parsley();
     fwdom.on('#addb', 'click', function(e){
         const btn = this;
         const form = document.getElementById('nbform');
