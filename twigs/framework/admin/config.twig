@@ -61,7 +61,7 @@
             document.getElementById('Xnewlocal').checked = 0;
             document.getElementById('Xnewval').value = '';
             document.getElementById('Xnewtype').value = '';
-            document.getElementById('inval').style.display = 'none';
+            document.getElementById('inval').classList.add('d-none');
         }).fail(function(jx){
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });
@@ -69,7 +69,6 @@
 {% endblock setup %}
 
 {% block onload %}
-    document.getElementById('inval').style.display = 'none';
     fwdom.on('#cfr', 'submit', function(e){ e.preventDefault(); });
     fwdom.on('.delb', 'click', delbean);
     fwdom.on('.lval', 'change', setlocal)
@@ -112,7 +111,7 @@
             }
             else
             {
-                document.getElementById('inval').style.display = 'block';
+                document.getElementById('inval').classList.remove('d-none');
             }
         }
     })
@@ -165,7 +164,7 @@
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
                     {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
-                    <div id="inval">
+                    <div id="inval" class="d-none">
                         {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
                         {{f.select({label : 'Type', id: 'Xnewtype',
                             options: [
