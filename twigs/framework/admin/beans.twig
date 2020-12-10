@@ -13,8 +13,8 @@
     {
         e.preventDefault();
         e.stopPropagation();
-        let tr = $(this).parent().parent();
-        let table = $('.bname', tr).text();
+        let tr = this.closest('tr');
+        let table = tr.querySelector('.bname').innerHTML;
         bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
