@@ -104,13 +104,13 @@
                 bootbox.alert('Invalid name format')
                 this.value = ''
             }
-            else if (document.querySelectorAll('input[name="'+name+'"]').length != 0)
-            {
-                bootbox.alert('That item already exists');
-            }
             else
             {
-                document.getElementById('inval').classList.remove('d-none');
+                framework.ajax(base+'/unique/{{config}}/'+name, {method: 'get'}).done(function(d){
+                    bootbox.alert('That item already exists');
+                }).fail(function(d){
+                    document.getElementById('inval').classList.remove('d-none');
+                });
             }
         }
     })
