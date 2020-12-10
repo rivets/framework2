@@ -32,7 +32,7 @@
 {% block onload %}
     const nbf = document.getElementById('nbform');
     nbf.addEventListener('submit', function(e){ e.preventDefault();});
-    $('#nbform').parsley();
+    fwdom.mkjQ('#nbform').parsley();
     fwdom.on('#addb', 'click', function(e){
         const btn = this;
         const form = document.getElementById('nbform');
@@ -86,13 +86,13 @@
             {
                 document.getElementById('btab').insertBefore(newd, sp.parentNode);
             }
-            $('#nbean').modal('hide');
+            fwdom.mkjQ('#nbean').modal('hide');
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function() { btn.disabled = false; });
     });
-    $('#nbean').on('show.bs.modal', function(e){
+    fwdom.mkjQ('#nbean').on('show.bs.modal', function(e){
         document.getElementById('nbform').reset();
     });
     fwdom.on('.delb', 'click', deltable);
