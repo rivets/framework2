@@ -67,7 +67,7 @@
                 <script {{h.urlattr(fwurls.jqueryslim)}}></script>
             {% endif %}
         {% endif %}
-        {% if fwdom || fwutils %}
+        {% if fwdom or fwutils %}
             <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
         {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
