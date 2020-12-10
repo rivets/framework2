@@ -104,7 +104,7 @@
                 bootbox.alert('Invalid name format')
                 this.value = ''
             }
-            else if ($('input[name="'+name+'"]').length != 0)
+            else if (document.getSelectorAll('input[name="'+name+'"]').length != 0)
             {
                 bootbox.alert('That item already exists');
             }
