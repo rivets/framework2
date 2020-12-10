@@ -54,7 +54,7 @@
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
                         '</div>{{i.delete('delb')}}</div></div>';
-            nname.parentNode.parentNode.previousElementSibling().insertBefore(newd);
+            document.getElementById('nvbox').previousSibling().insertBefore(newd);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
@@ -162,7 +162,7 @@
                 {% endfor %}
 {# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-                <div class="jumbotron">
+                <div class="jumbotron" id="nvbox">
                     {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval" class="d-none">
                         {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
