@@ -36,6 +36,7 @@
     document.getElementById('cfr').submit(function(e){ e.preventDefault(); });
     fwdom.on('.delb', 'click', delbean);
     fwdom.on('.lval', 'change', setlocal)
+/*
     fwdom.on('.cval', 'blur', function(e){
         fwdom.stop(e);
         const id = fwdom.data(e.target, 'id');
@@ -118,6 +119,7 @@
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });
     });
+*/
 {% endblock onload %}
 
 {% if not page is defined %}
