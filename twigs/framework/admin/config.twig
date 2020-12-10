@@ -106,7 +106,7 @@
             }
             else
             {
-                framework.ajax(base+'/unique/{{config}}/name/'+name, {method: 'get'}).done(function(d){
+                framework.ajax(base+'/ajax/unique/{{config}}/name/'+name, {method: 'get'}).done(function(d){
                     document.getElementById('inval').classList.remove('d-none');
                 }).fail(function(d){
                     bootbox.alert('That item already exists');
