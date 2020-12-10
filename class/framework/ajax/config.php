@@ -47,8 +47,7 @@
             $v->value = $fdt->mustFetch('value');
             $v->type = $fdt->mustFetch('type');
             $v->local = $fdt->fetch('local', 0);
-            R::store($v);
-            $this->context->web()->noContent();
+            echo R::store($v);
         }
 /**
  * Handle PUT or PATCH
