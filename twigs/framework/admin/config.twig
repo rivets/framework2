@@ -32,7 +32,7 @@
 
     function makeConfig(name, value, type, local)
     {
-        framework.ajax('{{base}}/ajax/bean/{{config}}/'+name, {
+        framework.ajax('{{base}}/ajax/config/'+name, {
             method: 'POST', // because we are creating a new item
             data: {
                 value,
