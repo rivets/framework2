@@ -86,7 +86,7 @@
             {
                 document.getElementById('btab').insertBefore(newd, sp.parentNode);
             }
-            document.getElementById('nbean').modal('hide');
+            $('#nbean').modal('hide');
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
             bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
