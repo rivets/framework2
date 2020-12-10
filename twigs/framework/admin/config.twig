@@ -112,8 +112,7 @@
             }
             else
             {
-                document.getElementById('inval').style.display = '';
-                document.getElementById('Xnewval').focus();
+                document.getElementById('inval').style.display = 'block';
             }
         }
     })
@@ -165,10 +164,10 @@
 {# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 <div class="jumbotron">
-                    {{f.text({label: 'New Config Item', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
+                    {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval">
-                        {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
-                        {{f.select({label : 'Type', name: 'type', id: 'Xnewtype',
+                        {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                        {{f.select({label : 'Type', id: 'Xnewtype',
                             options: [
                                 { value: '',  text: '&mdash; Pick a Type &mdash;' },
                                 { value: 'boolean', text: 'boolean' },
