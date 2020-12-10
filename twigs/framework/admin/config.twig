@@ -14,7 +14,7 @@
     function setlocal(e)
     {
         e.preventDefault();
-        const id = e.target.closest('[data-id]').getAttribute('data-id');
+        const id = fwdom.data(e.target, 'id');
         framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
             method: '{{patch}}', // because we are updating an item
             data: {
@@ -34,15 +34,15 @@
 {% block onload %}
     document.getElementById('inval').style.display = 'none';
     document.getElementById('cfr').addEventListener('submit', false);
-    document.getElementByClass('.delb').on('click', framework.delbean)
-    $('.lval').on('change', setlocal)
-    $('.cval').on('blur', function(e){
-        e.preventDefault();
-        const t = $(this);
-        const id = t.parent().parent().data('id');
+    fwdom.on('#cfr', 'submit', false);
+    fwdom.on('.delb', 'click', delbean);
+    fwdom.on('.lval', 'change', setlocal)
+    fwdom.on('.cval', 'blur', function(e){
+        fwdom.stop(e);
+        const id = fwdom.data(e.target, 'id');
         framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
             method: '{{patch}}', // because we are updating an item
-            data: { value: t.val() }
+            data: { value: this.getAttribute('value') }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
@@ -60,16 +60,15 @@
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     });
-    $('.nname').on('blur', function(e){
-        e.preventDefault()
-        const t = $(this)
-        const name = t.val()
+    fwdom.on('#Xnewconf', 'blur', function(e){
+        fwdom.stop(e);
+        const name = this.getAttribute('value');
         if (name != '')
         {
             if (!name.match(/^[a-z][a-z0-9]*$/i))
             {
                 bootbox.alert('Invalid name format')
-                t.val('')
+                this.setAttribute('value', '');
             }
             else if ($('input[name="'+name+'"]').length != 0)
             {
@@ -78,16 +77,16 @@
             else
             {
                 document.getElementById('inval').style.display = '';
-                $('#Xnewval').focus();
+                document.getElementbyId('Xnewval').focus();
             }
         }
     })
-    $('.nval').on('blur', function(e){
-        e.preventDefault();
-        const t = $(this);
-        const name = $('.nname').val();
-        const value = t.val();
-        const local = $('#Xnewlocal').is(':checked') ? 1 : 0;
+    fwdom.on('#Xnewval', 'blur', function(e){
+        fwdom.stop(e);
+        cont t = this;
+        const name = document.getElementById('Xnewconf').getattribute('value');
+        const value = this.getAttribute('value');
+        const local = document.getElementbyId('Xnewlocal').checked ? 1 : 0;
         framework.ajax('{{base}}/ajax/bean/{{config}}/', {
             method: 'POST', // because we are creating a new item
             data: {
@@ -96,20 +95,25 @@
                 local: 0
             }
         }).done(function(data){
-            $('.nname').parent().parent().prev().prev().after('<div class="row mb-2" data-id="'+data+'">'+
+            let newd = document.createElement('div');
+            let nname = document.getElementById('Xnewconf');
+            newd.setAttribute('data-id', data);
+            newd.classList.add('row');
+            newd.classList.add('mb-2');
+            newd.innerHTML =
                 '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
                     '<div class="col-md-9">'+
                             '<input type="text" id="X'+name+'" name="'+name+'" value="'+value+'" class="form-control cval"/>'+
                     '</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
-                            '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
-                        '</div>{{i.delete('delb ndelb')}}</div></div>'
-            );
-            $('.ndelb').on('click', framework.framework.delbean).removeClass('ndelb')
-            $('.nlval').on('change', setlocal).removeClass('nlval')
-            $('.nname').val('');
-            t.val('');
+                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
+                        '</div>{{i.delete('delb')}}</div></div>';
+            nname.parentNode.parentNode.previousElementSibling().previousElementSibling().after(newd);
+            fwdom.on('.delb', 'click', delbean, newd)
+            fwdom.on('.lval', 'change', setlocal, newd)
+            nname.setAttribute('value', '');
+            t.setAttribute('value', '');
             document.getElementById('inval').style.display = 'none';
         }).fail(function(jx){
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);

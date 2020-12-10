@@ -1,2 +1,2 @@
-var fwdom={handle:function(l,e,n,d=null){for(let o of(null!==d?d:document).querySelectorAll(l))o.addEventHandler(e,n,!1)}};
+var fwdom={on:function(t,n,o,e=null){for(let l of(null!==e?e:document).querySelectorAll(t))l.addEventHandler(n,o,!1)},data:function(t,n){const o="data-"+n;return t.closest("["+o+"]").getAttribute(o)},stop:function(t){t.preventDefault(),t.stopPropagation()}};
 //# sourceMappingURL=fwdom-min.js.map
