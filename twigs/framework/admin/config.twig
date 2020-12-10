@@ -76,7 +76,7 @@
             else
             {
                 document.getElementById('inval').style.display = '';
-                document.getElementbyId('Xnewval').focus();
+                document.getElementById('Xnewval').focus();
             }
         }
     })
@@ -85,7 +85,7 @@
         const t = this;
         const name = document.getElementById('Xnewconf').value;
         const value = this.value;
-        const local = document.getElementbyId('Xnewlocal').checked ? 1 : 0;
+        const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
         framework.ajax('{{base}}/ajax/bean/{{config}}/', {
             method: 'POST', // because we are creating a new item
             data: {
