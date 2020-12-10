@@ -96,7 +96,7 @@
         document.getElementById('nbform').reset();
     });
     fwdom.on('.delb', 'click', deltable);
-    fwdom.on('#mrow button', 'click', function(e) { framework.addMore(e); });
+    fwdom.on('#addm', 'click', function(e) { framework.addMore(e); });
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -164,7 +164,7 @@
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
             </fieldset>
             <p id="mrow">
-                <button class="btn btn-sm btn-info" type="button">More</button>
+                <button class="btn btn-sm btn-info" id="addm" type="button">More</button>
             </p>
         </form>
     </div>
