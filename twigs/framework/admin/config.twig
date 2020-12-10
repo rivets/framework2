@@ -54,7 +54,7 @@
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
                         '</div>{{i.delete('delb')}}</div></div>';
-            document.getElementById('nvbox').previousElementSibling().insertBefore(newd);
+            document.getElementById('nvbox').previousElementSibling.insertBefore(newd);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
