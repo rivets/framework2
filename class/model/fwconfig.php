@@ -89,7 +89,7 @@
             case 'string':
                 break;
             default:
-                throw new \Framework\Exception\BadValue('Invalid config item type');
+                throw new \Framework\Exception\BadValue('Invalid config item type: '.$this->bean->type);
             }
         }
 /**
