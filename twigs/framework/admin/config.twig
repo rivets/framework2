@@ -162,15 +162,16 @@
                     <div id="inval">
                         {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
                         {{f.select({label : 'Type', name: 'type',
-                        options: [
-                            { value: '',  text: '&mdash; Pick a Type &mdash;' },
-                            { value: 'boolean', text: 'boolean' },
-                            { value: 'css', text: 'css' },
-                            { value: 'integer', text: 'integer' },
-                            { value: 'js', text: 'js' },
-                            { value: 'string', text: 'string' },
-                        ]
-                    })}}
+                            options: [
+                                { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                                { value: 'boolean', text: 'boolean' },
+                                { value: 'css', text: 'css' },
+                                { value: 'integer', text: 'integer' },
+                                { value: 'js', text: 'js' },
+                                { value: 'string', text: 'string' },
+                            ]
+                        })}}
+                        {{f.checkbox({ids: ['Xnewlocal', labels: ['Local'], values : [1]})}}
                     </div>
                 </div>
             {{f.endform()}}
