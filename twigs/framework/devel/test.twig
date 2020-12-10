@@ -2,14 +2,16 @@
 {% set title = 'The Framework: Test Page' %}
 {% set keywords = 'framework, test' %}
 {% set description = 'A page that tests various features of the Framework' %}
+{% set fwdom = TRUE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/accmacro.twig' as a %}
 
 {% block onload %}
-    $('#nopu').on('click', function(e){
-        $(this).toggleClass('btn-primary').toggleClass('btn-warning');
+    fwdom.on('#nopu', 'click', function(e){
+        this.classList.toggle('btn-primary');
+        this.classList.toggle('btn-warning');
     })
     {{a.caretJS('acc1')}}
 {% endblock onload %}
