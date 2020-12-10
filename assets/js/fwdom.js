@@ -17,5 +17,9 @@
         stop: function(e) {
             e.preventDefault();
             e.stopPropagation();
+        },
+
+        mkjQ: function(sel){
+            return $(sel);
         }
     };
