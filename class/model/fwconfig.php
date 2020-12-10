@@ -78,7 +78,7 @@
                 $this->checkURL('CSS');
                 break;
             case 'integer':
-                if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
+                if (filter_var($this->bean->value, FILTER_VALIDATE_INT) === FALSE)
                 {
                     throw new \Framework\Exception\BadValue('Invalid value for integer item');
                 }
