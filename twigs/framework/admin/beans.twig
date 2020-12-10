@@ -76,7 +76,7 @@
             newd.innerHTML = '<td class="bname">'+name+'</td>'+
                 '<td><a href="'+base+'/admin/view/table/'+name+'/">{{i.view()}}</a></td>'+
                 '<td><a href="'+base+'/admin/edit/table/'+name+'/">{{i.edit()}}</a></td>'+
-                '<td>{{i.delete('delb')}}</td>;
+                '<td>{{i.delete('delb')}}</td>';
             fwdom.on('.delb', 'click', deltable, newd);
             if (sp === null)
             {
