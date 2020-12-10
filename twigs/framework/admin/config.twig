@@ -33,7 +33,7 @@
 
 {% block onload %}
     document.getElementById('inval').style.display = 'none';
-    //document.getElementById('cfr').submit(function(e){ e.preventDefault(); });
+    fwdom.on('#cfr', 'submit', function(e){ e.preventDefault(); });
     fwdom.on('.delb', 'click', delbean);
     fwdom.on('.lval', 'change', setlocal)
     fwdom.on('.cval', 'blur', function(e){
@@ -41,7 +41,7 @@
         const id = fwdom.data(e.target, 'id');
         framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
             method: '{{patch}}', // because we are updating an item
-            data: { value: this.getAttribute('value') }
+            data: { value: this.value }
         }).fail(function(jx){
             bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
         });
@@ -61,13 +61,13 @@
     });
     fwdom.on('#Xnewconf', 'blur', function(e){
         fwdom.stop(e);
-        const name = this.getAttribute('value');
+        const name = this.value;
         if (name != '')
         {
             if (!name.match(/^[a-z][a-z0-9]*$/i))
             {
                 bootbox.alert('Invalid name format')
-                this.setAttribute('value', '');
+                this.value = ''
             }
             else if ($('input[name="'+name+'"]').length != 0)
             {
@@ -83,8 +83,8 @@
     fwdom.on('#Xnewval', 'blur', function(e){
         fwdom.stop(e);
         const t = this;
-        const name = document.getElementById('Xnewconf').getattribute('value');
-        const value = this.getAttribute('value');
+        const name = document.getElementById('Xnewconf').value;
+        const value = this.value;
         const local = document.getElementbyId('Xnewlocal').checked ? 1 : 0;
         framework.ajax('{{base}}/ajax/bean/{{config}}/', {
             method: 'POST', // because we are creating a new item
@@ -111,8 +111,8 @@
             nname.parentNode.parentNode.previousElementSibling().previousElementSibling().after(newd);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
-            nname.setAttribute('value', '');
-            t.setAttribute('value', '');
+            nname.value = '';
+            t.value = '';
             document.getElementById('inval').style.display = 'none';
         }).fail(function(jx){
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
@@ -136,7 +136,7 @@
 {% block main %}
     <section class="row">
         <article class="col-md-12">
-            <form id="cfr" action="#" method="post">
+            {{f.startform({id: 'cfr', method: 'post')}}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
                     <div class="row mb-2" data-id="{{p.getID}}">
@@ -173,7 +173,7 @@
                     })}}
                     </div>
                 </div>
-            </form>
+            {{f.endform()}}
         </div>
     </section>
 {% endblock main %}
