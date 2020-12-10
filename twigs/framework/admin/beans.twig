@@ -11,7 +11,7 @@
 {% block setup %}
     function deltable(e)
     {
-        fwdom.stop();
+        fwdom.stop(e);
         let tr = this.closest('tr');
         let table = tr.querySelector('.bname').innerHTML;
         bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
