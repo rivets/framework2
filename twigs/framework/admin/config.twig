@@ -124,7 +124,7 @@
         const name = document.getElementById('Xnewconf').value;
         const value = this.value;
         const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
-        makeConfig(t, name, value, type, local);
+        makeConfig(name, value, type, local);
     });
 {% endblock onload %}
 
