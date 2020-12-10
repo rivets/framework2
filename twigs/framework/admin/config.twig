@@ -83,7 +83,7 @@
     })
     fwdom.on('#Xnewval', 'blur', function(e){
         fwdom.stop(e);
-        cont t = this;
+        const t = this;
         const name = document.getElementById('Xnewconf').getattribute('value');
         const value = this.getAttribute('value');
         const local = document.getElementbyId('Xnewlocal').checked ? 1 : 0;
