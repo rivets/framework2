@@ -43,7 +43,6 @@
         }).done(function(data){
             let newd = document.createElement('div');
             let nname = document.getElementById('Xnewconf');
-            let ntype = document.getElementById('Xnewname');
             newd.setAttribute('data-id', data);
             newd.classList.add('row');
             newd.classList.add('mb-2');
@@ -60,7 +59,9 @@
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
-
+            document.getElementById('Xnewlocal').checked = 0;
+            document.getElementById('Xnewval').value = '';
+            document.getElementById('Xnewtype').value = '';
             document.getElementById('inval').style.display = 'none';
         }).fail(function(jx){
             bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
@@ -120,18 +121,10 @@
     fwdom.on('#Xnewval', 'blur', function(e){
         fwdom.stop(e);
         const type = document.getElementById('Xnewtype').value;
-        if (type === '')
-        {
-            return;
-        }
-        const t = this;
         const name = document.getElementById('Xnewconf').value;
         const value = this.value;
         const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
         makeConfig(t, name, value, type, local);
-        document.getElementById('Xnewlocal').checked = 0;
-        document.getElementById('Xnewval').value = '';
-        document.getElementById('Xnewtype').value = '';
     });
 {% endblock onload %}
 
