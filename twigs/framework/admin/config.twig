@@ -136,7 +136,7 @@
 {% block main %}
     <section class="row">
         <article class="col-md-12">
-            {{f.startform({id: 'cfr', method: 'post')}}
+            {{f.startform({id: 'cfr', method: 'post'})}}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
                     <div class="row mb-2" data-id="{{p.getID}}">
