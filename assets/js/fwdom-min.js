@@ -1,2 +1,2 @@
-var fwdom={on:function(t,n,o,e=null){for(let l of(null!==e?e:document).querySelectorAll(t))l.addEventHandler(n,o,!1)},data:function(t,n){const o="data-"+n;return t.closest("["+o+"]").getAttribute(o)},stop:function(t){t.preventDefault(),t.stopPropagation()}};
+var fwdom={on:function(t,n,e,o=null){for(let l of(null!==o?o:document).querySelectorAll(t))l.addEventListener(n,e,!1)},data:function(t,n){const e="data-"+n;return t.closest("["+e+"]").getAttribute(e)},stop:function(t){t.preventDefault(),t.stopPropagation()}};
 //# sourceMappingURL=fwdom-min.js.map

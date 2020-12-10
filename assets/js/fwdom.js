@@ -5,7 +5,7 @@
         on: function(selector, op, func, parent = null) {
             for (let d of (parent !== null ? parent : document).querySelectorAll(selector))
             {
-                d.addEventHandler(op, func, false);
+                d.addEventListener(op, func, false);
             }
         },
 
