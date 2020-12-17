@@ -50,7 +50,7 @@
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (method_exists('\\Model\\'.$bean->getMeta('type'), 'ajaxResult'))
+            if (method_exists($this->model.$bean->getMeta('type'), 'ajaxResult'))
             {
                 $bean->ajaxResult($this->context, $method, 'bean');
             }
@@ -159,24 +159,24 @@
  */
         final public function handle() : void
         {
-            [$bean, $rest] = $this->restCheck(1);
+            [$beanType, $rest] = $this->restCheck(1);
             $method = strtolower($this->context->web()->method());
             if (!method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
             /** @psalm-suppress UndefinedConstant */
-            $this->model = '\\Model\\'.$bean;
+            $this->model = '\\Model\\'.$beanType;
             /**
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion
              */
             if (method_exists($this->model, 'canAjaxBean'))
-            {
+            { // permission checking for methods exists for this bean type
                 /** @psalm-suppress InvalidStringClass */
                 $this->model::canAjaxBean($this->context, $method);
             }
-            $this->{$method}($bean, $rest, $this->controller->log($bean));
+            $this->{$method}($beanType, $rest, $this->controller->log($beanType));
         }
     }
 ?>
