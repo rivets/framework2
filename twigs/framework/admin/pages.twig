@@ -162,8 +162,7 @@
         for (let sv of ['context', 'role'])
         {
             f.querySelectorAll('select[name^="'+sv+'"]').forEach(function(el, index){
-                let opt = el.getSelector('option:selected').value
-                dt[sv+'['+index+']'] = opt;
+                dt[sv+'['+index+']'] = el.options[el.selectedIndex].value;
             });
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
