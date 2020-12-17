@@ -23,12 +23,12 @@
 {% endmacro accordion %}
 
 {% macro caretJS(id) %}
-    let v{{id}} = document.getElementById('{{id}}')
-    v{{id}}.addEventListener('show.bs.collapse', function(e){
+    let v{{id}} = fwdom.dejQ(document.getElementById('{{id}}'));
+    v{{id}}.on('show.bs.collapse', function(e){
         let ch = e.target.getAttribute('aria-labelledby');
         fwdom.toggleClass(document.getElementById(ch).getSelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
     })
-    v{{id}}.addEventListener('hide.bs.collapse', function(e) {
+    v{{id}}.on('hide.bs.collapse', function(e) {
         let ch = e.target.getAttribute('aria-labelledby');
         fwdom.toggleClass(document.getElementById(ch).getSelectorAll('.fa-caret-down'), ['fa-caret-right', 'fa-caret-down']);
     });
