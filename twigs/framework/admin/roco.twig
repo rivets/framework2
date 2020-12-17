@@ -68,7 +68,7 @@
             btn.setAttribute('disabled', false);
         });
     });
-    document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.tableClick(e));
+    document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.tableClick(e);});
 
     $('#nroco').on('show.bs.modal', function(e){
         document.getElementById('nrform').reset();
