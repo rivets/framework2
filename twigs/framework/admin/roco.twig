@@ -22,11 +22,13 @@
     $('#nrform').parsley();
     $('#addb').on('click', function(e){
         fwdom.stop(e);
-        $(this).attr('disabled', true);
+        const btn = this;
+        btn.setAttribute('disabled', true);
         const pn = document.getElementById('nrname').value;
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
+            btn.setAttribute('disabled', false);
             return;
         }
         let sp = null;
@@ -49,29 +51,21 @@
         if (error)
         {
             bootbox.alert('That {{beantype}} name already exists');
-            $(this).attr('disabled', false);
+            btn.setAttribute('disabled', false);
             return;
         }
         $('#nroco').modal('hide');
         const htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td></tr>';
-        let nx;
-        if (sp == null)
-        {
-            nx = $(htm).appendTo($('#rtab tbody'));
-        }
-        else
-        {
-            nx = $(htm).insertBefore(sp.parent());
-        }
+        let nx = sp == null ? $(htm).appendTo($('#rtab tbody')) : $(htm).insertBefore(sp.parent());
         framework.ajax('{{base}}/ajax/bean/{{beantype}}/', {
             method: 'post',
             data: {name : pn},
         }).done(function(data){
-               nx.data('id', data)
+            nx.data('id', data)
         }).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
         }).always(function(e){
-            document.getElementById('addb').setAttribute('disabled', false);
+            btn.setAttribute('disabled', false);
         });
     });
     document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.tableClick(e)););
