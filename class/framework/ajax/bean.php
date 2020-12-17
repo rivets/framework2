@@ -74,7 +74,7 @@
  */
         private function post(string $beanType, array $rest, bool $log) : void
         {
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType);
 /*
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
