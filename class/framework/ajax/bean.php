@@ -44,13 +44,13 @@
  *
  * @return void
  */
-        private function ajaxResult(\RedBean\OODBBean $bean, string $method, string $op, bool $created = FALSE)
+        private function ajaxResult(\RedBean\OODBBean $bean, string $method)
         {
 /*
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (method_exists($this->model.$bean->getMeta('type'), 'ajaxResult'))
+            if (method_exists($this->model, 'ajaxResult'))
             {
                 $bean->ajaxResult($this->context, $method, 'bean');
             }
@@ -89,7 +89,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
             }
-            $this->ajaxResult($bean, 'post', 'bean');
+            $this->ajaxResult($bean, 'post');
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
@@ -111,7 +111,7 @@
             {
                 BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $field, $old);
             }
-            $this->ajaxResult($bean, 'patch', 'bean');
+            $this->ajaxResult($bean, 'patch');
         }
 /**
  * Map put onto patch
@@ -144,9 +144,8 @@
             {
                 BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', json_encode($bn->export()));
             }
-
             R::trash($bean); // If there is a delete function in the model it will get called automatically.
-            $this->ajaxResult($bean, 'delete', 'bean');
+            $this->context->web()->noContent();
         }
 /**
  * Carry out operations on beans
