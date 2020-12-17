@@ -23,7 +23,7 @@
 {% endmacro accordion %}
 
 {% macro caretJS(id) %}
-    let v{{id}} = fwdom.dejQ(document.getElementById('{{id}}'));
+    let v{{id}} = fwdom.mkjQ(document.getElementById('{{id}}'));
     v{{id}}.on('show.bs.collapse', function(e){
         let ch = e.target.getAttribute('aria-labelledby');
         fwdom.toggleClass(document.getElementById(ch).getSelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
