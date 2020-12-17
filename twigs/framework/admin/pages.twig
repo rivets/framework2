@@ -22,12 +22,12 @@
 
     function golink(e, x, t)
     {
-        let pnode = x.closest('.pname');
+        let pnode = x.closest('tr');
         if (pnode instanceof jQuery)
         {
             pnode = pnode[0];
         }
-        pnode.parentNode.querySelector('.pname')
+        pnode.querySelector('.pname')
         window.location.href = base+'/'+pnode.innerHTML+'/';
     }
 
@@ -64,6 +64,7 @@
     });
     $('#npform').on('submit', false).parsley();
     document.getElementById('npkind').addEventListener('change', function(e) {
+        fwdom.stop(e);
         var pn = document.getElementById('npname').value.toLowerCase();
         if (pn !== '')
         {
@@ -79,9 +80,9 @@
         }
     })
     $('#addb').on('click', function(e){
-        e.preventDefault();
-        $(this).attr('disabled', true); // disable submit button
-        const pn = $('#npname').val().toLowerCase();
+        fwdom.stop(e);
+        this.setAttribute('disabled', true); // disable submit button
+        const pn = document.getElementById('npname').value.toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
@@ -89,37 +90,38 @@
         }
         let sp = null;
         let error = false;
-        $('.pname').each(function(e){
-            const t = $(this).text();
+        for (let el of document.getElementsByClassName('pname'))
+        {
+            const t = el.innerHTML;
             if (t == pn)
             {
                 error = true;
-                return false;
+                break;
             }
             if (t > pn)
             {
-                sp = $(this);
-                return false;
+                sp = fwdom.mkjQ(this);
+                break;
             }
-        })
+        }
         if (error)
         {
             bootbox.alert('That page already exists');
-            $(this).attr('disabled', false);
+            this.setAttribute('disabled', false);
             return;
         }
         const src = $('#npsrc').val()
         if (src == '')
         {
             bootbox.alert('Please specify a source');
-            $(this).attr('disabled', false);
+            this.setAttribute('disabled', false);
             return;
         }
         const kind = $('#npkind').val();
         if (kind == '')
         {
             bootbox.alert('Please pick a page type');
-            $(this).attr('disabled', false);
+            this.setAttribute('disabled', false);
             return;
         }
         const active = $('#npactive').is(':checked') ? 1 : 0;
@@ -156,22 +158,17 @@
                 needlogin : login,
                 mobileonly: mobile
             };
-        const sel = ['context', 'role'];
-        const inp = ['start', 'end', 'otherinfo'];
-        const f = $('#npform');
-        var inx = 0;
-        for (let nv of inp)
+        const f = document.getElementById('npform');
+        for (let nv of ['start', 'end', 'otherinfo'])
         {
-            inx = 0;
-            $('input[name^="'+nv+'"]', f).each(function(){
-                dt[nv+'['+inx+']'] = $(this).val();
+            f.querySelectorAll('input[name^="'+nv+'"]').forEach(function(el, index){
+                dt[nv+'['+index+']'] = el.value;
             });
         }
-        for (let sv of sel)
+        for (let sv of ['context', 'role'])
         {
-            inx = 0;
-            $('select[name^="'+sv+'"]', f).each(function(){
-                dt[sv+'['+inx+']'] = $(this).val();
+            f.querySelectorAll('select[name^="'+sv+'"]').forEach(function(el, index){
+                dt[sv+'['+index+']'] = el.val;
             });
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');

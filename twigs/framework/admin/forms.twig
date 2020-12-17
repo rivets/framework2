@@ -29,10 +29,9 @@
         const frm = document.getElementById('addfform');
         for (let sel of ['checked', 'text'])
         {
-            for (let x in frm.querySelectorAll('input:'+sel))
-            {
-                 data[x.getAttribute('name')] = x.value;
-            }
+            frm.querySelectorAll('input:'+sel).foreach(function(el, index){
+                 data[el.getAttribute('name')] = el.value;
+            });
         }
         framework.beanCreate('{{constant('Config\\Framework::FORM')}}', data, function(ret){
             fwdom.mkjQ('#addf').modal('hide')
