@@ -19,11 +19,11 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#nrform').on('submit', false).parsley();
+    $('#nrform').parsley();
     $('#addb').on('click', function(e){
-        e.preventDefault();
+        fwdom.stop(e);
         $(this).attr('disabled', true);
-        const pn = $('#nrname').val();
+        const pn = document.getElementById('nrname').value;
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
             bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
@@ -32,16 +32,18 @@
         let sp = null;
         let error = false;
         $('.rname').each(function(e){
-            var t = $(this).text();
+        for (let r of document.getElementsByClassname('rname'))
+        {
+            let t = r.innerHTML;
             if (t == pn)
             {
                 error = true;
-                return false;
+                break;
             }
             if (t > pn)
             {
-                sp = $(this);
-                return false;
+                sp = fwdom.mkjQ(r);
+                break;
             }
         });
         if (error)
@@ -61,20 +63,21 @@
         {
             nx = $(htm).insertBefore(sp.parent());
         }
-        $.post('{{base}}/ajax/bean/{{beantype}}/', {
-            name : pn,
+        framework.ajax('{{base}}/ajax/bean/{{beantype}}/', {
+            method: 'post',
+            data: {name : pn},
         }).done(function(data){
                nx.data('id', data)
         }).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
         }).always(function(e){
-            $('#addb').attr('disabled', false);
+            document.getElementById('addb').setAttribute('disabled', false);
         });
     });
-    $('#rtab').on('click', {bean: '{{beantype}}', clicks: clicks}, framework.tableClick);
+    document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.tableClick(e)););
 
     $('#nroco').on('show.bs.modal', function(e){
-        $('#nrform input').val('');
+        document.getElementById('nrform').reset();
     });
 {% endblock onload %}
 
@@ -121,13 +124,13 @@
     </section>
     {{m.open({id: 'nroco', title: 'New ' ~ ctype ~ ' Name'})}}
     <div class="modal-body">
-        <form action="#" method="POST" id="nrform">
+        {{f.startform({method: 'post', id: 'nrform', on:{submit: 'function(e){fwdom.stop(e);})'})}}
             <div class="form-group">
                 {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, parsley: { trigger: 'change',
                 'remote-reverse': 'false', remote: base~'/ajax/unique/' ~ beantype ~ '/name/{value}',
                 'remote-message': 'That ' ~ type ~ ' name is not available', type: 'alphanum'} })}}
             </div>
-       </form>
+       {{f.endform()}}
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
