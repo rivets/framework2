@@ -81,7 +81,7 @@
  */
             if (!method_exists($this->model, 'add'))
             { // operation not supported
-                throw new BadOperation('Cannot add a '.$bean);
+                throw new BadOperation('Cannot add a '.$beanType);
             }
             /** @psalm-suppress InvalidStringClass */
             $bean = $this->model::add($this->context);
