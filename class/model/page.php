@@ -146,7 +146,7 @@
                     if ($cid !== '')
                     {
                         $p->addRoleByBean(
-                            $context->load(FW::ROLECONTEXT, $cid),                         // the context id
+                            $fdt->mustFetchBean(['context', $ix], FW::ROLECONTEXT),        // the context id
                             $fdt->mustFetchBean(['role', $ix], FW::ROLENAME),   // the rolename id
                             $fdt->mustFetch(['otherinfo', $ix]),
                             $fdt->mustFetch(['start', $ix]),
