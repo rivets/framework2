@@ -63,17 +63,17 @@
         url: framework.editcall
     });
     $('#npform').on('submit', false).parsley();
-    $('#npkind').on('change', function(e) {
-        var pn = $('#npname').val().toLowerCase();
-        if (pn != '')
+    document.getElementById('npkind').addEventListener('change', function(e) {
+        var pn = document.getElementById('npname').value.toLowerCase();
+        if (pn !== '')
         {
-            switch ($(this).val())
+            switch (this.value)
             {
             case '1':
-                $('#npsrc').val('\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1));
+                document.getElementById('npsrc').value = '\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1);
                 break;
             case '2':
-                $('#npsrc').val('@content/'+pn+'.twig');
+                document.getElementById('npsrc').value = '@content/'+pn+'.twig';
                 break;
             }
         }
@@ -176,11 +176,11 @@
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
-    $('#ptab').on('click', {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}, framework.tableClick);
+    document.getElementById('ptab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.tableClick(e);});
     $('#npage').on('show.bs.modal', function(e){
         $('#npform option').attr('selected', false)
     });
-    $('#more').on('click', framework.addMore);
+    document.getElementById('more').addEventListener('click', framework.addMore);
 {% endblock onload %}
 
 {% if not page is defined %}

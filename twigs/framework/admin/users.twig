@@ -46,7 +46,7 @@
             framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, 'addb');
     });
-    $('#utab').on('click', {bean: 'user', clicks: clicks}, framework.tableClick);
+    $('#utab').on('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.tableClick(e);}
 {% endblock onload %}
 
 {% if not page is defined %}

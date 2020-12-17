@@ -52,7 +52,7 @@
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
         }, 'addb');
     })
-    fwdom.on('#utab', 'click', {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}, framework.tableClick);
+    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}; framework.tableClick(e);});
 {% endblock onload %}
 
 {% block header %}
