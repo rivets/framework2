@@ -118,7 +118,7 @@
     </section>
     {{m.open({id: 'nroco', title: 'New ' ~ ctype ~ ' Name'})}}
     <div class="modal-body">
-        {{f.startform({method: 'post', id: 'nrform', on:{submit: 'function(e){fwdom.stop(e);}'})}}
+        {{f.startform({method: 'post', id: 'nrform', on:{submit: 'function(e){fwdom.stop(e);}'} })}}
             <div class="form-group">
                 {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, parsley: { trigger: 'change',
                 'remote-reverse': 'false', remote: base~'/ajax/unique/' ~ beantype ~ '/name/{value}',
