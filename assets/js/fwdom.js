@@ -3,10 +3,9 @@
  */
     var fwdom = {
         on: function(selector, op, func, parent = null) {
-            for (let d of (parent !== null ? parent : document).querySelectorAll(selector))
-            {
+            (parent !== null ? parent : document).querySelectorAll(selector).forEach(function(d, index){
                 d.addEventListener(op, func, false);
-            }
+            });
         },
 
         data: function(element, tag) {
