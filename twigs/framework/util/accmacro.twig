@@ -26,7 +26,7 @@
     let v{{id}} = fwdom.mkjQ(document.getElementById('{{id}}'));
     v{{id}}.on('show.bs.collapse', function(e){
         let ch = e.target.closest('.card');
-        console.log(e);
+        console.log(e, ch);
         fwdom.toggleClass(ch.getSelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
     })
     v{{id}}.on('hide.bs.collapse', function(e) {
