@@ -22,13 +22,6 @@
 
     function golink(e, x, t)
     {
-        let pnode = x.closest('tr');
-        if (pnode instanceof jQuery)
-        {
-            pnode = pnode[0];
-        }
-        pnode = pnode.querySelector('.pname')
-        window.location.href = base+'/'+pnode.innerHTML+'/';
     }
 
     function paramset(params)
@@ -135,7 +128,7 @@
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
                 '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
-                '<td><a href="'+base+'/'+pn+'">{{i.link('linkb')}}</a></td>'+
+                '<td><a href="'+base+'/'+pn+'">{{i.link('<')}}</a></td>'+
                 '<td>{{i.edit('editb')}}</td>'+
                 '<td>{{i.delete('delb')}}</td></tr>';
                 let nx
