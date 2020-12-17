@@ -118,9 +118,8 @@
         fwdom.stop(e);
         const type = document.getElementById('Xnewtype').value;
         const name = document.getElementById('Xnewconf').value;
-        const value = this.value;
         const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
-        makeConfig(name, value, type, local);
+        makeConfig(name, this.value, type, local);
     });
 {% endblock onload %}
 

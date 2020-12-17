@@ -158,8 +158,7 @@
  */
         toggle: function(x)
         {
-            x.classList.toggle('fa-toggle-off');
-            x.classList.toggle('fa-toggle-on');
+            fwdom.toggleClass([x], ['fa-toggle-off', 'fa-toggle-on']);
         },
 /**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
@@ -177,8 +176,7 @@
  */
         dotoggle: function(e, x, bean, fld)
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             let cl = x.classList;
             if (!cl.contains('fadis'))
             {
@@ -215,8 +213,7 @@
  */
         deletebean: function(e, x, bean, id, yes, msg = '')
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             if (msg === '')
             {
                 msg = 'this '+bean;
@@ -322,7 +319,7 @@
  */
         tableClick: function(event)
         {
-            event.preventDefault();
+            fwdom.stop(event);
             const clist = event.target.classList;
             event.data.clicks.forEach(function(value){
                 let [cls, fn, par] = value;
@@ -398,8 +395,7 @@
  */
         addMore: function(e)
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             const mrow = document.getElementById('mrow');
             const clone = mrow.previousElementSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))

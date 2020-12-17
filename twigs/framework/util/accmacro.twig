@@ -23,11 +23,13 @@
 {% endmacro accordion %}
 
 {% macro caretJS(id) %}
-    $('#{{id}}').on('show.bs.collapse', function(e){
-        let ch = $(e.target).attr('aria-labelledby');
-        $('.fa-caret-right', $('#'+ch)).removeClass('fa-caret-right').addClass('fa-caret-down');
-    }).on('hide.bs.collapse', function(e) {
-        let ch = $(e.target).attr('aria-labelledby');
-        $('.fa-caret-down', $('#'+ch)).removeClass('fa-caret-down').addClass('fa-caret-right');
+    let v{{id}} = document.getElementById('{{id}}')
+    v{{id}}.addEventListener('show.bs.collapse', function(e){
+        let ch = e.target.getAttribute('aria-labelledby');
+        fwdom.toggleClass(document.getElementById(ch).getSelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
+    })
+    v{{id}}.addEventListener('hide.bs.collapse', function(e) {
+        let ch = e.target.getAttribute('aria-labelledby');
+        fwdom.toggleClass(document.getElementById(ch).getSelectorAll('.fa-caret-down'), ['fa-caret-right', 'fa-caret-down']);
     });
 {% endmacro caretJS %}

@@ -10,8 +10,7 @@
 
 {% block onload %}
     fwdom.on('#nopu', 'click', function(e){
-        this.classList.toggle('btn-primary');
-        this.classList.toggle('btn-warning');
+        fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
     })
     {{a.caretJS('acc1')}}
 {% endblock onload %}

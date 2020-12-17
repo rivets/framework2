@@ -19,6 +19,16 @@
             e.stopPropagation();
         },
 
+        toggleClass: function(elements, classes) {
+            for (let el of elements)
+            {
+                for (let c of classes)
+                {
+                    el.classList.toggle(c);
+                }
+            }
+        },
+
         mkjQ: function(sel){
             return $(sel);
         }

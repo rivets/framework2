@@ -34,7 +34,36 @@
 /**
  * @var string
  */
-        private $class = '';
+        private $model = '';
+/**
+ * Generate a no content or call the ajaxResult method on a bean if it exists in its Model
+ *
+ * @param \RedBean\OODBBean $bean       The bean
+ * @param string            $method     The method used to get here
+ * @param string            $op         The ajax op that was invoked
+ *
+ * @return void
+ */
+        private function ajaxResult(\RedBean\OODBBean $bean, string $method, string $op, bool $created = FALSE)
+        {
+/*
+ * @psalm-suppress RedundantCondition
+ * @psalm-suppress ArgumentTypeCoercion
+ */
+            if (method_exists('\\Model\\'.$bean->getMeta('type'), 'ajaxResult'))
+            {
+                $bean->ajaxResult($this->context, $method, 'bean');
+            }
+            elseif ($method == 'post')
+            { // this is a creation of a bean
+                $this->context->web()->created($bean->getID()); // 201 return code
+            }
+            else
+            {
+                $this->context->web()->noContent();
+            }
+        }
+
 /**
  *  make a new one /ajax/bean/KIND/
  *
@@ -43,24 +72,24 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        private function post(string $bean, array $rest, bool $log) : void
+        private function post(string $beanType, array $rest, bool $log) : void
         {
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
 /*
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (!method_exists($this->class, 'add'))
+            if (!method_exists($this->model, 'add'))
             { // operation not supported
                 throw new BadOperation('Cannot add a '.$bean);
             }
             /** @psalm-suppress InvalidStringClass */
-            $id = $this->class::add($this->context)->getID();
+            $bean = $this->model::add($this->context);
             if ($log)
             {
                 BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
             }
-            $this->context->web()->created($id); // 201 return code
+            $this->ajaxResult($bean, 'post', 'bean');
         }
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
@@ -69,20 +98,20 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function patch(string $bean, array $rest, bool $log) : void
+        private function patch(string $beanType, array $rest, bool $log) : void
         {
             [$id, $field] = $rest;
             $more = $rest[2] ?? NULL;
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
-            $bn = $this->context->load($bean, (int) $id, TRUE);
-            $old = $bn->{$field};
-            $bn->{$field} = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bn->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
-            R::store($bn);
+            $bean = $this->context->load($beanType, (int) $id, TRUE);
+            $old = $bean->{$field};
+            $bean->{$field} = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bean->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
+            R::store($bean);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $bn->getID(), $field, $old);
+                BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $field, $old);
             }
-            $this->context->web()->noContent();
+            $this->ajaxResult($bean, 'patch', 'bean');
         }
 /**
  * Map put onto patch
@@ -91,9 +120,9 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function put(string $bean, array $rest, bool $log) : void
+        private function put(string $beanType, array $rest, bool $log) : void
         {
-            $this->patch($bean, $rest, $log);
+            $this->patch($beanType, $rest, $log);
         }
 /**
  * DELETE /ajax/bean/KIND/ID/
@@ -102,7 +131,7 @@
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function delete(string $bean, array $rest, bool $log) : void
+        private function delete(string $beanType, array $rest, bool $log) : void
         {
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
             $id = $rest[0] ?? 0; // get the id from the URL
@@ -110,21 +139,14 @@
             {
                 throw new \Framework\Exception\BadValue('Missing value');
             }
-            $bn = $this->context->load($bean, (int) $id);
+            $bean = $this->context->load($beanType, (int) $id);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, (int) $id, '*', json_encode($bn->export()));
+                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', json_encode($bn->export()));
             }
-            /**
-             * @psalm-suppress RedundantCondition
-             * @psalm-suppress ArgumentTypeCoercion
-             */
-            if (method_exists($this->class, 'delete')) // call the clean-up function if it has one
-            {
-                $bn->delete($this->context);
-            }
-            R::trash($bn);
-            $this->context->web()->noContent();
+
+            R::trash($bean); // If there is a delete function in the model it will get called automatically.
+            $this->ajaxResult($bean, 'delete', 'bean');
         }
 /**
  * Carry out operations on beans
@@ -144,15 +166,15 @@
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
             /** @psalm-suppress UndefinedConstant */
-            $this->class = REDBEAN_MODEL_PREFIX.$bean;
+            $this->model = '\\Model\\'.$bean;
             /**
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion
              */
-            if (method_exists($this->class, 'canAjaxBean'))
+            if (method_exists($this->model, 'canAjaxBean'))
             {
                 /** @psalm-suppress InvalidStringClass */
-                $this->class::canAjaxBean($this->context, $method);
+                $this->model::canAjaxBean($this->context, $method);
             }
             $this->{$method}($bean, $rest, $this->controller->log($bean));
         }

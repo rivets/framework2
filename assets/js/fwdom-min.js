@@ -1,2 +1,2 @@
-var fwdom={on:function(t,n,e,o=null){for(let r of(null!==o?o:document).querySelectorAll(t))r.addEventListener(n,e,!1)},data:function(t,n){const e="data-"+n;return t.closest("["+e+"]").getAttribute(e)},stop:function(t){t.preventDefault(),t.stopPropagation()},mkjQ:function(t){return $(t)}};
+var fwdom={on:function(t,o,n,e=null){for(let l of(null!==e?e:document).querySelectorAll(t))l.addEventListener(o,n,!1)},data:function(t,o){const n="data-"+o;return t.closest("["+n+"]").getAttribute(n)},stop:function(t){t.preventDefault(),t.stopPropagation()},toggleClass:function(t,o){for(let n of t)for(let t of o)n.classList.toggle(t)},mkjQ:function(t){return $(t)}};
 //# sourceMappingURL=fwdom-min.js.map
