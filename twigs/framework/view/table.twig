@@ -86,8 +86,10 @@
     {% else %}
         $('#searchb').on('click', function(e){
             e.preventDefault();
-            $.get(base + '/ajax/tablesearch/{{bean.name}}'+'/'+$('#fname').val()+'/'+$('#fop').val(), {
-                value:  $('#fval').val(),
+            framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('#fop').value, {
+                method: 'get',
+                data: {value:  document.getElementById('fval').value},
+                }
             }).done(function(data){
                 var bdy = $('#sres article');
                 if (data.length == 0)
