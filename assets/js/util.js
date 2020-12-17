@@ -96,7 +96,7 @@
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
             let ajaxObj = new FWAjaxRQ(request);
             request.options = options;
-            request.open(method, url, true);
+            request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
             request.onload = ajaxObj.onloaded;
             request.onerror = ajaxObj.onfailed;
