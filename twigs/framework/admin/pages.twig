@@ -104,14 +104,14 @@
             this.setAttribute('disabled', false);
             return;
         }
-        const src = $('#npsrc').val()
+        const src = document.getElementById('npsrc').value;
         if (src == '')
         {
             bootbox.alert('Please specify a source');
             this.setAttribute('disabled', false);
             return;
         }
-        const kind = $('#npkind').val();
+        const kind = document.getElementById('npkind').value;
         if (kind == '')
         {
             bootbox.alert('Please pick a page type');
@@ -162,7 +162,8 @@
         for (let sv of ['context', 'role'])
         {
             f.querySelectorAll('select[name^="'+sv+'"]').forEach(function(el, index){
-                dt[sv+'['+index+']'] = el.val;
+                let opt = el.getSelector('option:selected').value
+                dt[sv+'['+index+']'] = opt;
             });
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
