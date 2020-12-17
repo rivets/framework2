@@ -53,14 +53,15 @@
             btn.setAttribute('disabled', false);
             return;
         }
-        $('#nroco').modal('hide');
-        const htm = '<tr><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td></tr>';
-        let nx = sp == null ? $(htm).appendTo($('#rtab tbody')) : $(htm).insertBefore(sp.parent());
+
         framework.ajax('{{base}}/ajax/bean/{{beantype}}/', {
             method: 'post',
             data: {name : pn},
         }).done(function(data){
+            const htm = '<tr data-id="'+data+'"><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td></tr>';
+            let nx = sp == null ? $(htm).appendTo($('#rtab tbody')) : $(htm).insertBefore(sp.parent());
             nx.data('id', data)
+            $('#nroco').modal('hide');
         }).fail(function(jqXHR, textStatus, errorThrown){
             bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
         }).always(function(e){
