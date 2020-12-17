@@ -102,7 +102,7 @@
         {
             [$id, $field] = $rest;
             $more = $rest[2] ?? NULL;
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType, $field);
             $bean = $this->context->load($beanType, (int) $id, TRUE);
             $old = $bean->{$field};
             $bean->{$field} = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bean->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
@@ -133,7 +133,7 @@
  */
         private function delete(string $beanType, array $rest, bool $log) : void
         {
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType);
             $id = $rest[0] ?? 0; // get the id from the URL
             if ($id <= 0)
             {
