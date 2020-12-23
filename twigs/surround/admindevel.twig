@@ -1,0 +1,54 @@
+    {% if context.hasAdmin %}
+        <li class="nav-item dropdown{{action == 'admin' ? ' active'}}">
+            <a href="#" class="nav-link dropdown-toggle" id="ddadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
+            <div class="dropdown-menu" aria-labelledby="ddadmin">
+                <a class="dropdown-item" href="{{base}}/admin/pages/">Pages</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/admin/users/">Users</a>
+                <a class="dropdown-item" href="{{base}}/admin/contexts/">Contexts</a>
+                <a class="dropdown-item" href="{{base}}/admin/roles/">Roles</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/admin/forms/">Forms</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/admin/beans/">Beans</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/admin/config/">Config</a>
+                <a class="dropdown-item" href="{{base}}/admin/checksum/">Checksum</a>
+                <a class="dropdown-item" href="{{base}}/admin/update/">Update</a>
+                <a class="dropdown-item" href="{{base}}/admin/offline/">Go Offline</a>
+            </div>
+        </li>
+    {% endif %}
+    {% if context.hasDeveloper %}
+        <li class="nav-item dropdown{{action == 'devel' ? ' active'}}">
+            <a href="#" class="nav-link dropdown-toggle" id="dddevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
+            <div class="dropdown-menu" aria-labelledby="dddevel">
+                <a class="dropdown-item" href="{{base}}/devel/ajax/">AJAX</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/devel/hack/">Run Code</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/admin/info/">PHP Info</a>
+            </div>
+        </li>
+        <li class="nav-item dropdown{{action == 'test' ? ' active'}}">
+            <a href="#" class="nav-link dropdown-toggle" id="ddtest" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
+            <div class="dropdown-menu" aria-labelledby="ddtest">
+                <a class="dropdown-item" href="{{base}}/devel/test/page/">Test Page</a>
+                <a class="dropdown-item" href="{{base}}/test/">Page Access Check Test</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/ajax/">Ajax Test</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/upload/">Upload Test</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/devel/test/fail/">Fail</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/toss/">Throw</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/assert/">Assert</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/devel/test/mail/">Test mail</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/devel/test/get/">Form Get</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/post/">Form Post</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/put/">Form Put</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/file/">Form File</a>
+                <a class="dropdown-item" href="{{base}}/devel/test/cookie/">Form Cookie</a>
+            </div>
+        </li>
+    {% endif %}
