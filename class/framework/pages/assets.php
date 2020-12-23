@@ -63,19 +63,7 @@
             {
                 $ext = '';
             }
-            if (isset(self::$mtypes[$ext]))
-            {
-                $mime = self::$mtypes[$ext];
-            }
-            else
-            {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                if (($mime = finfo_file($finfo, $this->file)) === FALSE)
-                { // there was an error of some kind.
-                    $mime = '';
-                }
-                finfo_close($finfo);
-            }
+            $mime =  isset(self::$mtypes[$ext]) ??  \Framework\Support\Security::getInstance()->mimetype($this->file);
             $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([

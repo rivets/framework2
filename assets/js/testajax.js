@@ -4,12 +4,12 @@
 
         makecall : function (url, data, cdone, cfail){
             data.async = true;
-            $.ajax(base+'/ajax/'+url, data).done(cdone).fail(cfail);
+            framework.ajax(base+'/ajax/'+url, data).done(cdone).fail(cfail);
         },
         testbean: function (){
             bootbox.alert('Bean operation test complete');
         },
-    
+
         testconfig : function (){
             let t = $(this).parent();
             testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'string'} }, function(){
@@ -60,7 +60,7 @@
                 t.append('<p>Create config item fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
-    
+
         testhints: function (){
             let t = $(this).parent();
             testing.makecall('hints/'+testtable+'/f1?search=a%', { method: 'GET' }, function(data){
@@ -90,19 +90,19 @@
         testpaging: function (){
             bootbox.alert('Paging operation test complete');
         },
-    
+
         testpwcheck: function (){
             bootbox.alert('Pwcheck operation test complete');
         },
-    
+
         testshared: function (){
             bootbox.alert('Shared operation test complete');
         },
-    
+
         testtable: function (){
             bootbox.alert('Table operation test complete');
         },
-    
+
         testtablecheck: function (){
             let t = $(this).parent();
             testing.makecall('tablecheck/'+testtable, { method: 'GET' }, function(){
@@ -123,7 +123,7 @@
                 t.append('<p>Non-existent table fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
-    
+
         testtablesearch: function (){
             let t = $(this).parent();
             testing.makecall('tablesearch/'+testtable+'/f1/4?value=string', { method: 'GET' }, function(data){
@@ -149,7 +149,7 @@
                 }
             });
         },
-    
+
         testtoggle : function(){
             let t = $(this).parent();
             let tstate = 2;
@@ -177,7 +177,7 @@
                 t.append('<p>Toggle non-toggleable field OK - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
-    
+
         testunique: function (){
             let t = $(this).parent();
             testing.makecall('unique/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
@@ -198,7 +198,7 @@
                 t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
-    
+
         testuniquenl :function (){
             let t = $(this).parent();
             let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){

@@ -125,12 +125,10 @@
             $res = '';
             foreach ($this->ons as $id => $conds)
             {
-                $xres = '';
                 foreach ($conds as $on => $fn)
                 {
-                    $xres .= ".on('".$on."', ".$fn.')';
+                    $res .= "document.getElementById('".$id."').addEventListener('".$on."', ".$fn.');'.PHP_EOL;
                 }
-                $res .= "$('#".$id."')".$xres.";\n";
             }
             return $res;
         }

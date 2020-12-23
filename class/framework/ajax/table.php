@@ -169,7 +169,10 @@
                 /* NOT REACHED */
             }
             $table = strtolower($rest[1]);
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
+            if (!$this->context->hasAdmin())
+            { // not admin so check...
+                $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
+            }
             $method = strtolower($this->context->web()->method());
             if (!method_exists(self::class, $method))
             {

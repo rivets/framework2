@@ -210,12 +210,7 @@
             [$code, $range, $length] = $this->hasrange(filesize($path));
             if ($mime === '')
             {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                if (($mime = finfo_file($finfo, $path)) === FALSE)
-                { // there was an error of some kind.
-                    $mime = '';
-                }
-                finfo_close($finfo);
+                $mime = \Framework\Support\Security::getInstance()->mimetype($path);
             }
     //      $this->addHeader(['Content-Description' => 'File Transfer']);
             $this->sendHeaders($code, $mime, $length, $name);

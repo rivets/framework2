@@ -1,0 +1,2 @@
+var fwdom={on:function(t,n,o,e=null){(null!==e?e:document).querySelectorAll(t).forEach((function(t,e){t.addEventListener(n,o,!1)}))},data:function(t,n){const o="data-"+n;return t.closest("["+o+"]").getAttribute(o)},stop:function(t){t.preventDefault(),t.stopPropagation()},toggleClass:function(t,n){for(let o of t)for(let t of n)o.classList.toggle(t)},mkjQ:function(t){return $(t)}};
+//# sourceMappingURL=fwdom-min.js.map

@@ -57,23 +57,24 @@
     {% if allownew %}
         $('#nfform').on('submit', false).parsley();
         $('#addb').on('click', function(e){
-            e.preventDefault();
-            const pn = $('#nfname').val().toLowerCase();
+            fwdom.stop(e);
+            const pn = document.getElementById('nfname').value.toLowerCase();
             let sp = null;
             let error = false;
-            $('.fname').each(function(e){
-                const t = $(this).text();
+            for (let f of document.getElementsByClasssName('fname'))
+            {
+                const t = f.innerHTML;
                 if (t == pn)
                 {
                     error = true;
-                    return false;
+                    break;
                 }
                 if (t > pn)
                 {
-                    sp = $(this);
-                    return false;
+                    sp = fwdom.mkjQ(this);
+                    break;
                 }
-            })
+            }
             if (error)
             {
                 bootbox.alert('That field already exists');
@@ -85,9 +86,11 @@
         })
     {% else %}
         $('#searchb').on('click', function(e){
-            e.preventDefault();
-            $.get(base + '/ajax/tablesearch/{{bean.name}}'+'/'+$('#fname').val()+'/'+$('#fop').val(), {
-                value:  $('#fval').val(),
+            fwdom.stop(e);
+            framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('#fop').value, {
+                method: 'get',
+                data: {value:  document.getElementById('fval').value},
+                }
             }).done(function(data){
                 var bdy = $('#sres article');
                 if (data.length == 0)

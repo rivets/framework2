@@ -4,6 +4,7 @@
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
+{% import '@content/iconmacro.twig' as icon %}
 
 {% block onload %}
     $('#regform').parsley()
@@ -12,30 +13,37 @@
 {% block navigation %}
 {% endblock navigation %}
 
-{% block pageheader %}
-{% endblock pageheader %}
+{% block header %}
+    <article class="col-md-12 mt-5">
+        <h1 class="text-center mt-5">Register</h1>
+    </article>
+{% endblock header %}
 
 {% block main %}
-    <section class="row" id="frontpage">
+    <section class="row mt-5" id="frontpage">
         <article class="ml-auto col-md-8 mr-auto">
-            {% include '@util/message.twig' %}
-            {% if regok is defined %}
-                <p><a href="{{base}}/login/" class="btn btn-primary">Login Page</a></p>
-                <p><a href="{{base}}/" class="btn btn-primary">Home Page</a></p>
+            {% if context.hasUser %}
+                <h2 class="text-center">Please logout before registering a new user</h2>
             {% else %}
+                {% include '@util/message.twig' %}
+                {% if regok is defined %}
+                    <p class="text-center"><a href="{{base}}/login/" class="btn btn-primary">{{icon.fa('sign-in-alt')}} Login Page</a></p>
+                    <p class="text-center"><a href="{{base}}/" class="btn btn-primary">{{icon.home('')}} Home Page</a></p>
+                {% else %}
 
-                <h1 class="jumbotron">Register for {{fwurls.sitename.value}}</h1>
-                {{f.startform({method: 'post', class: 'jumbotron', id: 'regform'})}}
-                    {{f.text({label: 'User Name', id: 'un', ph: 'User name - alphanumeric characters only',
-                        parsley: {trigger: 'change',  'remote-reverse': 'false', remote: base~'/ajax/uniquenl/user/login/{value}',
-                        'remote-message': 'That user name is not available', type: 'alphanum'}, required: TRUE})}}
-                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '*********', required: TRUE})}}
-                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '*********', parsley: {trigger: 'change', equalTo: '#pw'}, required: TRUE})}}
-                    {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.org', parsley: {trigger: 'change'}, required: TRUE})}}
-                    <p class="mt-4">
-                        {{f.submit({value: 'Register'})}}
-                    </p>
-                {{f.endform()}}
+                    <h1 class="jumbotron">Register for {{fwurls.sitename.value}}</h1>
+                    {{f.startform({method: 'post', class: 'jumbotron', id: 'regform'})}}
+                        {{f.text({label: 'User Name', id: 'un', name: 'login', value: login, ph: 'User name - alphanumeric characters only',
+                            parsley: {trigger: 'change',  'remote-reverse': 'false', remote: base~'/ajax/uniquenl/user/login/{value}',
+                            'remote-message': 'That user name is not available', type: 'alphanum'}, required: TRUE})}}
+                        {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '*********', required: TRUE})}}
+                        {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '*********', parsley: {trigger: 'change', equalTo: '#pw'}, required: TRUE})}}
+                        {{f.email({label: 'Email Address', id: 'em', name: 'email', value: email, ph: 'pat@smith.org', parsley: {trigger: 'change'}, required: TRUE})}}
+                        <p class="mt-4">
+                            {{f.submit({value: 'Register'})}}
+                        </p>
+                    {{f.endform()}}
+                {% endif %}
             {% endif %}
         </article>
     </section>

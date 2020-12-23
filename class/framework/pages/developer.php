@@ -42,6 +42,7 @@
                 break;
 
             case 'test':
+                $context->local()->addval('action', 'test'); // this is a hack to make the menu bar light up right
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
                 {

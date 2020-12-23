@@ -4,27 +4,22 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as icon %}
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
-     $('#more').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        const mrow = $('#mrow');
-        mrow.before($('#example').clone());
-        const pr = $mrow.prev();
-        $('input', pr).val(''); // clear the inputs
-        $('option', pr).prop('selected', false); // clear any selections
-        $('.delb', pr).on('click', function(e){
-            framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
-        });
+    document.getElementById('more').addEventListener('click', function(e){
+        framework.addMore(e);
     });
-    $('#uform').on('submit', function(e){
+    document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
         return $(this).parsley().validate()
     });
-    $('.delb').on('click', function(e){
-        framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
-    });
+    for (var node of document.querySelectorAll('.delb'))
+    {
+        node.addEventListener('click', function(e){
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
+        });
+    }
 {% endblock onload %}
 
 {% block header %}

@@ -46,8 +46,8 @@
             $v->name = $name;
             $v->value = $fdt->mustFetch('value');
             $v->type = $fdt->mustFetch('type');
-            R::store($v);
-            $this->context->web()->noContent();
+            $v->local = $fdt->fetch('local', 0);
+            echo R::store($v);
         }
 /**
  * Handle PUT or PATCH

@@ -1,14 +1,77 @@
+   class FWAjaxRQ
+   {
+        constructor(rq)
+        {
+            this.request = rq;
+        }
+/**
+ * called when loaded
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
+        onloaded(){
+            if (this.status >= 200 && this.status < 400)
+            { // Success!
+                if (this.options.hasOwnProperty('success'))
+                {
+                    this.options.success(this.response);
+                }
+            }
+            else if (this.options.hasOwnProperty('fail'))
+            { // something went wrong
+                this.options.fail(this.response);
+            }
+            if (this.options.hasOwnProperty('always'))
+            { // always do this
+                this.options.always(this.response);
+            }
+        }
+/**
+ * called when there is a send error
+ *
+ * @param {object} rq   - request object
+ * @param {object} options - options object
+ */
+        onfailed(){
+            // There was a connection error of some sort
+              if (this.options.hasOwnProperty('fail'))
+              {
+                  this.options.fail(this.response);
+              }
+              if (this.options.hasOwnProperty('always'))
+              {
+                  this.options.always(this.response);
+              }
+        }
+
+        done(fn)
+        {
+            this.request.options.success = fn;
+            return this;
+        }
+
+        fail(fn)
+        {
+            this.request.options.fail= fn;
+            return this;
+        }
+
+        always(fn)
+        {
+            this.request.options.always = fn;
+            return this;
+        }
+    }
+
     var framework = {
-        dejq: function(el) {
-            console.log(el);
-        },
 /**
  * encode object into a query string
  *
  * @param {object} data   - the object to encode
  */
         makeQString: function(data) {
-            var enc = '';
+            let enc = '';
             let amp = '';
             for (var prop in data)
             {
@@ -20,56 +83,25 @@
             }
             return enc;
         },
-
-        onloaded: function(rq, options){
-            if (rq.status >= 200 && rq.status < 400)
-            { // Success!
-                if (options.hasOwnProperty('success'))
-                {
-                    options.success(rq.response);
-                }
-            }
-            else if (options.hasOwnProperty('fail'))
-            { // something went wrong
-                options.fail(rq.response);
-            }
-            if (options.hasOwnProperty('always'))
-            { // always do this
-                options.always(rq.response);
-            }
-        },
-        onfailed: function(rq, options){
-            // There was a connection error of some sort
-              if (options.hasOwnProperty('fail'))
-              {
-                  options.fail(rq.response);
-              }
-              if (options.hasOwnProperty('always'))
-              {
-                  options.always(rq.response);
-              }
-        },
-/**
- * non-jquery post function
+/*
+ * non-jquery ajax function
  *
- * @param {string} op     - the operation to use
  * @param {string} url    - the URL to invoke
  * @param {object} data   - the data to pass
  */
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
-            let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
+            let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
-            request.open(method, url, true);
+            let ajaxObj = new FWAjaxRQ(request);
+            request.options = options;
+            request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
-            request.onload = function() {
-                framework.onloaded(this, options);
-            };
-            request.onerror = function() {
-                framework.onfailed(this, options);
-            };
+            request.onload = ajaxObj.onloaded;
+            request.onerror = ajaxObj.onfailed;
             request.send(data);
+            return ajaxObj;
         },
 /**
  * get JSON
@@ -77,6 +109,7 @@
         getJSON : function(url, success, fail){
             var request = new XMLHttpRequest();
             request.open('GET', url, true);
+            request.setRequestHeader('Accept', 'application/json');
             request.onload = function() {
               if (this.status >= 200 && this.status < 400) {
                 // Success!
@@ -125,8 +158,7 @@
  */
         toggle: function(x)
         {
-            x.classList.toggle('fa-toggle-off');
-            x.classList.toggle('fa-toggle-on');
+            fwdom.toggleClass([x], ['fa-toggle-off', 'fa-toggle-on']);
         },
 /**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
@@ -144,8 +176,7 @@
  */
         dotoggle: function(e, x, bean, fld)
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             let cl = x.classList;
             if (!cl.contains('fadis'))
             {
@@ -157,23 +188,14 @@
                 }
                 else
                 { // toggle at the other end
-                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                    //    method: putorpatch,
-                    //}).done(function(){
-                    //   framework.toggle(x);
-                    //}).fail(function(jx){
-                    //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
-                    //});
                     let pnode = x.closest('[data-id]');
                     if (pnode instanceof jQuery)
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                        method: putorpatch,
-                        success: function(){ framework.toggle(x); },
-                        fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
-                    });
+                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {method: putorpatch})
+                    .done(function(){ framework.toggle(x); })
+                    .fail(function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
@@ -191,8 +213,7 @@
  */
         deletebean: function(e, x, bean, id, yes, msg = '')
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             if (msg === '')
             {
                 msg = 'this '+bean;
@@ -200,11 +221,9 @@
             bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
-                        method: 'DELETE',
-                        success: yes,
-                        fail : function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); },
-                    });
+                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {method: 'DELETE'})
+                    .done(yes)
+                    .fail(function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -217,7 +236,7 @@
  */
         editcall: function(params) {
             const url = base + '/ajax/' + params.op + '/' + params.bean + '/' + params.pk + '/'+params.name+'/';
-            return $.ajax(url, {
+            return framework.ajax(url, {
                 method: putorpatch,
                 data: { value: params.value }
             });
@@ -300,11 +319,11 @@
  */
         tableClick: function(event)
         {
-            event.preventDefault();
-            const x = $(event.target);
+            fwdom.stop(event);
+            const clist = event.target.classList;
             event.data.clicks.forEach(function(value){
                 let [cls, fn, par] = value;
-                if (x.hasClass(cls))
+                if (clist.contains(cls))
                 {
                     fn(event, event.target, event.data.bean, par);
                 }
@@ -358,10 +377,13 @@
  */
         beanCreate: function(bean, data, fn, button)
         {
-            $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
+            framework.ajax(base+'/ajax/bean/'+bean+'/', {method: 'POST', data})
+            .done(fn)
+            .fail(function(jx){
                 bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
-            }).always(function(){
-                $(button).attr('disabled', false);
+            })
+            .always(function(){
+                document.getElementById(button).setAttribute('disabled', false);
             });
         },
 /**
@@ -373,10 +395,35 @@
  */
         addMore: function(e)
         {
-            e.preventDefault();
-            $('#mrow').before($('#example').clone());
-            $('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
-            $('option', $('#mrow').prev()).prop('selected', false); // clear any selections
+            fwdom.stop(e);
+            const mrow = document.getElementById('mrow');
+            const clone = mrow.previousElementSibling.cloneNode(true);
+            for (var node of clone.getElementsByTagName('input'))
+            {
+                if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
+                {
+                    node.removeAttribute('checked');
+                }
+                else
+                {
+                    node.setAttribute('value', '');
+                }
+            }
+            for (node of clone.getElementsByTagName('textarea'))
+            {
+                node.innerHTML = '';
+            }
+            for (node of clone.getElementsByTagName('option'))
+            {
+                node.removeAttribute('selected', false);
+            }
+            for (node of clone.getElementsByTagName('select'))
+            {
+                node.children[0].setAttribute('selected', 'selected');
+            }
+            mrow.parentNode.insertBefore(clone, mrow);
+            //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
+            //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
         },
 /**
  * Used by doBGFade to calculate the next value in a progressive fade
