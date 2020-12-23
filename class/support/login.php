@@ -86,6 +86,7 @@
                 session_destroy(); // Finally, destroy the -session.
             }
             $context->divert('/');
+            /* NOT REACHED */
         }
     }
 ?>
