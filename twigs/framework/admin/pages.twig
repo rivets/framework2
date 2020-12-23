@@ -20,15 +20,9 @@
         return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
     }
 
-    function golink(e, x, t)
+    function golink(event)
     {
-        let pnode = x.closest('.pname');
-        if (pnode instanceof jQuery)
-        {
-            pnode = pnode[0];
-        }
-        pnode.parentNode.querySelector('.pname')
-        window.location.href = base+'/'+pnode.innerHTML+'/';
+        window.location = event.target.parentNode.getAttribute('href');
     }
 
     function paramset(params)
