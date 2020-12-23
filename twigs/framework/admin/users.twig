@@ -96,7 +96,7 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <p><button class="btn btn-primary" data-toggle="modal" data-target="#addu" type="button">Add User</button></p>
+            <p>{{m.invoke('addu', 'Add User')}}</p>
         </article>
     </section>
     {{m.open({id: 'addu', title: 'Add A New User'})}}

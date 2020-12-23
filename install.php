@@ -306,7 +306,7 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
         'facss'         => ['https://use.fontawesome.com/releases/v5.15.1/css/all.css', 1, '', '', 0, 0, 'css'],
@@ -314,12 +314,12 @@
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
-        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'bootbox'       => ['https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
-        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
         'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],

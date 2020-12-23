@@ -88,7 +88,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <p><button class="btn btn-primary" data-toggle="modal" data-target="#addf" type="button">Add a Form</button></p>
+            <p>{{m.invoke('addf', 'Add a Form')}}</p>
         </article>
     </section>
     {{m.open({id: 'addf', title: 'Add a Form'})}}

@@ -4,7 +4,7 @@
         {% else %}
             <a class="navbar-brand" href="{{base}}/">{{fwurls.sitename.value}}</a>
         {% endif %}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -14,7 +14,7 @@
                     <li class="nav-item{{action == 'contact' ? ' active'}}"><a class="nav-link" href="{{base}}/contact/">Contact</a></li>
                     {% if context.hasAdmin %}
                         <li class="nav-item dropdown{{action == 'admin' ? ' active'}}">
-                            <a href="#" class="nav-link dropdown-toggle" id="ddadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
+                            <a href="#" class="nav-link dropdown-toggle" id="ddadmin" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
                             <div class="dropdown-menu" aria-labelledby="ddadmin">
                                 <a class="dropdown-item" href="{{base}}/admin/pages/">Pages</a>
                                 <div class="dropdown-divider"></div>
@@ -35,7 +35,7 @@
                     {% endif %}
                     {% if context.hasDeveloper %}
                         <li class="nav-item dropdown{{action == 'developer' ? ' active'}}">
-                            <a href="#" class="nav-link dropdown-toggle" id="dddevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
+                            <a href="#" class="nav-link dropdown-toggle" id="dddevel" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
                             <div class="dropdown-menu" aria-labelledby="dddevel">
                                 <a class="dropdown-item" href="{{base}}/devel/ajax/">AJAX</a>
                                 <div class="dropdown-divider"></div>
@@ -45,7 +45,7 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown{{action == 'test' ? ' active'}}">
-                            <a href="#" class="nav-link dropdown-toggle" id="ddtest" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
+                            <a href="#" class="nav-link dropdown-toggle" id="ddtest" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
                             <div class="dropdown-menu" aria-labelledby="ddtest">
                                 <a class="dropdown-item" href="{{base}}/devel/test/page/">Test Page</a>
                                 <a class="dropdown-item" href="{{base}}/test/">Page Access Check Test</a>
@@ -69,7 +69,7 @@
             {% if context.hasUser %}
                 <ul class="nav navbar-nav navbar-right">
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" id="dduser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user{% if context.hasadmin %} text-danger{% endif %}"></i><b class="caret"></b></a>
+                        <a href="#" class="nav-link dropdown-toggle" id="dduser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user{% if context.hasadmin %} text-danger{% endif %}"></i><b class="caret"></b></a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dduser">
                             <a class="dropdown-item" href="{{base}}/logout/">Logout</a>
                             <a class="dropdown-item" href="{{base}}/profile/">Profile</a>
