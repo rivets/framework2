@@ -120,62 +120,85 @@
  */
         public function register(Context $context) : string
         {
-            $fdt = $context->formdata('post');
-            $login = $fdt->fetch('login', '');
-            if ($login !== '')
+            if (!Config::REGISTER)
             {
-                $errmess = [];
-                $x = R::findOne('user', 'login=?', [$login]);
-                if (!is_object($x))
+                $context->divert('/');
+                /* NOT REACHED */
+            }
+            if ($context->web()->isPost())
+            {
+                if ($context->hasUser())
                 {
-                    $pw = $fdt->mustFetch('password');
-                    $rpw = $fdt->mustFetch('repeat');
-                    $email = $fdt->mustFetch('email');
-                    if ($pw != $rpw)
-                    {
-                        $errmess[] = 'The passwords do not match';
-                    }
-                    if (!\Model\User::pwValid($pw))
-                    {
-                        $errmess[] = 'The password does not meet the specification';
-                    }
-                    if (preg_match('/[^a-z0-9]/i', $login))
-                    {
-                        $errmess[] = 'Your username can only contain letters and numbers';
-                    }
-                    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-                    {
-                        $errmess[] = 'Please provide a valid email address';
-                    }
-                    if (empty($errmess))
-                    {
-                        $x = R::dispense('user');
-                        $x->login = $login;
-                        $x->email = $email;
-                        $x->confirm = 0;
-                        $x->active = 1;
-                        $x->joined = $context->utcnow();
-                        R::store($x);
-                        $x->setpw($pw);
-                        $rerr = $x->register($context); // do any extra registration
-                        if (empty($rerr))
-                        {
-                            $this->confmessage($context, $x);
-                        }
-                        else
-                        { // extra registration failed
-                            \R::trash($x); // delete the user object
-                            $errmess = array_merge($errmess, $rerr);
-                        }
-                    }
+                    throw new \Framework\Exception\BadOperation('Cannot register while logged in');
                 }
                 else
                 {
-                    $errmess[] = 'That user name is already in use';
-                }
-                if (!empty($errmess))
-                {
-                    $context->local()->message(Local::ERROR, $errmess);
+                    $fdt = $context->formdata('post');
+                    $login = $fdt->fetch('login', '');
+                    if ($login !== '')
+                    {
+                        $errmess = [];
+                        $x = R::findOne('user', 'login=?', [$login]);
+                        if (!is_object($x))
+                        {
+                            $pw = $fdt->mustFetch('password');
+                            $rpw = $fdt->mustFetch('repeat');
+                            $email = $fdt->mustFetch('email');
+                            if ($pw != $rpw)
+                            {
+                                $errmess[] = 'The passwords do not match';
+                            }
+                            if (!\Model\User::pwValid($pw))
+                            {
+                                $errmess[] = 'The password does not meet the specification';
+                            }
+                            if (preg_match('/[^a-z0-9]/i', $login))
+                            {
+                                $errmess[] = 'Your username can only contain letters and numbers';
+                            }
+                            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                            {
+                                $errmess[] = 'Please provide a valid email address';
+                            }
+                            if (empty($errmess))
+                            {
+                                $x = R::dispense('user');
+                                $x->login = $login;
+                                $x->email = $email;
+                                $x->confirm = 0;
+                                $x->active = 1;
+                                $x->joined = $context->utcnow();
+                                R::store($x);
+                                $x->setpw($pw);
+                                $rerr = $x->register($context); // do any extra registration
+                                if (empty($rerr))
+                                {
+                                    $this->confmessage($context, $x);
+                                }
+                                else
+                                { // extra registration failed
+                                    \R::trash($x); // delete the user object
+                                    $errmess = array_merge($errmess, $rerr);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            $errmess[] = 'That login is not available';
+                        }
+                        if (!empty($errmess))
+                        {
+                            $context->local()->message(Local::ERROR, $errmess);
+                            $context->local()->addval([
+                                'login' => $login,
+                                'email' => $email,
+                            ]);
+                        }
+                    }
+                    else
+                    {
+                        $context->local()->message(Local::ERROR, 'Please complete the registration form');
+                    }
                 }
             }
             return '@content/register.twig';
@@ -201,7 +224,7 @@
             {
                 $user->confirm = 1;
                 R::store($user);
-                $msg = 'You have been registered on the system';
+                $msg = 'You have successfully registered with the system';
             }
             $context->local()->message(Local::MESSAGE, $msg);
             $context->local()->addval('regok', TRUE);
@@ -218,6 +241,7 @@
             if ($context->hasuser())
             { // logged in, so this stupid....
                 $context->divert('/');
+                /* NOT REACHED */
             }
             $local = $context->local();
             $tpl = '@users/reset.twig';
@@ -336,6 +360,7 @@
                 else
                 {
                     $context->divert('/');
+                    /* NOT REACHED */
                 }
             }
             else

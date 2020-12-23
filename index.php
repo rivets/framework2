@@ -21,12 +21,6 @@
 
     $local->enabledebug(); // turn debugging on
 
-    $mfl = $local->makebasepath('maintenance'); // maintenance mode indicator file
-    if (file_exists($mfl) && !$context->hasadmin())
-    { // only let administrators in as we are doing maintenance. Could have a similar feature for other roles
-        $context->web()->sendtemplate('support/maintenance.twig', \Framework\Web\StatusCodes::HTTP_OK, 'text/html', ['msg' => file_get_contents($mfl)]);
-        exit;
-    }
     $action = $context->action();
     if ($action === '')
     { // default to home if there is nothing

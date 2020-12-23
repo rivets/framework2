@@ -9,6 +9,7 @@
 {% macro fab(icon, other='') %}<i class="fab fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fab %}
 
 {% macro edit(other='') %}{% import _self as s %}{{s.fa('edit', other)}}{% endmacro edit %}
+{% macro home(other='') %}{% import _self as s %}{{s.fa('home', other)}}{% endmacro home %}
 {% macro delete(other='') %}{% import _self as s %}{{s.fa('trash-alt', other)}}{% endmacro delete %}
 {% macro view(other='') %}{% import _self as s %}{{s.fa('eye', other)}}{% endmacro view %}
 {% macro forward(other='') %}{% import _self as s %}{{s.fa('forward', other)}}{% endmacro forward %}

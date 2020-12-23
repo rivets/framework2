@@ -1,5 +1,7 @@
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as icon %}
+
 {% block navigation %}
     {# Might not want navigation bar on a login page... #}
 {% endblock navigation %}
@@ -33,13 +35,13 @@
                                 </label>
                             </div>
         #}
-                    <button class="btn btn-primary" type="submit">Login</button>
+                    <button class="btn btn-primary" type="submit">{{icon.fa('sign-in-alt')}} Login</button>
                 </fieldset>
-                <p><small><a href="{{base}}/forgot">Lost password?</a></small></p>
+                <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
                 {% if register %}
-                    <p><small><a href="{{base}}/confirm">Confirm email?</a></small></p>
+                    <p><small><a href="{{base}}/confirm">{{icon.fa('envelope')}} Confirm email?</a></small></p>
                     <p>or</p>
-                    <p><a class="btn btn-info btn-sm" href="{{base}}/register">Register</a></p>
+                    <p><a class="btn btn-info btn-sm" href="{{base}}/register">{{icon.fa('pencil-alt')}} Register</a></p>
                 {% endif %}
             </form>
         </article>
