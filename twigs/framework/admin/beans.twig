@@ -67,7 +67,7 @@
         {
             form.querySelectorAll('input[name="'+v+'[]"]').forEach(function(item, index){
 
-                data[v+'[' + index + ']'] = fields[index].value;
+                data[v+'[' + index + ']'] = item.value;
             });
         }
         dt['data'] = data;
