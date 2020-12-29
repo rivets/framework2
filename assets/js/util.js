@@ -167,8 +167,8 @@
  *
  * @todo generalise the position of the data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {string} fld - the name of the field in the bean to toggle
  *
@@ -202,8 +202,8 @@
 /**
  * Ask user if they want to delete a bean and if so, send an AJAX call to the server to do the deletion
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {int} id - the id of the bean to be deleted
  * @param {function} yes - the function to call on success
@@ -244,7 +244,7 @@
 /**
  * Remove a node. If it has a rowspan then remove the next rows as well
  *
- * @param {object} tr - a dom object
+ * @param {object} node - a dom object
  *
  * @return void
  */
@@ -266,16 +266,16 @@
 /**
  * Turn background of the dom object yellow and then fade to white.
  *
- * @param {object} tr - a  dom object
+ * @param {object} el - a dom object
  * @param {?function} atend - a function called after fade finishes or null
  *
  * @return void
  */
-        fadetodel: function(tr, atend = null){
-            tr.classList.add('fader');
-            tr.style.opacity = '0';
+        fadetodel: function(el, atend = null){
+            el.classList.add('fader');
+            el.style.opacity = '0';
             setTimeout(function(){
-                framework.removeNode(tr);
+                framework.removeNode(el);
                 if (atend !== null)
                 {
                     atend();
@@ -291,8 +291,8 @@
  *
  * @see dotoggle above for info about data-id usage
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {string} msg - included in part of the "do you want to delete" prompt
  *
@@ -313,7 +313,7 @@
  * containing a classname, a function, and a paramter to pass  to the function.
  * If the item within the table that was clicked has the class name then the function is called.
  *
- * @param {object} event - a jQuery event object
+ * @param {object} event - an event object
  *
  * @return void
  */
@@ -334,8 +334,8 @@
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery dom object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} t - a RedBean bean name
  *
  * @return void
@@ -350,12 +350,23 @@
             window.location.href = base+'/admin/edit/'+t+'/' + pnode.getAttribute('data-id') + '/';
         },
 /**
+ * Handle a click on a link
+ *
+ * @param {object} e - an event
+ *
+ * @return void
+ */
+        goLink: function(e)
+        {
+            window.location.href = e.target.getAttribute('href');
+        },
+/**
  * Relocate to an admin view URL - used by the framework admin interface
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery dom object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} t - a RedBean bean name
  *
  * @return void
@@ -389,7 +400,7 @@
 /**
  * Duplicate the #example item of a form. Allows users to send more data if they need to.
  *
- * @param {object} e - a jQuery event
+ * @param {object} e - an event
  *
  * @return void
  */
