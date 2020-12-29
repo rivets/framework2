@@ -63,10 +63,13 @@
         }
         let dt = {method: 'post'};
         let data = {};
-        form.querySelectorAll('input[name="'+v+'[]"]').forEach(function(item, index){
+        for (let v of ['field', 'sample'])
+        {
+            form.querySelectorAll('input[name="'+v+'[]"]').forEach(function(item, index){
 
-            data[v+'[' + index + ']'] = fields[index].value;
-        });
+                data[v+'[' + index + ']'] = fields[index].value;
+            });
+        }
         dt['data'] = data;
         const fn = function(data){
             let newd = document.createElement('tr');
