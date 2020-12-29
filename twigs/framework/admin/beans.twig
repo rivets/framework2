@@ -71,6 +71,7 @@
                 data[v+'[' + index + ']'] = fields[index].value;
             }
         }
+        dt['data'] = data;
         const fn = function(data){
             let newd = document.createElement('tr');
             newd.setAttribute('data-id', data);
