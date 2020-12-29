@@ -33,7 +33,7 @@
     const nbf = document.getElementById('nbform');
     nbf.addEventListener('submit', function(e){ e.preventDefault();});
     fwdom.mkjQ('#nbform').parsley();
-    document.getElementById('nbform').addEventListener('click', function(e){
+    document.getElementById('addb').addEventListener('click', function(e){
         fwdom.stop(e);
         const btn = e.target;
         const form = document.getElementById('nbform');
