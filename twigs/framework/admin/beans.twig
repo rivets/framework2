@@ -12,8 +12,8 @@
     function deltable(e)
     {
         fwdom.stop(e);
-        let tr = this.closest('tr');
-        let table = tr.querySelector('.bname').innerHTML;
+        let tr = this.closest('[data-bean]');
+        let table = tr.getAttribute('data-bean');
         bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
@@ -33,18 +33,18 @@
     const nbf = document.getElementById('nbform');
     nbf.addEventListener('submit', function(e){ e.preventDefault();});
     fwdom.mkjQ('#nbform').parsley();
-    fwdom.on('#addb', 'click', function(e){
-        const btn = this;
+    document.getElementById('nbform').addEventListener('click', function(e){
+        fwdom.stop(e);
+        const btn = e.target;
         const form = document.getElementById('nbform');
-        this.disabled = true;
-        e.preventDefault()
+        btn.disabled = true;
         let name = document.getElementById('xbn').value;
         let sp = null;
         let error = false;
-        for (let x of document.querySelectorAll('.bname'))
+        for (let x of document.querySelectorAll('[data-bean]'))
         {
-            const t = x.innerHTML
-            if (t == name)
+            const t = x.getAttribute('data-bean');
+            if (t === name)
             {
                 error = true;
                 break;
@@ -62,12 +62,13 @@
             return;
         }
         let dt = {method: 'post'};
+        let data = {};
         for (let v of ['field', 'sample'])
         {
             let fields = form.querySelectorAll('input[name="'+v+'[]"]');
             for (let index in fields)
             {
-                dt[v+'[' + index + ']'] = fields[index].value;
+                data[v+'[' + index + ']'] = fields[index].value;
             }
         }
         const fn = function(data){
@@ -84,7 +85,7 @@
             }
             else
             {
-                document.getElementById('btab').insertBefore(newd, sp.parentNode);
+                document.getElementById('btab').insertBefore(newd, sp);
             }
             fwdom.mkjQ('#nbean').modal('hide');
         };
