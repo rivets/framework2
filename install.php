@@ -315,11 +315,11 @@
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
         'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
-        'bootbox'       => ['//cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
+        'bootbox'       => ['https://cdn.jsdelivr.net/npm/bootbox@5.5.2/bootbox.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
-        'parsley'       => ['//cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['//cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
         'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
@@ -387,7 +387,7 @@
         'default-src'   => ["'self'"],
         'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
-        'script-src'    => ["'self'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
+        'script-src'    => ["'self'", 'cdn.jsdelivr.net', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
         'style-src'     => ["'self'", 'cdn.jsdelivr.net', '*.fontawesome.com'],
     ];
 /*
