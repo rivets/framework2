@@ -230,11 +230,13 @@
                 { // there is a message about the update
                     $context->local()->message(\Framework\Local::MESSAGE, $upd->message);
                 }
+                $current = trim(file_get_contents($context->local()->makebasepath('version.txt')));
                 $context->local()->addval([
                     'version'   => $upd->version,
+                    'older'     => version_compare($current, $upd->version, '<'),
                     'updated'   => $updated,
                     'done'      => $doit,
-                    'current'   => trim(file_get_contents($context->local()->makebasepath('version.txt'))),
+                    'current'   => $current,
                 ]);
             }
             return '@admin/update.twig';
