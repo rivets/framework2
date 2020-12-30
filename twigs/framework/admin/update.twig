@@ -21,7 +21,9 @@
             {% else %}
                 <p>No support software link updates</p>
             {%endfor %}
-            <p><a class="btn btn-primary" href="?update=1">Update</a></p>
+            {% if not done %}
+                <p><a class="btn btn-primary" href="?update=1">Update</a></p>
+            {% endif %}
          </article>
     </section>
 {% endblock main %}
