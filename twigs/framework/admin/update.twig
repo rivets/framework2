@@ -10,8 +10,8 @@
     <section class="row">
         <article class="ml-auto col-md-10 mr-auto">
             {% include '@util/message.twig' %}
-            <h2>Latest version is Framework {{version}}</h2>
-            {% if current == version %}
+            <h2>Latest version is Framework {{current > version ? current : version}}</h2>
+            {% if current >= version %}
                 <p>You have the latest code version</p>
             {% else %}
                 <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
