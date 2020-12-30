@@ -42,7 +42,7 @@
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, 'addb');
     });
-    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.tableClick(e);}
+    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.tableClick(e);});
 {% endblock onload %}
 
 {% if not page is defined %}
