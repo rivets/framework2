@@ -227,7 +227,7 @@
     </section>
     {{m.open({id: 'npage', title: 'New Page'})}}
     <div class="modal-body">
-        <form action="#" method="POST" id="npform">
+        {{f.startform({method: 'post', id: 'npform'})}}
             {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
                 parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/unique/' ~ constant('Config\\Framework::PAGE') ~ '/name/{value}',
                 'remote-message': 'That page already exists'} })}}
@@ -292,7 +292,7 @@
                     </tbody>
                 </table>
             </fieldset>
-        </form>
+        {{f.endform()}}
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
