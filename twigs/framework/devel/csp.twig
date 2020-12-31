@@ -17,7 +17,7 @@
     });
     fwdom.on('#actb', 'click', function(e){
         document.getElementById('caform').reset();
-        document.getElementById('ctype').value = e.targe.parentNode.previousSibling.innerHTML;
+        document.getElementById('ctype').value = e.target.parentNode.previousSibling.innerHTML;
         fwdom.mkjQ('#cadd').show();
     });
 {% endblock onload %}
