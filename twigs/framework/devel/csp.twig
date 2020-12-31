@@ -1,0 +1,40 @@
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as icon %}
+
+{% block header %}
+    <section class="col-md-12 mt-5">
+        <h1>Setup CSP</h1>
+    </section>
+{% endblock header %}
+
+{% block main %}
+    <section class="row">
+        <article class="ml-auto col-md-10 mb-5">
+            {% include '@util/message.twig' %}
+            {% set type = '' %}
+            <table>
+                <tbody>
+                    {% for type, hosts in context.web.getCSP %}
+                        <tr>
+                            <td rowspan="{{hosts|length}}">{{type}}</td>
+                            {% for h in hosts %}
+                                {% if not loop.first %}
+                                    <tr>
+                                {% endif %}
+                                <td>{{h}}</td>
+                                <td>{{icon.delete()}}
+                                {% if not loop.last %}
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

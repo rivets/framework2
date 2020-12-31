@@ -33,7 +33,12 @@
             switch ($rest[0])
             {
             case 'ajax': // configure user AJAX functions
+                $context->web()->initCSP(); // this will set up the necessary data if it hasn't already been done.
                 $tpl = '@devel/ajax.twig';
+                break;
+
+            case 'csp': // configure CSP values
+                $tpl = '@devel/csp.twig';
                 break;
 
             case 'hack': // execute some code.

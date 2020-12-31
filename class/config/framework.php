@@ -32,8 +32,10 @@
         public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
         public const TESTCONTEXT = self::DBPREFIX.'Test';
 
-        public const CONFIG = self::DBPREFIX.'fwconfig'; // table names
+        public const AJAX = self::DBPREFIX.'fwajax'; // table names
+        public const CONFIG = self::DBPREFIX.'fwconfig';
         public const CONFIRM = self::DBPREFIX.'confirm';
+        public const CSP = self::DBPREFIX.'fwcsp';
         public const FORM = self::DBPREFIX.'form';
         public const FORMFIELD = self::DBPREFIX.'formfield';
         public const PAGE = self::DBPREFIX.'page';
