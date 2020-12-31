@@ -13,12 +13,13 @@
         if (e.target.classList.contains('delb'))
         {
             let id = e.target.closest('[data-id]').getAttribute('data-id');
-            //framework.deletebean('
+            framework.deletebean(e, e.target, 'fwcsp', id, function(d){
+            }, 'CSP Entry');
         }
     });
     fwdom.on('.actb', 'click', function(e){
         document.getElementById('caform').reset();
-        document.getElementById('ctype').value = this.parentNode.previousSibling.innerHTML;
+        document.getElementById('ctype').value = this.previousElementSibling.innerHTML;
         fwdom.mkjQ('#cadd').modal('show');
     });
 {% endblock onload %}
