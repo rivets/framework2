@@ -23,12 +23,20 @@
         fwdom.mkjQ('#cadd').modal('show');
     });
     document.getElementById('addb').addEventListener('click', function(e){
-        const data = {
-            type: document.getElementById('ctype').value,
-            host: document.getElementById('chost').value,
-            essential: document.getElementById('cess').checked ? 1 : 0,
-        };
-        framework.beanCreate('fwcsp', data, function(d){
+        const type = document.getElementById('ctype').value;
+        const host = document.getElementById('chost').value;
+        const essential = document.getElementById('cess').checked ? 1 : 0;
+        framework.beanCreate('fwcsp', {type, host, essential}, function(data){
+            const row = document.querySelector('[data-type="'+type+'"]');
+            if (row == undefined)
+            {
+            }
+            else
+            {
+                const tbody = row.document.querySelector('tbody')
+                const htm = '<tr data-id="'+data+'"><td>'+host+'</td><td></td></tr>';
+                tbody.appendChild(htm);
+            }
             fwdom.mkjQ('#cadd').modal('hide');
         }, 'addb');
     });
@@ -42,7 +50,7 @@
 
 {% block main %}
     {% for type,beans in csp %}
-        <section class="row mb-2 border-bottom border-dark">
+        <section class="row mb-2 border-bottom border-dark" data-type="{{type}}">
             <article class="ml-auto col-md-2 ">
                 <p class="text-center">{{type}}</p>
                 <p class="text-center actb">{{icon.fa('plus')}}<br/><small>Add host</small></p>
