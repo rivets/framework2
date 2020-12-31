@@ -9,31 +9,25 @@
 {% endblock header %}
 
 {% block main %}
-    <section class="row">
-        <article class="ml-auto col-md-10 mb-5">
-            {% include '@util/message.twig' %}
-            {% set type = '' %}
-            <table class="table">
-                <tbody>
-                    {% for type, hosts in context.web.getCSP %}
-                        <tr data-id="{{hosts[0].getID}}">
-                            <td rowspan="{{hosts|length}}">{{type}}</td>
-                            {% for h in hosts %}
-                                {% if not loop.first %}
-                                    <tr data-id="{{h.getID}}">
-                                {% endif %}
+    {% for type, hosts in context.web.getCSP %}
+        <section class="row mb-2">
+            <article class="ml-auto col-md-2 ">
+                <p class="text-center">{{type}}</p>
+            </article>
+            <article class="col-md-8 mr-auto" data>
+                <table class="table>
+                    <tbody>
+                        {% for h in hosts %}
+                            <tr data-id="{{h.getID}}">
                                 <td>{{h}}</td>
                                 <td>{{icon.delete('delb')}}
-                                {% if not loop.last %}
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </article>
-    </section>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </article>
+        </section>
+    {% endfor %}
 {% endblock main %}
 
 {% block pagefooter %}
