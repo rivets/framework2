@@ -31,7 +31,7 @@
 {% endblock header %}
 
 {% block main %}
-    {% for type, hosts in context.web.getCSP %}
+    {% for type,beans in csp %}
         <section class="row mb-2 border-bottom border-dark">
             <article class="ml-auto col-md-2 ">
                 <p class="text-center">{{type}}</p>
@@ -40,9 +40,9 @@
             <article class="col-md-8 mr-auto" data>
                 <table class="table w-100">
                     <tbody>
-                        {% for h in hosts %}
+                        {% for h in beans %}
                             <tr data-id="{{h.getID}}">
-                                <td class="w-50">{{h}}</td>
+                                <td class="w-50">{{h.host}}</td>
                                 <td class="w-50 text-center">{{icon.delete('delb')}}
                             </tr>
                         {% endfor %}
