@@ -33,7 +33,7 @@
         public function saveCSP(string $type, string $data) : string
         {
             $hash = \Framework\Support\Security::getinstance()->hash($data);
-            $this->addCSP($type, "'".$hash."'");
+            $this->addCSP([$type => ["'".$hash."'"]]);
             return $hash;
         }
 /**
@@ -63,7 +63,7 @@
                 }
                 else
                 {
-                    $this->csp[$t] = $this->csp[$t] + $h;
+                    $this->csp[$t] += $h;
                 }
             }
         }
