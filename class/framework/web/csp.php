@@ -63,7 +63,7 @@
                 }
                 else
                 {
-                    $this->csp[$t] += $h;
+                    $this->csp[$t] = array_merge($this->csp[$t], $h);
                 }
             }
         }
