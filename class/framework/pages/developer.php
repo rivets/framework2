@@ -33,6 +33,10 @@
             switch ($rest[0])
             {
             case 'ajax': // configure user AJAX functions
+                $tpl = '@devel/ajax.twig';
+                break;
+
+            case 'csp': // configure CSP values
                 $context->web()->initCSP(); // this will set up the necessary data if it hasn't already been done.
                 $csp = [];
                 foreach (\R::find(\Config\Framework::CSP, 'order by type,host') as $cd)
@@ -40,10 +44,6 @@
                     $csp[$cd->type][] = $cd;
                 }
                 $context->local()->addval('csp', $csp);
-                $tpl = '@devel/ajax.twig';
-                break;
-
-            case 'csp': // configure CSP values
                 $tpl = '@devel/csp.twig';
                 break;
 
