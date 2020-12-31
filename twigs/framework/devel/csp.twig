@@ -14,9 +14,9 @@
         if (targ.classList.contains('delb'))
         {
             let id = targ.closest('[data-id]').getAttribute('data-id');
-            framework.deletebean(e, targ, 'fwcsp', id, function(d){
+            framework.dodelbean(e, targ, 'fwcsp', 'this CSP Entry', function(d){
                 framework.faetodel(targ.parentNode.parentNode);
-            }, 'this CSP Entry');
+            });
         }
     });
     fwdom.on('.actb', 'click', function(e){
