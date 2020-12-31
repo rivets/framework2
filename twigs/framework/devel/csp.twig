@@ -26,7 +26,7 @@
         const data = {
             type: document.getElementById('ctype').value,
             host: document.getElementById('chost').value,
-            essential: 1,
+            essential: document.getElementById('cess').checked ? 1 : 0,
         };
         framework.beanCreate('fwcsp', data, function(d){
         }, 'addb');
@@ -52,7 +52,7 @@
                         {% for h in beans %}
                             <tr data-id="{{h.getID}}">
                                 <td class="w-50">{{h.host}}</td>
-                                <td class="w-50 text-center">{{icon.delete('delb')}}
+                                <td class="w-50 text-center">{%if h.essential %}{{icon.fa('ban')}}{% else %}{{icon.delete('delb')}}{% endif %}
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -65,6 +65,7 @@
         {{f.startform({id: 'caform'})}}
             {{f.text({label: 'Type', id: 'ctype', ph: 'CSP Type'})}}
             {{f.text({label: 'Host', id: 'chost', ph: 'Host pattern'})}}
+            {{f.checkbox({labels:['essential'], ids: ['cess'], values: [1]})}}
         {{f.endform()}}
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
