@@ -22,6 +22,14 @@
         document.getElementById('ctype').value = this.previousElementSibling.innerHTML;
         fwdom.mkjQ('#cadd').modal('show');
     });
+    document.getElementById('addb').addEventListener('click', function(e){
+        const data = {
+            type: document.getElementById('ctype').value,
+            host: document.getElementById('chost').value
+        };
+        framework.beancreate('fwcsp', data, function(d){
+        }, 'addb');
+    });
 {% endblock onload %}
 
 {% block header %}
