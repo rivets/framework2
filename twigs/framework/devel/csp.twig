@@ -10,11 +10,13 @@
 {% block onload %}
     document.getElementById('caform').addEventListener('submit', function(e){fwdom.stop(e);});
     fwdom.on('table', 'click', function(e){
-        if (e.target.classList.contains('delb'))
+        const targ = e.target;
+        if (targ.classList.contains('delb'))
         {
-            let id = e.target.closest('[data-id]').getAttribute('data-id');
-            framework.deletebean(e, e.target, 'fwcsp', id, function(d){
-            }, 'CSP Entry');
+            let id = target.closest('[data-id]').getAttribute('data-id');
+            framework.deletebean(e, targ, 'fwcsp', id, function(d){
+                framework.faetodel(targ.parentNode.parentNode);
+            }, 'this CSP Entry');
         }
     });
     fwdom.on('.actb', 'click', function(e){
