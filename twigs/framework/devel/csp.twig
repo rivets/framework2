@@ -1,14 +1,22 @@
 {% extends '@content/page.twig' %}
 
 {% import '@content/iconmacro.twig' as icon %}
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
 
 {% block onload %}
+    document.getElementById('caform').addEventListener('submit', function(e){fwdom.stop(e);});
     fwdom.on('table', 'click', function(e){
         if (e.target.classList.contains('delb'))
         {
             let id = e.target.closest('[data-id]').getAttribute('data-id');
             framework.deletebean('
         }
+    });
+    fwdom.on('#actb', 'click', function(e){
+        document.getElementById('caform').reset();
+        document.getElementById('ctype').value = e.targe.parentNode.previousSibling.innerHTML;
+        fwdom.mkjQ('#cadd').show();
     });
 {% endblock onload %}
 
@@ -39,6 +47,14 @@
             </article>
         </section>
     {% endfor %}
+    {{m.open({id: 'cadd', title: 'Add CSP'})}}
+    <div class="modal-body">
+        {{f.startform({id: 'caform'})}}
+            {{f.text({label: 'Type', id: 'ctype', ph: 'CSP Type'})}}
+            {{f.text({label: 'Host', id: 'chost', ph: 'Host pattern'})}}
+        {{f.endform()}}
+    </div>
+    {{m.close({value: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}
