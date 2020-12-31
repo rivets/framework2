@@ -13,7 +13,7 @@
         const targ = e.target;
         if (targ.classList.contains('delb'))
         {
-            let id = target.closest('[data-id]').getAttribute('data-id');
+            let id = targ.closest('[data-id]').getAttribute('data-id');
             framework.deletebean(e, targ, 'fwcsp', id, function(d){
                 framework.faetodel(targ.parentNode.parentNode);
             }, 'this CSP Entry');
