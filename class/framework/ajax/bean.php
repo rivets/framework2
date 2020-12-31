@@ -21,6 +21,7 @@
  * @var array
  */
         private static $permissions = [
+            FW::CSP         => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], [] ],
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
