@@ -110,7 +110,7 @@
                 {
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.';';
+                        $csp .= ' '.$key.' '.implode(',', $val).';';
                     }
                 }
                 if ($local->configval('reportcsp'))
