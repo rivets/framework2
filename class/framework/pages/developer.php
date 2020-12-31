@@ -39,6 +39,7 @@
                 {
                     $csp[$cd->type][] = $cd;
                 }
+                $context->local()->addval('csp', $csp);
                 $tpl = '@devel/ajax.twig';
                 break;
 
