@@ -34,8 +34,10 @@
             else
             {
                 const tbody = row.querySelector('tbody')
-                const htm = '<tr data-id="'+data+'"><td>'+host+'</td><td></td></tr>';
-                tbody.appendChild(htm);
+                const node = document.createElement('tr');
+                node.setAttribute('data-id', data);
+                node.innerHTML = '<td>'+host+'</td><td></td>';
+                tbody.appendChild(node);
             }
             fwdom.mkjQ('#cadd').modal('hide');
         }, 'addb');
