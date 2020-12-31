@@ -10,7 +10,7 @@
 
 {% block main %}
     {% for type, hosts in context.web.getCSP %}
-        <section class="row mb-2">
+        <section class="row mb-2 border-bottom border-dark">
             <article class="ml-auto col-md-2 ">
                 <p class="text-center">{{type}}</p>
                 <p class="text-center">{{icon.fa('plus')}}<br/><small>Add host</small></p>
