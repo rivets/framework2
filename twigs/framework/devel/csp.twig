@@ -13,7 +13,7 @@
         <article class="ml-auto col-md-10 mb-5">
             {% include '@util/message.twig' %}
             {% set type = '' %}
-            <table>
+            <table class="table">
                 <tbody>
                     {% for type, hosts in context.web.getCSP %}
                         <tr>
@@ -23,7 +23,7 @@
                                     <tr>
                                 {% endif %}
                                 <td>{{h}}</td>
-                                <td>{{icon.delete()}}
+                                <td>{{icon.delete('delb')}}
                                 {% if not loop.last %}
                                     </tr>
                                 {% endif %}
