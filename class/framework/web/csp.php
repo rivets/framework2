@@ -156,6 +156,7 @@
                             $bn = \R::dispense(\Config\Framework::CSP);
                             $bn->type = $type;
                             $bn->host = $h;
+                            $bn->essential = 1;
                             \R::store($bn);
                         }
                     }

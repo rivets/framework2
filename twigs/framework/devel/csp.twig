@@ -25,7 +25,8 @@
     document.getElementById('addb').addEventListener('click', function(e){
         const data = {
             type: document.getElementById('ctype').value,
-            host: document.getElementById('chost').value
+            host: document.getElementById('chost').value,
+            essential: 1,
         };
         framework.beanCreate('fwcsp', data, function(d){
         }, 'addb');
