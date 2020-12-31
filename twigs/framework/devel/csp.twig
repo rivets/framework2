@@ -16,11 +16,11 @@
             <table class="table">
                 <tbody>
                     {% for type, hosts in context.web.getCSP %}
-                        <tr>
+                        <tr data-id="{{hosts[0].getID}}">
                             <td rowspan="{{hosts|length}}">{{type}}</td>
                             {% for h in hosts %}
                                 {% if not loop.first %}
-                                    <tr>
+                                    <tr data-id="{{h.getID}}">
                                 {% endif %}
                                 <td>{{h}}</td>
                                 <td>{{icon.delete('delb')}}
