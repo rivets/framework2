@@ -29,6 +29,7 @@
             essential: document.getElementById('cess').checked ? 1 : 0,
         };
         framework.beanCreate('fwcsp', data, function(d){
+            fwdom.mkjQ('#cadd').modal('hide');
         }, 'addb');
     });
 {% endblock onload %}
