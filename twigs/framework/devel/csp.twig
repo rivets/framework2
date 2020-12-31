@@ -2,6 +2,16 @@
 
 {% import '@content/iconmacro.twig' as icon %}
 
+{% block onload %}
+    fwdom.on('table', 'click', function(e){
+        if (e.target.classList.contains('delb'))
+        {
+            let id = e.target.closest('[data-id]').getAttribute('data-id');
+            framework.deletebean('
+        }
+    });
+{% endblock onload %}
+
 {% block header %}
     <section class="col-md-12 mt-5">
         <h1>Setup CSP</h1>
@@ -13,7 +23,7 @@
         <section class="row mb-2 border-bottom border-dark">
             <article class="ml-auto col-md-2 ">
                 <p class="text-center">{{type}}</p>
-                <p class="text-center">{{icon.fa('plus')}}<br/><small>Add host</small></p>
+                <p class="text-center actb">{{icon.fa('plus')}}<br/><small>Add host</small></p>
             </article>
             <article class="col-md-8 mr-auto" data>
                 <table class="table w-100">
