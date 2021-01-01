@@ -394,7 +394,7 @@
                 bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
             })
             .always(function(){
-                document.getElementById(button).setAttribute('disabled', false);
+                document.getElementById(button).disabled = false;
             });
         },
 /**
@@ -413,11 +413,11 @@
             {
                 if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
                 {
-                    node.removeAttribute('checked');
+                    node.checked = false;
                 }
                 else
                 {
-                    node.setAttribute('value', '');
+                    node.value = '';
                 }
             }
             for (node of clone.getElementsByTagName('textarea'))
@@ -426,11 +426,11 @@
             }
             for (node of clone.getElementsByTagName('option'))
             {
-                node.removeAttribute('selected', false);
+                node.selected = false;
             }
             for (node of clone.getElementsByTagName('select'))
             {
-                node.children[0].setAttribute('selected', 'selected');
+                node.children[0].selected = true;
             }
             mrow.parentNode.insertBefore(clone, mrow);
             //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
