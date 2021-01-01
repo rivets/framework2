@@ -34,7 +34,7 @@
                 script.setAttribute('data-type', type);
                 script.querySelector('.stype').innerHTML = type;
                 const tbody = script.querySelector('tbody');
-                tbody.innerHTML = '<tr data-id="'+data+'"><td>'+host+'</td><td>'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td></tr>';
+                tbody.innerHTML = '<tr data-id="'+data+'"><td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td></tr>';
             }
             else
             {
