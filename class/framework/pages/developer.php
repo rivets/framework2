@@ -43,7 +43,10 @@
                 {
                     $csp[$cd->type][] = $cd;
                 }
-                $context->local()->addval('csp', $csp);
+                $context->local()->addval([
+                    'csp' => $csp,
+                    'force' => $context->formdata('get')->exists('force'),
+                ]);
                 $tpl = '@devel/csp.twig';
                 break;
 
