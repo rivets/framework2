@@ -30,7 +30,7 @@
             const row = document.querySelector('[data-type="'+type+'"]');
             if (row == undefined)
             {
-                const script = document.querySelector('['data-type="default-src"]').cloneNode(TRUE);
+                const script = document.querySelector('[data-type="default-src"]').cloneNode(TRUE);
                 script.setAttribute('data-type', type);
                 script.querySelector('.stype').innerHTML = type;
                 const tbody = script.querySelector('tbody');
