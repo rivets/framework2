@@ -43,7 +43,7 @@
                 const tbody = row.querySelector('tbody')
                 const node = document.createElement('tr');
                 node.setAttribute('data-id', data);
-                node.innerHTML = '<td>'+host+'</td><td>'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>';
+                node.innerHTML = '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>';
                 tbody.appendChild(node);
             }
             fwdom.mkjQ('#cadd').modal('hide');
