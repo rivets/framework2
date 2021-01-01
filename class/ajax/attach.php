@@ -47,7 +47,7 @@
             }
             $bean = $context->load($type, $rest[2]);
             $fdt = $this->context->formdata('file');
-            $table = $type > $upload ? $type.'_upload' : 'upload_'.$type;
+            $table = $type > 'upload' ? $type.'_upload' : 'upload_'.$type;
             foreach ($fdt->fileArray('file') as $file)
             {
                 $upl = \R::dispense('upload');

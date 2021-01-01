@@ -88,7 +88,7 @@
             $bean = $this->model::add($this->context);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::CREATE, $bean, $id, '*', NULL);
+                BeanLog::mklog($this->context, BeanLog::CREATE, $bean, '*', NULL);
             }
             $this->ajaxResult($bean, 'post');
         }
@@ -143,7 +143,7 @@
             $bean = $this->context->load($beanType, (int) $id);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', json_encode($bn->export()));
+                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', json_encode($bean->export()));
             }
             R::trash($bean); // If there is a delete function in the model it will get called automatically.
             $this->context->web()->noContent();
