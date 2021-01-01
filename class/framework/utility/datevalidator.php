@@ -24,7 +24,7 @@
             $time = \strtotime($date);
             if ($time !== FALSE)
             {
-                return \DateTime($time)->format('Y-m-d H:i:s');
+                return (new \DateTime($time))->format('Y-m-d H:i:s');
             }
             return FALSE;
         }
