@@ -47,12 +47,12 @@
             }
             $bean = $context->load($type, $rest[2]);
             $fdt = $this->context->formdata('file');
-            $table = $type > $upload ? $type.'_upload' : 'upload_'.$type;
+            $table = $type > 'upload' ? $type.'_upload' : 'upload_'.$type;
             foreach ($fdt->fileArray('file') as $file)
             {
                 $upl = \R::dispense('upload');
                 $upl->savefile($context, $file, FALSE, $context->user(), 0);
-                $bean->link($type.'_upload', ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
             }
 
             \R::store($bean);
