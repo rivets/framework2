@@ -51,7 +51,7 @@
         final public function handle() : void
         {
             [$bean, $field, $op] = $this->restCheck(3);
-            if (!$context->hasAdmin())
+            if (!$this->context->hasAdmin())
             { // not admin so check
                 $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field, TRUE);
             }

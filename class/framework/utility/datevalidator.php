@@ -21,10 +21,10 @@
  */
         public static function check(string $date)
         {
-            \strtotime($date);
+            $time = \strtotime($date);
             if ($time !== FALSE)
             {
-                return DateTime($time)->format('Y-m-d H:i:s');
+                return \DateTime($time)->format('Y-m-d H:i:s');
             }
             return FALSE;
         }

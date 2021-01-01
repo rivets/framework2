@@ -52,7 +52,7 @@
             {
                 $upl = \R::dispense('upload');
                 $upl->savefile($context, $file, FALSE, $context->user(), 0);
-                $bean->link($type.'_upload', ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
             }
 
             \R::store($bean);

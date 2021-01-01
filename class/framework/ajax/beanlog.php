@@ -29,13 +29,13 @@
  *
  * @return void
  */
-        public static function mklog(Context $context, int $op, \RedBean\OODBBean $bean, string $field, $value) : void
+        public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : void
         {
             $lg = \R::dispense('beanlog');
             $lg->user = $context->user();
             $lg->updated = $context->utcnow();
             $lg->op = $op;
-            $lg->bean = $bean->getMeta( 'type' );
+            $lg->bean = $bean->getMeta('type');
             $lg->bid = $bean->getID();
             $lg->field = $field;
             $lg->value = $value;
