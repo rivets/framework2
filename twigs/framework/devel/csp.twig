@@ -30,6 +30,11 @@
             const row = document.querySelector('[data-type="'+type+'"]');
             if (row == undefined)
             {
+                const script = document.querySelector('['data-type="default-src"]').cloneNode(TRUE);
+                script.setAttribute('data-type', type);
+                script.querySelector('.stype').innerHTML = type;
+                const tbody = script.querySelector('tbody');
+                tbody.innerHTML = '<tr data-id="'+data+'"'><td>'+host+'</td><td>'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td></tr>';
             }
             else
             {
@@ -54,7 +59,7 @@
     {% for type,beans in csp %}
         <section class="row mb-2 border-bottom border-dark" data-type="{{type}}">
             <article class="ml-auto col-md-2 ">
-                <p class="text-center">{{type}}</p>
+                <p class="text-center stype">{{type}}</p>
                 <p class="text-center actb">{{icon.fa('plus')}}<br/><small>Add host</small></p>
             </article>
             <article class="col-md-8 mr-auto" data>
