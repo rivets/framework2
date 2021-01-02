@@ -90,7 +90,6 @@
             framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('#fop').value, {
                 method: 'get',
                 data: {value:  document.getElementById('fval').value},
-                }
             }).done(function(data){
                 var bdy = $('#sres article');
                 if (data.length == 0)
