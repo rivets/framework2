@@ -26,12 +26,15 @@
 {% endblock setup %}
 
 {% block onload %}
-    for (let id of ['mailconfig', 'cfem', 'recapkeys'])
+    for (let id of ['mailconfig', 'cfem', 'recapkeys', 'ssltime'])
     {
         document.getElementById(id).style.display = 'none';
     }
-    document.getElementById('mailon').addEventListener('click', function(e){ shbit(this, 'mailconfig'); });
-    document.getElementById('regis').addEventListener('click', function(e){ shbit(this, 'cfem'); });
+    document.getElementById('mailon').addEventListener('change', function(e){ shbit(this, 'mailconfig'); });
+    document.getElementById('regis').addEventListener('change', function(e){ shbit(this, 'cfem'); });
+    document.getElementById('fssl').addEventListener('change', function(e){
+        document.getElementById('ssltime').style.display = this.checked ? 'block' : 'none';
+    });
     document.querySelectorAll('[name="recaptcha"]').forEach(function(ietm){
         item.addEventListener('change', function(){
             if (this.value == 0)
@@ -216,13 +219,6 @@
                             <input class="form-check-input" type="radio" name="protocol" value="ssl" disabled="disabled"> SSL
                           </label>
                         </div>
-                        <div id="ssltime">
-                            <div class="form-group">
-                                <label for="st" class="control-label">Enforced SSL Period in seconds</label>
-                                <input type="text" id="st" name="ssltime" value="31536000" placeholder="Time period in seconds" class="form-control"/>
-                            </div>
-
-                        </div>
                         <div class="form-check form-check-inline">
                           <label class="form-check-label">
                             <input class="form-check-input" type="radio" name="protocol" value="tls" disabled="disabled"> TLS
@@ -284,8 +280,14 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
+                                <input type="checkbox" id="fssl" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
                             </label>
+                        </div>
+                        <div id="ssltime">
+                            <div class="form-group">
+                                <label for="st" class="control-label">Enforced SSL Period in seconds</label>
+                                <input type="text" id="st" name="ssltime" value="31536000" placeholder="Time period in seconds" class="form-control"/>
+                            </div>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label col-md-3">
