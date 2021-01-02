@@ -123,6 +123,7 @@
     function exception_handler($e)
     {
         echo '<h2>There has been an installer system exception</h2>';
+        echo '<p>'.$e->getMessage().'</p>';
         cleanup();
         exit;
         /** NOT REACHED **/
