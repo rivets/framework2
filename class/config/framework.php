@@ -38,6 +38,7 @@
         public const CSP = self::DBPREFIX.'fwcsp';
         public const FORM = self::DBPREFIX.'form';
         public const FORMFIELD = self::DBPREFIX.'formfield';
+        public const HEADER    = self::DBPREFIX.'fwheader';
         public const PAGE = self::DBPREFIX.'page';
         public const PAGEROLE = self::DBPREFIX.'pagerole';
         public const ROLE = self::DBPREFIX.'role';

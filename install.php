@@ -5,12 +5,9 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2020 Newcastle University
  */
-    define('DBPREFIX', '');
-    define('FWCONTEXT', 'Site');
-    define('TESTCONTEXT', 'Test');
-    define('ADMINROLE', 'Admin');
-    define('DEVELROLE', 'Developer');
-    define('TESTROLE', 'Tester');
+    include 'class/config/framework.php';
+
+    use \Config\Framework as FW;
 
     global $verbose, $cwd;
 /**
@@ -53,7 +50,7 @@
  */
     function addfwconfig(string $name, $value, bool $local) : void
     {
-        $fwc = \R::dispense('fwconfig');
+        $fwc = \R::dispense(FW::CONFIG);
         $fwc->name = $name;
         $fwc->local = $local ? 1 : 0;
         if (is_array($value))
@@ -368,20 +365,6 @@
         break;
     }
 
-    $beans = [
-        'fwconfig',
-        'confirm',
-        'form',
-        'formfield',
-        'page',
-        'pagerole',
-        'role',
-        'rolecontext',
-        'rolename',
-        'table',
-        'user',
-    ];
-
     $fwcsp = [
         'connect-src'   => ["'self'"],
         'default-src'   => ["'self'"],
@@ -491,7 +474,8 @@
 
             'usecsp'        => ['', TRUE, FALSE, 'bool', TRUE],
             'reportcsp'     => ['', TRUE, FALSE, 'bool', FALSE],
-            'forcessl'      => ['', FALSE, FALSE, 'bool', FALSE],
+            'forcessl'      => ['', TRUE, FALSE, 'bool', FALSE],
+            'ssltime'       => ['', TRUE, FALSE, 'string', '31536000'], // one year
 
             'recaptcha'     => ['RECAPTCHA', FALSE, TRUE, 'int', 0],
             'recaptchakey'  => ['RECAPTCHAKEY', FALSE, FALSE, 'string', ''],
@@ -607,6 +591,22 @@
             }
             //fputs($fd, "\tpublic const DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
 
+            $headers = [
+                'Window-Target'             => '_top',      // deframes things
+                'X-Frame-Options'           => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
+                'Content-Language'          => 'en',
+                'Vary'                      => 'Accept-Encoding',
+                'X-Content-Type-Options'    => 'nosniff',
+                'X-XSS-Protection'          => '1; mode=block',
+                //'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
+            ];
+            foreach ($headers as $key => $head)
+            {
+                $bn = \R::dispense(FW::HEADER);
+                $bn->name= $key;
+                $bn->value = $host;
+                \R::store($bn);
+            }
             fputs($fd, "
         public static function setup()
         {
@@ -621,14 +621,17 @@
             ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
             " : '')."]);
         }".PHP_EOL.PHP_EOL);
-
-            fputs($fd, '
-        public static $defaultCSP = ['.PHP_EOL);
             foreach ($fwcsp as $key => $val)
             {
-                fputs($fd, "                '".$key."' => [\"".implode('", "', $val).'"],'.PHP_EOL);
+                foreach ($val as $host)
+                { //make the CSP database table
+                    $bn = \R::dispense(FW::CSP);
+                    $bn->type = $key;
+                    $bn->host = $host;
+                    $bn->essential = 1;
+                    \R::store($bn);
+                }
             }
-            fputs($fd, '        ];'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.PHP_EOL);
             if (!$hasgah)
             {
@@ -687,7 +690,7 @@
                 \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); // mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
-                $user = R::dispense(DBPREFIX.'user');
+                $user = R::dispense(FW::USER);
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
                 $user->password = password_hash((string) $cvalue['adminpw'], PASSWORD_DEFAULT);
@@ -698,12 +701,12 @@
     /**
      * Now initialise the confirmation code table
      */
-                $conf = R::dispense(DBPREFIX.'confirm');
+                $conf = R::dispense(FW::CONFIRM);
                 $conf->code = 'this is a rubbish code';
                 $conf->issued = $now;
                 $conf->kind = 'C';
                 \R::store($conf);
-                $user->xownConfirm[] = $conf;
+                $user->{'xown'.FW::CONFIRM}[] = $conf;
                 \R::store($user);
                 \R::trash($conf);
     /**
@@ -730,16 +733,16 @@
      *
      * These are both granted to the admin user.
      */
-                $cname = makerc(DBPREFIX.'rolecontext', FWCONTEXT);
+                $cname = makerc(FW::ROLECONTEXT, FW::FWCONTEXT);
     // Admin role name
-                $arname = makerc(DBPREFIX.'rolename', ADMINROLE);
-                makerole(DBPREFIX.'role', $now, $user, $cname, $arname);
+                $arname = makerc(FW::ROLENAME, FW::ADMINROLE);
+                makerole(FW::ROLE, $now, $user, $cname, $arname);
     // Developer Role name
-                $drname = makerc(DBPREFIX.'rolename', DEVELROLE);
-                makerole(DBPREFIX.'role', $now, $user, $cname, $drname);
+                $drname = makerc(ROLENAME, FW::DEVELROLE);
+                makerole(FW::ROLE, $now, $user, $cname, $drname);
     // Testing role and context
-                $tname = makerc(DBPREFIX.'rolecontext', TESTCONTEXT);
-                $trname = makerc(DBPREFIX.'rolename', TESTROLE);
+                $tname = makerc(FW::ROLECONTEXT, FW::TESTCONTEXT);
+                $trname = makerc(FW::ROLENAME, FW::TESTROLE);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
      *
@@ -773,7 +776,7 @@
                 ];
                 foreach ($pages as $pname => $data)
                 {
-                    $page = \R::dispense(DBPREFIX.'page');
+                    $page = \R::dispense(FW::PAGE);
                     /** @psalm-suppress PossiblyUndefinedArrayOffset **/
                     $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
@@ -784,15 +787,15 @@
                     \R::store($page);
                     if ($data[2])
                     { // must be an admin
-                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $arname);
+                        makerole(FW::PAGEROLE, $now, $page, $cname, $arname);
                     }
                     if ($data[4])
                     { // must be a developer
-                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $drname);
+                        makerole(FW::PAGEROLE, $now, $page, $cname, $drname);
                     }
                     if ($data[6])
                     { // must be a tester
-                        makerole(DBPREFIX.'pagerole', $now, $page, $tname, $trname);
+                        makerole(FW::PAGEROLE, $now, $page, $tname, $trname);
                     }
                 }
                 $tpl = 'success.twig';

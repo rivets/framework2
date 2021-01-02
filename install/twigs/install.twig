@@ -7,33 +7,42 @@
 {% block setup %}
     function shbit(btn, id)
     {
-        var ce = $('#'+id)
-        if (btn.is(':checked'))
+        var ce = document.getElementById(id)
+        if (btn.checked)
         { // show fieldset and enable inputs
-            ce.show();
-            $('input', ce).prop('disabled', false)
+            ce.style.display ='block';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = false;
+            });
         }
         else
         { // hide and disable
-            ce.hide();
-            $('input', ce).prop('disabled', true)
+            ce.style.display = 'none';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = true;
+            });
         }
     }
 {% endblock setup %}
 
 {% block onload %}
-    $('#mailconfig,#cfem,#recapkeys').hide()
-    $('#mailon').on('click', function(){ shbit($(this), 'mailconfig'); });
-    $('#regis').on('click', function(){ shbit($(this), 'cfem'); });
-    $('#recap').on('change', function(){
-        if ($(this).is(':checked'))
-        {
-           $('#recapkeys').hide();
-        }
-        else
-        {
-           $('#$recapkeys').show();
-        }
+    for (let id of ['mailconfig', 'cfem', 'recapkeys'])
+    {
+        document.getElementById(id).style.display = 'none';
+    }
+    document.getElementById('mailon).addEventListener('click', function(e){ shbit(this, 'mailconfig'); });
+    document.getElementById('regis').addEventListener('click', function(e){ shbit(this, 'cfem'); });
+    document.querySelectorAll('[name="recaptcha"]').forEach(function(ietm){
+        item.addEventListener('change', function(){
+            if (this.value == =
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'none' : 'block';
+            }
+            else
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'block' : 'none';
+            }
+        };
     });
 {% endblock onload %}
 
