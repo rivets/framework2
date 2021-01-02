@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2020 Newcastle University
  */
-    $dir = dirname(__DIR__, 2);
+    $dir = \dirname(__DIR__, 2);
     /** @psalm-suppress UnusedFunctionCall */
     set_include_path(
         implode(PATH_SEPARATOR, [
