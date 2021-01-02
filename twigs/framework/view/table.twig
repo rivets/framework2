@@ -87,7 +87,7 @@
     {% else %}
         $('#searchb').on('click', function(e){
             fwdom.stop(e);
-            framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('#fop').value, {
+            framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('fop').value, {
                 method: 'get',
                 data: {value:  document.getElementById('fval').value},
             }).done(function(data){
