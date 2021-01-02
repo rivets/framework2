@@ -597,23 +597,6 @@
                 }
             }
             //fputs($fd, "\tpublic const DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
-
-            $headers = [
-                'Window-Target'             => '_top',      // deframes things
-                'X-Frame-Options'           => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
-                'Content-Language'          => 'en',
-                'Vary'                      => 'Accept-Encoding',
-                'X-Content-Type-Options'    => 'nosniff',
-                'X-XSS-Protection'          => '1; mode=block',
-                //'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
-            ];
-            foreach ($headers as $key => $head)
-            {
-                $bn = \R::dispense(FW::HEADER);
-                $bn->name= $key;
-                $bn->value = $host;
-                \R::store($bn);
-            }
             fputs($fd, "
         public static function setup()
         {
@@ -697,6 +680,22 @@
                 \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); // mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
+                $headers = [
+                    'Window-Target'             => '_top',      // deframes things
+                    'X-Frame-Options'           => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
+                    'Content-Language'          => 'en',
+                    'Vary'                      => 'Accept-Encoding',
+                    'X-Content-Type-Options'    => 'nosniff',
+                    'X-XSS-Protection'          => '1; mode=block',
+                    //'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
+                ];
+                foreach ($headers as $key => $head)
+                {
+                    $bn = \R::dispense(FW::HEADER);
+                    $bn->name= $key;
+                    $bn->value = $host;
+                    \R::store($bn);
+                }
                 $user = R::dispense(FW::USER);
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
