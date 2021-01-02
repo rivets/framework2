@@ -7,9 +7,9 @@
  */
     include 'class/config/framework.php';
 
-    use \Config\Framework as FW;
+    use Framework as FW;
 
-    global $verbose, $cwd;
+    global $verbose;
 /**
  * Function to cleanup after errors
  *
@@ -20,12 +20,12 @@
  */
     function cleanup()
     {
-        global $cwd, $verbose;
+        global $verbose;
 
-        chdir($cwd);
+        chdir(__DIR__);
         if ($verbose)
         {
-            echo '<p>Cleaning '.$cwd.'</p>';
+            echo '<p>Cleaning '.__DIR__.'</p>';
         }
         foreach (['class/config/config.php', '.htaccess'] as $file)
         {
@@ -222,10 +222,6 @@
     }
 
     $verbose = isset($_GET['verbose']);
-/*
- * Remember where we are in the file system
- */
-    $cwd = __DIR__;
  /*
   * Set up all the system error handlers
   */
