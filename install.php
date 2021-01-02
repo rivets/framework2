@@ -5,9 +5,19 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2020 Newcastle University
  */
-    include 'class/config/framework.php';
+    $dir = dirname(__DIR__, 2);
+    /** @psalm-suppress UnusedFunctionCall */
+    set_include_path(
+        implode(PATH_SEPARATOR, [
+            implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
+            get_include_path(),
+        ])
+    );
+    /** @psalm-suppress UnusedFunctionCall */
+    spl_autoload_extensions('.php');
+    spl_autoload_register();
 
-    use Framework as FW;
+    use Config\Framework as FW;
 
     global $verbose;
 /**
