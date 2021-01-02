@@ -35,7 +35,7 @@
     document.getElementById('fssl').addEventListener('change', function(e){
         document.getElementById('ssltime').style.display = this.checked ? 'block' : 'none';
     });
-    document.querySelectorAll('[name="recaptcha"]').forEach(function(ietm){
+    document.querySelectorAll('[name="recaptcha"]').forEach(function(item){
         item.addEventListener('change', function(){
             if (this.value == 0)
             {
