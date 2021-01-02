@@ -615,17 +615,6 @@
             ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
             " : '')."]);
         }".PHP_EOL.PHP_EOL);
-            foreach ($fwcsp as $key => $val)
-            {
-                foreach ($val as $host)
-                { //make the CSP database table
-                    $bn = \R::dispense(FW::CSP);
-                    $bn->type = $key;
-                    $bn->host = $host;
-                    $bn->essential = 1;
-                    \R::store($bn);
-                }
-            }
             fputs($fd, '    }'.PHP_EOL.PHP_EOL);
             if (!$hasgah)
             {
@@ -684,6 +673,17 @@
                 \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); // mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
+                foreach ($fwcsp as $key => $val)
+                {
+                    foreach ($val as $host)
+                    { //make the CSP database table
+                        $bn = \R::dispense(FW::CSP);
+                        $bn->type = $key;
+                        $bn->host = $host;
+                        $bn->essential = 1;
+                        \R::store($bn);
+                    }
+                }
                 $headers = [
                     'Window-Target'             => '_top',      // deframes things
                     'X-Frame-Options'           => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
