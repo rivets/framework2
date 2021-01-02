@@ -748,7 +748,7 @@
                 $arname = makerc(FW::ROLENAME, FW::ADMINROLE);
                 makerole(FW::ROLE, $now, $user, $cname, $arname);
     // Developer Role name
-                $drname = makerc(ROLENAME, FW::DEVELROLE);
+                $drname = makerc(FW::ROLENAME, FW::DEVELROLE);
                 makerole(FW::ROLE, $now, $user, $cname, $drname);
     // Testing role and context
                 $tname = makerc(FW::ROLECONTEXT, FW::TESTCONTEXT);
