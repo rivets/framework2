@@ -216,6 +216,13 @@
                             <input class="form-check-input" type="radio" name="protocol" value="ssl" disabled="disabled"> SSL
                           </label>
                         </div>
+                        <div id="ssltime">
+                            <div class="form-group">
+                                <label for="st" class="control-label">Enforced SSL Period in seconds</label>
+                                <input type="text" id="st" name="ssltime" value="31536000" placeholder="Time period in seconds" class="form-control"/>
+                            </div>
+
+                        </div>
                         <div class="form-check form-check-inline">
                           <label class="form-check-label">
                             <input class="form-check-input" type="radio" name="protocol" value="tls" disabled="disabled"> TLS
@@ -294,11 +301,11 @@
                         <div id="recapkeys">
                             <div class="form-group">
                                 <label for="rk" class="control-label">Your ReCaptcha Key</label>
-                                <input type="text" id="rk" name="recaptchakey" value="{{name}}" placeholder="ReCaptcha Key" value="" class="form-control"/>
+                                <input type="text" id="rk" name="recaptchakey" placeholder="ReCaptcha Key" value="" class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="srk" class="control-label">Your ReCaptcha Secret</label>
-                                <input type="text" id="srk" name="recaptchasecret" value="{{name}}" placeholder="ReCaptcha Secret" value="" class="form-control"/>
+                                <input type="text" id="srk" name="recaptchasecret" placeholder="ReCaptcha Secret" value="" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
