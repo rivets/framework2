@@ -126,7 +126,7 @@
         echo '<p>'.$e->getMessage().'</p>';
         ob_start();
         debug_print_backtrace(1, 2);
-        $back .= ob_get_clean(); // will get used later in make500
+        $back = ob_get_clean(); // will get used later in make500
         echo str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($back))).'</pre>';
         cleanup();
         exit;
