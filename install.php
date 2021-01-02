@@ -697,7 +697,7 @@
                 {
                     $bn = \R::dispense(FW::HEADER);
                     $bn->name= $key;
-                    $bn->value = $host;
+                    $bn->value = $ead;
                     \R::store($bn);
                 }
                 $user = R::dispense(FW::USER);
