@@ -14,7 +14,7 @@
             {% if not older %}
                 <p>You have the latest code version</p>
             {% else %}
-                <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
+                <p>You have version {{current}} &mdash; please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
             {% for key,val in updated %}
                 <p>"{{key}}" {% if done %}will be {% endif %}updated to "{{val}}"</p>
