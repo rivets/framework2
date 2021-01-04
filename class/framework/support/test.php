@@ -278,6 +278,10 @@
         public function upload(Context $context) : string
         {
             $fdt = $context->formdata('file');
+            if (isset($_GET['ok']))
+            {
+                $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+            }
             try
             {
                 if ($fdt->exists('upload'))
