@@ -306,7 +306,7 @@
 
                     case'delete':
                         \R::trash($context->load('upload', $id));
-                        $context->divert('/devel/test/upload'); // this clears the RESTful URL
+                        $context->divert('/devel/test/upload?ok=1'); // this clears the RESTful URL
                         break;
 
                     default:
