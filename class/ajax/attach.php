@@ -51,8 +51,14 @@
             foreach ($fdt->fileArray('file') as $file)
             {
                 $upl = \R::dispense('upload');
-                $upl->savefile($context, $file, FALSE, $context->user(), 0);
-                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
+                { //
+                    throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
+                }
+                else
+                {
+                    $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                }
             }
 
             \R::store($bean);
