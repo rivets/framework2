@@ -513,21 +513,28 @@
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { // looks like there is a database configured
-                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                $trycount = 0;
+                while (TRUE)
+                {
+                    \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                    if (\R::testConnection())
+                    {
+                        break;
+                    }
+                    $dbcount += 1;
+                    if ($dbcount > 3)
+                    { // Try 3 times and then fail....
+                        $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
+                        /* NOT REACHED */
+                    }
+                    usleep(10000); // sleep for 0.1 seconds
+                }
                 \R::freeze(!$devel); // freeze DB for production systems
                 $this->fwconfig = [];
-                try
-                { // sometimes RB does not get a connection
-                    foreach (\R::findAll(FW::CONFIG) as $cnf)
-                    {
-                        $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
-                        $this->fwconfig[$cnf->name] = $cnf;
-                    }
-                }
-                catch (\Exception $e)
-                { // But what do we do?
-                    $this->errorHandler->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.', TRUE);
-                    /* NOT REACHED */
+                foreach (\R::findAll(FW::CONFIG) as $cnf)
+                {
+                    $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
+                    $this->fwconfig[$cnf->name] = $cnf;
                 }
                 if ($loadtwig)
                 {
