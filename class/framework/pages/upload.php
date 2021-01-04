@@ -30,10 +30,18 @@
             {
                 if (Config::UPUBLIC && Config::UPRIVATE)
                 { // need to check the flag could be either private or public
-                    foreach ($fdt->fetchArray('public') as $ix => $public)
+                    $fdp = $context->formdata('post');
+                    foreach($fdt->fileArray('uploads') as $ix => $fa)
                     {
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fdt->fileData('uploads', $ix), $public, $context->user(), $ix);
+                        if (!$upl->savefile($context, $fa, $fdp->fetch(['public', $ix]), $context->user(), $ix))
+                        { // something went wrong
+                            \Model\Upload::fail($context, $fa);
+                        }
+                        else
+                        {
+                            $context->local()->message(\Framework\Local::MESSAGE, $fa['name'].' uploaded');
+                        }
                     }
                 }
                 else
@@ -41,7 +49,14 @@
                     foreach($fdt->fileArray('uploads') as $ix => $fa)
                     { // we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
-                        $upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix);
+                        if (!$upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix))
+                        { // something went wrong
+                            \Model\Upload::fail($context, $fa);
+                        }
+                        else
+                        {
+                            $context->local()->message(\Framework\Local::MESSAGE, $fa['name'].' uploaded');
+                        }
                     }
                 }
             }
