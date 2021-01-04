@@ -513,21 +513,11 @@
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
             if (Config::DBHOST !== '' && $loadrb)
             { // looks like there is a database configured
-                $trycount = 0;
-                while (TRUE)
+                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                if (!\R::testConnection())
                 {
-                    \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
-                    if (\R::testConnection())
-                    {
-                        break;
-                    }
-                    $dbcount += 1;
-                    if ($dbcount > 3)
-                    { // Try 3 times and then fail....
-                        $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
-                        /* NOT REACHED */
-                    }
-                    usleep(10000); // sleep for 0.1 seconds
+                    $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
+                    /* NOT REACHED */
                 }
                 \R::freeze(!$devel); // freeze DB for production systems
                 $this->fwconfig = [];
