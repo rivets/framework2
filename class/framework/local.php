@@ -524,7 +524,7 @@
                     $dbcount += 1;
                     if ($dbcount > 3)
                     { // Try 3 times and then fail....
-                        $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Site may be overloaded, please try later.', TRUE);
+                        $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
                         /* NOT REACHED */
                     }
                     usleep(10000); // sleep for 0.1 seconds
