@@ -56,10 +56,7 @@
                 {
                     throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
                 }
-                else
-                {
-                    $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
-                }
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
             }
 
             \R::store($bean);
