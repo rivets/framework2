@@ -18,6 +18,7 @@
 /**
  * @var array If you want to use the permission checking functions. If you just want to control access
  *            then just put the list of contextname/rolename pairs in the result of requires.
+ * @phpcsSuppress SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
  */
          private static $permissions = [];
 /**
@@ -47,7 +48,7 @@
             }
             $bean = $context->load($type, $rest[2]);
             $fdt = $this->context->formdata('file');
-            $table = $type > 'upload' ? $type.'_upload' : 'upload_'.$type;
+            $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
             foreach ($fdt->fileArray('file') as $file)
             {
                 $upl = \R::dispense('upload');
