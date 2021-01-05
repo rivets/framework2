@@ -310,6 +310,7 @@
                 if (isset($_SESSION['user']))
                 {
                     $this->luser =  $_SESSION['user'];
+                    $this->luser->fresh();
                 }
             }
             $this->mtoken();
