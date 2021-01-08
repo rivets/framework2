@@ -9,10 +9,11 @@
 {% import '@util/accmacro.twig' as a %}
 
 {% block onload %}
-    fwdom.on('#nopu', 'click', function(e){
+    document.getElementById('nopu'.addEventListener('click', function(e){
         fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
     })
     {{a.caretJS('acc1')}}
+    fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
 {% endblock onload %}
 
 {% block header %}
