@@ -7,7 +7,7 @@
             framework.ajax(base+'/ajax/'+url, data).done(cdone).fail(cfail);
         },
         testbean: function (){
-            bootbox.alert('Bean operation test complete');
+            wdom.alert('Bean operation test complete');
         },
 
         testconfig : function (){
@@ -88,19 +88,19 @@
         },
 
         testpaging: function (){
-            bootbox.alert('Paging operation test complete');
+            fwdom.alert('Paging operation test complete');
         },
 
         testpwcheck: function (){
-            bootbox.alert('Pwcheck operation test complete');
+            fwdom.alert('Pwcheck operation test complete');
         },
 
         testshared: function (){
-            bootbox.alert('Shared operation test complete');
+            fwdom.alert('Shared operation test complete');
         },
 
         testtable: function (){
-            bootbox.alert('Table operation test complete');
+            fwdom.alert('Table operation test complete');
         },
 
         testtablecheck: function (){

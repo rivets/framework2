@@ -14,7 +14,7 @@
         fwdom.stop(e);
         let tr = this.closest('[data-bean]');
         let table = tr.getAttribute('data-bean');
-        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+        fwdom.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
                 framework.ajax(base+'/ajax/table/'+table, {
@@ -22,7 +22,7 @@
                 }).done(function(){
                     framework.fadetodel(tr);
                 }).fail(function(jx){
-                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                    fwdom.alert('<h3>Delete failed</h3>'+jx.responseText);
                 });
             }
         });
@@ -57,7 +57,7 @@
         }
         if (error)
         {
-            bootbox.alert('That bean already exists');
+            fwdom.alert('That bean already exists');
             this.disabled = false;
             return;
         }
@@ -90,7 +90,7 @@
             fwdom.mkjQ('#nbean').modal('hide');
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
-            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+            fwdom.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function() { btn.disabled = false; });
     });
     fwdom.mkjQ('#nbean').on('show.bs.modal', function(e){

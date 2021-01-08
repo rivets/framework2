@@ -77,7 +77,7 @@
             }
             if (error)
             {
-                bootbox.alert('That field already exists');
+                fwdom.alert('That field already exists');
                 return;
             }
         })
@@ -111,7 +111,7 @@
                 }
                 $('#tsearch').modal('hide');
             }).fail(function(jx){
-                bootbox.alert('<h3>Search failed</h3>'+jx.responseText);
+                fwdom.alert('<h3>Search failed</h3>'+jx.responseText);
             });
         });
     {% endif %}

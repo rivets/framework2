@@ -79,7 +79,7 @@
         const pn = document.getElementById('npname').value.toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
+            fwdom.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
             return;
         }
         let sp = null;
@@ -100,21 +100,21 @@
         }
         if (error)
         {
-            bootbox.alert('That page already exists');
+            fwdom.alert('That page already exists');
             this.setAttribute('disabled', false);
             return;
         }
         const src = document.getElementById('npsrc').value;
         if (src == '')
         {
-            bootbox.alert('Please specify a source');
+            fwdom.alert('Please specify a source');
             this.setAttribute('disabled', false);
             return;
         }
         const kind = document.getElementById('npkind').value;
         if (kind == '')
         {
-            bootbox.alert('Please pick a page type');
+            fwdom.alert('Please pick a page type');
             this.setAttribute('disabled', false);
             return;
         }
@@ -167,7 +167,7 @@
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
-    document.getElementById('ptab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.tableClick(e);});
+    document.getElementById('ptab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.containerClick(e);});
     $('#npage').on('show.bs.modal', function(e){
         $('#npform option').attr('selected', false)
     });

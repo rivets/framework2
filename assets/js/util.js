@@ -161,6 +161,23 @@
             fwdom.toggleClass([x], ['fa-toggle-off', 'fa-toggle-on']);
         },
 /**
+ * build a link from base
+ *
+ * @param (arguments)
+ *
+ * @return string
+ */
+        buildFWLink: function (){
+            let link = base;
+            arguments.forEach(function (item){
+                if (link !== '')
+                {
+                    link += '/' + item;
+                }
+            });
+            return link + '/';
+        },
+/**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
  * The id of the bean is taken from the data-id field of the parent of the parent of the toggle
  * which is assumed to be in a td in a tr.
@@ -193,9 +210,8 @@
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {method: putorpatch})
-                    .done(function(){ framework.toggle(x); })
-                    .fail(function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); });
+                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: putorpatch})
+                    .done(function(){ framework.toggle(x); }).fail(function(jx) { fwdom.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
@@ -218,12 +234,12 @@
             {
                 msg = 'this '+bean;
             }
-            bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
+            fwdom.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {method: 'DELETE'})
+                    framework.ajax(framework.buildFWLink('ajax/bean', bean, id), {method: 'DELETE'})
                     .done(yes)
-                    .fail(function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); });
+                    .fail(function(jx){ fwdom.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -235,8 +251,7 @@
  * @return {void}
  */
         editcall: function(params) {
-            const url = base + '/ajax/' + params.op + '/' + params.bean + '/' + params.pk + '/'+params.name+'/';
-            return framework.ajax(url, {
+            return framework.ajax(framework.buildFWLink('ajax', params.op, params.bean, params.pk, params.name), {
                 method: putorpatch,
                 data: { value: params.value }
             });
@@ -271,14 +286,14 @@
  *
  * @return void
  */
-        fadetodel: function(el, atend = null){
+        fadetodel: function(el, atEnd = null){
             el.classList.add('fader');
             el.style.opacity = '0';
             setTimeout(function(){
                 framework.removeNode(el);
-                if (atend !== null)
+                if (atEnd !== null)
                 {
-                    atend();
+                    atEnd();
                 }
             }, 1500);
         },
@@ -308,7 +323,7 @@
             framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){ framework.fadetodel(pnode, success);}, msg);
         },
 /**
- * When a table detects a click call this. Expects there to be an
+ * When a container detects a click call this. Expects there to be an
  * field in the event data called clicks which is an array of 3 element arrays
  * containing a classname, a function, and a paramter to pass  to the function.
  * If the item within the table that was clicked has the class name then the function is called.
@@ -317,7 +332,7 @@
  *
  * @return void
  */
-        tableClick: function(event)
+        containerClick: function(event)
         {
             fwdom.stop(event);
             const clist = event.target.classList;
@@ -329,25 +344,40 @@
                 }
             });
         },
+        tableClick : framework.containerClick, // just for some backward compatibility....
 /**
- * Relocate to an admin edit URL - used by the framework admin interface
+ * Relocate to link inside the framework with an id added in
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - an event
- * @param {object} x - a dom object
- * @param {string} t - a RedBean bean name
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
  *
  * @return void
  */
-        goedit: function(e, x, t)
+        goFWLink: function(x, pre, t, post = '/')
         {
             let pnode = x.closest('[data-id]');
             if (pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
-            window.location.href = base+'/admin/edit/'+t+'/' + pnode.getAttribute('data-id') + '/';
+            window.location.href = framework.buildFWLink(pre, t, pnode.getAttribute('data-id'), post);
+        },
+/**
+ * Relocate to an admin edit URL - used by the framework admin interface
+ *
+ * @see toggle above for info on use of data-id field
+ *
+ * @param {object} event - an event (not used - for compatibility when used with containerClick)
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
+ *
+ * @return void
+ */
+        goedit: function(event, x, t)
+        {
+            framework.goFWLink(x, 'admin/edit', t);
         },
 /**
  * Handle a click on a link
@@ -365,15 +395,15 @@
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - an event
- * @param {object} x - a dom object
- * @param {string} t - a RedBean bean name
+ * @param {object} event - an event (not used - for compatibility when used with containerClick)
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
  *
  * @return void
  */
-        goview: function(e, x, t)
+        goview: function(event, x, t)
         {
-            window.location.href = base+'/admin/view/'+t+'/' + x.parent().parent().data('id') + '/';
+            framework.goFWLink(x, 'admin/view', t);
         },
 /**
  * Use AJAX to create a new RedBean bean.
@@ -388,10 +418,10 @@
  */
         beanCreate: function(bean, data, fn, button)
         {
-            framework.ajax(base+'/ajax/bean/'+bean+'/', {method: 'POST', data})
+            framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data})
             .done(fn)
             .fail(function(jx){
-                bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+                fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
             })
             .always(function(){
                 document.getElementById(button).disabled = false;

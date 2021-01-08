@@ -1,8 +1,10 @@
+{% set fwdom = TRUE %}
+
 {% extends '@content/page.twig' %}
 
 {% block onload %}
     $('#alert').on('click', function(){
-        bootbox.alert('Hello World')
+        fwdom.alert('Hello World')
     })
 {% endblock onload %}
 

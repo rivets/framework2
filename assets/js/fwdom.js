@@ -3,7 +3,7 @@
  */
     var fwdom = {
         on: function(selector, op, func, parent = null) {
-            (parent !== null ? parent : document).querySelectorAll(selector).forEach(function(d, index){
+            (parent !== null ? parent : document).querySelectorAll(selector).forEach(function(d){
                 d.addEventListener(op, func, false);
             });
         },
@@ -30,5 +30,13 @@
 
         mkjQ: function(sel){
             return $(sel);
-        }
+        },
+
+        alert: function(msg){
+            bootbox.alert(msg);
+        },
+
+        confirm: function(msg, fn){
+            bootbox.confirm(msg, fn);
+        },
     };
