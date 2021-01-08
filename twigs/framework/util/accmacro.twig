@@ -27,7 +27,7 @@
     v{{id}}.on('show.bs.collapse', function(e){
         let ch = e.target.closest('.card');
         fwdom.toggleClass(ch.querySelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
-    })
+    });
     v{{id}}.on('hide.bs.collapse', function(e) {
         let ch = e.target.closest('.card');
         fwdom.toggleClass(ch.querySelectorAll('.fa-caret-down'), ['fa-caret-right', 'fa-caret-down']);
