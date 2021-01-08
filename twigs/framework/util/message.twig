@@ -1,28 +1,12 @@
-{% block fwmessages %}
-    {%if fwerrmessage is defined %}
-        {% for msg in fwerrmessage %}
-            <div class="alert alert-danger">{{eraw is defined ? msg|raw : msg}}</div>
-        {% endfor %}
-    {% endif %}
-    {%if fwwarnmessage is defined %}
-        {% for msg in fwwarnmessage %}
-            <div class="alert alert-warning">{{wraw is defined ? msg|raw : msg}}</div>
-        {% endfor %}
-    {% endif %}
-    {%if fwmessage is defined %}
-        {% for msg in fwmessage %}
-            <div class="alert alert-info">{{mraw is defined ? msg|raw : msg}}</div>
-        {% endfor %}
-    {% endif %}
-{% endblock fwmessages %}
-    {% if block('fwmessages')|trim != '' %}
+    {% set fwm = include('@util/fwmessages.twig')|trim %}
+    {% if fwm != '' %}
         {% if userow is defined%}
             <div class="{{userow ?: 'row'}}">
         {% endif %}
         {% if usecol is defined%}
             <div class="{{usecol ?: 'col-md-12 text-center'}}">
         {% endif %}
-        {{block('fwmessages')}}
+        {{fwm|raw}}
         {% if usecol is defined%}
             </div>
         {% endif %}
