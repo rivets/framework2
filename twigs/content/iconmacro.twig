@@ -2,11 +2,11 @@
   The fa macro is used by default so you can change which style it uses - regular (free), solid or duotone.
   fab is for brand icons and is also free.
 #}
-{% macro fa(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fa %}
-{% macro far(icon, other='') %}<i class="far fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro far %}
-{% macro fas(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fas %}
-{% macro fad(icon, other='') %}<i class="fad fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fad %}
-{% macro fab(icon, other='') %}<i class="fab fa-{{icon}}{{other != '' ? ' '~other : ''}}"></i>{% endmacro fab %}
+{% macro fa(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fa %}
+{% macro far(icon, other='') %}<i class="far fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro far %}
+{% macro fas(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fas %}
+{% macro fad(icon, other='') %}<i class="fad fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fad %}
+{% macro fab(icon, other='') %}<i class="fab fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fab %}
 
 {% macro edit(other='') %}{% import _self as s %}{{s.fa('edit', other)}}{% endmacro edit %}
 {% macro home(other='') %}{% import _self as s %}{{s.fa('home', other)}}{% endmacro home %}
