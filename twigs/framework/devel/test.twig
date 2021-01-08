@@ -24,7 +24,7 @@
 {% block main %}
     <section class="row">
         <article class="ml-auto col-md-10 mb-5">
-            {% include '@util/message.twig' %}
+            {% include '@util/message.twig' with {userow: 'row mt-2 mb-2', usecol: 'col-md-6'} %}
             {{a.accordion('acc1', [
                 {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
