@@ -169,12 +169,13 @@
  */
         buildFWLink: function (){
             let link = base;
-            arguments.forEach(function (item){
+            for (let item of arguments)
+            {
                 if (link !== '')
                 {
                     link += '/' + item;
                 }
-            });
+            }
             return link + '/';
         },
 /**

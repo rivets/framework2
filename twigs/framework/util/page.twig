@@ -111,7 +111,7 @@
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
-        {% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}
+        {#{% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}#}
         {% set nonce = security.makeNonce() %}
         {% do context.web.addcsp('script-src', "'nonce-"~nonce~"'") %}
         {#<script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>#}
