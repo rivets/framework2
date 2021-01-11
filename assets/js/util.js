@@ -344,7 +344,6 @@
                 }
             });
         },
-        tableClick : framework.containerClick, // just for some backward compatibility....
 /**
  * Relocate to link inside the framework with an id added in
  *
@@ -515,3 +514,4 @@
             );
         },
     };
+    framework.tableClick = framework.containerClick; // just for some backward compatibility....
