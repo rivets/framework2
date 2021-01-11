@@ -42,12 +42,12 @@
     {% endblock head %}
     {% if block('style') is defined %}
         {% set nonce = security.makeNonce() %}
-        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        {% do context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('style')}}</style>
     {% endif %}
     {% if block('criticalCSS') is defined %}
         {% set nonce = security.makeNonce() %}
-        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        {% do context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('criticalCSS')}}</style>
     {% endif %}
 
@@ -112,7 +112,13 @@
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
         {% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}
-        <script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>
+        {% set nonce = security.makeNonce() %}
+        {% do context.web.addcsp('script-src', "'nonce-"~nonce~"'") %}
+        {#<script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>#}
+        <script nonce="{{nonce}}">const base = '{{base}}', putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
+            {{sjs|raw}}
+            {{ojs|raw}}
+        </script>
     {% endif %}
 </body>
 </html>
