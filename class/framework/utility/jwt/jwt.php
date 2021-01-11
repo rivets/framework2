@@ -13,12 +13,24 @@
  * @link     https://github.com/firebase/php-jwt
  */
 namespace Framework\Utility\JWT;
+
 use \DomainException;
 use \InvalidArgumentException;
 use \UnexpectedValueException;
 use \DateTime;
+
 /**
- * The JWT Class
+ * JSON Web Token implementation, based on this spec:
+ * https://tools.ietf.org/html/rfc7519
+ *
+ * PHP version 5
+ *
+ * @category Authentication
+ * @package  Authentication_JWT
+ * @author   Neuman Vong <neuman@twilio.com>
+ * @author   Anant Narayanan <anant@php.net>
+ * @license  http://opensource.org/licenses/BSD-3-Clause 3-clause BSD
+ * @link     https://github.com/firebase/php-jwt
  */
 class JWT
 {
@@ -31,7 +43,7 @@ class JWT
      * we want to provide some extra leeway time to
      * account for clock skew.
      */
-    public static $leeway = 0;
+    private static $leeway = 0;
 
     /**
      * Allow the current timestamp to be specified.
@@ -39,15 +51,13 @@ class JWT
      *
      * Will default to PHP time() value if null.
      */
-    public static $timestamp = null;
-/**
- * @var array Hash algorthms that this supports
- */
+    private static $timestamp = null;
+
     private static $supported_algs = [
         'ES256' => ['openssl', 'SHA256'],
         'HS256' => ['hash_hmac', 'SHA256'],
-        'HS512' => ['hash_hmac', 'SHA512'],
         'HS384' => ['hash_hmac', 'SHA384'],
+        'HS512' => ['hash_hmac', 'SHA512'],
         'RS256' => ['openssl', 'SHA256'],
         'RS384' => ['openssl', 'SHA384'],
         'RS512' => ['openssl', 'SHA512'],
@@ -56,11 +66,11 @@ class JWT
     /**
      * Decodes a JWT string into a PHP object.
      *
-     * @param string        $jwt            The JWT
-     * @param string|array  $key            The key, or map of keys.
-     *                                      If the algorithm used is asymmetric, this is the public key
-     * @param array         $allowed_algs   List of supported verification algorithms
-     *                                      Supported algorithms are 'HS256', 'HS384', 'HS512' and 'RS256'
+     * @param string                    $jwt            The JWT
+     * @param string|array|resource     $key            The key, or map of keys.
+     *                                                  If the algorithm used is asymmetric, this is the public key
+     * @param array                     $allowed_algs   List of supported verification algorithms
+     *                                                  Supported algorithms are 'ES256', 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', and 'RS512'
      *
      * @return object The JWT's payload as a PHP object
      *
@@ -73,25 +83,25 @@ class JWT
      * @uses jsonDecode
      * @uses urlsafeB64Decode
      */
-    public static function decode($jwt, $key, array $allowed_algs = []) : object
+    public static function decode(string $jwt, $key, array $allowed_algs = []) : object
     {
-        $timestamp = is_null(static::$timestamp) ? time() : static::$timestamp;
+        $timestamp = static::$timestamp ?? \time();
 
         if (empty($key)) {
             throw new InvalidArgumentException('Key may not be empty');
         }
-        $tks = explode('.', $jwt);
-        if (count($tks) != 3) {
+        $tks = \explode('.', $jwt);
+        if (\count($tks) != 3) {
             throw new UnexpectedValueException('Wrong number of segments');
         }
         [$headb64, $bodyb64, $cryptob64] = $tks;
-        if (NULL === ($header = static::jsonDecode(static::urlsafeB64Decode($headb64)))) {
+        if (null === ($header = static::jsonDecode(static::urlsafeB64Decode($headb64)))) {
             throw new UnexpectedValueException('Invalid header encoding');
         }
-        if (NULL === $payload = static::jsonDecode(static::urlsafeB64Decode($bodyb64))) {
+        if (null === $payload = static::jsonDecode(static::urlsafeB64Decode($bodyb64))) {
             throw new UnexpectedValueException('Invalid claims encoding');
         }
-        if (FALSE === ($sig = static::urlsafeB64Decode($cryptob64))) {
+        if (false === ($sig = static::urlsafeB64Decode($cryptob64))) {
             throw new UnexpectedValueException('Invalid signature encoding');
         }
         if (empty($header->alg)) {
@@ -100,10 +110,15 @@ class JWT
         if (empty(static::$supported_algs[$header->alg])) {
             throw new UnexpectedValueException('Algorithm not supported');
         }
-        if (!in_array($header->alg, $allowed_algs)) {
+        if (!\in_array($header->alg, $allowed_algs)) {
             throw new UnexpectedValueException('Algorithm not allowed');
         }
-        if (is_array($key) || $key instanceof \ArrayAccess) {
+        if ($header->alg === 'ES256') {
+            // OpenSSL expects an ASN.1 DER sequence for ES256 signatures
+            $sig = self::signatureToDER($sig);
+        }
+
+        if (\is_array($key) || $key instanceof \ArrayAccess) {
             if (isset($header->kid)) {
                 if (!isset($key[$header->kid])) {
                     throw new UnexpectedValueException('"kid" invalid, unable to lookup correct key');
@@ -115,15 +130,15 @@ class JWT
         }
 
         // Check the signature
-        if (!static::verify($headb64.'.'.$bodyb64, $sig, $key, $header->alg)) {
+        if (!static::verify("$headb64.$bodyb64", $sig, $key, $header->alg)) {
             throw new SignatureInvalidException('Signature verification failed');
         }
 
-        // Check if the nbf if it is defined. This is the time that the
+        // Check the nbf if it is defined. This is the time that the
         // token can actually be used. If it's not yet that time, abort.
         if (isset($payload->nbf) && $payload->nbf > ($timestamp + static::$leeway)) {
             throw new BeforeValidException(
-                'Cannot handle token prior to ' . date(DateTime::ISO8601, $payload->nbf)
+                'Cannot handle token prior to ' . \date(DateTime::ISO8601, $payload->nbf)
             );
         }
 
@@ -132,7 +147,7 @@ class JWT
         // correctly used the nbf claim).
         if (isset($payload->iat) && $payload->iat > ($timestamp + static::$leeway)) {
             throw new BeforeValidException(
-                'Cannot handle token prior to ' . date(DateTime::ISO8601, $payload->iat)
+                'Cannot handle token prior to ' . \date(DateTime::ISO8601, $payload->iat)
             );
         }
 
@@ -151,7 +166,7 @@ class JWT
      * @param string        $key        The secret key.
      *                                  If the algorithm used is asymmetric, this is the private key
      * @param string        $alg        The signing algorithm.
-     *                                  Supported algorithms are 'HS256', 'HS384', 'HS512' and 'RS256'
+     *                                  Supported algorithms are 'ES256', 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', and 'RS512'
      * @param mixed         $keyId
      * @param array         $head       An array with header elements to attach
      *
@@ -160,24 +175,24 @@ class JWT
      * @uses jsonEncode
      * @uses urlsafeB64Encode
      */
-    public static function encode($payload, $key, $alg = 'HS256', $keyId = null, $head = null) : string
+    public static function encode($payload, string $key, string $alg = 'HS256', $keyId = null, $head = null) : string
     {
         $header = ['typ' => 'JWT', 'alg' => $alg];
         if ($keyId !== null) {
             $header['kid'] = $keyId;
         }
-        if ( isset($head) && is_array($head) ) {
-            $header = array_merge($head, $header);
+        if (isset($head) && \is_array($head)) {
+            $header = \array_merge($head, $header);
         }
         $segments = [];
         $segments[] = static::urlsafeB64Encode(static::jsonEncode($header));
         $segments[] = static::urlsafeB64Encode(static::jsonEncode($payload));
-        $signing_input = implode('.', $segments);
+        $signing_input = \implode('.', $segments);
 
         $signature = static::sign($signing_input, $key, $alg);
         $segments[] = static::urlsafeB64Encode($signature);
 
-        return implode('.', $segments);
+        return \implode('.', $segments);
     }
 
     /**
@@ -186,11 +201,11 @@ class JWT
      * @param string            $msg    The message to sign
      * @param string|resource   $key    The secret key
      * @param string            $alg    The signing algorithm.
-     *                                  Supported algorithms are 'HS256', 'HS384', 'HS512' and 'RS256'
+     *                                  Supported algorithms are 'ES256', 'HS256', 'HS384', 'HS512', 'RS256', 'RS384', and 'RS512'
+     *
+     * @return string An encrypted message
      *
      * @throws DomainException Unsupported algorithm was specified
-     * @return string
-     * @psalm-suppress InvalidNullableReturnType
      */
     public static function sign(string $msg, $key, string $alg = 'HS256') : string
     {
@@ -198,24 +213,21 @@ class JWT
             throw new DomainException('Algorithm not supported');
         }
         [$function, $algorithm] = static::$supported_algs[$alg];
-        switch($function) {
-        case 'hash_hmac':
-            /** @psalm-suppress PossiblyInvalidArgument */
-            return hash_hmac($algorithm, $msg, $key, true);
-        case 'openssl':
-            $signature = '';
-            $success = openssl_sign($msg, $signature, $key, $algorithm);
-            if (!$success) {
-                throw new DomainException("OpenSSL unable to sign data");
-            }
-            if ($alg === 'ES256') {
-                $signature = self::signatureFromDER($signature, 256);
-            }
-            return $signature;
-        default:
-            throw new DomainException('Algorithm not supported');
+        switch ($function) {
+            case 'hash_hmac':
+                return \hash_hmac($algorithm, $msg, $key, true);
+            case 'openssl':
+                $signature = '';
+                $success = \openssl_sign($msg, $signature, $key, $algorithm);
+                if (!$success) {
+                    throw new DomainException("OpenSSL unable to sign data");
+                } else {
+                    if ($alg === 'ES256') {
+                        $signature = self::signatureFromDER($signature, 256);
+                    }
+                    return $signature;
+                }
         }
-        /* NOT REACHED */
     }
 
     /**
@@ -238,35 +250,33 @@ class JWT
         }
 
         [$function, $algorithm] = static::$supported_algs[$alg];
-        switch($function) {
+        switch ($function) {
             case 'openssl':
-                $success = openssl_verify($msg, $signature, $key, $algorithm);
+                $success = \openssl_verify($msg, $signature, $key, $algorithm);
                 if ($success === 1) {
-                    return TRUE;
-                }
-                if ($success === 0) {
-                    return FALSE;
+                    return true;
+                } elseif ($success === 0) {
+                    return false;
                 }
                 // returns 1 on success, 0 on failure, -1 on error.
                 throw new DomainException(
-                    'OpenSSL error: ' . openssl_error_string()
+                    'OpenSSL error: ' . \openssl_error_string()
                 );
             case 'hash_hmac':
             default:
-                /** @psalm-suppress PossiblyInvalidArgument */
-                $hash = hash_hmac($algorithm, $msg, $key, true);
-                if (function_exists('hash_equals')) {
-                    return hash_equals($signature, $hash);
+                $hash = \hash_hmac($algorithm, $msg, $key, true);
+                if (\function_exists('hash_equals')) {
+                    return \hash_equals($signature, $hash);
                 }
-                $len = min(static::safeStrlen($signature), static::safeStrlen($hash));
+                $len = \min(static::safeStrlen($signature), static::safeStrlen($hash));
 
                 $status = 0;
                 for ($i = 0; $i < $len; $i++) {
-                    $status |= (ord($signature[$i]) ^ ord($hash[$i]));
+                    $status |= (\ord($signature[$i]) ^ \ord($hash[$i]));
                 }
                 $status |= (static::safeStrlen($signature) ^ static::safeStrlen($hash));
 
-                return $status === 0;
+                return ($status === 0);
         }
     }
 
@@ -281,23 +291,8 @@ class JWT
      */
     public static function jsonDecode(string $input) : object
     {
-        //if (version_compare(PHP_VERSION, '5.4.0', '>=') && !(defined('JSON_C_VERSION') && PHP_INT_SIZE > 4)) {
-            /** In PHP >=5.4.0, json_decode() accepts an options parameter, that allows you
-             * to specify that large ints (like Steam Transaction IDs) should be treated as
-             * strings, rather than the PHP default behaviour of converting them to floats.
-             */
-            $obj = json_decode($input, false, 512, JSON_BIGINT_AS_STRING);
-        //} else {
-        //    /** Not all servers will support that, however, so for older versions we must
-        //     * manually detect large ints in the JSON string and quote them (thus converting
-        //     *them to strings) before decoding, hence the preg_replace() call.
-        //     */
-        //    $max_int_length = strlen((string) PHP_INT_MAX) - 1;
-        //    $json_without_bigints = preg_replace('/:\s*(-?\d{'.$max_int_length.',})/', ': "$1"', $input);
-        //    $obj = json_decode($json_without_bigints);
-        //}
-
-        if (function_exists('json_last_error') && $errno = json_last_error()) {
+        $obj = \json_decode($input, false, 512, JSON_BIGINT_AS_STRING);
+        if ($errno = \json_last_error()) {
             static::handleJsonError($errno);
         } elseif ($obj === null && $input !== 'null') {
             throw new DomainException('Null result with non-null input');
@@ -316,8 +311,8 @@ class JWT
      */
     public static function jsonEncode($input) : string
     {
-        $json = json_encode($input);
-        if (function_exists('json_last_error') && $errno = json_last_error()) {
+        $json = \json_encode($input);
+        if ($errno = \json_last_error()) {
             static::handleJsonError($errno);
         } elseif ($json === 'null' && $input !== null) {
             throw new DomainException('Null result with non-null input');
@@ -334,12 +329,12 @@ class JWT
      */
     public static function urlsafeB64Decode(string $input) : string
     {
-        $remainder = strlen($input) % 4;
+        $remainder = \strlen($input) % 4;
         if ($remainder) {
             $padlen = 4 - $remainder;
-            $input .= str_repeat('=', $padlen);
+            $input .= \str_repeat('=', $padlen);
         }
-        return base64_decode(strtr($input, '-_', '+/'));
+        return \base64_decode(\strtr($input, '-_', '+/'));
     }
 
     /**
@@ -351,7 +346,7 @@ class JWT
      */
     public static function urlsafeB64Encode(string $input) : string
     {
-        return str_replace('=', '', strtr(base64_encode($input), '+/', '-_'));
+        return \str_replace('=', '', \strtr(\base64_encode($input), '+/', '-_'));
     }
 
     /**
@@ -361,7 +356,7 @@ class JWT
      *
      * @return void
      */
-    private static function handleJsonError($errno) : void
+    private static function handleJsonError(int $errno) : void
     {
         $messages = [
             JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
@@ -370,7 +365,11 @@ class JWT
             JSON_ERROR_SYNTAX => 'Syntax error, malformed JSON',
             JSON_ERROR_UTF8 => 'Malformed UTF-8 characters' //PHP >= 5.3.3
         ];
-        throw new DomainException($messages[$errno] ?? 'Unknown JSON error: ' . $errno);
+        throw new DomainException(
+            isset($messages[$errno])
+            ? $messages[$errno]
+            : 'Unknown JSON error: ' . $errno
+        );
     }
 
     /**
@@ -382,126 +381,130 @@ class JWT
      */
     private static function safeStrlen(string $str) : int
     {
-        if (function_exists('mb_strlen')) {
-            return mb_strlen($str, '8bit');
+        if (\function_exists('mb_strlen')) {
+            return \mb_strlen($str, '8bit');
         }
-        return strlen($str);
+        return \strlen($str);
     }
-/**
- * Convert an ECDSA signature to an ASN.1 DER sequence
- *
- * @param   string $sig The ECDSA signature to convert
- * @return  string The encoded DER object
- */
-        private static function signatureToDER($sig) : string
-        {
-            // Separate the signature into r-value and s-value
-            list($r, $s) = \str_split($sig, (int) (\strlen($sig) / 2));
-    
-            // Trim leading zeros
-            $r = \ltrim($r, "\x00");
-            $s = \ltrim($s, "\x00");
-    
-            // Convert r-value and s-value from unsigned big-endian integers to
-            // signed two's complement
-            if (\ord($r[0]) > 0x7f) {
-                $r = "\x00" . $r;
-            }
-            if (\ord($s[0]) > 0x7f) {
-                $s = "\x00" . $s;
-            }
-    
-            return self::encodeDER(
-                self::ASN1_SEQUENCE,
-                self::encodeDER(self::ASN1_INTEGER, $r) .
-                self::encodeDER(self::ASN1_INTEGER, $s)
-            );
+
+    /**
+     * Convert an ECDSA signature to an ASN.1 DER sequence
+     *
+     * @param   string $sig The ECDSA signature to convert
+     * @return  string The encoded DER object
+     */
+    private static function signatureToDER(string $sig) : string
+    {
+        // Separate the signature into r-value and s-value
+        [$r, $s] = \str_split($sig, (int) (\strlen($sig) / 2));
+
+        // Trim leading zeros
+        $r = \ltrim($r, "\x00");
+        $s = \ltrim($s, "\x00");
+
+        // Convert r-value and s-value from unsigned big-endian integers to
+        // signed two's complement
+        if (\ord($r[0]) > 0x7f) {
+            $r = "\x00" . $r;
         }
-/**
- * Encodes a value into a DER object.
- *
- * @param   int     $type DER tag
- * @param   string  $value the value to encode
- * @return  string  the encoded object
- */
-        private static function encodeDER($type, $value) : string
-        {
-            $tag_header = 0;
-            if ($type === self::ASN1_SEQUENCE) {
-                $tag_header |= 0x20;
-            }
-    
-            // Type
-            $der = \chr($tag_header | $type);
-    
-            // Length
-            $der .= \chr(\strlen($value));
-    
-            return $der . $value;
-        }
-/**
- * Encodes signature from a DER object.
- *
- * @param   string  $der binary signature in DER format
- * @param   int     $keySize the number of bits in the key
- * @return  string  the signature
- */
-        private static function signatureFromDER($der, $keySize) : string
-        {
-            // OpenSSL returns the ECDSA signatures as a binary ASN.1 DER SEQUENCE
-            list($offset) = self::readDER($der);
-            list($offset, $r) = self::readDER($der, $offset);
-            list($offset, $s) = self::readDER($der, $offset);
-    
-            // Convert r-value and s-value from signed two's compliment to unsigned
-            // big-endian integers
-            $r = \ltrim($r, "\x00");
-            $s = \ltrim($s, "\x00");
-    
-            // Pad out r and s so that they are $keySize bits long
-            $r = \str_pad($r, $keySize / 8, "\x00", STR_PAD_LEFT);
-            $s = \str_pad($s, $keySize / 8, "\x00", STR_PAD_LEFT);
-    
-            return $r . $s;
+        if (\ord($s[0]) > 0x7f) {
+            $s = "\x00" . $s;
         }
 
-/**
- * Reads binary DER-encoded data and decodes into a single object
- *
- * @param string $der the binary data in DER format
- * @param int $offset the offset of the data stream containing the object
- * to decode
- * @return array [$offset, $data] the new offset and the decoded object
- */
-        private static function readDER($der, $offset = 0) : array
-        {
-            $pos = $offset;
-            $size = \strlen($der);
-            $constructed = (\ord($der[$pos]) >> 5) & 0x01;
-            $type = \ord($der[$pos++]) & 0x1f;
-    
-            // Length
-            $len = \ord($der[$pos++]);
-            if ($len & 0x80) {
-                $n = $len & 0x1f;
-                $len = 0;
-                while ($n-- && $pos < $size) {
-                    $len = ($len << 8) | \ord($der[$pos++]);
-                }
-            }
-    
-            // Value
-            if ($type == self::ASN1_BIT_STRING) {
-                $pos += 1; // Skip the first contents octet (padding indicator)
-                $data = \substr($der, $pos, $len - 1);
-                $pos += $len - 1;
-            } elseif (!$constructed) {
-                $data = \substr($der, $pos, $len);
-                $pos += $len;
-            } else {
-                $data = null;
-            }
-    
-            return [$pos, $data];
+        return self::encodeDER(
+            self::ASN1_SEQUENCE,
+            self::encodeDER(self::ASN1_INTEGER, $r) .
+            self::encodeDER(self::ASN1_INTEGER, $s)
+        );
+    }
+
+    /**
+     * Encodes a value into a DER object.
+     *
+     * @param   int     $type DER tag
+     * @param   string  $value the value to encode
+     * @return  string  the encoded object
+     */
+    private static function encodeDER(int $type, string $value) : string
+    {
+        $tag_header = 0;
+        if ($type === self::ASN1_SEQUENCE) {
+            $tag_header |= 0x20;
         }
+
+        // Type
+        $der = \chr($tag_header | $type);
+
+        // Length
+        $der .= \chr(\strlen($value));
+
+        return $der . $value;
+    }
+
+    /**
+     * Encodes signature from a DER object.
+     *
+     * @param   string  $der binary signature in DER format
+     * @param   int     $keySize the number of bits in the key
+     * @return  string  the signature
+     */
+    private static function signatureFromDER(string $der, int $keySize) : string
+    {
+        // OpenSSL returns the ECDSA signatures as a binary ASN.1 DER SEQUENCE
+        [$offset, $_] = self::readDER($der);
+        [$offset, $r] = self::readDER($der, $offset);
+        [$offset, $s] = self::readDER($der, $offset);
+
+        // Convert r-value and s-value from signed two's compliment to unsigned
+        // big-endian integers
+        $r = \ltrim($r, "\x00");
+        $s = \ltrim($s, "\x00");
+
+        // Pad out r and s so that they are $keySize bits long
+        $r = \str_pad($r, $keySize / 8, "\x00", STR_PAD_LEFT);
+        $s = \str_pad($s, $keySize / 8, "\x00", STR_PAD_LEFT);
+
+        return $r . $s;
+    }
+
+    /**
+     * Reads binary DER-encoded data and decodes into a single object
+     *
+     * @param string $der the binary data in DER format
+     * @param int $offset the offset of the data stream containing the object
+     * to decode
+     * @return array [$offset, $data] the new offset and the decoded object
+     */
+    private static function readDER(string $der, int $offset = 0) : array
+    {
+        $pos = $offset;
+        $size = \strlen($der);
+        $constructed = (\ord($der[$pos]) >> 5) & 0x01;
+        $type = \ord($der[$pos++]) & 0x1f;
+
+        // Length
+        $len = \ord($der[$pos++]);
+        if ($len & 0x80) {
+            $n = $len & 0x1f;
+            $len = 0;
+            while ($n-- && $pos < $size) {
+                $len = ($len << 8) | \ord($der[$pos++]);
+            }
+        }
+
+        // Value
+        if ($type == self::ASN1_BIT_STRING) {
+            $pos++; // Skip the first contents octet (padding indicator)
+            $data = \substr($der, $pos, $len - 1);
+            $pos += $len - 1;
+        } elseif (!$constructed) {
+            $data = \substr($der, $pos, $len);
+            $pos += $len;
+        } else {
+            $data = null;
+        }
+
+        return [$pos, $data];
+    }
 }
+?>
