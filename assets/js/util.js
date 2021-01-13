@@ -1,4 +1,7 @@
-   class FWAjaxRQ
+/**
+ * global fwdom
+ */
+    class FWAjaxRQ
    {
         constructor(rq)
         {
@@ -527,10 +530,10 @@
  */
         addElement: function(container, element, attr, content, position = null) {
             const el = document.createElement(element);
-            for (let index in attr)
-            {
-                el.setAttribute(index, attr[index]);
-            }
+            const keys = Object.keys(attr);
+            keys.forEach(function(key){
+                el.setAttribute(key, attr[key]);
+            });
             el.innerHTML = content;
             if (position === null)
             {
