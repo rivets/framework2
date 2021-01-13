@@ -527,7 +527,7 @@
  */
         addElement: function(container, element, attr, content, position = null) {
             const el = document.createElement(element);
-            for (let index of attr)
+            for (let index in attr)
             {
                 el.setAttribute(index, attr[index]);
             }
