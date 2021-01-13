@@ -529,7 +529,7 @@
             const el = document.createElement(element);
             for (let index of attr)
             {
-                el.setAttribute(index, item[index]);
+                el.setAttribute(index, attr[index]);
             }
             el.innerHTML = content;
             if (position === null)
