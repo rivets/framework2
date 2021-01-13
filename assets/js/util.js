@@ -527,9 +527,10 @@
  */
         addElement: function(container, element, attr, content, position = null) {
             const el = document.createElement(element);
-            attr.forEach(function(item, index){
-                el.setAttribute(index, item);
-            });
+            for (let index of attr)
+            {
+                el.setAttribute(index, item[index]);
+            }
             el.innerHTML = content;
             if (position === null)
             {
