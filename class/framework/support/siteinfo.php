@@ -248,7 +248,7 @@
         public static function hasField(string $table, string $field) : bool
         {
             $tbs = R::inspect($table);
-            return \isset($tbs[$field]);
+            return isset($tbs[$field]);
         }
 /**
  * Check if table is a framework table
