@@ -56,19 +56,19 @@
             const tr = document.createElement('tr');
             tr.setAttribute('data-id', data);
             tr.innerHTML = '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>';
-            const ntab = document.getElementById('ntab');
+            const rtab = document.getElementById('rtab');
             if (sp === null)
             {
-                ntab.appendChild(tr);
+                rtab.appendChild(tr);
             }
             else
             {
-                ntab.insertBefore(tr, sp);
+                rtab.insertBefore(tr, sp);
             }
 */
             let attr = []
             attr['data-id'] = data;
-            framework.addElement(document.getElementById('ntab'), 'tr', attr,
+            framework.addElement(document.getElementById('rtab'), 'tr', attr,
                 '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>', sp);
             fwdom.mkjQ('#nroco').modal('hide');
         }).fail(function(jqXHR, textStatus, errorThrown){
