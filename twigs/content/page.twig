@@ -20,14 +20,17 @@
 
 {% block body %}
     {% block navigation %}
-	{% include '@surround/navbar.twig' %}
+        {%- include '@surround/navbar.twig' -%}
     {% endblock navigation %}
-
-    <div class="container">
+    {% set margin = '5' }
+    {% if block('navigation') != '' and breadcrumbs is not defined %}
+        {% set margin = '3' %}
+    {% endif %}
+    <div class="container mt-{{margin}} mb-3">
         {% block pageheader %}
             <header class="row">
             {% block header %}
-                <section class="col-md-12 mt-5">
+                <section class="col-md-12">
                     {% block headerbody %}
                         {% include '@surround/header.twig' %}
                     {% endblock headerbody %}

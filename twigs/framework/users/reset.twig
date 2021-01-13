@@ -10,8 +10,8 @@
 {% endblock navigation %}
 
 {% block main %}
-    <section class="row">
-        <article class="mx-auto col mt-5">
+    <section class="row mt-5">
+        <article class="mx-auto col">
             {% include '@util/message.twig' %}
             {% if not done %}
                 {{f.startform({action: base ~ '/forgot/', method: 'post', class: 'jumbotron'})}}

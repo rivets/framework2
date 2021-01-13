@@ -117,8 +117,8 @@
 
 {% set foptions = [] %}
 {% block main %}
+    {% include '@util/message.twig' with {userow: ''} %}
     <section class="row">
-        {% include '@util/message.twig' %}
         <article class="mx-auto col">
             <table class="table table-responsive table-striped">
                 <tbody>
