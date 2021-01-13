@@ -306,8 +306,13 @@
                 /** @psalm-suppress UnusedFunctionCall */
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION['user']))
+                { // deprecated
+                    $this->luser =  $_SESSION['user'];
+                    $this->luser->fresh(); // not taht helpful though as it doesn't clear arrays
+                }
+                elseif (isset($_SESSION['userID']))
                 {
-                    $this->luser =  $this->load(FW::USER, $_SESSION['user']);
+                    $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
                 }
             }
             $this->mtoken();

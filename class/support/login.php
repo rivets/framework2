@@ -41,7 +41,7 @@
                         { // no session started yet
                             session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
                         }
-                        $_SESSION['user'] = $user->getID();
+                        $_SESSION['userID'] = $user->getID();
                         $context->divert($page === '' ? '/' : $page); // success - divert to home page
                         /* NOT REACHED */
                     }
