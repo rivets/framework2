@@ -23,7 +23,7 @@
     fwdom.mkjQ('#adduform').on('submit', false).parsley();
     document.getElementById('addb').addEventListener('click', function(e){
         fwdom.stop(e);
-        e.target.disabled = true;
+        this.disabled = true;
         let data = {admin : 0, devel : 0};
         document.getElementById('adduform').querySelectorAll('input:checked,input:text,input:password,input[type="email"]').forEach(function(el, index){
              data[el.getAttribute('name')] = el.value;

@@ -23,6 +23,8 @@
         fwdom.mkjQ('#cadd').modal('show');
     });
     document.getElementById('addb').addEventListener('click', function(e){
+        fwdom.stop(e);
+        this.disabled = true;
         const type = document.getElementById('ctype').value;
         const host = document.getElementById('chost').value;
         const essential = document.getElementById('cess').checked ? 1 : 0;
@@ -40,14 +42,15 @@
             }
             else
             {
-                const tbody = row.querySelector('tbody')
+                framework.addElement(row.querySelector('tbody'), 'tr', {'data-id': data), '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>');
+                /*const tbody = row.querySelector('tbody')
                 const node = document.createElement('tr');
                 node.setAttribute('data-id', data);
                 node.innerHTML = '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>';
-                tbody.appendChild(node);
+                tbody.appendChild(node);*/
             }
             fwdom.mkjQ('#cadd').modal('hide');
-        }, 'addb');
+        }, this);
     });
 {% endblock onload %}
 

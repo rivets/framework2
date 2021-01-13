@@ -12,7 +12,7 @@
         framework.addMore(e);
     });
     document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
-        return $(this).parsley().validate()
+        return fwdom.mkjQ(this).parsley().validate()
     });
     for (var node of document.querySelectorAll('.delb'))
     {

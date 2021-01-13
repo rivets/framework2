@@ -41,7 +41,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({
+    fwdom.mkjQ('.ppedit').editable({
         ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
         params: paramset,
         source: kname,
@@ -49,23 +49,24 @@
         url: framework.editcall
     });
 
-    $('#ptab').on('click', function(e){
+    document.getElementById('ptab').addEventListener('click', function(e){
         const x = $(e.target);
+        const ecl = e.target.classList;
         for (let cl of clicks)
         {
             let [cls, fn, par] = cl;
-            if (x.hasClass(cls))
+            if (ecl.contains((cls))
             {
                 fn(e, x, '{{constant('Config\\Framework::FORMFIELD')}}', par);
                 break;
             }
         }
     });
-    $('#example .typesel').on('change', function(e){
-        const val = $(this).val();
+    fwdom.on('.typesel', 'change', function(e){
+        const val = this.value;
         $('#example .flagsel input[name="fldchecked"]').prop('checked', false).prop('disabled', !(val == 'checkbox' || val == 'radio'))
         $('#example .flagsel input[name="fldmultiple"]').prop('checked', false).prop('disabled', val != 'select')
-    })
+    }, document.getElementById('example'))
 {% endblock onload %}
 
 {% block header %}
@@ -92,7 +93,7 @@
                 </fieldset>
                 <fieldset>
                     <legend>Field details</legend>
-                    <table id="ptab" class="table">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Type</th>
@@ -110,7 +111,7 @@
                                 <th>&nbsp;</th>
                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="ptab">
                             {% for fld in bean.fields %}
                                 <tr data-id="{{fld.getID}}" class="border-top border-dark">
                                     <td rowspan="3">
