@@ -412,7 +412,7 @@
  * @param {string} bean - a bean name
  * @param {object} data - data to pass to the bean creation: the fields to set
  * @param {function} fn - called on success
- * @param {string} button - the id attribute value for the button that was used to initiate the operation
+ * @param {string|object} button - the id attribute value for the button that was used to initiate the operation
  *
  * @return void
  */
@@ -424,7 +424,7 @@
                 fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
             })
             .always(function(){
-                document.getElementById(button).disabled = false;
+                (button instanceof Object ? button : document.getElementById(button)).disabled = false;
             });
         },
 /**
