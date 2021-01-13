@@ -20,7 +20,7 @@
 
 {% block onload %}
     fwdom.mkjQ('#nrform').parsley();
-    document.getElementById('#addb').addEventListener('click', function(e){
+    document.getElementById('addb').addEventListener('click', function(e){
         fwdom.stop(e);
         const btn = this;
         btn.disabled = true;
