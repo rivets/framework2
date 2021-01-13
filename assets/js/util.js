@@ -440,7 +440,7 @@
             const mrow = document.getElementById('mrow');
             const clone = mrow.previousElementSibling.cloneNode(true);
             for (var node of clone.getElementsByTagName('input'))
-            {
+            { // empty inputs
                 if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
                 {
                     node.checked = false;
@@ -451,15 +451,15 @@
                 }
             }
             for (node of clone.getElementsByTagName('textarea'))
-            {
+            { // empty textareas
                 node.innerHTML = '';
             }
             for (node of clone.getElementsByTagName('option'))
-            {
+            { // clear all selections
                 node.selected = false;
             }
             for (node of clone.getElementsByTagName('select'))
-            {
+            { // select first element
                 node.children[0].selected = true;
             }
             mrow.parentNode.insertBefore(clone, mrow);
@@ -513,6 +513,32 @@
                 },
                 intervals
             );
+        },
+/**
+ * Make a new element qnd add it in the right place in a container.
+ *
+ * @param {object} container - a Dom element
+ * @param {string} element - what we want to insert
+ * @param {object} attr - any atributes we want to add
+ * @param {string} content - what goes inside the new element
+ * @param {object} position - where to put it before or null
+ *
+ * @return void
+ */
+        addElement: function(container, element, attr, content, position = null) {
+            const el = document.createElement(element);
+            attr.forEach(function(item, index){
+                el.setAttribute(index, item);
+            });
+            el.innerHTML = content;
+            if (position === null)
+            {
+                container.appendChild(el);
+            }
+            else
+            {
+                container.insertBefore(el, position);
+            }
         },
     };
     framework.tableClick = framework.containerClick; // just for some backward compatibility....
