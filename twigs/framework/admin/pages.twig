@@ -49,14 +49,14 @@
 {% endblock setup %}
 
 {% block onload %}
-    framework.mkjQ('.ppedit').editable({
+    fwdom.mkjQ('.ppedit').editable({
         ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
         params: paramset,
         source: kname,
         onblur: 'cancel',
         url: framework.editcall
     });
-    framewokr.mkjQ('#npform').on('submit', false).parsley();
+    fwdom.mkjQ('#npform').on('submit', false).parsley();
     document.getElementById('npkind').addEventListener('change', function(e) {
         fwdom.stop(e);
         var pn = document.getElementById('npname').value.toLowerCase();
@@ -121,7 +121,7 @@
         const active = document.getElementById('npactive').checked ? 1 : 0;
         const login = document.getElementById('nplogin').checked ? 1 : 0;
         const mobile = document.getElementById('npmobile').checked ? 1 : 0;
-        framework.mkjQ('#npage').modal('hide');
+        fwdom.mkjQ('#npage').modal('hide');
         var fn = function(data){
             const tr = document.createELement('tr');
             tr.setAttribute('data-id', data);
@@ -143,7 +143,7 @@
             {
                 ptab.insertBefore(nx, sp);
             }
-            //framework.mkjQ('.ppedit', nx).editable({params: paramset, source: kname});
+            //fwdom.mkjQ('.ppedit', nx).editable({params: paramset, source: kname});
         };
         let dt = {
                 name : pn,
@@ -169,7 +169,7 @@
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
     document.getElementById('ptab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.containerClick(e);});
-    framework.mkjQ('#npage').on('show.bs.modal', function(e){
+    fwdom.mkjQ('#npage').on('show.bs.modal', function(e){
         document.getElementById('npform').reset();
     });
     document.getElementById('more').addEventListener('click', framework.addMore);

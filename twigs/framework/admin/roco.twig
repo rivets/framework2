@@ -19,7 +19,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    framework.mkjQ('#nrform').parsley();
+    fwdom.mkjQ('#nrform').parsley();
     document.getElementById('#addb').addEventListener('click', function(e){
         fwdom.stop(e);
         const btn = this;
@@ -74,7 +74,7 @@
 */
             framework.addElement(document.getElementById('ntab'), 'tr', {'data-id': data},
                 '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>', sp);
-            framework.mkjQ('#nroco').modal('hide');
+            fwdom.mkjQ('#nroco').modal('hide');
         }).fail(function(jqXHR, textStatus, errorThrown){
             fwdom.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
         }).always(function(e){
@@ -83,7 +83,7 @@
     });
     document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.containerClick(e);});
 
-    framework.mkjQ('#nroco').on('show.bs.modal', function(e){
+    fwdom.mkjQ('#nroco').on('show.bs.modal', function(e){
         document.getElementById('nrform').reset();
     });
 {% endblock onload %}

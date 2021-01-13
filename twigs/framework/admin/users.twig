@@ -20,7 +20,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#adduform').on('submit', false).parsley();
+    fwdom.mkjQ('#adduform').on('submit', false).parsley();
     document.getElementById('addb').addEventListener('click', function(e){
         fwdom.stop(e);
         e.target.disabled = true;
@@ -29,15 +29,16 @@
              data[el.getAttribute('name')] = el.value;
         });
         framework.beanCreate('user', data, function(ret){
-            $('#addu').modal('hide');
-            $('#utab').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
+            fwdom.mkjQ('#addu').modal('hide');
+            framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
+                '<td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
                 '<td>'+framework.mktoggle('confirm', data.confirm)+'</td>'+
                 '<td>'+framework.mktoggle('active', data.active)+'</td>'+
                 '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
                 '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
                 '<td>{{i.edit('editb')}}</td>' +
-                '<td>{{i.delete('delb')}}</td></tr>'
+                '<td>{{i.delete('delb')}}</td>'
             );
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, 'addb');
