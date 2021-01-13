@@ -22,9 +22,9 @@
     {% block navigation %}
         {%- include '@surround/navbar.twig' -%}
     {% endblock navigation %}
-    {% set margin = '5' %}
+    {% set margin = '3' %}
     {% if block('navigation') != '' and breadcrumbs is not defined %}
-        {% set margin = '3' %}
+        {% set margin = '5' %}
     {% endif %}
     <div class="container mt-{{margin}} mb-3">
         {% block pageheader %}
