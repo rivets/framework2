@@ -22,7 +22,7 @@
     {% block navigation %}
         {%- include '@surround/navbar.twig' -%}
     {% endblock navigation %}
-    {% set margin = '5' }
+    {% set margin = '5' %}
     {% if block('navigation') != '' and breadcrumbs is not defined %}
         {% set margin = '3' %}
     {% endif %}
