@@ -13,15 +13,13 @@
 {% block navigation %}
 {% endblock navigation %}
 
-{% block header %}
-    <article class="col-md-12 mt-5">
-        <h1 class="text-center mt-5">Register</h1>
-    </article>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center mt-5">Register</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row mt-5" id="frontpage">
-        <article class="ml-auto col-md-8 mr-auto">
+        <article class="mx-auto col">
             {% if context.hasUser %}
                 <h2 class="text-center">Please logout before registering a new user</h2>
             {% else %}

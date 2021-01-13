@@ -1,15 +1,15 @@
 {% extends '@content/page.twig' %}
 
-{% block header %}
+{% block headerblock %}
     <h1>Resend Confirmation Email</h1>
-{% endblock header %}
+{% endblock headerblock %}
 
 {% block navigation %}
 {% endblock navigation %}
 
 {% block main %}
     <section class="row" id="frontpage">
-        <article class="ml-auto col-md-6 mr-auto mt-5">
+        <article class="mx-auto col mt-5">
             {% include '@util/message.twig' %}
             <form action="{{base}}/confirm/resend" method="post" class="jumbotron">
                 <fieldset>

@@ -121,11 +121,8 @@
         const active = document.getElementById('npactive').checked ? 1 : 0;
         const login = document.getElementById('nplogin').checked ? 1 : 0;
         const mobile = document.getElementById('npmobile').checked ? 1 : 0;
-        fwdom.mkjQ('#npage').modal('hide');
         var fn = function(data){
-            const tr = document.createELement('tr');
-            tr.setAttribute('data-id', data);
-            tr.innerHMTL = '<td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+            framework.addElement(document.getElementById('ptab'), 'tr', {'data-id': data}, '<td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
                 '<td>'+mkinline('text', 'source', 'Enter source', data, document.getElementById('npsrc').value)+'</td>'+
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
@@ -133,16 +130,8 @@
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
                 '<td><a href="'+base+'/'+pn+'">{{i.link('linkb')}}</a></td>'+
                 '<td>{{i.edit('editb')}}</td>'+
-                '<td>{{i.delete('delb')}}</td>';
-            const ptab = document.getElementById('ptab');
-            if (sp == null)
-            {
-                ptab.appendChild(nx);
-            }
-            else
-            {
-                ptab.insertBefore(nx, sp);
-            }
+                '<td>{{i.delete('delb')}}</td>', sp);
+                fwdom.mkjQ('#npage').modal('hide');
             //fwdom.mkjQ('.ppedit', nx).editable({params: paramset, source: kname});
         };
         let dt = {

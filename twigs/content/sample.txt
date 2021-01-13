@@ -123,15 +123,13 @@
     default. You then don't need to have a header block either.
 #}
 
-{% block header %}
-    <article class="col-md-12">
-        <h1 class="text-center">{{action}}</h1>
-    </article>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">{{action}}</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
+        <article class="mx-auto col">
             <p class="text-center">Coming Soon</p>
         </article>
     </section>

@@ -52,23 +52,7 @@
             method: 'post',
             data: {name : pn},
         }).done(function(data){
-/*
-            const tr = document.createElement('tr');
-            tr.setAttribute('data-id', data);
-            tr.innerHTML = '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>';
-            const rtab = document.getElementById('rtab');
-            if (sp === null)
-            {
-                rtab.appendChild(tr);
-            }
-            else
-            {
-                rtab.insertBefore(tr, sp);
-            }
-*/
-            let attr = []
-            attr['data-id'] = data;
-            framework.addElement(document.getElementById('rtab'), 'tr', attr,
+            framework.addElement(document.getElementById('rtab'), 'tr', {'data-id': data},
                 '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>', sp);
             fwdom.mkjQ('#nroco').modal('hide');
         }).fail(function(jqXHR, textStatus, errorThrown){
@@ -97,7 +81,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <table class="table table-striped table-hover">
                 <thead>

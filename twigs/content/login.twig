@@ -6,15 +6,13 @@
     {# Might not want navigation bar on a login page... #}
 {% endblock navigation %}
 
-{% block header %}
-    <section class="ml-auto col-md-4 mr-auto mt-5">
-        <h1 class="text-center">Please Log In</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">Please Log In</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-4 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/message.twig' %}
             <form action="{{base}}/login" method="post" class="jumbotron">
                 <input type="hidden" name="goto" value="{{goto}}"/>

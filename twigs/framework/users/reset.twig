@@ -2,18 +2,16 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1 class="text-center">Password Reset</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">Password Reset</h1>
+{% endblock headerbody %}
 
 {% block navigation %}
 {% endblock navigation %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-6 mr-auto mt-5">
+        <article class="mx-auto col mt-5">
             {% include '@util/message.twig' %}
             {% if not done %}
                 {{f.startform({action: base ~ '/forgot/', method: 'post', class: 'jumbotron'})}}

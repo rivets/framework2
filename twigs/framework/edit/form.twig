@@ -50,14 +50,13 @@
     });
 
     document.getElementById('ptab').addEventListener('click', function(e){
-        const x = $(e.target);
         const ecl = e.target.classList;
         for (let cl of clicks)
         {
             let [cls, fn, par] = cl;
             if (ecl.contains((cls))
             {
-                fn(e, x, '{{constant('Config\\Framework::FORMFIELD')}}', par);
+                fn(e, e.target, '{{constant('Config\\Framework::FORMFIELD')}}', par);
                 break;
             }
         }
