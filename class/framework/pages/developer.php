@@ -60,15 +60,12 @@
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
                 {
-                    if (method_exists($test, $rest[1]))
-                    {
-                        $tpl = $test->{$rest[1]}($context);
-                    }
-                    else
+                    if (!method_exists($test, $rest[1]))
                     {
                         $context->web()->bad();
                         /* NOT REACHED */
                     }
+                    $tpl = $test->{$rest[1]}($context);
                 }
                 break;
             }
