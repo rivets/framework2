@@ -171,11 +171,9 @@
 
 {% set pages = siteinfo.pagecount('page',  pagesize) %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Pages</h1>
-    </section>
-{% endblock header %}
+{% block headerblock %}
+    <h1>Pages</h1>
+{% endblock headerblock %}
 
 {% block main %}
     <section class="row">

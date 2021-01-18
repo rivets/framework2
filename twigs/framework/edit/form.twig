@@ -68,11 +68,9 @@
     }, document.getElementById('example'))
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}">{{i.view('viewb')}}</a></h1>
-    </section>
-{% endblock header %}
+{% block headerblock %}
+    <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}">{{i.view('viewb')}}</a></h1>
+{% endblock headerblock %}
 
 {% block main %}
     <section class="row">
