@@ -2,11 +2,9 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Test FormData calls for {{op}}</h1>
-    </section>
-{% endblock header %}
+{% block headerblock %}
+    <h1>Test FormData calls for {{op}}</h1>
+{% endblock headerblock %}
 
 {% block onload %}
     {% if op == 'put' %}

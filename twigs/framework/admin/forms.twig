@@ -54,11 +54,9 @@
     document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}; framework.containerClick(e);});
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Forms</h1>
-    </section>
-{% endblock header %}
+{% block headerblock %}
+    <h1>Forms</h1>
+{% endblock headerblock %}
 
 {% block main %}
     <section class="row">
