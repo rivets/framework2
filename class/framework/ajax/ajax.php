@@ -96,7 +96,7 @@
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        final private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
+        private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
             if (!empty($pairs) && $user == NULL)
             { // you can't have permissions without a user
