@@ -7,39 +7,51 @@
 {% block setup %}
     function shbit(btn, id)
     {
-        var ce = $('#'+id)
-        if (btn.is(':checked'))
+        var ce = document.getElementById(id)
+        if (btn.checked)
         { // show fieldset and enable inputs
-            ce.show();
-            $('input', ce).prop('disabled', false)
+            ce.style.display ='block';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = false;
+            });
         }
         else
         { // hide and disable
-            ce.hide();
-            $('input', ce).prop('disabled', true)
+            ce.style.display = 'none';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = true;
+            });
         }
     }
 {% endblock setup %}
 
 {% block onload %}
-    $('#mailconfig,#cfem,#recapkeys').hide()
-    $('#mailon').on('click', function(){ shbit($(this), 'mailconfig'); });
-    $('#regis').on('click', function(){ shbit($(this), 'cfem'); });
-    $('#recap').on('change', function(){
-        if ($(this).is(':checked'))
-        {
-           $('#recapkeys').hide();
-        }
-        else
-        {
-           $('#$recapkeys').show();
-        }
+    for (let id of ['mailconfig', 'cfem', 'recapkeys', 'ssltime'])
+    {
+        document.getElementById(id).style.display = 'none';
+    }
+    document.getElementById('mailon').addEventListener('change', function(e){ shbit(this, 'mailconfig'); });
+    document.getElementById('regis').addEventListener('change', function(e){ shbit(this, 'cfem'); });
+    document.getElementById('fssl').addEventListener('change', function(e){
+        document.getElementById('ssltime').style.display = this.checked ? 'block' : 'none';
+    });
+    document.querySelectorAll('[name="recaptcha"]').forEach(function(item){
+        item.addEventListener('change', function(){
+            if (this.value == 0)
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'none' : 'block';
+            }
+            else
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'block' : 'none';
+            }
+        });
     });
 {% endblock onload %}
 
 {% block main%}
     <div class="row">
-        <div class="ml-auto col-md-8 mr-auto">
+        <div class="mx-auto col-md-8">
             <h1>Framework Installer</h1>
             {% if fail %}
                 <h2>Error!!</h2>
@@ -268,28 +280,34 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
+                                <input type="checkbox" id="fssl" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
                             </label>
                         </div>
+                        <div id="ssltime">
+                            <div class="form-group">
+                                <label for="st" class="control-label">Enforced SSL Period in seconds</label>
+                                <input type="text" id="st" name="ssltime" value="31536000" placeholder="Time period in seconds" class="form-control"/>
+                            </div>
+                        </div>
                         <div class="form-check">
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" id="recap" class="form-check-input" name="recaptcha" value="0" checked/> No Captcha
                             </label>
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" class="form-check-input" name="recaptcha" value="2"/> Recaptcha V2
                             </label>
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" class="form-check-input" name="recaptcha" value="3"/> Recaptcha V3
                             </label>
                         </div>
                         <div id="recapkeys">
                             <div class="form-group">
                                 <label for="rk" class="control-label">Your ReCaptcha Key</label>
-                                <input type="text" id="rk" name="recaptchakey" value="{{name}}" placeholder="ReCaptcha Key" value="" class="form-control"/>
+                                <input type="text" id="rk" name="recaptchakey" placeholder="ReCaptcha Key" value="" class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="srk" class="control-label">Your ReCaptcha Secret</label>
-                                <input type="text" id="srk" name="recaptchasecret" value="{{name}}" placeholder="ReCaptcha Secret" value="" class="form-control"/>
+                                <input type="text" id="srk" name="recaptchasecret" placeholder="ReCaptcha Secret" value="" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">

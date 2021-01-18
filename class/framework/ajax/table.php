@@ -29,6 +29,7 @@
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
+            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ],
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
 /**
@@ -136,9 +137,8 @@
         private function delete(string $table, array $rest) : void
         {
             if (\Support\SiteInfo::isFWTable($table))
-            { // you cannot delete framework tables
+            { // nobody can delete framework tables
                 throw new Forbidden('Permission Denied');
-                /* NOT REACHED */
             }
             try
             {
@@ -147,7 +147,6 @@
             catch (\Exception $e)
             {
                 throw new Forbidden($e->getMessage());
-                /* NOT REACHED */
             }
             $this->context->web()->noContent();
         }
@@ -166,7 +165,6 @@
             if (count($rest) < 2)
             {
                 throw new BadValue('No table name');
-                /* NOT REACHED */
             }
             $table = strtolower($rest[1]);
             if (!$this->context->hasAdmin())

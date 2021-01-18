@@ -12,7 +12,7 @@
         framework.addMore(e);
     });
     document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
-        return $(this).parsley().validate()
+        return fwdom.mkjQ(this).parsley().validate()
     });
     for (var node of document.querySelectorAll('.delb'))
     {
@@ -22,15 +22,13 @@
     }
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Page &ldquo;{{bean.name}}&rdquo;</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Page &ldquo;{{bean.name}}&rdquo;</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/message.twig' %}
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}

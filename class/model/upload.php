@@ -155,5 +155,43 @@
                 throw new \Framework\Exception\Forbidden('Cannot chdir '.$dir);
             }
         }
+/**
+ * Generate an error message
+ *
+ * @param Context $context
+ * @param array   $fa
+ *
+ * @return void
+ */
+        public static function fail(Context $context, array $fa) : void
+        {
+            if ($fa['name'] !== '' && !$fa['name'] === NULL)
+            {
+                if ($fa['size'] == 0)
+                {
+                    $context->local()->message(\Framework\Local::ERROR, $fa['name'].' is an empty file');
+                }
+                else
+                {
+                    switch ($fa['error'])
+                    {
+                    case UPLOAD_ERR_OK: // this shouldn't happen
+                        throw new \Framework\Exception\InternalError('Should not be OK');
+
+                    case UPLOAD_ERR_NO_FILE:
+                        $context->local()->message(\Framework\Local::ERROR, $fa['name'].' No file sent');
+                        break;
+
+                    case UPLOAD_ERR_INI_SIZE:
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $context->local()->message(\Framework\Local::ERROR, $fa['name'].' File size exceeded');
+                        break;
+
+                    default:
+                        throw new \Framework\Exception\InternalError($fa['name'].' Unknown upload error');
+                    }
+                }
+            }
+        }
     }
 ?>

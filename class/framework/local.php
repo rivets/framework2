@@ -514,21 +514,20 @@
             if (Config::DBHOST !== '' && $loadrb)
             { // looks like there is a database configured
                 \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
-                \R::freeze(!$devel); // freeze DB for production systems
-                $this->fwconfig = [];
-                try
-                { // sometimes RB does not get a connection
-                    foreach (\R::findAll(FW::CONFIG) as $cnf)
-                    {
-                        $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
-                        $this->fwconfig[$cnf->name] = $cnf;
-                    }
-                }
-                catch (\Exception)
-                { // But what do we do?
-                    $this->errorHandler->earlyFail('OVERLOAD', 'The site is currently experiencing a heavy load, please try again later.', TRUE);
+                if (!\R::testConnection())
+                {
+                    $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
                     /* NOT REACHED */
                 }
+                \R::freeze(!$devel); // freeze DB for production systems
+                $this->fwconfig = [];
+
+                foreach (\R::findAll(FW::CONFIG) as $cnf)
+                {
+                    $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
+                    $this->fwconfig[$cnf->name] = $cnf;
+                }
+
                 if ($loadtwig)
                 {
                     /** @psalm-suppress PossiblyNullReference */

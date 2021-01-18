@@ -12,6 +12,7 @@
     use \Config\Framework as FW;
     use \Support\Context;
     use \RedBeanPHP\OODBBean as Bean;
+    use \R;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -24,6 +25,7 @@
         protected static $fwtables = [
             FW::CONFIG,
             FW::CONFIRM,
+            FW::CSP,
             FW::FORM,
             FW::FORMFIELD,
             FW::PAGE,
@@ -64,7 +66,7 @@
             {
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
-            $collection = \R::findCollection($bean, $where, $params);
+            $collection = R::findCollection($bean, $where, $params);
             /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
             while ($item = $collection->next())
             {
@@ -90,9 +92,9 @@
             }
             if (empty($params))
             { // no offset and no params so use findAll
-                 return \R::findAll($bean, $where);
+                 return R::findAll($bean, $where);
             }
-            return \R::find($bean, $where, $params);
+            return R::find($bean, $where, $params);
         }
 /**
  * Return the count for a particular bean
@@ -105,7 +107,7 @@
  */
         public function count(string $bean, string $where = '', array $params = []) : int
         {
-            return \R::count($bean, $where, $params);
+            return R::count($bean, $where, $params);
         }
 /**
  * Get all the user beans
@@ -200,7 +202,7 @@
  */
         public function form(string $name) : ?Bean
         {
-            return \R::findOne(FW::FORM, 'name=?', [$name]);
+            return R::findOne(FW::FORM, 'name=?', [$name]);
         }
 /**
  * Get all users with a particular context/role
@@ -219,7 +221,7 @@
         {
             $rnid = is_object($rolename) ? $rolename->getID() : $this->context->rolename($rolename)->getID();
             $rcid = is_object($rolecontext) ? $rolecontext->getID() : $this->context->rolecontext($rolecontext)->getID();
-            $res = \R::findMulti(FW::USER, 'select '.FW::USER.'.* from '.FW::USER.' join '.FW::ROLE.' on ('.FW::ROLE.
+            $res = R::findMulti(FW::USER, 'select '.FW::USER.'.* from '.FW::USER.' join '.FW::ROLE.' on ('.FW::ROLE.
                 '.'.FW::USER.'_id = '.FW::USER.'.id) where '.FW::ROLENAME.'_id=? and '.FW::ROLECONTEXT.'_id = ?'.
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
                 [$rnid, $rcid]);
@@ -234,7 +236,7 @@
   */
         public static function tableExists(string $table) : bool
         {
-            return in_array(\strtolower($table), \R::inspect());
+            return \in_array(\strtolower($table), R::inspect());
         }
  /**
   * Check to see if a table has a given field
@@ -246,7 +248,7 @@
   */
         public static function hasField(string $table, string $field) : bool
         {
-            $tbs = \R::inspect($table);
+            $tbs = R::inspect($table);
             return isset($tbs[$field]);
         }
 /**
@@ -270,7 +272,7 @@
         public static function tablecount(bool $all = FALSE) : int
         {
             $x = \count(\R::inspect());
-            return $all ? $x : $x - count(self::$fwtables);
+            return $all ? $x : $x - \count(self::$fwtables);
         }
 /**
  * Return bean table data
@@ -283,7 +285,7 @@
         public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
         {
             $beans = [];
-            foreach(\R::inspect() as $tab)
+            foreach(R::inspect() as $tab)
             {
                 if ($all || !self::isFWTable($tab))
                 {
@@ -303,10 +305,10 @@
  * @return int
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function pagecount(string $table, int $pagesize, string $where = '', array $pars = []) : int
+        public function pageCount(string $table, int $pagesize, string $where = '', array $pars = []) : int
         {
-            $count = \R::count($table, $where, $pars);
-            return (int) floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
+            $count = R::count($table, $where, $pars);
+            return (int) \floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
         }
 /**
  * Get a mimetype for file
@@ -328,6 +330,23 @@
                 \finfo_close($finfo);
             }
             return $mime;
+        }
+/**
+ * Call functions based on the method - useful for RESTful systems
+ *
+ * @param Context $context
+ *
+ * @return string
+ * @psalm-suppress InvalidReturnType
+ */
+        public function crudDriver(Context $context) : string
+        {
+            $method = strtolower($context->web()->method());
+            if (!method_exists(static::class, $method))
+            { // no function implementing this method
+                throw new \Framework\Exception\BadOperation($method.' is not supported');
+            }
+            return $this->{$method}($context, $context->rest());
         }
     }
 ?>

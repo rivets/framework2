@@ -11,7 +11,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto mb-5">
+        <article class="mx-auto col-md-10 mb-5">
             {% include '@util/message.twig' %}
             {{f.startform({method: 'post', multi: TRUE})}}
                 {{f.file({id: 'f0', name: 'upload', label: 'File'})}}
@@ -24,12 +24,12 @@
     </section>
     {% if download is defined %}
         <section class="row">
-            <article class="ml-auto col-md-10 mr-auto mb-5">
+            <article class="mx-auto col-md-10 mb-5">
                 <p class="class="text-center mt-4">
-                    <a class="btn btn-primary" href="{{base}}/devel/upload/get/{{download}}">Download</a>
+                    <a class="btn btn-primary" href="{{base}}/devel/test/upload/get/{{download}}">Download</a>
                 </p>
                 <p class="class="text-center">
-                    <a class="btn btn-primary" href="{{base}}/devel/upload/delete/{{download}}">Delete</a>
+                    <a class="btn btn-primary" href="{{base}}/devel/test/upload/delete/{{download}}">Delete</a>
                 </p>
             </article>
         </section>

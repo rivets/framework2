@@ -12,9 +12,9 @@
     function deltable(e)
     {
         fwdom.stop(e);
-        let tr = this.closest('tr');
-        let table = tr.querySelector('.bname').innerHTML;
-        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+        let tr = this.closest('[data-bean]');
+        let table = tr.getAttribute('data-bean');
+        fwdom.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
                 framework.ajax(base+'/ajax/table/'+table, {
@@ -22,7 +22,7 @@
                 }).done(function(){
                     framework.fadetodel(tr);
                 }).fail(function(jx){
-                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                    fwdom.alert('<h3>Delete failed</h3>'+jx.responseText);
                 });
             }
         });
@@ -33,18 +33,18 @@
     const nbf = document.getElementById('nbform');
     nbf.addEventListener('submit', function(e){ e.preventDefault();});
     fwdom.mkjQ('#nbform').parsley();
-    fwdom.on('#addb', 'click', function(e){
-        const btn = this;
+    document.getElementById('addb').addEventListener('click', function(e){
+        fwdom.stop(e);
+        const btn = e.target;
         const form = document.getElementById('nbform');
-        this.disabled = true;
-        e.preventDefault()
+        btn.disabled = true;
         let name = document.getElementById('xbn').value;
         let sp = null;
         let error = false;
-        for (let x of document.querySelectorAll('.bname'))
+        for (let x of document.querySelectorAll('[data-bean]'))
         {
-            const t = x.innerHTML
-            if (t == name)
+            const t = x.getAttribute('data-bean');
+            if (t === name)
             {
                 error = true;
                 break;
@@ -57,19 +57,20 @@
         }
         if (error)
         {
-            bootbox.alert('That bean already exists');
+            fwdom.alert('That bean already exists');
             this.disabled = false;
             return;
         }
         let dt = {method: 'post'};
+        let data = {};
         for (let v of ['field', 'sample'])
         {
-            let fields = form.querySelectorAll('input[name="'+v+'[]"]');
-            for (let index in fields)
-            {
-                dt[v+'[' + index + ']'] = fields[index].value;
-            }
+            form.querySelectorAll('input[name="'+v+'[]"]').forEach(function(item, index){
+
+                data[v+'[' + index + ']'] = item.value;
+            });
         }
+        dt['data'] = data;
         const fn = function(data){
             let newd = document.createElement('tr');
             newd.setAttribute('data-id', data);
@@ -84,12 +85,12 @@
             }
             else
             {
-                document.getElementById('btab').insertBefore(newd, sp.parentNode);
+                document.getElementById('btab').insertBefore(newd, sp);
             }
             fwdom.mkjQ('#nbean').modal('hide');
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
-            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+            fwdom.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function() { btn.disabled = false; });
     });
     fwdom.mkjQ('#nbean').on('show.bs.modal', function(e){

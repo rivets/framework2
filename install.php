@@ -5,14 +5,21 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2020 Newcastle University
  */
-    define('DBPREFIX', '');
-    define('FWCONTEXT', 'Site');
-    define('TESTCONTEXT', 'Test');
-    define('ADMINROLE', 'Admin');
-    define('DEVELROLE', 'Developer');
-    define('TESTROLE', 'Tester');
+    $dir = \dirname(__DIR__, 2);
+    /** @psalm-suppress UnusedFunctionCall */
+    set_include_path(
+        implode(PATH_SEPARATOR, [
+            implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
+            get_include_path(),
+        ])
+    );
+    /** @psalm-suppress UnusedFunctionCall */
+    spl_autoload_extensions('.php');
+    spl_autoload_register();
 
-    global $verbose, $cwd;
+    use Config\Framework as FW;
+
+    global $verbose;
 /**
  * Function to cleanup after errors
  *
@@ -23,12 +30,12 @@
  */
     function cleanup()
     {
-        global $cwd, $verbose;
+        global $verbose;
 
-        chdir($cwd);
+        chdir(__DIR__);
         if ($verbose)
         {
-            echo '<p>Cleaning '.$cwd.'</p>';
+            echo '<p>Cleaning '.__DIR__.'</p>';
         }
         foreach (['class/config/config.php', '.htaccess'] as $file)
         {
@@ -53,7 +60,7 @@
  */
     function addfwconfig(string $name, $value, bool $local) : void
     {
-        $fwc = \R::dispense('fwconfig');
+        $fwc = \R::dispense(FW::CONFIG);
         $fwc->name = $name;
         $fwc->local = $local ? 1 : 0;
         if (is_array($value))
@@ -116,6 +123,11 @@
     function exception_handler($e)
     {
         echo '<h2>There has been an installer system exception</h2>';
+        echo '<p>'.$e->getMessage().'</p>';
+        ob_start();
+        debug_print_backtrace(1, 2);
+        $back = ob_get_clean(); // will get used later in make500
+        echo str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($back))).'</pre>';
         cleanup();
         exit;
         /** NOT REACHED **/
@@ -225,10 +237,6 @@
     }
 
     $verbose = isset($_GET['verbose']);
-/*
- * Remember where we are in the file system
- */
-    $cwd = __DIR__;
  /*
   * Set up all the system error handlers
   */
@@ -314,12 +322,12 @@
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
-        'bootbox'       => ['https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.5.2/bootbox.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'bootbox'       => ['https://cdn.jsdelivr.net/npm/bootbox@5.5.2/bootbox.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
-        'parsley'       => ['https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        'parsley'       => ['https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js', 1, '', '', 0, 0, 'js'],
+        'popperjs'      => ['https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
         'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
         'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
@@ -368,26 +376,12 @@
         break;
     }
 
-    $beans = [
-        'fwconfig',
-        'confirm',
-        'form',
-        'formfield',
-        'page',
-        'pagerole',
-        'role',
-        'rolecontext',
-        'rolename',
-        'table',
-        'user',
-    ];
-
     $fwcsp = [
         'connect-src'   => ["'self'"],
         'default-src'   => ["'self'"],
         'font-src'      => ["'self'", 'data:', '*.fontawesome.com'], // fontawesome uses data: internally
         'img-src'       => ["'self'", 'data:'],
-        'script-src'    => ["'self'", 'cdn.jsdelivr.net', 'cdnjs.cloudflare.com', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
+        'script-src'    => ["'self'", 'cdn.jsdelivr.net', 'code.jquery.com', '*.fontawesome.com'], // fontawesome in case a kit is used later
         'style-src'     => ["'self'", 'cdn.jsdelivr.net', '*.fontawesome.com'],
     ];
 /*
@@ -491,7 +485,8 @@
 
             'usecsp'        => ['', TRUE, FALSE, 'bool', TRUE],
             'reportcsp'     => ['', TRUE, FALSE, 'bool', FALSE],
-            'forcessl'      => ['', FALSE, FALSE, 'bool', FALSE],
+            'forcessl'      => ['', TRUE, FALSE, 'bool', FALSE],
+            'ssltime'       => ['', TRUE, FALSE, 'string', '31536000'], // one year
 
             'recaptcha'     => ['RECAPTCHA', FALSE, TRUE, 'int', 0],
             'recaptchakey'  => ['RECAPTCHAKEY', FALSE, FALSE, 'string', ''],
@@ -606,7 +601,6 @@
                 }
             }
             //fputs($fd, "\tpublic const DBOP\t= '".($options['regexp'] ? ' regexp ' : '=')."';".PHP_EOL);
-
             fputs($fd, "
         public static function setup()
         {
@@ -621,14 +615,6 @@
             ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
             " : '')."]);
         }".PHP_EOL.PHP_EOL);
-
-            fputs($fd, '
-        public static $defaultCSP = ['.PHP_EOL);
-            foreach ($fwcsp as $key => $val)
-            {
-                fputs($fd, "                '".$key."' => [\"".implode('", "', $val).'"],'.PHP_EOL);
-            }
-            fputs($fd, '        ];'.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.PHP_EOL);
             if (!$hasgah)
             {
@@ -687,7 +673,18 @@
                 \R::setup($cvalue['dbtype'].':host='.$cvalue['dbhost'].';dbname='.$cvalue['dbname'], (string) $cvalue['dbuser'], (string) $cvalue['dbpass']); // mysql initialiser
                 \R::freeze(FALSE); // we need to be able to update things on the fly!
                 \R::nuke(); // clear everything.....
-                $user = R::dispense(DBPREFIX.'user');
+                foreach ($fwcsp as $key => $val)
+                {
+                    foreach ($val as $host)
+                    { //make the CSP database table
+                        $bn = \R::dispense(FW::CSP);
+                        $bn->type = $key;
+                        $bn->host = $host;
+                        $bn->essential = 1;
+                        \R::store($bn);
+                    }
+                }
+                $user = R::dispense(FW::USER);
                 $user->email = $cvalue['sysadmin'];
                 $user->login = $cvalue['admin'];
                 $user->password = password_hash((string) $cvalue['adminpw'], PASSWORD_DEFAULT);
@@ -698,12 +695,12 @@
     /**
      * Now initialise the confirmation code table
      */
-                $conf = R::dispense(DBPREFIX.'confirm');
+                $conf = R::dispense(FW::CONFIRM);
                 $conf->code = 'this is a rubbish code';
                 $conf->issued = $now;
                 $conf->kind = 'C';
                 \R::store($conf);
-                $user->xownConfirm[] = $conf;
+                $user->{'xown'.FW::CONFIRM}[] = $conf;
                 \R::store($user);
                 \R::trash($conf);
     /**
@@ -730,16 +727,16 @@
      *
      * These are both granted to the admin user.
      */
-                $cname = makerc(DBPREFIX.'rolecontext', FWCONTEXT);
+                $cname = makerc(FW::ROLECONTEXT, FW::FWCONTEXT);
     // Admin role name
-                $arname = makerc(DBPREFIX.'rolename', ADMINROLE);
-                makerole(DBPREFIX.'role', $now, $user, $cname, $arname);
+                $arname = makerc(FW::ROLENAME, FW::ADMINROLE);
+                makerole(FW::ROLE, $now, $user, $cname, $arname);
     // Developer Role name
-                $drname = makerc(DBPREFIX.'rolename', DEVELROLE);
-                makerole(DBPREFIX.'role', $now, $user, $cname, $drname);
+                $drname = makerc(FW::ROLENAME, FW::DEVELROLE);
+                makerole(FW::ROLE, $now, $user, $cname, $drname);
     // Testing role and context
-                $tname = makerc(DBPREFIX.'rolecontext', TESTCONTEXT);
-                $trname = makerc(DBPREFIX.'rolename', TESTROLE);
+                $tname = makerc(FW::ROLECONTEXT, FW::TESTCONTEXT);
+                $trname = makerc(FW::ROLENAME, FW::TESTROLE);
     /**
      * See code below for significance of the entries (kind, source, admin, needlogin, devel, active)
      *
@@ -773,7 +770,7 @@
                 ];
                 foreach ($pages as $pname => $data)
                 {
-                    $page = \R::dispense(DBPREFIX.'page');
+                    $page = \R::dispense(FW::PAGE);
                     /** @psalm-suppress PossiblyUndefinedArrayOffset **/
                     $page->name = $options['regexp'] ? '^'.$pname.'$' : $pname;
                     $page->kind = $data[0];
@@ -784,15 +781,15 @@
                     \R::store($page);
                     if ($data[2])
                     { // must be an admin
-                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $arname);
+                        makerole(FW::PAGEROLE, $now, $page, $cname, $arname);
                     }
                     if ($data[4])
                     { // must be a developer
-                        makerole(DBPREFIX.'pagerole', $now, $page, $cname, $drname);
+                        makerole(FW::PAGEROLE, $now, $page, $cname, $drname);
                     }
                     if ($data[6])
                     { // must be a tester
-                        makerole(DBPREFIX.'pagerole', $now, $page, $tname, $trname);
+                        makerole(FW::PAGEROLE, $now, $page, $tname, $trname);
                     }
                 }
                 $tpl = 'success.twig';

@@ -19,58 +19,51 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#nrform').parsley();
-    $('#addb').on('click', function(e){
+    fwdom.mkjQ('#nrform').parsley();
+    document.getElementById('addb').addEventListener('click', function(e){
         fwdom.stop(e);
         const btn = this;
-        btn.setAttribute('disabled', true);
+        btn.disabled = true;
         const pn = document.getElementById('nrname').value;
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
-            btn.setAttribute('disabled', false);
+            fwdom.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
+            btn.disabled = false;
             return;
         }
         let sp = null;
-        let error = false;
         for (let r of document.getElementsByClassName('rname'))
         {
             let t = r.innerHTML;
             if (t == pn)
             {
-                error = true;
-                break;
+                fwdom.alert('That {{beantype}} name already exists');
+                btn.disabled = false;
+                return;
             }
             if (t > pn)
             {
-                sp = fwdom.mkjQ(r);
+                sp = r;
                 break;
             }
         };
-        if (error)
-        {
-            bootbox.alert('That {{beantype}} name already exists');
-            btn.setAttribute('disabled', false);
-            return;
-        }
 
         framework.ajax('{{base}}/ajax/bean/{{beantype}}/', {
             method: 'post',
             data: {name : pn},
         }).done(function(data){
-            const htm = '<tr data-id="'+data+'"><td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td></tr>';
-            let nx = sp == null ? $(htm).appendTo($('#rtab tbody')) : $(htm).insertBefore(sp.parent());
-            nx.data('id', data)
-            $('#nroco').modal('hide');
+            framework.addElement(document.getElementById('rtab'), 'tr', {'data-id': data},
+                '<td>'+pn+'</td><td>'+framework.mktoggle('fixed', 0)+'</td><td>{{i.delete('delb')}}</td>', sp);
+            fwdom.mkjQ('#nroco').modal('hide');
         }).fail(function(jqXHR, textStatus, errorThrown){
-            bootbox.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
+            fwdom.alert('<h3>Failed to create new {{beantype}} name</h3>'+jqXHR.responseText);
         }).always(function(e){
-            btn.setAttribute('disabled', false);
+            btn.disabled = false;
         });
     });
-    document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.tableClick(e);});
+    document.getElementById('rtab').addEventListener('click', function(e){e.data = {bean: '{{beantype}}', clicks}; framework.containerClick(e);});
 
-    $('#nroco').on('show.bs.modal', function(e){
+    fwdom.mkjQ('#nroco').on('show.bs.modal', function(e){
         document.getElementById('nrform').reset();
     });
 {% endblock onload %}
@@ -82,17 +75,15 @@
 
 {% set pages = siteinfo.pagecount(beantype, pagesize) %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-	<h1>{{ctype}} Names</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>{{ctype}} Names</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <table class="table table-striped table-hover" id="rtab">
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -100,7 +91,7 @@
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="rtab">
                     {% for r in attribute(siteinfo, fcall, [page, pagesize]) %}
                         <tr data-id="{{r.id}}">
                             <td class="rname">{{r.name}}</td>

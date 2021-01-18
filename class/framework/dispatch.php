@@ -138,6 +138,7 @@
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
+            $context->web()->initCSP(); // prepare the CSP values
         }
 /**
  * Handle dispatch of a page.

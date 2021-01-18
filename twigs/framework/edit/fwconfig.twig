@@ -7,9 +7,8 @@
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
-    $('#more').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
+    document.getElementById('more').addEventListener('click', function(e){
+        fwdom.stop(e);
         const mrow = $('#mrow');
         mrow.before($('#example').clone());
         const pr = $mrow.prev();
@@ -19,8 +18,8 @@
             framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
         });
     });
-    $('#uform').on('submit', function(e){
-        return $(this).parsley().validate();
+    document.getElementById('uform').addEventListener('submit', function(e){
+        return fwdom.mkjQ(this).parsley().validate();
     });
 {% endblock onload %}
 

@@ -20,29 +20,30 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#adduform').on('submit', false).parsley();
+    fwdom.mkjQ('#adduform').on('submit', false).parsley();
     document.getElementById('addb').addEventListener('click', function(e){
-        e.preventDefault();
-        this.setAttribute('disabled', true);
+        fwdom.stop(e);
+        this.disabled = true;
         let data = {admin : 0, devel : 0};
-        document.getElementById('adduform').querySelectorAll('frm.querySelectorAll('input:checked,input:text,input:password,input[type="email"]').forEach(function(el, index){
+        document.getElementById('adduform').querySelectorAll('input:checked,input:text,input:password,input[type="email"]').forEach(function(el, index){
              data[el.getAttribute('name')] = el.value;
         });
         framework.beanCreate('user', data, function(ret){
-            $('#addu').modal('hide');
-            $('#utab').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
+            fwdom.mkjQ('#addu').modal('hide');
+            framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
+                '<td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
                 '<td>'+framework.mktoggle('confirm', data.confirm)+'</td>'+
                 '<td>'+framework.mktoggle('active', data.active)+'</td>'+
                 '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
                 '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
                 '<td>{{i.edit('editb')}}</td>' +
-                '<td>{{i.delete('delb')}}</td></tr>'
+                '<td>{{i.delete('delb')}}</td>'
             );
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
         }, 'addb');
     });
-    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.tableClick(e);}
+    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.containerClick(e);});
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -60,7 +61,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <table class="table table-striped table-hover">
                 <thead>

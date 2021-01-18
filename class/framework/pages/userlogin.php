@@ -131,74 +131,71 @@
                 {
                     throw new \Framework\Exception\BadOperation('Cannot register while logged in');
                 }
-                else
+                $fdt = $context->formdata('post');
+                $login = $fdt->fetch('login', '');
+                if ($login !== '')
                 {
-                    $fdt = $context->formdata('post');
-                    $login = $fdt->fetch('login', '');
-                    if ($login !== '')
+                    $errmess = [];
+                    $x = R::findOne('user', 'login=?', [$login]);
+                    if (!is_object($x))
                     {
-                        $errmess = [];
-                        $x = R::findOne('user', 'login=?', [$login]);
-                        if (!is_object($x))
+                        $pw = $fdt->mustFetch('password');
+                        $rpw = $fdt->mustFetch('repeat');
+                        $email = $fdt->mustFetch('email');
+                        if ($pw != $rpw)
                         {
-                            $pw = $fdt->mustFetch('password');
-                            $rpw = $fdt->mustFetch('repeat');
-                            $email = $fdt->mustFetch('email');
-                            if ($pw != $rpw)
-                            {
-                                $errmess[] = 'The passwords do not match';
-                            }
-                            if (!\Model\User::pwValid($pw))
-                            {
-                                $errmess[] = 'The password does not meet the specification';
-                            }
-                            if (preg_match('/[^a-z0-9]/i', $login))
-                            {
-                                $errmess[] = 'Your username can only contain letters and numbers';
-                            }
-                            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-                            {
-                                $errmess[] = 'Please provide a valid email address';
-                            }
-                            if (empty($errmess))
-                            {
-                                $x = R::dispense('user');
-                                $x->login = $login;
-                                $x->email = $email;
-                                $x->confirm = 0;
-                                $x->active = 1;
-                                $x->joined = $context->utcnow();
-                                R::store($x);
-                                $x->setpw($pw);
-                                $rerr = $x->register($context); // do any extra registration
-                                if (empty($rerr))
-                                {
-                                    $this->confmessage($context, $x);
-                                }
-                                else
-                                { // extra registration failed
-                                    \R::trash($x); // delete the user object
-                                    $errmess = array_merge($errmess, $rerr);
-                                }
-                            }
+                            $errmess[] = 'The passwords do not match';
                         }
-                        else
+                        if (!\Model\User::pwValid($pw))
                         {
-                            $errmess[] = 'That login is not available';
+                            $errmess[] = 'The password does not meet the specification';
                         }
-                        if (!empty($errmess))
+                        if (preg_match('/[^a-z0-9]/i', $login))
                         {
-                            $context->local()->message(Local::ERROR, $errmess);
-                            $context->local()->addval([
-                                'login' => $login,
-                                'email' => $email,
-                            ]);
+                            $errmess[] = 'Your username can only contain letters and numbers';
+                        }
+                        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                        {
+                            $errmess[] = 'Please provide a valid email address';
+                        }
+                        if (empty($errmess))
+                        {
+                            $x = R::dispense('user');
+                            $x->login = $login;
+                            $x->email = $email;
+                            $x->confirm = 0;
+                            $x->active = 1;
+                            $x->joined = $context->utcnow();
+                            R::store($x);
+                            $x->setpw($pw);
+                            $rerr = $x->register($context); // do any extra registration
+                            if (empty($rerr))
+                            {
+                                $this->confmessage($context, $x);
+                            }
+                            else
+                            { // extra registration failed
+                                \R::trash($x); // delete the user object
+                                $errmess = array_merge($errmess, $rerr);
+                            }
                         }
                     }
                     else
                     {
-                        $context->local()->message(Local::ERROR, 'Please complete the registration form');
+                        $errmess[] = 'That login is not available';
                     }
+                    if (!empty($errmess))
+                    {
+                        $context->local()->message(Local::ERROR, $errmess);
+                        $context->local()->addval([
+                            'login' => $login,
+                            'email' => $email,
+                        ]);
+                    }
+                }
+                else
+                {
+                    $context->local()->message(Local::ERROR, 'Please complete the registration form');
                 }
             }
             return '@content/register.twig';

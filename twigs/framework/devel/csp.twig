@@ -1,0 +1,94 @@
+{% set fwutils = TRUE %}
+{% set ajax = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as icon %}
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+
+{% block onload %}
+    document.getElementById('caform').addEventListener('submit', function(e){fwdom.stop(e);});
+    fwdom.on('table', 'click', function(e){
+        const targ = e.target;
+        if (targ.classList.contains('delb'))
+        {
+            let id = targ.closest('[data-id]').getAttribute('data-id');
+            framework.dodelbean(e, targ, 'fwcsp', 'this CSP Entry');
+        }
+    });
+    fwdom.on('.actb', 'click', function(e){
+        document.getElementById('caform').reset();
+        document.getElementById('ctype').value = this.previousElementSibling.innerHTML;
+        fwdom.mkjQ('#cadd').modal('show');
+    });
+    document.getElementById('addb').addEventListener('click', function(e){
+        fwdom.stop(e);
+        this.disabled = true;
+        const type = document.getElementById('ctype').value;
+        const host = document.getElementById('chost').value;
+        const essential = document.getElementById('cess').checked ? 1 : 0;
+        framework.beanCreate('fwcsp', {type, host, essential}, function(data){
+            const row = document.querySelector('[data-type="'+type+'"]');
+            if (row == undefined)
+            {
+                const script = document.querySelector('[data-type="default-src"]');
+                const node = script.cloneNode(true);
+                node.setAttribute('data-type', type);
+                node.querySelector('.stype').innerHTML = type;
+                const tbody = node.querySelector('tbody');
+                tbody.innerHTML = '<tr data-id="'+data+'"><td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td></tr>';
+                script.parentNode.append(node);
+            }
+            else
+            {
+                framework.addElement(row.querySelector('tbody'), 'tr', {'data-id': data}, '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>');
+                /*const tbody = row.querySelector('tbody')
+                const node = document.createElement('tr');
+                node.setAttribute('data-id', data);
+                node.innerHTML = '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>';
+                tbody.appendChild(node);*/
+            }
+            fwdom.mkjQ('#cadd').modal('hide');
+        }, this);
+    });
+{% endblock onload %}
+
+{% block headerbody %}
+        <h1>Setup CSP</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    {% for type,beans in csp %}
+        <section class="row mb-2 border-bottom border-dark" data-type="{{type}}">
+            <article class="ml-auto col-md-2 ">
+                <p class="text-center stype">{{type}}</p>
+                <p class="text-center actb">{{icon.fa('plus')}}<br/><small>Add host</small></p>
+            </article>
+            <article class="col-md-8 mr-auto" data>
+                <table class="table w-100">
+                    <tbody>
+                        {% for h in beans %}
+                            <tr data-id="{{h.getID}}">
+                                <td class="w-50">{{h.host}}</td>
+                                <td class="w-50 text-center">{%if h.essential and not force %}{{icon.fa('ban')}}{% else %}{{icon.delete('delb')}}{% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </article>
+        </section>
+    {% endfor %}
+    {{m.open({id: 'cadd', title: 'Add CSP'})}}
+    <div class="modal-body">
+        {{f.startform({id: 'caform'})}}
+            {{f.text({label: 'Type', id: 'ctype', ph: 'CSP Type'})}}
+            {{f.text({label: 'Host', id: 'chost', ph: 'Host pattern'})}}
+            {{f.checkbox({labels:['essential'], ids: ['cess'], values: [1]})}}
+        {{f.endform()}}
+    </div>
+    {{m.close({action: 'Add', id: 'addb'})}}
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

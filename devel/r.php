@@ -32,6 +32,13 @@ class R
         return self::$dummy;
     }
 /**
+ * @return bool
+ */
+    public static function testConnection() : bool
+    {
+        return FALSE;
+    }
+/**
  * @return void
  */
     public static function close() : void

@@ -278,13 +278,25 @@
         public function upload(Context $context) : string
         {
             $fdt = $context->formdata('file');
+            if (isset($_GET['ok']))
+            {
+                $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+            }
             try
             {
                 if ($fdt->exists('upload'))
                 {
                     $upl = \R::dispense('upload');
-                    $upl->savefile($context, $fdt->fileData('upload'), FALSE, $context->user(), 0);
-                    $context->local()->addval('download', $upl->getID());
+                    $fa = $fdt->fileData('upload');
+                    if (!$upl->savefile($context, $fa, FALSE, $context->user(), 0))
+                    {
+                        \Model\Upload::fail($context, $fa);
+                    }
+                    else
+                    {
+                        $context->local()->message(\Framework\Local::MESSAGE, $fa['name'].' uploaded');
+                        $context->local()->addval('download', $upl->getID());
+                    }
                 }
                 $rest = $context->rest();
                 if (count($rest) == 4)
@@ -298,8 +310,11 @@
 
                     case'delete':
                         \R::trash($context->load('upload', $id));
-                        $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+                        $context->divert('/devel/test/upload?ok=1'); // this clears the RESTful URL
                         break;
+
+                    default:
+                        throw new \Framework\Exception\BadValue('Illegal operation "'.$rest[2].'"');
                     }
                 }
             }

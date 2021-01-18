@@ -36,6 +36,20 @@
                 $tpl = '@devel/ajax.twig';
                 break;
 
+            case 'csp': // configure CSP values
+                $context->web()->initCSP(); // this will set up the necessary data if it hasn't already been done.
+                $csp = [];
+                foreach (\R::find(\Config\Framework::CSP, 'order by type,host') as $cd)
+                {
+                    $csp[$cd->type][] = $cd;
+                }
+                $context->local()->addval([
+                    'csp' => $csp,
+                    'force' => $context->formdata('get')->exists('force'),
+                ]);
+                $tpl = '@devel/csp.twig';
+                break;
+
             case 'hack': // execute some code.
                 /** @psalm-suppress UnresolvableInclude */
                 include $context->local()->makebasepath('devel', 'hack.php');
@@ -46,15 +60,12 @@
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
                 {
-                    if (method_exists($test, $rest[1]))
-                    {
-                        $tpl = $test->{$rest[1]}($context);
-                    }
-                    else
+                    if (!method_exists($test, $rest[1]))
                     {
                         $context->web()->bad();
                         /* NOT REACHED */
                     }
+                    $tpl = $test->{$rest[1]}($context);
                 }
                 break;
             }

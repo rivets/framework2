@@ -229,7 +229,7 @@
                     { // this is in the User twig content directory
                         $name = ['content', $m[1]];
                     }
-                    elseif (preg_match('%@([a-z]+)/(.*)%', $name, $m))
+                    elseif (preg_match('%@([a-z]+)/(.*)%', $p->source, $m))
                     { // this is using a system twig
                         $name = ['framework', $m[1], $m[2]];
                     }

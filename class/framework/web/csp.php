@@ -33,7 +33,7 @@
         public function saveCSP(string $type, string $data) : string
         {
             $hash = \Framework\Support\Security::getinstance()->hash($data);
-            $this->addCSP($type, "'".$hash."'");
+            $this->addCSP([$type => ["'".$hash."'"]]);
             return $hash;
         }
 /**
@@ -49,11 +49,22 @@
             if (!is_array($type))
             {
                 assert($host !== '');
-                $type = [$type => $host];
+                $type = [$type => [$host]];
             }
             foreach ($type as $t => $h)
             {
-                $this->csp[$t][] = $h;
+                if (!is_array($h))
+                {
+                    $h = [$h];
+                }
+                if (!isset($this->csp[$t]))
+                {
+                    $this->csp[$t] = $h;
+                }
+                else
+                {
+                    $this->csp[$t] = array_merge($this->csp[$t], $h);
+                }
             }
         }
 /**
@@ -74,7 +85,10 @@
             }
             foreach ($type as $t => $h)
             {
-                $this->nocsp[$t][] = $h;
+                if (isset($this->csp[$t]))
+                {
+                    $this->csp[$t] = array_diff($this->csp[$t], is_array($h) ? $h : [$h]);
+                }
             }
         }
 /**
@@ -92,15 +106,11 @@
             if ($local->configval('usecsp'))
             {
                 $csp = '';
-                foreach (\Config\Config::$defaultCSP as $key => $val)
+                foreach ($this->csp as $key => $val)
                 {
-                    if (isset($this->nocsp[$key]))
-                    {
-                        $val = array_diff($val, $this->nocsp[$key]);
-                    }
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).(isset($this->csp[$key]) ? ' '.implode(' ', $this->csp[$key]) : '').';';
+                        $csp .= ' '.$key.' '.implode(' ', $val).';';
                     }
                 }
                 if ($local->configval('reportcsp'))
@@ -116,6 +126,51 @@
                     'Content-Security-Policy'   => $csp,
                 ]);
             }
+        }
+/**
+ * Initialise CSP
+ *
+ * If the data is in the database then use that, if not thensetup the table from Config::$defaultCSP
+ *
+ */
+        public function initCSP()
+        {
+            $local = $this->context->local();
+            if ($local->configval('usecsp'))
+            {
+                if (\Support\SiteInfo::tableExists(\Config\Framework::CSP))
+                { // we have the table
+                    $this->csp = [];
+                    foreach (\R::findAll(\Config\Framework::CSP) as $csp)
+                    {
+                        $this->csp[$csp->type][] = $csp->host;
+                    }
+                }
+                else
+                { // copy the default set
+                    $this->csp = \Config\Config::$defaultCSP;
+                    foreach ($this->csp as $type => $host)
+                    { // now set up the database for future working...
+                        foreach ($host as $h)
+                        {
+                            $bn = \R::dispense(\Config\Framework::CSP);
+                            $bn->type = $type;
+                            $bn->host = $h;
+                            $bn->essential = 1;
+                            \R::store($bn);
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * Get the CSP values
+ *
+ * @return array
+ */
+        public function getCSP() : array
+        {
+            return $this->csp;
         }
     }
 ?>
