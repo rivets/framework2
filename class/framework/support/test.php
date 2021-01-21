@@ -284,7 +284,7 @@
             }
             try
             {
-                if ($fdt->exists('upload'))
+                if ($fdt->hasForm())
                 {
                     $upl = \R::dispense('upload');
                     $fa = $fdt->fileData('upload');

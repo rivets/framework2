@@ -256,8 +256,8 @@
             $adon = $local->makebasepath('admin', 'adminonly');
             $adminonly = file_exists($adon);
             $fdt = $context->formdata('post');
-            if ($fdt->exists('msg'))
-            {
+            if ($fdt->hasForm())
+            { // it's a post
                 $msg = $fdt->mustFetch('msg');
                 $onlyadmin = $fdt->fetch('onlyadmin', 0);
                 $online = $fdt->fetch('online', 0);

@@ -89,7 +89,7 @@
         public static function add(Context $context) : bool
         {
             $fdt = $context->formdata('post');
-            if ($fdt->exists('name'))
+            if ($fdt->hasForm())
             {
                 $name = strtolower($fdt->mustFetch('name'));
                 if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
