@@ -64,6 +64,7 @@
  * @param string                $bean
  * @param string                $field
  *
+ * @throws Forbidden
  * @return void
  */
         final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
@@ -96,7 +97,7 @@
  * @return void
  * @psalm-suppress PossiblyNullReference
  */
-        final private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
+        private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
             if (!empty($pairs) && $user == NULL)
             { // you can't have permissions without a user

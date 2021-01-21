@@ -11,6 +11,7 @@
 
     use \Config\Framework as FW;
     use \Framework\Exception\BadOperation;
+    use \Framework\Exception\BadValue;
     use \R;
 /**
  * Operations on beans
@@ -37,11 +38,10 @@
  */
         private $model = '';
 /**
- * Generate a no content or call the ajaxResult method on a bean if it exists in its Model
+ * Generate a no content, created or call the ajaxResult method on a bean if it exists in its Model
  *
  * @param \RedBean\OODBBean $bean       The bean
  * @param string            $method     The method used to get here
- * @param string            $op         The ajax op that was invoked
  *
  * @return void
  */
@@ -67,6 +67,10 @@
 
 /**
  *  make a new one /ajax/bean/KIND/
+ *
+ * @param string        $beanType  The bean type
+ * @param array<string> $rest      The rest of the URL
+ * @param bool          $log       If TRUE then log the changes
  *
  * @return void
  * @psalm-suppress UnusedMethod
@@ -95,27 +99,57 @@
 /**
  * update a field   /ajax/bean/KIND/ID/FIELD/[FN]
  *
+ * If FIELD has the value * then the formdata has several inputs named by field names, if it is a field
+ * name then the form contains a single field called value
+ *
+ * @param string        $beanType  The bean type
+ * @param array<string> $rest      The rest of the URL
+ * @param bool          $log       If TRUE then log the changes
+ * @param string        $method    patch or put - only needed because we are sharing put and patch because of bad routers.
+ *
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private function patch(string $beanType, array $rest, bool $log) : void
+        private function patch(string $beanType, array $rest, bool $log, string $method = 'patch') : void
         {
+            $perms = $this->controller->permissions(static::class, self::$permissions);
+            $user = $this->context->user();
             [$id, $field] = $rest;
+            $fdt = $this->context->formdata('put');
             $more = $rest[2] ?? NULL;
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType, $field);
             $bean = $this->context->load($beanType, (int) $id, TRUE);
-            $old = $bean->{$field};
-            $bean->{$field} = empty($more) ? $this->context->formdata('put')->mustFetch('value') : $bean->{$more[0]}($this->context->formdata('put')->mustFetch('value'));
+            $old = [];
+            foreach ($field == '*' ? $fdt->fetchAll() : [$field => $fdt->mustFetch('value')] as $fname => $value)
+            {
+                if (is_array($value))
+                { // we are looking at the form here so make sure there is no attempt to pass an array value
+                    throw new BadValue('Arrays are not supported');
+                }
+                this->checkAccess($this->context->user(), $perms, $beanType, $fname); // can we access this field?
+                if (!\Support\Siteinfo::hasField($beanType, $fname))
+                { // we are looking at the form here so make sure there is no attempt to pass an array value
+                    throw new BadValue($beanType.' has no such field as '.$fname);
+                }
+                $old[$fname] = $bean->{$fname};
+                $bean->{$fname} = is_null($more) ? $value : $bean->{$more[0]}($value);
+            }
             R::store($bean);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $field, $old);
+                foreach ($old as $of => $ov)
+                {
+                    BeanLog::mklog($this->context, BeanLog::UPDATE, $beanType, $bean->getID(), $of, $ov);
+                }
             }
-            $this->ajaxResult($bean, 'patch');
+            $this->ajaxResult($bean, $method);
         }
 /**
  * Map put onto patch
+ *
+ * @param string        $beanType  The bean type
+ * @param array<string> $rest      The rest of the URL
+ * @param bool          $log       If TRUE then log the changes
  *
  * @return void
  * @psalm-suppress UnusedMethod
@@ -123,10 +157,14 @@
  */
         private function put(string $beanType, array $rest, bool $log) : void
         {
-            $this->patch($beanType, $rest, $log);
+            $this->patch($beanType, $rest, $log, 'patch');
         }
 /**
  * DELETE /ajax/bean/KIND/ID/
+ *
+ * @param string        $beanType  The bean type
+ * @param array<string> $rest      The rest of the URL
+ * @param bool          $log       If TRUE then log the changes
  *
  * @return void
  * @psalm-suppress UnusedMethod
@@ -138,7 +176,7 @@
             $id = $rest[0] ?? 0; // get the id from the URL
             if ($id <= 0)
             {
-                throw new \Framework\Exception\BadValue('Missing value');
+                throw new BadValue('Missing value');
             }
             $bean = $this->context->load($beanType, (int) $id);
             if ($log)
