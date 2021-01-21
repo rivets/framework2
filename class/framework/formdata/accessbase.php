@@ -97,5 +97,23 @@
         {
             return new \ArrayIterator($this->getValue($name, $default, FALSE, TRUE)[1]);
         }
+/**
+ * Return an ArrayIterator over all the values in the form
+ *
+ * @return \ArrayIterator
+ */
+        public function fetchAll() : \ArrayIterator
+        {
+            return new \ArrayIterator($this->getsuper());
+        }
+/**
+ * Return the array of values
+ *
+ * @return array
+ */
+        public function fetchRaw() : array
+        {
+            return $this->getsuper();
+        }
     }
 ?>
