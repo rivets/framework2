@@ -34,13 +34,13 @@
 /**
  * Make a confirmation code and store it in the database
  *
- * @param Context   $context The context bean
- * @param object    $bn A User bean
- * @param string    $kind
+ * @param Context                 $context The context bean
+ * @param \RedBeanPHP\OODBBean    $bn A User bean
+ * @param string                  $kind
  *
  * @return string
  */
-        private function makecode(Context $context, $bn, string $kind) : string
+        private function makecode(Context $context, \RedBeanPHP\OODBBean $bn, string $kind) : string
         {
             R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
             $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
@@ -55,37 +55,37 @@
 /**
  * Mail a confirmation code
  *
- * @param Context   $context    The context object
- * @param object    $bn         A User bean
+ * @param Context                 $context    The context object
+ * @param \RedBeanPHP\OODBBean    $bn         A User bean
  *
  * @return void
  */
-        private function sendconfirm(Context $context, $bn) : void
+        private function sendconfirm(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
             $local = $context->local();
             $code = $this->makecode($context, $bn, 'C');
-            mail($bn->email, 'Please confirm your email address for '.$local->configval('sitename'),
+            $local->sendmail([$bn->email], 'Please confirm your email address for '.$local->configval('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
                 $local->configval('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
-                'From: '.$local->configval('noreply')
+                ['From' => $local->configval('noreply')]
             );
         }
 /**
  * Mail a password reset code
  *
- * @param Context  $context     The context object
- * @param object   $bn          A User bean
+ * @param Context               $context     The context object
+ * @param \RedBeanPHP\OODBBean   $bn          A User bean
  *
  * @return void
  */
-        private function sendreset(Context $context, $bn) : void
+        private function sendreset(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
             $local = $context->local();
             $code = $this->makecode($context, $bn, 'P');
-            mail($bn->email, 'Reset your '.$local->configval('sitename').' password',
+            $local->sendmail([$bn->email], 'Reset your '.$local->configval('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
                 $local->configval('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
-                'From: '.$local->configval('sitenoreply')
+                ['From' => $local->configval('sitenoreply')]
             );
         }
 /**
