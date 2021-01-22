@@ -15,8 +15,13 @@
         ['confirm', framework.dotoggle, 'confirm'],
         ['active', framework.dotoggle, 'active'],
         ['devb', framework.dotoggle, '{{constant('\\Config\\Framework::DEVELROLE')}}'],
-        ['editb', framework.goedit]
+        ['editb', framework.goedit],
+        ['mailb', doMail],
     ];
+    function doMail(event)
+    {
+        window.location = e.target.getAttribute('href');
+    }
 {% endblock setup %}
 
 {% block onload %}
@@ -77,7 +82,7 @@
                     {% for u in siteinfo.users(page, pagesize) %}
                         <tr data-id="{{u.id}}">
                             <td>{{u.login}}</td>
-                            <td><a href="mailto:{{u.email}}">{{u.email}}</a></td>
+                            <td><a href="mailto:{{u.email}}" class="mailb">{{u.email}}</a></td>
                             <td>{{f.tick(u.isconfirmed, 'confirm')}}</td>
                             <td>{{f.tick(u.isactive, 'active')}}</td>
                             <td>{{f.tick(u.isadmin, 'admb')}}</td>
