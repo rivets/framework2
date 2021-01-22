@@ -10,8 +10,8 @@
     namespace Framework\Support;
 
     use \Config\Framework as FW;
-    use \Support\Context;
     use \R;
+    use \Support\Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
