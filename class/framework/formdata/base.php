@@ -18,7 +18,7 @@
 /**
  * @var int Indicates which Superglobal we are using
  */
-        private $which;
+        protected $which;
 /**
  * @var array The array that contains the relevant values.
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
