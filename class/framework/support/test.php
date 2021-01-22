@@ -226,7 +226,7 @@
  * @psalm-suppress PossiblyNullPropertyFetch
  * @psalm-suppress PossiblyNullArgument
  */
-            $msg = $context->local()->sendmail([$context->user()->email], 'test', 'test');
+            $msg = $context->local()->sendmail([$context->user()->email], 'test', '<b>test</b>', 'plain test', ['From' => $context->user()->email]);
             if ($msg === '')
             {
                 $context->local()->message(\Framework\Local::MESSAGE, 'sent');
