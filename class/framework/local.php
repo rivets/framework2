@@ -64,7 +64,7 @@
  * Return state of devel flag
  *
  * @return bool
- **/
+ */
         public function develMode()
         {
             return $this->devel;
