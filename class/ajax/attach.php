@@ -18,7 +18,7 @@
 /**
  * @var array If you want to use the permission checking functions. If you just want to control access
  *            then just put the list of contextname/rolename pairs in the result of requires.
- * @phpcsSuppress SlevomatCodingStandard.Sniffs.Classes.UnusedPrivateElementsSniff
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
          private static $permissions = [];
 /**
