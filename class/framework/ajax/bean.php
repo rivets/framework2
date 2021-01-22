@@ -22,7 +22,6 @@
  * @var array
  */
         private static $permissions = [
-            FW::CSP         => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], [] ],
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -127,7 +126,7 @@
                     throw new BadValue('Arrays are not supported');
                 }
                 this->checkAccess($this->context->user(), $perms, $beanType, $fname); // can we access this field?
-                if (!\Support\Siteinfo::hasField($beanType, $fname))
+                if (!\Support\SiteInfo::hasField($beanType, $fname))
                 { // we are looking at the form here so make sure there is no attempt to pass an array value
                     throw new BadValue($beanType.' has no such field as '.$fname);
                 }
