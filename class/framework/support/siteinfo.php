@@ -250,7 +250,7 @@
   */
         public static function hasField(string $table, string $field) : bool
         {
-            if (!isset(self::fields[$table]))
+            if (!isset(self::$fields[$table]))
             {
                 self::$fields[$table] = R::inspect($table);
             }
