@@ -26,9 +26,10 @@
  *
  * @return void
  */
-        public function setuptwig(bool $cache = FALSE) : void
+        public function __construct(Context $context, array $options)
         {
-            $twigdir = $this->makebasepath('twigs');
+            parent::__construct($context, $options);
+            $twigdir = $context->local()->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
@@ -46,44 +47,54 @@
             {
                 $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
             }
-            $this->twig = new \Twig\Environment(
+            $this->engine = new \Twig\Environment(
                 $loader,
-                ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
+                ['cache' => isset($options['cache']) ? $this->makebasepath('twigcache') : FALSE]
             );
-            $this->twig->addExtension(new \Framework\Utility\Plural());
+            $this->engine->addExtension(new \Framework\Utility\Plural());
 /*
  * A set of basic values that get passed into the TWIG renderer
  *
  * Add new key/value pairs to this array to pass values into the twigs
  */
-            $this->twig->addGlobal('base', $this->base());
-            $this->twig->addGlobal('assets', $this->assets());
+            $this->engine->addGlobal('base', $this->base());
+            $this->engine->addGlobal('assets', $this->assets());
             foreach (self::$msgnames as $mn)
             {
-                $this->twig->addGlobal($mn, []);
+                $this->engine->addGlobal($mn, []);
             }
-            $this->tvals = [];
         }
 /**
- * Calls a user defined function with the twig object as a parameter.
- * The user can then add extensions, filters etc.
+ * Add a global template variable
  *
- * @param callable     $fn      A user defined function
+ * @param string    $name
+ * @param string    $value
  *
  * @return void
  */
-        public function extendtwig(callable $fn) : void
+        public function addGlobal(string $name, string $val) : void
         {
-            $fn($this->twig);
+            $this->engine->addGlobal($name, $val);
         }
 /**
- * Return TRUE if Twig is enabled
+ * Add a template engine extension
  *
- * @return bool
+ * @param object $plugin
+ *
+ * @return void
  */
-        public function hastwig()
+        public function addExtension(object $plugin) : void
         {
-            return is_object($this->twig);
+            $this->engine->addExtension($plugin);
+        }
+/**
+ * Enable debugging mode
+ *
+ * @return void
+ */
+        public function enableDebug() : void
+        {
+            $this->engine->enableDebug();
         }
 /**
  * Render a twig and return the string - do nothing if the template is the empty string
@@ -93,7 +104,7 @@
  *
  * @return string
  */
-        public function getrender(string $tpl, array $vals = [])
+        public function getRender(string $tpl, array $vals = [])
         {
             if ($tpl === '')
             { // no template so no output
@@ -109,24 +120,7 @@
             $this->clearMessages();
             $this->addval($vals); // set up any values that have been passed
             /** @psalm-suppress PossiblyNullReference */
-            return $this->twig->render($tpl, $this->tvals);
-        }
-/**
- * Render a twig - do nothing if the template is the empty string
- *
- * @param string   $tpl       The template
- * @param mixed[]  $vals      Values to set for the twig
- * @param string   $mimeType
- * @param int      $status
- *
- * @return void
- */
-        public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
-        {
-            if ($tpl !== '')
-            {
-                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimeType, $status);
-            }
+            return $this->engine->render($tpl, $this->tvals);
         }
 /**
  * Add a value into the values stored for rendering the template
@@ -148,7 +142,7 @@
                 {
                     if ($tglobal)
                     {
-                        $this->twig->addGlobal($key, $aval);
+                        $this->engine->addGlobal($key, $aval);
                     }
                     else
                     {
@@ -158,7 +152,7 @@
             }
             elseif ($tglobal)
             {
-                $this->twig->addGlobal($vname, $value);
+                $this->engine->addGlobal($vname, $value);
             }
             else
             {
@@ -178,7 +172,7 @@
  *
  * {% include '@util/message.twig %}
  *
- * somewhere in the relevant twig (usually at the top of the main body)
+ * somewhere in the relevant template (usually at the top of the main body)
  *
  * @param int                   $kind   The kind of message
  * @param string|array<string>  $value  The value to be stored or an array of values

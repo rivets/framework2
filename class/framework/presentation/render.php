@@ -32,7 +32,7 @@
  *
  * @return void
  */
-        public function __construct(bool $cache = FALSE)
+        public function __construct(Context $context, array $options = [])
         {
             $this->clearValues();
             $this->clearMessages();
@@ -50,6 +50,29 @@
             $fn($this->engine);
         }
 /**
+ * Add a global template variable
+ *
+ * @param string    $name
+ * @param string    $value
+ *
+ * @return void
+ */
+        abstract public function addGlobal(string $name, string $val) : void;
+/**
+ * Add a template engine extension
+ *
+ * @param object $plugin
+ *
+ * @return void
+ */
+        abstract public function addExtension(object $plugin) : void;
+/**
+ * Enable debugging mode
+ *
+ * @return void
+ */
+        abstract public function enableDebug() : void;
+/**
  * Render a template and return the string - do nothing if the template is the empty string
  *
  * @param string    $tpl    The template
@@ -57,7 +80,7 @@
  *
  * @return string
  */
-        abstract public function getrender(string $tpl, array $vals = []) : string;
+        abstract public function getRender(string $tpl, array $vals = []) : string;
 /**
  * Render a template - do nothing if the template is the empty string
  *
