@@ -53,6 +53,7 @@
                     throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
                 }
                 $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add
             }
 
             \R::store($bean);
