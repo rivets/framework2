@@ -41,10 +41,6 @@
             $context = $this->context;
             $rest = $context->rest();
             $type = strtolower($rest[1]);
-            if (!in_array($type, ['note', 'project']))
-            {
-                throw new \Framework\Exception\BadValue('Invalid bean');
-            }
             $bean = $context->load($type, $rest[2]);
             $fdt = $this->context->formdata('file');
             $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
