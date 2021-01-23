@@ -22,6 +22,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @throws \Framework\Exception\Forbidden
  */
         final public function handle() : void
         {

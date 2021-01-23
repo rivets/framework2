@@ -22,7 +22,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site ADmins to do this
         }
@@ -32,6 +32,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -55,6 +56,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -64,7 +66,7 @@
             {
                 throw new BadValue('No such item');
             }
-            $res = new \stdClass();
+            $res = new \stdClass;
             $fdt = $this->context->formdata('put');
             foreach (['value', 'type', 'name'] as $fld)
             {
@@ -94,6 +96,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -112,6 +115,7 @@
  * @param ?\RedBeanPHP\OODBBean $v
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -126,17 +130,15 @@
 /**
  * Config value operation
  *
- * @throws \Framework\Exception\BadOperation
- * @throws \Framework\Exception\BadValue
- *
  * @return void
+ * @throws \Framework\Exception\BadOperation
  */
         final public function handle() : void
         {
             [$name] = $this->restCheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
-            $method = strtolower($this->context->web()->method());
-            if (!method_exists(self::class, $method))
+            $method = \strtolower($this->context->web()->method());
+            if (!\method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }

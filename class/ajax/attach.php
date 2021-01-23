@@ -20,7 +20,7 @@
  *            then just put the list of contextname/rolename pairs in the result of requires.
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-         private static $permissions = [];
+         private static array $permissions = [];
 /**
  * Return permission requirements. The version in the base class requires logins and adds nothing else.
  * If that is what you need then you can remove this method. This function is called from the base
@@ -28,7 +28,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []];
         }

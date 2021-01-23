@@ -23,32 +23,32 @@
 /*
  * Constants that are used to get the names of the Framework's internal tables
  */
-        public const ADMINROLE = 'Admin'; // role names
-        public const DEVELROLE = 'Developer';
-        public const TESTROLE = 'Tester';
+        public const ADMINROLE      = 'Admin'; // role names
+        public const DEVELROLE      = 'Developer';
+        public const TESTROLE       = 'Tester';
 
-        public const DBPREFIX = '';
+        public const DBPREFIX       = ''; // this probably should be in Config though....
 
-        public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
-        public const TESTCONTEXT = self::DBPREFIX.'Test';
+        public const FWCONTEXT      = self::DBPREFIX.'Site'; // context names
+        public const TESTCONTEXT    = self::DBPREFIX.'Test';
 
-        public const AJAX = self::DBPREFIX.'fwajax'; // table names
-        public const CONFIG = self::DBPREFIX.'fwconfig';
-        public const CONFIRM = self::DBPREFIX.'confirm';
-        public const CSP = self::DBPREFIX.'fwcsp';
-        public const FORM = self::DBPREFIX.'form';
-        public const FORMFIELD = self::DBPREFIX.'formfield';
-        public const PAGE = self::DBPREFIX.'page';
-        public const PAGEROLE = self::DBPREFIX.'pagerole';
-        public const ROLE = self::DBPREFIX.'role';
-        public const ROLECONTEXT = self::DBPREFIX.'rolecontext';
-        public const ROLENAME = self::DBPREFIX.'rolename';
-        public const TABLE = self::DBPREFIX.'table';
-        public const TEST = self::DBPREFIX.'fwtest';
-        public const USER = self::DBPREFIX.'user';
+        public const AJAX           = self::DBPREFIX.'fwajax'; // table names
+        public const CONFIG         = self::DBPREFIX.'fwconfig';
+        public const CONFIRM        = self::DBPREFIX.'confirm';
+        public const CSP            = self::DBPREFIX.'fwcsp';
+        public const FORM           = self::DBPREFIX.'form';
+        public const FORMFIELD      = self::DBPREFIX.'formfield';
+        public const PAGE           = self::DBPREFIX.'page';
+        public const PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const ROLE           = self::DBPREFIX.'role';
+        public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
+        public const ROLENAME       = self::DBPREFIX.'rolename';
+        public const TABLE          = self::DBPREFIX.'table';
+        public const TEST           = self::DBPREFIX.'fwtest';
+        public const USER           = self::DBPREFIX.'user';
 
-        public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
-        public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
+        public const AUTHTOKEN      = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
+        public const AUTHKEY        = 'Some string of text.....'; // The key used to encode the token validation
 /**
  * Initialise some standard things for any invocation of a page
  *
@@ -56,23 +56,23 @@
  */
         public static function initialise() : void
         {
-            error_reporting(E_ALL | E_STRICT);
+            \error_reporting(E_ALL | E_STRICT);
 /*
  * Setup the autoloader
  */
-            $dir = dirname(__DIR__, 2);
+            $dir = \dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall */
-            set_include_path(
+            \set_include_path(
                 implode(PATH_SEPARATOR, [
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
-                    get_include_path(),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
+                    \get_include_path(),
                 ])
             );
             /** @psalm-suppress UnusedFunctionCall */
-            spl_autoload_extensions('.php');
-            spl_autoload_register();
+            \spl_autoload_extensions('.php');
+            \spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php';
         }
@@ -88,9 +88,9 @@
  */
         public static function constant($name, $default = '')
         {
-            if (defined('\\Config\\Config::'.$name))
+            if (\defined('\\Config\\Config::'.$name))
             {
-                return constant('\\Config\\Config::'.$name);
+                return \constant('\\Config\\Config::'.$name);
             }
             return $default;
         }

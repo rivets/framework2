@@ -18,7 +18,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -34,8 +34,8 @@
  *
  * @param \Support\Context    $context The context object
  *
- * @throws \Framework\Exception\BadOperation
  * @return void
+ * @throws \Framework\Exception\BadOperation
  */
         final public function handle() : void
         {

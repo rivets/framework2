@@ -19,7 +19,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
         ];
 /**
@@ -27,7 +27,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // login not required
         }
@@ -52,7 +52,7 @@
             $order = $fdt->fetch('order', $field);
             if ($order !== $field)
             { // strop the fieldname if it occurs in the order spec
-                $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
+                $order = \preg_replace('/\b'.$ofield.'\b/', $field, $order);
             }
             $limit = $fdt->fetch('limit', 10);
             $search = $fdt->fetch('search', '%');

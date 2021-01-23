@@ -21,7 +21,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -35,7 +35,7 @@
 /**
  * @var string
  */
-        private $model = '';
+        private string $model = '';
 /**
  * Generate a no content, created or call the ajaxResult method on a bean if it exists in its Model
  *
@@ -44,7 +44,7 @@
  *
  * @return void
  */
-        private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method)
+        private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method) : void
         {
 /*
  * @psalm-suppress RedundantCondition
@@ -72,6 +72,7 @@
  * @param bool          $log       If TRUE then log the changes
  *
  * @return void
+ * @throws BadOperation
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -107,6 +108,7 @@
  * @param string        $method    patch or put - only needed because we are sharing put and patch because of bad routers.
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -165,6 +167,7 @@
  * @param bool          $log       If TRUE then log the changes
  *
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -179,7 +182,7 @@
             $bean = $this->context->load($beanType, (int) $id);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', json_encode($bean->export()));
+                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', \json_encode($bean->export()));
             }
             R::trash($bean); // If there is a delete function in the model it will get called automatically.
             $this->context->web()->noContent();
@@ -187,27 +190,23 @@
 /**
  * Carry out operations on beans
  *
- * @throws BadOperation
- * @throws \Framework\Exception\BadValue
- * @throws \Framework\Exception\Forbidden
- *
  * @return void
+ * @throws BadOperation
  */
         final public function handle() : void
         {
             [$beanType, $rest] = $this->restCheck(1);
-            $method = strtolower($this->context->web()->method());
-            if (!method_exists(self::class, $method))
+            $method = \strtolower($this->context->web()->method());
+            if (!\method_exists(self::class, $method))
             {
-                throw new \Framework\Exception\BadOperation($method.' is not supported');
+                throw new BadOperation($method.' is not supported');
             }
-            /** @psalm-suppress UndefinedConstant */
             $this->model = '\\Model\\'.$beanType;
             /**
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion
              */
-            if (method_exists($this->model, 'canAjaxBean'))
+            if (\method_exists($this->model, 'canAjaxBean'))
             { // permission checking for methods exists for this bean type
                 /** @psalm-suppress InvalidStringClass */
                 $this->model::canAjaxBean($this->context, $method);

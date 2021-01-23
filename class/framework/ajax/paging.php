@@ -18,7 +18,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
             FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
         ];
@@ -27,7 +27,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // login not required
         }

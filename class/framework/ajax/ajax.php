@@ -17,20 +17,12 @@
     abstract class Ajax
     {
 /**
- * @var Ajax
- */
-        protected $controller;
-/**
- * @var Context
- */
-        protected $context;
-/**
  * Constructor
  */
-        public function __construct(Context $context, \Support\Ajax $controller)
+        public function __construct(
+            protected Context $context,
+            protected \Support\Ajax $controller)
         {
-            $this->context = $context;
-            $this->controller = $controller;
             [$login, $perms] = $this->requires();
             if ($login && !$context->hasUser())
             {
@@ -149,7 +141,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []]; // default to requiring login but no specific context/role
         }
