@@ -54,6 +54,7 @@
                 else
                 {
                     $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                    //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add
                 }
             }
 
