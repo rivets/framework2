@@ -42,10 +42,6 @@
             $context = $this->context;
             $rest = $context->rest();
             $type = strtolower($rest[1]);
-            if (!in_array($type, ['note', 'project']))
-            {
-                throw new \Framework\Exception\BadValue('Invalid bean');
-            }
             $bean = $context->load($type, $rest[2]);
             $fdt = $this->context->formdata('file');
             $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
@@ -56,7 +52,8 @@
                 {
                     throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' size: '.$file['size'].' error code:'.$file['error']);
                 }
-                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl; // add description into the link array.
+                //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add
             }
 
             \R::store($bean);
