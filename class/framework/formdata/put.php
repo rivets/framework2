@@ -14,11 +14,15 @@
  */
     class Put extends AccessBase
     {
+/**
+ * Parses the form data and extract the fields
+ *
+ * @return array
+ */
         private function parse() : array
         {
             $result = [];
-            //get raw input data
-            $data = file_get_contents('php://input');
+            $data = file_get_contents('php://input'); //get raw input data
             if (empty($data))
             {
                 return NULL;
@@ -49,13 +53,13 @@
             }
             return $result;
         }
-
-        /**
-         * Parses body param headers
-         * @param $headerContent
-         *
-         * @return array
-         */
+/**
+ * Parses body param headers
+ *
+ * @param string  $data  The header data
+ *
+ * @return array
+ */
         private function parseHeaders(string $data) : array
         {
             $headers = [];

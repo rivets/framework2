@@ -6,3 +6,6 @@ composer.lock
 
 *.codekit3
 *.php~
+docp
+dodiff
+mkcp

@@ -64,6 +64,7 @@
  * @param string                $bean
  * @param string                $field
  *
+ * @throws Forbidden
  * @return void
  */
         final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void

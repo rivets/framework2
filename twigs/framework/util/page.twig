@@ -36,7 +36,7 @@
     {% if editable %}
         <link rel="stylesheet" {{h.urlattr(fwurls.editablecss)}}/>
     {% endif %}
-    <link rel="stylesheet" href="{{assets}}/css/layout.min.css" media="screen"/>
+    <link rel="stylesheet" href="{{assets}}/css/layout.min.css{{context.local.develMode ? '?debug' : ''}}" media="screen"/>
 
     {% block head %}
     {% endblock head %}

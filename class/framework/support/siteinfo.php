@@ -10,9 +10,8 @@
     namespace Framework\Support;
 
     use \Config\Framework as FW;
-    use \Support\Context;
-    use \RedBeanPHP\OODBBean as Bean;
     use \R;
+    use \Support\Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
@@ -25,7 +24,6 @@
         protected static $fwtables = [
             FW::CONFIG,
             FW::CONFIRM,
-            FW::CSP,
             FW::FORM,
             FW::FORMFIELD,
             FW::PAGE,
@@ -39,6 +37,10 @@
  * @var \Support\Context  The Context object
  */
         protected $context;
+/**
+ * @var array Field information for tables
+ */
+        private static $fields = [];
 /**
  * Class constructor. The concrete class using this trait can override it.
  *
@@ -248,8 +250,11 @@
   */
         public static function hasField(string $table, string $field) : bool
         {
-            $tbs = R::inspect($table);
-            return isset($tbs[$field]);
+            if (!isset(self::$fields[$table]))
+            {
+                self::$fields[$table] = R::inspect($table);
+            }
+            return isset(self::$fields[$table][$field]);
         }
 /**
  * Check if table is a framework table

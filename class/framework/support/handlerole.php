@@ -170,7 +170,7 @@
         public function editroles(\Support\Context $context) : void
         {
             $fdt = $context->formdata('post');
-            if ($fdt->exists('exist'))
+            if ($fdt->hasForm())
             {
                 foreach ($fdt->fetchArray('exist') as $ix => $rid)
                 {

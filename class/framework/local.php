@@ -57,6 +57,19 @@
  */
         private array $fwconfig       = [];
 /**
+ * @var bool   Developer mode?
+ */
+        private $devel          = FALSE;
+/**
+ * Return state of devel flag
+ *
+ * @return bool
+ */
+        public function develMode()
+        {
+            return $this->devel;
+        }
+/**
  * Send mail if possible
  *
  * @param string[]       $to       An array of people to send to.
@@ -410,6 +423,7 @@
         {
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
+            $this->devel = $devel;
 /*
  * If you want to be able to move the system arbitrarily you will need
  * the functionality of the next block of code.
