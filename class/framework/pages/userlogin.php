@@ -43,7 +43,7 @@
         private function makecode(Context $context, \RedBeanPHP\OODBBean $bn, string $kind) : string
         {
             R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
-            $code = hash('sha256', $bn->getID.$bn->email.$bn->login.uniqid());
+            $code = hash('sha256', $bn->getID().$bn->email.$bn->login.uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
             $conf->issued = $context->utcnow();
