@@ -18,7 +18,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -33,13 +33,13 @@
 /**
  * @var array<string> Search ops
  */
-        private static $searchOps = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
+        private static array $searchOps = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
 /**
  * Return permission requirements
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // Permission check done in handle
         }
@@ -58,7 +58,7 @@
             $value = $this->context->formdata('get')->fetch('value', '');
             $incv = ' ?';
             if ($op == '4')
-            {
+            { // this is a contains
                 $value = '%'.$value.'%';
                 $op = 'like';
             }
@@ -71,7 +71,7 @@
                 $op = self::$searchOps[$op];
             }
             $res = [];
-            $fields = array_keys(\R::inspect($bean));
+            $fields = \array_keys(\R::inspect($bean));
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass();

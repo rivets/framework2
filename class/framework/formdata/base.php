@@ -131,7 +131,7 @@
             $etrack = [];
             while (TRUE) // iterate over the array of keys
             {
-                $key = array_shift($keys);
+                $key = \array_shift($keys);
                 $etrack[] = $key;
                 if (!isset($part[$key]))
                 { // missing item so fail or return default
@@ -243,7 +243,7 @@
  */
         public function hasForm() : bool
         {
-            return count($this->super);
+            return \count($this->super);
         }
     }
 ?>

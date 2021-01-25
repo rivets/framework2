@@ -12,6 +12,7 @@
     use \Config\Framework as FW;
     use \Framework\Exception\BadValue;
     use \Framework\Exception\Forbidden;
+    use \R;
 /**
  * Operations on database tables
  */
@@ -20,7 +21,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -53,18 +54,18 @@
                 /* NOT REACHED */
             }
             $fdt = $this->context->formdata('post');
-            $bn = \R::dispense($table);
+            $bn = R::dispense($table);
             foreach ($fdt->fetchArray('field') as $ix => $fname)
             {
-                $fname = strtolower($fname);
-                if (preg_match('/[a-z][a-z0-9]*/', $fname))
+                $fname = \strtolower($fname);
+                if (\preg_match('/[a-z][a-z0-9]*/', $fname))
                 {
                     $bn->$fname = $fdt->fetch(['sample', $ix], '');
                 }
             }
-            \R::store($bn);
-            \R::trash($bn);
-            \R::exec('truncate `'.$table.'`');
+            R::store($bn);
+            R::trash($bn);
+            R::exec('truncate `'.$table.'`');
             $this->context->web()->created('');
         }
 /**
@@ -93,7 +94,7 @@
                     /* NOT REACHED */
                 }
                 $f2 = $value;
-                $fields = \R::inspect($table);
+                $fields = R::inspect($table);
                 $type = $fields[$f1];
                 break;
             case 'type':
@@ -106,7 +107,7 @@
             }
             try
             {
-                \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
+                R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
             }
             catch (\Exception $e)
             {
@@ -142,7 +143,7 @@
             }
             try
             {
-                \R::exec('drop table `'.$table.'`');
+                R::exec('drop table `'.$table.'`');
             }
             catch (\Exception $e)
             {
@@ -166,12 +167,12 @@
             {
                 throw new BadValue('No table name');
             }
-            $table = strtolower($rest[1]);
+            $table = \strtolower($rest[1]);
             if (!$this->context->hasAdmin())
             { // not admin so check...
                 $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
             }
-            $method = strtolower($this->context->web()->method());
+            $method = \strtolower($this->context->web()->method());
             if (!method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');

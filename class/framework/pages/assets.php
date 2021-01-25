@@ -16,11 +16,11 @@
     class Assets extends \Framework\SiteAction
     {
 /** @var string The file name */
-        private $file = '';
+        private string $file = '';
 /** @var int    Last modified time for the file */
-        private $mtime = 0;
+        private int $mtime = 0;
 /** @var array<string> Mime type values */
-        private static $mtypes = [
+        private static array $mtypes = [
             ''      => 'text/plain',
             'css'   => 'text/css',
             'js'    => 'text/javascript',
@@ -41,23 +41,23 @@
  *
  * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string
         {
             chdir($context->local()->assetsdir());
 
             $rest = $context->rest();
-            $this->file = implode(DIRECTORY_SEPARATOR, $rest);
-            $this->mtime = filemtime($this->file);
+            $this->file = \implode(DIRECTORY_SEPARATOR, $rest);
+            $this->mtime = \filemtime($this->file);
 /**
  * PHP file info does not give the correct mime type for compressed css files
  * so we need to do it ourselves which is a pain
  */
-            $fname = array_pop($rest);
+            $fname = \array_pop($rest);
             /** @psalm-suppress PossiblyFalseArgument */
             $dotp = strrchr($fname, '.');
             if ($dotp !== FALSE)
             {
-                $ext = strtolower(substr($dotp, 1));
+                $ext = \strtolower(substr($dotp, 1));
             }
             else
             {
@@ -85,7 +85,7 @@
  */
         public function makeetag(Context $context) : string
         {
-            return sprintf('%u', crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
+            return \sprintf('%u', \crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
  * Check an etag to see if we need to send the page again or not.
@@ -97,7 +97,7 @@
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return substr($tag, 0, -1) === substr($this->makeetag($context), 0, -1);
+            return \substr($tag, 0, -1) === \substr($this->makeetag($context), 0, -1);
         }
 /**
  * Make a maximum age - overrides function in SiteAction

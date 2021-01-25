@@ -18,7 +18,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['local', 'fixed', 'defer', 'async'] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['multipart'] ],
             // FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -45,18 +45,19 @@
             $rest = $this->context->rest();
             if (count($rest) > 2)
             {
-                [$type, $bid, $field] = $this->restCheck(3);
+                [$beanType, $bid, $field] = $this->restCheck(3);
             }
             else // this is legacy
             {
                 $fdt = $this->context->formdata('post');
-                $type = $fdt->mustFetch('bean');
+                $beanType = $fdt->mustFetch('bean');
                 $field = $fdt->mustFetch('field');
                 $bid = $fdt->mustFetch('id');
             }
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
-            $bn = $this->context->load($type, (int) $bid);
-            if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())
+            $log = $this->controller->log($beanType);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType, $field);
+            $bn = $this->context->load($beanType, (int) $bid);
+            if ($beanType === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())
             { // not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {
@@ -68,11 +69,19 @@
                     $bn->addrole(FW::FWCONTEXT, $field, '', $this->context->utcnow());
                     $res = 1;
                 }
+/**
+ * @ToDo Work out how we might add this to the log if someone is wanting to log changes to the User bean!
+ */
             }
             else
             {
-                $res = $bn->$field = $bn->$field == 1 ? 0 : 1;
+                $ov = $bn->$field;
+                $res = $bn->$field = $ov == 1 ? 0 : 1;
                 \R::store($bn);
+                if ($log)
+                {
+                    BeanLog::mklog($this->context, BeanLog::UPDATE, $beanType, $bn->getID(), $field, $ov);
+                }
             }
             echo $res;
         }

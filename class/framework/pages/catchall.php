@@ -29,7 +29,7 @@
  *
  * @return string|array     A template name or array
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $tpl = '';
             $local = $context->local();

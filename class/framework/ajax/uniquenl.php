@@ -18,7 +18,7 @@
 /**
  * @var array
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::USER => [ FALSE, [], ['login'] ],
         ];
 /**
@@ -26,7 +26,7 @@
  *
  * @return array
  */
-        final public function requires()
+        final public function requires() : array
         {
             return [FALSE, []]; // does not require login
         }
@@ -41,9 +41,9 @@
  */
         final public function handle() : void
         {
-            [$bean, $field, $value] = $this->restCheck(3);
-            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
-            if (\R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
+            [$beanType, $field, $value] = $this->restCheck(3);
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType, $field);
+            if (\R::count($beanType, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $this->context->web()->notFound(); // error if it exists....
                 /* NOT REACHED */

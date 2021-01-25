@@ -23,7 +23,7 @@
  *
  * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $fdt = $context->formdata('file');
             if ($fdt->hasForm())

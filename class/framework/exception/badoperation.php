@@ -3,7 +3,7 @@
  * Exception Class for when there is a bad operation request
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-202 Newcastle University
+ * @copyright 2018-2020 Newcastle University
  * @package Framework
  * @subpackage Exceptions
  */

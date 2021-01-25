@@ -17,7 +17,7 @@
 /**
  * @var array   The base entry in the $_FILES array.
  */
-        private $far;
+        private array $far;
 /**
  * The constructor
  *

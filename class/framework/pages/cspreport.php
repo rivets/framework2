@@ -21,16 +21,15 @@
  *
  * @param Context  $context    The context object for the site
  *
- * @return string   A template name
+ * @return string|array   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $context->local()->sendmail([Config::SYSADMIN], Config::SITENAME.' CSP Error Report',
-                 file_get_contents('php://input'), // get the JSON report
+                 \file_get_contents('php://input'), // get the JSON report
                  '', ['From' => 'CSP Report <'.Config::SITENOREPLY.'>']);
-            header(\Framework\Web\StatusCodes::httpHeaderFor(\Framework\Web\StatusCodes::HTTP_NO_CONTENT));
-            exit;
-//            return ['', '', \Framework\Web\StatusCodes::HTTP_NO_CONTENT];
+            $context->web()->nocontent();
+            /* not reached */
         }
     }
 ?>

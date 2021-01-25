@@ -26,7 +26,7 @@
  *
  * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $tpl = '@devel/devel.twig';
             $rest = $context->rest();
@@ -60,7 +60,7 @@
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
                 {
-                    if (!method_exists($test, $rest[1]))
+                    if (!\method_exists($test, $rest[1]))
                     {
                         $context->web()->bad();
                         /* NOT REACHED */
@@ -71,6 +71,5 @@
             }
             return $tpl;
         }
-
     }
 ?>

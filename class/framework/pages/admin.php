@@ -87,7 +87,7 @@
  */
         private function edit(Context $context, array $rest) : string
         {
-            if (count($rest) < 3)
+            if (\count($rest) < 3)
             {
                 throw new \Framework\Exception\ParameterCount('Too few parameters');
             }
@@ -199,7 +199,7 @@
         {
             $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
-            $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
+            $upd = \json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
             { // now see if there are any config values that need updating.
                 $base = $context->local()->base();
@@ -220,7 +220,7 @@
                         $lval->local = 0;
                         foreach ($cdata as $k => $v)
                         {
-                            $lval->$k = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
+                            $lval->$k = \preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                         }
                         \R::store($lval);
                         $updated[$cname] = $cdata->value;
@@ -233,7 +233,7 @@
                 $current = trim(file_get_contents($context->local()->makebasepath('version.txt')));
                 $context->local()->addval([
                     'version'   => $upd->version,
-                    'older'     => version_compare($current, $upd->version, '<'),
+                    'older'     => \version_compare($current, $upd->version, '<'),
                     'updated'   => $updated,
                     'done'      => $doit,
                     'current'   => $current,
@@ -268,9 +268,9 @@
                 if ($online == 0)
                 {
                     $file = $onlyadmin == 1 ? $adon : $local->makebasepath('admin', 'offline');
-                    $fd = fopen($file, 'w');
-                    fputs($fd, $msg);
-                    fclose($fd);
+                    $fd = \fopen($file, 'w');
+                    \fputs($fd, $msg);
+                    \fclose($fd);
                 }
                 else
                 {
@@ -288,9 +288,9 @@
  *
  * @param Context  $context    The context object for the site
  *
- * @return string   A template name
+ * @return string|array   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $rest = $context->rest();
             $context->setpages(); // most of the pages use pagination so get values if any
@@ -344,6 +344,5 @@
             }
             return $tpl;
         }
-
     }
 ?>

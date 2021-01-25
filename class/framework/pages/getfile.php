@@ -37,10 +37,9 @@
  */
         private const DATADIR   = 'private';
 /** @var string The name of the file we are working on */
-        private $file = '';
+        private string $file = '';
 /** @var int    The last modified time for the file */
-        private $mtime = 0;
-
+        private int $mtime = 0;
 /**
  * Return data files as requested
  *
@@ -50,25 +49,25 @@
  * @throws \Framework\Exception\Forbidden
  * @return string   Always return empty string as all the file sending is done internally.
  */
-        public function handle(Context $context) : string
+        public function handle(Context $context) : string|array
         {
             $web = $context->web(); // it's used all over the place so grab it once
 
-            chdir($context->local()->basedir());
+            \chdir($context->local()->basedir());
             $fpt = $context->rest();
 
-            if (count($fpt) == 2 && $fpt[0] == 'file')
-            { // this is access by upload ID
+            if (\count($fpt) == 2 && $fpt[0] == 'file')
+            { // this is access by upload ID - don;t use context->load so that we can make a better error message.
                 $file = \R::load('upload', (int) $fpt[1]);
                 if ($file->getID() == 0)
                 {
                     throw new \Framework\Exception\BadValue('No such file');
                 }
-                $this->file = substr($file->fname, 1); // drop the separator at the start....
+                $this->file = \substr($file->fname, 1); // drop the separator at the start....
             }
             else
             {
-                chdir(self::DATADIR);
+                \chdir(self::DATADIR);
 /**
  * Depending on how you construct the URL, it's possible to do some sanity checks on the
  * values passed in. The structure assumed here is /user_id/year/month/filename so
@@ -77,8 +76,8 @@
  *
  * Always be careful that filenames do not have .. in them of course.
  */
-                $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
-                if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
+                $this->file = \implode(DIRECTORY_SEPARATOR, $fpt);
+                if (!\preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', \implode('/', $fpt)))
                 { // filename constructed is not the right format
                     throw new \Framework\Exception\BadValue('Illegal filename');
                 }
@@ -97,7 +96,7 @@
                 throw new \Framework\Exception\Forbidden('No access');
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
-            if (($this->mtime = filemtime($this->file)) === FALSE)
+            if (($this->mtime = \filemtime($this->file)) === FALSE)
             {
                 $web->internal('Lost File: '.$this->file);
                 /* NOT REACHED */
