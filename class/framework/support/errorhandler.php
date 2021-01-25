@@ -49,7 +49,7 @@
  */
         public function shutdown() : void
         {
-            if ($error = error_get_last())
+            if ($error = \error_get_last())
             { // are we terminating with an error?
                 if (isset($error['type']) && ($error['type'] == E_ERROR || $error['type'] == E_PARSE || $error['type'] == E_COMPILE_ERROR))
                 { // tell the developers about this
@@ -84,7 +84,7 @@
             }
             $this->back = $e->getTraceAsString();
             $ekey = $this->tellAdmin(
-                get_class($e).': '.$e->getMessage(),
+                $e::class.': '.$e->getMessage(),
                 0,
                 $e->getFile(),
                 $e->getLine()

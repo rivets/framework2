@@ -17,7 +17,7 @@
  */
     class ErrorHandlerBase
     {
-        private static $tellfields = [
+        private static array $tellfields = [
             'REQUEST_URI',
             'HTTP_REFERER',
             'HTTP_X_FORWARDED_FOR',
@@ -31,67 +31,56 @@
 /**
  * @var bool    If TRUE then ignore trapped errors
  */
-        protected $errignore      = FALSE;    // needed for checking preg expressions....
+        protected bool $errignore      = FALSE;    // needed for checking preg expressions....
 /**
  * @var bool    Set to TRUE if an error was trapped and ignored
  */
-        protected $wasignored     = FALSE;
+        protected bool $wasignored     = FALSE;
 /**
  * @var array    A list of errors that have been emailed to the user. Only send a message once.
  */
-        protected $senterrors     = [];
+        protected array $senterrors     = [];
 /**
  * @var bool   If TRUE then we are handling an error
  */
-        protected $error          = FALSE;
+        protected bool $error          = FALSE;
 /**
  * @var string    Backtrace info - only used with errors
  */
-        protected $back           = '';
-/**
- * @var \Framework\Local
- */
-        protected $local          = NULL;
+        protected string $back           = '';
 /**
  * @var bool
  */
-        protected $devel          = FALSE;
-/**
- * @var bool
- */
-        protected $ajax           = FALSE;
-/**
- * @var bool
- */
-        protected $debug          = FALSE;
+        protected bool $debug          = FALSE;
 /**
  * Constructor
  *
  * @param bool $devel
+ * @param bool $ajax
  * @param \Framework\Local
  */
-        public function __construct(bool $devel, bool $ajax, \Framework\Local $local)
+        public function __construct(
+            protected bool $devel,
+            protected bool $ajax,
+            protected ?\Framework\Local $local)
         {
-            $this->local = $local;
-            $this->devel = $devel;
-            $this->ajax = $ajax;
  /*
  * Set up all the system error handlers
  */
             /** @psalm-suppress ArgumentTypeCoercion */
-            set_exception_handler([$this, 'exceptionHandler']);
-            set_error_handler([$this, 'errorHandler']);
+            \set_exception_handler([$this, 'exceptionHandler']);
+            \set_error_handler([$this, 'errorHandler']);
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
             /** @psalm-suppress ArgumentTypeCoercion */
-            register_shutdown_function([$this, 'shutdown']);
+            \register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
-                if (defined(\ASSERT_ACTIVE))
+                if (\defined(\ASSERT_ACTIVE))
                 {
-                    assert_options(\ASSERT_ACTIVE, $devel);
-                    assert_options(\ASSERT_WARNING, 0);
-                    assert_options(\ASSERT_QUIET_EVAL, 1);
-                    assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
+                    \assert_options(\ASSERT_ACTIVE, $devel);
+                    \assert_options(\ASSERT_WARNING, 0);
+                    \assert_options(\ASSERT_QUIET_EVAL, 1);
+                    \assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
                 }
             }
         }
@@ -131,8 +120,8 @@
         protected function eRewrite(string $origin = '') : string
         {
             return '<pre>'.
-                str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($origin)).
-                str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($this->back))).'</pre>';
+                \str_replace(PHP_EOL, '<br/>'.PHP_EOL, htmlentities($origin)).
+                \str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', \str_replace(PHP_EOL, '<br/>'.PHP_EOL, \htmlentities($this->back))).'</pre>';
         }
 /**
  * Tell sysadmin there was an error
@@ -144,11 +133,11 @@
  *
  * @return string
  */
-        protected function tellAdmin(string $msg, $type, string $file, int $line) : string
+        protected function tellAdmin(string $msg, int|string $type, string $file, int $line) : string
         {
             $this->error = TRUE; // flag that we are handling an error
             $ekey = $file.' | '.$line.' | '.$type.' | '.$msg;
-            $subject = Config::SITENAME.' '.date('c').' System Error - '.$msg.' '.$ekey;
+            $subject = Config::SITENAME.' '.\date('c').' System Error - '.$msg.' '.$ekey;
             $origin = $subject.PHP_EOL.PHP_EOL;
             foreach (self::$tellfields as $fld)
             {
@@ -163,9 +152,9 @@
                 if (isset($_GET['fwtrace']))
                 {
                     $this->debug = TRUE;
-                    ob_start();
-                    debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
-                    $this->back .= ob_get_clean(); // will get used later in make500
+                    \ob_start();
+                    \debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
+                    $this->back .= \ob_get_clean(); // will get used later in make500
                     if (isset($_GET['fwdump']))
                     { // save the error message to a file in /debug
                         Debug::show($this->back);
@@ -211,7 +200,7 @@
                 }
                 else
                 {
-                    header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
+                    \header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
                 }
             }
         }

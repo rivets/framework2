@@ -42,7 +42,8 @@
  */
         private function makecode(Context $context, \RedBeanPHP\OODBBean $bn, string $kind) : string
         {
-            R::trashAll($bn->{'own'.FW::CONFIG.'List'});
+            // R::trashAll($bn->{'own'.\ucfirst(FW::CONFIG).'List'}); // This is the right way to do it, but currently has issues with caching in RedBean.
+            R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
             $code = \hash('sha256', $bn->getID().$bn->email.$bn->login.\uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
@@ -150,11 +151,11 @@
                         {
                             $errmess[] = 'The password does not meet the specification';
                         }
-                        if (preg_match('/[^a-z0-9]/i', $login))
+                        if (\preg_match('/[^a-z0-9]/i', $login))
                         {
                             $errmess[] = 'Your username can only contain letters and numbers';
                         }
-                        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                        if (!\filter_var($email, FILTER_VALIDATE_EMAIL))
                         {
                             $errmess[] = 'Please provide a valid email address';
                         }
@@ -176,7 +177,7 @@
                             else
                             { // extra registration failed
                                 \R::trash($x); // delete the user object
-                                $errmess = array_merge($errmess, $rerr);
+                                $errmess = \array_merge($errmess, $rerr);
                             }
                         }
                     }
@@ -387,9 +388,9 @@
  *
  * @param Context  $context    The context object for the site
  *
- * @return string   A template name
+ * @return string|array   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : string|array
         {
             $action = $context->action(); // the validity of the action value has been checked before we get here
             assert(method_exists($this, $action));

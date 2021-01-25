@@ -19,21 +19,21 @@
         use \Framework\Utility\Singleton;
 
 /** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
-        protected $luser        = NULL;
+        protected ?\RedBeanPHP\OODBBean $luser        = NULL;
 /** @var string The first component of the current URL */
-        protected $reqaction    = 'home';
+        protected string $reqaction    = 'home';
 /** @var array<string>    The rest of the current URL exploded at / */
-        protected $reqrest      = [];
+        protected array $reqrest      = [];
 /** @var bool   True if authenticated by token */
-        protected $tokenAuth    = FALSE;
+        protected bool $tokenAuth    = FALSE;
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
-        protected $roles        = [];
+        protected array $roles        = [];
 /** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
-        protected $contexts     = [];
+        protected array $contexts     = [];
 /** @var array<array<string>>                   A cache for JS ons */
-        protected $ons          = [];
+        protected array $ons          = [];
 /** @var array<\Framework\FormData\Base>        FormData handler cache */
-        protected $getters      = [];
+        protected array $getters      = [];
 /*
  ***************************************
  * URL and REST support functions
@@ -44,7 +44,7 @@
  *
  * @return string
  */
-        public function action()
+        public function action() : string
         {
             return $this->reqaction;
         }
@@ -58,7 +58,7 @@
  *
  * @return array<string>
  */
-        public function rest()
+        public function rest() : array
         {
             return $this->reqrest;
         }
@@ -165,7 +165,7 @@
 /**
  * Load a bean
  *
- * @param string    $bean       A bean type name
+ * @param string    $beanType       A bean type name
  * @param int       $id         A bean id
  * @param bool      $forupdate  If TRUE then use loadforupdate
  *
@@ -176,12 +176,12 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function load(string $beanType, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
+            $foo = $forupdate ? \R::loadforupdate($beanType, $id) : \R::load($beanType, $id);
             if ($foo->getID() == 0)
             {
-                throw new \Framework\Exception\MissingBean('Missing '.$bean);
+                throw new \Framework\Exception\MissingBean('Missing '.$beanType);
             }
             return $foo;
         }
@@ -207,12 +207,8 @@
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formData(?string $which = NULL) : object
+        public function formData(string $which) : object
         {
-            if ($which == NULL)
-            { // this is backward compatibility and will be removed in the future
-                return \Framework\Support\FormData::getInstance();
-            }
             if (!isset($this->getters[$which]))
             {
                 $class = '\Framework\FormData\\'.ucfirst($which);
@@ -291,6 +287,9 @@
                 \session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION['user']))
                 { // deprecated
+/**
+ * @deprecated
+ */
                     $this->luser =  $_SESSION['user'];
                     $this->luser->fresh(); // not taht helpful though as it doesn't clear arrays
                 }

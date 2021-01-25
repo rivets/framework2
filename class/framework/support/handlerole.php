@@ -34,8 +34,8 @@
             {
                 $res[] = $this->hasrole(...$rc);
             }
-            $res = array_filter($res); // get rid of any null entries
-            return $or ? $res : (count($res) === count($roles) ? $res : []); // for an "and" you have to have all of them.
+            $res = \array_filter($res); // get rid of any null entries
+            return $or ? $res : (\count($res) === \count($roles) ? $res : []); // for an "and" you have to have all of them.
         }
 /**
  * Check for a role
@@ -156,7 +156,7 @@
                 return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
             }
             $cond = 'start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end';
-            return $this->bean->withCondition($cond)->{'own'.ucfirst($this->roletype)};
+            return $this->bean->withCondition($cond)->{'own'.\ucfirst($this->roletype)};
         }
 /**
  * Deal with the role selecting part of a form
