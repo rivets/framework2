@@ -23,15 +23,15 @@
  * At the moment it is either the user or any admin that is allowed. Rewrite the
  * method to add more complex access control schemes.
  *
- * @param object   $user   A user object
- * @param string   $op     r for read, u for update, d for delete
+ * @param ?\RedBeanPHP\OODBBean   $user   A user object
+ * @param string                  $op     r for read, u for update, d for delete
  *
  * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function canaccess($user, string $op = 'r') : bool
+        public function canaccess(?\RedBeanPHP\OODBBean $user, string $op = 'r') : bool
         {
-            return $this->bean->user->equals($user) || $user->isadmin();
+            return $user !== NULL &&  $this->bean->user->equals($user) || $user->isadmin();
         }
 /**
  * Hook for adding extra data to a file save.
