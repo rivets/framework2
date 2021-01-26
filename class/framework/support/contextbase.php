@@ -275,6 +275,7 @@
  * Initialise the context and return self
  *
  * @return \Framework\Support\ContextBase
+ * @throws \Framework\Exception\InternalError
  */
         public function setup() : \Framework\Support\ContextBase
         {
@@ -282,21 +283,10 @@
             \ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
             \ini_set('session.cookie_httponly', 1);
             if (isset($_COOKIE[Config::SESSIONNAME]))
-            {# see if there is a user variable in the session....
+            { # see if there is a user id in the session....
                 /** @psalm-suppress UnusedFunctionCall */
                 \session_start(['name' => Config::SESSIONNAME]);
-                if (isset($_SESSION['user']))
-                { // deprecated
-/**
- * @deprecated
- */
-                    $this->luser =  $_SESSION['user'];
-                    $this->luser->fresh(); // not taht helpful though as it doesn't clear arrays
-                }
-                elseif (isset($_SESSION['userID']))
-                {
-                    $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
-                }
+                $this->luser =  $this->load(FW::USER, $_SESSION['userID'] ?? throw new \Framework\Exception\InternalError('Bad session'));
             }
             $this->mtoken();
 
