@@ -29,6 +29,20 @@
             return $this->bean->user;
         }
 /**
+ * Return the value need for an HREF on a download <a> tag
+ *
+ * @return string
+ */
+        public function link()
+        {
+            $base = Context::getinstance()->local()->base();
+            if ($this->bean->public)
+            { // the file is freely acessible by name in assets/public
+                return $base.$this->bean->fname;
+            }
+            return $base.'/private/file/'.$this->bean->getID(); // needs access control as it is private.
+        }
+/**
  * Store a file
  *
  * This is the basic functionality assumed by the framework. You can adapt this by changing this function.
