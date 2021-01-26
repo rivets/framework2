@@ -104,7 +104,7 @@
  */
         public function fetchAll() : \ArrayIterator
         {
-            return new \ArrayIterator($this->getSuper($this->which));
+            return new \ArrayIterator($this->super);
         }
 /**
  * Return the array of values
@@ -113,7 +113,7 @@
  */
         public function fetchRaw() : array
         {
-            return $this->getSuper($this->which);
+            return $this->super;
         }
     }
 ?>
