@@ -309,8 +309,7 @@
                 session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION['user']))
                 {
-                    $this->luser =  $_SESSION['user'];
-                    $this->luser->fresh();
+                    $this->luser =  $_SESSION['user']->fresh();
                 }
             }
             $this->mtoken();

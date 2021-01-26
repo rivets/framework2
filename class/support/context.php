@@ -20,15 +20,15 @@
 /**
  * Return TRUE if the user in the parameter is the same as the current user
  *
- * @param \RedBeanPHP\OODBBean    $user
+ * @param ?\RedBeanPHP\OODBBean    $user
  *
  * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function sameUser(\RedBeanPHP\OODBBean $user) : bool
+        public function sameUser(?\RedBeanPHP\OODBBean $user) : bool
         {
              /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->equals($user);
+            return $user !== NULL && $this->hasuser() && $this->user()->equals($user);
         }
 /**
  * Any functions that you need to be available through context.
