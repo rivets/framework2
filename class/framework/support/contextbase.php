@@ -271,7 +271,7 @@
                     /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
                     $tok = \Framework\Utility\JWT\JWT::decode(array_shift($auth), FW::AUTHKEY);
                 }
-                catch (\Exception $e)
+                catch (\Throwable $e)
                 { // token error of some kind so return no access.
                     $this->web()->noaccess($e->getMessage());
                     /* NOT REACHED */
@@ -281,7 +281,6 @@
                     if ($this->luser->getID() != $tok->sub)
                     {
                         throw new \Framework\Exception\InternalError('User conflict');
-                        /* NOT REACHED */
                     }
                 }
                 else

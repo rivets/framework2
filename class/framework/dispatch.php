@@ -165,7 +165,7 @@
                  */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             { // You catch DB errors from hacky URL values here.
                 $page = NULL;
             }

@@ -104,7 +104,7 @@
                     /** @psalm-suppress InvalidStringClass */
                     $obj = new $class($rest[2]);
                 }
-                catch (\Exception $e)
+                catch (\Throwable $e)
                 {
                     $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
                     $obj = NULL;
@@ -129,7 +129,7 @@
                     {
                         [$error, $emess] = $obj->edit($context); // handle the edit result
                     }
-                    catch (\Exception $e)
+                    catch (\Throwable $e)
                     {
                         $error = TRUE;
                         $emess = $e->getMessage();
@@ -171,7 +171,7 @@
                     /** @psalm-suppress InvalidStringClass */
                     $obj = new $class($rest[2]);
                 }
-                catch (\Exception $e)
+                catch (\Throwable $e)
                 {
                     $context->local()->message(\Framework\Local::ERROR, $e->getMessage());
                     $obj = NULL;
