@@ -313,7 +313,7 @@
                     }
                 }
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 $context->local()->message(\Framework\Local::ERROR, $e->getmessage());
             }

@@ -129,7 +129,7 @@
                     }
                     return $mail->send() ? '' : $mail->ErrorInfo;
                 }
-                catch (\Exception $e)
+                catch (\Throwable $e)
                 {
                     return $mail->ErrorInfo;
                 }

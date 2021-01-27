@@ -85,18 +85,15 @@
             {
                 (new $class($context, $this))->handle($context);
             }
-            catch(Exception\Forbidden $e)
+            catch (Exception\Forbidden $e)
             {
                 $context->web()->noaccess($e->getMessage());
             }
-            catch(Exception\BadValue |
-                  Exception\BadOperation |
-                  Exception\MissingBean |
-                  Exception\ParameterCount $e)
+            catch (Exception\BadValue | Exception\BadOperation | Exception\MissingBean | Exception\ParameterCount $e)
             {
                 $context->web()->bad($e->getMessage());
             }
-            catch(\Exception $e)
+            catch (\Throwable $e)
             { // any other exception - this will be a framework internal error
                 $context->web()->internal($e->getMessage());
             }

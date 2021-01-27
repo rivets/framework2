@@ -108,7 +108,7 @@
             {
                 \R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 throw new \Framework\Exception\BadValue($e->getMessage());
             }
@@ -139,16 +139,14 @@
             if (\Support\SiteInfo::isFWTable($table))
             { // nobody can delete framework tables
                 throw new Forbidden('Permission Denied');
-                /* NOT REACHED */
             }
             try
             {
                 \R::exec('drop table `'.$table.'`');
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 throw new Forbidden($e->getMessage());
-                /* NOT REACHED */
             }
             $this->context->web()->noContent();
         }

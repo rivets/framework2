@@ -142,7 +142,7 @@
                 $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
                 return $throwOK;
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 $this->local->message(Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
             }
