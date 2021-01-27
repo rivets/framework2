@@ -109,7 +109,7 @@
             {
                 R::exec('alter table `'.$table.'` change `'.$f1.'` `'.$f2.'` '.$type);
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 throw new \Framework\Exception\BadValue($e->getMessage());
             }
@@ -145,7 +145,7 @@
             {
                 R::exec('drop table `'.$table.'`');
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             {
                 throw new Forbidden($e->getMessage());
             }

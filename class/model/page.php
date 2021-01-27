@@ -243,7 +243,7 @@
                 }
                 return $p;
             }
-            catch (\Exception $e)
+            catch (\Throwable $e)
             { // clean up the page we made above. This will cascade delete any pageroles that might have been created
                 \R::trash($p);
                 throw $e; // throw it up to the handlers above

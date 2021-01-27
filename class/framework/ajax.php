@@ -96,7 +96,7 @@
             {
                 $context->web()->bad($e->getMessage());
             }
-            catch(\Exception $e)
+            catch(\Throwable $e)
             { // any other exception - this will be a framework internal error
                 $context->web()->internal($e->getMessage());
             }
