@@ -20,9 +20,9 @@
     {% import '@util/formmacro.twig' as f %}
     {% import _self as h %}
     {{attribute(f, mname, opts)}}
-    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {disabled: TRUE})~')}}'
+    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {disabled: TRUE})~')}}' %}
     {{include(template, {mname: mname})}}
-    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {readonly: TRUE})~')}}'
+    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {readonly: TRUE})~')}}' %}
     {{include(template, {mname: mname})}}
 {% endmacro ndr %}
 
