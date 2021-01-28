@@ -29,7 +29,7 @@
  */
         private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
-            return R::findOne(FW::USER, (filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
+            return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
 /**
  * Make a confirmation code and store it in the database
