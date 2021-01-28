@@ -9,7 +9,10 @@
         {{f.range({label: 'Range Disabled', id : 'rnid2', name: 'rn2', dvalue: 15, min:10, step: 1, max: 20, disabled: TRUE})}}
         {{f.range({label: 'Range Readonly', id : 'rnid3', name: 'rn3', dvalue: 15, min:10, step: 1, max: 20, readonly: TRUE})}}
 
-        {{f.datetime({label: 'DateTime', id : 'dtid', name: 'dt', ph: 'date time type'})}}
+        {{f.date({label: 'Date', id : 'dttid', name: 'dt', ph: 'date type'})}}
+        {{f.datetime({label: 'DateTime(-local)', id : 'dtid', name: 'dt', ph: 'date time local type'})}}
+        {{f.datetimelocal({label: 'DateTime-Local', id : 'dttlid', name: 'dt', ph: 'date time local type'})}}
+        {{f.time({label: 'Time', id : 'dtid', name: 'tm', ph: 'time type'})}}
 
         {{f.file({label: 'File', id : 'flid', name: 'fl', accept: 'image/png'})}}
         {{f.file({label: 'File Disabled', id : 'flid', name: 'fl', accept: 'image/png', disabled: TRUE})}}
