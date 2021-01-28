@@ -55,7 +55,7 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return array_merge(static::$fwPermissions[$which], $system); //@phpstan-ignore-line
+            return \array_merge(static::$fwPermissions[$which], $system); //@phpstan-ignore-line
         }
 /**
  * Handle AJAX operations
@@ -63,6 +63,7 @@
  * @param Context   $context    The context object for the site
  *
  * @return void
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.CyclomaticComplexityIsHigh
  */
         public function handle(Context $context) : void
         {
