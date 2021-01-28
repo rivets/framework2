@@ -16,6 +16,7 @@
  */
     class AccessBase extends Base
     {
+/**  * @phpcsSuppress PHP_CodeSniffer.Standards.Generic.CodeAnalysis.UselessOverridingMethod */
         public function __construct(?int $which)
         {
             parent::__construct($which);
@@ -36,7 +37,6 @@
  * @param bool          $isArray  Expect an array ratherthan a simple value
  *
  * @return mixed
- * @phpcsSuppress PHP_CodeSniffer.Standards.Generic.CodeAnalysis.UselessOverridingMethod
  */
         public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
         {
