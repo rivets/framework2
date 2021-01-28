@@ -55,12 +55,18 @@
         {
             switch($which ?? $this->which)
             {
-            case INPUT_GET:     return $_GET;
-            case INPUT_POST:    return $_POST;
-            case INPUT_COOKIE:  return $_COOKIE;
-            case INPUT_SERVER:  return $_SERVER;
-            case INPUT_ENV:     return $_ENV;
-            case NULL:          return $this->super;
+            case INPUT_GET:
+                return $_GET;
+            case INPUT_POST:
+                return $_POST;
+            case INPUT_COOKIE:
+                return $_COOKIE;
+            case INPUT_SERVER:
+                return $_SERVER;
+            case INPUT_ENV:
+                return $_ENV;
+            case NULL:
+                return $this->super;
             }
             throw new BadValue('Invalid Superglobal constant');
         }
