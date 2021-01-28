@@ -40,15 +40,15 @@
  *
  * @return string
  */
-        private function makecode(Context $context, \RedBeanPHP\OODBBean $bn, string $kind) : string
+        private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
-            R::trashAll(R::find(FW::CONFIRM, 'user_id=?', [$bn->getID()]));
-            $code = hash('sha256', $bn->getID().$bn->email.$bn->login.uniqid());
+            R::trashAll($user->all()->{'own'+\ucfirst(FW::CONFIRM).'List'});;
+            $code = hash('sha256', $user->getID().$user->email.$user->login.uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
             $conf->issued = $context->utcnow();
             $conf->kind = $kind;
-            $conf->user = $bn;
+            $conf->user = $user;
             R::store($conf);
             return $code;
         }
@@ -60,10 +60,10 @@
  *
  * @return void
  */
-        private function sendconfirm(Context $context, \RedBeanPHP\OODBBean $bn) : void
+        private function sendConfirm(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
             $local = $context->local();
-            $code = $this->makecode($context, $bn, 'C');
+            $code = $this->makeCode($context, $bn, 'C');
             $local->sendmail([$bn->email], 'Please confirm your email address for '.$local->configval('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
                 $local->configval('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
@@ -78,10 +78,10 @@
  *
  * @return void
  */
-        private function sendreset(Context $context, \RedBeanPHP\OODBBean $bn) : void
+        private function sendReset(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
             $local = $context->local();
-            $code = $this->makecode($context, $bn, 'P');
+            $code = $this->makeCode($context, $bn, 'P');
             $local->sendmail([$bn->email], 'Reset your '.$local->configval('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
                 $local->configval('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
@@ -117,6 +117,7 @@
  * @param Context  $context    The context object for the site
  *
  * @return string   A template name
+ * @throws \Framework\Exception\BadOperation
  */
         public function register(Context $context) : string
         {
@@ -175,8 +176,8 @@
                             }
                             else
                             { // extra registration failed
-                                \R::trash($x); // delete the user object
-                                $errmess = array_merge($errmess, $rerr);
+                                R::trash($x); // delete the user object
+                                $errmess = \array_merge($errmess, $rerr);
                             }
                         }
                     }
