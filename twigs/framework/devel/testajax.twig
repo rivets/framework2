@@ -27,14 +27,14 @@
     }
 {% endblock onload %}
 
-{% block headerblock %}
+{% block headerbody %}
         <h1>Test Framework AJAX calls</h1>
         {% if context.hasadmin %}
             <h2>Running as Site Admin</h2>
         {% elseif context.user.hasrole('Test', 'Tester') %}
             <h2>Running as Test Tester</h2>
         {% endif %}
-{% endblock headerblock %}
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
