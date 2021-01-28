@@ -42,7 +42,7 @@
  */
         private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
-            R::trashAll($user->all()->{'own'+\ucfirst(FW::CONFIRM).'List'});;
+            R::trashAll($user->all()->{'own'+\ucfirst(FW::CONFIRM).'List'});
             $code = hash('sha256', $user->getID().$user->email.$user->login.uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
