@@ -1,6 +1,18 @@
 {% import '@util/formmacro.twig' as f %}
 {% import _self as me %}
 
+{% macro makehash(hash) %}
+    {% set res = '{' %}
+    {% for key,value in hash %}
+        {% set res = res ~ key ~ ': "' ~ value ~ '"' %}
+        {% if not loop.last %}
+            {% set res = res ~ ',' %}
+        {% endif %}
+    {% endfor %}
+    {% set res = res ~ '}' %}
+    {{res}}
+{% endmacro makehash %}
+
 {% macro ndr(mname, opts) %}
     {% import '@util/formmacro.twig' as f %}
     {{attribute(f, mname, opts)}}
@@ -13,6 +25,9 @@
     {% set dopts.label = dopts.label ~ ' Readonly' %}
     {{attribute(f, mname, ropts)}}
 {% endmacro ndr %}
+
+{% set var = me.makehash({label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50}) %}
+{{var}}
 
     {{f.startform({id: 'tform2', on: {submit: 'function(e){fwdom.stop(e);}'} })}}
         {{me.ndr('number', {label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50})}}
