@@ -36,7 +36,7 @@
  * @param bool          $isArray  Expect an array ratherthan a simple value
  *
  * @return mixed
- * @psalm-suppress UselessOverridingMethod
+ * @phpcsSuppress PHP_CodeSniffer.Standards.Generic.CodeAnalysis.UselessOverridingMethod
  */
         public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
         {
