@@ -119,9 +119,9 @@
 
 {% set pages = ((siteinfo.tablecount(all) + pagesize) / pagesize)|round(0, 'floor') %}
 
-{% block headerblock %}
+{% block headerbody %}
     <h1>Beans</h1>
-{% endblock headerblock %}
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
