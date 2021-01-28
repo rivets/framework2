@@ -28,7 +28,7 @@
     {% endif %}
     <div class="container mt-{{margin}} mb-3">
         {% block pageheader %}
-            <header class="row">
+            <header class="row{% if breadcrumbs is defined %} mt-3{% endif %}">
             {% block header %}
                 <section class="col-md-12 text-center">
                     {% block headerbody %}
