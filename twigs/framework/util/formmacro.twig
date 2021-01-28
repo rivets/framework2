@@ -91,7 +91,7 @@
 
 {% macro file(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('file', opts)}}{{fx.bse(opts)}}{% endmacro file %}
 
-{% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
+{% macro datetime(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime-local', opts)}}{{fx.bse(opts)}}{% endmacro datetime %}
 
 {% macro select(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}
     <select {{fx.cv(opts.class)}}{{fx.hv('id', opts.id)}}{{fx.on(opts)}}{{fx.hv('name', opts.name)}}{{fx.fv(opts)}}{{fx.cdb(opts.multiple, 'multiple')}}{{fx.hv('size', opts.size)}}>
