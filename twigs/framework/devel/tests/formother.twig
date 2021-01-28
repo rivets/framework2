@@ -1,7 +1,7 @@
 {% import '@util/formmacro.twig' as f %}
 {% import _self as me %}
 
-{% macro makehash(hash) %}
+{% macro makehash(hash, extra) %}
     {% set res = '{' %}
     {% for key,value in hash %}
         {% set res = res ~ key ~ ': "' ~ value ~ '"' %}
@@ -9,24 +9,26 @@
             {% set res = res ~ ',' %}
         {% endif %}
     {% endfor %}
+    {% for key,value in extra %}
+        {% set res = res ~ "," ~ key ~ ': "' ~ value ~ '"' %}
+    {% endfor %}
     {% set res = res ~ '}' %}
     {{res}}
 {% endmacro makehash %}
 
 {% macro ndr(mname, opts) %}
     {% import '@util/formmacro.twig' as f %}
+    {% import _self as h %}
     {{attribute(f, mname, opts)}}
-    {% set dopts = opts %}
-    {{attribute(f, mname, dopts)}}
-    {% set ropts = opts %}
-    {{attribute(f, mname, ropts)}}
+    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {disabled: TRUE})~')}}'
+    {{include(template, {mname: mname})}}
+    {% set template = "{% import '@util/formmacro.twig' as f %}{{attribute(f,mname,"~h.makehash(opts, {readonly: TRUE})~')}}'
+    {{include(template, {mname: mname})}}
 {% endmacro ndr %}
 
 {% set var = me.makehash({label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50}) %}
 {{var}}
 
-{% set var2 = {label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50} %}
-{{var2}}
 
     {{f.startform({id: 'tform2', on: {submit: 'function(e){fwdom.stop(e);}'} })}}
         {{f.number({label: 'Number', id : 'nmid1', name: 'nm1', value: 42, min: 30, step: 2, max: 50})}}
