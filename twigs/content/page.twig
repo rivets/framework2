@@ -28,9 +28,9 @@
     {% endif %}
     <div class="container mt-{{margin}} mb-3">
         {% block pageheader %}
-            <header class="row{% if breadcrumbs is defined %} mt-3{% endif %}">
+            <header class="row">
             {% block header %}
-                <section class="col-md-12 text-center">
+                <section class="col-md-12 text-center{% if breadcrumbs is defined %} mt-3{% endif %}">
                     {% block headerbody %}
                         {% include '@surround/header.twig' %}
                     {% endblock headerbody %}
