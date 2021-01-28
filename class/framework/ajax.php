@@ -63,7 +63,7 @@
  * @param Context   $context    The context object for the site
  *
  * @return void
- * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.CyclomaticComplexityIsHigh
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.CyclomaticComplexityIsHigh
  */
         public function handle(Context $context) : void
         {
