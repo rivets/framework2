@@ -92,7 +92,7 @@
 {% macro file(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('file', opts)}}{{fx.bse(opts)}}{% endmacro file %}
 
 {% macro datetime(opts) %}{% import _self as fx %}{{fx.datetimelocal(opts)}}{% endmacro datetime %}
-{% macro datetimelocal(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime-local', opts)}}{{fx.bse(opts)}}{% endmacro datetime-local %}
+{% macro datetimelocal(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('datetime-local', opts)}}{{fx.bse(opts)}}{% endmacro datetimelocal %}
 {% macro date(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('date', opts)}}{{fx.bse(opts)}}{% endmacro date %}
 {% macro time(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}{{fx.input('time', opts)}}{{fx.bse(opts)}}{% endmacro time %}
 
