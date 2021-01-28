@@ -17,12 +17,8 @@
     {% import '@util/formmacro.twig' as f %}
     {{attribute(f, mname, opts)}}
     {% set dopts = opts %}
-    {% set dopts.disabled = TRUE %}
-    {% set dopts.label = dopts.label ~ ' Disabled' %}
     {{attribute(f, mname, dopts)}}
     {% set ropts = opts %}
-    {% set ropts.readonly = TRUE %}
-    {% set dopts.label = dopts.label ~ ' Readonly' %}
     {{attribute(f, mname, ropts)}}
 {% endmacro ndr %}
 
