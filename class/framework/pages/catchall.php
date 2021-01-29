@@ -52,7 +52,7 @@
                 switch ($rest[0])
                 {
                 case 'gpc.json':
-                    $context->web()->sendJSON((object)[gpc => TRUE, version => 1]);
+                    $context->web()->sendJSON((object) [gpc => TRUE, version => 1]);
                     break;
                 default:
                     $context->web()->notfound();
