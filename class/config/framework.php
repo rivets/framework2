@@ -15,6 +15,7 @@
  */
     namespace Config;
 
+    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 /**
  * Class for doing initial setup of the Framework.
  */

@@ -10,8 +10,6 @@
  *
  * @link https://catless.ncl.ac.uk/framework/
  */
-    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
-
     include 'class/config/framework.php';
     \Config\Framework::initialise();
     \Config\Config::setup(); // add default headers etc. - anything that the user choses to add to the code.
