@@ -217,14 +217,14 @@
             $this->debuffer();
             if (!empty($range))
             {
-                $fd = fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
-                fseek($fd, $range[0]);
+                $fd = \fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
+                \fseek($fd, $range[0]);
                 echo fread($fd, $length);
-                fclose($fd);
+                \fclose($fd);
             }
             else
             {
-                readfile($path);
+                \readfile($path);
             }
         }
 /**
@@ -241,7 +241,7 @@
             $this->debuffer();
             [$code, $range, $length] = $this->hasRange(strlen($value), $code);
             $this->sendHeaders($code, $mime, $length);
-            echo empty($range) ? $value : substr($value, $range[0], $length);
+            echo empty($range) ? $value : \substr($value, $range[0], $length);
         }
 /**
  * Deliver JSON response.
@@ -253,7 +253,7 @@
  */
         public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
         {
-            $this->sendString(json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
+            $this->sendString(\json_encode($res, JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
 /**
  * Add a header to the header list.
@@ -289,9 +289,9 @@
  */
         public function recaptcha(string $secret) : bool
         {
-            if (filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+            if (\filter_has_var(INPUT_POST, 'g-recaptcha-response'))
             {
-                $data = http_build_query([
+                $data = \http_build_query([
                     'secret'    => $secret,
                     'response'  => $_POST['g-recaptcha-response'],
                     'remoteip'  => $_SERVER['REMOTE_ADDR'],
@@ -303,11 +303,11 @@
                         'content' => $data,
                     ],
                 ];
-                $context  = stream_context_create($opts);
+                $context  = \stream_context_create($opts);
                 $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
                 if ($result !== FALSE)
                 {
-                    $check = json_decode($result, TRUE);
+                    $check = \json_decode($result, TRUE);
                     return $check->success;
                 }
             }
