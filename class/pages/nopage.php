@@ -23,7 +23,7 @@
  * @param Context   $context    The context object for the site
  *
  * @return string|array<string>     A template name
- * @phpcsSuppress Generic.CodeAnalysis.UselessOverridingMethod
+ * @phpcsSuppress Standards.Generic.CodeAnalysis.UselessOverridingMethod
  */
         public function handle(Context $context)
         {

@@ -38,7 +38,7 @@
         <file name="class/framework/exception/internalerror.php" />
         <file name="class/framework/exception/missingbean.php" />
         <file name="class/framework/exception/parametercount.php" />
-        
+
         <file name="class/framework/formdata/accessbase.php" />
         <file name="class/framework/formdata/base.php" />
         <file name="class/framework/formdata/cookie.php" />
@@ -141,7 +141,7 @@
         <MissingReturnType errorLevel="info" />
         <MissingPropertyType errorLevel="info" />
         <InvalidDocblock errorLevel="info" />
-        <MisplacedRequiredParam errorLevel="info" />
+        <!--<MisplacedRequiredParam errorLevel="info" />-->
         <MismatchingDocblockReturnType errorLevel="info" />
         <PropertyNotSetInConstructor errorLevel="info" />
         <MissingConstructor errorLevel="info" />
