@@ -8,6 +8,7 @@
  */
     namespace Framework\Support;
 
+    use \R;
 /**
  * Adds functions for manipulating tables
  */
