@@ -34,6 +34,7 @@
             'toggle'        => Ajax\Toggle::class,
             'unique'        => Ajax\Unique::class,
             'uniquenl'      => Ajax\UniqueNl::class,
+            'upload'        => Ajax\Upload::class,
         ];
 /**
  * Return the log requirements array from the child
