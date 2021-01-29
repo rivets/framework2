@@ -47,6 +47,18 @@
                 $local->addval('url', $local->configval('siteurl'));
                 return ['@info/sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
+            case '.well-known':
+                $rest = $context->rest();
+                switch ($rest[0])
+                {
+                case 'gpc.json':
+                    $context->web()->sendJSON((object)[gpc => TRUE, version => 1]);
+                    break;
+                default:
+                    $context->web()->notfound();
+                }
+                break;
+
             default:
                 $local->addval('page', $_SERVER['REQUEST_URI']);
                 \Framework\Dispatch::basicSetup($context, 'error');
