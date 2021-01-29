@@ -106,7 +106,7 @@
                     break;
                 }
                 /* FALLTHROUGH */
-            default:
+            default: // @phpcsSupress PhpCsFixer.Fixer.ControlStructure.NoBreakCommentFixer
                 return;
             }
             if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN))
