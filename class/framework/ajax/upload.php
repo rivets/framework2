@@ -17,6 +17,7 @@
     {
 /**
  * @var array
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $permissions = [];
 /**
