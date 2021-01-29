@@ -105,8 +105,8 @@
                 {
                     break;
                 }
-                /* FALLTHROUGH */
-            default: // @phpcsSupress PhpCsFixer.Fixer.ControlStructure.NoBreakCommentFixer
+                // no break
+            default:
                 return;
             }
             if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN))
