@@ -41,7 +41,7 @@
             $context = $this->context;
             if (!$context->web()->isPost())
             {
-                throw \Framework\Exception\BadOperation('Operation not supported');
+                throw new \Framework\Exception\BadOperation('Operation not supported');
             }
 
             $rest = $context->rest();
@@ -55,13 +55,13 @@
                     $beanType = $rest[$ix];
                     if (\Support\SiteInfo::isFWTable($beanType))
                     {
-                        throw \Framework\Exception\BadValue('Cannot attach to framework beans');
+                        throw new \Framework\Exception\BadValue('Cannot attach to framework beans');
                     }
                     $stable[] = $beanType < FW::UPLOAD ? $beanType.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$beanType;
                     $ix += 1;
                     if (!isset($rest[$ix]))
                     {
-                        throw \Framework\Exception\ParameterCount('Missing field');
+                        throw new \Framework\Exception\ParameterCount('Missing field');
                     }
                     $beans[] = $this->context->load($beanType, $rest[$ix]);
                     $ix += 1;
@@ -141,7 +141,7 @@
             }
             catch (\Throwable $e)
             {
-                throw \Framework\Exception\InternalError($e->getMessage);
+                throw new \Framework\Exception\InternalError($e->getMessage);
             }
             $context->web()->sendJSON($uplid);
         }
