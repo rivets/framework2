@@ -3,7 +3,7 @@
  * A class that contains code to return info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -15,102 +15,9 @@
 /**
  * Utility class that returns generally useful information about parts of the site
  */
-    class SiteInfo
+    class SiteInfo extends SiteInfoBase
     {
-        use \Framework\Utility\Singleton;
-/**
- * @var array<string>  A list of the Framework DB tables
- */
-        protected static $fwtables = [
-            FW::CONFIG,
-            FW::CONFIRM,
-            FW::FORM,
-            FW::FORMFIELD,
-            FW::PAGE,
-            FW::PAGEROLE,
-            FW::ROLE,
-            FW::ROLECONTEXT,
-            FW::ROLENAME,
-            FW::USER,
-        ];
-/**
- * @var \Support\Context  The Context object
- */
-        protected $context;
-/**
- * @var array Field information for tables
- */
-        private static $fields = [];
-/**
- * Class constructor. The concrete class using this trait can override it.
- *
- * @psalm-suppress PropertyTypeCoercion
- */
-        protected function __construct()
-        {
-            $this->context = Context::getinstance();
-        }
-/**
- * Get beans in chunks and turn them one by one using a generator
- *
- * @param string    $bean   A bean name
- * @param string    $where  An SQL where condition
- * @param array     $params Substitutions for the where clause
- * @param int       $start  The start position
- * @param int       $count  The number wanted.
- *
- * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
- * @return \Generator
- */
-        public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : \Generator
-        {
-            if ($start >= 0)
-            {
-                 $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
-            }
-            $collection = R::findCollection($bean, $where, $params);
-            /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
-            while ($item = $collection->next())
-            {
-                yield $item;
-            }
-        }
-/**
- * Get bean data
- *
- * @param string    $bean       The bean kind
- * @param string    $where      The where condition
- * @param array     $params     Parameter values for query (if any)
- * @param int       $start      Start position - used for pagination
- * @param int       $count      The number to be fetched - used for pagination
- *
- * @return array<\RedBeanPHP\OODBBean>
- */
-        public function fetch(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : array
-        {
-            if ($start >= 0)
-            {
-                 $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
-            }
-            if (empty($params))
-            { // no offset and no params so use findAll
-                 return R::findAll($bean, $where);
-            }
-            return R::find($bean, $where, $params);
-        }
-/**
- * Return the count for a particular bean
- *
- * @param string    $bean       The bean kind
- * @param string    $where      The where condition
- * @param array     $params     Parameter values for query (if any)
- *
- * @return int
- */
-        public function count(string $bean, string $where = '', array $params = []) : int
-        {
-            return R::count($bean, $where, $params);
-        }
+        use SITable; // bring in table handling methods
 /**
  * Get all the user beans
  *
@@ -228,76 +135,6 @@
                 ($all ? '' : ' and (start is NULL or start <= NOW()) and (end is NULL or end > NOW())'),
                 [$rnid, $rcid]);
             return $res['user'];
-        }
- /**
-  * Check to see if a table exists - utility function used by AJAX
-  *
-  * @param string $table
-  *
-  * @return bool
-  */
-        public static function tableExists(string $table) : bool
-        {
-            return \in_array(\strtolower($table), R::inspect());
-        }
- /**
-  * Check to see if a table has a given field
-  *
-  * @param string $table
-  * @param string $field
-  *
-  * @return bool
-  */
-        public static function hasField(string $table, string $field) : bool
-        {
-            if (!isset(self::$fields[$table]))
-            {
-                self::$fields[$table] = R::inspect($table);
-            }
-            return isset(self::$fields[$table][$field]);
-        }
-/**
- * Check if table is a framework table
- *
- * @param string $table
- *
- * @return bool
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public static function isFWTable(string $table) : bool
-        {
-            return \in_array($table, self::$fwtables);
-        }
-/**
- * Number of tables
- *
- * @return int
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public static function tablecount(bool $all = FALSE) : int
-        {
-            $x = \count(R::inspect());
-            return $all ? $x : $x - \count(self::$fwtables);
-        }
-/**
- * Return bean table data
- *
- * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
- *
- * @return array
- * @psalm-suppress PossiblyUnusedMethod
- */
-        public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array
-        {
-            $beans = [];
-            foreach(R::inspect() as $tab)
-            {
-                if ($all || !self::isFWTable($tab))
-                {
-                    $beans[] = new \Framework\Support\Table($tab);
-                }
-            }
-            return $start < 0 ? $beans : \array_slice($beans, ($start - 1) * $count, $count);
         }
 /**
  * Do a page count calculation for a table
