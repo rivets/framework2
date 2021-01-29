@@ -113,9 +113,9 @@
         <file name="../ajax.php" />
         <file name="../index.php" />
         <ignoreFiles>
-            <directory name="vendor" />
-            <directory name="install" />
-            <directory name="testing" />
+            <directory name="../vendor" />
+            <directory name="../install" />
+            <directory name="../testing" />
             <file name="../devel/hack.php" />
             <file name="../devel/testautoload.php" />
             <file name="../install.php" />
