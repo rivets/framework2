@@ -131,7 +131,6 @@
  * Initialise CSP
  *
  * If the data is in the database then use that, if not thensetup the table from Config::$defaultCSP
- *
  */
         public function initCSP()
         {
