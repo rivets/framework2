@@ -29,23 +29,25 @@
 
         public const DBPREFIX = '';
 
-        public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
-        public const TESTCONTEXT = self::DBPREFIX.'Test';
+        public const FWCONTEXT      = self::DBPREFIX.'Site'; // context names
+        public const TESTCONTEXT    = self::DBPREFIX.'Test';
 
-        public const AJAX = self::DBPREFIX.'fwajax'; // table names
-        public const CONFIG = self::DBPREFIX.'fwconfig';
-        public const CONFIRM = self::DBPREFIX.'confirm';
-        public const CSP = self::DBPREFIX.'fwcsp';
-        public const FORM = self::DBPREFIX.'form';
-        public const FORMFIELD = self::DBPREFIX.'formfield';
-        public const PAGE = self::DBPREFIX.'page';
-        public const PAGEROLE = self::DBPREFIX.'pagerole';
-        public const ROLE = self::DBPREFIX.'role';
-        public const ROLECONTEXT = self::DBPREFIX.'rolecontext';
-        public const ROLENAME = self::DBPREFIX.'rolename';
-        public const TABLE = self::DBPREFIX.'table';
-        public const TEST = self::DBPREFIX.'fwtest';
-        public const USER = self::DBPREFIX.'user';
+        public const AJAX           = 'fwajax'; // table names
+        public const CONFIG         = 'fwconfig';
+        public const CONFIRM        = self::DBPREFIX.'confirm';
+        public const CSP            = 'fwcsp';
+        public const FLOOD          = 'fwflood';
+        public const FORM           = self::DBPREFIX.'form';
+        public const FORMFIELD      = self::DBPREFIX.'formfield';
+        public const PAGE           = self::DBPREFIX.'page';
+        public const PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const ROLE           = self::DBPREFIX.'role';
+        public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
+        public const ROLENAME       = self::DBPREFIX.'rolename';
+        public const TABLE          = self::DBPREFIX.'table';
+        public const TEST           = 'fwtest';
+        public const UPLOAD         = 'fwupload';
+        public const USER           = 'user';
 
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation

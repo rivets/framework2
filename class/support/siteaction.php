@@ -30,7 +30,7 @@
  *
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
- * @phpcsSuppress NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
         public function setCache(Context $context) : void
         {
@@ -42,7 +42,7 @@
  * @param \Support\Context    $context   The context object for the site
  *
  * @return void
- * @phpcsSuppress NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
         public function set304Cache(Context $context) : void
         {
