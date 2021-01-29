@@ -60,7 +60,7 @@
         <RedundantConditionGivenDocblockType errorLevel="info" />
         <UndefinedGlobalVariable>
             <errorLevel type="suppress">
-              <directory name="install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
+              <directory name="../install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
             </errorLevel>
         </UndefinedGlobalVariable>
         <UnresolvableInclude errorLevel="info" />

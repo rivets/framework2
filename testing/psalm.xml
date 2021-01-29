@@ -78,8 +78,10 @@
         <file name="../class/framework/utility/proxycheck.php" />
         <file name="../class/framework/utility/singleton.php" />
 
+        <file name="../class/framework/web/csp.php" />
         <file name="../class/framework/web/statuscodes.php" />
         <file name="../class/framework/web/web.php" />
+        <file name="../class/framework/web/webbase.php" />
 
         <file name="../class/model/form.php" />
         <file name="../class/model/formfield.php" />
