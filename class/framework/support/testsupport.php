@@ -153,7 +153,7 @@
  *
  * @return void
  */
-        public function run(array $tests, bool $old = TRUE)
+        public function run(array $tests, bool $old = TRUE) : void
         {
             $this->fdt = $old ? $this->fdtold : $this->fdtnew;
             if ($this->fdt instanceof \Framework\FormData\Base)

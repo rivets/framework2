@@ -253,12 +253,12 @@
  *
  * @param string $source
  *
- * @throws BadValue
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkObject(string $source)
+        private static function checkObject(string $source) : void
         {
             if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
             {
@@ -270,12 +270,12 @@
  *
  * @param string $source
  *
- * @throws BadValue
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkTemplate(string $source)
+        private static function checkTemplate(string $source) : void
         {
             if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
             {
@@ -287,12 +287,12 @@
  *
  * @param string $source
  *
- * @throws BadValue
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkRedirect(string $source)
+        private static function checkRedirect(string $source) : void
         {
             if (!preg_match('#^(/.*?)+#i', $source))
             {
@@ -304,12 +304,12 @@
  *
  * @param string $source
  *
- * @throws BadValue
  * @return void
+ * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkXRedirect(string $source)
+        private static function checkXRedirect(string $source) : void
         {
             if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
             {

@@ -131,8 +131,10 @@
  * Initialise CSP
  *
  * If the data is in the database then use that, if not thensetup the table from Config::$defaultCSP
+ *
+ * @return void
  */
-        public function initCSP()
+        public function initCSP() : void
         {
             $local = $this->context->local();
             if ($local->configval('usecsp'))

@@ -52,7 +52,7 @@
  *
  * @return void
  */
-        private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method)
+        private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method) : void
         {
 /*
  * @psalm-suppress RedundantCondition
