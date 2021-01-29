@@ -11,7 +11,6 @@
 
     use \Config\Framework as FW;
     use \R;
-    use \Support\Context;
 /**
  * Utility class that returns generally useful information about parts of the site
  */
