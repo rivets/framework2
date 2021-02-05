@@ -60,7 +60,7 @@
  */
             $this->engine->addGlobal('base', $local->base());
             $this->engine->addGlobal('assets', $local->assets());
-            foreach (\Framework\Local::$msgnames as $mn)
+            foreach (self::$msgnames as $mn)
             {
                 $this->engine->addGlobal($mn, []);
             }
@@ -115,7 +115,7 @@
             {
                 if (!empty($mvals))
                 {
-                    $this->addval(\Framework\Local::$msgnames[$ix], $mvals);
+                    $this->addval(self::$msgnames[$ix], $mvals);
                 }
             }
             $this->clearMessages();

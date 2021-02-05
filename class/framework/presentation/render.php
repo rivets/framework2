@@ -16,6 +16,10 @@
     abstract class Render
     {
 /**
+ * @var array Contains string names for the message constants - used for Template variables
+ */
+        protected static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
+/**
  * @var array    Key/value array of data to pass into template renderer
  */
         protected array $tvals          = [];
