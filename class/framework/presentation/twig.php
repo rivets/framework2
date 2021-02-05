@@ -22,15 +22,15 @@
  *//**
  * Initialise twig template engine
  *
- * @param bool    $cache    if TRUE then enable the TWIG cache
+ * @param array    $options
  *
  * @return void
  */
-        public function __construct(Context $context, array $options)
+        public function __construct(array $options)
         {
             parent::__construct($context, $options);
             $local = $context->local();
-            $twigdir = $local->makebasepath('twigs');
+            $twigdir = $local->makebasepath($options['templateDir'] ?? 'twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
@@ -40,17 +40,17 @@
             {
                 $loader->addPath($twigdir.'/'.$tns, $tns);
             }
-            foreach (['util'] as $tns)
-            {
-                $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
-            }
-            foreach (['content'] as $tns)
-            {
-                $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
-            }
+            //foreach (['util'] as $tns)
+            //{
+            //    $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
+            //}
+            //foreach (['content'] as $tns)
+            //{
+            //    $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
+            //}
             $this->engine = new \Twig\Environment(
                 $loader,
-                ['cache' => isset($options['cache']) ? $local->makebasepath('twigcache') : FALSE]
+                ['cache' => isset($options['cache']) ? $local->makebasepath($options['cache']) : FALSE]
             );
             $this->engine->addExtension(new \Framework\Utility\Plural());
 /*

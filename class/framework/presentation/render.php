@@ -32,14 +32,12 @@
  */
         protected ?object $engine       = NULL;
 /**
- * Initialise twig template engine
- *
- * @param bool    $cache    if TRUE then enable the TWIG cache
+ * Initialise template engine
  *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function __construct(Context $context, array $options = [])
+        public function __construct(array $options = [])
         {
             $this->clearValues();
             $this->clearMessages();
