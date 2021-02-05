@@ -11,6 +11,6 @@
     include 'class/config/framework.php';
     \Config\Framework::initialise();
 
-    \Framework\Local::getinstance()->setup(__DIR__, TRUE, TRUE, TRUE, TRUE); // AJAX, developer mode on, load twig, load RB
+    \Framework\Local::getinstance()->setup(__DIR__, TRUE, TRUE, [], TRUE); // AJAX, developer mode on, renderer, load RB
     \Support\Ajax::getinstance()->handle(\Support\Context::getinstance()->setup());
 ?>
