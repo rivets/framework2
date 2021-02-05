@@ -109,7 +109,7 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function saveOn($id, $on, $fn) : void
+        public function saveOn(string $id, string $on, string $fn) : void
         {
             $this->ons[$id][$on] = $fn;
         }
@@ -120,7 +120,7 @@
  * @psalm-suppress PossiblyUnusedMethod
  * @phpcsSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
-        public function getOns()
+        public function getOns() : string
         {
             $res = '';
             foreach ($this->ons as $id => $conds)
@@ -223,10 +223,6 @@
  */
         public function formData(?string $which = NULL) : object
         {
-            if ($which == NULL)
-            { // this is backward compatibility and will be removed in the future
-                return \Framework\Support\FormData::getInstance();
-            }
             if (!isset($this->getters[$which]))
             {
                 $class = '\Framework\FormData\\'.ucfirst($which);
@@ -336,15 +332,16 @@
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
                 $bsplit = array_filter(explode('/', $this->local()->base()));
-                foreach (range(1, count($bsplit)) as $c)
-                {
-                    array_shift($req); // pop off the directory name...
-                }
+                $req = array_slice($req, count($bsplit));
+                //foreach (range(1, count($bsplit)) as $c)
+                //{
+                //    array_shift($req); // pop off the directory name...
+                //}
             }
             if (!empty($req))
             { // there was something after the domain name so split it into action and rest...
                 $this->reqaction = strtolower(array_shift($req));
-                $this->reqrest = empty($req) ? [''] : array_values($req);
+                $this->reqrest = empty($req) ? [''] : $req;  // there may only have been an action
             }
             return $this;
         }
