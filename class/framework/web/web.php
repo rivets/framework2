@@ -14,87 +14,8 @@
  */
     class Web extends WebBase
     {
-        use CSP; // bring in CSP handling code
-/**
- * Send a 204 response - OK but no content
- *
- * @return void
- */
-        public function noContent() : void
-        {
-            $this->sendheaders(StatusCodes::HTTP_NO_CONTENT);
-        }
-/**
- * Send a 201 response - Created
- *
- * @param string  $value  a string to return
- * @param string  $mime   the mimetype
- *
- * @return void
- */
-        public function created(string $value, string $mime = 'text/plain; charset=UTF-8') : void
-        {
-            $this->sendString($value, $mime, \Framework\Web\StatusCodes::HTTP_CREATED);
-        }
-/**
- * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
- *
- * @see \Support\SiteAction
- *
- * @return void
- */
-        public function send304() : void
-        {
-            $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
-        }
-/**
- * Generate a 400 Bad Request error return
- *
- * @param string    $msg    A message to be sent
- *
- * @return void
- * @psalm-return never-return
- */
-        public function bad(string $msg = '') : void
-        {
-            $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
-        }
-/**
- * Generate a 403 Access Denied error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function noAccess(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_FORBIDDEN, $msg);
-        }
-/**
- * Generate a 404 Not Found error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function notFound(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_NOT_FOUND, $msg);
-        }
-/**
- * Generate a 500 Internal Error error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function internal(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
-        }
+        use CSP;      // bring in CSP handling code
+        use Response; // bring in response generating functions.
 /**
  * Check to see if the client accepts gzip encoding
  *
@@ -102,8 +23,21 @@
  */
         public function acceptgzip() : bool
         {
-            return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') > 0;
+            return $this->accepts('gzip');
         }
+/**
+ * Check to see if the client accepts gzip encoding
+ *
+ * @param string  $type  The type you are looking for...
+ *
+ * @return bool
+ */
+        public function accepts(string $type) : bool
+        {
+            return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], $type) > 0;
+        }
+/**
+ *
 /**
  * What kind of request was this?
  *
@@ -133,6 +67,18 @@
         public function addCache(array $items) : void
         {
             $this->cache = array_merge($this->cache, $items);
+        }
+/**
+ * Return header value or NULL if it does not exist
+ *
+ * @param string $name
+ *
+ * @return ?string
+ */
+        public function header(string $name) : ?string
+        {
+            $xname = strtoupper('HTTP_'.preg_replace('/\s+/', '_', trim($name)));
+            return filter_has_var(INPUT_SERVER, $xname) ? $_SERVER[$xname] : NULL;
         }
     }
 ?>
