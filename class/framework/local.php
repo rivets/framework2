@@ -11,6 +11,7 @@
     use \Config\Config;
     use \Config\Framework as FW;
     use \Framework\Web\Web;
+    use \R;
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -43,7 +44,7 @@
 /**
  * @var ?object    the Twig renderer
  */
-        private $twig           = NULL;
+        private $renderer       = NULL;
 /**
  * @var array    Key/value array of data to pass into template renderer
  */
@@ -217,51 +218,6 @@
             return $this->fwconfig;
         }
 /**
- * Initialise twig template engine
- *
- * @param bool    $cache    if TRUE then enable the TWIG cache
- *
- * @return void
- */
-        public function setuptwig(bool $cache = FALSE) : void
-        {
-            $twigdir = $this->makebasepath('twigs');
-            $loader = new \Twig\Loader\FilesystemLoader($twigdir);
-            foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
-            {
-                    $loader->addPath($twigdir.'/framework/'.$tns, $tns);
-            }
-            foreach (['content', 'info', 'surround'] as $tns)
-            {
-                $loader->addPath($twigdir.'/'.$tns, $tns);
-            }
-            foreach (['util'] as $tns)
-            {
-                    $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
-            }
-            foreach (['content'] as $tns)
-            {
-                $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
-            }
-            $this->twig = new \Twig\Environment(
-                $loader,
-                ['cache' => $cache ? $this->makebasepath('twigcache') : FALSE]
-            );
-            $this->twig->addExtension(new \Framework\Utility\Plural());
-/*
- * A set of basic values that get passed into the TWIG renderer
- *
- * Add new key/value pairs to this array to pass values into the twigs
- */
-            $this->twig->addGlobal('base', $this->base());
-            $this->twig->addGlobal('assets', $this->assets());
-            foreach (self::$msgnames as $mn)
-            {
-                $this->twig->addGlobal($mn, []);
-            }
-            $this->tvals = [];
-        }
-/**
  * Calls a user defined function with the twig object as a parameter.
  * The user can then add extensions, filters etc.
  *
@@ -269,50 +225,36 @@
  *
  * @return void
  */
-        public function extendtwig(callable $fn) : void
+        public function extendRenderer(callable $fn) : void
         {
-            $fn($this->twig);
+            $this->renderer->extendEngine($fn);
         }
 /**
- * Return TRUE if Twig is enabled
+ * Return TRUE if a renderer is enabled
  *
  * @return bool
  */
-        public function hastwig()
+        public function hasRenderer()
         {
-            return is_object($this->twig);
+            return is_object($this->renderer);
         }
 /**
- * Render a twig and return the string - do nothing if the template is the empty string
+ * Render a twig and return the string - will do nothing if the template is the empty string
  *
  * @param string    $tpl    The template
- * @param mixed[]   $vals   Values to set for the twig
+ * @param mixed[]   $vals   Values to set for the template
  *
  * @return string
  */
-        public function getrender(string $tpl, array $vals = [])
+        public function getrender(string $tpl, array $vals = []) : string
         {
-            if ($tpl === '')
-            { // no template so no output
-                return '';
-            }
-            foreach ($this->messages as $ix => $mvals)
-            {
-                if (!empty($mvals))
-                {
-                    $this->addval(self::$msgnames[$ix], $mvals);
-                }
-            }
-            $this->clearMessages();
-            $this->addval($vals); // set up any values that have been passed
-            /** @psalm-suppress PossiblyNullReference */
-            return $this->twig->render($tpl, $this->tvals);
+            return $this->renderer->getRender($tpl, $this->tvals);
         }
 /**
- * Render a twig - do nothing if the template is the empty string
+ * Render a template - will do nothing if the template is the empty string
  *
  * @param string   $tpl       The template
- * @param mixed[]  $vals      Values to set for the twig
+ * @param mixed[]  $vals      Values to set for the template
  * @param string   $mimeType
  * @param int      $status
  *
@@ -320,32 +262,29 @@
  */
         public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
-            if ($tpl !== '')
-            {
-                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimeType, $status);
-            }
+            $this->renderer->render($tpl, $this->tvals);
         }
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array<mixed>   $vname    The name to be used inside the twig or an array of key/value pairs
+ * @param string|array<mixed>   $vname    The name to be used inside the template or an array of key/value pairs
  * @param mixed                 $value    The value to be stored or "" if an array in param 1
- * @param bool                  $tglobal  If TRUE add this as a twig global variable
+ * @param bool                  $tglobal  If TRUE add this as a template global variable
  *
  * @throws \Framework\Exception\InternalError
  *
  * @return void
  */
-        public function addval($vname, $value = '', $tglobal = FALSE) : void
+        public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
-            assert(is_object($this->twig)); // Should never be called if Twig is not initialised.
+            assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
             {
                 foreach ($vname as $key => $aval)
                 {
                     if ($tglobal)
                     {
-                        $this->twig->addGlobal($key, $aval);
+                        $this->engine->addGlobal($key, $aval);
                     }
                     else
                     {
@@ -355,7 +294,7 @@
             }
             elseif ($tglobal)
             {
-                $this->twig->addGlobal($vname, $value);
+                $this->engine->addGlobal($vname, $value);
             }
             else
             {
@@ -382,16 +321,9 @@
  *
  * @return void
  */
-        public function message(int $kind, $value) : void
+        public function message(int $kind, string|array $value) : void
         {
-            if (is_array($value))
-            {
-                $this->messages[$kind] = array_merge($this->messages[$kind], $value);
-            }
-            else
-            {
-                $this->messages[$kind][] = $value;
-            }
+            $this->engine->message($kind, $value);
         }
 /**
  * Clear out messages
@@ -402,14 +334,16 @@
  */
         public function clearMessages(?int $kind = NULL) : void
         {
-            if ($kind === '')
-            {
-                $this->messages = [[], [], []];
-            }
-            else
-            {
-                $this->messages[$kind] = [];
-            }
+            $this->engine->clearmessages($kind);
+        }
+/**
+ * Clear out values
+ *
+ * @return void
+ */
+        public function clearValues() : void
+        {
+            $this->engine->clearValues();
         }
 /**
  * Return the name of the directory for this site
@@ -477,17 +411,17 @@
 /**
  * Set up local information. Returns self
  *
- * The $loadrb parameter simplifies some of the unit testing for this class
+ * The $loadORM parameter simplifies some of the unit testing for this class
  *
- * @param string  $basedir    The full path to the site directory
- * @param bool    $ajax       If TRUE then this is an AJAX call
- * @param bool    $devel      If TRUE then we are developing the system
- * @param bool    $loadtwig   If TRUE then load in Twig.
- * @param bool    $loadrb     If TRUE then load in RedBean
+ * @param string    $basedir    The full path to the site directory
+ * @param bool      $ajax       If TRUE then this is an AJAX call
+ * @param bool      $devel      If TRUE then we are developing the system
+ * @param string    $render     The name of the Renderer class or '' if not wanted
+ * @param bool      $loadORM    If TRUE then load in RedBean
  *
  * @return \Framework\Local
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, bool $loadtwig, bool $loadrb = TRUE) : \Framework\Local
+        public function setup(string $basedir, bool $ajax, bool $devel, string $render, bool $loadORM = TRUE) : \Framework\Local
         {
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
@@ -502,16 +436,16 @@
         //    $bdr = [''];
         //    while ($bd != $_SERVER['DOCUMENT_ROOT'])
         //    { // keep stripping of the last component until we get to the document root
-        //        $pp = pathinfo($bd);
+        //        $pp = \pathinfo($bd);
         //        $bd = $pp['dirname'];
         //        $bdr[] = $pp['basename'];
         //    }
-        //    $this->basedname = implode('/', $bdr);
+        //    $this->basedname = \implode('/', $bdr);
             $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $this);
 
-            if ($loadtwig)
-            { // we want twig - there are some autoloader issues out there that adding twig seems to fix....
-                $this->setuptwig(FALSE);
+            if ($render !== '')
+            { // we want a renderer - this setups Twig but needs to be generalised
+                $this->renderer = new ('\\Framework\\Presentation\\'.$render)($context, []);
             }
 
             $offl = $this->makebasepath('admin', 'offline');
@@ -523,28 +457,28 @@
 /*
  * Initialise database access
  */
-            class_alias('\RedBeanPHP\R', '\R');
+            \class_alias('\RedBeanPHP\R', '\R');
             /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
-            if (Config::DBHOST !== '' && $loadrb)
+            if (Config::DBHOST !== '' && $loadORM)
             { // looks like there is a database configured
-                \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
-                if (!\R::testConnection())
+                R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                if (!R::testConnection())
                 {
                     $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
                     /* NOT REACHED */
                 }
-                \R::freeze(!$devel); // freeze DB for production systems
+                R::freeze(!$devel); // freeze DB for production systems
                 $this->fwconfig = [];
-                foreach (\R::findAll(FW::CONFIG) as $cnf)
+                foreach (R::findAll(FW::CONFIG) as $cnf)
                 {
                     $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
                     $this->fwconfig[$cnf->name] = $cnf;
                 }
 
-                if ($loadtwig)
+                if ($this->renderer !== NULL)
                 {
                     /** @psalm-suppress PossiblyNullReference */
-                    $this->twig->addGlobal('fwurls', $this->fwconfig); // Package URL values for use in Twigs
+                    $this->renderer->addGlobal('fwurls', $this->fwconfig); // Package URL values for use in Twigs
                 }
             }
             return $this;
