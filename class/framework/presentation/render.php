@@ -8,9 +8,11 @@
  */
     namespace Framework\Presentation;
 
-    use \Config\Config;
     use \Framework\Web\Web;
-
+    use \Support\Context;
+/**
+ * Base class for other Twig like renderers
+ */
     abstract class Render
     {
 /**

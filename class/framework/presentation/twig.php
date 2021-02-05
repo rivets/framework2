@@ -8,10 +8,10 @@
  */
     namespace Framework\Presentation;
 
-    use \Config\Config;
-    use \Config\Framework as FW;
     use \Framework\Web\Web;
-
+/**
+ * Class that uses Twig to render pages
+ */
     class Twig extends Render
     {
 /**
