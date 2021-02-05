@@ -32,7 +32,7 @@
  */
         public function recaptcha() : bool
         {
-            return CFW::constant('RECAPTCHA', 0) != 0 ?  \Framework\Web\Web::getInstance->recaptcha(CFW::constant('RECAPTCHASECRET', '')) : TRUE;
+            return CFW::constant('RECAPTCHA', 0) != 0 ?  \Framework\Web\Web::getInstance()->recaptcha(CFW::constant('RECAPTCHASECRET', '')) : TRUE;
         }
     }
 ?>
