@@ -57,13 +57,18 @@
         <file name="../class/framework/pages/getfile.php" />
         <file name="../class/framework/pages/userlogin.php" />
 
+        <file name="../class/framework/presentation/render.php" />
+        <file name="../class/framework/presentation/twig.php" />
+
         <file name="../class/framework/support/contextbase.php" />
         <file name="../class/framework/support/debug.php" />
         <file name="../class/framework/support/errorhandler.php" />
         <file name="../class/framework/support/errorhandlerbase.php" />
         <file name="../class/framework/support/formdata.php" />
         <file name="../class/framework/support/handlerole.php" />
+        <file name="../class/framework/support/sitable.php" />
         <file name="../class/framework/support/siteinfo.php" />
+        <file name="../class/framework/support/siteinfobase.php" />
         <file name="../class/framework/support/table.php" />
         <file name="../class/framework/support/test.php" />
         <file name="../class/framework/support/testsupport.php" />
@@ -74,11 +79,13 @@
         <file name="../class/framework/utility/jwt/ExpiredException.php" />
         <file name="../class/framework/utility/jwt/SignatureInvalidException.php" />
         <file name="../class/framework/utility/jwt/jwt.php" /> -->
+        <file name="../class/framework/utility/fmailer.php" />
         <file name="../class/framework/utility/plural.php" />
         <file name="../class/framework/utility/proxycheck.php" />
         <file name="../class/framework/utility/singleton.php" />
 
         <file name="../class/framework/web/csp.php" />
+        <file name="../class/framework/web/response.php" />
         <file name="../class/framework/web/statuscodes.php" />
         <file name="../class/framework/web/web.php" />
         <file name="../class/framework/web/webbase.php" />
@@ -86,6 +93,7 @@
         <file name="../class/model/form.php" />
         <file name="../class/model/formfield.php" />
         <file name="../class/model/fwconfig.php" />
+        <file name="../class/model/fwcsp.php" />
         <file name="../class/model/page.php" />
         <file name="../class/model/pagerole.php" />
         <file name="../class/model/role.php" />
