@@ -399,7 +399,7 @@
  *
  * @return \Framework\Local
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, string $render, bool $loadORM = TRUE) : \Framework\Local
+        public function setup(string $basedir, bool $ajax, bool $devel, string $render, bool $loadORM = TRUE,) : \Framework\Local
         {
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
@@ -421,9 +421,9 @@
         //    $this->basedname = \implode('/', $bdr);
             $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $this);
 
-            if ($render !== '')
-            { // we want a renderer - this setups Twig but needs to be generalised
-                $this->renderer = new ('\\Framework\\Presentation\\'.$render)($context, []);
+            if (!empty($render))
+            { // we want a renderer - this setups
+                $this->renderer = new ('\\Framework\\Presentation\\'.$render[0])($render[1]);
             }
 
             $offl = $this->makebasepath('admin', 'offline');
