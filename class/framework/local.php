@@ -39,14 +39,6 @@
  */
         private $errorHandler   = NULL;
 /**
- * @var array    Key/value array of data to pass into template renderer
- */
-        private $tvals          = [];
-/**
- * @var array<array>    Stash away messages so that messages.twig works
- */
-        private $messages       = [[], [], []];
-/**
  * @var array               Config values from database
  */
         private $fwconfig       = [];

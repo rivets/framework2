@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Framework\Web\Web;
 /**
  * Adds functions for calling the renderer
  */
