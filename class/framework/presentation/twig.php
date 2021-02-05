@@ -61,7 +61,7 @@
  */
             $this->engine->addGlobal('base', $local->base());
             $this->engine->addGlobal('assets', $local->assets());
-            foreach (self::$msgnames as $mn)
+            foreach (\Framework\Local::$msgnames as $mn)
             {
                 $this->engine->addGlobal($mn, []);
             }
@@ -116,7 +116,7 @@
             {
                 if (!empty($mvals))
                 {
-                    $this->addval(self::$msgnames[$ix], $mvals);
+                    $this->addval(\Framework\Local::$msgnames[$ix], $mvals);
                 }
             }
             $this->clearMessages();
@@ -137,7 +137,7 @@
  */
         public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
-            assert(is_object($this->twig)); // Should never be called if Twig is not initialised.
+            assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
             {
                 foreach ($vname as $key => $aval)
