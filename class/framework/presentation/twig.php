@@ -26,10 +26,9 @@
  *
  * @return void
  */
-        public function __construct(array $options)
+        public function __construct(\Framework\Local $local, array $options)
         {
-            parent::__construct($context, $options);
-            $local = $context->local();
+            parent::__construct($local, $options);
             $twigdir = $local->makebasepath($options['templateDir'] ?? 'twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)

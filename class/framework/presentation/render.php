@@ -37,7 +37,7 @@
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function __construct(array $options = [])
+        public function __construct(\Framework\Local $local, array $options = [])
         {
             $this->clearValues();
             $this->clearMessages();
