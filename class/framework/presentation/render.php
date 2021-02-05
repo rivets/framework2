@@ -9,7 +9,6 @@
     namespace Framework\Presentation;
 
     use \Framework\Web\Web;
-    use \Support\Context;
 /**
  * Base class for other Twig like renderers
  */
