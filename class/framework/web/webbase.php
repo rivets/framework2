@@ -147,7 +147,7 @@
  */
         public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
-            if (!isset($_SERVER['HTTP_RANGE']))
+            if (!filter_has_var(INPUT_SERVER, 'HTTP_RANGE'))
             {
                 return [$code, [], $size];
             }
@@ -294,7 +294,7 @@
                 $data = \http_build_query([
                     'secret'    => $secret,
                     'response'  => $_POST['g-recaptcha-response'],
-                    'remoteip'  => $_SERVER['REMOTE_ADDR'],
+                    'remoteip'  => $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'],
                 ]);
                 $opts = [
                     'http' => [
@@ -304,11 +304,10 @@
                     ],
                 ];
                 $context  = \stream_context_create($opts);
-                $result = file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
+                $result = \file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
                 if ($result !== FALSE)
                 {
-                    $check = \json_decode($result, TRUE);
-                    return $check->success;
+                    return \json_decode($result, TRUE)->success;
                 }
             }
             return FALSE;

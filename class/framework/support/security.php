@@ -58,5 +58,14 @@
             finfo_close($finfo);
             return $mime;
         }
+/**
+ * Return TRUE of there is a valid GPC Sec-GPC header
+ *
+ * @return bool
+ */
+        public function hasSecGPC()
+        {
+            return \Framework\Web\Web::getInstance()->header('Sec-GPC') == '1';
+        }
     }
 ?>
