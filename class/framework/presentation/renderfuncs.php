@@ -8,7 +8,6 @@
  */
     namespace Framework\Presentation;
 
-    use \Framework\Web\Web;
 /**
  * Adds functions for calling the renderer
  */
@@ -73,9 +72,12 @@
  *
  * @return void
  */
-        public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
+        public function render(string $tpl, array $vals = [], string $mimeType = \Framework\Web\Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
-            $this->renderer->render($tpl, $vals);
+            if ($tpl !== '')
+            {
+                \Framework\Web\Web::getinstance()->sendstring($this->renderer->getrender($tpl, $vals), $mimeType, $status);
+            }
         }
 /**
  * Add a value into the values stored for rendering the template
