@@ -30,7 +30,8 @@
         public function __construct(Context $context, array $options)
         {
             parent::__construct($context, $options);
-            $twigdir = $context->local()->makebasepath('twigs');
+            $local = $context->local();
+            $twigdir = $local->makebasepath('twigs');
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
@@ -50,7 +51,7 @@
             }
             $this->engine = new \Twig\Environment(
                 $loader,
-                ['cache' => isset($options['cache']) ? $this->makebasepath('twigcache') : FALSE]
+                ['cache' => isset($options['cache']) ? $local->makebasepath('twigcache') : FALSE]
             );
             $this->engine->addExtension(new \Framework\Utility\Plural());
 /*
@@ -58,8 +59,8 @@
  *
  * Add new key/value pairs to this array to pass values into the twigs
  */
-            $this->engine->addGlobal('base', $this->base());
-            $this->engine->addGlobal('assets', $this->assets());
+            $this->engine->addGlobal('base', $local->base());
+            $this->engine->addGlobal('assets', $local->assets());
             foreach (self::$msgnames as $mn)
             {
                 $this->engine->addGlobal($mn, []);
@@ -105,7 +106,7 @@
  *
  * @return string
  */
-        public function getRender(string $tpl, array $vals = [])
+        public function getRender(string $tpl, array $vals = []) : string
         {
             if ($tpl === '')
             { // no template so no output
