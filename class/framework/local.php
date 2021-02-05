@@ -43,6 +43,21 @@
             return $this->devel;
         }
 /**
+ * Put the system into debugging mode
+ *
+ * @return void
+ * @psalm-suppress PossiblyNullReference
+ */
+        public function enabledebug() : void
+        {
+            $this->errorHandler->enableDebug();
+            if ($this->hasRenderer())
+            { // now we know we have twig - hence suppress above
+                $this->renderer->addExtension(new \Twig\Extension\DebugExtension());
+                $this->renderer->enableDebug();
+            }
+        }
+/**
  * Return a named config bean
  *
  * @param string       $name  The name of the item

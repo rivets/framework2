@@ -9,8 +9,6 @@
     namespace Framework\Support;
 
     use \Config\Config;
-    use \Config\Framework as FW;
-    use \R;
 /**
  * This is a class that maintains values about the local environment and does error handling
  */
@@ -176,21 +174,6 @@
         public function debase(string $url)
         {
             return $this->base() !== '' ? preg_replace('#^'.$this->base().'#', '', $url) : $url;
-        }
-/**
- * Put the system into debugging mode
- *
- * @return void
- * @psalm-suppress PossiblyNullReference
- */
-        public function enabledebug() : void
-        {
-            $this->errorHandler->enableDebug();
-            if ($this->hasRenderer())
-            { // now we know we have twig - hence suppress above
-                $this->renderer->addExtension(new \Twig\Extension\DebugExtension());
-                $this->renderer->enableDebug();
-            }
         }
 /**
  * Check to see if non-admin users are being excluded

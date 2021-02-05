@@ -61,7 +61,7 @@
  */
         public function getrender(string $tpl, array $vals = []) : string
         {
-            return $this->renderer->getRender($tpl, $this->tvals);
+            return $this->renderer->getRender($tpl, $vals);
         }
 /**
  * Render a template - will do nothing if the template is the empty string
@@ -75,7 +75,7 @@
  */
         public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
-            $this->renderer->render($tpl, $this->tvals);
+            $this->renderer->render($tpl, $vals);
         }
 /**
  * Add a value into the values stored for rendering the template
