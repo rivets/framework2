@@ -399,7 +399,7 @@
  *
  * @return \Framework\Local
  */
-        public function setup(string $basedir, bool $ajax, bool $devel, string $render, bool $loadORM = TRUE,) : \Framework\Local
+        public function setup(string $basedir, bool $ajax, bool $devel, string $render, bool $loadORM = TRUE) : \Framework\Local
         {
             $this->basepath = $basedir;
             $this->basedname = Config::BASEDNAME;
