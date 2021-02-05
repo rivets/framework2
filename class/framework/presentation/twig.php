@@ -8,7 +8,6 @@
  */
     namespace Framework\Presentation;
 
-    use \Framework\Web\Web;
     use \Support\Context;
 /**
  * Class that uses Twig to render pages

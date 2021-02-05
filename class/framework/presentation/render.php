@@ -33,6 +33,7 @@
  * @param bool    $cache    if TRUE then enable the TWIG cache
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function __construct(Context $context, array $options = [])
         {
