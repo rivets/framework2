@@ -277,29 +277,7 @@
  */
         public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
-            assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
-            if (is_array($vname))
-            {
-                foreach ($vname as $key => $aval)
-                {
-                    if ($tglobal)
-                    {
-                        $this->engine->addGlobal($key, $aval);
-                    }
-                    else
-                    {
-                        $this->tvals[$key] = $aval;
-                    }
-                }
-            }
-            elseif ($tglobal)
-            {
-                $this->engine->addGlobal($vname, $value);
-            }
-            else
-            {
-                $this->tvals[$vname] = $value;
-            }
+            $this->renderer->addval($vname, $vakue, $tglobal);
         }
 /**
  * Add a message into the messages stored for rendering the template
@@ -323,7 +301,7 @@
  */
         public function message(int $kind, string|array $value) : void
         {
-            $this->engine->message($kind, $value);
+            $this->renderer->message($kind, $value);
         }
 /**
  * Clear out messages
@@ -334,7 +312,7 @@
  */
         public function clearMessages(?int $kind = NULL) : void
         {
-            $this->engine->clearmessages($kind);
+            $this->renderer->clearmessages($kind);
         }
 /**
  * Clear out values
@@ -343,7 +321,7 @@
  */
         public function clearValues() : void
         {
-            $this->engine->clearValues();
+            $this->renderer->clearValues();
         }
 /**
  * Return the name of the directory for this site
