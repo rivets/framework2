@@ -37,8 +37,6 @@
             return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], $type) > 0;
         }
 /**
- *
-/**
  * What kind of request was this?
  *
  * @return string
