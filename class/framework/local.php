@@ -277,7 +277,7 @@
  */
         public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
-            $this->renderer->addval($vname, $vakue, $tglobal);
+            $this->renderer->addval($vname, $value, $tglobal);
         }
 /**
  * Add a message into the messages stored for rendering the template
@@ -288,11 +288,11 @@
  *      \Framework\Local\WARNING
  *      \Framework\Local\MESSAGE
  *
- * To have your Twig deal with these you need
+ * To have your Template engine deal with these you need
  *
  * {% include '@util/message.twig %}
  *
- * somewhere in the relevant twig (usually at the top of the main body)
+ * somewhere in the relevant template (usually at the top of the main body)
  *
  * @param int                   $kind   The kind of message
  * @param string|array<string>  $value  The value to be stored or an array of values
@@ -364,10 +364,10 @@
         public function enabledebug() : void
         {
             $this->errorHandler->enableDebug();
-            if ($this->hastwig())
+            if ($this->hasRenderer())
             { // now we know we have twig - hence suppress above
-                $this->twig->addExtension(new \Twig\Extension\DebugExtension());
-                $this->twig->enableDebug();
+                $this->renderer->addExtension(new \Twig\Extension\DebugExtension());
+                $this->renderer->enableDebug();
             }
         }
 /**
