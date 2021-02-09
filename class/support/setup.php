@@ -18,8 +18,8 @@
 /**
  * For user code
  *
- * @param Context                       $context    The context object
- * @param \RedBean\OODBBean|stdClass    $page       An object about the page about to be rendered
+ * @param Context                          $context    The context object
+ * @param \RedBeanPHP\OODBBean|\stdClass   $page       An object about the page about to be rendered
  *
  * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
