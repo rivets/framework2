@@ -149,7 +149,7 @@ class R
  * @param string[] $y
  * @return array
  */
-    public static function findCollection(string $b, string $x = '', array $y = []) : array
+    public static function findCollection(string $b, string $x = '', array $y = []) : \ArrayIterator
     {
         return [];
     }
