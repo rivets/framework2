@@ -16,7 +16,7 @@
     class Paging extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
@@ -25,7 +25,7 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array<mixed>
  */
         public function requires()
         {
@@ -33,8 +33,6 @@
         }
 /**
  * Get a page of bean values
- *
- * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\Forbidden
  *
