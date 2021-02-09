@@ -15,7 +15,7 @@
     class Debug
     {
 /**
- * @var \resource|false    The file descriptor
+ * @var mixed    The file descriptor
  */
         private static $fd = FALSE;
 /**
