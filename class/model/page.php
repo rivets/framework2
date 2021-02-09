@@ -117,6 +117,43 @@
             }
         }
 /**
+ * Handle an object page
+ *
+ * @param Context               $context
+ * @param \RedBeanPHP\OODBBean  $p
+ *
+ * @return void
+ */
+        private function doObject(Context $context, \RedBeanPHP\OODBBean $p)
+        {
+            if (!preg_match('/\\\\/', $p->source))
+            { // no namespace so put it in \Pages
+                $p->source = '\\Pages\\'.$p->source;
+                \R::store($p);
+            }
+            $tl = \strtolower($p->source);
+            $tspl = \explode('\\', $p->source);
+            $base = \array_pop($tspl);
+            $lbase = \strtolower($base);
+            $namespace = \implode('\\', \array_filter($tspl));
+            $src = \preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
+            $file = $context->local()->makebasepath('class', $src);
+            if (!\file_exists($file))
+            { // make the file
+                $fd = \fopen($file, 'w');
+                if ($fd !== FALSE)
+                {
+                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $p->name]));
+                    \fclose($fd);
+                }
+                else
+                {
+                    throw new \Framework\Exception\InternalError('Cannot create PHP file');
+                }
+            }
+            self::makeTwig($context, ['content', $lbase.'.twig']);
+        }
+/**
  * Add a Page
  *
  * This will be called from ajax.php
@@ -157,32 +194,7 @@
                 switch ($p->kind)
                 {
                 case Dispatch::OBJECT:
-                    if (!preg_match('/\\\\/', $p->source))
-                    { // no namespace so put it in \Pages
-                        $p->source = '\\Pages\\'.$p->source;
-                        \R::store($p);
-                    }
-                    $tl = strtolower($p->source);
-                    $tspl = explode('\\', $p->source);
-                    $base = array_pop($tspl);
-                    $lbase = strtolower($base);
-                    $namespace = implode('\\', array_filter($tspl));
-                    $src = preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
-                    $file = $local->makebasepath('class', $src);
-                    if (!file_exists($file))
-                    { // make the file
-                        $fd = \fopen($file, 'w');
-                        if ($fd !== FALSE)
-                        {
-                            \fwrite($fd, $context->local()->getRendeer('@util/pagesample.twig', ['pagename' => $p->name]));
-                            \fclose($fd);
-                        }
-                        else
-                        {
-                            throw new \Framework\Exception\InternalError('Cannot create PHP file');
-                        }
-                    }
-                    self::makeTwig($context, ['content', $lbase.'.twig']);
+                    $this->doObject($context, $p);
                     break;
                 case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
