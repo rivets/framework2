@@ -42,7 +42,7 @@
             $context = $this->context;
             $rest = $context->rest();
             $type = strtolower($rest[1]);
-            $bean = $context->load($type, $rest[2]);
+            $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
             $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
             foreach ($fdt->fileArray('file') as $file)
