@@ -8,6 +8,16 @@
         public $bean;
     }
 
+    class BeanCollection
+    {
+/**
+ * @return \RedBeanPHP\OODBBean
+ */
+        public function next() : \RedBeanPHP\OODBBean
+        {
+        }
+    }
+
     class OODBBean
     {
         /** @var OODBBean */
