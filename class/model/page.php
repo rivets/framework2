@@ -247,6 +247,7 @@
                 case Dispatch::REHOME:
                 case Dispatch::XREDIRECT:
                 case Dispatch::XREHOME:
+/** @todo check that the values passed in make sense */
                     break;
                 }
                 return $p;
