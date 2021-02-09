@@ -35,14 +35,14 @@
  * Make a confirmation code and store it in the database
  *
  * @param Context                 $context The context bean
- * @param \RedBeanPHP\OODBBean    $bn A User bean
+ * @param \RedBeanPHP\OODBBean    $user    A User bean
  * @param string                  $kind
  *
  * @return string
  */
         private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
-            R::trashAll($user->all()->{'own'+\ucfirst(FW::CONFIRM).'List'});
+            R::trashAll($user->all()->{'own'.\ucfirst(FW::CONFIRM).'List'});
             $code = hash('sha256', $user->getID().$user->email.$user->login.uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
@@ -207,7 +207,7 @@
  * @internal
  *
  * @param Context            $context
- * @param \RedBean\OODBBean  $user
+ * @param \RedBeanPHP\OODBBean  $user
  *
  * @return void
  */
