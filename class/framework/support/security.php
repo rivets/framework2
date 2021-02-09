@@ -33,7 +33,7 @@
 /**
  * Hash a string
  *
- * @param string $value
+ * @param string $data
  *
  * @return string
  */
