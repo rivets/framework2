@@ -47,8 +47,8 @@
 /**
  * Generate a no content, created or call the ajaxResult method on a bean if it exists in its Model
  *
- * @param \RedBean\OODBBean $bean       The bean
- * @param string            $method     The method used to get here
+ * @param \RedBeanPHP\OODBBean $bean       The bean
+ * @param string               $method     The method used to get here
  *
  * @return void
  */
