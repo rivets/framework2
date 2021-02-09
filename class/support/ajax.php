@@ -55,7 +55,7 @@
  */
         public function handle(Context $context) : void
         {
-            /* You can put code here if you need to */
+            /* You can put code here if you really need to, but do think carefully about whether this is the right place */
             parent::handle($context);
         }
     }

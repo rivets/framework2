@@ -17,7 +17,7 @@
     abstract class Ajax
     {
 /**
- * @var Ajax
+ * @var \Support\Ajax
  */
         protected $controller;
 /**
