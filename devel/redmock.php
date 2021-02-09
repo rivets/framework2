@@ -34,6 +34,14 @@
              return 0;
         }
 /**
+ *@param \RedBeanPHP\OODBBean $bn
+ * @return bool
+ */
+        public function equals(\RedBeanPHP\OODBBean $bn) : bool
+        {
+             return FALSE;
+        }
+/**
  * @param string $m
  * @return mixed
  * @psalm-suppress PossiblyUnusedParam
