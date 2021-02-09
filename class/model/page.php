@@ -143,7 +143,7 @@
                 $fd = \fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $p->name]));
+                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $p->name, 'namespace' => $namespace]));
                     \fclose($fd);
                 }
                 else
@@ -190,7 +190,6 @@
                         );
                     }
                 }
-                $local = $context->local();
                 switch ($p->kind)
                 {
                 case Dispatch::OBJECT:
