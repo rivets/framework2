@@ -124,7 +124,7 @@
  *
  * @return void
  */
-        private function doObject(Context $context, \RedBeanPHP\OODBBean $p)
+        private static function doObject(Context $context, \RedBeanPHP\OODBBean $p)
         {
             if (!preg_match('/\\\\/', $p->source))
             { // no namespace so put it in \Pages
@@ -152,6 +152,51 @@
                 }
             }
             self::makeTwig($context, ['content', $lbase.'.twig']);
+        }
+/**
+ * Handle a template page
+ *
+ * @param Context               $context
+ * @param \RedBeanPHP\OODBBean  $p
+ *
+ * @return void
+ */
+        public static function doTemplate(Context $context, \RedBeanPHP\OODBBean $p) : void
+        {
+            if (!preg_match('/\.twig$/', $p->source))
+            { // doesn't end in .twig
+                $p->source .= '.twig';
+            }
+            else
+            { // sometimes there are extra .twig extensions...
+                $p->source = \preg_replace('/(\.twig)+$/', '.twig', $p->source); // this removes extra .twigs .....
+            }
+            if (!\preg_match('/^@/', $p->source))
+            {
+                if (\preg_match('#/#', $p->source))
+                { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
+                    $name = $p->source;
+                }
+                else
+                { // no namespace so put it in @content
+                    $p->source = '@content/'.$p->source;
+                    $name = ['content', $p->source];
+                    \R::store($p);
+                }
+            }
+            elseif (\preg_match('%^@content/(.*)%', $p->source, $m))
+            { // this is in the User twig content directory
+                $name = ['content', $m[1]];
+            }
+            elseif (\preg_match('%@([a-z]+)/(.*)%', $p->source, $m))
+            { // this is using a system twig
+                $name = ['framework', $m[1], $m[2]];
+            }
+            else
+            {
+                throw new \Framework\Exception\BadValue('Not recognised');
+            }
+            self::makeTwig($context, $name);
         }
 /**
  * Add a Page
@@ -193,43 +238,10 @@
                 switch ($p->kind)
                 {
                 case Dispatch::OBJECT:
-                    $this->doObject($context, $p);
+                    self::doObject($context, $p);
                     break;
                 case Dispatch::TEMPLATE:
-                    if (!preg_match('/\.twig$/', $p->source))
-                    { // doesn't end in .twig
-                        $p->source .= '.twig';
-                    }
-                    else
-                    { // sometimes there are extra .twig extensions...
-                        $p->source = preg_replace('/(\.twig)+$/', '.twig', $p->source); // this removes extra .twigs .....
-                    }
-                    if (!preg_match('/^@/', $p->source))
-                    {
-                        if (preg_match('#/#', $p->source))
-                        { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
-                            $name = $p->source;
-                        }
-                        else
-                        { // no namespace so put it in @content
-                            $p->source = '@content/'.$p->source;
-                            $name = ['content', $p->source];
-                            \R::store($p);
-                        }
-                    }
-                    elseif (preg_match('%^@content/(.*)%', $p->source, $m))
-                    { // this is in the User twig content directory
-                        $name = ['content', $m[1]];
-                    }
-                    elseif (preg_match('%@([a-z]+)/(.*)%', $p->source, $m))
-                    { // this is using a system twig
-                        $name = ['framework', $m[1], $m[2]];
-                    }
-                    else
-                    {
-                        throw new \Framework\Exception\BadValue('Not recognised');
-                    }
-                    self::makeTwig($context, $name);
+                    self::doTemplate($context, $p);
                     break;
                 case Dispatch::REDIRECT:
                 case Dispatch::REHOME:
