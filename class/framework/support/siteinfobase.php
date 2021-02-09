@@ -53,11 +53,11 @@
 /**
  * Get beans in chunks and turn them one by one using a generator
  *
- * @param string    $bean   A bean name
- * @param string    $where  An SQL where condition
- * @param array     $params Substitutions for the where clause
- * @param int       $start  The start position
- * @param int       $count  The number wanted.
+ * @param string            $bean   A bean name
+ * @param string            $where  An SQL where condition
+ * @param array<mixed>      $params Substitutions for the where clause
+ * @param int               $start  The start position
+ * @param int               $count  The number wanted.
  *
  * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
  * @return \Generator
@@ -79,11 +79,11 @@
 /**
  * Get bean data
  *
- * @param string    $bean       The bean kind
- * @param string    $where      The where condition
- * @param array     $params     Parameter values for query (if any)
- * @param int       $start      Start position - used for pagination
- * @param int       $count      The number to be fetched - used for pagination
+ * @param string            $bean       The bean kind
+ * @param string            $where      The where condition
+ * @param array<mixed>      $params     Parameter values for query (if any)
+ * @param int               $start      Start position - used for pagination
+ * @param int               $count      The number to be fetched - used for pagination
  *
  * @return array<\RedBeanPHP\OODBBean>
  */
@@ -102,9 +102,9 @@
 /**
  * Return the count for a particular bean
  *
- * @param string    $bean       The bean kind
- * @param string    $where      The where condition
- * @param array     $params     Parameter values for query (if any)
+ * @param string            $bean       The bean kind
+ * @param string            $where      The where condition
+ * @param array<mixed>      $params     Parameter values for query (if any)
  *
  * @return int
  */
@@ -116,17 +116,17 @@
 /**
  * Do a page count calculation for a table
  *
- * @param string    $table
- * @param int       $pagesize
- * @param string    $where
- * @param array     $pars
+ * @param string            $table
+ * @param int               $pagesize
+ * @param string            $where
+ * @param array<mixed>      $params
  *
  * @return int
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function pageCount(string $table, int $pagesize = 10, string $where = '', array $pars = []) : int
+        public function pageCount(string $table, int $pagesize = 10, string $where = '', array $params = []) : int
         {
-            $count = R::count($table, $where, $pars);
+            $count = R::count($table, $where, $params);
             return (int) \floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
         }
     }
