@@ -219,7 +219,11 @@
                     { // sometimes there are extra .twig extensions...
                         $p->source = preg_replace('/(\.twig)+$/', '.twig', $p->source); // this removes extra .twigs .....
                     }
-                    if (!preg_match('/^@/', $p->source))
+                    if (preg_match('#/#', $p->source))
+                    { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
+                        $name = $p->source;
+                    }
+                    elseif (!preg_match('/^@/', $p->source))
                     { // no namespace so put it in @content
                         $p->source = '@content/'.$p->source;
                         $name = ['content', $p->source];
@@ -232,6 +236,10 @@
                     elseif (preg_match('%@([a-z]+)/(.*)%', $p->source, $m))
                     { // this is using a system twig
                         $name = ['framework', $m[1], $m[2]];
+                    }
+                    else
+                    { // not something we recognise so just leave it.
+                        $name = $p->source;
                     }
                     self::maketwig($context, $name);
                     break;
