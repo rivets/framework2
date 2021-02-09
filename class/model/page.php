@@ -171,40 +171,15 @@
                     $file = $local->makebasepath('class', $src);
                     if (!file_exists($file))
                     { // make the file
-                        $fd = fopen($file, 'w');
+                        $fd = \fopen($file, 'w');
                         if ($fd !== FALSE)
                         {
-                            fwrite($fd, '<?php
-/**
- * A class that contains code to handle any requests for  /'.$p->name.'/
- *
- * @author Your Name <Your@email.org>
- * @copyright year You
- * @package Framework
- * @subpackage UserPages
- */
-    namespace '.$namespace.';
-
-    use \\Support\\Context as Context;
-/**
- * Support /'.$p->name.'/
- */
-    class '.$base.' extends \\Framework\\Siteaction
-    {
-/**
- * Handle '.$p->name.' operations
- *
- * @param Context   $context    The context object for the site
- *
- * @return string|array   A template name
- */
-        public function handle(Context $context)
-        {
-            return \'@content/'.$lbase.'.twig\';
-        }
-    }
-?>');
-                            fclose($fd);
+                            \fwrite($fd, $context->local()->getRendeer('@util/pagesample.twig', ['pagename' => $p->name]));
+                            \fclose($fd);
+                        }
+                        else
+                        {
+                            throw new \Framework\Exception\InternalError('Cannot create PHP file');
                         }
                     }
                     self::makeTwig($context, ['content', $lbase.'.twig']);
