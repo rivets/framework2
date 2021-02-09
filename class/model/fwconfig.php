@@ -148,8 +148,10 @@
  * Handle an update from the page updater
  *
  * @param object $cdata  Update values from the json updater
+ * @param string $base
+ * @param bool   $doit
  *
- * @return void
+ * @return string
  */
         public function doupdate(object $cdata, string $base, bool $doit) : string
         {
