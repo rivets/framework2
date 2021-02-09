@@ -55,7 +55,7 @@
         public function update() : void
         {
             $this->bean->name = strtolower($this->bean->name);
-            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
+            if (!\preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
                 throw new BadValue('Invalid page name');
             }
@@ -110,7 +110,7 @@
             $file = $context->local()->makebasepath('twigs', ...$name);
             if (!\file_exists($file))
             { // make the file
-                if (!copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
+                if (!\copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
                 {
                     throw new \Framework\Exception\InternalError('Cannot create '.$file);
                 }
