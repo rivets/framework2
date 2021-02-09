@@ -222,7 +222,7 @@
             $fset = FALSE;
             foreach ($this->sequence() as $flds)
             {
-                $fld = reset($flds);
+                $fld = \reset($flds);
                 $crlabel = '';
                 switch ($fld->type)
                 {
