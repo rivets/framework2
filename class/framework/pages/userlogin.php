@@ -206,7 +206,7 @@
  *
  * @internal
  *
- * @param Context            $context
+ * @param Context               $context
  * @param \RedBeanPHP\OODBBean  $user
  *
  * @return void
