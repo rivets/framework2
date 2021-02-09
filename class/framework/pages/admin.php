@@ -232,8 +232,8 @@
                 }
                 $current = \trim(\file_get_contents($context->local()->makebasepath('version.txt')));
                 $context->local()->addval([
-                    'version'   => $upd->version, /* @phpstan-ignore-line */
-                    'older'     => \version_compare($current, $upd->version, '<'), /* @phpstan-ignore-line */
+                    'version'   => $upd->version,
+                    'older'     => \version_compare($current, $upd->version, '<'),
                     'updated'   => $updated,
                     'done'      => $doit,
                     'current'   => $current,
