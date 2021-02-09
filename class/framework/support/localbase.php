@@ -44,9 +44,9 @@
             /** @psalm-suppress RedundantCondition */
             if (Config::USEPHPM || ini_get('sendmail_path') !== '')
             {
+                $mail = new \Framework\Utility\FMailer();
                 try
                 {
-                    $mail = new \Framework\Utility\FMailer();
                     $mail->setFrom($other['from'] ?? Config::SITENOREPLY);
                     if (isset($other['replyto']))
                     {
