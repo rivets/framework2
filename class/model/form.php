@@ -79,7 +79,7 @@
 /**
  * Return the form's fields
  *
- * @return array<string>
+ * @return array<\RedBeanPHP\OODBBean>
  */
         public function fields() : array
         {
@@ -97,8 +97,8 @@
             $res = [];
             foreach ($this->fields() as $fld)
             {
-                $sqn = explode('/', $fld->seqn);
-                if (count($sqn) > 1)
+                $sqn = \explode('/', $fld->seqn);
+                if (\count($sqn) > 1)
                 { // there are sub orderings in here
                     $res[$sqn[0]][$sqn[1]] = $fld;
                 }
