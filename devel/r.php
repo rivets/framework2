@@ -151,13 +151,13 @@ class R
  */
     public static function findCollection(string $b, string $x = '', array $y = []) : \ReadBeanPHP\BeanCollection
     {
-        return [];
+        return new \ReadBeanPHP\BeanCollection();
     }
 /**
  * @param string $b
  * @param string $x
- * @param array<string> $y
- * @return array<mixed>
+ * @param array<mixed> $y
+ * @return array<\RedBeanPHP\OODBBean>
  */
     public static function findMulti(string $b, string $x = '', array $y = []) : array
     {
