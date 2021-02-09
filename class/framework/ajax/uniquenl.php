@@ -16,7 +16,7 @@
     class UniqueNl extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::USER => [ FALSE, [], ['login'] ],
@@ -24,7 +24,7 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array<mixed>
  */
         final public function requires()
         {

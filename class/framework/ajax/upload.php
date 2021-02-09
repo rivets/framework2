@@ -16,14 +16,14 @@
     class Upload extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $permissions = [];
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array<mixed>
  */
         public function requires()
         {

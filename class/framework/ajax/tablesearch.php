@@ -16,7 +16,7 @@
     class TableSearch extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],

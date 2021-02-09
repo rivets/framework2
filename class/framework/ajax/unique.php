@@ -16,7 +16,7 @@
     class Unique extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
@@ -28,7 +28,7 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array <mixed>
  */
         public function requires()
         {

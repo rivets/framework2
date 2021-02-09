@@ -16,7 +16,7 @@
     class Toggle extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['local', 'fixed', 'defer', 'async'] ],
@@ -36,7 +36,6 @@
  * simply changing a value.
  *
  * @internal
- * @param Context   $context    The context object for the site
  *
  * @return void
  */
