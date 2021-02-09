@@ -215,7 +215,8 @@ class JWT
         [$function, $algorithm] = static::$supported_algs[$alg];
         switch ($function) {
             case 'hash_hmac':
-                return \hash_hmac($algorithm, $msg, $key, true);
+                $signature = \hash_hmac($algorithm, $msg, $key, true);
+                break;
             case 'openssl':
                 $signature = '';
                 $success = \openssl_sign($msg, $signature, $key, $algorithm);
@@ -225,8 +226,9 @@ class JWT
                 if ($alg === 'ES256') {
                     $signature = self::signatureFromDER($signature, 256);
                 }
-                return $signature;
+                break;
         }
+        return $signature;
     }
 
     /**
