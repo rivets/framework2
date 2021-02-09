@@ -16,7 +16,7 @@
     final class Attach extends \Framework\Ajax\Ajax
     {
 /**
- * @var array If you want to use the permission checking functions. If you just want to control access
+ * @var array<mixed> If you want to use the permission checking functions. If you just want to control access
  *            then just put the list of contextname/rolename pairs in the result of requires.
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
