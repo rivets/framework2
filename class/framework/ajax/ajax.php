@@ -138,7 +138,7 @@
             $rest = $this->context->rest();
             if (count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
             {
-                throw new \Framework\Exception\ParameterCount();
+                throw new \Framework\Exception\ParameterCount('Missing parameter');
             }
             $res = array_slice($rest, 1, $count);
             $res[] = array_slice($rest, $count + 1); // return anything left - there might be optional parameters.
