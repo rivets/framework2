@@ -18,7 +18,7 @@
     class Table extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -153,10 +153,8 @@
 /**
  * Carry out operations on tables
  *
- *
  * @throws Forbidden
  * @throws BadOperation
- *
  * @return void
  */
         final public function handle() : void

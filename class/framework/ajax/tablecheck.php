@@ -18,7 +18,7 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array<mixed>
  */
         public function requires()
         {
@@ -26,8 +26,6 @@
         }
 /**
  * Do a parsley table check
- *
- * @param \Support\Context    $context
  *
  * @return void
  */
