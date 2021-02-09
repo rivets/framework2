@@ -61,7 +61,7 @@
 /**
  * Generate a name and a token
  *
- * @return array
+ * @return array<string>
  */
         public function generate() : array
         {
