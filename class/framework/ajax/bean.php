@@ -145,7 +145,7 @@
             {
                 foreach ($old as $of => $ov)
                 {
-                    BeanLog::mklog($this->context, BeanLog::UPDATE, $beanType, $bean->getID(), $of, $ov);
+                    BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $of, $ov);
                 }
             }
             $this->ajaxResult($bean, $method);
