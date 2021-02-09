@@ -220,7 +220,7 @@
                         $lval->local = 0;
                         foreach ($cdata as $k => $v)
                         {
-                            $lval->$k = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
+                            $lval->$k = \preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                         }
                         \R::store($lval);
                         $updated[$cname] = $cdata->value;
@@ -230,10 +230,10 @@
                 { // there is a message about the update
                     $context->local()->message(\Framework\Local::MESSAGE, $upd->message);
                 }
-                $current = trim(file_get_contents($context->local()->makebasepath('version.txt')));
+                $current = \trim(\file_get_contents($context->local()->makebasepath('version.txt')));
                 $context->local()->addval([
                     'version'   => $upd->version,
-                    'older'     => version_compare($current, $upd->version, '<'),
+                    'older'     => \version_compare($current, $upd->version, '<'),
                     'updated'   => $updated,
                     'done'      => $doit,
                     'current'   => $current,
@@ -263,14 +263,14 @@
                 $online = $fdt->fetch('online', 0);
                 if ($adminonly && ($online || $fdt->fetch('deladonly', 0) == 1))
                 {
-                    unlink($adon);
+                    \unlink($adon);
                 }
                 if ($online == 0)
                 {
                     $file = $onlyadmin == 1 ? $adon : $local->makebasepath('admin', 'offline');
-                    $fd = fopen($file, 'w');
-                    fputs($fd, $msg);
-                    fclose($fd);
+                    $fd = \fopen($file, 'w');
+                    \fputs($fd, $msg);
+                    \fclose($fd);
                 }
                 else
                 {
