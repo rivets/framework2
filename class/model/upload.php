@@ -96,12 +96,11 @@
 /**
  * Replace the existing uploaded file with another one
  *
- * @param \Support\Context    $context
- * @param array               $da        The file upload info array via FormData
- * @param int                 $index     The index if this all part of an array of data
+ * @param Context    $context
+ * @param array      $da        The file upload info array via FormData
+ * @param int        $index     The index if this all part of an array of data
  *
  * @throws \Framework\Exception\InternalError
- *
  * @return void
  */
         public function replace(Context $context, array $da, int $index = 0) : void
@@ -128,14 +127,14 @@
 /**
  * Make a path for a new file
  *
- * @param \Support\Context $context
+ * @param Context $context
  * @param ?object           $owner
  * @param bool             $public
  * @param array            $da
  *
  * @return array
  */
-        private function mkpath(\Support\Context $context, ?object $owner, bool $public, array $da) : array
+        private function mkpath(Context $context, ?object $owner, bool $public, array $da) : array
         {
             $dir = getcwd();
             chdir($context->local()->basedir());
@@ -152,7 +151,6 @@
  * @param string    $dir The directory name
  *
  * @throws \Framework\Exception\Forbidden
- *
  * @return void
  */
         private static function mkch(string $dir) : void
@@ -172,8 +170,8 @@
 /**
  * Generate an error message
  *
- * @param Context $context
- * @param array   $fa
+ * @param Context       $context
+ * @param array<mixed>  $fa
  *
  * @return void
  */
