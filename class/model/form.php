@@ -90,7 +90,7 @@
  *
  * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
  *
- * @return array<array<string>>
+ * @return array<array<\RedBeanPHP\OODBBean>>
  */
         public function sequence() : array
         {
