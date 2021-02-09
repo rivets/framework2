@@ -43,9 +43,9 @@
  *
  * @return bool
  */
-        final public function log(string $bean) : bool
+        final public function log(string $beanType) : bool
         {
-            return in_array($bean, static::$log); // @phpstan-ignore-line
+            return \in_array($beanType, static::$log);
         }
 /**
  * Return the permission requirements array from the child
