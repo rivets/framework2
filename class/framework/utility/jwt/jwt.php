@@ -221,12 +221,11 @@ class JWT
                 $success = \openssl_sign($msg, $signature, $key, $algorithm);
                 if (!$success) {
                     throw new DomainException("OpenSSL unable to sign data");
-                } else {
-                    if ($alg === 'ES256') {
-                        $signature = self::signatureFromDER($signature, 256);
-                    }
-                    return $signature;
                 }
+                if ($alg === 'ES256') {
+                    $signature = self::signatureFromDER($signature, 256);
+                }
+                return $signature;
         }
     }
 
