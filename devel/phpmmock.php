@@ -20,7 +20,6 @@
 /** @var string */
         public $AltBody = '';
 /** @psalm-suppress PossiblyUnusedParam */
-/** @phpstan-ignore-next-line */
         public function __construct(bool $x)
         {
         }
