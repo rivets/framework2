@@ -108,7 +108,7 @@
  *
  * @param Context $context  The site context object
  *
- * @return void
+ * @return string
  */
         public function assert(Context $context) : string
         {
@@ -125,6 +125,7 @@
  */
         public function fail(Context $context) : string
         {
+            /** @phpstan-ignore-next-line */
             2 / 0;
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
@@ -134,11 +135,11 @@
  *
  * @param string $type
  *
- * @return array
+ * @return array<mixed>
  */
-        private static function mapping(string $type)
+        private static function mapping(string $type) : array
         {
-            return array_map(static function ($item) use ($type) {
+            return \array_map(static function ($item) use ($type) {
                 return [$item[0].$type, $item[1], $item[2], $item[3]];
             }, self::$oldtests);
         }
@@ -265,12 +266,14 @@
  * @param Context $context  The site context object
  *
  * @throws \Exception
- * @return void
+ * @return string
  */
         public function toss(Context $context) : string
         {
             throw new \Exception('Unhandled Exception Test');
+            /** @phpstan-ignore-next-line */
             $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
+            /** @phpstan-ignore-next-line */
             return '@devel/test.twig';
         }
 /**
