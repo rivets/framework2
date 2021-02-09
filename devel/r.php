@@ -136,7 +136,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string[] $y
+ * @param array<string> $y
  * @return int
  */
     public static function count(string $b, string $x = '', array $y = []) : int
@@ -156,8 +156,8 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string[] $y
- * @return array
+ * @param array<string> $y
+ * @return array<mixed>
  */
     public static function findMulti(string $b, string $x = '', array $y = []) : array
     {
