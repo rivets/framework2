@@ -70,7 +70,7 @@
 /**
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string|array  $type    What the item is for (script-src, style-src etc.)
+ * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
  * @param string        $host    The item to remove
  *
  * @return void
@@ -167,7 +167,7 @@
 /**
  * Get the CSP values
  *
- * @return array
+ * @return array<string>
  */
         public function getCSP() : array
         {
