@@ -61,17 +61,17 @@
  *
  * @param ?\RedBeanPHP\OODBBean  $user
  * @param array                 $permissions
- * @param string                $bean
+ * @param string                $beanType
  * @param string                $field
  *
  * @throws Forbidden
  * @return void
  */
-        final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $bean, string $field = '', bool $idOK = FALSE) : void
+        final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $beanType, string $field = '', bool $idOK = FALSE) : void
         {
-            if (isset($permissions[$bean]))
+            if (isset($permissions[$beanType]))
             { // there are some permissions
-                $access = $permissions[$bean];
+                $access = $permissions[$beanType];
                 if (is_object($user) || !$access[0])
                 { // either we have a user or no login required
                     $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
@@ -85,7 +85,7 @@
                     }
                 }
             }
-            throw new Forbidden('Permission denied: '.$bean);
+            throw new Forbidden('Permission denied: '.$beanType);
         }
 /**
  * Check that user has the permissions that are specified in an array
@@ -99,23 +99,23 @@
  */
         private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
-            if (!empty($pairs) && $user == NULL)
+            if (!empty($pairs) && $user === NULL)
             { // you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }
             foreach ($pairs as $rcs)
             {
-                if (is_array($rcs[0]))
-                { // this is an OR
-                    foreach ($rcs as $orv)
-                    {
-                        if (is_object($user->hasRole($orv[0], $orv[1])))
-                        {
-                            continue 2;
-                        }
-                    }
-                    throw new Forbidden('Permission denied');
-                }
+                //if (is_array($rcs[0]))
+                //{ // this is an OR
+                //    foreach ($rcs as $orv)
+                //    {
+                //        if (is_object($user->hasRole($orv[0], $orv[1])))
+                //        {
+                //            continue 2;
+                //        }
+                //    }
+                //    throw new Forbidden('Permission denied');
+                //}
                 if (!is_object($user->hasRole($rcs[0], $rcs[1])))
                 {
                     throw new Forbidden('Permission denied');
