@@ -9,7 +9,6 @@
  */
     namespace Framework\FormData;
 
-
 /**
  * A class that provides helpers for accessing PUT OR PATCH form data
  */
