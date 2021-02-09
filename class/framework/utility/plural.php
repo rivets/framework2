@@ -1,6 +1,6 @@
 <?php
 /**
- * Contains definition of Plural class
+ * Contains definition of Plural class used for a Twig extension
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2020 Newcastle University
@@ -28,7 +28,7 @@
  *
  * Required by Twig
  *
- * @return array
+ * @return array<\Twig\TwigFunction>
  * @psalm-suppress LessSpecificImplementedReturnType
  */
         public function getFunctions() : array
