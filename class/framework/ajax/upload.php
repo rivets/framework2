@@ -141,7 +141,7 @@
             }
             catch (\Throwable $e)
             {
-                throw new \Framework\Exception\InternalError($e->getMessage);
+                throw new \Framework\Exception\InternalError($e->getMessage());
             }
             $context->web()->sendJSON($uplid);
         }
