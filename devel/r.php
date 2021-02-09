@@ -124,7 +124,7 @@ class R
     }
 /**
  * @param string $b
- * @param string[] $y
+ * @param array<mixed> $y
  * @param string $s
  *
  * @return \RedBeanPHP\OODBBean
@@ -136,7 +136,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param array<string> $y
+ * @param array<mixed> $y
  * @return int
  */
     public static function count(string $b, string $x = '', array $y = []) : int
@@ -146,7 +146,7 @@ class R
 /**
  * @param string $b
  * @param string $x
- * @param string[] $y
+ * @param array<mixed> $y
  * @return \ReadBeanPHP\BeanCollection
  */
     public static function findCollection(string $b, string $x = '', array $y = []) : \ReadBeanPHP\BeanCollection
@@ -165,7 +165,7 @@ class R
     }
 /**
  * @param string $b
- * @param string[] $y
+ * @param array<mixed> $y
  * @return mixed
  */
     public static function getCell(string $b,  array $y = [])
@@ -174,7 +174,7 @@ class R
     }
 /**
  * @param string $b
- * @param string[] $y
+ * @param array<mixed> $y
  * @return int
  */
     public static function exec(string $b,  array $y = []) : int
@@ -213,7 +213,7 @@ class R
     }
 /**
  * @param string $x
- * @return string[]
+ * @return array<string>
  */
     public static function inspect(string $x = '') : array
     {

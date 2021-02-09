@@ -16,6 +16,9 @@
  */
     class Test
     {
+/**
+ * @var array<mixed>
+ */
         private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, TRUE],
@@ -58,7 +61,9 @@
             ['fetchArray', ['knotexist'], ['iterator', []], FALSE],
             ['mustFetchArray', ['knotexist'], ['iterator', []], FALSE],
         ];
-
+/**
+ * @var array<mixed>
+ */
         private static $oldtests = [ // function, parameters, expected result, if TRUE then failure is expected and result may be default or an exception
             ['has', ['exist'], TRUE, TRUE],
             ['has', ['notexist'], FALSE, FALSE],
