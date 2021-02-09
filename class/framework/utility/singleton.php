@@ -42,6 +42,7 @@
     {
 /**
  * @var ?object The only instance of the class that is using this trait
+ * @phpstan-ignore-next-line
  */
         protected static $instance = NULL;
 /**
