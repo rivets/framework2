@@ -18,13 +18,13 @@
     {
 /** @var Local */
         private $local;
-/** @varContext */
+/** @var Context */
         private $context;
 /** @var object */
         private $fdt;
 /** @var \Framework\Support\FormData */
         private $fdtold;
-/** @var \Framework\FormData\AccesBase */
+/** @var \Framework\FormData\AccessBase */
         private $fdtnew;
 /** @var bool */
         private $noform = FALSE;
@@ -57,6 +57,13 @@
         }
 /**
  * Run tests specified
+ *
+ * @param string $func
+ * @param array<mixed> $params
+ * @param mixed $result
+ * @param bool $throwOK
+ *
+ * @return bool;
  */
         private function test(string $func, array $params, $result, bool $throwOK) : bool
         {
@@ -150,6 +157,9 @@
         }
 /**
  * Run tests
+ *
+ * @param array<mixed> $tests
+ * @param bool $old
  *
  * @return void
  */
