@@ -153,8 +153,8 @@
 /**
  * Carry out operations on tables
  *
- * @throws Forbidden
- * @throws BadOperation
+ * @throws \Framework\Exception\Forbidden
+ * @throws \Framework\Exception\BadOperation
  * @return void
  */
         final public function handle() : void

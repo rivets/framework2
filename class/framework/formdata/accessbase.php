@@ -84,8 +84,8 @@
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
  *
- * @param mixed   $name    The key
- * @param mixed[] $dflt    Returned if the key does not exist
+ * @param mixed        $name    The key
+ * @param array<mixed> $default    Returned if the key does not exist
  *
  * @return \ArrayIterator
  */

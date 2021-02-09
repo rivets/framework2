@@ -9,6 +9,7 @@
  */
     namespace Framework\FormData;
 
+
 /**
  * A class that provides helpers for accessing PUT OR PATCH form data
  */
@@ -29,7 +30,7 @@
  * @param mixed    $name
  * @param mixed    $key
  *
- * @throws BadValue
+ * @throws \Framework\Exception\BadValue
  * @return array
  */
         public function fileData($name, $key = '') : array

@@ -81,9 +81,8 @@
  * @param bool      $isArray    If TRUE then check that this is an array
  * @param ?int      $filter     Filter to apply or NULL
  * @param mixed     $options    Filter options
- * @param bool      $allowArray If TRUE then allow return of array elements rather than just a value
  *
- * @return array
+ * @return array<mixed>
  */
         final public function getValue($name, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
         {
