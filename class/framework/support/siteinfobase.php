@@ -123,7 +123,7 @@
  * @return int
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function pageCount(string $table, int $pagesize, string $where = '', array $pars = []) : int
+        public function pageCount(string $table, int $pagesize = 10, string $where = '', array $pars = []) : int
         {
             $count = R::count($table, $where, $pars);
             return (int) \floor(($count % $pagesize > 0 ? ($count + $pagesize) : $count) / $pagesize);
