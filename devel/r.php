@@ -147,11 +147,11 @@ class R
  * @param string $b
  * @param string $x
  * @param array<mixed> $y
- * @return \ReadBeanPHP\BeanCollection
+ * @return \RedBeanPHP\BeanCollection
  */
-    public static function findCollection(string $b, string $x = '', array $y = []) : \ReadBeanPHP\BeanCollection
+    public static function findCollection(string $b, string $x = '', array $y = []) : \RedBeanPHP\BeanCollection
     {
-        return new \ReadBeanPHP\BeanCollection();
+        return new \RedBeanPHP\BeanCollection();
     }
 /**
  * @param string $b
