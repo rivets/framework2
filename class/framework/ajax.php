@@ -39,12 +39,13 @@
 /**
  * Return the log requirements array from the child
  *
- * @param string $bean  The name of a bean
+ * @param string $beanType  The name of a bean
  *
  * @return bool
  */
         final public function log(string $beanType) : bool
         {
+            /** @phpstan-ignore-next-line */
             return \in_array($beanType, static::$log);
         }
 /**
