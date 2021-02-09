@@ -14,11 +14,11 @@
     trait CSP
     {
 /**
- * @var array   Holds values that need to be added to CSP headers.
+ * @var array<string>   Holds values that need to be added to CSP headers.
  */
         private $csp        = [];
 /**
- * @var array   Holds values that need to be removed from CSP headers.
+ * @var array<string>   Holds values that need to be removed from CSP headers.
  */
         private $nocsp      = [];
 /**
@@ -39,8 +39,8 @@
 /**
  * Add an item for use in a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
- * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
- * @param string                $host    The host to add
+ * @param string|array<mixed>  $type    What the item is for (script-src, style-src etc.)
+ * @param string               $host    The host to add
  *
  * @return void
  */
