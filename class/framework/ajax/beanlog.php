@@ -21,9 +21,9 @@
 /**
  * make log entry
  *
+ * @param Context $context
  * @param int $op
- * @param string $bean
- * @param int $id
+ * @param \RedBeanPHP\OODBBean $bean
  * @param string $field
  * @param mixed $value
  *
