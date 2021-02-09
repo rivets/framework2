@@ -154,11 +154,10 @@
  * Run tests
  *
  * @param array<mixed> $tests
- * @param bool $old
  *
  * @return void
  */
-        public function run(array $tests, bool $old = TRUE) : void
+        public function run(array $tests) : void
         {
             if ($this->fdt instanceof \Framework\FormData\Base)
             {

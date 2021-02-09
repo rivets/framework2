@@ -62,36 +62,6 @@
             ['mustFetchArray', ['knotexist'], ['iterator', []], FALSE],
         ];
 /**
- * @var array<mixed>
- */
-        private static $oldtests = [ // function, parameters, expected result, if TRUE then failure is expected and result may be default or an exception
-            ['has', ['exist'], TRUE, TRUE],
-            ['has', ['notexist'], FALSE, FALSE],
-            ['has', [['aexist', 0]], TRUE, TRUE],
-            ['has', [['aexist', 3]], FALSE, TRUE],
-            ['has', [['nexist', 0]], FALSE, TRUE],
-            ['', ['exist', 3], '42', TRUE],
-            ['', ['notexist', 3], 3, FALSE],
-            ['must', ['exist'], '42', TRUE],
-            ['must', ['notexist'], '42', FALSE],
-            ['', [['aexist', 0], 3], '42', TRUE],
-            ['', [['aexist', 3], 3], 3, FALSE],
-            ['must', [['aexist', 1]],'66', TRUE],
-            ['must', [['aexist', 3]], '42', FALSE],
-            ['', [['nexist', 14], 3], '42', TRUE],
-            ['', [['nexist', 13], 3], 3, FALSE],
-            ['must', [['nexist', 14]],'42', TRUE],
-            ['must', [['nexist', 13]], '42', FALSE],
-            ['', [['kexist', 'key1'], 3], '42', TRUE],
-            ['', [['kexist', 'key45'], 3], 3, FALSE],
-            ['must', [['kexist', 'key1']],'42', TRUE],
-            ['must', [['kexist', 'key45']], '42', FALSE],
-            ['filter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-            ['mustfilter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-            ['filter', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-            ['mustfilter', ['email', FILTER_VALIDATE_INT], 3, FALSE],
-        ];
-/**
  * Test AJAX functions
  *
  * @param Context $context  The site context object
@@ -130,19 +100,6 @@
             return '@devel/devel.twig';
         }
 /**
- * mapping old tests
- *
- * @param string $type
- *
- * @return array<mixed>
- */
-        private static function mapping(string $type) : array
-        {
-            return \array_map(static function ($item) use ($type) {
-                return [$item[0].$type, $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-        }
-/**
  * Do test
  *
  * @param string $type
@@ -152,8 +109,7 @@
         private static function dotest(Context $context, string $type) : string
         {
             $tester = new \Framework\Support\TestSupport($context, $type);
-            $tester->run(self::mapping($type), TRUE);
-            $tester->run(self::$tests, FALSE);
+            $tester->run(self::$tests);
             $context->local()->addval('op', $type);
             if (filter_has_var(INPUT_GET, 'remote'))
             {
