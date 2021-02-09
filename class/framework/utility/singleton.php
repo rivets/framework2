@@ -42,7 +42,7 @@
     {
 /**
  * The only instance of using class
- * @var object
+ * @var ?object
  */
         protected static $instance = NULL;
 /**
