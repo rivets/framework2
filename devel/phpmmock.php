@@ -51,7 +51,7 @@
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function isHTML(string $x) : void
+        public function isHTML(string $x) : bool
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
