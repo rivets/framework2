@@ -19,7 +19,8 @@
         public $Subject = '';
 /** @var string */
         public $AltBody = '';
- /** @psalm-suppress PossiblyUnusedParam */
+/** @psalm-suppress PossiblyUnusedParam */
+/** @phpstan-ignore-next-line */
         public function __construct(bool $x)
         {
         }
@@ -53,6 +54,7 @@
  /** @psalm-suppress PossiblyUnusedParam */
         public function isHTML(string $x) : bool
         {
+            return FALSE;
         }
  /** @psalm-suppress PossiblyUnusedParam */
         public function setFrom(string $x) : void
@@ -65,6 +67,7 @@
  /** @psalm-suppress PossiblyUnusedParam */
         public function send() : string
         {
+            return '';
         }
     }
 ?>
