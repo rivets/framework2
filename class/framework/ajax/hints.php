@@ -17,7 +17,7 @@
     class Hints extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
@@ -25,7 +25,7 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * @return array<mixed>
  */
         public function requires()
         {
@@ -33,8 +33,6 @@
         }
 /**
  * Get search hints for a bean
- *
- * @param Context    $context    The context object for the site
  *
  * @throws Forbidden
  * @return void
