@@ -147,9 +147,9 @@ class R
  * @param string $b
  * @param string $x
  * @param string[] $y
- * @return array
+ * @return \ReadBeanPHP\BeanCollection
  */
-    public static function findCollection(string $b, string $x = '', array $y = []) : \ArrayIterator
+    public static function findCollection(string $b, string $x = '', array $y = []) : \ReadBeanPHP\BeanCollection
     {
         return [];
     }
