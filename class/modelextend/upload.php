@@ -82,8 +82,6 @@
 /**
  * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
  *
- * @param Context $context
- *
  * @throws \Framework\Exception\Forbidden
  * @return void
  */
