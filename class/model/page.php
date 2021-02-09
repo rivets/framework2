@@ -221,7 +221,7 @@
                     }
                     if (!preg_match('/^@/', $p->source))
                     {
-                        if (preg_match('#/#', $p->source) )
+                        if (preg_match('#/#', $p->source))
                         { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
                             $name = $p->source;
                         }
