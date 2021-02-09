@@ -41,8 +41,7 @@
     trait Singleton
     {
 /**
- * The only instance of using class
- * @var ?object
+ * @var ?object The only instance of the class that is using this trait
  */
         protected static $instance = NULL;
 /**
