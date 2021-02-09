@@ -20,12 +20,8 @@
         private $local;
 /** @var Context */
         private $context;
-/** @var object */
-        private $fdt;
-/** @var \Framework\Support\FormData */
-        private $fdtold;
 /** @var \Framework\FormData\AccessBase */
-        private $fdtnew;
+        private $fdt;
 /** @var bool */
         private $noform = FALSE;
 /**
@@ -38,8 +34,7 @@
         {
             $this->context = $context;
             $this->local = $context->local();
-            $this->fdtold = $context->formdata(''); // old school and deprecated
-            $this->fdtnew = $context->formdata($type);
+            $this->fdt = $context->formdata($type);
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
         }
 /**
@@ -165,7 +160,6 @@
  */
         public function run(array $tests, bool $old = TRUE) : void
         {
-            $this->fdt = $old ? $this->fdtold : $this->fdtnew;
             if ($this->fdt instanceof \Framework\FormData\Base)
             {
                 $this->local->message(Local::MESSAGE, 'hasForm returns '.($this->fdt->hasForm() ? 'TRUE' : 'FALSE').' for '.get_class($this->fdt));
