@@ -269,7 +269,8 @@
  */
         public function toss(Context $context) : string
         {
-            throw new \Exception('Unhandled Exception Test'); /** @phpstan-ignore-line */
+            throw new \Exception('Unhandled Exception Test');
+            /** @phpstan-ignore-next-line */
             $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
             return '@devel/test.twig';
         }
