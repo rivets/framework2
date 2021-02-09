@@ -26,9 +26,9 @@
  * If that is what you need then you can remove this method. This function is called from the base
  * class constructor when it does some permission checking.
  *
- * @return array
+ * @return array<mixed>
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []];
         }
