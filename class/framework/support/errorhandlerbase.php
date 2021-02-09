@@ -200,7 +200,7 @@
                 if ($this->devel || !$this->ajax)
                 { // not in an ajax page so try and send a pretty error
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
-                    if (!$this->ajax && $this->local->hasRender())
+                    if (!$this->ajax && $this->local->hasRenderer())
                     { // we have twig so render a nice page
                         \Framework\Dispatch::basicSetup(\Framework\Context::getinstance(), 'error');
                         $this->local->render('@error/500.twig', ['errdata' => $str], Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
