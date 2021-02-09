@@ -16,7 +16,7 @@
     class Shared extends Ajax
     {
 /**
- * @var array
+ * @var array<mixed>
  */
         private static $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -31,8 +31,6 @@
         ]; //          [ [Roles], ['BeanName' => [FieldNames - all if empty]]]]
 /**
  * Carry out operations on RB shared lists
- *
- * @param \Support\Context    $context The context object
  *
  * @throws \Framework\Exception\BadOperation
  * @return void
