@@ -151,6 +151,7 @@ class R
  */
     public static function findCollection(string $b, string $x = '', array $y = []) : \RedBeanPHP\BeanCollection
     {
+        /** @phpstan-ignore-next-line */
         return new \RedBeanPHP\BeanCollection();
     }
 /**
