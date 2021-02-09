@@ -15,6 +15,7 @@
  */
         public function next() : \RedBeanPHP\OODBBean
         {
+            return new \RedBeanPHP\OODBBean;
         }
     }
 
