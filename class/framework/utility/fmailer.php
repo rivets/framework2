@@ -28,7 +28,6 @@
         {
             parent::__construct($exceptions);
             /** @psalm-suppress TypeDoesNotContainType */
-            /** @phpstan-ignore-next-line */
             if (Config::USEPHPM)
             {
                 $this->isSMTP();
