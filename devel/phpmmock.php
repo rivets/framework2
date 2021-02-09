@@ -39,6 +39,22 @@
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
+        public function addCC(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function addBCC(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function addAttachment(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function isHtml(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
         public function setFrom(string $x) : void
         {
         }
@@ -47,7 +63,7 @@
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function send() : void
+        public function send() : string
         {
         }
     }
