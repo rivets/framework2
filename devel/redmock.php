@@ -23,7 +23,7 @@
     {
         /** @var OODBBean */
         private static $dummy;
- /** @psalm-suppress PossiblyUnusedParam */
+        /** @psalm-suppress PossiblyUnusedParam */
         public function __get(string $name)
         {
         }
@@ -32,7 +32,7 @@
  * @psalm-suppress MissingParamType
  */
         public function __set(string $name, $value): void {}
- /** @psalm-suppress PossiblyUnusedParam */
+        /** @psalm-suppress PossiblyUnusedParam */
         /** @psalm-suppress MissingParamType */
         public function __call($function, $args)
         {
@@ -45,7 +45,7 @@
              return 0;
         }
 /**
- *@param \RedBeanPHP\OODBBean $bn
+ * @param \RedBeanPHP\OODBBean $bn
  * @return bool
  */
         public function equals(\RedBeanPHP\OODBBean $bn) : bool
