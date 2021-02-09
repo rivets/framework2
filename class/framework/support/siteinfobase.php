@@ -70,7 +70,6 @@
             }
             $collection = R::findCollection($bean, $where, $params);
             /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
-            /** @phpstan-ignore-next-line */
             while ($item = $collection->next())
             {
                 yield $item;

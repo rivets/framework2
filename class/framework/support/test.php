@@ -125,8 +125,7 @@
  */
         public function fail(Context $context) : string
         {
-            /** @phpstan-ignore-next-line */
-            2 / 0;
+            2 / 0; /** @phpstan-ignore-line */
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
@@ -270,10 +269,8 @@
  */
         public function toss(Context $context) : string
         {
-            throw new \Exception('Unhandled Exception Test');
-            /** @phpstan-ignore-next-line */
+            throw new \Exception('Unhandled Exception Test'); /** @phpstan-ignore-line */
             $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
-            /** @phpstan-ignore-next-line */
             return '@devel/test.twig';
         }
 /**
