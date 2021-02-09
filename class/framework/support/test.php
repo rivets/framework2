@@ -319,8 +319,7 @@
                     case'delete':
                         \R::trash($context->load('upload', $id));
                         $context->divert('/devel/test/upload?ok=1'); // this clears the RESTful URL
-                        break;
-
+                        /* NOT REACHED */
                     default:
                         throw new \Framework\Exception\BadValue('Illegal operation "'.$rest[2].'"');
                     }
