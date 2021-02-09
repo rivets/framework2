@@ -227,8 +227,8 @@
                     if ($cid !== '')
                     {
                         $p->addRoleByBean(
-                            $fdt->mustFetchBean(['context', $ix], FW::ROLECONTEXT),        // the context id
-                            $fdt->mustFetchBean(['role', $ix], FW::ROLENAME),   // the rolename id
+                            $fdt->mustFetchBean(['context', $ix], FW::ROLECONTEXT),  // the context id
+                            $fdt->mustFetchBean(['role', $ix], FW::ROLENAME),        // the rolename id
                             $fdt->mustFetch(['otherinfo', $ix]),
                             $fdt->mustFetch(['start', $ix]),
                             $fdt->mustFetch(['end', $ix])
