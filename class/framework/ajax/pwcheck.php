@@ -17,10 +17,7 @@
 /**
  * Do a password verification
  *
- * @param Context    $context
- *
  * @throws \Framework\Exception\Forbidden
- *
  * @return void
  */
         final public function handle() : void
