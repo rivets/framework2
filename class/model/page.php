@@ -99,21 +99,20 @@
 /**
  * Make a twig file if we have permission
  *
- * @param \Support\Context    $context    The Context object
- * @param string    $name       The name of the twig
+ * @param Context          $context    The Context object
+ * @param array<string>    $name       The name of the twig
  *
+ * @throws \Framework\Exception\InternalError
  * @return void
  */
-        private static function maketwig(Context $context, array $name) : void
+        private static function makeTwig(Context $context, array $name) : void
         {
             $file = $context->local()->makebasepath('twigs', ...$name);
-            if (!file_exists($file))
+            if (!\file_exists($file))
             { // make the file
-                $fd = fopen($file, 'w');
-                if ($fd !== FALSE)
+                if (!copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
                 {
-                    fwrite($fd, file_get_contents($context->local()->makebasepath('twigs', 'content', 'sample.txt')));
-                    fclose($fd);
+                    throw new \Framework\Exception\InternalError('Cannot create '.$file);
                 }
             }
         }
@@ -208,7 +207,7 @@
                             fclose($fd);
                         }
                     }
-                    self::maketwig($context, ['content', $lbase.'.twig']);
+                    self::makeTwig($context, ['content', $lbase.'.twig']);
                     break;
                 case Dispatch::TEMPLATE:
                     if (!preg_match('/\.twig$/', $p->source))
@@ -244,7 +243,7 @@
                     {
                         throw new \Framework\Exception\BadValue('Not recognised');
                     }
-                    self::maketwig($context, $name);
+                    self::makeTwig($context, $name);
                     break;
                 case Dispatch::REDIRECT:
                 case Dispatch::REHOME:
