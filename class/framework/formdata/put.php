@@ -69,7 +69,7 @@
                 {
                     [$name, $value] = explode(':', $part, 2);
                     $name = strtolower(trim($name));
-                    $value = trim(value);
+                    $value = trim($value);
                     if (strpos($value, ';') === FALSE)
                     {
                         $headers[$name] = $value;
