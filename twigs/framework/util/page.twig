@@ -116,6 +116,7 @@
         {% do context.web.addcsp('script-src', "'nonce-"~nonce~"'") %}
         {#<script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>#}
         <script nonce="{{nonce}}">const base = '{{base}}', putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
+            framework.base = '{{base}}'; framework.putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
             {{sjs|raw}}
             {{ojs|raw}}
         </script>

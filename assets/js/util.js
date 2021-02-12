@@ -69,6 +69,14 @@
 
     var framework = {
 /**
+ * The base directory value to add to all local URLs - set in the initialisation javascript
+ */
+        base : '',
+ /**
+ * Some routers do not support PATCH so use PUT - set in the initialisation javascript
+ */
+        putorpatch : 'PATCH',
+/**
  * encode object into a query string
  *
  * @param {object} data   - the object to encode
