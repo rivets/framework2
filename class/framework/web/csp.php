@@ -185,9 +185,9 @@
  * @param string $type      js, css etc.
  * @param bool   $essential If TRUE this is essential to site functioning
  *
- * @return string  '' if we dont need to update the CSP data
+ * @return bool TRUE if source was added
  */
-        public function checkCSP(string $url, string $type, bool $essential = TRUE) : string
+        public function checkCSP(string $url, string $type, bool $essential = TRUE) : bool
         {
             if (isset(self::$cspFields[$type]))
             {
@@ -206,12 +206,12 @@
                             $bn->host = $url;
                             $bn->essential = $essential ? 1 : 0;
                             \R::store($bn);
-                            return $url;
+                            return TRUE;
                         }
                     }
                 }
             }
-            return '';
+            return FALSE;
         }
     }
 ?>
