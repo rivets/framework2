@@ -159,12 +159,12 @@
             { // update if not locally set and there is a new value
                 $change = FALSE;
                 $cdata->value = preg_replace('/%BASE%/', $base, $cdata->value); // relocate to this base.
-                $diff = '';
+                $diff = [];
                 foreach ($cdata as $k => $v)
                 {
                     if ($this->bean->$k != $v)
                     {
-                        $diff .= $k;
+                        $diff[] = $k;
                         if ($doit)
                         {
                             $this->bean->$k = $v;
@@ -178,7 +178,7 @@
                     {
                         \R::store($this->bean);
                     }
-                    return $cdata->value.' '.$diff;
+                    return $cdata->value.' changed fields: '.\implode(' ', $diff);
                 }
             }
             return '';
