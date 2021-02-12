@@ -2,20 +2,24 @@
   The fa macro is used by default so you can change which style it uses - regular (free), solid or duotone.
   fab is for brand icons and is also free.
 #}
-{% macro fa(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fa %}
-{% macro far(icon, other='') %}<i class="far fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro far %}
-{% macro fas(icon, other='') %}<i class="fas fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fas %}
-{% macro fad(icon, other='') %}<i class="fad fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fad %}
-{% macro fab(icon, other='') %}<i class="fab fa-{{icon}}{{other != '' ? ' '~other}}"></i>{% endmacro fab %}
+{% macro show(type, icon, other, title, attr) -%}
+    <i class="{{type}} fa-{{icon}}{{other != '' ? ' '~other : ''}}"{% if title != '' %} title="{{title}}"{% endif %}{% if attr != '' %} {{attr|raw}}{% endif %}></i>
+{%- endmacro show %}
+{% macro fa(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('far', icon, other, title, attr)}}{% endmacro fa %}
+{% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('far', icon, other, title, attr)}}{% endmacro far %}
+{% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fas', icon, other, title, attr)}}{% endmacro fas %}
+{% macro fad(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fad', icon, other, title, attr)}}{% endmacro fad %}
+{% macro fab(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fab', icon, other, title, attr)}}{% endmacro fab %}
 
-{% macro edit(other='') %}{% import _self as s %}{{s.fa('edit', other)}}{% endmacro edit %}
-{% macro home(other='') %}{% import _self as s %}{{s.fa('home', other)}}{% endmacro home %}
-{% macro delete(other='') %}{% import _self as s %}{{s.fa('trash-alt', other)}}{% endmacro delete %}
-{% macro view(other='') %}{% import _self as s %}{{s.fa('eye', other)}}{% endmacro view %}
-{% macro forward(other='') %}{% import _self as s %}{{s.fa('forward', other)}}{% endmacro forward %}
-{% macro fastfwd(other='') %}{% import _self as s %}{{s.fa('fast-forward', other)}}{% endmacro fastfwd %}
-{% macro backward(other='') %}{% import _self as s %}{{s.fa('backward', other)}}{% endmacro backward %}
-{% macro fastbwd(other='') %}{% import _self as s %}{{s.fa('fast-backward', other)}}{% endmacro fastbwd %}
-{% macro search(other='') %}{% import _self as s %}{{s.fa('search', other)}}{% endmacro search %}
-{% macro check(other='') %}{% import _self as s %}{{s.fa('check', other)}}{% endmacro check %}
-{% macro link(other='') %}{% import _self as s %}{{s.fa('link', other)}}{% endmacro link %}
+{% macro edit(other='', title='', attr='') %}{% import _self as s %}{{s.fa('edit', other, title, attr)}}{% endmacro edit %}
+{% macro delete(other='', title='', attr='') %}{% import _self as s %}{{s.fa('trash-alt', other, title, attr)}}{% endmacro delete %}
+{% macro view(other='', title='', attr='') %}{% import _self as s %}{{s.fa('eye', other, title, attr)}}{% endmacro view %}
+{% macro forward(other='', title='', attr='') %}{% import _self as s %}{{s.fa('forward', other, title, attr)}}{% endmacro forward %}
+{% macro fastfwd(other='', title='', attr='') %}{% import _self as s %}{{s.fa('fast-forward', other, title, attr)}}{% endmacro fastfwd %}
+{% macro backward(other='', title='', attr='') %}{% import _self as s %}{{s.fa('backward', other, title, attr)}}{% endmacro backward %}
+{% macro fastbwd(other='', title='', attr='') %}{% import _self as s %}{{s.fa('fast-backward', other, title, attr)}}{% endmacro fastbwd %}
+{% macro search(other='', title='', attr='') %}{% import _self as s %}{{s.fa('search', other, title, attr)}}{% endmacro search %}
+{% macro check(other='', title='', attr='') %}{% import _self as s %}{{s.fa('check', other, title, attr)}}{% endmacro check %}
+{% macro link(other='', title='', attr='') %}{% import _self as s %}{{s.fa('link', other, title, attr)}}{% endmacro link %}
+{% macro open(other='', title='', attr='') %}{% import _self as s %}{{s.fa('caret-down', other, title, attr)}}{% endmacro open %}
+{% macro closed(other='', title='', attr='') %}{% import _self as s %}{{s.fa('caret-right', other, title, attr)}}{% endmacro closed %}
