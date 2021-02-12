@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2020 Newcastle University
+ * @copyright 2017-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
