@@ -206,7 +206,7 @@
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
-                    if ($context->web()->checkCSP($cdata->value, $cdata->type))
+                    if (strpos($url, '%BASE%') === FALSE && $context->web()->checkCSP($cdata->value, $cdata->type))
                     {
                         $newCSP[] = [$cdata->value, $cdata->type];
                     }
