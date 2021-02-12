@@ -22,6 +22,10 @@
  */
         private $nocsp      = [];
 /**
+ * @var which  CSP fields to check for hostnames
+ */
+        private static $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
+/**
  * compute, save and return a hash for use in a CSP header
  *
  * @param string  $type    What the hash is for (script-src, css-src etc.)
@@ -172,6 +176,41 @@
         public function getCSP() : array
         {
             return $this->csp;
+        }
+/**
+ * Check to see if we need to update the CSP data for a new host
+ *
+ * @param string $url       The url for the resource
+ * @param string $type      js, css etc.
+ * @param bool   $essential If TRUE this is essential to site functioning
+ *
+ * @return string  '' if we dont need to update the CSP data
+ */
+        public function checkCSP(string $URL, string $type, bool $essential = TRUE) : string
+        {
+            if (isset(self::$cspFields[$type]))
+            {
+                $host = \parse_url($url, PHP_URL_HOST);
+                if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [$type, $host]) === NULL)
+                { // it might be hidden behind a pattern
+                    $x = \explode('.', $url);
+                    if (\count($x) >= 3)
+                    {
+                        $x[0] = '*';
+                        $x = \implode('.', $x);
+                        if (\R::findOne(FW::CSP, 'type=? and host=?', [$type, $x]) === NULL)
+                        { // doesn't seem to be in there
+                            $bn = \R::dispense(\Config\Framework::CSP);
+                            $bn->type = $type;
+                            $bn->host = $url;
+                            $bn->essential = $essential ? 1 : 0;
+                            \R::store($bn);
+                            return $url;
+                        }
+                    }
+                }
+            }
+            return '';
         }
     }
 ?>
