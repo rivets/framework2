@@ -91,7 +91,7 @@
  *
  * @return void
  */
-        public function addval($vname, mixed $value = '', bool $tglobal = FALSE) : void
+        public function addval($vname, $value = '', bool $tglobal = FALSE) : void
         {
             $this->renderer->addval($vname, $value, $tglobal);
         }
