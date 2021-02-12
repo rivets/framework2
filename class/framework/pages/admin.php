@@ -199,12 +199,17 @@
         {
             $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
+            $newCSP = [];
             $upd = \json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
             { // now see if there are any config values that need updating.
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
+                    if ($context->web->checkCSP($cdata->host, $cdata->type))
+                    {
+                        $newCSP[] = $cname;
+                    }
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
                     {
@@ -237,6 +242,7 @@
                     'updated'   => $updated,
                     'done'      => $doit,
                     'current'   => $current,
+                    'newcsp'    => $newCSP,
                 ]);
             }
             return '@admin/update.twig';
