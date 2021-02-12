@@ -26,7 +26,8 @@
         {
             if (!empty($render))
             { // we want a renderer - this setups
-                $this->renderer = new ('\\Framework\\Presentation\\'.$render[0])($this, $render[1]);
+                $class = '\\Framework\\Presentation\\'.$render[0];
+                $this->renderer = new ($class)($this, $render[1]);
             }
         }
 /**
