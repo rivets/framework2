@@ -91,7 +91,7 @@
  *
  * @return void
  */
-        public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
+        public function addval($vname, mixed $value = '', bool $tglobal = FALSE) : void
         {
             $this->renderer->addval($vname, $value, $tglobal);
         }
@@ -115,7 +115,7 @@
  *
  * @return void
  */
-        public function message(int $kind, string|array $value) : void
+        public function message(int $kind, $value) : void
         {
             $this->renderer->message($kind, $value);
         }
