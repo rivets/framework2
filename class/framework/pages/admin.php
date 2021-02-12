@@ -207,7 +207,7 @@
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
                     if ($context->web()->checkCSP($cdata->value, $cdata->type))
-                    {var_dump($cdata); exit;
+                    {
                         $newCSP[] = [$cdata->value, $cdata->type];
                     }
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
