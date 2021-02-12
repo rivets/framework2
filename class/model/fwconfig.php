@@ -14,7 +14,7 @@
     use \Config\Framework as FW;
     use \Support\Context;
 /**
- * A class implementing a RedBean model for Page beans
+ * A class implementing a RedBean model for fwconfig beans
  * @psalm-suppress UnusedClass
  */
     class FWConfig extends \RedBeanPHP\SimpleModel
