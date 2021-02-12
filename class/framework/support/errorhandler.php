@@ -31,7 +31,7 @@
             {
                 $this->tellAdmin($title.' - '.$msg, 'Error', 'local.php', 0);
             }
-            if ($this->local->hasTwig())
+            if ($this->local->hasRenderer())
             { // we have twig so can render a template
                 $this->local->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
             }
