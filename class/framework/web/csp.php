@@ -192,9 +192,9 @@
             if (isset(self::$cspFields[$type]))
             {
                 $host = \parse_url($url, PHP_URL_HOST);
-                var_dump($url, $host); exit;
                 if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [$type, $host]) === NULL)
                 { // it might be hidden behind a pattern
+                                    var_dump($url, $host); exit;
                     $x = \explode('.', $url);
                     if (\count($x) >= 3)
                     {
