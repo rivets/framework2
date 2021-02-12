@@ -158,9 +158,9 @@
             if ($this->bean->local == 0)
             { // update if not locally set and there is a new value
                 $change = FALSE;
+                $cdata->value = preg_replace('/%BASE%/', $base, $cdata->value); // relocate to this base.
                 foreach ($cdata as $k => $v)
                 {
-                    $v = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                     if ($this->bean->$k != $v)
                     {
                         if ($doit)
