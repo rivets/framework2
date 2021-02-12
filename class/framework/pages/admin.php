@@ -208,7 +208,7 @@
                 {
                     if ($context->web->checkCSP($cdata->host, $cdata->type))
                     {
-                        $newCSP[] = $cname;
+                        $newCSP[] = [$cdata->host, $cdata->type];
                     }
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
                     if (is_object($lval))
