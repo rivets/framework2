@@ -24,7 +24,7 @@
 
 {% macro header(opts) %}{% import _self as h %}
     <div class="modal-header">
-        <h4 class="modal-title"{{h.hv('id', opts.id)}}>{{opts.title}}</h4>
+        <h4 class="modal-title"{{h.hv('id', opts.id~'Title')}}>{{opts.title}}</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     </div>
 {% endmacro header %}
