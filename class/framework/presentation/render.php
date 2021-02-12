@@ -21,15 +21,15 @@
 /**
  * @var array    Key/value array of data to pass into template renderer
  */
-        protected array $tvals          = [];
+        protected $tvals          = [];
 /**
  * @var array<array>    Stash away messages so that the renderer can treat them properly
  */
-        protected array $messages       = [[], [], []];
+        protected $messages       = [[], [], []];
 /**
  * @var ?object
  */
-        protected ?object $engine       = NULL;
+        protected $engine       = NULL;
 /**
  * Initialise template engine
  *
