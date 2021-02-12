@@ -73,9 +73,9 @@
  */
         base : '',
  /**
- * Some routers do not support PATCH so use PUT - set in the initialisation javascript
+ * Some routers do not support PUT so use PATCH - set in the initialisation javascript
  */
-        putorpatch : 'PATCH',
+        putorpatch : 'PUT',
 /**
  * encode object into a query string
  *
