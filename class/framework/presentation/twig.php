@@ -66,12 +66,12 @@
 /**
  * Add a global template variable
  *
- * @param string    $name
- * @param string    $value
+ * @param string  $name
+ * @param mixed   $value
  *
  * @return void
  */
-        public function addGlobal(string $name, string $val) : void
+        public function addGlobal(string $name, $val) : void
         {
             $this->engine->addGlobal($name, $val);
         }

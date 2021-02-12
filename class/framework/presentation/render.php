@@ -56,12 +56,12 @@
 /**
  * Add a global template variable
  *
- * @param string    $name
- * @param string    $value
+ * @param string   $name
+ * @param mixed    $value
  *
  * @return void
  */
-        abstract public function addGlobal(string $name, string $val) : void;
+        abstract public function addGlobal(string $name, $val) : void;
 /**
  * Add a template engine extension
  *
