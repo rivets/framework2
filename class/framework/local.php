@@ -19,7 +19,6 @@
  */
     class Local extends \Framework\Support\LocalBase
     {
-        use \Framework\Utility\Singleton;
         use \Framework\Presentation\RenderFuncs;
 
         public const ERROR     = 0;        // 'fwerrmessage';
