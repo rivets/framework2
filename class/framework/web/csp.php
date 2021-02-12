@@ -3,11 +3,12 @@
  * A trait that implements the CSP handling for the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
+ * @copyright 2019-2021 Newcastle University
  * @package Framework
  */
     namespace Framework\Web;
 
+    use \Config\Framework as FW;
 /**
  * Adds functions for adding and removinng CSP
  */
