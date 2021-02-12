@@ -192,17 +192,17 @@
             if (isset(self::$cspFields[$type]))
             {
                 $host = \parse_url($url, PHP_URL_HOST);
-                if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [$type, $host]) === NULL)
+                if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [self::$cspFields[$type], $host]) === NULL)
                 { // it might be hidden behind a pattern
                     $x = \explode('.', $host);
                     if (\count($x) >= 3)
                     {
                         $x[0] = '*';
                         $x = \implode('.', $x);
-                        if (\R::findOne(FW::CSP, 'type=? and host=?', [$type, $x]) === NULL)
+                        if (\R::findOne(FW::CSP, 'type=? and host=?', [self::$cspFields[$type], $x]) === NULL)
                         { // doesn't seem to be in there
                             $bn = \R::dispense(\Config\Framework::CSP);
-                            $bn->type = $type;
+                            $bn->type = self::$cspFields[$type];
                             $bn->host = $host;
                             $bn->essential = $essential ? 1 : 0;
                             \R::store($bn);
