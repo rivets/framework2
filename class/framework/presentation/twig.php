@@ -132,7 +132,7 @@
  *
  * @return void
  */
-        public function addval(string|array $vname, mixed $value = '', bool $tglobal = FALSE) : void
+        public function addval($vname, $value = '', bool $tglobal = FALSE) : void
         {
             assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
             if (is_array($vname))
@@ -178,7 +178,7 @@
  *
  * @return void
  */
-        public function message(int $kind, string|array $value) : void
+        public function message(int $kind, $value) : void
         {
             if (is_array($value))
             {
