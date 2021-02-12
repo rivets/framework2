@@ -189,7 +189,7 @@
             return '@view/'.$kind.'.twig';
         }
 /**
- * Check for version updates and update config info
+ * Check for version updates and update config info. Check for new CSP needed
  *
  * @param Context    $context  The Context object
  *
