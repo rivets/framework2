@@ -204,7 +204,7 @@
                         { // doesn't seem to be in there
                             $bn = \R::dispense(\Config\Framework::CSP);
                             $bn->type = $type;
-                            $bn->host = $url;
+                            $bn->host = $host;
                             $bn->essential = $essential ? 1 : 0;
                             \R::store($bn);
                             return TRUE;
