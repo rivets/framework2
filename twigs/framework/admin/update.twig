@@ -15,7 +15,7 @@
                 <p>You have version {{current}} &mdash; please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
             {% for cdata in newcsp %}
-                <p>{{cdata.type}} source &#8220;{{host}}&#8221; has been added to the CSP table</p>
+                <p>{{cdata[0]}} source &#8220;{{cdata[1]}}&#8221; has been added to the CSP table</p>
             {% endfor %}
             {% for key,val in updated %}
                 <p>"{{key}}" {% if not done %}will be {% endif %}updated to "{{val}}"</p>

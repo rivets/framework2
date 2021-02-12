@@ -201,6 +201,7 @@
                         $x = \implode('.', $x);
                         if (\R::findOne(FW::CSP, 'type=? and host=?', [self::$cspFields[$type], $x]) === NULL)
                         { // doesn't seem to be in there
+                            var_dump($x, $host, $url); exit;
                             $bn = \R::dispense(\Config\Framework::CSP);
                             $bn->type = self::$cspFields[$type];
                             $bn->host = $host;
