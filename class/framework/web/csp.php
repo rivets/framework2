@@ -194,14 +194,13 @@
                 $host = \parse_url($url, PHP_URL_HOST);
                 if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [$type, $host]) === NULL)
                 { // it might be hidden behind a pattern
-                    $x = \explode('.', $url);
+                    $x = \explode('.', $host);
                     if (\count($x) >= 3)
                     {
                         $x[0] = '*';
                         $x = \implode('.', $x);
                         if (\R::findOne(FW::CSP, 'type=? and host=?', [$type, $x]) === NULL)
                         { // doesn't seem to be in there
-                            var_dump($x, $host, $type); exit;
                             $bn = \R::dispense(\Config\Framework::CSP);
                             $bn->type = $type;
                             $bn->host = $host;
