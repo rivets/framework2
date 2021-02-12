@@ -186,7 +186,7 @@
  *
  * @return string  '' if we dont need to update the CSP data
  */
-        public function checkCSP(string $URL, string $type, bool $essential = TRUE) : string
+        public function checkCSP(string $url, string $type, bool $essential = TRUE) : string
         {
             if (isset(self::$cspFields[$type]))
             {
