@@ -199,7 +199,7 @@
         {
             $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
-            $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
+            $upd = \json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
             { // now see if there are any config values that need updating.
                 $base = $context->local()->base();
