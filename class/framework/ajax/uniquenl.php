@@ -31,7 +31,7 @@
             return [FALSE, []]; // does not require login
         }
 /**
- * Do a parsley uniqueness check wothout requiring login
+ * Do a parsley uniqueness check without requiring login
  * Send a 404 if it exists (That's how parsley works)
  *
  * @todo this call ought to be rate limited in some way!

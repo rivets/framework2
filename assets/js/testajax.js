@@ -1,3 +1,7 @@
+ /**
+  * global fwdom
+  * global framework
+  */
     var testing = {
 
         ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
@@ -7,7 +11,7 @@
             framework.ajax(base+'/ajax/'+url, data).done(cdone).fail(cfail);
         },
         testbean: function (){
-            wdom.alert('Bean operation test complete');
+            fwdom.alert('Bean operation test complete');
         },
 
         testconfig : function (){
@@ -204,6 +208,7 @@
             let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }, function(jx){
+                console.log(jx);
                 if (jx.status == 404)
                 {
                    t.append('<p>Existing login OK</p>');
