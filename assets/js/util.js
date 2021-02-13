@@ -14,22 +14,20 @@
  * @param {object} options - options object
  */
         onloaded(){
-            console.log(this);
             if (this.status >= 200 && this.status < 400)
             { // Success!
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(this.response);
+                    this.options.success(this);
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
             { // something went wrong
-        console.log(this.response);
-                this.options.fail(this.response);
+                this.options.fail(this);
             }
             if (this.options.hasOwnProperty('always'))
             { // always do this
-                this.options.always(this.response);
+                this.options.always(this);
             }
         }
 /**
@@ -42,11 +40,11 @@
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
-                  this.options.fail(this.response);
+                  this.options.fail(this);
               }
               if (this.options.hasOwnProperty('always'))
               {
-                  this.options.always(this.response);
+                  this.options.always(this);
               }
         }
 
