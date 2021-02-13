@@ -119,7 +119,7 @@
             {% if fwutils -%}
                 framework.base = '{{base}}'; framework.putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
             {%- else -%}
-                var framework = { base: '{{base}}', putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}' };
+                var framework = { base: '{{base}}', putorpatch: '{{constant('Config\\Config::PUTORPATCH')}}' };
             {%- endif %}
             {{sjs|raw}}
             {{ojs|raw}}
