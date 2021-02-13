@@ -300,7 +300,7 @@
             { // see if there is a userID variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
                 \session_start(['name' => Config::SESSIONNAME]);
-                if (filter_has_var(INPUT_SESSION, 'userID'))
+                if (isset($_SESSION['userID']))
                 {
                     $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
                 }
