@@ -14,6 +14,7 @@
  * @param {object} options - options object
  */
         onloaded(){
+            console.log(this);
             if (this.status >= 200 && this.status < 400)
             { // Success!
                 if (this.options.hasOwnProperty('success'))
@@ -23,6 +24,7 @@
             }
             else if (this.options.hasOwnProperty('fail'))
             { // something went wrong
+        console.log(this.response);
                 this.options.fail(this.response);
             }
             if (this.options.hasOwnProperty('always'))
@@ -40,7 +42,6 @@
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
-    console.log(this.response);
                   this.options.fail(this.response);
               }
               if (this.options.hasOwnProperty('always'))
@@ -180,7 +181,7 @@
  * @return string
  */
         buildFWLink: function (){
-            let link = base;
+            let link = framework.base;
             for (let item of arguments)
             {
                 if (link !== '')
