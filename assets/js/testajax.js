@@ -208,7 +208,6 @@
             let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }, function(jx){
-                console.log(jx);
                 if (jx.status == 404)
                 {
                    t.append('<p>Existing login OK</p>');
