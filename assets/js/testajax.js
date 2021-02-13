@@ -170,15 +170,15 @@
                         t.append('<p>Toggle fails, have '+tstate+' got '+data+'</p>');
                     }
                 }, function(jx) {
-                    t.append('<p>Toggle Fails- '+jx.status+' "'+str.trim(jx.responseText)+'"</p>');
+                    t.append('<p>Toggle Fails- '+jx.status+' "'+jx.responseText.replace(/^\s+|\s+$/gm,'')+'"</p>');
                 });
             }, function(jx) {
-                t.append('<p>Toggle Fails- '+jx.status+' "'+str.trim(jx.responseText)+'"</p>');
+                t.append('<p>Toggle Fails- '+jx.status+' "'+jx.responseText.replace(/^\s+|\s+$/gm,'')+'"</p>');
             });
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/f1', { method: 'POST' }, function(data){
                 t.append('<p>Toggle non-toggleable field FAILS returns 200: '+data.length+'</p>');
             }, function(jx) {
-                t.append('<p>Toggle non-toggleable field OK - '+jx.status+' "'+str.trim(jx.responseText)+'"</p>');
+                t.append('<p>Toggle non-toggleable field OK - '+jx.status+' "'+jx.responseText.replace(/^\s+|\s+$/gm,'')+'"</p>');
             });
         },
 
