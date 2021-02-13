@@ -40,6 +40,7 @@
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
+    console.log(this.response);
                   this.options.fail(this.response);
               }
               if (this.options.hasOwnProperty('always'))
