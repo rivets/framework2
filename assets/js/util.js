@@ -18,7 +18,7 @@
             { // Success!
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(this);
+                    this.options.success(this.response, this);
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
