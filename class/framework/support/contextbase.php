@@ -293,14 +293,25 @@
  */
         public function setup() : \Framework\Support\ContextBase
         {
-            ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
-            ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
-            ini_set('session.cookie_httponly', 1);
+            \ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
+            \ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
+            \ini_set('session.cookie_httponly', 1);     // You can get rid of these calls if you know your php.ini is set up correctly
             if (isset($_COOKIE[Config::SESSIONNAME]))
-            {# see if there is a user variable in the session....
+            { // see if there is a userID variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
-                session_start(['name' => Config::SESSIONNAME]);
-                $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
+                \session_start(['name' => Config::SESSIONNAME]);
+                if (filter_has_var(INPUT_SESSION, 'userID'))
+                {
+                    $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
+                }
+                else
+                { // something not right so kill session and the session cookie
+                    \session_destroy();
+                    $params = session_get_cookie_params();
+                    setcookie(session_name(), '', time() - 42000,
+                        $params['path'], $params['domain'], $params['secure'], $params['httponly']
+                    );
+                }
             }
             $this->mtoken();
 
@@ -318,9 +329,9 @@
             }
             if ($_SERVER['QUERY_STRING'] !== '')
             { // there is a query string so get rid it of it from the URI
-                [$uri] = explode('?', $uri);
+                [$uri] = \explode('?', $uri);
             }
-            $req = array_filter(explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
+            $req = \array_filter(\explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
