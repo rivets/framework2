@@ -190,12 +190,12 @@
  *
  * @return \RedBeanPHP\OODBBean
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : \RedBeanPHP\OODBBean
         {
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
-                throw new \Framework\Exception\MissingBean('Missing '.$bean);
+                throw new \Framework\Exception\MissingBean($msg !== '' ? $msg : 'Missing '.$bean);
             }
             return $foo;
         }
