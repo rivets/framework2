@@ -180,7 +180,7 @@
         {
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType);
             $id = $rest[0] ?? 0; // get the id from the URL
-            if ($id <= 0)
+            if (!is_numeric($id) || $id <= 0)
             {
                 throw new BadValue('Missing value');
             }
@@ -191,6 +191,32 @@
             }
             R::trash($bean); // If there is a delete function in the model it will get called automatically.
             $this->context->web()->noContent();
+        }
+/**
+ * GET /ajax/bean/KIND/ID/ - this
+ *
+ * @param string        $beanType  The bean type
+ * @param array<string> $rest      The rest of the URL
+ * @param bool          $log       If TRUE then log the changes
+ *
+ * @return void
+ * @psalm-suppress UnusedMethod
+ * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ */
+        private function get(string $beanType, array $rest, bool $log) : void
+        {
+            $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $beanType);
+            $id = $rest[0] ?? 0; // get the id from the URL
+            if (!is_numeric($id) || $id <= 0)
+            {
+                throw new BadValue('Missing value');
+            }
+            $bean = $this->context->load($beanType, (int) $id);
+            if (!\method_exists('\\Model\\'.$beanType, 'ajaxGet'))
+            {
+                throw new \Framework\Exception\BadOperation('GET is not supported');
+            }
+            $bean->ajaxGet($this->context, $rest);
         }
 /**
  * Carry out operations on beans
