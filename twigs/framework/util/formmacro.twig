@@ -118,7 +118,7 @@
 
 {% macro htick(val, class, name, disabled, label = '') %}
 {% import _self as fx %}
-{{fx.tick(val, class ~ ' htick', label, disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
+{{fx.tick(val, "#{class} htick", label, disabled)}}<input type="hidden" value="{{val}}" name="{{name}}[]"/>
 {% endmacro htick %}
 
 {% macro inline(type, name, msg, id, value, class='ppedit', empty = '----') %}<a href="#" class="{{class}}" {% if type == 'select' %}data-value="{{value}}" {% endif %}data-name="{{name}}" data-type="{{type}}" data-pk="{{id}}" data-title="{{msg}}" data-emptytext="{{empty}}">{{value}}</a>{% endmacro inline %}

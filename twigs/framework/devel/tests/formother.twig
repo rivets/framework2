@@ -4,15 +4,15 @@
 {% macro makehash(hash, extra) %}
     {% set res = '{' %}
     {% for key,value in hash %}
-        {% set res = res ~ key ~ ': "' ~ value ~ '"' %}
+        {% set res = "#{res}#{key}: \"#{value}\"" %}
         {% if not loop.last %}
-            {% set res = res ~ ',' %}
+            {% set res = "#{res}," %}
         {% endif %}
     {% endfor %}
     {% for key,value in extra %}
-        {% set res = res ~ "," ~ key ~ ': "' ~ value ~ '"' %}
+        {% set res = "#{res},#{key}: \"#{value}\"" %}
     {% endfor %}
-    {% set res = res ~ '}' %}
+    {% set res = "#{res}}" %}
     {{res}}
 {% endmacro makehash %}
 
