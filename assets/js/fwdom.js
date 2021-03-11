@@ -1,4 +1,6 @@
-/**
+/* globals document, bootbox, jQuery */
+/* jshint undef: true, unused: false */
+/*
  * Some utility functions to make getting round the dom a bit less wordy
  */
     var fwdom = {
@@ -29,7 +31,7 @@
         },
 
         mkjQ: function(sel){
-            return $(sel);
+            return jQuery(sel);
         },
 
         alert: function(msg){

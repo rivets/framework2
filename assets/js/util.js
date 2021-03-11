@@ -1,6 +1,6 @@
-/**
- * global fwdom
- */
+/* globals fwdom: false */
+/* globals XMLHttpRequest, window, putorpatch, setTimeout, document */
+/* jshint undef: true, unused: false */
     class FWAjaxRQ
     {
         constructor(rq)
