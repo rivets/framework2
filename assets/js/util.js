@@ -2,7 +2,7 @@
  * global fwdom
  */
     class FWAjaxRQ
-   {
+    {
         constructor(rq)
         {
             this.request = rq;
