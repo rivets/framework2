@@ -71,7 +71,7 @@
  *
  * @return string|bool
  */
-        private function checkPtns(Context$context, array $ptnmap, string $fn, ?string $oktpl, string $errtpl)
+        private function checkPtns(Context $context, array $ptnmap, string $fn, ?string $oktpl, string $errtpl)
         {
             $data = [];
             $errors = [];
