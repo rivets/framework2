@@ -11,6 +11,7 @@
 
     use \Config\Config;
     use \Config\Framework as FW;
+    use \RedBeanPHP\OODBBean;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
@@ -18,7 +19,7 @@
     {
         use \Framework\Utility\Singleton;
 
-/** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var ?OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser        = NULL;
 /** @var string The first component of the current URL */
         protected $reqaction    = 'home';
@@ -26,9 +27,9 @@
         protected $reqrest      = [];
 /** @var bool   True if authenticated by token */
         protected $tokenAuth    = FALSE;
-/** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
+/** @var array<OODBBean>            A cache for rolename beans */
         protected $roles        = [];
-/** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
+/** @var array<OODBBean>            A cache for rolecontext beans */
         protected $contexts     = [];
 /** @var array<array<string>>                   A cache for JS ons */
         protected $ons          = [];
@@ -70,9 +71,9 @@
 /**
  * Return the current logged in user if any
  *
- * @return ?\RedBeanPHP\OODBBean
+ * @return ?OODBBean
  */
-        public function user() : ?\RedBeanPHP\OODBBean
+        public function user() : ?OODBBean
         {
             return $this->luser;
         }
@@ -139,10 +140,10 @@
  *
  * @throws \Framework\Exception\InternalError
  *
- * @return \RedBeanPHP\OODBBean
+ * @return OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function roleName(string $name) : \RedBeanPHP\OODBBean
+        public function roleName(string $name) : OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -161,10 +162,10 @@
  *
  * @throws \Framework\Exception\InternalError
  *
- * @return \RedBeanPHP\OODBBean
+ * @return OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function roleContext(string $name) : \RedBeanPHP\OODBBean
+        public function roleContext(string $name) : OODBBean
         {
             if (!isset($this->contexts[$name]))
             {
@@ -188,9 +189,9 @@
  * @throws  \Framework\Exception\MissingBean
  * @throws  \InvalidArgumentException - this would be an internal error
  *
- * @return \RedBeanPHP\OODBBean
+ * @return OODBBean
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : \RedBeanPHP\OODBBean
+        public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : OODBBean
         {
             $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
@@ -291,7 +292,7 @@
  *
  * @return \Framework\Support\ContextBase
  */
-        public function setup() : \Framework\Support\ContextBase
+        public function setup() : ContextBase
         {
             \ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
             \ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
@@ -315,23 +316,7 @@
             }
             $this->mtoken();
 
-            if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
-            {
-/*
- *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
- *  Older versions will not have this so the code will do nothing.
- */
-                $uri = preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
-            }
-            else
-            {
-                $uri = $_SERVER['REQUEST_URI'];
-            }
-            if ($_SERVER['QUERY_STRING'] !== '')
-            { // there is a query string so get rid it of it from the URI
-                [$uri] = \explode('?', $uri);
-            }
-            $req = \array_filter(\explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
+            $req = \array_filter(\explode('/', $this->web()->request())); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
@@ -344,10 +329,6 @@
             { // we are in at least one sub-directory
                 $bsplit = array_filter(explode('/', $this->local()->base()));
                 $req = array_slice($req, count($bsplit));
-                //foreach (range(1, count($bsplit)) as $c)
-                //{
-                //    array_shift($req); // pop off the directory name...
-                //}
             }
             if (!empty($req))
             { // there was something after the domain name so split it into action and rest...

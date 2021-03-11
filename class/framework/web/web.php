@@ -67,6 +67,31 @@
             $this->cache = array_merge($this->cache, $items);
         }
 /**
+ * Return the URI without any Query String
+ *
+ * @return string
+ */
+        public function request()
+        {
+            if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
+            {
+/*
+ *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
+ *  Older versions will not have this so the code will do nothing.
+ */
+                $uri = preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
+            }
+            else
+            {
+                $uri = $_SERVER['REQUEST_URI'];
+            }
+            if ($_SERVER['QUERY_STRING'] !== '')
+            { // there is a query string so get rid it of it from the URI
+                [$uri] = \explode('?', $uri);
+            }
+            return $uri;
+        }
+/**
  * Return header value or NULL if it does not exist
  *
  * @param string $name

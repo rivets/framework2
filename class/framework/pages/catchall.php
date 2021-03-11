@@ -36,7 +36,7 @@
             switch ($context->action())
             {
             case 'favicon.ico':
-                $context->web()->sendfile($context->local()->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
+                $context->web()->sendfile($local->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
                 break;
 
             case 'robots.txt':
@@ -60,7 +60,7 @@
                 break;
 
             default:
-                $local->addval('page', $_SERVER['REQUEST_URI']);
+                $local->addval('page', $context->web()->request());
                 \Framework\Dispatch::basicSetup($context, 'error');
                 return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
             }
