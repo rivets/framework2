@@ -149,7 +149,7 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages, extra: extra } %}
-	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nbean" type="button">Add Bean</button></p>
+	    <p>{{m.invoke('#nbean', 'Add Bean')}}</p>
         </article>
     </section>
     {{m.open({id: 'nbean', title: 'New Bean'})}}

@@ -63,9 +63,9 @@
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     <div class="form-check form-check-inline">
     {% for ix,val in opts.values %}
-        <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
+        <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
-	    <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="mr-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
+	    <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
             {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
         {{opts.labels[ix]|raw}}
         </label>
@@ -77,7 +77,7 @@
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     <div class="form-check form-check-inline">
     {% for ix,val in opts.values %}
-        <label class="form-check-label {{rspace is defined ? rspace : 'mr-4'}}">
+        <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
         {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
 	    <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}
             {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>

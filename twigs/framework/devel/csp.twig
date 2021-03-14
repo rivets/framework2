@@ -61,11 +61,11 @@
 {% block main %}
     {% for type,beans in csp %}
         <section class="row mb-2 border-bottom border-dark" data-type="{{type}}">
-            <article class="ml-auto col-md-2 ">
+            <article class="mx-auto col-md-2 ">
                 <p class="text-center stype">{{type}}</p>
                 <p class="text-center actb">{{icon.fa('plus')}}<br/><small>Add host</small></p>
             </article>
-            <article class="col-md-8 mr-auto" data>
+            <article class="col-md-8 me-auto" data>
                 <table class="table w-100">
                     <tbody>
                         {% for h in beans %}
