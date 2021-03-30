@@ -605,15 +605,14 @@
         public static function setup()
         {
             \\Framework\\Web\\Web::getinstance()->addheader([
-            'Date'                   => gmstrftime('%b %d %Y %H:%M:%S', time()),
-            'Window-Target'          => '_top',      // deframes things
-            'X-Frame-Options'	     => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
-            'Content-Language'	     => 'en',
-            'Vary'                   => 'Accept-Encoding',
-            'X-Content-Type-Options' => 'nosniff',
-            'X-XSS-Protection'       => '1; mode=block',
-            ".($options['forcessl'] ? "'Strict-Transport-Security' => 'max-age=31536000', // enforces HTTPS for this domain for a year
-            " : '')."]);
+                'Date'                   => gmstrftime('%b %d %Y %H:%M:%S', time()),
+                'Window-Target'          => '_top',      // deframes things
+                'X-Frame-Options'        => 'DENY',      // deframes things: SAMEORIGIN would allow this site to use frames
+                'Content-Language'       => 'en',
+                'Vary'                   => 'Accept-Encoding',
+                'X-Content-Type-Options' => 'nosniff',
+                'X-XSS-Protection'       => '1; mode=block',
+            ]);
         }".PHP_EOL.PHP_EOL);
             fputs($fd, '    }'.PHP_EOL.PHP_EOL);
             if (!$hasgah)

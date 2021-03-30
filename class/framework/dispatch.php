@@ -139,6 +139,7 @@
             }
             $context->local()->addval($basicvals, '', TRUE);
             $context->web()->initCSP(); // prepare the CSP values
+            \Framework\Support\Security::getInstance()->sslCheck($context);
         }
 /**
  * Handle dispatch of a page.

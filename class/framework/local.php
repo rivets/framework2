@@ -74,9 +74,9 @@
  *
  * @return string
  */
-        public function configval(string $name) : string
+        public function configVal(string $name, string $default = '') : string
         {
-            return $this->fwconfig[$name]->value ?? '';
+            return $this->fwconfig[$name]->value ?? $default;
         }
 /**
  * Return all the config values

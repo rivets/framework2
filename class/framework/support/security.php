@@ -9,6 +9,7 @@
  */
     namespace Framework\Support;
 
+    use \Support\Context;
 /**
  * A class that handles provides various security related functions.
  */
@@ -66,6 +67,20 @@
         public function hasSecGPC()
         {
             return \Framework\Web\Web::getInstance()->header('Sec-GPC') == '1';
+        }
+/**
+ * Check for HSTS wanted
+ *
+ * @return void
+ */
+        public function sslCheck(Context $context)
+        {
+            if ($context->local()->configVal('forcessl', '0') == '1')
+            {
+                $context->web()->addHeader([
+                    'Strict-Transport-Security' => $context->local()->configVal('ssltime', '31536000'),
+                ]);
+            }
         }
     }
 ?>

@@ -3,7 +3,7 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
