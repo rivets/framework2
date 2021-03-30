@@ -29,7 +29,7 @@
         #}
                 {{f.endfset()}}
                 <p>
-                    <button class="btn btn-primary" type="submit">{{icon.fa('sign-in-alt')}} Login</button>
+                    {{f.bsubmit({rvalue: icon.fa('sign-in-alt')}} ~ ' Login'})}}
                 </p>
             {{f.endform()}}
             <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
