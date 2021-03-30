@@ -15,10 +15,9 @@
     <section class="row">
         <article class="mx-auto col-6 bg-light p-5">
             {% include '@util/message.twig' %}
-            <form action="{{base}}/login" method="post" class="jumbotron">
+            {{f.startform({method: 'post'})}}
                 <input type="hidden" name="goto" value="{{goto}}"/>
-                <fieldset>
-                    <legend>Login</legend>
+                {{f.startfset({legend: 'Login'})}}
                     {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'User Name', required: TRUE})}}
                     {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE})}}
         {#
@@ -31,14 +30,14 @@
                     <p>
                         <button class="btn btn-primary" type="submit">{{icon.fa('sign-in-alt')}} Login</button>
                     </p>
-                </fieldset>
-                <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
-                {% if register %}
-                    <p><small><a href="{{base}}/confirm">{{icon.fa('envelope')}} Confirm email?</a></small></p>
-                    <p>or</p>
-                    <p><a class="btn btn-info btn-sm" href="{{base}}/register">{{icon.fa('pencil-alt')}} Register</a></p>
-                {% endif %}
-            </form>
+                {{f.endfset()}}
+            {{f.endform()}}
+            <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
+            {% if register %}
+                <p><small><a href="{{base}}/confirm">{{icon.fa('envelope')}} Confirm email?</a></small></p>
+                <p>or</p>
+                <p><a class="btn btn-info btn-sm" href="{{base}}/register">{{icon.fa('pencil-alt')}} Register</a></p>
+            {% endif %}
         </article>
     </section>
 {% endblock main %}
