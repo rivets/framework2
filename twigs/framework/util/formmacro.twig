@@ -103,8 +103,8 @@
         {% endfor %}
     </select>{{fx.bse(opts)}}{% endmacro select %}
 
-{% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}/>{% endmacro submit %}
-{% macro bsubmit(opts) %}{% import _self as fx %}<button class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}" type="submit"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}>{{opts.value}}{{opts.rvalue|raw}}</button>{% endmacro bsubmit %}
+{% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}{{fx.hv('class', opts.class)}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}/>{% endmacro submit %}
+{% macro bsubmit(opts) %}{% import _self as fx %}<button class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}{{fx.hv('class', opts.class)}}" type="submit"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}>{{opts.value}}{{opts.rvalue|raw}}</button>{% endmacro bsubmit %}
 {% macro recaptcha(key, label, callback, opts) %}
 {% import _self as fx %}
     {% if key != '' %}
