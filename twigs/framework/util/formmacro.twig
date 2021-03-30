@@ -108,9 +108,9 @@
 {% macro recaptcha(key, label, callback, opts) %}
 {% import _self as fx %}
     {% if key != '' %}
-        <button class="btn {{opts.style != '' ? opts.style : 'btn-primary'}} g-recaptcha" data-sitekey="{{key}}" data-callback="{{callback}}"{{fx.hv('id', opts.id)}}>{{label}}</button>
+        <button class="btn {{opts.style != '' ? opts.style : 'btn-primary'}} g-recaptcha{{opts.class != '' ? ' '~opts.class}}" data-sitekey="{{key}}" data-callback="{{callback}}"{{fx.hv('id', opts.id)}}>{{label}}</button>
     {% else %}
-        <button class="btn {{opts.style != '' ? opts.style : 'btn-primary'}}" onclick="{{callback}}('');"{{fx.hv('id', opts.id)}}>{{label}}</button>
+        <button class="btn {{opts.style != '' ? opts.style : 'btn-primary'}}{{opts.class != '' ? ' '~opts.class}}" onclick="{{callback}}('');"{{fx.hv('id', opts.id)}}>{{label}}</button>
     {% endif %}
 {% endmacro recaptcha %}
 
