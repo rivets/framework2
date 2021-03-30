@@ -31,10 +31,10 @@
 
 {% macro bsl(opts) %}{% import _self as fx %}<div class="form-group">
     {% if opts.label != '' %}
-        <label{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
+        <label class="form-label"{{fx.hv('for', opts.id)}}>{{opts.label}}</label>
     {% endif %}
     {% if opts.rlabel != '' %}
-        <label{{fx.hv('for', opts.id)}}>{{opts.rlabel|raw}}</label>
+        <label class="form-label"{{fx.hv('for', opts.id)}}>{{opts.rlabel|raw}}</label>
     {% endif %}
 {% endmacro bsl %}
 
