@@ -65,6 +65,8 @@
         <file name="../class/framework/support/errorhandler.php" />
         <file name="../class/framework/support/errorhandlerbase.php" />
         <file name="../class/framework/support/handlerole.php" />
+        <file name="../class/framework/support/localbase.php" />
+        <file name="../class/framework/support/security.php" />
         <file name="../class/framework/support/sitable.php" />
         <file name="../class/framework/support/siteinfo.php" />
         <file name="../class/framework/support/siteinfobase.php" />
