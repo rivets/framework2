@@ -17,7 +17,7 @@
  */
     class ContextBase
     {
-        use \Framework\Utility\Singleton; // @phpcsSuppress PhpCsFixer.Fixer.Import.OrderedImportsFixer
+        use \Framework\Utility\Singleton; // phpcs:disable
 
 /** @var ?OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
         protected $luser        = NULL;
