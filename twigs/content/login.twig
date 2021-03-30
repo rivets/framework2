@@ -13,7 +13,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="mx-auto col">
+        <article class="mx-auto col bg-light">
             {% include '@util/message.twig' %}
             <form action="{{base}}/login" method="post" class="jumbotron">
                 <input type="hidden" name="goto" value="{{goto}}"/>
