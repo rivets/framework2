@@ -28,7 +28,7 @@
                             </div>
         #}
                 {{f.endfset()}}
-                {{f.bsubmit({rvalue: icon.fa('sign-in-alt') ~ ' Login'})}}
+                {{f.bsubmit({rvalue: icon.fa('sign-in-alt') ~ ' Login', class: 'mb-3'})}}
             {{f.endform()}}
             <p><small><a href="{{base}}/forgot">{{icon.fa('key')}} Lost password?</a></small></p>
             {% if register %}
