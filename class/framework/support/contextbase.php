@@ -17,7 +17,6 @@
  */
     class ContextBase
     {
-/* @phpcsSuppress PhpCs.Fixer.Import.OrderedImportsFixer */
         use \Framework\Utility\Singleton;
 
 /** @var ?OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */

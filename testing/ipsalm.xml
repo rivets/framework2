@@ -6,23 +6,23 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <file name="../devel/redmock.php" />
-        <file name="../devel/r.php" />
+        <file name="devel/redmock.php" />
+        <file name="devel/r.php" />
 
-        <file name="../class/framework/dispatch.php"/>
+        <file name="class/framework/dispatch.php"/>
 
-        <file name="../install/errors/composer.php" />
-        <file name="../install/errors/noredbean.php" />
-        <file name="../install/errors/notwig.php" />
-        <file name="../install/errors/phpbuild.php" />
-        <file name="../install/errors/symlink.php" />
+        <file name="install/errors/composer.php" />
+        <file name="install/errors/noredbean.php" />
+        <file name="install/errors/notwig.php" />
+        <file name="install/errors/phpbuild.php" />
+        <file name="install/errors/symlink.php" />
 
-        <file name="../install.php" />
+        <file name="install.php" />
         <ignoreFiles>
-            <directory name="../vendor" />
-            <directory name="../class" />
-            <directory name="../devel" />
-            <directory name="../testing" />
+            <directory name="vendor" />
+            <directory name="class" />
+            <directory name="devel" />
+            <directory name="testing" />
         </ignoreFiles>
     </projectFiles>
 
@@ -60,7 +60,7 @@
         <RedundantConditionGivenDocblockType errorLevel="info" />
         <UndefinedGlobalVariable>
             <errorLevel type="suppress">
-              <directory name="../install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
+              <directory name="install/errors" /> <!-- all InvalidReturnType issues in this directory are suppressed -->
             </errorLevel>
         </UndefinedGlobalVariable>
         <UnresolvableInclude errorLevel="info" />
