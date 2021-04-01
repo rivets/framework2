@@ -28,7 +28,11 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col-md-10 mb-5">
-            <div id="etest">Test Value</div>
+            <table>
+                <tbody>
+                    <tr><td id="etest">Test Value</td></tr>
+                </tbody>
+            </table>
             {{a.accordion('acc1', [
                 {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
