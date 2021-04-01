@@ -1,4 +1,6 @@
 {% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -7,7 +9,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#alert').on('click', function(){
+    document.getElementById('alert').addEventListener('click', function(){
         toast.show();
     })
 {% endblock onload %}
