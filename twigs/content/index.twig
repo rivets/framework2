@@ -33,14 +33,16 @@
             <p>Right Column</p>
         </aside>
     </section>
-    <div class="toast top-0 end-0" id="ext" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Alert!</strong>
-            <small>Hello World</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Hello, world! This is a Bootstrap toast message.
+    <div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement">
+        <div class="toast" id="ext" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Alert!</strong>
+                <small>Hello World</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a Bootstrap toast message.
+            </div>
         </div>
     </div>
 {% endblock main %}
