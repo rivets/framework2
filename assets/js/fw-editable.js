@@ -1,6 +1,6 @@
- fwdom.makeEdit = function()
+ fwdom.makeEdit = function(d)
  {
-    return '<form><input type="text" value="' + this.innerText + '"/></form>';
+    return '<form><input type="text" value="' + d.innerText + '"/></form>';
  };
 
 
@@ -10,9 +10,9 @@
     div.addEventListener('click', function(e){
         let popover = new bootstrap.Popover(div, {
             title: 'Edit',
-            html: true,
-            content: fwdom.makeEdit,
+            //content: fwdom.makeEdit,
             placement: 'auto',
+            template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body">'+fwdom.makeEdit(d)+'</div></div>'
         });
         popover.show();
     });
