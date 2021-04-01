@@ -4,7 +4,7 @@
         title: 'Edit',
         container: false,
         html: true,
-        content: '<input type="text" value="' + e.target.innerText + '"/>',
+        content: e.target, //'<input type="text" value="' + e.target.innerText + '"/>',
         placement: 'auto',
     });
     popover.show();
