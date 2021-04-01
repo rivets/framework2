@@ -18,6 +18,7 @@
     });
     {{a.caretJS('acc1')}}
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
+    document.getElementById('etest').addEventListener('click', fwdom.editable))
 {% endblock onload %}
 
 {% block headerbody %}
@@ -27,7 +28,7 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col-md-10 mb-5">
-            {#{% include '@util/message.twig' with {userow: 'row mt-2 mb-2', usecol: 'col-md-6'} %}#}
+            <div id="etest">Test Value</div>
             {{a.accordion('acc1', [
                 {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
