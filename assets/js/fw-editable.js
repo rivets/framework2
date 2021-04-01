@@ -12,7 +12,7 @@
         html: true,
         content: fwdom.makeEdit,
         placement: 'auto',
-        selector: div
+        selector: '#etest'
     });
     popover.show();
  };
