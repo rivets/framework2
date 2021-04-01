@@ -2,9 +2,13 @@
 
 {% extends '@content/page.twig' %}
 
+{% block setup %}
+    var toast = new bootstrap.Toast(document.getElementById('ext'), {});
+{% endblock setup %}
+
 {% block onload %}
     $('#alert').on('click', function(){
-        fwdom.alert('Hello World')
+        toast.show();
     })
 {% endblock onload %}
 
@@ -27,6 +31,16 @@
             <p>Right</p>
         </aside>
     </section>
+    <div class="toast" id="ext" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Alert!</strong>
+            <small>Hello World</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
 {% endblock main %}
 
 {% block footer %}
