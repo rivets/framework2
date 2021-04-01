@@ -14,5 +14,5 @@
         placement: 'auto',
         selector: '#etest'
     });
-    //popover.show();
+    div.addEventListener('click', function(e){popover.show()});
  };
