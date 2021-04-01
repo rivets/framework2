@@ -8,6 +8,10 @@
 
 {% import '@util/accmacro.twig' as a %}
 
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js"></script>
+{% endblock scripts %}
+
 {% block onload %}
     document.getElementById('nopu').addEventListener('click', function(e){
         fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
