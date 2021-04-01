@@ -3,7 +3,7 @@
     let popover = new bootstrap.Popover(e.target, {
         title: 'Edit',
         container: false,
-        html: false,
+        html: true,
         content: '<input type="text" value="' + e.target.innerText + '"/>',
         placement: 'auto',
     });
