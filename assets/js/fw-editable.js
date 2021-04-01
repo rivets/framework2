@@ -7,12 +7,13 @@
 
  fwdom.editable = function(div) {
     div.style.cursor = 'pointer';
-    let popover = new bootstrap.Popover(div, {
-        title: 'Edit',
-        html: true,
-        content: fwdom.makeEdit,
-        placement: 'auto',
-        selector: '#etest'
+    div.addEventListener('click', function(e){
+        let popover = new bootstrap.Popover(div, {
+            title: 'Edit',
+            html: true,
+            content: fwdom.makeEdit,
+            placement: 'auto',
+        });
+        popover.show();
     });
-    div.addEventListener('click', function(e){popover.show()});
  };
