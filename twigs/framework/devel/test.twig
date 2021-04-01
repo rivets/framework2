@@ -18,7 +18,7 @@
     });
     {{a.caretJS('acc1')}}
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
-    document.getElementById('etest').addEventListener('click', fwdom.editable);
+    fwdom.editable(document.getElementById('etest'));
 {% endblock onload %}
 
 {% block headerbody %}
