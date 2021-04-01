@@ -16,7 +16,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="offset-md-1 col">
+        <article class="offset-md-1 col-md-10">
             {% include '@util/message.twig' %}
             {{f.startform({id: 'cform', method: 'post'})}}
                 {{f.hidden({name: 'details', value: '1'})}}
