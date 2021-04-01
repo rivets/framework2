@@ -3,6 +3,8 @@
     return '<form><input type="text" value="' + this.innerText + '"/></form>';
  };
 
+
+
  fwdom.editable = function(div) {
     div.style.cursor = 'pointer';
     let popover = new bootstrap.Popover(div, {
@@ -12,5 +14,5 @@
         placement: 'auto',
         selector: div
     });
-    //popover.show();
+    popover.show();
  };
