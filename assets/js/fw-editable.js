@@ -12,7 +12,7 @@
             title: 'Edit',
             //content: fwdom.makeEdit,
             placement: 'auto',
-            template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body">'+fwdom.makeEdit(d)+'</div></div>'
+            template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body">'+fwdom.makeEdit(div)+'</div></div>'
         });
         popover.show();
     });
