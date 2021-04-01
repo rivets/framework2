@@ -1,4 +1,5 @@
  fwdom.editable = function(e) {
+    e.target.style.cursor = 'pointer';
     let popover = new bootstrap.Popover(e.target, {
         title: 'Edit',
         container: false,
