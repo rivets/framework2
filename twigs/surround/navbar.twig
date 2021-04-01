@@ -35,7 +35,7 @@
     </nav>
     {% if breadcrumbs is defined %}
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb bg-light">
+          <ol class="breadcrumb bg-light p-2">
             {% for l in breadcrumbs %}
                 <li class="breadcrumb-item{% if loop.last %} active{% endif %}" aria-current="page">{% if not loop.last %}<a href="{{l.link}}">{% endif %}{{l.text|raw}}{% if not loop.last %}</a>{% endif %}</li>
             {% endfor %}
