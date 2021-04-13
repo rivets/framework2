@@ -203,5 +203,14 @@
             $this->editroles($context);
             return [!empty($emess), $emess];
         }
+/**
+ * Return the user's 2FA secret
+ *
+ * @return string
+ */
+        public function secret()
+        {
+            return $this->bean->secret;
+        }
     }
 ?>

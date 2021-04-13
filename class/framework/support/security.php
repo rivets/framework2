@@ -9,6 +9,7 @@
  */
     namespace Framework\Support;
 
+    use \RobThree\Auth\TwoFactorAuth;
     use \Support\Context;
 /**
  * A class that handles provides various security related functions.
@@ -18,6 +19,10 @@
         use \Framework\Utility\Singleton;
 
         private const ALGORITHM = 'sha256';
+
+        private const SALT = '7HHX7089ZDCITYNJYAC1LWKD63H0X55NDV6VNCP4';
+
+        private $twoFA = NULL;
 /**
  * Make a nonce value for including inline CSS
  *
@@ -82,6 +87,40 @@
                     'Strict-Transport-Security' => $context->local()->configVal('ssltime', '31536000'),
                 ]);
             }
+        }
+/**
+ * get the 2FA object
+ *
+ * @return TwoFactorAuth
+ */
+        private function get2fa()
+        {
+            if ($this->twoFA === NULL)
+            {
+                $this->twoFA = new TwoFactorAuth;
+            }
+            return $this->twoFA;
+        }
+/**
+ * Generate 2FA Secret
+ *
+ * @return string
+ */
+        public function make2FASecret()
+        {
+            return $this->get2FA()->createSecret();
+        }
+/**
+ * Check 2FA
+ *
+ * @param \RedBeanPHP\OODBBean  $user
+ * @param string                $value
+ *
+ * @return bool
+ */
+        public function check2FA(\RedBeanPHP\OODBBean $user, string $value)
+        {
+            return $this->get2FA()->verifyCode($user->secret(), $value);
         }
     }
 ?>
