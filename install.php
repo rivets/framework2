@@ -690,6 +690,7 @@
                 $user->active = 1;
                 $user->confirm = 1;
                 $user->joined = $now;
+                $user->secret = '';
                 \R::store($user);
     /**
      * Now initialise the confirmation code table
