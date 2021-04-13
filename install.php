@@ -766,6 +766,7 @@
                     'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
                     'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
                     'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
+                    'twofa'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\USerLogin', FALSE, 0, FALSE, 1, FALSE],
                     'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)

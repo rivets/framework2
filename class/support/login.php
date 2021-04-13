@@ -37,12 +37,11 @@
                     $user = \Framework\Pages\UserLogin::eorl($lg); // use either a login name or the email address - see framework/pages/userlogin.php
                     if (is_object($user) && $user->pwok($pw) && $user->confirm)
                     {
-                        if (session_status() !== PHP_SESSION_ACTIVE)
-                        { // no session started yet
-                            session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
+                        if ($user->secret() !== '')
+                        {
+                            $context->divert('/twofa'.($page !== '' ? '?goto='.$page : ''));
                         }
-                        $_SESSION['userID'] = $user->getID();
-                        $context->divert($page === '' ? '/' : $page); // success - divert to home page
+                        $this->loginSession($context, $user, $page);
                         /* NOT REACHED */
                     }
                 }
@@ -51,6 +50,25 @@
             }
             $context->local()->addval('goto', $context->formdata('get')->fetch('goto', ''));
             return TRUE;
+        }
+/**
+ * Login success
+ *
+ * @param Context               $context
+ * @param \RedBeanPHP\OODBBean  $user
+ * @param string                $page
+ *
+ * @return void
+ */
+        public function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page)
+        {
+            if (session_status() !== PHP_SESSION_ACTIVE)
+            { // no session started yet
+                session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
+            }
+            $_SESSION['userID'] = $user->getID();
+            $context->divert($page === '' ? '/' : $page); // success - divert to home page
+            /* NOT REACHED */
         }
 /**
  * Handle a logout
