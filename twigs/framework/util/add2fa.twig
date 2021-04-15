@@ -11,13 +11,20 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col">
-            <p>Scan this QR-code using your authenticator app:</p>
-            <p><img src="{{qrcode}}"/></p>
-            <p>And then enter the code generated and submit the form:</p>
-            {{f.startform({method: 'post'})}}
-                {{f.text({label: 'Code', name: 'validator', ph: 'Code from your app', required: TRUE})}}
-                {{f.submit({value: 'Verify'})}}
-            {{f.endform()}}
+            {% if context.user.secret == '' %}
+                <p>Scan this QR-code using your authenticator app:</p>
+                <p><img src="{{qrcode}}"/></p>
+                <p>And then enter the code generated and submit the form:</p>
+                {{f.startform({method: 'post'})}}
+                    {{f.text({label: 'Code', name: 'validator', ph: 'Code from your app', required: TRUE})}}
+                    {{f.submit({value: 'Verify'})}}
+                {{f.endform()}}
+            {% else %}
+                {{f.startform({method: 'post'})}}
+                    {{f.hidden({name: 'disable', value: 1})}}
+                    {{f.submit({value: 'Disable 2-Factor Authentication'})}}
+                {{f.endform()}}
+            {% endif %}
         </article>
     </section>
 {% endblock main %}
