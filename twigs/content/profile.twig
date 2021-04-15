@@ -25,7 +25,7 @@
                 {{f.password({label: 'Repeat Password', id: 'rnp', name: 'rpw', ph: '***********', data: {'parsley-equalto': '#np', 'parsley-trigger': 'change'}})}}
                 {{f.submit({value: 'Update'})}}
             {{f.endform()}}
-            <p><a href="/add2fa/" class="btn btn-sm btn-info">{{context.user.secret == '' ? 'Enable' : 'Disable'}} 2-Factor Authentication</a></p>
+            <p class="mt-5"><a href="/add2fa/" class="btn btn-sm btn-info">{{context.user.secret == '' ? 'Enable' : 'Disable'}} 2-Factor Authentication</a></p>
         </article>
 
     </section>
