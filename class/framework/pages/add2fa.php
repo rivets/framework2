@@ -11,7 +11,7 @@
 
     use \Support\Context;
 
-    include __DIR__.'../utility/phpqrcode.php';
+    include __DIR__.'/../utility/phpqrcode.php';
 /**
  * An Add2FA page class
  */
