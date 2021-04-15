@@ -384,6 +384,25 @@
             return $tpl;
         }
 /**
+ * Login success so set up session
+ *
+ * @param Context               $context
+ * @param \RedBeanPHP\OODBBean  $user
+ * @param string                $page
+ *
+ * @return void
+ */
+        public function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page)
+        {
+            if (session_status() !== PHP_SESSION_ACTIVE)
+            { // no session started yet
+                session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
+            }
+            $_SESSION['userID'] = $user->getID();
+            $context->divert($page === '' ? '/' : $page); // success - divert to home page
+            /* NOT REACHED */
+        }
+/**
  * Handle TwoFA
  *
  * @param Context   $context    The context object for the site
