@@ -414,17 +414,16 @@
             if ($context->web()->isPost())
             {
                 $fdt = $context->formdata('post');
+                $user = R::findOne(FW::USER, 'code2fa=?', [$fdt->mustFetch('hash')]);
+                if (!is_object($user))
+                {
+                    $context->divert('/login/');
+                }
                 if (\Framework\Support\Security::getInstance()->check2FA($user, $fdt->mustFetch('validator')))
                 {
-                    $user = R::findOne(FW::USER, 'code2fa=?', [$fdt->mustFetch('hash')]);
-                    if (is_object($user))
-                    {
-                        $user->code2fa = '';
-                        R::store($user);
-                        $this->loginSession($context, $user, $fdt->fetch('goto', ''));
-                        /* NOT REACHED */
-                    }
-                    $context->divert('/login/');
+                    $user->code2fa = '';
+                    R::store($user);
+                    $this->loginSession($context, $user, $fdt->fetch('goto', ''));
                     /* NOT REACHED */
                 }
                 $context->local()->message(\Framework\Local::ERROR, 'Invalid code - please try again');
