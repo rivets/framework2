@@ -419,7 +419,7 @@
                 {
                     $context->divert('/login/');
                 }
-                if (\Framework\Support\Security::getInstance()->check2FA($user, $fdt->mustFetch('validator')))
+                if (\Framework\Support\Security::getInstance()->check2FA($user->secret(), $fdt->mustFetch('validator')))
                 {
                     $user->code2fa = '';
                     R::store($user);
