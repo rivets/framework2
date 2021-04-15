@@ -39,10 +39,9 @@
                 $user->secret = $secret;
                 \R::store($user);
 // $data = 'otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'
-                $stream = fopen('php://memory','r+');
-                QRImage::jpg('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk', $stream);
-                \rewind($stream);
-                $stringdata = \stream_get_contents($stream);
+                \ob_start();
+                QRImage::jpg('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk');
+                $stringdata = \ob_end_clean();
                 $context->local()->addval([
                     'qrcode' => 'data:image/jpeg;base64,'.base64_encode($stringdata)
                 ]);
