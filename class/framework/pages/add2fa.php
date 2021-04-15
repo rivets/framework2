@@ -9,9 +9,15 @@
  */
     namespace Framework\Pages;
 
-    use \Support\Context;
+    use Endroid\QrCode\Builder\Builder;
+    use Endroid\QrCode\Encoding\Encoding;
+    use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+    use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+    use Endroid\QrCode\Label\Font\NotoSans;
+    use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+    use Endroid\QrCode\Writer\PngWriter;
 
-    include __DIR__.'/../utility/phpqrcode.php';
+    use \Support\Context;
 /**
  * An Add2FA page class
  */
@@ -56,11 +62,20 @@
                 $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
                 $user->code2fa = $secret;
                 \R::store($user);
-                \ob_start();
-                \QRcode::png('otpauth://totp/'.$context->local()->configVal('sitename').'/'.$user->login.'/?secret='.$secret, FALSE, QR_ECLEVEL_L, 6);
-                $stringdata = \ob_get_clean();
+                $result = Builder::create()
+                    ->writer(new PngWriter())
+                    ->writerOptions([])
+                    ->data('otpauth://totp/'.$user->login.'/?secret='.$secret)
+                    ->encoding(new Encoding('UTF-8'))
+                    ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                    ->size(300)
+                    ->margin(10)
+                    ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+                    ->labelText($context->local()->configVal('sitename'))
+                    ->labelAlignment(new LabelAlignmentCenter())
+                    ->build();
                 $context->local()->addval([
-                    'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
+                    'qrcode' => $result->getDataURI() //'data:image/png;base64,'.base64_encode($stringdata)
                 ]);
             }
 
