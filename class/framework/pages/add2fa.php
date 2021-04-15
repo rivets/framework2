@@ -55,6 +55,7 @@
                 $user->secret = '';
                 $user->code2fa = '';
                 \R::store($user);
+                $context->local()->addval('disabled', TRUE);
                 $context->local()->message(\Framework\Local::WARNING, '2-Factor Authentication disabled');
             }
             elseif ($user->secret() === '')
@@ -72,9 +73,7 @@
                     ->margin(10)
                     ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
                     ->build();
-                $context->local()->addval([
-                    'qrcode' => $result->getDataURI() //'data:image/png;base64,'.base64_encode($stringdata)
-                ]);
+                $context->local()->addval('qrcode', $result->getDataURI());
             }
 
             return '@util/add2fa.twig';
