@@ -65,7 +65,7 @@
                 $result = Builder::create()
                     ->writer(new PngWriter())
                     ->writerOptions([])
-                    ->data('otpauth://totp/'.$user->login.'/?secret='.$secret)
+                    ->data('otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret)
                     ->encoding(new Encoding('UTF-8'))
                     ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
                     ->size(300)
