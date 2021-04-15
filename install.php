@@ -752,6 +752,7 @@
                 /* Type, location, Admin?, Must Login?, Developer?, Active?, Tester?  - Must Login and Active are 1 or 0 as they go into the database */
                 $pages = [
                     'about'         => [\Framework\Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'add2fa'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Add2FA', FALSE, 1, FALSE, 1, FALSE],
                     'admin'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
                     'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
                     'confirm'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
@@ -766,7 +767,7 @@
                     'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
                     'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
                     'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
-                    'twofa'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\USerLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'twofa'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
                     'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)

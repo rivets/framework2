@@ -1,0 +1,16 @@
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>Enable 2-Factor Authentication</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <img src="{{qrcode}}"/>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}
