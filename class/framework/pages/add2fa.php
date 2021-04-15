@@ -40,10 +40,10 @@
                 \R::store($user);
 // $data = 'otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'
                 \ob_start();
-                QRImage::jpg('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk');
+                QRcode::png('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk');
                 $stringdata = \ob_end_clean();
                 $context->local()->addval([
-                    'qrcode' => 'data:image/jpeg;base64,'.base64_encode($stringdata)
+                    'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
                 ]);
             }
             return '@util/add2fa.twig';
