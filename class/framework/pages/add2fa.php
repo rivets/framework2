@@ -27,14 +27,14 @@
         public function handle(Context $context)
         {
             $user = $context->user();
-            //if ($user->secret() !== '')
-            //{
-            //    if ($context->web()->isPost())
-            //    {
-            //    }
-            //}
-            //else
-            //{ // enabling it
+            if ($user->secret() !== '')
+            {
+                if ($context->web()->isPost())
+                {
+                }
+            }
+            else
+            { // enabling it
                 $secret  = (new \Framework\Utility\RandomStringGenerator())->generate(16);
                 $user->secret = $secret;
                 \R::store($user);
@@ -44,7 +44,7 @@
                 $context->local()->addval([
                     'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
                 ]);
-//            }
+            }
             return '@util/add2fa.twig';
         }
     }
