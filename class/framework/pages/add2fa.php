@@ -40,7 +40,7 @@
                 \R::store($user);
 // $data = 'otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'
                 $stream = fopen('php://memory','r+');
-                \imagepng(QRCode::jpg('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'), $stream);
+                \imagepng(QRImage::jpg('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'), $stream);
                 \rewind($stream);
                 $stringdata = \stream_get_contents($stream);
                 $context->local()->addval([
