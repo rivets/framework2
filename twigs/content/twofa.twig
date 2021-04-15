@@ -8,7 +8,7 @@
 {% endblock navigation %}
 
 {% block headerbody %}
-    <h1 class="text-center">Please Enter the 6-digit Code from your AUthenticator</h1>
+    <h1 class="text-center">Please Enter the Code from your Authenticator App</h1>
 {% endblock headerbody %}
 
 {% block main %}
@@ -17,8 +17,9 @@
             {% include '@util/message.twig' %}
             {{f.startform({method: 'post'})}}
                 <input type="hidden" name="goto" value="{{goto}}"/>
+                <input type="hidden" name="hash" value="{{hash}}"/>
                 {{f.startfset({legend: 'Two-Factor Authentication'})}}
-                    {{f.text({label: '6-digit Code', id: 'c6', name: 'validator', ph: 'Code from your authenticator', required: TRUE})}}
+                    {{f.text({label: 'Code', id: 'cde', name: 'validator', ph: 'Code from your authenticator', required: TRUE})}}
                 {{f.endfset()}}
                 {{f.bsubmit({rvalue: icon.fa('sign-in-alt') ~ ' Login', class: 'mb-3'})}}
             {{f.endform()}}

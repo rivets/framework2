@@ -39,7 +39,7 @@
                     {
                         if ($user->secret() !== '')
                         {
-                            $context->divert('/twofa'.($page !== '' ? '?goto='.$page : ''));
+                            $context->divert('/twofa?xx='.\Framework\Support\Security::getInstance()->makeUCode($user).($page !== '' ? '&goto='.$page : ''));
                         }
                         $this->loginSession($context, $user, $page);
                         /* NOT REACHED */

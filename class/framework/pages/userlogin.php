@@ -384,6 +384,46 @@
             return $tpl;
         }
 /**
+ * Handle TwoFA
+ *
+ * @param Context   $context    The context object for the site
+ *
+ * @return string
+ */
+        public function twofa(Context $context)
+        {
+            if ($context->web()->isPost())
+            {
+                $fdt = $context->formdata('post');
+                if (\Framework\Support\Security::getInstance()->check2FA($user, $fdt->mustFetch('validator')))
+                {
+                    $user = R::findOne(FW::USER, 'code2fa=?', [$fdt->mustFetch('hash')]);
+                    if (is_object($user))
+                    {
+                        $user->code2fa = '';
+                        R::store($user);
+                        $this->loginSession($context, $user, $fdt->fetch('goto', ''));
+                        /* NOT REACHED */
+                    }
+                    $context->divert('/login/');
+                    /* NOT REACHED */
+                }
+                $context->local()->message(\Framework\Local::ERROR, 'Invalid code - please try again');
+            }
+            $fget = $context->formdata('get');
+            $hash = $fget->fetch('xx');
+            if ($hash === '' || !is_object(R::findOne(FW::USER, 'code2fa=?', [$hash])))
+            {
+                $context->divert('/login/');
+                /* NOT REACHED */
+            }
+            $context->local()->addval([
+                'hash' => $hash,
+                'goto' => $fget->fetch('goto')
+            ]);
+            return '@content/twofa.twig';
+        }
+/**
  * Handle /login /logout /register /forgot /confirm
  *
  * @param Context  $context    The context object for the site

@@ -122,5 +122,19 @@
         {
             return $this->get2FA()->verifyCode($user->secret(), $value);
         }
+/**
+ * Make user code - used fror identifying a user for a 2FA check
+ *
+ * @param \RedBeanPHP\OODBBean  $user
+ *
+ * @return string
+ */
+        public function makeUCode(\RedBeanPHP\OODBBean $user)
+        {
+            $str = \hash('sha256', time().(new \Framework\Utility\RandomStringGenerator('BCDFGHJKLMNPQRSTVWXYZ0123456789'))->generate(32));
+            $user->code2fa = $str;
+            \R::store($user);
+            return $str;
+        }
     }
 ?>
