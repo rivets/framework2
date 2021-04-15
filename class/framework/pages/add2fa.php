@@ -39,12 +39,9 @@
                     else
                     {
                         $context->local()->message(\Framework\Local::ERROR, 'Please enter the code from your validator again');
+                        $context->local()->addval('resend', TRUE);
                     }
-                }
-                else
-                {
-                    $context->divert('/');
-                    /* NOT REACHED */
+                    return '@util/add2fa.twig';
                 }
                 $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
                 $user->secret = $secret;
