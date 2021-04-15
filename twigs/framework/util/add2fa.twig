@@ -11,6 +11,7 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col">
+            {% include '@util/message.twig' %}
             {% if context.user.secret == '' %}
                 <p>Scan this QR-code using your authenticator app:</p>
                 <p><img src="{{qrcode}}"/></p>
