@@ -35,7 +35,7 @@
             }
             else
             { // enabling it
-                $secret  = (new \Framework\Utility\RandomStringGenerator())->generate(16);
+                $secret  = (new \Framework\Utility\RandomStringGenerator('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'))->generate(16);
                 $user->secret = $secret;
                 \R::store($user);
                 \ob_start();
