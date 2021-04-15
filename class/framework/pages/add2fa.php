@@ -26,7 +26,8 @@
  */
         public function handle(Context $context)
         {
-            if ($context->user()->secret() !== '')
+            $user = $context->user();
+            if ($user()->secret() !== '')
             {
                 if ($context->web()->isPost())
                 {
