@@ -3,8 +3,8 @@
  * A trait that allows extending the UserLogin class for different authentication processes
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
- * @package Framework
+ * @copyright 2019-2021 Newcastle University
+ * @package Support
  */
     namespace Support;
 
