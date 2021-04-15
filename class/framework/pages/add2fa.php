@@ -39,7 +39,7 @@
                 $user->secret = $secret;
                 \R::store($user);
                 \ob_start();
-                \QRcode::png('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk');
+                \QRcode::png('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk', FALSE, QR_ECLEVEL_L, 6);
                 $stringdata = \ob_get_clean();
                 $context->local()->addval([
                     'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
