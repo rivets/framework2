@@ -48,6 +48,11 @@
                         $context->local()->message(\Framework\Local::ERROR, 'Please enter the code from your validator again');
                     }
                 }
+                else
+                {
+                    $context->divert('/');
+                    /* NOT REACHED */
+                }
             }
             if ($user->secret() === '')
             { // enabling it
