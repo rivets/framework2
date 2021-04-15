@@ -1,4 +1,8 @@
+{% set usebootbox = FALSE %}
+
 {% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
 
 {% block headerbody %}
     <h1>Enable 2-Factor Authentication</h1>
@@ -7,7 +11,13 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col">
-            <img src="{{qrcode}}"/>
+            <p>Scan this QR-code using your authenticator app:</p>
+            <p><img src="{{qrcode}}"/></p>
+            <p>And then enter the code generated and submit the form:</p>
+            {{f.startform({method: 'post'})}}
+                {{f.text({label: 'Code', name: 'validator', ph: 'Code from your app', required: TRUE})}}
+                {{f.submit({value: 'Verify'})}}
+            {{f.endform()}}
         </article>
     </section>
 {% endblock main %}
