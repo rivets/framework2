@@ -71,8 +71,6 @@
                     ->size(300)
                     ->margin(10)
                     ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
-                    ->labelText($context->local()->configVal('sitename'))
-                    ->labelAlignment(new LabelAlignmentCenter())
                     ->build();
                 $context->local()->addval([
                     'qrcode' => $result->getDataURI() //'data:image/png;base64,'.base64_encode($stringdata)
