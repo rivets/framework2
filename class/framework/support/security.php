@@ -118,9 +118,9 @@
  *
  * @return bool
  */
-        public function check2FA(\RedBeanPHP\OODBBean $user, string $value)
+        public function check2FA(string $secret, string $value)
         {
-            return $this->get2FA()->verifyCode($user->secret(), $value);
+            return $this->get2FA()->verifyCode($secret, $value);
         }
 /**
  * Make user code - used fror identifying a user for a 2FA check

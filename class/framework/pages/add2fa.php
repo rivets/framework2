@@ -32,8 +32,11 @@
             { // enabling it
                 if ($fdt->exists('validator'))
                 {
-                    if (\Framework\Support\Security::getInstance()->check2FA($user, $fdt->mustFetch('validator')))
+                    if (\Framework\Support\Security::getInstance()->check2FA($user->code2fa, $fdt->mustFetch('validator')))
                     {
+                        $user->secret = $user->code2fa;
+                        $user->code2fa = '';
+                        \R::store($user);
                         $context->local()->message(\Framework\Local::MESSAGE, '2-Factor Authentication enabled');
                     }
                     else
@@ -44,7 +47,7 @@
                     return '@util/add2fa.twig';
                 }
                 $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
-                $user->secret = $secret;
+                $user->code2fa = $secret;
                 \R::store($user);
                 \ob_start();
                 \QRcode::png('otpauth://totp/'.$context->local()->configVal('sitename').'/'.$user->login.'/?secret='.$secret, FALSE, QR_ECLEVEL_L, 6);
@@ -56,6 +59,7 @@
             elseif ($fdt->exists('disable'))
             {
                 $user->secret = '';
+                $user->code2fa = '';
                 \R::store($user);
                 $context->local()->message(\Framework\Local::WARNING, '2-Factor Authentication disabled');
             }
