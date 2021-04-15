@@ -40,7 +40,8 @@
                 \R::store($user);
                 \ob_start();
                 \QRcode::png('otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk');
-                $stringdata = \ob_end_clean();
+                $stringdata = \ob_get_clean();
+                var_dump($stringdata); exit;
                 $context->local()->addval([
                     'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
                 ]);
