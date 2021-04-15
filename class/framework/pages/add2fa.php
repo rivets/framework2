@@ -26,24 +26,48 @@
  */
         public function handle(Context $context)
         {
-            $user = $context->user();
-            if ($user->secret() !== '')
+            if ($context->web()->isPost())
             {
-                if ($context->web()->isPost())
+                $user = $context->user();
+                $fdt = $context->formdata('post');
+                if ($fdt->exists('disable'))
                 {
+                    $user->secret = '';
+                    \R::store($user);
+                }
+                elseif ($fdt->exists('validator'))
+                {
+                    if (\Framework\Support\Security::getInstance()->check2FA($user, $fdt->mustFetch('validator')))
+                    {
+                        $context->local()->message(\Framework\Local::MESSAGE, '2-Factor Authentication enabled');
+                    }
+                    else
+                    {
+                        $context->local()->message(\Framework\Local::ERROR, 'Please enter the code from your validator again');
+                    }
                 }
             }
             else
-            { // enabling it
-                $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
-                $user->secret = $secret;
-                \R::store($user);
-                \ob_start();
-                \QRcode::png('otpauth://totp/'.$context->local()->configVal('sitename').'/'.$user->login.'/?secret='.$secret, FALSE, QR_ECLEVEL_L, 6);
-                $stringdata = \ob_get_clean();
-                $context->local()->addval([
-                    'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
-                ]);
+            {
+                $user = $context->user();
+                if ($user->secret() !== '')
+                {
+                    if ($context->web()->isPost())
+                    {
+                    }
+                }
+                else
+                { // enabling it
+                    $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
+                    $user->secret = $secret;
+                    \R::store($user);
+                    \ob_start();
+                    \QRcode::png('otpauth://totp/'.$context->local()->configVal('sitename').'/'.$user->login.'/?secret='.$secret, FALSE, QR_ECLEVEL_L, 6);
+                    $stringdata = \ob_get_clean();
+                    $context->local()->addval([
+                        'qrcode' => 'data:image/png;base64,'.base64_encode($stringdata)
+                    ]);
+                }
             }
             return '@util/add2fa.twig';
         }
