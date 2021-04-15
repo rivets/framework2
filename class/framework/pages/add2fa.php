@@ -34,7 +34,7 @@
             }
             else
             { // enabling it
-                $secret  = (new \Framework\Utilty\RandomStringGenerator())->genertae(16);
+                $secret  = (new \Framework\Utility\RandomStringGenerator())->generate(16);
                 $user->secret = $secret;
                 \R::store($user);
 // $data = 'otpauth://totp/test?secret='.$secret.'&issuer=catless.ncl.ac.uk'
