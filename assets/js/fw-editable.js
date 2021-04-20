@@ -48,7 +48,7 @@
         box.addEventListener('blur', function(e){
             console.log(e);
         });
-        fwdom.tip = popover.tip;
+        fwdom.tip = fwdom.popover.tip;
         fwdom.tip.querySelector('.edno').addEventListener('click', function(e){
             fwdom.popover.dispose();
         });
