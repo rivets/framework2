@@ -25,7 +25,7 @@ fwdom.makeEdit = function(d, type)
 
  fwdom.outsideClick = function(e)
  {
-    console.log(fwdom.div, e.target);
+    console.log(fwdom.inline, e.target);
     if (fwdom.inline != e.target && !fwdom.inline.contains(e.target))
     {
         fwdom.popover.dispose();
