@@ -35,7 +35,7 @@
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
         popover.show();
-        let box = popover.tip.querySelector('.edBox')
+        let box = popover.tip.querySelector('.edbox')
         box.focus();
         box.addEventListener('blur', function(e){
             console.log(e);
