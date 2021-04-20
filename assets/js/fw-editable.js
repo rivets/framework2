@@ -23,13 +23,17 @@ fwdom.makeEdit = function(d, type)
     return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
  };
 
+ fwdom.popDispose = function(e)
+ {
+    fwdom.popover.dispose();
+    document.body.removeEventListener('click', fwdom.outsideClock);
+ }
+
  fwdom.outsideClick = function(e)
  {
-    console.log(fwdom.inline, e.target);
     if (fwdom.inline != e.target && fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target))
     {
-        fwdom.popover.dispose();
-        document.body.removeEventListener('click', fwdom.outsideClock);
+        fwdom.popDispose(e);
     }
  };
 
@@ -47,17 +51,24 @@ fwdom.makeEdit = function(d, type)
         });
         popover.show();
         let tip = popover.tip;
-        let box = tip.querySelector('.edbox');
-        box.focus();
-        box.addEventListener('blur', function(e){
-            console.log(e);
-        });
 
-        tip.querySelector('.edno').addEventListener('click', function(e){
-            popover.dispose();
-        });
+
+        tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
-            popover.dispose();
+            let box = tip.querySelector('.edbox');
+            switch (type)
+            {
+            case 'select':
+                break;
+            case 'textarea':
+                break;
+            default:
+                if (box.value != fwdom.inline.innerText)
+                {
+                    alert('update');
+                }
+            }
+            fwdom.popDispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
         fwdom.popover = popover;
