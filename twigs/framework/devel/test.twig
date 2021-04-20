@@ -24,7 +24,7 @@
     });
     {{a.caretJS('acc1')}}
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
-    fwdom.editable(document.getElementById('etest'));
+    fwdom.editable(document.getElementsByClass('editable')[0]);
 {% endblock onload %}
 
 {% block headerbody %}
@@ -36,7 +36,7 @@
         <article class="mx-auto col-md-10 mb-5">
             <table>
                 <tbody>
-                    <tr><td id="etest" class="editable">{{f.inline('text', 'test', 'Edit test', 6, 'This is a test', 'editable')}}</td></tr>
+                    <tr><td id="etest">{{f.inline('text', 'test', 'Edit test', 6, 'This is a test', 'editable')}}</td></tr>
                 </tbody>
             </table>
             {{a.accordion('acc1', [
