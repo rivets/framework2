@@ -4,7 +4,7 @@ fwdom.makeEdit = function(d, type)
  {
     let box = '';
     let text = d.innerText;
-    if (text === '')
+    if (text == '')
     {
         text = d.getAttribute('data-emptytext');
     }
