@@ -18,7 +18,7 @@ fwdom.makeEdit = function(d, type)
         box = '<span>Not supported yet<span>';
         break;
     case 'textarea':
-        box = '<textarea rows="5" cols="25" class="edbox">' + text + '"</textarea>';
+        box = '<textarea rows="5" cols="25" class="edbox">' + text + '</textarea>';
         break;
     default:
         box = '<input type="'+type+'" value="' + text + '" class="edbox"/>';
@@ -71,13 +71,14 @@ fwdom.makeEdit = function(d, type)
             switch (type)
             {
             case 'select':
+
+                break;
+            case 'textarea':
                 if (box.innerText != fwdom.inline.innerText)
                 {
                     fwdom.inline.innerText = box.innerText;
                     alert('update');
                 }
-                break;
-            case 'textarea':
                 break;
             default:
                 if (box.value != fwdom.inline.innerText)
