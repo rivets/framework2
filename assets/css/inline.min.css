@@ -14,3 +14,8 @@
    -webkit-text-decoration: underline dotted blue;
    text-decoration: underline dotted blue;
 }
+.edempty {
+    color: red;
+    -webkit-text-decoration: underline solid blue;
+    text-decoration: underline solid blue;
+}

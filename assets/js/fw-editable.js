@@ -8,9 +8,9 @@ fwdom.makeEdit = function(d, type)
  {
     let box = '';
     let text = d.innerText;
-    if (text === '')
+    if (text === d.getAttribute('data-emptytext'))
     {
-        text = d.getAttribute('data-emptytext');
+        text = '';
     }
     switch (type)
     {
@@ -46,6 +46,11 @@ fwdom.makeEdit = function(d, type)
  };
 
  fwdom.editable = function(div) {
+    if (div.innerText === '')
+    {
+        div.innerText = div.getAttribute('data-emptytext');
+        div.classList.add('edempty');
+    }
     let name = div.getAttribute('name');
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
