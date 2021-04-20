@@ -68,23 +68,10 @@ fwdom.makeEdit = function(d, type)
         tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             let box = tip.querySelector('.edbox');
-            switch (type)
+            if (box.value != fwdom.inline.innerText)
             {
-            case 'select':
-
-                break;
-            case 'textarea':
-                if (box.innerText != fwdom.inline.innerText)
-                {
-                    fwdom.inline.innerText = box.innerText;
-                    alert('update');
-                }
-                break;
-            default:
-                if (box.value != fwdom.inline.innerText)
-                {
-                    alert('update');
-                }
+                 alert('update');
+                 fwdom.inline.innerText = box.value;
             }
             fwdom.popDispose();
         });
