@@ -21,7 +21,7 @@
     return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
  };
 
- fwdom.outsideClick(e)
+ fwdom.outsideClick = function(e)
  {
     if (fwdom.tip != e.target && !fwdom.tip.contains(e.target))
     {
