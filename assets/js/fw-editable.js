@@ -14,7 +14,7 @@ fwdom.makeEdit = function(d, type)
         box = '<span>Not supported yet<span>';
         break;
     case 'textarea':
-        box = '<textarea rows="5" cols="80" class="edbox">' + text + '"</textarea>';
+        box = '<textarea rows="5" cols="10" class="edbox">' + text + '"</textarea>';
         break;
     default:
         box = '<input type="'+type+'" value="' + text + '" class="edbox"/>';
