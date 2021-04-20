@@ -24,7 +24,9 @@
     });
     {{a.caretJS('acc1')}}
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
-    fwdom.editable(document.getElementsByClassName('editable')[0]);
+    document.getElementsByClassName('editable').forEach(function(d){
+        fwdom.editable(d);
+    });
 {% endblock onload %}
 
 {% block headerbody %}
