@@ -1,4 +1,6 @@
- fwdom.makeEdit = function(d, type)
+/* globals document, fwdom, bootstrap */
+/* jshint undef: true, unused: false */
+fwdom.makeEdit = function(d, type)
  {
     let box = '';
     let text = d.innerText;
@@ -28,7 +30,7 @@
         fwdom.popover.dispose();
         document.body.removeEventListener('click', fwdom.outsideClock);
     }
- }
+ };
 
  fwdom.editable = function(div) {
     let name = div.getAttribute('name');
@@ -42,8 +44,8 @@
             placement: 'auto',
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
-        fwdom.popover.show();
-        let box = fwdom.popover.tip.querySelector('.edbox')
+
+        let box = fwdom.popover.tip.querySelector('.edbox');
         box.focus();
         box.addEventListener('blur', function(e){
             console.log(e);
@@ -56,5 +58,6 @@
             fwdom.popover.dispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
+        fwdom.popover.show();
     });
  };
