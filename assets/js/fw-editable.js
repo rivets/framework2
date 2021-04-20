@@ -23,7 +23,7 @@
 
  fwdom.outsideClick(e)
  {
-    if (fwdom.tip != event.target && !fwdom.tip.contains(e.target))
+    if (fwdom.tip != e.target && !fwdom.tip.contains(e.target))
     {
         popover.dispose();
         document.body.removeEventListener('click', fwdom.outsideClock);
@@ -55,6 +55,6 @@
         fwdom.tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.popover.dispose();
         });
-        document.body.addEventListener('click', fwdom.outsideClock);
+        document.body.addEventListener('click', fwdom.outsideClick);
     });
  };
