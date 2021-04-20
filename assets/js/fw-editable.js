@@ -60,6 +60,6 @@ fwdom.makeEdit = function(d, type)
         });
         document.body.addEventListener('click', fwdom.outsideClick);
         //fwdom.popover = popover;
-        //fwdom.tip = tip;
+        fwdom.tip = tip;
     });
  };
