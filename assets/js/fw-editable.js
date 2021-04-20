@@ -78,7 +78,7 @@ fwdom.makeEdit = function(d, type)
                  alert('update');
                  if (box.value === '')
                  {
-                    fwdom.inline.innerText = fwdom.inline.getAttribte('data-emptytext');
+                    fwdom.inline.innerText = fwdom.inline.getAttribute('data-emptytext');
                     fwdom.classsList.add('edempty');
                  }
                  else
