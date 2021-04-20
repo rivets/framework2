@@ -29,7 +29,7 @@ fwdom.makeEdit = function(d, type)
     fwdom.popover.dispose();
     fwdom.popover = null;
     fwdom.tip = null;
- }
+ };
 
  fwdom.outsideClick = function(e)
  {
@@ -61,6 +61,10 @@ fwdom.makeEdit = function(d, type)
             switch (type)
             {
             case 'select':
+                if (box.innerText != fwdom.inline.innerText)
+                {
+                    alert('update');
+                }
                 break;
             case 'textarea':
                 break;
