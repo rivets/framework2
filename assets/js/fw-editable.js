@@ -84,7 +84,7 @@ fwdom.makeEdit = function(d, type)
                  else
                  {
                     fwdom.inline.innerText = box.value;
-                    fwdom.classList.remove('edempty');
+                    fwdom.inline.classList.remove('edempty');
                  }
 
             }
