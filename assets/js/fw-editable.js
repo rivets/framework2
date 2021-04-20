@@ -79,7 +79,7 @@ fwdom.makeEdit = function(d, type)
                  if (box.value === '')
                  {
                     fwdom.inline.innerText = fwdom.inline.getAttribute('data-emptytext');
-                    fwdom.inline.classsList.add('edempty');
+                    fwdom.inline.classList.add('edempty');
                  }
                  else
                  {
