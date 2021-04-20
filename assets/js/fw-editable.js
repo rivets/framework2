@@ -6,7 +6,7 @@ fwdom.makeEdit = function(d, type)
     let text = d.innerText;
     if (text === '')
     {
-        text = d.getAttribute('data=empty');
+        text = d.getAttribute('data-empty');
     }
     switch (type)
     {
