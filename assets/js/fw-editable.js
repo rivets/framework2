@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap */
+/* globals document, fwdom, bootstrap, alert */
 /* jshint undef: true, unused: false */
 
 fwdom.popover = null;
@@ -76,7 +76,17 @@ fwdom.makeEdit = function(d, type)
             if (box.value != fwdom.inline.innerText)
             {
                  alert('update');
-                 fwdom.inline.innerText = box.value;
+                 if (box.value === '')
+                 {
+                    fwdom.inline.innerText = fwdom.inline.getAttribte('data-emptytext');
+                    fwdom.classsList.add('edempty');
+                 }
+                 else
+                 {
+                    fwdom.inline.innerText = box.value;
+                    fwdom.classList.remove('edempty');
+                 }
+
             }
             fwdom.popDispose();
         });
