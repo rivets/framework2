@@ -45,20 +45,21 @@ fwdom.makeEdit = function(d, type)
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
         popover.show();
-        fwdom.popover = popover;
-        fwdom.tip = popover.tip;
-        let box = fwdom.tip.querySelector('.edbox');
+        let tip = popover.tip;
+        let box = tip.querySelector('.edbox');
         box.focus();
         box.addEventListener('blur', function(e){
             console.log(e);
         });
 
-        fwdom.tip.querySelector('.edno').addEventListener('click', function(e){
+        tip.querySelector('.edno').addEventListener('click', function(e){
             popover.dispose();
         });
-        fwdom.tip.querySelector('.edyes').addEventListener('click', function(e){
+        tip.querySelector('.edyes').addEventListener('click', function(e){
             popover.dispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
+        fwdom.popover = popover;
+        fwdom.tip = tip;
     });
  };
