@@ -1,5 +1,9 @@
 /* globals document, fwdom, bootstrap */
 /* jshint undef: true, unused: false */
+
+fwdom.popover = null;
+fwdom.inline = null;
+
 fwdom.makeEdit = function(d, type)
  {
     let box = '';
@@ -14,7 +18,7 @@ fwdom.makeEdit = function(d, type)
         box = '<span>Not supported yet<span>';
         break;
     case 'textarea':
-        box = '<textarea rows="5" cols="10" class="edbox">' + text + '"</textarea>';
+        box = '<textarea rows="5" cols="20" class="edbox">' + text + '"</textarea>';
         break;
     default:
         box = '<input type="'+type+'" value="' + text + '" class="edbox"/>';
@@ -40,6 +44,10 @@ fwdom.makeEdit = function(d, type)
  };
 
  fwdom.editable = function(div) {
+    if (fwdom.inline !== null)
+    {
+        fwdom.popDispose();
+    }
     let name = div.getAttribute('name');
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
