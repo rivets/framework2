@@ -8,6 +8,7 @@
 {% extends '@content/page.twig' %}
 
 {% import '@util/accmacro.twig' as a %}
+{% import '@util/formmacro.twig' as f %}
 
 {% block css %}
     <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
@@ -35,7 +36,7 @@
         <article class="mx-auto col-md-10 mb-5">
             <table>
                 <tbody>
-                    <tr><td id="etest" class="editable">Test Value</td></tr>
+                    <tr><td id="etest" class="editable">{{f.inline('text', 'test', 'Edit test', 6, 'This is a test', class='editable', empty = '----'))}}</td></tr>
                 </tbody>
             </table>
             {{a.accordion('acc1', [
