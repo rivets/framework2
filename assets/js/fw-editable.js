@@ -26,7 +26,7 @@ fwdom.makeEdit = function(d, type)
  fwdom.outsideClick = function(e)
  {
     console.log(fwdom.inline, e.target);
-    if (fwdom.inline != e.target && !fwdom.inline.contains(e.target))
+    if (fwdom.inline != e.target && fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target))
     {
         fwdom.popover.dispose();
         document.body.removeEventListener('click', fwdom.outsideClock);
