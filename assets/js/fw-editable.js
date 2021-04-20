@@ -2,16 +2,21 @@
  {
     let type = d.getAttribute('data-type');
     let box = '';
+    let text = d.innerText;
+    if (text === '')
+    {
+        text = d.getAttribute('data=empty');
+    }
     switch (type)
     {
     case 'select':
-        box = '';
+        box = '<span>Not supported yet<span>';
         break;
     case 'textarea':
-        box = '<textarea rows="5" cols="80">' + d.innerText + '"</textarea>';
+        box = '<textarea rows="5" cols="80">' + text + '"</textarea>';
         break;
     default:
-        box = '<input type="'+type+'" value="' + d.innerText + '"/>';
+        box = '<input type="'+type+'" value="' + text + '"/>';
         break;
     }
     return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
