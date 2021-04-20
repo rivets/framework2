@@ -25,8 +25,8 @@ fwdom.makeEdit = function(d, type)
 
  fwdom.outsideClick = function(e)
  {
-    console.log(fwdom.tip, e.target);
-    if (fwdom.tip != e.target && !fwdom.tip.contains(e.target))
+    console.log(fwdom.div, e.target);
+    if (fwdom.inline != e.target && !fwdom.inline.contains(e.target))
     {
         fwdom.popover.dispose();
         document.body.removeEventListener('click', fwdom.outsideClock);
@@ -60,7 +60,7 @@ fwdom.makeEdit = function(d, type)
             popover.dispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
-        //fwdom.popover = popover;
-        fwdom.tip = tip;
+        fwdom.popover = popover;
+        fwdom.inline = div;
     });
  };
