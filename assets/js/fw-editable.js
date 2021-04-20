@@ -36,7 +36,7 @@ fwdom.makeEdit = function(d, type)
     let name = div.getAttribute('name');
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
-        fwdom.popover = new bootstrap.Popover(div, {
+        let popover = new bootstrap.Popover(div, {
             title: div.getAttribute('data-title'),
             html: true,
             sanitize: false,
@@ -44,8 +44,9 @@ fwdom.makeEdit = function(d, type)
             placement: 'auto',
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
-        fwdom.popover.show();
-        fwdom.tip = fwdom.popover.tip;
+        popover.show();
+        fwdom.popover = popover;
+        fwdom.tip = popover.tip;
         let box = fwdom.tip.querySelector('.edbox');
         box.focus();
         box.addEventListener('blur', function(e){
@@ -53,10 +54,10 @@ fwdom.makeEdit = function(d, type)
         });
 
         fwdom.tip.querySelector('.edno').addEventListener('click', function(e){
-            fwdom.popover.dispose();
+            popover.dispose();
         });
         fwdom.tip.querySelector('.edyes').addEventListener('click', function(e){
-            fwdom.popover.dispose();
+            popover.dispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
     });
