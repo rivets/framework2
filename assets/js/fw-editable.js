@@ -54,10 +54,10 @@ fwdom.makeEdit = function(d, type)
             fwdom.popDispose();
         }
         let popover = new bootstrap.Popover(div, {
-            title: div.getAttribute('data-title'),
+            title: this.getAttribute('data-title'),
             html: true,
             sanitize: false,
-            content: fwdom.makeEdit(div, type),
+            content: fwdom.makeEdit(this, type),
             placement: 'auto',
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
@@ -73,6 +73,7 @@ fwdom.makeEdit = function(d, type)
             case 'select':
                 if (box.innerText != fwdom.inline.innerText)
                 {
+                    fwdom.inline.innerText = box.innerText;
                     alert('update');
                 }
                 break;
