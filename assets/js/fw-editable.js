@@ -59,7 +59,7 @@ fwdom.makeEdit = function(d, type)
             popover.dispose();
         });
         document.body.addEventListener('click', fwdom.outsideClick);
-        fwdom.popover = popover;
-        fwdom.tip = tip;
+        //fwdom.popover = popover;
+        //fwdom.tip = tip;
     });
  };
