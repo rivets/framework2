@@ -21,11 +21,20 @@
     return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
  };
 
+ fwdom.outsideClick(e)
+ {
+    if (fwdom.tip != event.target && !fwdom.tip.contains(e.target))
+    {
+        popover.dispose();
+        document.body.removeEventListener('click', fwdom.outsideClock);
+    }
+ }
+
  fwdom.editable = function(div) {
     let name = div.getAttribute('name');
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
-        let popover = new bootstrap.Popover(div, {
+        fwdom.popover = new bootstrap.Popover(div, {
             title: div.getAttribute('data-title'),
             html: true,
             sanitize: false,
@@ -33,17 +42,19 @@
             placement: 'auto',
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
-        popover.show();
-        let box = popover.tip.querySelector('.edbox')
+        fwdom.popover.show();
+        let box = fwdom.popover.tip.querySelector('.edbox')
         box.focus();
         box.addEventListener('blur', function(e){
             console.log(e);
         });
-        popover.tip.querySelector('.edno').addEventListener('click', function(e){
-            popover.dispose();
+        fwdom.tip = popover.tip;
+        fwdom.tip.querySelector('.edno').addEventListener('click', function(e){
+            fwdom.popover.dispose();
         });
-        popover.tip.querySelector('.edyes').addEventListener('click', function(e){
-            popover.dispose();
+        fwdom.tip.querySelector('.edyes').addEventListener('click', function(e){
+            fwdom.popover.dispose();
         });
+        document.body.addEventListener('click', fwdom.outsideClock);
     });
  };
