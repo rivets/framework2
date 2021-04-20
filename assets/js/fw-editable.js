@@ -25,7 +25,7 @@
  {
     if (fwdom.tip != e.target && !fwdom.tip.contains(e.target))
     {
-        popover.dispose();
+        fwdom.popover.dispose();
         document.body.removeEventListener('click', fwdom.outsideClock);
     }
  }
