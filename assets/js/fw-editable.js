@@ -32,12 +32,12 @@ fwdom.makeEdit = function(d, type)
     document.body.removeEventListener('click', fwdom.outsideClick);
     fwdom.popover.dispose();
     fwdom.popover = null;
-    fwdom.tip = null;
+    fwdom.inline = null;
  };
 
  fwdom.outsideClick = function(e)
  {
-    if (fwdom.inline != e.target && fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target))
+    if (fwdom.inline != e.target && fwdom.popover === null || (fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target)))
     {
         fwdom.popDispose(e);
     }
