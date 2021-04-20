@@ -32,25 +32,25 @@ fwdom.makeEdit = function(d, type)
     document.body.removeEventListener('click', fwdom.outsideClick);
     fwdom.popover.dispose();
     fwdom.popover = null;
-    fwdom.inline = null;
+    fwdom.tip = null;
  };
 
  fwdom.outsideClick = function(e)
  {
-    if (fwdom.inline != e.target && fwdom.popover === null || (fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target)))
+    if (fwdom.inline != e.target && fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target))
     {
         fwdom.popDispose(e);
     }
  };
 
  fwdom.editable = function(div) {
-    if (fwdom.inline !== null)
-    {
-        fwdom.popDispose();
-    }
     let name = div.getAttribute('name');
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
+        if (fwdom.inline !== null)
+        {
+            fwdom.popDispose();
+        }
         let popover = new bootstrap.Popover(div, {
             title: div.getAttribute('data-title'),
             html: true,
