@@ -1,0 +1,14 @@
+.edno {
+    color: red;
+    padding : 0 0.5rem
+}
+
+.edyes {
+    color: green;
+    padding : 0 0.5rem
+}
+
+.editable:hover {
+   -webkit-text-decoration: underline dotted blue;
+   text-decoration: underline dotted blue
+}
