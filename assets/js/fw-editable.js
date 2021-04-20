@@ -25,8 +25,10 @@ fwdom.makeEdit = function(d, type)
 
  fwdom.popDispose = function(e)
  {
+    document.body.removeEventListener('click', fwdom.outsideClick);
     fwdom.popover.dispose();
-    document.body.removeEventListener('click', fwdom.outsideClock);
+    fwdom.popover = null;
+    fwdom.tip = null;
  }
 
  fwdom.outsideClick = function(e)
