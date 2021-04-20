@@ -1,7 +1,7 @@
  fwdom.makeEdit = function(d)
  {
-    return '<form><input type="text" value="' + d.innerText + '"/>' +
-       '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i></form>';
+    return '<input type="text" value="' + d.innerText + '"/>' +
+       '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
  };
 
  fwdom.editable = function(div) {
