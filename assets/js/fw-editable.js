@@ -44,7 +44,6 @@ fwdom.makeEdit = function(d, type)
  };
 
  fwdom.editable = function(div) {
-    console.log(fwdom.inline, fwdom.popover);
     if (fwdom.inline !== null)
     {
         fwdom.popDispose();
