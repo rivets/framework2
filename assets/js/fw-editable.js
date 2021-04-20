@@ -28,7 +28,6 @@
         let popover = new bootstrap.Popover(div, {
             title: div.getAttribute('data-title'),
             html: true,
-            trigger: 'click focus',
             sanitize: false,
             content: fwdom.makeEdit(div, type),
             placement: 'auto',
