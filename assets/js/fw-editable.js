@@ -1,14 +1,27 @@
  fwdom.makeEdit = function(d)
  {
-    return '<input type="text" value="' + d.innerText + '"/>' +
-       '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
+    let type = d.getAttribute('data-type');
+    let box = '';
+    switch (type)
+    {
+    case 'select':
+        box = '';
+        break;
+    case 'textarea':
+        box = '<textarea rows="5" cols="80">' + d.innerText + '"</textarea>';
+        break;
+    default:
+        box = '<input type="'+type+'" value="' + d.innerText + '"/>';
+        break;
+    }
+    return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
  };
 
  fwdom.editable = function(div) {
-    div.style.cursor = 'pointer';
+    let name = div.getAttribute('name');
     div.addEventListener('click', function(e){
         let popover = new bootstrap.Popover(div, {
-            title: 'Edit',
+            title: div.getAttribute('data-title'),
             html: true,
             sanitize: false,
             content: fwdom.makeEdit(div),
