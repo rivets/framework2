@@ -226,6 +226,7 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         final public function handle() : void
         {

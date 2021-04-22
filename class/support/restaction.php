@@ -133,6 +133,7 @@
  * @param string  $beanType
  *
  * @return array
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         protected function checkID(Context $context, string $id, array $data, string $beanType) : array
         {

@@ -97,7 +97,7 @@
         {
             if ($this->twoFA === NULL)
             {
-                $this->twoFA = new TwoFactorAuth;
+                $this->twoFA = new TwoFactorAuth();
             }
             return $this->twoFA;
         }

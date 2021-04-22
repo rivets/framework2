@@ -437,7 +437,7 @@
             }
             $context->local()->addval([
                 'hash' => $hash,
-                'goto' => $fget->fetch('goto')
+                'goto' => $fget->fetch('goto'),
             ]);
             return '@content/twofa.twig';
         }

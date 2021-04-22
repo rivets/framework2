@@ -20,23 +20,30 @@
 
 /** @var int */
         protected $alphabetLength;
-
 /**
+ * Set up the class
+ *
  * @param string $alphabet
  */
         public function __construct(string $alphabet = '')
         {
-            $this->setAlphabet($alphabet !== '' ? $alphabet : implode(range('a', 'z') ). implode(range('A', 'Z')) . implode(range(0, 9)));
+            $this->setAlphabet($alphabet !== '' ? $alphabet : implode(range('a', 'z')). implode(range('A', 'Z')) . implode(range(0, 9)));
         }
 /**
+ * Set up the alphabet to use
+ *
  * @param string $alphabet
+ *
+ * @return void
  */
-        public function setAlphabet(string $alphabet)
+        public function setAlphabet(string $alphabet) : void
         {
             $this->alphabet = $alphabet;
             $this->alphabetLength = strlen($alphabet);
         }
 /**
+ * Genrate a string of the given length
+ *
  * @param int $length
  *
  * @return string
@@ -52,6 +59,8 @@
             return $token;
         }
 /**
+ * Return a random integer in the given range
+ *
  * @param int $min
  * @param int $max
  *
