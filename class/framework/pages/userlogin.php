@@ -137,7 +137,7 @@
                 if ($login !== '')
                 {
                     $errmess = [];
-                    $x = R::findOne('user', 'login=?', [$login]);
+                    $x = R::findOne(FW::USER, 'login=?', [$login]);
                     if (!is_object($x))
                     {
                         $pw = $fdt->mustFetch('password');
@@ -161,7 +161,7 @@
                         }
                         if (empty($errmess))
                         {
-                            $x = R::dispense('user');
+                            $x = R::dispense(FW::USER);
                             $x->login = $login;
                             $x->email = $email;
                             $x->confirm = 0;
@@ -329,7 +329,7 @@
             elseif ($rest[0] === 'reset')
             {
                 $tpl = '@users/pwreset.twig';
-                $user = $fdt->mustFetchBean('uid', 'user');
+                $user = $fdt->mustFetchBean('uid', FW::USER);
                 $code = $fdt->mustFetch('code');
                 $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
                 if (is_object($xc) && $xc->user_id == $user->getID())
