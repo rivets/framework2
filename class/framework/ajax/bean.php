@@ -202,6 +202,7 @@
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         private function get(string $beanType, array $rest, bool $log) : void
         {
@@ -226,7 +227,6 @@
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
- * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         final public function handle() : void
         {

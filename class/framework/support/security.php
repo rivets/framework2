@@ -20,8 +20,6 @@
 
         private const ALGORITHM = 'sha256';
 
-        private const SALT = '7HHX7089ZDCITYNJYAC1LWKD63H0X55NDV6VNCP4';
-
         private $twoFA = NULL;
 /**
  * Make a nonce value for including inline CSS

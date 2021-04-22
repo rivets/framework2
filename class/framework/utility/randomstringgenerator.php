@@ -91,7 +91,7 @@
             {
                 $rnd = \hexdec(\bin2hex(\random_bytes($bytes)));
                 // Discard irrelevant bits.
-                $rnd = $rnd & $filter;
+                $rnd &= $filter;
 
             }
             while ($rnd >= $range);
