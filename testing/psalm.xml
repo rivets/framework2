@@ -49,6 +49,7 @@
         <file name="class/framework/formdata/post.php" />
         <file name="class/framework/formdata/put.php" />
 
+        <file name="class/framework/pages/add2fa.php" />
         <file name="class/framework/pages/admin.php" />
         <file name="class/framework/pages/assets.php" />
         <file name="class/framework/pages/catchall.php" />
@@ -65,7 +66,7 @@
         <file name="class/framework/support/errorhandler.php" />
         <file name="class/framework/support/errorhandlerbase.php" />
         <file name="class/framework/support/handlerole.php" />
-        <file name="class/framework/support/localbaser.php" />
+        <file name="class/framework/support/localbase.php" />
         <file name="class/framework/support/security.php" />
         <file name="class/framework/support/sitable.php" />
         <file name="class/framework/support/siteinfo.php" />
@@ -83,6 +84,7 @@
         <file name="class/framework/utility/fmailer.php" />
         <file name="class/framework/utility/plural.php" />
         <file name="class/framework/utility/proxycheck.php" />
+        <file name="class/framework/utility/randomstringgenerator.php" />
         <file name="class/framework/utility/singleton.php" />
 
         <file name="class/framework/web/csp.php" />
