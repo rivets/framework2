@@ -59,6 +59,8 @@
  * The actual ways of determining page freshness will be page specific and you may
  * need to override some of the other methods that this method calls in order to make things work!
  *
+ * @param Context $context
+ *
  * @return void
  */
         final public function ifmodcheck(Context $context) : void
@@ -78,7 +80,7 @@
             }
             if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
             {
-                $leave = $this->noneMatch(); // If TRUE then etag was matched
+                $leave = $this->noneMatch($context); // If TRUE then etag was matched
             }
             if (!$this->ifms || $leave)
             { // we dont need to send the page
@@ -87,7 +89,7 @@
             }
             if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
             {
-                $this->match();
+                $this->match($context);
             }
             if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
             {
@@ -108,9 +110,11 @@
 /**
  * Check the IF_NONE_MATCH header
  *
+ * @param Context $context
+ *
  * @return bool
  */
-        private function noneMatch() : bool
+        private function noneMatch(Context $context) : bool
         {
             if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
             {
@@ -133,11 +137,13 @@
             return FALSE;
         }
 /**
- * Check IF_MATCH
+ * Check the IF_MATCH header
+ *
+ * @param Context $context
  *
  * @return void
  */
-        private function match() : void
+        private function match(Context $context) : void
         {
             $match = FALSE;
             if ($_SERVER['HTTP_IF_MATCH'] == '*')
