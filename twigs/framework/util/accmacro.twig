@@ -4,11 +4,11 @@
         {% for t in tabs %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="{{t.id}}">
-                    <button class="accordion-button{% if t.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
+                    <button class="accordion-button{% if not t.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
                         {{t.title}}
                     </button>
                 </h2>
-                <div id="col{{t.id}}" class="accordion-collapse{% if t.open %}  collapse{% endif %}" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
+                <div id="col{{t.id}}" class="accordion-collapse{% if not t.open %}  collapse{% endif %}" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
                     <div class="accordion-body">
                         {% if t.with is defined %}
                             {% include t.file with t.with%}
