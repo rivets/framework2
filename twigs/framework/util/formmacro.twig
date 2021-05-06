@@ -54,20 +54,20 @@
 
 {% macro hidden(opts) %}{% import _self as fx %}{{fx.input('hidden', opts)}}{% endmacro hidden %}
 
-{% macro checkbox(opts) %}
+{% macro checkbox(opts) %} {#
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     {% for ix,val in opts.values %}
         <div class="form-check{%if opts.values|length > 1 %} form-check-inline{% endif %}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
                 {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
-            <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">{{opts.labels[ix]|raw}}</label>
+            <label class="form-check-label for="{{opts.ids[ix]}}"{{rspace is defined ? rspace : 'me-4'}}">{{opts.labels[ix]|raw}}</label>
         </div>
     {% endfor %}
-    {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}
+    {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}#}
 {% endmacro checkbox %}
 
-{% macro radio(opts) %}
+{% macro radio(opts) %}{#
 {% import _self as fx %}{%if opts.group %}{{fx.bsl({label: opts.label})}}{% endif %}
     {% for ix,val in opts.values %}
         <div class="form-check{%if opts.values|length > 1 %} form-check-inline{% endif %}">
@@ -77,7 +77,7 @@
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">{{opts.labels[ix]|raw}}</label>
         </div>
     {% endfor %}
-    {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}
+    {{fx.bse(opts)}}{%if opts.group %}{{fx.bse({})}}{% endif %}#}
 {% endmacro radio %}
 
 {% macro textarea(opts) %}{% import _self as fx %}{{fx.bsl(opts)}}<textarea{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.cv(opts.class)}}{{fx.hv('rows', opts.rows)}}{{fx.hv('cols', opts.cols)}}{{fx.hv('placeholder', opts.ph)}}{{fx.on(opts)}}{{fx.data(opts.data)}}>{{opts.value}}</textarea>{{fx.bse(opts)}}{% endmacro %}
@@ -94,7 +94,8 @@
         {% for ov in opts.options %}
             <option value="{{ov.value is defined ? ov.value : ov.text}}"{{fx.slct(opts, ov)}}>{{(ov.text is defined ? ov.text : ov.value)|raw}}</option>
         {% endfor %}
-    </select>{{fx.bse(opts)}}{% endmacro select %}
+    </select>{{fx.bse(opts)}}
+{% endmacro select %}
 
 {% macro submit(opts) %}{% import _self as fx %}<input class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}{{opts.class != '' ? ' '~opts.class}}" type="submit" value="{{opts.value}}"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}/>{% endmacro submit %}
 {% macro bsubmit(opts) %}{% import _self as fx %}<button class="btn {{opts.bstyle != '' ? opts.bstyle : 'btn-primary'}}{{opts.class != '' ? ' '~opts.class}}" type="submit"{{fx.hv('id', opts.id)}}{{fx.on(opts)}}>{{opts.value}}{{opts.rvalue|raw}}</button>{% endmacro bsubmit %}
