@@ -2,13 +2,13 @@
     {% import '@content/iconmacro.twig' as fa %}
     <div class="accordion" id="{{id}}">
         {% for t in tabs %}
-            <div class="card">
-                <div class="card-header" id="{{t.id}}">
-                    <h4 class="mb-0">
-                        <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">{{t.title}}{% if carets %} {{fa.fa('caret-right')}}{% endif %}</button>
-                    </h4>
-                </div>
-                <div id="col{{t.id}}" class="collapse" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="{{t.id}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
+                        {{t.title}}{% if carets %} {{fa.fa('caret-right')}}{% endif %}
+                    </button>
+                </h2>
+                <div id="col{{t.id}}" class="accordion-collapse" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
                     <div class="card-body">
                         {% if t.with is defined %}
                             {% include t.file with t.with%}
