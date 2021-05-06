@@ -74,7 +74,7 @@
         <div class="form-check{%if opts.inline %} form-check-inline{% endif %}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
-                <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}}{{fx.hv('class', opts.class)}}
+                <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"
                 {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
