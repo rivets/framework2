@@ -36,14 +36,8 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col-md-10 mb-5">
-            <table>
-                <tbody>
-                    <tr><td>{{f.inline('text', 'test', 'Edit test', 6, 'This is a test', 'editable')}}</td></tr>
-                    <tr><td>{{f.inline('text', 'empty', 'Edit empty', 6, '', 'editable')}}</td></tr>
-                    <tr><td>{{f.inline('textarea', 'tarea', 'Edit tarea', 6, 'this is a value', 'editable')}}</td></tr>
-                </tbody>
-            </table>
             {{a.accordion('acc1', [
+                {id: 'inline', title: 'Inline Edit', file: '@devel/tests/inlineedit.twig' },
                 {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage}, open: TRUE },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
                 {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},
