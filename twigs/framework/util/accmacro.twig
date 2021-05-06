@@ -4,12 +4,12 @@
         {% for t in tabs %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="{{t.id}}">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
-                        {{t.title}}{% if carets %} {{fa.fa('caret-right')}}{% endif %}
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
+                        {{t.title}}
                     </button>
                 </h2>
                 <div id="col{{t.id}}" class="accordion-collapse" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
-                    <div class="card-body">
+                    <div class="accordion-body">
                         {% if t.with is defined %}
                             {% include t.file with t.with%}
                         {% else %}
