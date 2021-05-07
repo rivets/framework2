@@ -61,7 +61,7 @@
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
-                {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}{{fx.cdb(opts.readonly[ix] is defined and opts.readonly[ix], 'readonly')}}/>
+                {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
     {% endfor %}
