@@ -30,7 +30,7 @@
 {% endmacro input %}
 
 {% macro bsl(opts) %}{% import _self as fx %}<div class="mb-3">
-<label class="form-label"{{fx.hv('for', opts.id)}}>{% if opts.label != '' %}{{opts.label}}</label>{% endif %}{% if opts.rlabel != '' %}{{opts.rlabel|raw}}{% endif %}</label>
+<label class="form-label"{{fx.hv('for', opts.id)}}>{{opts.label}}{{opts.rlabel|raw}}</label>
 {% endmacro bsl %}
 
 {% macro xsl(opts, cls) %}{% import _self as fx %}<div class="{{cls}}">{% if opts.label != '' %}<label class="form-label"{{fx.hv('for', opts.id)}}>{{opts.label}}</label>{% endif %}{% endmacro xsl %}
