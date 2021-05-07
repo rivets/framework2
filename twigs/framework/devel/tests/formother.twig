@@ -58,7 +58,7 @@
         {{f.select({label: 'Select Multiple Disabled', is: 'slid12', name: 'sl12', size: 3, multiple: TRUE, selected: [1, 4], options: options, disabled: TRUE})}}
 
         {{f.checkbox({group: TRUE, label: 'Checkboxes', ids : ['nic1', 'nic2', 'nic3'], names: ['nc1', 'nc2', 'nc3'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE], disabled: [FALSE, TRUE, FALSE]})}}
-        {{f.checkbox({group: TRUE, label: 'Inline Checkboxes', inline: TRUE, ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [FALSE, FALSE, TRUE], disabled: [FALSE, TRUE, FALSE]})}}
+        {{f.checkbox({group: TRUE, label: 'Inline Checkboxes', inline: TRUE, ids : ['ic1', 'ic2', 'ic3'], names: ['c1', 'c2', 'c3'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [FALSE, TRUE, TRUE], disabled: [FALSE, TRUE, FALSE]})}}
         {{f.radio({group: TRUE, label: 'Radios', ids : ['nir1', 'nir2', 'nir3'], names: ['nr1', 'nr1', 'nr1'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE], disabled: [FALSE, TRUE, FALSE]})}}
         {{f.radio({group: TRUE, label: 'Inline Radios', inline: TRUE, ids : ['ir1', 'ir2', 'ir3'], names: ['r1', 'r1', 'r1'], labels: [1, '2 (disabled)', 3], values: [ 1, 2, 3], check: [TRUE, FALSE, FALSE], disabled: [FALSE, TRUE, FALSE]})}}
 
