@@ -57,7 +57,8 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return isset(static::$fwPermissions[$which]) ? \array_merge(static::$fwPermissions[$which][0], $system) : $system;
+            assert(isset(static::$fwPermissions[$which][0]));
+            return \array_merge(static::$fwPermissions[$which][0], $system);
         }
 /**
  * Handle AJAX operations
