@@ -57,7 +57,7 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return \array_merge(static::$fwPermissions[$which], $system); //@phpstan-ignore-line
+            return \isset(static::$fwPermissions[$which]) ? \array_merge(static::$fwPermissions[$which][0], $system) : $system;
         }
 /**
  * Handle AJAX operations
@@ -71,14 +71,14 @@
         {
             $rest = $context->rest();
             $op = $rest[0];
-            if (isset(self::$restops[$op]))
+            if (\isset(self::$restops[$op]))
             { // a Framework Ajax operation
                 $class = self::$restops[$op];
             }
             else
             {
                 $class = '\\Ajax\\'.$op;
-                if (!class_exists($class))
+                if (!\class_exists($class))
                 { // not a developer provided ajax op
                     $context->web()->bad('No such operation');
                     /* NOT REACHED */
