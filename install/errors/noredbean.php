@@ -7,9 +7,6 @@
     <title>Error</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<!--
-    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8" />
--->
 
     <link rel="stylesheet" href="<?php echo $fwurls['bootcss'][0]; ?>" media="screen,print"/>
 
