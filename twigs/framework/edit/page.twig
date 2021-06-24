@@ -64,12 +64,12 @@
                     {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params, ph: 'Not in use currently', disabled: TRUE})}}
                     {{f.text({ label: 'Source', id: 'npsrc', name: 'source', value: bean.source, ph: 'page.twig="page, class name, /local/redirection or URL', required: TRUE})}}
                     {{f.checkbox({labels: ['Active', 'Mobile Only', 'Must Login'], ids : ['npactive', 'npmobile', 'nplogin'],
-                        names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], check: [bean.active, bean.mobileonly, bean.needlogin]})}}
+                        names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], inline: TRUE, check: [bean.active, bean.mobileonly, bean.needlogin]})}}
                 </fieldset>
                 <fieldset>
                     <legend>Page Functional Requirements</legend>
                     {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
-                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
                         values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}
