@@ -1,5 +1,6 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Config'}] %}
 
 {% extends '@content/page.twig' %}
 

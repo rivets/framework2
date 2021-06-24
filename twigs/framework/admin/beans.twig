@@ -1,6 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Beans'}] %}
 
 {% extends '@content/page.twig' %}
 
