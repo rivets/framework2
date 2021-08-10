@@ -16,13 +16,7 @@
  */
     abstract class Ajax
     {
-/**
- * @var \Support\Ajax
- */
         protected \Support\Ajax $controller;
-/**
- * @var Context
- */
         protected Context $context;
 /**
  * Constructor
