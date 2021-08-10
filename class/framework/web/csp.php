@@ -15,17 +15,17 @@
     trait CSP
     {
 /**
- * @var array<string>   Holds values that need to be added to CSP headers.
+ * @var array<array<string>>  Holds values that need to be added to CSP headers.
  */
-        private $csp        = [];
+        private array $csp        = [];
 /**
- * @var array<string>   Holds values that need to be removed from CSP headers.
+ * @var array<array<string>>   Holds values that need to be removed from CSP headers.
  */
-        private $nocsp      = [];
+        private array $nocsp      = [];
 /**
  * @var which  CSP fields to check for hostnames
  */
-        private static $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
+        private static array $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
 /**
  * compute, save and return a hash for use in a CSP header
  *

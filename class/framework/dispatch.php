@@ -132,9 +132,9 @@
                     $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
-                catch (\ReflectionException $e)
+                catch (\ReflectionException)
                 {
-                    NULL; // void
+                    // void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
@@ -166,7 +166,7 @@
                  */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
-            catch (\Throwable $e)
+            catch (\Throwable)
             { // You catch DB errors from hacky URL values here.
                 $page = NULL;
             }

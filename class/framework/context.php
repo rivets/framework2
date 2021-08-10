@@ -94,7 +94,7 @@
  */
         public function utcdate(string $datetime) : string
         { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(strtotime($datetime) - date('Z'));
+            return \R::isodatetime(strtotime($datetime) - (int) date('Z'));
         }
 /*
  ***************************************
