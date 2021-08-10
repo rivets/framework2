@@ -94,19 +94,19 @@
                                     return FALSE;
                                 }
                             }
-                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.get_class($res));
+                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.$res::class);
                             return TRUE;
                         }
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.get_class($res));
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.$res::class);
                     }
                     elseif ($res instanceof \RedBeanPHP\OODBBean)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.get_class($res).' id='.$this->display($res->getID(), TRUE));
+                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.$res::class.' id='.$this->display($res->getID(), TRUE));
                         return TRUE;
                     }
                     else
                     {
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.get_class($res));
+                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.$res::class);
                     }
                 }
                 elseif (is_array($result))
@@ -136,17 +136,17 @@
             }
             catch (\Framework\Exception\BadValue $e)
             {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;
             }
             catch (\Framework\Exception\MissingBean $e)
             {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;
             }
             catch (\Throwable $e)
             {
-                $this->local->message(Local::ERROR, $msg.' throws exception: '.get_class($e).' '.$e->getMessage());
+                $this->local->message(Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
             }
             return FALSE;
         }
@@ -161,7 +161,7 @@
         {
             if ($this->fdt instanceof \Framework\FormData\Base)
             {
-                $this->local->message(Local::MESSAGE, 'hasForm returns '.($this->fdt->hasForm() ? 'TRUE' : 'FALSE').' for '.get_class($this->fdt));
+                $this->local->message(Local::MESSAGE, 'hasForm returns '.($this->fdt->hasForm() ? 'TRUE' : 'FALSE').' for '.$this->fdt::class);
             }
             foreach ($tests as $test)
             {
