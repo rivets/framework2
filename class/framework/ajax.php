@@ -19,9 +19,9 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
+ * @var array<array<string>> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $restops = [
+        private static array $restops = [
             'bean'          => Ajax\Bean::class,
             'config'        => Ajax\Config::class,
             'hints'         => Ajax\Hints::class,
