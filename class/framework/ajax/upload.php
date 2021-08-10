@@ -63,7 +63,7 @@
                     {
                         throw new \Framework\Exception\ParameterCount('Missing field');
                     }
-                    $beans[] = $this->context->load($beanType, $rest[$ix]);
+                    $beans[] = $this->context->load($beanType, (int) $rest[$ix]);
                     $ix += 1;
                 }
             }

@@ -46,7 +46,7 @@
         final public function log(string $beanType) : bool
         {
             /** @phpstan-ignore-next-line */
-            return \in_array($beanType, static::$log);
+            return \in_array($beanType, static::$log); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
  * Return the permission requirements array from the child
@@ -57,9 +57,10 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            if (isset(static::$fwPermissions[$which][0])) /** @phpstan-ignore-line */
+            /** @phpstan-ignore-next-line */
+            if (isset(static::$fwPermissions[$which][0]))  // @phan-suppress-current-line PhanUndeclaredStaticProperty
             {
-                return \array_merge(static::$fwPermissions[$which][0], $system);
+                return \array_merge(static::$fwPermissions[$which][0], $system);  // @phan-suppress-current-line PhanUndeclaredStaticProperty
             }
             return $system;
         }

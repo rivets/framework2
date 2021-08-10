@@ -15,15 +15,12 @@
  */
     class Base
     {
-/**
- * @var int Indicates which Superglobal we are using
- */
-        protected $which;
+        protected ?int $which; // Indicates which Superglobal we are using
 /**
  * @var array The array that contains the relevant values.
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
  */
-        protected $super;
+        protected array $super;
 /**
  * Constructor
  *
