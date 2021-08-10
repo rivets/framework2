@@ -19,11 +19,11 @@
 /**
  * @var \Support\Ajax
  */
-        protected $controller;
+        protected \Support\Ajax $controller;
 /**
  * @var Context
  */
-        protected $context;
+        protected Context $context;
 /**
  * Constructor
  */
