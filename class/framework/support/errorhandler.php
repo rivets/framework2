@@ -84,7 +84,7 @@
             }
             $this->back = $e->getTraceAsString();
             $ekey = $this->tellAdmin(
-                get_class($e).': '.$e->getMessage(),
+                $e::class.': '.$e->getMessage(),
                 0,
                 $e->getFile(),
                 $e->getLine()
