@@ -57,7 +57,7 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            if (isset(static::$fwPermissions[$which][0]))
+            if (isset(static::$fwPermissions[$which][0])) /** @phpstan-ignore-line */
             {
                 return \array_merge(static::$fwPermissions[$which][0], $system);
             }

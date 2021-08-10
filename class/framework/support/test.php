@@ -95,7 +95,7 @@
  */
         public function fail(Context $context) : string
         {
-            2 / 0; /** @phpstan-ignore-line */
+            2 / 0;
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
