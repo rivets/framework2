@@ -92,7 +92,7 @@
             {
                 if (isset($this->csp[$t]))
                 {
-                    $this->csp[$t] = array_diff($this->csp[$t], is_array($h) ? $h : [$h]);
+                    $this->csp[$t] = \array_diff($this->csp[$t], is_array($h) ? $h : [$h]);
                 }
             }
         }
