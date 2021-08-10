@@ -222,14 +222,14 @@
 /**
  * Carry out operations on beans
  *
- * @param Context $context   The context object
+ * @param \Support\Context $context   The context object
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        final public function handle(Context $context) : void
+        final public function handle(\Support\Context $context) : void
         {
             [$beanType, $rest] = $this->restCheck(1);
             $method = \strtolower($this->context->web()->method());
