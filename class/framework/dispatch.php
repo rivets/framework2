@@ -163,6 +163,7 @@
                 /**
                  * @psalm-suppress TypeDoesNotContainType
                  * @psalm-suppress RedundantCondition
+                 * @phan-suppress-next-line PhanUndeclaredClassConstant
                  */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
@@ -237,12 +238,12 @@
                 /* NOT REACHED */
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-            if ($tpl !== '') // @phan-suppress-current-line PhanUndeclaredVariable
+            if ($tpl !== '') // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
             { // an empty template string means generate no output here...
-                $html = $local->getrender($tpl); // @phan-suppress-current-line PhanUndeclaredVariable
+                $html = $local->getrender($tpl); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 // Now set up CSP Header in use : rendering the page may have generated new hashcodes.
                 /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-                $csp->setCSP(); // @phan-suppress-current-line PhanUndeclaredVariable
+                $csp->setCSP(); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 $context->web()->sendstring($html, $mime, $code);
             }
             //else if ($code != StatusCodes::HTTP_OK);
