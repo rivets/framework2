@@ -120,7 +120,6 @@
  * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
- * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         private function put(string $table, array $rest) : void
         {
