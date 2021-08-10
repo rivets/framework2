@@ -83,7 +83,7 @@
  */
         public function utcnow() : string
         { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(time() - date('Z'));
+            return \R::isodatetime(time() - (int) date('Z'));
         }
 /**
  * Return an iso formatted time in UTC
