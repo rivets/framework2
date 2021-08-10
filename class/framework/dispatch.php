@@ -193,7 +193,7 @@
                 {
                     $pageObj->ifmodcheck($context); // check for any If- headers
                     \Support\Setup::preliminary($context, $page); // any user setup code
-                    $tpl = $pageObj->handle($context);
+                    $tpl = $pageObj->handle($context); // @phan-suppress-current-line PhanUndeclaredVariable
                     $pageObj->setCache($context); // set up cache-control headers.
                 }
                 catch(\Framework\Exception\Forbidden $e)
@@ -237,11 +237,12 @@
                 /* NOT REACHED */
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-            if ($tpl !== '')
+            if ($tpl !== '') // @phan-suppress-current-line PhanUndeclaredVariable
             { // an empty template string means generate no output here...
-                $html = $local->getrender($tpl);
+                $html = $local->getrender($tpl); // @phan-suppress-current-line PhanUndeclaredVariable
+                // Now set up CSP Header in use : rendering the page may have generated new hashcodes.
                 /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-                $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.
+                $csp->setCSP(); // @phan-suppress-current-line PhanUndeclaredVariable
                 $context->web()->sendstring($html, $mime, $code);
             }
             //else if ($code != StatusCodes::HTTP_OK);
