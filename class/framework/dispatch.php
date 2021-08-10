@@ -163,8 +163,8 @@
                 /**
                  * @psalm-suppress TypeDoesNotContainType
                  * @psalm-suppress RedundantCondition
-                 * @phan-suppress-next-line PhanUndeclaredClassConstant
                  */
+                /* @phan-suppress-next-line PhanUndeclaredClassConstant */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
             catch (\Throwable)
@@ -194,7 +194,7 @@
                 {
                     $pageObj->ifmodcheck($context); // check for any If- headers
                     \Support\Setup::preliminary($context, $page); // any user setup code
-                    $tpl = $pageObj->handle($context); // @phan-suppress-current-line PhanUndeclaredVariable
+                    $tpl = $pageObj->handle($context);
                     $pageObj->setCache($context); // set up cache-control headers.
                 }
                 catch(\Framework\Exception\Forbidden $e)
@@ -211,7 +211,7 @@
                     /* NOT REACHED */
                 }
 
-                if (is_array($tpl))
+                if (is_array($tpl)) // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 { // page is returning more than just a template filename
                     [$tpl, $mime, $code] = $tpl;
                 }
