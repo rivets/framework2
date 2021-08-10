@@ -23,7 +23,7 @@
 /**
  * @var array These permissions let the Site Admin manipulate the Framework internal tables.
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::AJAX        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::CSP         => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -43,7 +43,7 @@
 /**
  * @var string
  */
-        private $model = '';
+        private string $model = '';
 /**
  * Generate a no content, created or call the ajaxResult method on a bean if it exists in its Model
  *
@@ -58,7 +58,7 @@
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (method_exists($this->model, 'ajaxResult'))
+            if (\method_exists($this->model, 'ajaxResult'))
             {
                 $bean->ajaxResult($this->context, $method, 'bean');
             }
@@ -91,7 +91,7 @@
  * @psalm-suppress RedundantCondition
  * @psalm-suppress ArgumentTypeCoercion
  */
-            if (!method_exists($this->model, 'add'))
+            if (!\method_exists($this->model, 'add'))
             { // operation not supported
                 throw new BadOperation('Cannot add a '.$beanType);
             }
@@ -222,13 +222,14 @@
 /**
  * Carry out operations on beans
  *
- * @throws BadOperation
+ * @param Context $context   The context object
+ *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
  *
  * @return void
  */
-        final public function handle() : void
+        final public function handle(Context $context) : void
         {
             [$beanType, $rest] = $this->restCheck(1);
             $method = \strtolower($this->context->web()->method());
