@@ -91,7 +91,7 @@
             }
             try
             {
-                (new $class($context, $this))->handle($context);
+                (new $class($context, $this))->handle();
             }
             catch(Exception\Forbidden $e)
             {
