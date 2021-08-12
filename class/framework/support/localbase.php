@@ -15,18 +15,10 @@
     class LocalBase
     {
         use \Framework\Utility\Singleton;
-/**
- * @var string    The absolute path to the site directory
- */
-        protected $basepath         = '';
-/**
- * @var string  The name of the site directory
- */
-        protected $basedname        = '';
-/**
- * @var ?\Framework\Support\ErrorHandler
- */
-        protected $errorHandler     = NULL;
+
+        protected $basepath         = ''; // The absolute path to the site directory
+        protected string $basedname = ''; // The name of the site directory
+        protected ?\Framework\Support\ErrorHandler $errorHandler     = NULL;
 /**
  * Send mail if possible
  *

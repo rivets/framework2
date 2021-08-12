@@ -3,7 +3,7 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -24,20 +24,15 @@
         public const ERROR     = 0;        // 'fwerrmessage';
         public const WARNING   = 1;        // 'fwwarnmessage';
         public const MESSAGE   = 2;        // 'fwmessage';
-/**
- * @var array               Config values from database
- */
-        private $fwconfig       = [];
-/**
- * @var bool   Developer mode?
- */
-        private $devel          = FALSE;
+
+        private array $fwconfig       = []; // Config values from database
+        private bool $devel          = FALSE; // Developer mode?
 /**
  * Return state of devel flag
  *
  * @return bool
  */
-        public function develMode()
+        public function develMode() : bool
         {
             return $this->devel;
         }
@@ -59,7 +54,7 @@
 /**
  * Return a named config bean
  *
- * @param string       $name  The name of the item
+ * @param string $name  The name of the item
  *
  * @return ?object
  */
@@ -70,7 +65,7 @@
 /**
  * Return a named config bean value
  *
- * @param string       $name  The name of the item
+ * @param string $name  The name of the item
  *
  * @return string
  */
