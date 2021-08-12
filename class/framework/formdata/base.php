@@ -44,7 +44,7 @@
  *
  *  @TODO Change this to use match() when PHP 8 is released
  *
- *  @param int  $which
+ *  @param ?int  $which
  *
  *  @return array
  */
