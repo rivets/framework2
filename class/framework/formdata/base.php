@@ -125,7 +125,7 @@
  *
  * @param string[]  $keys       An array of keys
  *
- * @return array;
+ * @return array
  * @throws BadValue
  */
         private function find(array $keys) : array
