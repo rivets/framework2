@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX hints operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -16,18 +16,13 @@
  */
     class Hints extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
         ];
 /**
  * Return permission requirements
- *
- * @return array<mixed>
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // login not required
         }
@@ -35,7 +30,6 @@
  * Get search hints for a bean
  *
  * @throws Forbidden
- * @return void
  */
         final public function handle() : void
         {
@@ -50,7 +44,7 @@
             $order = $fdt->fetch('order', $field);
             if ($order !== $field)
             { // strop the fieldname if it occurs in the order spec
-                $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
+                $order = \preg_replace('/\b'.$ofield.'\b/', $field, $order);
             }
             $limit = $fdt->fetch('limit', 10);
             $search = $fdt->fetch('search', '%');

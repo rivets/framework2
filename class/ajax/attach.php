@@ -3,7 +3,7 @@
  * A class that handles the Attach AJAX operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  */
     namespace Ajax;
 
@@ -34,8 +34,6 @@
         }
 /**
  * Upload a file for a note
- *
- * @return void
  */
         public function handle() : void
         {

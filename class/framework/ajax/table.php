@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX table operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -17,10 +17,7 @@
  */
     class Table extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -35,7 +32,6 @@
 /**
  *  make a new one
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -45,12 +41,10 @@
             if (\Support\SiteInfo::tableExists($table))
             {
                 throw new Forbidden('Table exists');
-                /* NOT REACHED */
             }
             if (!preg_match('/[a-z][a-z0-9]*/', $table))
             {
                 throw new BadValue('Table name should be alphanumeric');
-                /* NOT REACHED */
             }
             $fdt = $this->context->formdata('post');
             $bn = \R::dispense($table);
@@ -68,9 +62,8 @@
             $this->context->web()->created('');
         }
 /**
- * update a field
+ * Update a field
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -79,7 +72,6 @@
             if (\Support\SiteInfo::isFWTable($table))
             { // you can't alter framework tables
                 throw new Forbidden('Permission Denied');
-                /* NOT REACHED */
             }
             $value = $this->context->formdata('put')->mustFetch('value');
             $f1 = $rest[2];
@@ -90,7 +82,6 @@
                 if (\Support\SiteInfo::hasField($table, $value))
                 {
                     throw new BadValue('Field already exists');
-                    /* NOT REACHED */
                 }
                 $f2 = $value;
                 $fields = \R::inspect($table);
@@ -102,7 +93,6 @@
                 break;
             default:
                 throw new BadValue('No such change');
-                /* NOT REACHED */
             }
             try
             {
@@ -117,7 +107,6 @@
 /**
  * Map put onto patch
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -128,7 +117,6 @@
 /**
  * DELETE
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -154,22 +142,21 @@
  *
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\BadOperation
- * @return void
  */
         final public function handle() : void
         {
             $rest = $this->context->rest();
-            if (count($rest) < 2)
+            if (\count($rest) < 2)
             {
                 throw new BadValue('No table name');
             }
-            $table = strtolower($rest[1]);
+            $table = \strtolower($rest[1]);
             if (!$this->context->hasAdmin())
             { // not admin so check...
                 $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $table);
             }
-            $method = strtolower($this->context->web()->method());
-            if (!method_exists(self::class, $method))
+            $method = \strtolower($this->context->web()->method());
+            if (!\method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }

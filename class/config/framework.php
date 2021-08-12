@@ -10,7 +10,7 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2020 Newcastle University
+ * @copyright 2015-2021 Newcastle University
  * @package Framework
  */
     namespace Config;
@@ -54,8 +54,6 @@
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 /**
  * Initialise some standard things for any invocation of a page
- *
- * @return void
  */
         public static function initialise() : void
         {
@@ -89,7 +87,7 @@
  *
  * @return mixed
  */
-        public static function constant($name, $default = '')
+        public static function constant(string $name, $default = '')
         {
             if (defined('\\Config\\Config::'.$name))
             {

@@ -3,7 +3,7 @@
  * A class implementing logging of beans to the datbase
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -26,8 +26,6 @@
  * @param \RedBeanPHP\OODBBean $bean
  * @param string $field
  * @param mixed $value
- *
- * @return void
  */
         public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : void
         {

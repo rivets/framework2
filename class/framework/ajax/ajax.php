@@ -40,7 +40,6 @@
  * @param bool      $idok    Allow the id field
  *
  * @throws \Framework\Exception\BadValue
- * @return bool
  */
         final protected function fieldExists(string $type, string $field, bool $idok = FALSE) : bool
         {
@@ -59,20 +58,19 @@
  * @param string                $field
  *
  * @throws Forbidden
- * @return void
  */
         final protected function checkAccess(?\RedBeanPHP\OODBBean $user, array $permissions, string $beanType, string $field = '', bool $idOK = FALSE) : void
         {
             if (isset($permissions[$beanType]))
             { // there are some permissions
                 $access = $permissions[$beanType];
-                if (is_object($user) || !$access[0])
+                if (\is_object($user) || !$access[0])
                 { // either we have a user or no login required
                     $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
                     foreach ($checks as $check)
                     {
                         $this->checkPerms($user, $check[0]); // check user plays the right roles
-                        if ($field === '' || empty($check[1]) || (in_array($field, $check[1]) && ($field != 'id' || $idOK)))
+                        if ($field === '' || empty($check[1]) || (\in_array($field, $check[1]) && ($field != 'id' || $idOK)))
                         {
                             return;
                         }
@@ -88,7 +86,6 @@
  * @param array                  $pairs  The permission array
  *
  * @throws Forbidden
- * @return void
  * @psalm-suppress PossiblyNullReference
  */
         private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
@@ -110,7 +107,7 @@
                 //    }
                 //    throw new Forbidden('Permission denied');
                 //}
-                if (!is_object($user->hasRole($rcs[0], $rcs[1])))
+                if (!\is_object($user->hasRole($rcs[0], $rcs[1])))
                 {
                     throw new Forbidden('Permission denied');
                 }
@@ -118,39 +115,34 @@
         }
 /**
  * Check URL string for n parameter values and pull them out
+ * Returns the parameter values in an array indexed from 0 with last parameter, anything left in an array
  *
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
  * @param int   $count  The number to check for
  *
  * @throws \Framework\Exception\ParameterCount
- *
- * @return array The parameter values in an array indexed from 0 with last parameter, anything left in an array
  */
         protected function restCheck(int $count) : array
         {
             $rest = $this->context->rest();
-            if (count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
+            if (\count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
             {
                 throw new \Framework\Exception\ParameterCount('Missing parameter');
             }
-            $res = array_slice($rest, 1, $count);
-            $res[] = array_slice($rest, $count + 1); // return anything left - there might be optional parameters.
+            $res = \array_slice($rest, 1, $count);
+            $res[] = \array_slice($rest, $count + 1); // return anything left - there might be optional parameters.
             return $res;
         }
 /**
  * Return permission requirements
- *
- * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []]; // default to requiring login but no specific context/role
         }
 /**
  * Handle AJAX operations
- *
- * @return void
  */
         abstract public function handle() : void;
     }

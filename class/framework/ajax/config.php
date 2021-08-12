@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX config operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -19,8 +19,6 @@
     {
 /**
  * Return permission requirements
- *
- * @return array
  */
         public function requires()
         {
@@ -31,7 +29,6 @@
  *
  * @param ?\RedBeanPHP\OODBBean $v
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -54,7 +51,6 @@
  *
  * @param ?\RedBeanPHP\OODBBean $v
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -80,7 +76,6 @@
 /**
  * Map put onto patch
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -93,7 +88,6 @@
  *
  * @param ?\RedBeanPHP\OODBBean $v
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -111,7 +105,6 @@
  *
  * @param ?\RedBeanPHP\OODBBean $v
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -128,8 +121,6 @@
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
- *
- * @return void
  */
         final public function handle() : void
         {
