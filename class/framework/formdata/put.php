@@ -3,7 +3,7 @@
  * Contains the definition of Formdata PUT or PATCH support class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -17,9 +17,9 @@
 /**
  * Parses the form data and extract the fields
  *
- * @return array
+ * @return ?array
  */
-        private function parse() : array
+        private function parse() : ?array
         {
             $result = [];
             $data = file_get_contents('php://input'); //get raw input data
@@ -115,7 +115,6 @@
                 break;
             default:
                 throw new \Framework\Exception\BadValue('Unknown encoding type PUT/PATCH: '.$_SERVER['CONTENT_TYPE']);
-                break;
             }
         }
     }

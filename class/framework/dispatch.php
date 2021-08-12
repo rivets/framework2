@@ -3,7 +3,7 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2020 Newcastle University
+ * @copyright 2017-2021 Newcastle University
  * @package Framework
  */
     namespace Framework;

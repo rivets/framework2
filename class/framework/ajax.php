@@ -6,7 +6,7 @@
  * the first part of the URL after ajax is an opcode that defines what is to be done.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2020 Newcastle University
+ * @copyright 2014-2021 Newcastle University
  * @package Framework
  */
     namespace Framework;

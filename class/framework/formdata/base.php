@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -216,7 +216,7 @@
             {
                 $this->find(is_array($name) ? $name : [$name]);
             }
-            catch (BadValue $e)
+            catch (BadValue)
             { // not there
                 return FALSE;
             }
