@@ -112,7 +112,7 @@
             }
             else
             {
-                $obj = $context->load($kind, $rest[2]);
+                $obj = $context->load($kind, (int) $rest[2]);
             }
             $context->local()->addval('bean', $obj);
             if (is_object($obj))
@@ -179,7 +179,7 @@
             }
             else
             {
-                $obj = $context->load($kind, $rest[2]);
+                $obj = $context->load($kind, (int) $rest[2]);
             }
             if (is_object($obj))
             {
