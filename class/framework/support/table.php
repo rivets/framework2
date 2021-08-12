@@ -3,7 +3,7 @@
  * A class for the object Table
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -16,25 +16,18 @@
  */
     class Table
     {
-/**
- * @var string The name of the table
- */
-        private $table;
-
         use \ModelExtend\MakeGuard;
 /**
  * Constructor
  *
  * @param string $name The name of the table
  */
-        public function __construct(string $name)
+        public function __construct(private string $table)
         {
-            if (!\Support\SiteInfo::tableExists($name))
+            if (!\Support\SiteInfo::tableExists($table))
             {
-                throw new \Framework\Exception\BadValue('Table does not exist');
-                /* NOT REACHED */
+                throw new \Framework\Exception\BadValue('Table "'.$table.'" does not exist');
             }
-            $this->table = $name;
         }
 /**
  * Process new bean
@@ -151,7 +144,7 @@
                     $bn = $context->load($rest[2], $rest[3]);
                     $context->local()->addval('object', $bn);
                 }
-                catch (\Framework\Exception\MissingBean $e)
+                catch (\Framework\Exception\MissingBean)
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'Object does not exist');
                 }
