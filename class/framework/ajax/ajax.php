@@ -16,12 +16,12 @@
  */
     abstract class Ajax
     {
-        protected \Support\Ajax $controller;
+        protected \Framework\Ajax $controller;
         protected Context $context;
 /**
  * Constructor
  */
-        public function __construct(Context $context, \Support\Ajax $controller)
+        public function __construct(Context $context, \Framework\Ajax $controller)
         {
             $this->context = $context;
             $this->controller = $controller;
