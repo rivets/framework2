@@ -296,7 +296,7 @@
         {
             \ini_set('session.use_only_cookies', '1'); // make sure PHP is set to make sessions use cookies only
             \ini_set('session.use_trans_sid', '0');   // this helps a bit towards making session hijacking more difficult
-            \ini_set('session.cookie_httponly', 1);     // You can get rid of these calls if you know your php.ini is set up correctly
+            \ini_set('session.cookie_httponly', '1');     // You can get rid of these calls if you know your php.ini is set up correctly
             if (isset($_COOKIE[Config::SESSIONNAME]))
             { // see if there is a userID variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
