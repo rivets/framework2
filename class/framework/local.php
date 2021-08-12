@@ -122,7 +122,7 @@
             $offl = $this->makebasepath('admin', 'offline');
             if (file_exists($offl))
             { // go offline before we try to do anything else...
-                $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
+                $this->errorHandler->earlyFail('OFFLINE', \file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
 /*

@@ -17,8 +17,6 @@
 /**
  * Generate a message page for early failures
  *
- * @internal
- *
  * @param string    $title      Page title and heading
  * @param string    $msg        The message to be displayed
  * @param bool      $tellAdmin  If TRUE then mail admin
