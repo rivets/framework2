@@ -17,6 +17,9 @@
  */
     class ErrorHandlerBase
     {
+/**
+ * @var array<string> A list of $_SERVER fields to report to the user in an error message
+ */
         private static array $tellfields = [
             'REQUEST_URI',
             'HTTP_REFERER',
@@ -28,54 +31,21 @@
             'HTTP_COOKIE',
             'HTTP_USER_AGENT',
         ];
-/**
- * @var bool    If TRUE then ignore trapped errors
- */
-        protected bool $errignore      = FALSE;    // needed for checking preg expressions....
-/**
- * @var bool    Set to TRUE if an error was trapped and ignored
- */
-        protected bool $wasignored     = FALSE;
-/**
- * @var array    A list of errors that have been emailed to the user. Only send a message once.
- */
-        protected array $senterrors     = [];
-/**
- * @var bool   If TRUE then we are handling an error
- */
-        protected bool $error          = FALSE;
-/**
- * @var string    Backtrace info - only used with errors
- */
-        protected string $back           = '';
-/**
- * @var \Framework\Local
- */
-        protected ?\Framework\Local $local          = NULL;
-/**
- * @var bool
- */
-        protected bool $devel          = FALSE;
-/**
- * @var bool
- */
-        protected bool $ajax           = FALSE;
-/**
- * @var bool
- */
+        protected bool $errignore      = FALSE;    // If TRUE then ignore trapped errors, needed for checking preg expressions....
+        protected bool $wasignored     = FALSE; // Set to TRUE if an error was trapped and ignored
+        protected array $senterrors    = []; // A list of errors that have been emailed to the user. Only send a message once.
+        protected bool $error          = FALSE; // If TRUE then we are handling an error
+        protected string $back         = ''; // backtrace info - only used with errors
         protected bool $debug          = FALSE;
 /**
  * Constructor
  *
+ * @param \Framework\Local $local
  * @param bool $devel
  * @param bool $ajax
- * @param \Framework\Local $local
  */
-        public function __construct(bool $devel, bool $ajax, \Framework\Local $local)
+        public function __construct(protected \Framework\Local $local, protected bool $devel = FALSE, protected bool $ajax = FALSE)
         {
-            $this->local = $local;
-            $this->devel = $devel;
-            $this->ajax = $ajax;
  /*
  * Set up all the system error handlers
  */

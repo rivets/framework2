@@ -115,7 +115,7 @@
         //        $bdr[] = $pp['basename'];
         //    }
         //    $this->basedname = \implode('/', $bdr);
-            $this->errorHandler = new \Framework\Support\ErrorHandler($devel, $ajax, $this);
+            $this->errorHandler = new \Framework\Support\ErrorHandler($this, $devel, $ajax);
 
             $this->initRender($render);
 
