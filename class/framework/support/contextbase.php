@@ -20,21 +20,21 @@
         use \Framework\Utility\Singleton;
 
 /** @var ?OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
-        protected $luser        = NULL;
+        protected ?OODBBean $luser        = NULL;
 /** @var string The first component of the current URL */
-        protected $reqaction    = 'home';
+        protected string $reqaction    = 'home';
 /** @var array<string>    The rest of the current URL exploded at / */
-        protected $reqrest      = [];
+        protected array $reqrest      = [];
 /** @var bool   True if authenticated by token */
-        protected $tokenAuth    = FALSE;
+        protected bool $tokenAuth    = FALSE;
 /** @var array<OODBBean>            A cache for rolename beans */
-        protected $roles        = [];
+        protected array $roles        = [];
 /** @var array<OODBBean>            A cache for rolecontext beans */
-        protected $contexts     = [];
+        protected array $contexts     = [];
 /** @var array<array<string>>                   A cache for JS ons */
-        protected $ons          = [];
+        protected array $ons          = [];
 /** @var array<\Framework\FormData\Base>        FormData handler cache */
-        protected $getters      = [];
+        protected array $getters      = [];
 /*
  ***************************************
  * URL and REST support functions
@@ -45,7 +45,7 @@
  *
  * @return string
  */
-        public function action()
+        public function action() : string
         {
             return $this->reqaction;
         }
@@ -59,7 +59,7 @@
  *
  * @return array<string>
  */
-        public function rest()
+        public function rest() : array
         {
             return $this->reqrest;
         }
