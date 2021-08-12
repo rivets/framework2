@@ -193,7 +193,7 @@
                         $context->local()->message(Local::ERROR, $errmess);
                         $context->local()->addval([
                             'login' => $login,
-                            'email' => $email, // @phan-suppress PhanPossiblyUndeclaredVariable
+                            'email' => $email, // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                         ]);
                     }
                 }
