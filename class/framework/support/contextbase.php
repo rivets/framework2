@@ -211,18 +211,18 @@
  */
         public function local() : \Framework\Local
         {
-            return \Framework\Local::getInstance();
+            return \Framework\Local::getInstance(); // @phan-suppress-current-line PhanTypeMismatchReturn
         }
 /**
  * Return a Formdata object
  *
- * @param ?string $which
+ * @param string $which
  *
  * @return object
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formData(?string $which = NULL) : object
+        public function formData(string $which) : object
         {
             if (!isset($this->getters[$which]))
             {
