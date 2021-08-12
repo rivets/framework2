@@ -3,7 +3,7 @@
  * Contains definition of Twig Rendering class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  */
     namespace Framework\Presentation;
@@ -61,7 +61,7 @@
  *
  * @return void
  */
-        abstract public function addGlobal(string $name, $val) : void;
+        abstract public function addGlobal(string $name, $value) : void;
 /**
  * Add a template engine extension
  *
