@@ -246,7 +246,7 @@
  */
         public function hasForm() : bool
         {
-            return count($this->super);
+            return count($this->super) > 0;
         }
     }
 ?>
