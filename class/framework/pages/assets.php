@@ -63,7 +63,7 @@
             {
                 $ext = '';
             }
-            $mime =  isset(self::$mtypes[$ext]) ??  \Framework\Support\Security::getInstance()->mimetype($this->file);
+            $mime =  self::$mtypes[$ext] ??  \Framework\Support\Security::getInstance()->mimetype($this->file);
             $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([
