@@ -3,7 +3,7 @@
  * Definition of Userlogin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -64,9 +64,11 @@
         {
             $local = $context->local();
             $code = $this->makeCode($context, $bn, 'C');
-            $local->sendmail([$bn->email], 'Please confirm your email address for '.$local->configval('sitename'),
+            $local->sendmail([$bn->email],
+                'Please confirm your email address for '.$local->configval('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
                 $local->configval('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
+                '',
                 ['From' => $local->configval('noreply')]
             );
         }
@@ -85,6 +87,7 @@
             $local->sendmail([$bn->email], 'Reset your '.$local->configval('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
                 $local->configval('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
+                '',
                 ['From' => $local->configval('sitenoreply')]
             );
         }
