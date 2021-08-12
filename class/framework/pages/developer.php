@@ -3,7 +3,7 @@
  * Contains definition of abstract Developer class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -39,7 +39,7 @@
             case 'csp': // configure CSP values
                 $context->web()->initCSP(); // this will set up the necessary data if it hasn't already been done.
                 $csp = [];
-                foreach (\R::find(\Config\Framework::CSP, 'order by type,host') as $cd)
+                foreach (\R::find(FW::CSP, 'order by type,host') as $cd)
                 {
                     $csp[$cd->type][] = $cd;
                 }
