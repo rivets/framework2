@@ -125,10 +125,9 @@
  *
  * @param string[]  $keys       An array of keys
  *
- * @return array
  * @throws BadValue
  */
-        private function find(array $keys) : array
+        private function find(array $keys) : array|string
         {
             $part = $this->super;
             $etrack = [];
