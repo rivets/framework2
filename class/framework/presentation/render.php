@@ -17,19 +17,19 @@
 /**
  * @var array Contains string names for the message constants - used for Template variables
  */
-        protected static $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
+        protected static array $msgnames  = ['fwerrmessage', 'fwwarnmessage', 'fwmessage'];
 /**
  * @var array    Key/value array of data to pass into template renderer
  */
-        protected $tvals          = [];
+        protected array $tvals          = [];
 /**
  * @var array<array>    Stash away messages so that the renderer can treat them properly
  */
-        protected $messages       = [[], [], []];
+        protected array $messages       = [[], [], []];
 /**
  * @var ?object
  */
-        protected $engine       = NULL;
+        protected ?object $engine       = NULL;
 /**
  * Initialise template engine
  *

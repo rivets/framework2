@@ -20,7 +20,7 @@
 /**
  * Setup a renderer if wanted
  *
- * @return void;
+ * @return void
  */
         public function initRender(array $render)
         {
