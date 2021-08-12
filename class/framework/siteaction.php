@@ -76,7 +76,7 @@
                 }
                 $st = \strtotime($ifmod);
                 /** @psalm-suppress InvalidScalarArgument */
-                $this->ifms = $st !== FALSE && $this->checkmodtime($context, $st); // will 304 later if there is no NONE_MATCH or nothing matches
+                $this->ifms = $st !== FALSE && $this->checkmodtime($context, (string) $st); // will 304 later if there is no NONE_MATCH or nothing matches
             }
             if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
             {
@@ -154,7 +154,7 @@
             {
                 foreach (\explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
                 {
-                    $match |= $this->checketag($context, \substr(\trim($etag), 1, -1)); // extract the ETag from its surrounding quotes
+                    $match = $match || $this->checketag($context, \substr(\trim($etag), 1, -1)); // extract the ETag from its surrounding quotes
                 }
             }
             if (!$match)
