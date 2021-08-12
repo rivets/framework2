@@ -240,7 +240,7 @@
  */
         public function web() : \Framework\Web\Web
         {
-            return \Framework\Web\Web::getInstance();
+            return \Framework\Web\Web::getInstance(); // @phan-suppress-current-line PhanTypeMismatchReturn
         }
 /*
  ***************************************
@@ -294,8 +294,8 @@
  */
         public function setup() : ContextBase
         {
-            \ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
-            \ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
+            \ini_set('session.use_only_cookies', '1'); // make sure PHP is set to make sessions use cookies only
+            \ini_set('session.use_trans_sid', '0');   // this helps a bit towards making session hijacking more difficult
             \ini_set('session.cookie_httponly', 1);     // You can get rid of these calls if you know your php.ini is set up correctly
             if (isset($_COOKIE[Config::SESSIONNAME]))
             { // see if there is a userID variable in the session....
