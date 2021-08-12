@@ -17,7 +17,7 @@
  */
     class ErrorHandlerBase
     {
-        private static $tellfields = [
+        private static array $tellfields = [
             'REQUEST_URI',
             'HTTP_REFERER',
             'HTTP_X_FORWARDED_FOR',
@@ -31,39 +31,39 @@
 /**
  * @var bool    If TRUE then ignore trapped errors
  */
-        protected $errignore      = FALSE;    // needed for checking preg expressions....
+        protected bool $errignore      = FALSE;    // needed for checking preg expressions....
 /**
  * @var bool    Set to TRUE if an error was trapped and ignored
  */
-        protected $wasignored     = FALSE;
+        protected bool $wasignored     = FALSE;
 /**
  * @var array    A list of errors that have been emailed to the user. Only send a message once.
  */
-        protected $senterrors     = [];
+        protected array $senterrors     = [];
 /**
  * @var bool   If TRUE then we are handling an error
  */
-        protected $error          = FALSE;
+        protected bool $error          = FALSE;
 /**
  * @var string    Backtrace info - only used with errors
  */
-        protected $back           = '';
+        protected string $back           = '';
 /**
  * @var \Framework\Local
  */
-        protected $local          = NULL;
+        protected ?\Framework\Local $local          = NULL;
 /**
  * @var bool
  */
-        protected $devel          = FALSE;
+        protected bool $devel          = FALSE;
 /**
  * @var bool
  */
-        protected $ajax           = FALSE;
+        protected bool $ajax           = FALSE;
 /**
  * @var bool
  */
-        protected $debug          = FALSE;
+        protected bool $debug          = FALSE;
 /**
  * Constructor
  *

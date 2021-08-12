@@ -3,7 +3,7 @@
  * Contains definition of LocalBase class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  */
     namespace Framework\Support;
@@ -18,7 +18,7 @@
 
         protected $basepath         = ''; // The absolute path to the site directory
         protected string $basedname = ''; // The name of the site directory
-        protected ?\Framework\Support\ErrorHandler $errorHandler     = NULL;
+        protected ?ErrorHandler $errorHandler     = NULL;
 /**
  * Send mail if possible
  *
