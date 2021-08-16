@@ -145,12 +145,12 @@
  *
  * @return void
  */
-        public function assertFail($file, $line, $message) : void
-        {
-            $ekey = $this->tellAdmin('Assertion Failure: '.$message, 0, $file, $line);
-            $this->make500($ekey);
-            exit;
-            /* NOT REACHED */
-        }
+        //public function assertFail($file, $line, $message) : void
+        //{
+        //    $ekey = $this->tellAdmin('Assertion Failure: '.$message, 0, $file, $line);
+        //    $this->make500($ekey);
+        //    exit;
+        //    /* NOT REACHED */
+        //}
     }
 ?>

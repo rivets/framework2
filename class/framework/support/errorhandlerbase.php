@@ -57,12 +57,12 @@
             register_shutdown_function([$this, 'shutdown']);
             if ($devel)
             { // set up expectation handling if in developer mode
-                if (defined(\ASSERT_ACTIVE))
+                if (ini_get('zend.assertions') == 1)
                 {
-                    assert_options(\ASSERT_ACTIVE, $devel);
-                    assert_options(\ASSERT_WARNING, 0);
-                    assert_options(\ASSERT_QUIET_EVAL, 1);
-                    assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
+                    ini_set('assert.exception', 1);
+//                    assert_options(\ASSERT_ACTIVE, $devel);
+//                    assert_options(\ASSERT_WARNING, 0);
+//                    assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
                 }
             }
         }
