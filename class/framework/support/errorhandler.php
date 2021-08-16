@@ -136,21 +136,5 @@
  */
             return TRUE;
         }
-/**
- * Handle an expectation failure
- *
- * @param string    $file    File name
- * @param int       $line      Line number in file
- * @param string    $message    Message
- *
- * @return void
- */
-        //public function assertFail($file, $line, $message) : void
-        //{
-        //    $ekey = $this->tellAdmin('Assertion Failure: '.$message, 0, $file, $line);
-        //    $this->make500($ekey);
-        //    exit;
-        //    /* NOT REACHED */
-        //}
     }
 ?>
