@@ -22,10 +22,8 @@
         private static $permissions = [];
 /**
  * Return permission requirements
- *
- * @return array<mixed>
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []]; // requires login
         }
@@ -33,8 +31,6 @@
  * Upload files and optionally attch them to a set of beans
  *
  * /ajax/upload/{bean type}/{bean id}/...
- *
- * @return void
  */
         final public function handle() : void
         {
