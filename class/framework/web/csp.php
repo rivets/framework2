@@ -27,11 +27,11 @@
  */
         private static array $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
         private static array $defaultCSP = [
-                'default-src' => ["'self'"],
-                'font-src' => ["'self'", '*.fontawesome.com'],
-                'img-src' => ["'self'", "data:", "*.amuniversal.com"],
-                'script-src' => ["'self'", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"],
-                'style-src' => ["'self'", "*.fontawesome.com", "stackpath.bootstrapcdn.com"],
+            'default-src' => ["'self'"],
+            'font-src' => ["'self'", '*.fontawesome.com'],
+            'img-src' => ["'self'", "data:", "*.amuniversal.com"],
+            'script-src' => ["'self'", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"],
+            'style-src' => ["'self'", "*.fontawesome.com", "stackpath.bootstrapcdn.com"],
         ];
 /**
  * compute, save and return a hash for use in a CSP header
