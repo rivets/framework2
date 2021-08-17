@@ -21,13 +21,11 @@
  * Call functions based on the method
  *
  * @param Context    $context    The context object for the site
- *
- * @return string|array
  */
-        public function crudDriver(Context $context) : string
+        public function crudDriver(Context $context) : array|string
         {
-            $method = strtolower($context->web()->method());
-            if (!method_exists(static::class, $method))
+            $method = \strtolower($context->web()->method());
+            if (!\method_exists(static::class, $method))
             {
                 throw new BadOperation($method.' is not supported');
             }
@@ -37,26 +35,24 @@
  * Call functions based on the method and the pattern in the URL. Driven by the contents of the pattern attribute
  *
  * @param Context      $context    The context object for the site
- *
- * @return string|array
  */
-        public function patternDriver(Context $context) : string
+        public function patternDriver(Context $context) : array|string
         {
-            $method = strtolower($context->web()->method());
+            $method = \strtolower($context->web()->method());
             if (!isset(self::$patterns[$method]))
             {
                 throw new BadOperation($method.' is not supported');
             }
             $url = $context->rest();
-            $uleng = count($url);
+            $uleng = \count($url);
             foreach (self::$patterns[$method] as [$ptnmap, $fn, $oktpl, $errtpl])
             {
 /*
  * The next test could be != but that would currently make having optional fields tricky.
  */
-                if (count($ptnmap) < $uleng)
+                if (\count($ptnmap) < $uleng)
                 { // looking for more data than we actually have so this is not a match
-                    $tpl = $this->checkPtn($ptnmap, $fn, $oktpl, $errtpl);
+                    $tpl = $this->checkPtns($context, $url, $ptnmap, $fn, $oktpl, $errtpl);
                     if ($tpl !== FALSE)
                     { // the result is a template (or potentially an array) Messages will have been set up already
                         return $tpl;
@@ -68,16 +64,14 @@
         }
 /**
  * Check patterns and apply functions
- *
- * @return string|bool
  */
-        private function checkPtns(Context $context, array $ptnmap, string $fn, ?string $oktpl, string $errtpl)
+        private function checkPtns(Context $context, array $url, array $ptnmap, string $fn, ?string $oktpl, string $errtpl) : string|bool
         {
             $data = [];
             $errors = [];
             foreach ($ptnmap as $ix => [$ptn, $map])
             {
-                if (!preg_match('#^'.$ptn.'$#i', $url[$ix]))
+                if (!\preg_match('#^'.$ptn.'$#i', $url[$ix]))
                 { // did not match the pattern so try the next set
                     return FALSE;
                 }
@@ -92,7 +86,7 @@
                         $data[$ix][] = $url[$ix];
                         if ($check !== NULL)
                         {
-                            $mfn = array_shift($check);
+                            $mfn = \array_shift($check);
                             [$ok, $dd] =  $this->{$mfn}($context, $url[$ix], $data, ...$check);
                             if (!$ok)
                             { // error of some kind - move on to check the rest.
@@ -124,6 +118,7 @@
             }
             return $oktpl;
         }
+*/
 /**
  * Check and fetch a bean - a utility function for specification in the pattern tables
  *
@@ -132,7 +127,6 @@
  * @param array   $data
  * @param string  $beanType
  *
- * @return array
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         protected function checkID(Context $context, string $id, array $data, string $beanType) : array
