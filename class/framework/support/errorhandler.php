@@ -130,7 +130,7 @@
                 /* NOT REACHED */
             }
 /*
- * If we get here it's a warning or a notice, so we arent stopping
+ * If we get here it's a warning or a notice, so we aren't stopping
  *
  * Change this to an exit if you don't want to continue on any errors
  */

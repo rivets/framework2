@@ -15,7 +15,6 @@
  */
     class Base
     {
-        protected ?int $which; // Indicates which Superglobal we are using
 /**
  * @var array The array that contains the relevant values.
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
@@ -26,11 +25,10 @@
  *
  * @param ?int  $which  The appropriate INPUT_ filter or NULL (which will be for PUT/PATCH...)
  */
-        public function __construct(?int $which)
+        public function __construct(protected ?int $which)
         {
-            $this->which = $which;
             if ($this->which !== NULL)
-            {
+            { // we have nominated a superglobal
                 $this->super = $this->getSuper($this->which);
             }
         }
@@ -43,10 +41,6 @@
  *  Return the relevant Superglobal
  *
  *  @TODO Change this to use match() when PHP 8 is released
- *
- *  @param ?int  $which
- *
- *  @return array
  */
         protected function getSuper(?int $which = NULL) : array
         {
@@ -72,20 +66,18 @@
  *
  * @internal
  *
- * @param string    $name       The key
- * @param mixed     $default    The default value if needed
- * @param bool      $throw      If TRUE then throw an execption if it does not exist
- * @param bool      $isArray    If TRUE then check that this is an array
- * @param ?int      $filter     Filter to apply or NULL
- * @param mixed     $options    Filter options
- *
- * @return array<mixed>
+ * @param array|string    $key       The key
+ * @param mixed           $default    The default value if needed
+ * @param bool            $throw      If TRUE then throw an execption if it does not exist
+ * @param bool            $isArray    If TRUE then check that this is an array
+ * @param ?int            $filter     Filter to apply or NULL
+ * @param mixed           $options    Filter options
  */
-        final public function getValue($name, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
+        final public function getValue(array|string $key, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
         {
             try
             {
-                $dt = $this->fetchFrom(is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
+                $dt = $this->fetchFrom($key, $default, TRUE, $filter, $options);
             }
             catch (BadValue $e)
             { // does not exist
@@ -123,12 +115,11 @@
  *
  * @internal
  *
- * @param string[]  $keys       An array of keys
- *
  * @throws BadValue
  */
-        private function find(array $keys) : array|string
+        private function find(array|string $keys) : array|string
         {
+            $keys = is_array($keys) ? $keys : [$keys];
             $part = $this->super;
             $etrack = [];
             while (TRUE) // iterate over the array of keys
@@ -156,12 +147,11 @@
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  * @param ?int      $filter     A PHP filter
- * @param mixed     $options    Filter options
+ * @param array|int     $options    Filter options
  *
  * @throws BadValue
- * @return mixed
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = [])
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = []) : array|string
         {
             try
             {
@@ -200,20 +190,13 @@
  *******************************************************************
  */
 /**
- * Is the key in the array?
- *
- * @TODO Fix the need for two calls. They are there because getval does an array check which is
- *       not relevant for an existence check. We need a three valued boolean :-)
- *
- * @param mixed    $name   The keys
- *
- * @return bool
+ * Check for keys in the array
  */
-        public function exists($name) : bool
+        public function exists(array|string $key) : bool
         {
             try
             {
-                $this->find(is_array($name) ? $name : [$name]);
+                $this->find($key);
             }
             catch (BadValue)
             { // not there
@@ -222,26 +205,18 @@
             return TRUE;
         }
 /**
- * Is the key in the array?
- *
- * @TODO Fix the need for two calls. They are there because getval does an array check which is
- *       not relevant for an existence check. We need a three valued boolean :-)
- *
- * @param mixed    $name   The keys
+ * Key(s) must be in array, otherwise throw
  *
  * @throws BadValue
- * @return bool
  */
-        public function mustExist($name) : bool
+        public function mustExist(array|string $key) : bool
         {
-            $this->find(is_array($name) ? $name : [$name]);
+            $this->find($key);
             return TRUE;
         }
 /**
- * Return TRUE of the  related Superglobal is not empty
+ * Return TRUE if the  related Superglobal is not empty
  * Not 100% reliable for cookies but good for GET and POST
- *
- * @return bool
  */
         public function hasForm() : bool
         {
