@@ -30,7 +30,7 @@
  *
  * @return array <mixed>
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []]; // requires login
         }

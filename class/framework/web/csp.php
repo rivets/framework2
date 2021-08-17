@@ -26,6 +26,13 @@
  * @var which  CSP fields to check for hostnames
  */
         private static array $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
+        private static array $defaultCSP = [
+                'default-src' => ["'self'"],
+                'font-src' => ["'self'", '*.fontawesome.com'],
+                'img-src' => ["'self'", "data:", "*.amuniversal.com"],
+                'script-src' => ["'self'", "stackpath.bootstrapcdn.com", "cdnjs.cloudflare.com", "code.jquery.com"],
+                'style-src' => ["'self'", "*.fontawesome.com", "stackpath.bootstrapcdn.com"],
+        ];
 /**
  * compute, save and return a hash for use in a CSP header
  *
@@ -154,7 +161,7 @@
                 }
                 else
                 { // copy the default set
-                    $this->csp = \Config\Config::$defaultCSP;
+                    $this->csp = self::$defaultCSP;
                     foreach ($this->csp as $type => $host)
                     { // now set up the database for future working...
                         foreach ($host as $h)

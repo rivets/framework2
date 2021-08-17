@@ -20,7 +20,7 @@
  *
  * @return array<mixed>
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site Admins to do this
         }

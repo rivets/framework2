@@ -39,7 +39,7 @@
  *
  * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // Permission check done in handle
         }

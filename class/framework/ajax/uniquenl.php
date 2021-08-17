@@ -26,7 +26,7 @@
  *
  * @return array<mixed>
  */
-        final public function requires()
+        final public function requires() : array
         {
             return [FALSE, []]; // does not require login
         }

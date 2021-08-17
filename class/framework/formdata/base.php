@@ -93,7 +93,7 @@
                 {
                     if ($throw)
                     {
-                        throw new BadValue('Form Item '.$name.' is an array');
+                        throw new BadValue('Form Item '.$key.' is an array');
                     }
                     return [FALSE, $default];
                 }
@@ -102,7 +102,7 @@
             {
                 if ($throw)
                 {
-                    throw new BadValue('Form Item '.$name.' is not an array');
+                    throw new BadValue('Form Item '.$key.' is not an array');
                 }
                 return [FALSE, $default];
             }

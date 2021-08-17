@@ -20,7 +20,7 @@
 /**
  * Return permission requirements
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site ADmins to do this
         }
