@@ -108,7 +108,6 @@
  *
  * @param Context   $context
  * @param string    $action
- * @psalm-suppress EmptyStatement
  */
         public static function basicSetup(Context $context, string $action) : void
         {
@@ -133,7 +132,7 @@
                 }
                 catch (\ReflectionException)
                 {
-                    // void
+                    ;// void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
