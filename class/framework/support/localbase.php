@@ -16,8 +16,8 @@
     {
         use \Framework\Utility\Singleton;
 
-        protected $basepath         = ''; // The absolute path to the site directory
-        protected string $basedname = ''; // The name of the site directory
+        protected string $basePath         = ''; // The absolute path to the site directory
+        protected string $baseDName        = ''; // The name of the site directory
         protected ?ErrorHandler $errorHandler     = NULL;
 /**
  * Send mail if possible
@@ -26,15 +26,13 @@
  * @param string     $subject  The subject
  * @param string     $msg      The message - if $alt is not empty then this is assumed to be HTML.
  * @param string     $alt      The alt message - plain text
- * @param string[]   $other    From, cc, bcc etc. etc.
+ * @param mixed[]    $other    From, cc, bcc etc. etc.
  * @param string[]   $attach   Any Attachments
- *
- * @return string
  */
         public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
         {
             /** @psalm-suppress RedundantCondition */
-            if (Config::USEPHPM || ini_get('sendmail_path') !== '')
+            if (Config::USEPHPM || \ini_get('sendmail_path') !== '')
             {
                 $mail = new \Framework\Utility\FMailer();
                 try
@@ -79,7 +77,7 @@
                     }
                     return $mail->send() ? '' : $mail->ErrorInfo;
                 }
-                catch (\Throwable $e)
+                catch (\Throwable)
                 {
                     return $mail->ErrorInfo;
                 }
@@ -92,8 +90,6 @@
  * This always clears the wasignored flag
  *
  * @param bool    $ignore    If TRUE then ignore the error otherwise stop ignoring
- *
- * @return bool    The last value of the wasignored flag
  */
         public function eIgnore(bool $ignore) : bool
         {
@@ -101,57 +97,45 @@
         }
 /**
  * Join the arguments with DIRECTORY_SEPARATOR to make a path name
- *
- * @return string
  */
-        public function makepath()
+        public function makePath(...$args) : string
         {
-            return implode(DIRECTORY_SEPARATOR, func_get_args());
+            return \implode(DIRECTORY_SEPARATOR, $args);
         }
 /**
  * Join the arguments with DIRECTORY_SEPARATOR to make a path name and prepend the path to the base directory
- *
- * @return string
  */
-        public function makebasepath()
+        public function makeBasePath(...$args) : string
         {
-            return $this->basedir().DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, func_get_args());
+            return $this->baseDir().\DIRECTORY_SEPARATOR.\implode(\DIRECTORY_SEPARATOR, $args);
         }
 /**
  * Return a path to the assets directory suitable for use in links
- *
- * @return string
  */
-        public function assets()
+        public function assets() : string
         {
             return $this->base().'/assets'; // for HTML so the / is OK to use here
         }
 /**
  * Return a filesystem path to the assets directory
- *
- * @return string
  */
-        public function assetsdir()
+        public function assetsDir() : string
         {
-            return $this->basedir().DIRECTORY_SEPARATOR.'assets';
+            return $this->baseDir().\DIRECTORY_SEPARATOR.'assets';
         }
 /**
  * Return the name of the directory for this site
- *
- * @return string
  */
-        public function base()
+        public function base() : string
         {
-            return $this->basedname;
+            return $this->baseDName;
         }
 /**
  * Return the path to the directory for this site
- *
- * @return string
  */
-        public function basedir()
+        public function baseDir() : string
         {
-            return $this->basepath;
+            return $this->basePath;
         }
 /**
  * Remove the base component from a URL
@@ -160,26 +144,22 @@
  * The installer tests for this and issues an error when run.
  *
  * @param string        $url
- *
- * @return string
  */
-        public function debase(string $url)
+        public function debase(string $url) : string
         {
-            return $this->base() !== '' ? preg_replace('#^'.$this->base().'#', '', $url) : $url;
+            return $this->base() !== '' ? \preg_replace('#^'.$this->base().'#', '', $url) : $url;
         }
 /**
  * Check to see if non-admin users are being excluded
  *
  * @param bool $admin
- *
- * @return void
  */
         public function adminOnly(bool $admin) : void
         {
             $offl = $this->makebasepath('admin', 'adminonly');
-            if (file_exists($offl) && !$admin)
+            if (\file_exists($offl) && !$admin)
             { // go offline before we try to do anything else as we are not an admin
-                $this->errorHandler->earlyFail('OFFLINE', file_get_contents($offl), FALSE);
+                $this->errorHandler->earlyFail('OFFLINE', \file_get_contents($offl), FALSE);
                 /* NOT REACHED */
             }
         }
