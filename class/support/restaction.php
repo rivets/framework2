@@ -118,7 +118,6 @@
             }
             return $oktpl;
         }
-*/
 /**
  * Check and fetch a bean - a utility function for specification in the pattern tables
  *
