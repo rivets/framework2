@@ -23,10 +23,8 @@
  * The test for developer status is done in index.php so deos not need to be repeated here.
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $tpl = '@devel/devel.twig';
             $rest = $context->rest();

@@ -82,8 +82,6 @@
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\ParameterCount
  * @throws \Framework\Exception\InternalError
- *
- * @return string
  */
         private function edit(Context $context, array $rest) : string
         {
@@ -149,8 +147,6 @@
  *
  * @param Context           $context  The Context object
  * @param array<string>     $rest     The rest of the URL
- *
- * @return string
  */
         private function view(Context $context, array $rest) : string
         {
@@ -192,8 +188,6 @@
  * Check for version updates and update config info. Check for new CSP needed
  *
  * @param Context    $context  The Context object
- *
- * @return string
  */
         private function update(Context $context) : string
         {
@@ -253,8 +247,6 @@
  * Remember that if you go offline rather than adminonly you have to remove the file by hand to get back online!
  *
  * @param Context   $context    The Context object
- *
- * @return string
  */
         private function offline(Context $context)
         {
@@ -293,10 +285,8 @@
  * Handle various admin operations /admin/xxxx
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $rest = $context->rest();
             $context->setpages(); // most of the pages use pagination so get values if any

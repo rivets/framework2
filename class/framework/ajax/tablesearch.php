@@ -15,10 +15,7 @@
  */
     class TableSearch extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -33,11 +30,9 @@
 /**
  * @var array<string> Search ops
  */
-        private static $searchOps = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
+        private static array $searchOps = ['', '=', '!=', 'like', 'contains', '>', '>=', '<', '<=', 'regexp', 'is NULL', 'is not NULL'];
 /**
  * Return permission requirements
- *
- * @return array
  */
         public function requires() : array
         {
@@ -45,8 +40,6 @@
         }
 /**
  * Search a table
- *
- * @return void
  */
         final public function handle() : void
         {
@@ -57,18 +50,19 @@
             }
             $value = $this->context->formdata('get')->fetch('value', '');
             $incv = ' ?';
-            if ($op == '4')
+            switch ($op)
             {
+            case 4:
                 $value = '%'.$value.'%';
                 $op = 'like';
-            }
-            else
-            {
-                if ($op == 10 || $op == 11)
-                { // no value on a NULL test
-                    $incv = '';
-                }
+                break;
+            case 10:
+            case 11: // no value on a NULL test
+                $incv = '';
+                /****************** DROP THROUGH!!!! *****************************/
+            default:
                 $op = self::$searchOps[$op];
+                break;
             }
             $res = [];
             $fields = array_keys(\R::inspect($bean));

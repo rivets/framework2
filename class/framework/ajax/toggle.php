@@ -15,10 +15,7 @@
  */
     class Toggle extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['local', 'fixed', 'defer', 'async'] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['multipart'] ],
             // FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -36,23 +33,21 @@
  * simply changing a value.
  *
  * @internal
- *
- * @return void
  */
         final public function handle() : void
         {
             $rest = $this->context->rest();
-            if (count($rest) > 2)
-            {
-                [$type, $bid, $field] = $this->restCheck(3);
-            }
-            else // this is legacy
-            {
-                $fdt = $this->context->formdata('post');
-                $type = $fdt->mustFetch('bean');
-                $field = $fdt->mustFetch('field');
-                $bid = $fdt->mustFetch('id');
-            }
+            //if (count($rest) > 2)
+            //{
+            [$type, $bid, $field] = $this->restCheck(3);
+            //}
+            //else // this is legacy
+            //{
+            //    $fdt = $this->context->formdata('post');
+            //    $type = $fdt->mustFetch('bean');
+            //    $field = $fdt->mustFetch('field');
+            //    $bid = $fdt->mustFetch('id');
+            //}
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
             if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())

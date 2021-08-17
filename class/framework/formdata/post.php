@@ -3,7 +3,7 @@
  * Contains the definition of Formdata GET support class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -27,8 +27,6 @@
  * RECAPTCHA - the kind of RECAPTCHA: 2 or 3 (0 means no RECAPTCHA)
  * RECAPTCHAKEY - the key given by google
  * RECAPTCHASECRET - the secret key given by google
- *
- * @return bool
  */
         public function recaptcha() : bool
         {

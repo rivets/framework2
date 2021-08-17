@@ -3,7 +3,7 @@
  * Definition of Iterator class helper for $_FILE array values
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2020 Newcastle University
+ * @copyright 2015-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -17,7 +17,7 @@
 /**
  * @var array   The base entry in the $_FILES array.
  */
-        private $far;
+        private array $far;
 /**
  * The constructor
  *
@@ -44,8 +44,6 @@
  * singleton and not an array. This can simplify coding in certain circumstances even
  * though it involves restructuring the data and hence is slightly inefficient. Basically
  * the $_FILES array should be made from objects with fields not arrays of keyed values!!!
- *
- * @return array
  */
         public function current() : array
         {

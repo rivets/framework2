@@ -5,7 +5,7 @@
  * request.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -26,10 +26,8 @@
  * Which might be better. Needs thought.
  *
  * @param Context  $context     The context object for the site
- *
- * @return string|array     A template name or array
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $tpl = '';
             $local = $context->local();

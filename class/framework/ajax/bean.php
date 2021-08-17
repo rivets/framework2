@@ -40,17 +40,12 @@
             FW::UPLOAD      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::USER        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
         ];
-/**
- * @var string
- */
         private string $model = '';
 /**
  * Generate a no content, created or call the ajaxResult method on a bean if it exists in its Model
  *
  * @param \RedBeanPHP\OODBBean $bean       The bean
  * @param string               $method     The method used to get here
- *
- * @return void
  */
         private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method) : void
         {
@@ -79,7 +74,6 @@
  * @param array<string> $rest      The rest of the URL
  * @param bool          $log       If TRUE then log the changes
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -114,7 +108,6 @@
  * @param bool          $log       If TRUE then log the changes
  * @param string        $method    patch or put - only needed because we are sharing put and patch because of bad routers.
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -157,7 +150,6 @@
  * @param array<string> $rest      The rest of the URL
  * @param bool          $log       If TRUE then log the changes
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -172,7 +164,6 @@
  * @param array<string> $rest      The rest of the URL
  * @param bool          $log       If TRUE then log the changes
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -199,7 +190,6 @@
  * @param array<string> $rest      The rest of the URL
  * @param bool          $log       If TRUE then log the changes
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -224,8 +214,6 @@
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
- *
- * @return void
  */
         final public function handle() : void
         {

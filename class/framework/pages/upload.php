@@ -3,7 +3,7 @@
  * A class that contains code to handle any /upload related requests.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2020 Newcastle University
+ * @copyright 2015-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -20,10 +20,8 @@
  * Handle various admin operations /upload
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $fdt = $context->formdata('file');
             if ($fdt->hasForm())

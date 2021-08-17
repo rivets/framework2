@@ -24,8 +24,6 @@
  * Find a user based on either a login or an email address
  *
  * @param string  $lg   A username or email address
- *
- * @return ?\RedBeanPHP\OODBBean    The user or NULL
  */
         private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
@@ -37,8 +35,6 @@
  * @param Context                 $context The context bean
  * @param \RedBeanPHP\OODBBean    $user    A User bean
  * @param string                  $kind
- *
- * @return string
  */
         private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
@@ -57,8 +53,6 @@
  *
  * @param Context                 $context    The context object
  * @param \RedBeanPHP\OODBBean    $bn         A User bean
- *
- * @return void
  */
         private function sendConfirm(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
@@ -77,8 +71,6 @@
  *
  * @param Context               $context     The context object
  * @param \RedBeanPHP\OODBBean   $bn          A User bean
- *
- * @return void
  */
         private function sendReset(Context $context, \RedBeanPHP\OODBBean $bn) : void
         {
@@ -97,8 +89,6 @@
  * @param Context  $context    The context object for the site
  *
  * @uses \Support\Login
- *
- * @return string   A template name
  */
         public function login(Context $context) : string
         {
@@ -119,7 +109,6 @@
  *
  * @param Context  $context    The context object for the site
  *
- * @return string   A template name
  * @throws \Framework\Exception\BadOperation
  */
         public function register(Context $context) : string
@@ -211,8 +200,6 @@
  *
  * @param Context               $context
  * @param \RedBeanPHP\OODBBean  $user
- *
- * @return void
  */
         private function confmessage(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
@@ -234,8 +221,6 @@
  * Handle things to do with email address confirmation
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
         public function confirm(Context $context) : string
         {
@@ -296,8 +281,6 @@
  * Handle things to do with password reset
  *
  * @param Context   $context    The context object for the site
- *
- * @return string   A template name
  */
         public function forgot(Context $context) : string
         {
@@ -392,8 +375,6 @@
  * @param Context               $context
  * @param \RedBeanPHP\OODBBean  $user
  * @param string                $page
- *
- * @return void
  */
         public function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page)
         {
@@ -409,8 +390,6 @@
  * Handle TwoFA
  *
  * @param Context   $context    The context object for the site
- *
- * @return string
  */
         public function twofa(Context $context)
         {
@@ -448,10 +427,8 @@
  * Handle /login /logout /register /forgot /confirm
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $action = $context->action(); // the validity of the action value has been checked before we get here
             assert(method_exists($this, $action));

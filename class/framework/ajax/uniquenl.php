@@ -15,16 +15,11 @@
  */
     class UniqueNl extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::USER => [ FALSE, [], ['login'] ],
         ];
 /**
  * Return permission requirements
- *
- * @return array<mixed>
  */
         final public function requires() : array
         {
@@ -36,8 +31,6 @@
  *
  * @todo this call ought to be rate limited in some way!
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
- *
- * @return void
  */
         final public function handle() : void
         {

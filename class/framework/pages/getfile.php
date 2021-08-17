@@ -18,7 +18,7 @@
  * would not be hard to add.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -37,20 +37,20 @@
  */
         private const DATADIR   = 'private';
 /** @var string The name of the file we are working on */
-        private $file = '';
+        private string $file = '';
 /** @var int    The last modified time for the file */
-        private $mtime = 0;
+        private int $mtime = 0;
 
 /**
  * Return data files as requested
+ * Always return empty string as all the file sending is done internally.
  *
  * @param Context   $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
- * @return string   Always return empty string as all the file sending is done internally.
  */
-        public function handle(Context $context) : string
+        public function handle(Context $context) : array|string
         {
             $web = $context->web(); // it's used all over the place so grab it once
 
@@ -120,7 +120,6 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return string
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeetag($context) : string
@@ -135,7 +134,6 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return int
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function lastmodified($context) : int
@@ -152,7 +150,6 @@
  * @param Context   $context    The context object for the site
  * @param string    $time       The time value to check
  *
- * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool
@@ -169,7 +166,6 @@
  * @param Context   $context   The context object for the site
  * @param string    $tag       The etag value to check
  *
- * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checketag(Context $context, string $tag) : bool

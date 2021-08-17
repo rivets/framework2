@@ -17,8 +17,6 @@
     {
 /**
  * Return permission requirements
- *
- * @return array<mixed>
  */
         public function requires() : array
         {
@@ -26,8 +24,6 @@
         }
 /**
  * Do a parsley table check
- *
- * @return void
  */
         final public function handle() : void
         {

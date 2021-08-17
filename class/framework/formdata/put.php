@@ -16,8 +16,6 @@
     {
 /**
  * Parses the form data and extract the fields
- *
- * @return ?array
  */
         private function parse() : ?array
         {
@@ -57,8 +55,6 @@
  * Parses body param headers
  *
  * @param string  $data  The header data
- *
- * @return array
  */
         private function parseHeaders(string $data) : array
         {

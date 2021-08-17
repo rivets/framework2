@@ -15,10 +15,7 @@
  */
     class Unique extends Ajax
     {
-/**
- * @var array<mixed>
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
             FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
@@ -27,8 +24,6 @@
         ];
 /**
  * Return permission requirements
- *
- * @return array <mixed>
  */
         public function requires() : array
         {
@@ -39,8 +34,6 @@
  * Send a 404 if it exists (That's how parsley works)
  *
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
- *
- * @return void
  */
         final public function handle() : void
         {

@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -30,10 +30,8 @@
  * @param ?int          $filter   Filter to apply
  * @param array|int     $options  Filter options
  * @param bool          $isArray  Expect an array ratherthan a simple value
- *
- * @return mixed
  */
-        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
@@ -47,10 +45,8 @@
  * @param ?int          $filter   Filter to apply
  * @param mixed         $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
- *
- * @return mixed
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
@@ -62,8 +58,6 @@
  * @param mixed    $name        The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  * @param string   $bean        The bean type
  * @param bool     $forupdate   If TRUE then load for update
- *
- * @return \RedBeanPHP\OODBBean
  */
         public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
@@ -75,7 +69,6 @@
  * @param mixed    $name    The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  *
  * @throws BadValue
- * @return \ArrayIterator
  */
         public function mustFetchArray($name) : \ArrayIterator
         {
@@ -86,8 +79,6 @@
  *
  * @param mixed        $name    The key
  * @param array<mixed> $default    Returned if the key does not exist
- *
- * @return \ArrayIterator
  */
         public function fetchArray($name, array $default = []) : \ArrayIterator
         {
@@ -95,8 +86,6 @@
         }
 /**
  * Return an ArrayIterator over all the values in the form
- *
- * @return \ArrayIterator
  */
         public function fetchAll() : \ArrayIterator
         {
@@ -104,8 +93,6 @@
         }
 /**
  * Return the array of values
- *
- * @return array
  */
         public function fetchRaw() : array
         {

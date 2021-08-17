@@ -16,11 +16,11 @@
     class Assets extends \Framework\SiteAction
     {
 /** @var string The file name */
-        private $file = '';
+        private string $file = '';
 /** @var int    Last modified time for the file */
-        private $mtime = 0;
+        private int $mtime = 0;
 /** @var array<string> Mime type values */
-        private static $mtypes = [
+        private static array $mtypes = [
             ''      => 'text/plain',
             'css'   => 'text/css',
             'js'    => 'text/javascript',
@@ -38,10 +38,8 @@
  * in the Apache config or you code it in here!
  *
  * @param Context   $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             chdir($context->local()->assetsdir());
 
@@ -80,8 +78,6 @@
  * Make an etag - overrides the function in SiteAction
  *
  * @param Context   $context   The context object for the site
- *
- * @return string
  */
         public function makeetag(Context $context) : string
         {
@@ -92,8 +88,6 @@
  *
  * @param Context   $context    The context object for the site
  * @param string    $tag        The etag value to check
- *
- * @return bool
  */
         public function checketag(Context $context, string $tag) : bool
         {
@@ -105,8 +99,6 @@
  * An hour for the most recent volume and a year for everything else
  *
  * @param Context    $context   The context object for the site
- *
- * @return int
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
@@ -118,8 +110,6 @@
  *
  * @param Context   $context    The context object for the site
  * @param string    $time       The time value to check
- *
- * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool

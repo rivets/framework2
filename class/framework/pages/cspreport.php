@@ -3,7 +3,7 @@
  * Class for handling csp error report messages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -20,10 +20,8 @@
  * Handle various contact operations /contact
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $context->local()->sendmail([Config::SYSADMIN], Config::SITENAME.' CSP Error Report',
                  file_get_contents('php://input'), // get the JSON report
