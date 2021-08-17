@@ -50,11 +50,11 @@
  * Set up all the system error handlers
  */
             /** @psalm-suppress ArgumentTypeCoercion */
-            \set_exception_handler([$this, 'exceptionHandler']);
-            \set_error_handler([$this, 'errorHandler']);
+            \set_exception_handler([$this, 'exceptionHandler']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
+            \set_error_handler([$this, 'errorHandler']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
             /** @psalm-suppress ArgumentTypeCoercion */
-            \register_shutdown_function([$this, 'shutdown']);
+            \register_shutdown_function([$this, 'shutdown']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
             if ($devel)
             { // set up expectation handling if in developer mode
                 if (\ini_get('zend.assertions') == 1)
@@ -166,7 +166,7 @@
                     $str = '<p>'.$ekey.'</p>'.($this->debug && $this->back !== '' ? $this->eRewrite() : '');
                     if (!$this->ajax && $this->local->hasRenderer())
                     { // we have twig so render a nice page
-                        \Framework\Dispatch::basicSetup(\Framework\Context::getinstance(), 'error');
+                        \Framework\Dispatch::basicSetup(\Support\Context::getinstance(), 'error');
                         $this->local->render('@error/500.twig', ['errdata' => $str], Web::HTMLMIME, StatusCodes::HTTP_INTERNAL_SERVER_ERROR);
                     }
                     else
