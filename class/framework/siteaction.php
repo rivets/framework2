@@ -19,8 +19,8 @@
     abstract class SiteAction
     {
         use \Support\SiteAction;
-/** @var bool */
-        private $ifms;
+
+        private bool $ifms;
 /**
  * Handle an action
  *
@@ -30,18 +30,13 @@
  *
  * @psalm-suppress InvalidReturnType
  */
-        public function handle(Context $context)
-        { // should never get called really
-            $context->divert('/');
-            /* NOT REACHED */
-        }
+        abstract public function handle(Context $context) : array|string;
 /**
  * Set up any CSP headers for a page
  *
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @return void
  * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
         public function setCSP() : void
@@ -60,8 +55,6 @@
  * need to override some of the other methods that this method calls in order to make things work!
  *
  * @param Context $context
- *
- * @return void
  */
         final public function ifmodcheck(Context $context) : void
         {
@@ -111,8 +104,6 @@
  * Check the IF_NONE_MATCH header
  *
  * @param Context $context
- *
- * @return bool
  */
         private function noneMatch(Context $context) : bool
         {
@@ -140,8 +131,6 @@
  * Check the IF_MATCH header
  *
  * @param Context $context
- *
- * @return void
  */
         private function match(Context $context) : void
         {
@@ -168,8 +157,6 @@
  * Format a time suitable for Last-Modified header
  *
  * @param int   $time    The last modified time
- *
- * @return string
  */
         public function makemod(int $time) : string
         {
@@ -182,7 +169,6 @@
  * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
  *
  * @psalm-return never-return
- * @return void
  */
         private function etagmatched(Context $context) : void
         {
@@ -210,7 +196,6 @@
  * @param string[]          $format   Currently not used
  *
  * @throws \Framework\Exception\ParameterCount
- * @return array<string>
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkRest(array $rest, int $start, int $num, $format = []) : array

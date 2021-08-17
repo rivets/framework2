@@ -18,8 +18,6 @@
         private static int $hcount = 0; // header count
 /**
  * Set up the debug text file
- *
- * @return void
  */
         private static function setup() : void
         {
@@ -30,10 +28,6 @@
         }
 /**
  * Display a string
- *
- * @param string    $str
- *
- * @return void
  */
         public static function show(string $str) : void
         {
@@ -43,10 +37,6 @@
         }
 /**
  * Dump a variable - uses buffering to grab the output.
- *
- * @param array<mixed> $vars
- *
- * @return void
  */
         public static function vdump(...$vars) : void
         {
@@ -59,8 +49,6 @@
         }
 /**
  * Flush the output stream
- *
- * @return void
  */
         public static function flush() : void
         {
@@ -72,10 +60,6 @@
         }
 /**
  * Display a string in an X-DEBUG-INFO header
- *
- * @param string    $str
- *
- * @return void
  */
         public static function head(string $str) : void
         {

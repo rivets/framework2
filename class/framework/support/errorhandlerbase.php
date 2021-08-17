@@ -135,7 +135,7 @@
                 {
                     $this->debug = TRUE;
                     ob_start();
-                    debug_print_backtrace($_GET['fwtrace'], $_GET['fwdepth'] ?? 0);
+                    debug_print_backtrace((int) $_GET['fwtrace'], (int) $_GET['fwdepth'] ?? 0);
                     $this->back .= ob_get_clean(); // will get used later in make500
                     if (isset($_GET['fwdump']))
                     { // save the error message to a file in /debug
