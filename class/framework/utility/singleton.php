@@ -53,11 +53,11 @@
  * @psalm-suppress MismatchingDocblockReturnType
  * @psalm-suppress ReservedWord
  */
-        public static function getinstance() : object
+        final public static function getinstance() : object
         {
             //if (static::$instance !== NULL) // cannot get this to work with namespaces for some reason
             //{
-            //    static::$instance = new static(); // @phpstan-ignore-line
+            //    static::$instance = new static(); 
             //}
             return static::$instance ?? (static::$instance = new static());
         }
@@ -65,7 +65,7 @@
  * Class constructor. The concrete class using this trait can override it.
  * @internal
  */
-        protected function __construct()
+        final protected function __construct()
         {
             // void
         }
