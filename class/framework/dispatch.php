@@ -108,7 +108,7 @@
  *
  * @param Context   $context
  * @param string    $action
- * @psalm-suppress PHP_CodeSniffer.Standards.Generic.Sniffs.CodeAnalysis.EmptyStatementSniff
+ * @psalm-suppress EmptyStatement
  */
         public static function basicSetup(Context $context, string $action) : void
         {
