@@ -29,8 +29,6 @@
         private bool $devel          = FALSE; // Developer mode?
 /**
  * Return state of devel flag
- *
- * @return bool
  */
         public function develMode() : bool
         {
@@ -39,7 +37,6 @@
 /**
  * Put the system into debugging mode
  *
- * @return void
  * @psalm-suppress PossiblyNullReference
  */
         public function enabledebug() : void
@@ -55,8 +52,6 @@
  * Return a named config bean
  *
  * @param string $name  The name of the item
- *
- * @return ?object
  */
         public function config(string $name) : ?object
         {
@@ -66,8 +61,6 @@
  * Return a named config bean value
  *
  * @param string $name  The name of the item
- *
- * @return string
  */
         public function configVal(string $name, string $default = '') : string
         {
@@ -75,8 +68,6 @@
         }
 /**
  * Return all the config values
- *
- * @return array
  */
         public function allconfig() : array
         {
@@ -92,13 +83,11 @@
  * @param bool      $devel      If TRUE then we are developing the system
  * @param array     $render     The name of the Renderer class and any options
  * @param bool      $loadORM    If TRUE then load in RedBean
- *
- * @return \Framework\Local
  */
         public function setup(string $basedir, bool $ajax, bool $devel, array $render, bool $loadORM = TRUE) : \Framework\Local
         {
-            $this->basepath = $basedir;
-            $this->basedname = Config::BASEDNAME;
+            $this->basePath = $basedir;
+            $this->baseDName = Config::BASEDNAME;
             $this->devel = $devel;
 /*
  * If you want to be able to move the system arbitrarily you will need
@@ -120,7 +109,7 @@
             $this->initRender($render);
 
             $offl = $this->makebasepath('admin', 'offline');
-            if (file_exists($offl))
+            if (\file_exists($offl))
             { // go offline before we try to do anything else...
                 $this->errorHandler->earlyFail('OFFLINE', \file_get_contents($offl), FALSE);
                 /* NOT REACHED */
@@ -142,7 +131,7 @@
                 $this->fwconfig = [];
                 foreach (R::findAll(FW::CONFIG) as $cnf)
                 {
-                    $cnf->value = preg_replace('/%BASE%/', $this->basedname, $cnf->value);
+                    $cnf->value = \preg_replace('/%BASE%/', $this->baseDName, $cnf->value);
                     $this->fwconfig[$cnf->name] = $cnf;
                 }
 
