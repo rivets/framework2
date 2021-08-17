@@ -69,7 +69,7 @@
 /**
  * @var array<array> $actions Values for determining handling of above codes
  */
-        private static $actions = [
+        private static array $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
             self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
             self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
@@ -84,7 +84,7 @@
 /**
  * @var array<string>
  */
-        private static $checks = [
+        private static array $checks = [
             self::OBJECT        => 'checkObject',
             self::TEMPLATE      => 'checkTemplate',
             self::REDIRECT      => 'checkRedirect',
@@ -102,14 +102,12 @@
  * @var array $configs Constants that might be defined in the configuration that
  * need to be passed into twigs.
  */
-        private static $configs = ['lang', 'keywords', 'description'];
+        private static array $configs = ['lang', 'keywords', 'description'];
 /**
  * Setup basic values
  *
  * @param Context   $context
  * @param string    $action
- *
- * @return void
  */
         public static function basicSetup(Context $context, string $action) : void
         {
@@ -148,8 +146,6 @@
  * @param string    $action
  *
  * @psalm-suppress PossiblyUndefinedMethod
- *
- * @return void
  */
         public static function handle(Context $context, string $action) : void
         {
@@ -256,7 +252,6 @@
  *
  * @param string $source
  *
- * @return void
  * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -273,7 +268,6 @@
  *
  * @param string $source
  *
- * @return void
  * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -290,7 +284,6 @@
  *
  * @param string $source
  *
- * @return void
  * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -307,7 +300,6 @@
  *
  * @param string $source
  *
- * @return void
  * @throws BadValue
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
@@ -326,7 +318,6 @@
  * @param string $source
  *
  * @throws BadValue
- * @return void
  */
         public static function check(int $kind, string $source) : void
         {
