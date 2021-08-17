@@ -94,9 +94,6 @@
         }
 /**
  * Check 2FA
- *
- * @param \RedBeanPHP\OODBBean  $user
- * @param string                $value
  */
         public function check2FA(string $secret, string $value) : bool
         {
@@ -104,8 +101,6 @@
         }
 /**
  * Make user code - used fror identifying a user for a 2FA check
- *
- * @param \RedBeanPHP\OODBBean  $user
  */
         public function makeUCode(\RedBeanPHP\OODBBean $user) : string
         {

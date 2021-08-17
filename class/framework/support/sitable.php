@@ -42,7 +42,7 @@
  */
         public static function isFWTable(string $table) : bool
         {
-            return \in_array($table, self::$fwtables);
+            return \in_array($table, self::$fwtables); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
  * Number of tables
@@ -52,7 +52,7 @@
         public static function tablecount(bool $all = FALSE) : int
         {
             $x = \count(R::inspect());
-            return $all ? $x : $x - \count(self::$fwtables);
+            return $all ? $x : $x - \count(self::$fwtables); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
  * Return bean table data
