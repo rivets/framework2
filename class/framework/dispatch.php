@@ -132,7 +132,7 @@
                 }
                 catch (\ReflectionException)
                 {
-                    ;// void
+                    // void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
