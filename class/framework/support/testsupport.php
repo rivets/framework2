@@ -3,7 +3,7 @@
  * Contains definition of Test class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -16,23 +16,17 @@
  */
     class TestSupport
     {
-/** @var Local */
-        private $local;
-/** @var Context */
-        private $context;
-/** @var \Framework\FormData\AccessBase */
-        private $fdt;
-/** @var bool */
-        private $noform = FALSE;
+        private Local $local;
+        private \Framework\FormData\AccessBase $fdt;
+        private bool $noform = FALSE;
 /**
  * Constructor
  *
  * @param Context $context
  * @param string  $type         get, post etc.
  */
-        public function __construct(Context $context, string $type)
+        public function __construct(private Context $context, string $type)
         {
-            $this->context = $context;
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
             $this->noform = $context->web()->method() == 'GET' && !isset($_GET['exist']) && !isset($_GET['cookie']);
@@ -42,8 +36,6 @@
  *
  * @param mixed $pars
  * @param bool $all
- *
- * @return string
  */
         private function display($pars, $all = FALSE) : string
         {
@@ -52,13 +44,6 @@
         }
 /**
  * Run tests specified
- *
- * @param string $func
- * @param array<mixed> $params
- * @param mixed $result
- * @param bool $throwOK
- *
- * @return bool;
  */
         private function test(string $func, array $params, $result, bool $throwOK) : bool
         {
@@ -152,10 +137,6 @@
         }
 /**
  * Run tests
- *
- * @param array<mixed> $tests
- *
- * @return void
  */
         public function run(array $tests) : void
         {
