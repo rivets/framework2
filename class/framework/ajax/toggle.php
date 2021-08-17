@@ -36,7 +36,7 @@
  */
         final public function handle() : void
         {
-            $rest = $this->context->rest();
+            //$rest = $this->context->rest();
             //if (count($rest) > 2)
             //{
             [$type, $bid, $field] = $this->restCheck(3);
