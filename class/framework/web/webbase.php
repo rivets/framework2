@@ -144,7 +144,7 @@
             }
             if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
             { // split the range request
-                if ($rng[1] <= $size)
+                if ((int) $rng[1] <= $size)
                 { // start is before end of file
                     if (!isset($rng[2]) || $rng[2] === '')
                     { // no top value specified, so use the filesize (-1 of course!!)
@@ -153,7 +153,7 @@
                     if ($rng[2] < $size)
                     { // end is before end of file
                         $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
-                        return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], $rng[2]-$rng[1]+1];
+                        return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], (int) $rng[2] - (int) $rng[1]+1];
                     }
                 }
             }
