@@ -21,7 +21,7 @@
 /**
  * @var array<string>  A list of the Framework DB tables
  */
-        protected static $fwtables = [
+        protected static array $fwtables = [
             FW::CSP,
             FW::CONFIG,
             FW::CONFIRM,
@@ -40,7 +40,7 @@
 /**
  * @var \Support\Context  The Context object
  */
-        protected $context;
+        protected Context $context;
 /**
  * Class constructor. The concrete class using this trait can override it.
  *
@@ -60,7 +60,6 @@
  * @param int               $count  The number wanted.
  *
  * @psalm-return \Generator<mixed, mixed, mixed, void>    But this yields beans
- * @return \Generator
  */
         public function collect(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : \Generator
         {
@@ -83,8 +82,6 @@
  * @param array<mixed>      $params     Parameter values for query (if any)
  * @param int               $start      Start position - used for pagination
  * @param int               $count      The number to be fetched - used for pagination
- *
- * @return array<\RedBeanPHP\OODBBean>
  */
         public function fetch(string $bean, string $where, array $params = [], int $start = -1, int $count = 0) : array
         {
@@ -104,8 +101,6 @@
  * @param string            $bean       The bean kind
  * @param string            $where      The where condition
  * @param array<mixed>      $params     Parameter values for query (if any)
- *
- * @return int
  */
         public function count(string $bean, string $where = '', array $params = []) : int
         {
@@ -120,7 +115,6 @@
  * @param string            $where
  * @param array<mixed>      $params
  *
- * @return int
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function pageCount(string $table, int $pagesize = 10, string $where = '', array $params = []) : int

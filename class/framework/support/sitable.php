@@ -14,16 +14,9 @@
  */
     trait SITable
     {
-/**
- * @var array Field information for tables
- */
-        private static $fields = [];
+        private static array $fields = []; // Field information for tables
 /**
  * Check to see if a table exists - utility function used by AJAX
- *
- * @param string $table
- *
- * @return bool
  */
         public static function tableExists(string $table) : bool
         {
@@ -31,11 +24,6 @@
         }
  /**
   * Check to see if a table has a given field
-  *
-  * @param string $table
-  * @param string $field
-  *
-  * @return bool
   */
         public static function hasField(string $table, string $field) : bool
         {
@@ -50,7 +38,6 @@
  *
  * @param string $table
  *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isFWTable(string $table) : bool
@@ -60,7 +47,6 @@
 /**
  * Number of tables
  *
- * @return int
  * @psalm-suppress PossiblyUnusedMethod
  */
         public static function tablecount(bool $all = FALSE) : int
@@ -73,7 +59,6 @@
  *
  * @param bool    $all  If TRUE then return all beans, otherwise just non-framework beans.
  *
- * @return array
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function tables(bool $all = FALSE, int $start = -1, int $count = -1) : array

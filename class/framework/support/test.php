@@ -95,7 +95,7 @@
  */
         public function fail(Context $context) : string
         {
-            2 / 0;
+            2 / 0; // @phan-suppress-current-line PhanDivisionByZero
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
@@ -225,7 +225,7 @@
  */
         public function toss(Context $context) : string
         {
-            throw new \Exception('Unhandled Exception Test');
+            throw new \Exception('Unhandled Exception Test'); // @phan-suppress-next-line PhanPluginUnreachableCode
             $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
             return '@devel/test.twig';
         }

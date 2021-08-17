@@ -20,13 +20,11 @@
 
         private const ALGORITHM = 'sha256';
 
-        private $twoFA = NULL;
+        private ?TwoFactorAuth $twoFA = NULL;
 /**
  * Make a nonce value for including inline CSS
- *
- * @return string
  */
-        public function makeNonce()
+        public function makeNonce() : string
         {
             $rand = '';
             for ($i = 0; $i < 32; $i++)
@@ -37,12 +35,8 @@
         }
 /**
  * Hash a string
- *
- * @param string $data
- *
- * @return string
  */
-        public function hash(string $data)
+        public function hash(string $data) : string
         {
             return self::ALGORITHM.'-'.\base64_encode(\hash(self::ALGORITHM, $data, TRUE));
         }
@@ -50,8 +44,6 @@
  * Get mimetype for a file
  *
  * @param string $path  The path to the file
- *
- * @return string
  */
         public function mimetype(string $path) : string
         {
@@ -65,19 +57,15 @@
         }
 /**
  * Return TRUE of there is a valid GPC Sec-GPC header
- *
- * @return bool
  */
-        public function hasSecGPC()
+        public function hasSecGPC() : bool
         {
             return \Framework\Web\Web::getInstance()->header('Sec-GPC') == '1';
         }
 /**
  * Check for HSTS wanted
- *
- * @return void
  */
-        public function sslCheck(Context $context)
+        public function sslCheck(Context $context) : void
         {
             if ($context->local()->configVal('forcessl', '0') == '1')
             {
@@ -88,10 +76,8 @@
         }
 /**
  * get the 2FA object
- *
- * @return TwoFactorAuth
  */
-        private function get2fa()
+        private function get2fa() : TwoFactorAuth
         {
             if ($this->twoFA === NULL)
             {
@@ -101,10 +87,8 @@
         }
 /**
  * Generate 2FA Secret
- *
- * @return string
  */
-        public function make2FASecret()
+        public function make2FASecret() : string
         {
             return $this->get2FA()->createSecret();
         }
@@ -113,10 +97,8 @@
  *
  * @param \RedBeanPHP\OODBBean  $user
  * @param string                $value
- *
- * @return bool
  */
-        public function check2FA(string $secret, string $value)
+        public function check2FA(string $secret, string $value) : bool
         {
             return $this->get2FA()->verifyCode($secret, $value);
         }
@@ -124,12 +106,10 @@
  * Make user code - used fror identifying a user for a 2FA check
  *
  * @param \RedBeanPHP\OODBBean  $user
- *
- * @return string
  */
-        public function makeUCode(\RedBeanPHP\OODBBean $user)
+        public function makeUCode(\RedBeanPHP\OODBBean $user) : string
         {
-            $str = \hash('sha256', time().(new \Framework\Utility\RandomStringGenerator('BCDFGHJKLMNPQRSTVWXYZ0123456789'))->generate(32));
+            $str = \hash('sha256', \time().(new \Framework\Utility\RandomStringGenerator('BCDFGHJKLMNPQRSTVWXYZ0123456789'))->generate(32));
             $user->code2fa = $str;
             \R::store($user);
             return $str;
