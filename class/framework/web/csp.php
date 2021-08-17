@@ -23,9 +23,12 @@
  */
         private array $nocsp      = [];
 /**
- * @var which  CSP fields to check for hostnames
+ * @var array<string> which  CSP fields to check for hostnames
  */
         private static array $cspFields = ['css' => 'style-src', 'js' => 'script-src', 'font' => 'font-src', 'img' => 'img-src'];
+/**
+ * @var array<array<string>>   Default CSP settings
+ */
         private static array $defaultCSP = [
             'default-src' => ["'self'"],
             'font-src' => ["'self'", '*.fontawesome.com'],
@@ -39,7 +42,6 @@
  * @param string  $type    What the hash is for (script-src, css-src etc.)
  * @param string  $data    The data to be hashed
  *
- * @return string Returns the hash
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function saveCSP(string $type, string $data) : string
@@ -53,19 +55,17 @@
  *
  * @param string|array<mixed>  $type    What the item is for (script-src, style-src etc.)
  * @param string               $host    The host to add
- *
- * @return void
  */
         public function addCSP($type, string $host = '') : void
         {
             if (!is_array($type))
             {
-                assert($host !== '');
+                \assert($host !== '');
                 $type = [$type => [$host]];
             }
             foreach ($type as $t => $h)
             {
-                if (!is_array($h))
+                if (!\is_array($h))
                 {
                     $h = [$h];
                 }
@@ -75,7 +75,7 @@
                 }
                 else
                 {
-                    $this->csp[$t] = array_merge($this->csp[$t], $h);
+                    $this->csp[$t] = \array_merge($this->csp[$t], $h);
                 }
             }
         }
@@ -85,21 +85,20 @@
  * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
  * @param string        $host    The item to remove
  *
- * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function removeCSP($type, string $host = '') : void
         {
-            if (!is_array($type))
+            if (!\is_array($type))
             {
-                assert($host !== '');
+                \assert($host !== '');
                 $type = [$type => $host];
             }
             foreach ($type as $t => $h)
             {
                 if (isset($this->csp[$t]))
                 {
-                    $this->csp[$t] = \array_diff($this->csp[$t], is_array($h) ? $h : [$h]);
+                    $this->csp[$t] = \array_diff($this->csp[$t], \is_array($h) ? $h : [$h]);
                 }
             }
         }
@@ -109,7 +108,6 @@
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function setCSP() : void
@@ -122,7 +120,7 @@
                 {
                     if (!empty($val))
                     {
-                        $csp .= ' '.$key.' '.implode(' ', $val).';';
+                        $csp .= ' '.$key.' '.\implode(' ', $val).';';
                     }
                 }
                 if ($local->configval('reportcsp'))
@@ -178,8 +176,6 @@
         }
 /**
  * Get the CSP values
- *
- * @return array<string>
  */
         public function getCSP() : array
         {
@@ -187,12 +183,11 @@
         }
 /**
  * Check to see if we need to update the CSP data for a new host
+ * Returns TRUE if source was added
  *
  * @param string $url       The url for the resource
  * @param string $type      js, css etc.
  * @param bool   $essential If TRUE this is essential to site functioning
- *
- * @return bool TRUE if source was added
  */
         public function checkCSP(string $url, string $type, bool $essential = TRUE) : bool
         {
