@@ -3,7 +3,7 @@
   * Class for handling home pages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2012-2019 Newcastle University
+  * @copyright 2012-2021 Newcastle University
   * @package Framework
   * @subpackage UserPages
   */
@@ -21,10 +21,9 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return string   A template name
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             return '@content/index.twig';
         }

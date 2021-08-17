@@ -3,7 +3,7 @@
  * A class that contains code to implement Multi nested static pages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2019 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage UserPages
  */
@@ -23,10 +23,10 @@
  *
  * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $action = $context->action();
-            $rest = $action.'/'.implode(DIRECTORY_SEPARATOR, $context->rest());
+            $rest = $action.'/'.\implode(\DIRECTORY_SEPARATOR, $context->rest());
             if (!file_exists($context->local()->basedir().'/twigs/'.$rest.'.twig'))
             {
                 $context->web()->notfound();

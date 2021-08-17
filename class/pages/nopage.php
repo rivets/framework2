@@ -4,7 +4,7 @@
  * mechanisms.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage UserPages
  */
@@ -22,10 +22,9 @@
  *
  * @param Context   $context    The context object for the site
  *
- * @return string|array<string>     A template name
  * @phpcsSuppress Standards.Generic.CodeAnalysis.UselessOverridingMethod
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             /*--- Your code goes here ---*/
             return parent::handle($context);

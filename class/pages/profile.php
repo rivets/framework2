@@ -20,10 +20,9 @@
  *
  * @param Context $context    The context object for the site
  *
- * @return string|array     A template name or an array with more complex information
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             return '@content/profile.twig';
         }
