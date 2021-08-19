@@ -38,7 +38,7 @@
         private const DATADIR   = 'private';
 /** @var string The name of the file we are working on */
         private string $file = '';
-/** @var int    The last modified time for the file */
+/** @var string    The last modified time for the file */
         private string $mtime = '';
 
 /**
@@ -64,7 +64,7 @@
                 {
                     throw new \Framework\Exception\BadValue('No such file');
                 }
-                $this->file = substr($file->fname, 1); // drop the separator at the start....
+                $this->file = \substr($file->fname, 1); // drop the separator at the start....
             }
             else
             {
@@ -77,15 +77,15 @@
  *
  * Always be careful that filenames do not have .. in them of course.
  */
-                $this->file = implode(DIRECTORY_SEPARATOR, $fpt);
-                if (!preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', implode('/', $fpt)))
+                $this->file = \implode(DIRECTORY_SEPARATOR, $fpt);
+                if (!\preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', \implode('/', $fpt)))
                 { // filename constructed is not the right format
                     throw new \Framework\Exception\BadValue('Illegal filename');
                 }
 /*
  * Now do an access control check
  */
-                $file = \R::findOne('upload', 'fname=?', [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
+                $file = \R::findOne('upload', 'fname=?', [\DIRECTORY_SEPARATOR . self::DATADIR . \DIRECTORY_SEPARATOR . $this->file]);
                 if (!\is_object($file))
                 { // not recorded in the database so 404 it
                     $web->notfound();
