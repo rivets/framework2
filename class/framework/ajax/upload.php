@@ -69,7 +69,7 @@
             $fdt = $context->formData('file');
             try
             {
-                foreach ($fdt->fileArray('file') as $file)
+                foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
                 {
                     $upl = \R::dispense('upload');
                     if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
