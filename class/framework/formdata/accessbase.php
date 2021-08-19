@@ -31,7 +31,7 @@
  * @param array|int     $options  Filter options
  * @param bool          $isArray  Expect an array ratherthan a simple value
  */
-        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE) : array|string
+        public function mustFetch($name, $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
@@ -43,10 +43,10 @@
  * @param string|array  $name     The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  * @param mixed         $default  Returned if the key does not exist
  * @param ?int          $filter   Filter to apply
- * @param mixed         $options  Filter options
+ * @param array|int     $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE) : array|string
+        public function fetch($name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
@@ -61,7 +61,7 @@
  */
         public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT, FALSE)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, \FILTER_VALIDATE_INT)[1], $forupdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it

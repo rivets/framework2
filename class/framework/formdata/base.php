@@ -71,9 +71,9 @@
  * @param bool            $throw      If TRUE then throw an execption if it does not exist
  * @param bool            $isArray    If TRUE then check that this is an array
  * @param ?int            $filter     Filter to apply or NULL
- * @param mixed           $options    Filter options
+ * @param array|int       $options    Filter options
  */
-        final public function getValue(array|string $key, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
+        final public function getValue(array|string $key, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, array|int $options = 0) : array
         {
             try
             {
@@ -147,11 +147,11 @@
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  * @param ?int      $filter     A PHP filter
- * @param array|int     $options    Filter options
+ * @param array|int $options    Filter options
  *
  * @throws BadValue
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = []) : array|string
+        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = 0) : array|string
         {
             try
             {
@@ -170,7 +170,7 @@
                 $part = trim($part);
                 if (!empty($filter))
                 { // need to apply a filter to the value
-                    $part = filter_var($part, $filter, $options);
+                    $part = \filter_var($part, $filter, $options);
                     if ($part === FALSE || $part === NULL)
                     { // it failed
                         if ($throw)
