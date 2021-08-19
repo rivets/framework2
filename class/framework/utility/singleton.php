@@ -47,7 +47,6 @@
 /**
  * Checks, instantiates and returns the only instance of the using class.
  *
- * @template object
  * @psalm-return object
  *
  * @psalm-suppress MismatchingDocblockReturnType
