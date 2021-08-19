@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -23,17 +23,17 @@
 /**
  * @var array<string> METHOD options for forms
  */
-        private static $methods     = ['', 'GET', 'POST'];
+        private static array $methods     = ['', 'GET', 'POST'];
 /**
  * @var array<string> Attributes for inputs
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $attributes  = ['type', 'class', 'name', 'placeholder'];
+        private static array $attributes  = ['type', 'class', 'name', 'placeholder'];
 /**
  * @var array<array<bool>>   Key is name of field and the array contains flags for checks
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $editfields = [
+        private static array $editfields = [
             'name'            => [TRUE, FALSE],         // [NOTEMPTY, CHECK/RADIO]
             'action'          => [TRUE, FALSE],
             'method'          => [TRUE, FALSE],
@@ -44,7 +44,7 @@
 /**
  * @var array The kinds of flags that fields can have
  */
-        private static $flags = [
+        private static array $flags = [
             'checked'       => ['Checked', TRUE, 0x01],
             'disabled'      => ['Disabled', FALSE, 0x02],
             'multiple'      => ['Multiple', TRUE, 0x04],
@@ -54,14 +54,12 @@
 /**
  * @var bool flag to indicate inside optgroup - nested optgroups are NOT supported (at the moment)
  */
-        private $optgroup = FALSE;
+        private bool $optgroup = FALSE;
 
         use \ModelExtend\FWEdit;
         use \ModelExtend\MakeGuard;
 /**
  * Return the form name
- *
- * @return string
  */
         public function name() : string
         {
@@ -69,8 +67,6 @@
         }
 /**
  * Return the form's method
- *
- * @return string
  */
         public function method() : string
         {
@@ -78,8 +74,6 @@
         }
 /**
  * Return the form's fields
- *
- * @return array<\RedBeanPHP\OODBBean>
  */
         public function fields() : array
         {
@@ -89,8 +83,6 @@
  * Return the form's fields by sequence
  *
  * Some fields deliberately share sequence numbers (e.g. checkboxes in a row)
- *
- * @return array<array<\RedBeanPHP\OODBBean>>
  */
         public function sequence() : array
         {
@@ -115,8 +107,6 @@
  * Remember that some items deliberatley share sequence numbers!
  *
  * @todo support resequencing of sub-orderings
- *
- * @return void
  */
         public function resequence() : void
         {
@@ -125,9 +115,9 @@
             {
                 foreach ($flds as $fld)
                 {
-                    $sqn = explode('/', $fld->seqn);
+                    $sqn = \explode('/', $fld->seqn);
                     $sqn[0] = $seqn;
-                    $fld->seqn = implode('/', $sqn);
+                    $fld->seqn = \implode('/', $sqn);
                     \R::store($fld);
                 }
                 $seqn += 10;
@@ -139,7 +129,6 @@
  * @param Context           $context The context object
  * @param array<string>     $rest     Not used here at the moment
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
@@ -152,8 +141,6 @@
  * @see Framework\Pages\Admin
  *
  * @param \Support\Context    $context  The context object
- *
- * @return array
  */
         public function edit(Context $context) : array
         {
@@ -188,7 +175,6 @@
  * @param Context           $context
  * @param array<string>     $rest
  *
- * @return void
  * @psalm-suppress PossiblyUnusedParameter
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -200,10 +186,8 @@
  *
  * @param array     $values Values to enter into form
  * @param bool      $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
- *
- * @return string
  */
-        public function render($values = [], bool $noform = FALSE) : string
+        public function render(array $values = [], bool $noform = FALSE) : string
         {
             if (!$noform || $this->bean->method == 0)
             {
@@ -305,13 +289,11 @@
  * handle an option
  *
  * @param object|array  $option
- *
- * @return string
  */
         private function doOption($option) : string
         {
             $form = '';
-            if (is_object($option))
+            if (\is_object($option))
             {
                 if (isset($option->optgroup))
                 {
@@ -330,7 +312,7 @@
                     return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
                 }
             }
-            elseif (is_array($option))
+            elseif (\is_array($option))
             {
                 if ($option[0] === NULL)
                 {
@@ -358,10 +340,8 @@
  * @param string $text
  * @param bool   $selected
  * @param bool   $disabled
- *
- * @return string
  */
-        private function mkOption($value, $text, $selected, $disabled) : string
+        private function mkOption(string $value, string $text, bool $selected, bool $disabled) : string
         {
             return '<option value="'.$value.'"'.($disabled ? ' disabled="disabled"' : '').($selected ? ' selected="selected"' : '').'>'.$text.'</option>';
         }
@@ -371,8 +351,6 @@
  * @see Framework\Ajax::bean
  *
  * @param Context    $context  The context object
- *
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {

@@ -248,7 +248,7 @@
                 if ($fdt->hasForm())
                 {
                     $upl = \R::dispense('upload');
-                    $fa = $fdt->fileData('upload');
+                    $fa = $fdt->fileData('upload');  // @phan-suppress-current-line PhanUndeclaredMethod
                     if (!$upl->savefile($context, $fa, FALSE, $context->user(), 0))
                     {
                         \Model\Upload::fail($context, $fa);

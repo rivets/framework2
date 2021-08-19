@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -27,7 +27,6 @@
  * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
@@ -35,7 +34,7 @@
             $type = $fdt->mustFetch('type');
             $host = $fdt->mustFetch('host');
             $bn = \R::findOne(FW::CSP, 'type=? and host=?', [$type, $host]);
-            if (is_object($bn))
+            if (\is_object($bn))
             {
                 throw new \Framework\Exception\BadValue('CSP item exists');
             }

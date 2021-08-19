@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2013-2020 Newcastle University
+ * @copyright 2013-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -23,12 +23,12 @@
  * @var string   The type of the bean that stores roles for this page
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private $roletype = FW::ROLE;
+        private string $roletype = FW::ROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checks
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $editfields = [
+        private static array $editfields = [
             'email'     => [TRUE, FALSE],         // [NOTEMPTY]
         ];
 
@@ -42,7 +42,6 @@
  * @param Context    $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
@@ -80,46 +79,36 @@
         }
 /**
  * Is this user an admin?
- *
- * @return bool
  */
         public function isAdmin() : bool
         {
-            return is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
+            return \is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
         }
 /**
  * Is this user active?
- *
- * @return bool
  */
         public function isActive() : bool
         {
-            return $this->bean->active;
+            return $this->bean->active != 0;
         }
 /**
  * Is this user confirmed?
- *
- * @return bool
  */
         public function isConfirmed() : bool
         {
-            return $this->bean->confirm;
+            return $this->bean->confirm != 0;
         }
 /**
  * Is this user a developer?
- *
- * @return bool
  */
         public function isDeveloper() : bool
         {
-            return is_object($this->hasRole(FW::FWCONTEXT, FW::DEVELROLE));
+            return \is_object($this->hasRole(FW::FWCONTEXT, FW::DEVELROLE));
         }
 /**
  * Set the user's password
  *
  * @param string    $pw The password
- *
- * @return void
  */
         public function setPW(string $pw) : void
         {
@@ -130,17 +119,13 @@
  * Check a password
  *
  * @param string    $pw The password
- *
- * @return bool
  */
         public function pwOK(string $pw) : bool
         {
-            return password_verify($pw, $this->bean->password);
+            return \password_verify($pw, $this->bean->password);
         }
 /**
  * Set the email confirmation flag
- *
- * @return void
  */
         public function doConfirm() : void
         {
@@ -154,13 +139,12 @@
  * @param string    $url        The URL of the site
  * @param string    $device     Currently not used!!
  *
- * @return string
  * @psalm-suppress UnusedVariable
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makeToken(string $url, string $device = '') : string
         {
-            $token = (object) ['iss' => $url, 'iat' => idate('U'), 'sub' => $this->bean->getID()];
+            $token = (object) ['iss' => $url, 'iat' => \idate('U'), 'sub' => $this->bean->getID()];
             /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
             return \Framework\Utility\JWT\JWT::encode($token, FW::AUTHKEY);
         }
@@ -170,7 +154,6 @@
  * @param Context       $context   The context object
  * @param array<string> $rest      Any other values from the URL
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
@@ -205,10 +188,8 @@
         }
 /**
  * Return the user's 2FA secret
- *
- * @return string
  */
-        public function secret()
+        public function secret() : string
         {
             return $this->bean->secret;
         }

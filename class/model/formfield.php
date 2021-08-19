@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -20,15 +20,15 @@
 /**
  * @var array<string> Attributes that this supports
  */
-        private static $attributes  = ['class', 'name', 'placeholder'];
+        private static array $attributes  = ['class', 'name', 'placeholder'];
  /**
   * @var int Counter used for generating new IDs
   */
-        private static $lcount             = 1;
+        private static int $lcount             = 1;
 /**
  * @var array The kinds of flags that fields can have
  */
-        private static $flags = [
+        private static array $flags = [
             'checked'       => ['Checked', TRUE, 0x01],
             'disabled'      => ['Disabled', FALSE, 0x02],
             'multiple'      => ['Multiple', TRUE, 0x04],
@@ -63,8 +63,6 @@
  *
  * @param string    $class    The class name
  * @param bool      $doValue  If TRUE Then add a value attribute
- *
- * @return string
  */
         public function fieldAttr(string $class, bool $doValue = TRUE) : string
         {
@@ -109,7 +107,7 @@
             {
                 $res[] = $this->bean->other;
             }
-            return implode(' ', $res);
+            return \implode(' ', $res);
         }
     }
 ?>

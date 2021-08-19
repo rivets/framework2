@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -23,7 +23,7 @@
  * @var array<array<bool>>   Key is name of field and the array contains flags for checks
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $editfields = [
+        private static array $editfields = [
             'value'       => [TRUE, FALSE],         // [NOTEMPTY, CHECK/RADIO]
             'integrity'   => [FALSE, FALSE],
             'crossorigin' => [FALSE, FALSE],
@@ -40,13 +40,12 @@
  * @param string   $type   For error message
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function checkURL(string $type) : void
         {
-            if (filter_var($this->bean->value, FILTER_VALIDATE_URL) === FALSE)
+            if (\filter_var($this->bean->value, \FILTER_VALIDATE_URL) === FALSE)
             { // not a straightforward URL
-                if (!preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
+                if (!\preg_match('#^(%BASE%/|//?).+#', $this->bean->value))
                 { // not a canonical URL
                     throw new \Framework\Exception\BadValue('Invalid value for '.$type.' item');
                 }
@@ -56,19 +55,18 @@
  * Function called when a page bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function update() : void
         {
             $this->bean->name = strtolower($this->bean->name);
-            if (!preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
+            if (!\preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
                 throw new \Framework\Exception\BadValue('Invalid config item name');
             }
-            switch (strtolower($this->bean->type))
+            switch (\strtolower($this->bean->type))
             {
             case 'boolean':
-                if (($x = filter_var($this->bean->value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) === NULL)
+                if (($x = \filter_var($this->bean->value, \FILTER_VALIDATE_BOOLEAN, \FILTER_NULL_ON_FAILURE)) === NULL)
                 {
                     throw new \Framework\Exception\BadValue('Invalid value for boolean item');
                 }
@@ -78,7 +76,7 @@
                 $this->checkURL('CSS');
                 break;
             case 'integer':
-                if (filter_var($this->bean->value, FILTER_VALIDATE_INT) === FALSE)
+                if (\filter_var($this->bean->value, \FILTER_VALIDATE_INT) === FALSE)
                 {
                     throw new \Framework\Exception\BadValue('Invalid value for integer item');
                 }
@@ -100,14 +98,13 @@
  * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata('post');
             $name = $fdt->mustFetch('name');
             $bn = \R::findOne(FW::CONFIG, 'name=?', [$name]);
-            if (is_object($bn))
+            if (\is_object($bn))
             {
                 throw new \Framework\Exception\BadValue('Config item exists');
             }
@@ -126,7 +123,6 @@
  *
  * @param \Support\Context    $context   The context object
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context) : void
@@ -150,15 +146,13 @@
  * @param object $cdata  Update values from the json updater
  * @param string $base
  * @param bool   $doit
- *
- * @return string
  */
         public function doupdate(object $cdata, string $base, bool $doit) : string
         {
             if ($this->bean->local == 0)
             { // update if not locally set and there is a new value
                 $change = FALSE;
-                $cdata->value = preg_replace('/%BASE%/', $base, $cdata->value); // relocate to this base.
+                $cdata->value = \preg_replace('/%BASE%/', $base, $cdata->value); // relocate to this base.
                 $diff = [];
                 foreach ($cdata as $k => $v)
                 {

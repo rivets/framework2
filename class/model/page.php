@@ -25,12 +25,12 @@
  * @var string   The type of the bean that stores roles for this page
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private $roletype = FW::PAGEROLE;
+        private string $roletype = FW::PAGEROLE;
 /**
  * @var Array   Key is name of field and the array contains flags for checkboxes
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $editfields = [
+        private static array $editfields = [
             'name'          => [TRUE, FALSE],
             'kind'          => [TRUE, FALSE],
             'source'        => [TRUE, FALSE],
@@ -50,11 +50,10 @@
  * Function called when a page bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function update() : void
         {
-            $this->bean->name = strtolower($this->bean->name);
+            $this->bean->name = \strtolower($this->bean->name);
             if (!\preg_match('/^[a-z][a-z0-9]*/', $this->bean->name))
             {
                 throw new BadValue('Invalid page name');
@@ -67,8 +66,6 @@
  * @param \Support\Context    $context    The context object
  *
  * @psalm-suppress PossiblyNullReference - we know we have a user when we call context->user
- *
- * @return void
  */
         public function check(Context $context) : void
         {
@@ -76,7 +73,7 @@
             {
                 if (!$context->hasuser())
                 { // not logged in
-                    $context->divert('/login/?goto='.urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
+                    $context->divert('/login/?goto='.\urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
                 if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
@@ -103,7 +100,6 @@
  * @param array<string>    $name       The name of the twig
  *
  * @throws \Framework\Exception\InternalError
- * @return void
  */
         private static function makeTwig(Context $context, array $name) : void
         {
@@ -118,15 +114,10 @@
         }
 /**
  * Handle an object page
- *
- * @param Context               $context
- * @param \RedBeanPHP\OODBBean  $p
- *
- * @return void
  */
         private static function doObject(Context $context, \RedBeanPHP\OODBBean $p)
         {
-            if (!preg_match('/\\\\/', $p->source))
+            if (!\preg_match('/\\\\/', $p->source))
             { // no namespace so put it in \Pages
                 $p->source = '\\Pages\\'.$p->source;
                 \R::store($p);
@@ -155,15 +146,10 @@
         }
 /**
  * Handle a template page
- *
- * @param Context               $context
- * @param \RedBeanPHP\OODBBean  $p
- *
- * @return void
  */
         public static function doTemplate(Context $context, \RedBeanPHP\OODBBean $p) : void
         {
-            if (!preg_match('/\.twig$/', $p->source))
+            if (!\preg_match('/\.twig$/', $p->source))
             { // doesn't end in .twig
                 $p->source .= '.twig';
             }
@@ -204,8 +190,6 @@
  * This will be called from ajax.php
  *
  * @param Context   $context    The context object for the site
- *
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
@@ -262,8 +246,8 @@
  * Setup for an edit
  *
  * @param Context    $context  The context object
+ * @paream array     $rest     The rest of the URL
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
@@ -282,11 +266,11 @@
 
             $this->editroles($context);
             $admin = $this->hasrole(FW::FWCONTEXT, FW::ADMINROLE);
-            if (is_object($devel = $this->hasrole(FW::FWCONTEXT, FW::DEVELROLE)) && !is_object($admin))
+            if (\is_object($devel = $this->hasrole(FW::FWCONTEXT, FW::DEVELROLE)) && !\is_object($admin))
             { // if we need developer then we also need admin
                 $admin = $this->addrole(FW::FWCONTEXT, FW::ADMINROLE, '-', $devel->start, $devel->end);
             }
-            if (is_object($admin) && !$this->bean->needlogin)
+            if (\is_object($admin) && !$this->bean->needlogin)
             { // if we need admin then we also need login!
                 $this->bean->needlogin = 1;
                 \R::store($this->bean);

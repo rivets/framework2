@@ -29,7 +29,7 @@
                 if (Config::UPUBLIC && Config::UPRIVATE)
                 { // need to check the flag could be either private or public
                     $fdp = $context->formdata('post');
-                    foreach($fdt->fileArray('uploads') as $ix => $fa)
+                    foreach($fdt->fileArray('uploads') as $ix => $fa) // @phan-suppress-current-line PhanUndeclaredMethod
                     {
                         $upl = \R::dispense('upload');
                         if (!$upl->savefile($context, $fa, $fdp->fetch(['public', $ix]), $context->user(), $ix))
@@ -44,7 +44,7 @@
                 }
                 else
                 {
-                    foreach($fdt->fileArray('uploads') as $ix => $fa)
+                    foreach($fdt->fileArray('uploads') as $ix => $fa) // @phan-suppress-current-line PhanUndeclaredMethod
                     { // we only support private or public in this case so there is no flag
                         $upl = \R::dispense('upload');
                         if (!$upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix))

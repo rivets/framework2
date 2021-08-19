@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2020 Newcastle University
+ * @copyright 2015-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -21,8 +21,6 @@
         use \ModelExtend\Upload;
 /**
  * Return the owner of this uplaod
- *
- * @return ?\RedBeanPHP\OODBBean
  */
         public function owner() : ?\RedBeanPHP\OODBBean
         {
@@ -30,8 +28,6 @@
         }
 /**
  * Return the value need for an HREF on a download <a> tag
- *
- * @return string
  */
         public function link() : string
         {
@@ -55,15 +51,14 @@
  * @param int                   $index      If there is an array of files possibly with other data, then this is the index in the array.
  *
  * @throws \Framework\Exception\InternalError
- * @return bool
  */
-        public function savefile(Context $context, array $da, bool $public, ?\RedBeanPHP\OODBBean $owner = NULL, $index = 0) : bool
+        public function savefile(Context $context, array $da, bool $public, ?\RedBeanPHP\OODBBean $owner = NULL, int $index = 0) : bool
         {
-            if ($da['size'] == 0 || $da['error'] != UPLOAD_ERR_OK)
+            if ($da['size'] == 0 || $da['error'] != \UPLOAD_ERR_OK)
             { // 0 length file or there was an error so ignore
                 return FALSE;
             }
-            if (!$public && !is_object($owner))
+            if (!$public && !\is_object($owner))
             {
                 if (!$context->hasuser())
                 { // no logged in user! This should never happen...
@@ -73,21 +68,21 @@
             }
             [$dir, $pname, $fname] = $this->mkpath($context, $owner, $public, $da);
             $mimetype = \Framework\Support\Security::getinstance()->mimetype($da['tmp_name']);
-            if (!@move_uploaded_file($da['tmp_name'], $fname))
+            if (!\move_uploaded_file($da['tmp_name'], $fname))
             {
-                @chdir($dir);
+                \chdir($dir);
                 throw new \Framework\Exception\InternalError('Cannot move uploaded file to '.$fname);
             }
             $this->bean->added = $context->utcnow();
             $pname[] = $fname;
-            $this->bean->fname = DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $pname);
+            $this->bean->fname = \DIRECTORY_SEPARATOR.\implode(\DIRECTORY_SEPARATOR, $pname);
             $this->bean->filename = $da['name'];
             $this->bean->public = $public ? 1 : 0;
             $this->bean->user = $owner;
             $this->bean->mimetype = $mimetype;
             $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
-            if (!@chdir($dir))
+            if (!@\chdir($dir))
             { // go back to where we were in the file system
                 throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
@@ -101,15 +96,14 @@
  * @param int        $index     The index if this all part of an array of data
  *
  * @throws \Framework\Exception\InternalError
- * @return void
  */
         public function replace(Context $context, array $da, int $index = 0) : void
         {
             $oldfile = $this->bean->fname;
             [$dir, $pname, $fname] = $this->mkpath($context, $this->bean->user, $this->bean->public, $da);
-            if (!move_uploaded_file($da['tmp_name'], $fname))
+            if (!\move_uploaded_file($da['tmp_name'], $fname))
             {
-                chdir($dir);
+                \chdir($dir);
                 throw new \Framework\Exception\InternalError('Cannot move uploaded file to '.$fname);
             }
             $this->bean->added = $context->utcnow();
@@ -118,8 +112,8 @@
             $this->bean->filename = $da['name'];
             $this->updateData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
-            unlink($context->local()->basedir().$oldfile);
-            if (!chdir($dir))
+            \unlink($context->local()->basedir().$oldfile);
+            if (!\chdir($dir))
             { // go back to where we were in the file system
                 throw new \Framework\Exception\InternalError('Cannot chdir to '.$dir);
             }
@@ -131,19 +125,17 @@
  * @param ?object           $owner
  * @param bool             $public
  * @param array            $da
- *
- * @return array
  */
         private function mkpath(Context $context, ?object $owner, bool $public, array $da) : array
         {
-            $dir = getcwd();
-            chdir($context->local()->basedir());
-            $pname = array_merge($public ? ['assets', 'public'] : ['private'], [is_object($owner) ? $owner->getID() : '0', date('Y'), date('m')]);
+            $dir = \getcwd();
+            \chdir($context->local()->basedir());
+            $pname = \array_merge($public ? ['assets', 'public'] : ['private'], [\is_object($owner) ? $owner->getID() : '0', \date('Y'), \date('m')]);
             foreach ($pname as $pd)
             { // walk the path cding and making if needed
                 $this->mkch($pd);
             }
-            return [$dir, $pname, uniqid('', TRUE).'.'.pathinfo($da['name'], PATHINFO_EXTENSION)];
+            return [$dir, $pname, \uniqid('', TRUE).'.'.\pathinfo($da['name'], \PATHINFO_EXTENSION)];
         }
 /**
  * Make a directory if necessary and cd into it
@@ -151,18 +143,17 @@
  * @param string    $dir The directory name
  *
  * @throws \Framework\Exception\Forbidden
- * @return void
  */
         private static function mkch(string $dir) : void
         {
-            if (!file_exists($dir))
+            if (!\file_exists($dir))
             {
-                if (!mkdir($dir, 0770))
+                if (!\mkdir($dir, 0770))
                 {
                     throw new \Framework\Exception\Forbidden('Cannot mkdir '.$dir);
                 }
             }
-            if (!chdir($dir))
+            if (!\chdir($dir))
             {
                 throw new \Framework\Exception\Forbidden('Cannot chdir '.$dir);
             }
@@ -172,8 +163,6 @@
  *
  * @param Context       $context
  * @param array<mixed>  $fa
- *
- * @return void
  */
         public static function fail(Context $context, array $fa) : void
         {
@@ -187,15 +176,15 @@
                 {
                     switch ($fa['error'])
                     {
-                    case UPLOAD_ERR_OK: // this shouldn't happen
+                    case \UPLOAD_ERR_OK: // this shouldn't happen
                         throw new \Framework\Exception\InternalError('Should not be OK');
 
-                    case UPLOAD_ERR_NO_FILE:
+                    case \UPLOAD_ERR_NO_FILE:
                         $context->local()->message(\Framework\Local::ERROR, $fa['name'].' No file sent');
                         break;
 
-                    case UPLOAD_ERR_INI_SIZE:
-                    case UPLOAD_ERR_FORM_SIZE:
+                    case \UPLOAD_ERR_INI_SIZE:
+                    case \UPLOAD_ERR_FORM_SIZE:
                         $context->local()->message(\Framework\Local::ERROR, $fa['name'].' File size exceeded');
                         break;
 

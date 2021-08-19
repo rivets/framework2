@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-20120Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -23,11 +23,10 @@
  * Function called when a rolecontext bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function update() : void
         {
-            if (!preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
+            if (!\preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
                 throw new \Framework\Exception\BadValue('Invalid context name');
             }
@@ -36,8 +35,6 @@
  * Add a RoleContext from a form - invoked by the AJAX bean operation
  *
  * @param Context  $context  The context object for the site
- *
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {

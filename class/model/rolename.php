@@ -5,7 +5,7 @@
  * This is a Framework system class - do not edit!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemModel
  */
@@ -23,11 +23,10 @@
  * Function called when a rolename bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function update() : void
         {
-            if (!preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
+            if (!\preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
                 throw new \Framework\Exception\BadValue('Invalid role name');
             }
@@ -38,8 +37,6 @@
  * @see Framework\Ajax::bean
  *
  * @param Context  $context  The Context object for the site
- *
- * @return \RedBeanPHP\OODBBean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
