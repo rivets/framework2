@@ -20,13 +20,11 @@
  *            then just put the list of contextname/rolename pairs in the result of requires.
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-         private static $permissions = [];
+         private static array $permissions = [];
 /**
  * Return permission requirements. The version in the base class requires logins and adds nothing else.
  * If that is what you need then you can remove this method. This function is called from the base
  * class constructor when it does some permission checking.
- *
- * @return array<mixed>
  */
         public function requires() : array
         {
@@ -43,7 +41,7 @@
             $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
             $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
-            foreach ($fdt->fileArray('file') as $file)
+            foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
             {
                 $upl = \R::dispense('upload');
                 if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
