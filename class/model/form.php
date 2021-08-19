@@ -147,7 +147,7 @@
             $fdt = $context->formdata('post');
             $emess = $this->dofields($fdt);
 
-            foreach ($fdt->fetchArray('new') as $ix => $fid)
+            foreach ($fdt->fetchArray('new') as $ix => $fid) // @phan-suppress-current-line PhanUnusedVariableValueOfForeachWithKey
             {
                 if (($type = $fdt->fetch(['type', $ix], '')) !== '')
                 {
@@ -158,7 +158,7 @@
                         $fld->$fname = $fdt->fetch(['fld'.$fname, $ix], '');
                     }
                     $fld->flags = 0;
-                    foreach (self::$flags as $fn => $fv)
+                    foreach (self::$flags as $fn => $fv) // @phan-suppress-current-line PhanUnusedVariableValueOfForeachWithKey
                     {
                         $fld->flags |= $fdt->fetch(['fld'.$fn, $ix], 0);
                     }

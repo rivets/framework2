@@ -65,7 +65,7 @@
 /**
  * Check patterns and apply functions
  */
-        private function checkPtns(Context $context, array $url, array $ptnmap, string $fn, ?string $oktpl, string $errtpl) : string|bool
+        private function checkPtns(Context $context, array $url, array $ptnmap, string $fn, ?string $oktpl, string $errtpl) : NULL|string|bool
         {
             $data = [];
             $errors = [];
@@ -99,7 +99,7 @@
             }
             if (!empty($errors))
             { // we matched the URL but there were errors so report them and return the error template
-                $context->local()->message(Local::ERROR, $errrors);
+                $context->local()->message(Local::ERROR, $errors);
                 return $errtpl;
             }
             if ($fn === NULL)
