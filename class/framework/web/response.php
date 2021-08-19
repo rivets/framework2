@@ -3,7 +3,7 @@
  * A trait that implements various response functions
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
+ * @copyright 2019-2021 Newcastle University
  * @package Framework
  */
     namespace Framework\Web;
@@ -15,8 +15,6 @@
     {
 /**
  * Send a 204 response - OK but no content
- *
- * @return void
  */
         public function noContent() : void
         {
@@ -27,8 +25,6 @@
  *
  * @param string  $value  a string to return
  * @param string  $mime   the mimetype
- *
- * @return void
  */
         public function created(string $value, string $mime = 'text/plain; charset=UTF-8') : void
         {
@@ -38,8 +34,6 @@
  * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
  *
  * @see \Support\SiteAction
- *
- * @return void
  */
         public function send304() : void
         {
@@ -50,7 +44,6 @@
  *
  * @param string    $msg    A message to be sent
  *
- * @return void
  * @psalm-return never-return
  */
         public function bad(string $msg = '') : void
@@ -63,7 +56,6 @@
  * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
- * @return void
  */
         public function noAccess(string $msg = '') : void
         {
@@ -75,7 +67,6 @@
  * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
- * @return void
  */
         public function notFound(string $msg = '') : void
         {
@@ -87,7 +78,6 @@
  * @param string    $msg    A message to be sent
  *
  * @psalm-return never-return
- * @return void
  */
         public function internal(string $msg = '') : void
         {

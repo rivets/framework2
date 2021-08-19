@@ -16,13 +16,11 @@
 /**
  * @var ?Render Template engine
  */
-        private $renderer = NULL;
+        private ?Render $renderer = NULL;
 /**
  * Setup a renderer if wanted
- *
- * @return void
  */
-        public function initRender(array $render)
+        public function initRender(array $render) : void
         {
             if (!empty($render))
             { // we want a renderer - this setups
@@ -35,8 +33,6 @@
  * The user can then add extensions, filters etc.
  *
  * @param callable     $fn      A user defined function
- *
- * @return void
  */
         public function extendRenderer(callable $fn) : void
         {
@@ -44,20 +40,16 @@
         }
 /**
  * Return TRUE if a renderer is enabled
- *
- * @return bool
  */
-        public function hasRenderer()
+        public function hasRenderer() : bool
         {
-            return is_object($this->renderer);
+            return \is_object($this->renderer);
         }
 /**
  * Render a twig and return the string - will do nothing if the template is the empty string
  *
  * @param string    $tpl    The template
  * @param mixed[]   $vals   Values to set for the template
- *
- * @return string
  */
         public function getrender(string $tpl, array $vals = []) : string
         {
@@ -70,8 +62,6 @@
  * @param mixed[]  $vals      Values to set for the template
  * @param string   $mimeType
  * @param int      $status
- *
- * @return void
  */
         public function render(string $tpl, array $vals = [], string $mimeType = \Framework\Web\Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
@@ -83,15 +73,13 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array<mixed>   $vname    The name to be used inside the template or an array of key/value pairs
- * @param mixed                 $value    The value to be stored or "" if an array in param 1
- * @param bool                  $tglobal  If TRUE add this as a template global variable
+ * @param array|string   $vname    The name to be used inside the template or an array of key/value pairs
+ * @param mixed          $value    The value to be stored or '' if an array in param 1
+ * @param bool           $tglobal  If TRUE add this as a template global variable
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return void
  */
-        public function addval($vname, $value = '', bool $tglobal = FALSE) : void
+        public function addval(array|string $vname, $value = '', bool $tglobal = FALSE) : void
         {
             $this->renderer->addval($vname, $value, $tglobal);
         }
@@ -110,12 +98,10 @@
  *
  * somewhere in the relevant template (usually at the top of the main body)
  *
- * @param int                   $kind   The kind of message
- * @param string|array<string>  $value  The value to be stored or an array of values
- *
- * @return void
+ * @param int           $kind   The kind of message
+ * @param array|string  $value  The value to be stored or an array of values
  */
-        public function message(int $kind, $value) : void
+        public function message(int $kind, array|string $value) : void
         {
             $this->renderer->message($kind, $value);
         }
@@ -123,8 +109,6 @@
  * Clear out messages
  *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
- *
- * @return void
  */
         public function clearMessages(?int $kind = NULL) : void
         {
@@ -132,8 +116,6 @@
         }
 /**
  * Clear out values
- *
- * @return void
  */
         public function clearValues() : void
         {

@@ -22,8 +22,6 @@
  * Initialise twig template engine
  *
  * @param array    $options
- *
- * @return void
  */
         public function __construct(\Framework\Local $local, array $options)
         {
@@ -68,8 +66,6 @@
  *
  * @param string  $name
  * @param mixed   $value
- *
- * @return void
  */
         public function addGlobal(string $name, $value) : void
         {
@@ -79,8 +75,6 @@
  * Add a template engine extension
  *
  * @param object $plugin
- *
- * @return void
  */
         public function addExtension(object $plugin) : void
         {
@@ -88,8 +82,6 @@
         }
 /**
  * Enable debugging mode
- *
- * @return void
  */
         public function enableDebug() : void
         {
@@ -100,8 +92,6 @@
  *
  * @param string    $tpl    The template
  * @param mixed[]   $vals   Values to set for the twig
- *
- * @return string
  */
         public function getRender(string $tpl, array $vals = []) : string
         {
@@ -129,13 +119,11 @@
  * @param bool                  $tglobal  If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return void
  */
         public function addval($vname, $value = '', bool $tglobal = FALSE) : void
         {
-            assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
-            if (is_array($vname))
+            \assert(\is_object($this->engine)); // Should never be called if Twig is not initialised.
+            if (\is_array($vname))
             {
                 foreach ($vname as $key => $aval)
                 {
@@ -173,16 +161,14 @@
  *
  * somewhere in the relevant template (usually at the top of the main body)
  *
- * @param int                   $kind   The kind of message
- * @param string|array<string>  $value  The value to be stored or an array of values
- *
- * @return void
+ * @param int           $kind   The kind of message
+ * @param array|string  $value  The value to be stored or an array of values
  */
-        public function message(int $kind, $value) : void
+        public function message(int $kind, array|string $value) : void
         {
-            if (is_array($value))
+            if (\is_array($value))
             {
-                $this->messages[$kind] = array_merge($this->messages[$kind], $value);
+                $this->messages[$kind] = \array_merge($this->messages[$kind], $value);
             }
             else
             {
@@ -193,12 +179,10 @@
  * Clear out messages
  *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
- *
- * @return void
  */
         public function clearMessages(?int $kind = NULL) : void
         {
-            if (is_null($kind))
+            if (\is_null($kind))
             {
                 $this->messages = [[], [], []];
             }

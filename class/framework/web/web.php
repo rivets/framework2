@@ -18,8 +18,6 @@
         use Response; // bring in response generating functions.
 /**
  * Check to see if the client accepts gzip encoding
- *
- * @return bool
  */
         public function acceptgzip() : bool
         {
@@ -29,26 +27,21 @@
  * Check to see if the client accepts gzip encoding
  *
  * @param string  $type  The type you are looking for...
- *
- * @return bool
  */
         public function accepts(string $type) : bool
         {
-            return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], $type) > 0;
+            return \filter_has_var(\INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && \substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], $type) > 0;
         }
 /**
  * What kind of request was this?
- *
- * @return string
  */
         public function method() : string
         {
-            return $_SERVER['REQUEST_METHOD'];
+            return \strtoupper($_SERVER['REQUEST_METHOD']);
         }
 /**
  * Is this a POST?
  *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function isPost() : bool
@@ -59,8 +52,6 @@
  * Add an item for use in a Cache-Control header
  *
  * @param string[]  $items  An array of items
- *
- * @return void
  */
         public function addCache(array $items) : void
         {
@@ -68,18 +59,16 @@
         }
 /**
  * Return the URI without any Query String
- *
- * @return string
  */
         public function request()
         {
-            if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
+            if (isset($_SERVER['REDIRECT_URL']) && !\preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
             {
 /*
  *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
  *  Older versions will not have this so the code will do nothing.
  */
-                $uri = preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
+                $uri = \preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
             }
             else
             {
@@ -95,13 +84,11 @@
  * Return header value or NULL if it does not exist
  *
  * @param string $name
- *
- * @return ?string
  */
         public function header(string $name) : ?string
         {
-            $xname = strtoupper('HTTP_'.preg_replace('/\s+/', '_', trim($name)));
-            return filter_has_var(INPUT_SERVER, $xname) ? $_SERVER[$xname] : NULL;
+            $xname = \strtoupper('HTTP_'.\preg_replace('/\s+/', '_', \trim($name)));
+            return \filter_has_var(\INPUT_SERVER, $xname) ? $_SERVER[$xname] : NULL;
         }
     }
 ?>

@@ -94,7 +94,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Not editable');
             }
-            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            if (($notmodel = \in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
@@ -113,7 +113,7 @@
                 $obj = $context->load($kind, (int) $rest[2]);
             }
             $context->local()->addval('bean', $obj);
-            if (is_object($obj))
+            if (\is_object($obj))
             {
                 $obj->startEdit($context, $rest); // do any special setup that the edit requires
                 if (($bid = $context->formdata('post')->fetch('bean', '')) !== '')
@@ -150,16 +150,16 @@
  */
         private function view(Context $context, array $rest) : string
         {
-            if (count($rest) < 3)
+            if (\count($rest) < 3)
             {
                 throw new \Framework\Exception\ParameterCount('Too few parameters');
             }
             $kind = $rest[1];
-            if (!in_array($kind, self::VIEWABLE))
+            if (!\in_array($kind, self::VIEWABLE))
             {
                 throw new \Framework\Exception\Forbidden('Not Viewable');
             }
-            if (in_array($kind, self::NOTMODEL))
+            if (\in_array($kind, self::NOTMODEL))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
@@ -200,12 +200,12 @@
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
-                    if (strpos($cdata->value, '%BASE%') === FALSE && $context->web()->checkCSP($cdata->value, $cdata->type))
+                    if (\strpos($cdata->value, '%BASE%') === FALSE && $context->web()->checkCSP($cdata->value, $cdata->type))
                     {
                         $newCSP[] = [$cdata->value, $cdata->type];
                     }
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
-                    if (is_object($lval))
+                    if (\is_object($lval))
                     {
                         if (($upderr = $lval->doupdate($cdata, $base, $doit)) !== '')
                         {
@@ -252,7 +252,7 @@
         {
             $local = $context->local();
             $adon = $local->makebasepath('admin', 'adminonly');
-            $adminonly = file_exists($adon);
+            $adminonly = \file_exists($adon);
             $fdt = $context->formdata('post');
             if ($fdt->hasForm())
             { // it's a post

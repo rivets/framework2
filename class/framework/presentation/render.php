@@ -33,7 +33,6 @@
 /**
  * Initialise template engine
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function __construct(\Framework\Local $local, array $options = [])
@@ -46,8 +45,6 @@
  * The user can then add extensions, filters etc.
  *
  * @param callable     $fn      A user defined function
- *
- * @return void
  */
         public function extendEngine(callable $fn) : void
         {
@@ -58,22 +55,16 @@
  *
  * @param string   $name
  * @param mixed    $value
- *
- * @return void
  */
         abstract public function addGlobal(string $name, $value) : void;
 /**
  * Add a template engine extension
  *
  * @param object $plugin
- *
- * @return void
  */
         abstract public function addExtension(object $plugin) : void;
 /**
  * Enable debugging mode
- *
- * @return void
  */
         abstract public function enableDebug() : void;
 /**
@@ -81,8 +72,6 @@
  *
  * @param string    $tpl    The template
  * @param mixed[]   $vals   Values to set for the renderer
- *
- * @return string
  */
         abstract public function getRender(string $tpl, array $vals = []) : string;
 /**
@@ -92,8 +81,6 @@
  * @param mixed[]  $vals      Values to set for the twig
  * @param string   $mimeType
  * @param int      $status
- *
- * @return void
  */
         public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
@@ -105,18 +92,16 @@
 /**
  * Add a value into the values stored for rendering the template
  *
- * @param string|array<mixed>   $vname    The name to be used inside the twig or an array of key/value pairs
- * @param mixed                 $value    The value to be stored or "" if an array in param 1
- * @param bool                  $tglobal  If TRUE add this as a twig global variable
+ * @param array|string    $vname    The name to be used inside the twig or an array of key/value pairs
+ * @param mixed           $value    The value to be stored or "" if an array in param 1
+ * @param bool            $tglobal  If TRUE add this as a twig global variable
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return void
  */
-        public function addval($vname, $value = '', bool $tglobal = FALSE) : void
+        public function addval(array|string $vname, $value = '', bool $tglobal = FALSE) : void
         {
-            assert(is_object($this->engine)); // Should never be called if Twig is not initialised.
-            if (!is_array($vname))
+            \assert(\is_object($this->engine)); // Should never be called if Twig is not initialised.
+            if (!\is_array($vname))
             {
                 $vname = [$vname => $value];
             }
@@ -147,16 +132,14 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param int                   $kind   The kind of message
- * @param string|array<string>  $value  The value to be stored or an array of values
- *
- * @return void
+ * @param int            $kind   The kind of message
+ * @param array|string   $value  The value to be stored or an array of values
  */
-        public function message(int $kind, $value) : void
+        public function message(int $kind, array|string $value) : void
         {
-            if (is_array($value))
+            if (\is_array($value))
             {
-                $this->messages[$kind] = array_merge($this->messages[$kind], $value);
+                $this->messages[$kind] = \array_merge($this->messages[$kind], $value);
             }
             else
             {
@@ -167,12 +150,10 @@
  * Clear out messages
  *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
- *
- * @return void
  */
         public function clearMessages(?int $kind = NULL) : void
         {
-            if (is_null($kind))
+            if (\is_null($kind))
             {
                 $this->messages = [[], [], []];
             }
@@ -183,8 +164,6 @@
         }
 /**
  * Clear out values
- *
- * @return void
  */
         public function clearValues() : void
         {

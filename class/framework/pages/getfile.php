@@ -39,7 +39,7 @@
 /** @var string The name of the file we are working on */
         private string $file = '';
 /** @var int    The last modified time for the file */
-        private int $mtime = 0;
+        private string $mtime = '';
 
 /**
  * Return data files as requested
@@ -54,10 +54,10 @@
         {
             $web = $context->web(); // it's used all over the place so grab it once
 
-            chdir($context->local()->basedir());
+            \chdir($context->local()->basedir());
             $fpt = $context->rest();
 
-            if (count($fpt) == 2 && $fpt[0] == 'file')
+            if (\count($fpt) == 2 && $fpt[0] == 'file')
             { // this is access by upload ID
                 $file = \R::load('upload', (int) $fpt[1]);
                 if ($file->getID() == 0)
@@ -68,7 +68,7 @@
             }
             else
             {
-                chdir(self::DATADIR);
+                \chdir(self::DATADIR);
 /**
  * Depending on how you construct the URL, it's possible to do some sanity checks on the
  * values passed in. The structure assumed here is /user_id/year/month/filename so
@@ -86,7 +86,7 @@
  * Now do an access control check
  */
                 $file = \R::findOne('upload', 'fname=?', [DIRECTORY_SEPARATOR . self::DATADIR . DIRECTORY_SEPARATOR . $this->file]);
-                if (!is_object($file))
+                if (!\is_object($file))
                 { // not recorded in the database so 404 it
                     $web->notfound();
                     /* NOT REACHED */
@@ -97,7 +97,7 @@
                 throw new \Framework\Exception\Forbidden('No access');
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
-            if (($this->mtime = filemtime($this->file)) === FALSE)
+            if (($this->mtime = (string) \filemtime($this->file)) === FALSE)
             {
                 $web->internal('Lost File: '.$this->file);
                 /* NOT REACHED */
@@ -122,9 +122,9 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function makeetag($context) : string
+        public function makeetag(Context $context) : string
         {
-            return (string) $this->mtime;
+            return $this->mtime;
         }
 /**
  * Get a last modified time for the page
@@ -136,7 +136,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function lastmodified($context) : int
+        public function lastmodified(Context $context) : string
         {
             return $this->mtime;
         }

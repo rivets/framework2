@@ -4,7 +4,7 @@
  * This exists to reduce the number of method in Web itself
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage Web
  */
@@ -138,7 +138,7 @@
  */
         public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array
         {
-            if (!\filter_has_var(INPUT_SERVER, 'HTTP_RANGE'))
+            if (!\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
             {
                 return [$code, [], $size];
             }

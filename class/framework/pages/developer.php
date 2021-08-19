@@ -58,7 +58,7 @@
                 $test = new \Framework\Support\Test();
                 if (count($rest) > 1)
                 {
-                    if (!method_exists($test, $rest[1]))
+                    if (!\method_exists($test, $rest[1]))
                     {
                         $context->web()->bad();
                         /* NOT REACHED */

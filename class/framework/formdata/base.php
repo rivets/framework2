@@ -46,15 +46,15 @@
         {
             switch($which ?? $this->which)
             {
-            case INPUT_GET:
+            case \INPUT_GET:
                 return $_GET;
-            case INPUT_POST:
+            case \INPUT_POST:
                 return $_POST;
-            case INPUT_COOKIE:
+            case \INPUT_COOKIE:
                 return $_COOKIE;
-            case INPUT_SERVER:
+            case \INPUT_SERVER:
                 return $_SERVER;
-            case INPUT_ENV:
+            case \INPUT_ENV:
                 return $_ENV;
             case NULL:
                 return $this->super;
@@ -119,16 +119,16 @@
  */
         private function find(array|string $keys) : array|string
         {
-            $keys = is_array($keys) ? $keys : [$keys];
+            $keys = \is_array($keys) ? $keys : [$keys];
             $part = $this->super;
             $etrack = [];
             while (TRUE) // iterate over the array of keys
             {
-                $key = array_shift($keys);
+                $key = \array_shift($keys);
                 $etrack[] = $key;
                 if (!isset($part[$key]))
                 { // missing item so fail or return default
-                    throw new BadValue('Missing form item: '.implode('/', $etrack));
+                    throw new BadValue('Missing form item: '.\implode('/', $etrack));
                 }
                 $part = $part[$key];
                 if (empty($keys))
@@ -179,7 +179,7 @@
                         }
                         return $default;
                     }
-                    $part = trim($part);
+                    $part = \trim($part);
                 }
             }
             return $part;

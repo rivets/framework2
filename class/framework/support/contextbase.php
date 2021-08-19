@@ -218,11 +218,10 @@
  *
  * @param string $which
  *
- * @return object
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formData(string $which) : object
+        public function formData(string $which) : \Framework\FormData\AccessBase
         {
             if (!isset($this->getters[$which]))
             {
@@ -234,7 +233,6 @@
 /**
  * Return the Web object
  *
- * @return \Framework\Web\Web
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
@@ -252,21 +250,20 @@
  *
  * @internal
  *
- * @return void
  * @throws \Framework\Exception\InternalError
  */
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            $auth = array_filter(getallheaders(), static function ($key) {
-                return FW::AUTHTOKEN === strtoupper($key);
-            }, ARRAY_FILTER_USE_KEY);
+            $auth = \array_filter(\getallheaders(), static function ($key) {
+                return FW::AUTHTOKEN === \strtoupper($key);
+            }, \ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
             { // we have mobile authentication in use
                 try
                 {
                     /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($auth), FW::AUTHKEY);
+                    $tok = \Framework\Utility\JWT\JWT::decode(\array_shift($auth), FW::AUTHKEY);
                 }
                 catch (\Throwable $e)
                 { // token error of some kind so return no access.
@@ -289,8 +286,6 @@
         }
 /**
  * Initialise the context and return self
- *
- * @return \Framework\Support\ContextBase
  */
         public function setup() : ContextBase
         {
@@ -308,8 +303,8 @@
                 else
                 { // something not right so kill session and the session cookie
                     \session_destroy();
-                    $params = session_get_cookie_params();
-                    setcookie(session_name(), '', time() - 42000,
+                    $params = \session_get_cookie_params();
+                    \setcookie(\session_name(), '', \time() - 42000,
                         $params['path'], $params['domain'], $params['secure'], $params['httponly']
                     );
                 }
@@ -327,12 +322,12 @@
  */
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
-                $bsplit = array_filter(explode('/', $this->local()->base()));
-                $req = array_slice($req, count($bsplit));
+                $bsplit = \array_filter(\explode('/', $this->local()->base()));
+                $req = \array_slice($req, \count($bsplit));
             }
             if (!empty($req))
             { // there was something after the domain name so split it into action and rest...
-                $this->reqaction = strtolower(array_shift($req));
+                $this->reqaction = \strtolower(\array_shift($req));
                 $this->reqrest = empty($req) ? [''] : $req;  // there may only have been an action
             }
             return $this;

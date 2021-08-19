@@ -39,7 +39,7 @@
         private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
             R::trashAll($user->all()->{'own'.\ucfirst(FW::CONFIRM).'List'});
-            $code = hash('sha256', $user->getID().$user->email.$user->login.uniqid());
+            $code = \hash('sha256', $user->getID().$user->email.$user->login.\uniqid());
             $conf = R::dispense(FW::CONFIRM);
             $conf->code = $code;
             $conf->issued = $context->utcnow();
@@ -130,7 +130,7 @@
                 {
                     $errmess = [];
                     $x = R::findOne(FW::USER, 'login=?', [$login]);
-                    if (!is_object($x))
+                    if (!\is_object($x))
                     {
                         $pw = $fdt->mustFetch('password');
                         $rpw = $fdt->mustFetch('repeat');
@@ -143,11 +143,11 @@
                         {
                             $errmess[] = 'The password does not meet the specification';
                         }
-                        if (preg_match('/[^a-z0-9]/i', $login))
+                        if (\preg_match('/[^a-z0-9]/i', $login))
                         {
                             $errmess[] = 'Your username can only contain letters and numbers';
                         }
-                        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                        if (!\filter_var($email, FILTER_VALIDATE_EMAIL))
                         {
                             $errmess[] = 'Please provide a valid email address';
                         }
@@ -350,7 +350,7 @@
             else
             {
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'P']);
-                if (is_object($x))
+                if (\is_object($x))
                 {
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 1)
@@ -378,9 +378,9 @@
  */
         public function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page)
         {
-            if (session_status() !== PHP_SESSION_ACTIVE)
+            if (\session_status() !== \PHP_SESSION_ACTIVE)
             { // no session started yet
-                session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
+                \session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
             }
             $_SESSION['userID'] = $user->getID();
             $context->divert($page === '' ? '/' : $page); // success - divert to home page
@@ -431,7 +431,7 @@
         public function handle(Context $context) : array|string
         {
             $action = $context->action(); // the validity of the action value has been checked before we get here
-            assert(method_exists($this, $action));
+            \assert(\method_exists($this, $action));
             return $this->$action($context);
         }
     }
