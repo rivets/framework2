@@ -112,7 +112,7 @@
                 $context->local()->message(Local::ERROR, $msg);
                 return $errtpl;
             }
-            if (is_array($msg) || $msg !== '')
+            if (\is_array($msg) || $msg !== '')
             { // there was a message - could be one in a string or several in an array
                 $context->local()->message(Local::MESSAGE, $msg);
             }
