@@ -59,7 +59,7 @@
             case 10:
             case 11: // no value on a NULL test
                 $incv = '';
-                /****************** DROP THROUGH!!!! *****************************/
+                /*!!!!!!!!!!!! DROP THROUGH!!!! !!!!!!!!!!!!*/
             default:
                 $op = self::$searchOps[$op];
                 break;
