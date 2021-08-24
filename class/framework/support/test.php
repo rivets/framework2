@@ -95,7 +95,7 @@
  */
         public function fail(Context $context) : string
         {
-            2 / 0; // @phan-suppress-current-line PhanDivisionByZero
+            2 / 0; // @phan-suppress-current-line PhanDivisionByZero,PhanNoopBinaryOperator
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
