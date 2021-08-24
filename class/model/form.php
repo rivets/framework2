@@ -286,11 +286,9 @@
             return $noform || $this->bean->method == 0 ? $form : $form.'</form>';
         }
 /**
- * handle an option
- *
- * @param object|array  $option
+ * Handle making an option. Deals with optgroups
  */
-        private function doOption($option) : string
+        private function doOption(object|array $option) : string
         {
             $form = '';
             if (\is_object($option))
@@ -301,37 +299,28 @@
                     { // one open already so close it
                         $form = '</optgroup>';
                     }
-                    if ($option->optgroup !== '') // If the name is empty then we want to close an open optgroup without startng a new one
+                    if ($option->optgroup !== '') // If the name is not empty then we want to close an open optgroup and start a new one
                     {
                         $this->optgroup = TRUE;
                         return $form.'<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
                     }
                 }
-                else
-                {
-                    return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
-                }
+                return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
             }
-            elseif (\is_array($option))
+            assert(\is_array($options)); // $options must be an array if we get here
+            if ($option[0] === NULL)
             {
-                if ($option[0] === NULL)
-                {
-                    if ($this->optgroup)
-                    { // one open already so close it
-                        $form = '</optgroup>';
-                    }
-                    if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without startng a new one
-                    {
-                        $this->optgroup = TRUE;
-                        return $form.'<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
-                    }
+                if ($this->optgroup)
+                { // one open already so close it
+                    $form = '</optgroup>';
                 }
-                else
+                if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without startng a new one
                 {
-                    return $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
+                    $this->optgroup = TRUE;
+                    return $form.'<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
                 }
             }
-            return $this->mkoption($option, $option, FALSE, FALSE);
+            return $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
         }
 /**
  * Make an option tag
