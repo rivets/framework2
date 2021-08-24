@@ -307,7 +307,7 @@
                 }
                 return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
             }
-            assert(\is_array($options)); // $options must be an array if we get here
+            assert(\is_array($option)); // $options must be an array if we get here
             if ($option[0] === NULL)
             {
                 if ($this->optgroup)
