@@ -16,10 +16,7 @@
  */
     class Test
     {
-/**
- * @var array<mixed>
- */
-        private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
+        private static array $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, TRUE],
             ['exists', [['aexist', 0]], TRUE, TRUE],
@@ -63,10 +60,6 @@
         ];
 /**
  * Test AJAX functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function ajax(Context $context) : string
         {
@@ -75,10 +68,6 @@
         }
 /**
  * Test failed assertion handling
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function assert(Context $context) : string
         {
@@ -88,10 +77,6 @@
         }
 /**
  * Test run time error handling
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function fail(Context $context) : string
         {
@@ -100,11 +85,7 @@
             return '@devel/devel.twig';
         }
 /**
- * Do test
- *
- * @param string $type
- *
- * @return string
+ * Run a set of tests
  */
         private static function dotest(Context $context, string $type) : string
         {
@@ -119,10 +100,6 @@
         }
 /**
  * Test the FormData Get functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function get(Context $context) : string
         {
@@ -130,10 +107,6 @@
         }
 /**
  * Test the FormData Post functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function post(Context $context) : string
         {
@@ -141,10 +114,6 @@
         }
 /**
  * Test the FormData Put functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function put(Context $context) : string
         {
@@ -152,10 +121,6 @@
         }
 /**
  * Test the FormData Cookie functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function cookie(Context $context) : string
         {
@@ -163,10 +128,6 @@
         }
 /**
  * Test the FormData File functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function file(Context $context) : string
         {
@@ -176,10 +137,6 @@
         }
 /**
  * Test mail
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function mail(Context $context) : string
         {
@@ -200,10 +157,6 @@
         }
 /**
  * Generate a test page. This tests various twig macros etc.
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function page(Context $context) : string
         {
@@ -218,10 +171,7 @@
 /**
  * Throw an unhandled exception. Tests exception handling.
  *
- * @param Context $context  The site context object
- *
  * @throws \Exception
- * @return string
  */
         public function toss(Context $context) : string
         {
@@ -231,10 +181,6 @@
         }
 /**
  * Test the upload features
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function upload(Context $context) : string
         {
