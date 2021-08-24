@@ -65,7 +65,7 @@
 /**
  * Check patterns and apply functions
  */
-        private function checkPtns(Context $context, array $url, array $ptnmap, string $fn, ?string $oktpl, string $errtpl) : NULL|string|bool
+        private function checkPtns(Context $context, array $url, array $ptnmap, string $fn, ?string $oktpl, string $errtpl) : null|string|bool
         {
             $data = [];
             $errors = [];
