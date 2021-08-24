@@ -338,18 +338,15 @@
  * Add a new form, called when adding a new form via ajax
  *
  * @see Framework\Ajax::bean
- *
- * @param Context    $context  The context object
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata('post');
             $p = \R::dispense(FW::FORM);
-            $p->name = $fdt->mustFetch('name');
-            $p->action = $fdt->mustFetch('action');
-            $p->class = $fdt->mustFetch('class');
-            $p->idval = $fdt->mustFetch('idval');
-            $p->method = $fdt->mustFetch('method');
+            foreach (['name', 'action', 'class', 'idval', 'method'] as $fld)
+            {
+                $p->{$fld} = $fdt->mustFetch($fld);
+            }
             $p->multipart = $fdt->fetch('multipart', 0);
             \R::store($p);
             return $p;
