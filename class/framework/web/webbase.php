@@ -136,7 +136,7 @@
  * @psalm-suppress PossiblyInvalidOperand
  * @psalm-suppress InvalidNullableReturnType
  */
-        public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array
+        public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
         {
             if (!\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
             {
