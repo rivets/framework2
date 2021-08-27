@@ -15,14 +15,14 @@
 /**
  * A class implementing a RedBean model for Role beans
  */
-    final class Role extends \RedBeanPHP\SimpleModel
+    class Role extends \RedBeanPHP\SimpleModel
     {
 /**
  * Return rolename object
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolename() : \RedBeanPHP\OODBBean
+        final public function rolename() : \RedBeanPHP\OODBBean
         {
             return $this->bean->rolename;
         }
@@ -31,14 +31,14 @@
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function rolecontext() : \RedBeanPHP\OODBBean
+        final public function rolecontext() : \RedBeanPHP\OODBBean
         {
             return $this->bean->rolecontext;
         }
 /**
  * Fixes up start values
  *
- * @param string   $start  The input value
+ * @param string   $start  The start date
  */
         private function checkstart(string $start) : string
         {
@@ -47,7 +47,7 @@
 /**
  * Fixes up end values
  *
- * @param string   $end  The input value
+ * @param string   $end  The end date
  */
         private function checkend(string $end) : ?string
         {
