@@ -121,10 +121,7 @@
 /**
  * Make a path for a new file
  *
- * @param Context $context
- * @param ?object           $owner
- * @param bool             $public
- * @param array            $da
+ * @internal
  */
         private function mkpath(Context $context, ?object $owner, bool $public, array $da) : array
         {
@@ -140,29 +137,23 @@
 /**
  * Make a directory if necessary and cd into it
  *
- * @param string    $dir The directory name
+ * @internal
  *
  * @throws \Framework\Exception\Forbidden
  */
-        private static function mkch(string $dir) : void
+        private static function mkch(string $directory) : void
         {
-            if (!\file_exists($dir))
+            if (!\file_exists($dir) && !\mkdir($directory, 0770))
             {
-                if (!\mkdir($dir, 0770))
-                {
-                    throw new \Framework\Exception\Forbidden('Cannot mkdir '.$dir);
-                }
+                throw new \Framework\Exception\Forbidden('Cannot mkdir '.$directory);
             }
             if (!\chdir($dir))
             {
-                throw new \Framework\Exception\Forbidden('Cannot chdir '.$dir);
+                throw new \Framework\Exception\Forbidden('Cannot chdir to '.$directory);
             }
         }
 /**
  * Generate an error message
- *
- * @param Context       $context
- * @param array<mixed>  $fa
  */
         public static function fail(Context $context, array $fa) : void
         {

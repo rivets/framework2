@@ -126,9 +126,6 @@
 /**
  * Setup for an edit
  *
- * @param Context           $context The context object
- * @param array<string>     $rest     Not used here at the moment
- *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
@@ -139,8 +136,6 @@
  * Handle a form edit
  *
  * @see Framework\Pages\Admin
- *
- * @param \Support\Context    $context  The context object
  */
         public function edit(Context $context) : array
         {
@@ -171,9 +166,6 @@
         }
 /**
  * View a form
- *
- * @param Context           $context
- * @param array<string>     $rest
  *
  * @psalm-suppress PossiblyUnusedParameter
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -324,11 +316,6 @@
         }
 /**
  * Make an option tag
- *
- * @param string $value
- * @param string $text
- * @param bool   $selected
- * @param bool   $disabled
  */
         private function mkOption(string $value, string $text, bool $selected, bool $disabled) : string
         {
