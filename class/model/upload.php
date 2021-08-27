@@ -143,11 +143,11 @@
  */
         private static function mkch(string $directory) : void
         {
-            if (!\file_exists($dir) && !\mkdir($directory, 0770))
+            if (!\file_exists($directory) && !\mkdir($directory, 0770))
             {
                 throw new \Framework\Exception\Forbidden('Cannot mkdir '.$directory);
             }
-            if (!\chdir($dir))
+            if (!\chdir($directory))
             {
                 throw new \Framework\Exception\Forbidden('Cannot chdir to '.$directory);
             }
@@ -155,32 +155,32 @@
 /**
  * Generate an error message
  */
-        public static function fail(Context $context, array $fa) : void
+        public static function fail(Context $context, array $fileArray) : void
         {
-            if ($fa['name'] !== '' && $fa['name'] !== NULL)
+            if ($fileArray['name'] !== '' && $fileArray['name'] !== NULL)
             {
-                if ($fa['size'] == 0)
+                if ($fileArray['size'] === 0)
                 {
-                    $context->local()->message(\Framework\Local::ERROR, $fa['name'].' is an empty file');
+                    $context->local()->message(\Framework\Local::ERROR, $fileArray['name'].' is an empty file');
                 }
                 else
                 {
-                    switch ($fa['error'])
+                    switch ($fileArray['error'])
                     {
                     case \UPLOAD_ERR_OK: // this shouldn't happen
                         throw new \Framework\Exception\InternalError('Should not be OK');
 
                     case \UPLOAD_ERR_NO_FILE:
-                        $context->local()->message(\Framework\Local::ERROR, $fa['name'].' No file sent');
+                        $context->local()->message(\Framework\Local::ERROR, $fileArray['name'].' No file sent');
                         break;
 
                     case \UPLOAD_ERR_INI_SIZE:
                     case \UPLOAD_ERR_FORM_SIZE:
-                        $context->local()->message(\Framework\Local::ERROR, $fa['name'].' File size exceeded');
+                        $context->local()->message(\Framework\Local::ERROR, $fileArray['name'].' File size exceeded');
                         break;
 
                     default:
-                        throw new \Framework\Exception\InternalError($fa['name'].' Unknown upload error');
+                        throw new \Framework\Exception\InternalError($fileArray['name'].' Unknown upload error');
                     }
                 }
             }
