@@ -18,7 +18,7 @@
 /**
  * An Add2FA page class
  */
-    class Add2FA extends \Framework\SiteAction
+    final class Add2FA extends \Framework\SiteAction
     {
 /**
  * Handle various profile operations /

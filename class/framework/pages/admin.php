@@ -16,7 +16,7 @@
  *
  * Admin status is checked in index.php so does not need to be done here.
  */
-    class Admin extends \Framework\SiteAction
+    final class Admin extends \Framework\SiteAction
     {
         private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
         private const VIEWABLE = [FW::TABLE, FW::FORM];

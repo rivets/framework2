@@ -39,8 +39,6 @@
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *
- * @param Context    $context    The context object for the site
- *
  * @throws \Framework\Exception\BadValue
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -112,7 +110,7 @@
  */
         public function setPW(string $pw) : void
         {
-            $this->bean->password = password_hash($pw, PASSWORD_DEFAULT);
+            $this->bean->password = \password_hash($pw, PASSWORD_DEFAULT);
             \R::store($this->bean);
         }
 /**
@@ -158,6 +156,7 @@
  */
         public function startEdit(Context $context, array $rest) : void
         {
+            // nothing to do
         }
 /**
  * Handle an edit form for this user

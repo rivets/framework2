@@ -54,6 +54,7 @@
                     break;
                 default:
                     $context->web()->notfound();
+                    /* NOT REACHED */
                 }
                 break;
 
