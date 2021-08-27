@@ -121,16 +121,11 @@
 /**
  * Check and fetch a bean - a utility function for specification in the pattern tables
  *
- * @param Context $context
- * @param int     $id
- * @param array   $data
- * @param string  $beanType
- *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        protected function checkID(Context $context, string $id, array $data, string $beanType) : array
+        protected function checkID(Context $context, int $id, array $data, string $beanType) : array
         {
-            return [TRUE, $context->load($beanType, (int) $id)];
+            return [TRUE, $context->load($beanType, $id)];
         }
     }
 ?>

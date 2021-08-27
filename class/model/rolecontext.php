@@ -17,7 +17,7 @@
  * A class implementing a RedBean model for RoleContext beans
  * @psalm-suppress UnusedClass
  */
-    class RoleContext extends \RedBeanPHP\SimpleModel
+    final class RoleContext extends \RedBeanPHP\SimpleModel
     {
 /**
  * Function called when a rolecontext bean is updated - do error checking in here

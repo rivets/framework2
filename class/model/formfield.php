@@ -15,7 +15,7 @@
  * A class implementing a RedBean model for Form beans
  * @psalm-suppress UnusedClass
  */
-    class FormField extends \RedBeanPHP\SimpleModel
+    final class FormField extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var array<string> Attributes that this supports

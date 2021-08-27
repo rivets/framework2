@@ -17,7 +17,7 @@
  * A class implementing a RedBean model for User beans
  * @psalm-suppress UnusedClass
  */
-    class User extends \RedBeanPHP\SimpleModel
+    final class User extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page

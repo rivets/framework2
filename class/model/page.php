@@ -19,7 +19,7 @@
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass
  */
-    class Page extends \RedBeanPHP\SimpleModel
+    final class Page extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page

@@ -15,7 +15,7 @@
  * A class implementing a RedBean model for PageRole beans
  * @psalm-suppress UnusedClass
  */
-    class PageRole extends Role
+    final class PageRole extends Role
     {
     }
 ?>

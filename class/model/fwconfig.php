@@ -17,7 +17,7 @@
  * A class implementing a RedBean model for fwconfig beans
  * @psalm-suppress UnusedClass
  */
-    class FWConfig extends \RedBeanPHP\SimpleModel
+    final class FWConfig extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var array<array<bool>>   Key is name of field and the array contains flags for checks

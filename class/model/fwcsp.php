@@ -17,7 +17,7 @@
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass
  */
-    class FWcsp extends \RedBeanPHP\SimpleModel
+    final class FWcsp extends \RedBeanPHP\SimpleModel
     {
 /**
  * Add a new FWConfig bean

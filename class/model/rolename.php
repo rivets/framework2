@@ -17,7 +17,7 @@
  * A class implementing a RedBean model for RoleName beans
  * @psalm-suppress UnusedClass
  */
-    class RoleName extends \RedBeanPHP\SimpleModel
+    final class RoleName extends \RedBeanPHP\SimpleModel
     {
 /**
  * Function called when a rolename bean is updated - do error checking in here
