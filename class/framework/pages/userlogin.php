@@ -17,11 +17,13 @@
 /**
  * A class to handle the /login, /logout, /register, /forgot and /resend actions
  */
-    class UserLogin extends \Framework\SiteAction
+    final class UserLogin extends \Framework\SiteAction
     {
         use \Support\Login;
 /**
  * Find a user based on either a login or an email address
+ *
+ * @internal
  *
  * @param string  $lg   A username or email address
  */
@@ -31,10 +33,6 @@
         }
 /**
  * Make a confirmation code and store it in the database
- *
- * @param Context                 $context The context bean
- * @param \RedBeanPHP\OODBBean    $user    A User bean
- * @param string                  $kind
  */
         private function makeCode(Context $context, \RedBeanPHP\OODBBean $user, string $kind) : string
         {
@@ -51,14 +49,13 @@
 /**
  * Mail a confirmation code
  *
- * @param Context                 $context    The context object
- * @param \RedBeanPHP\OODBBean    $bn         A User bean
+ * @internal
  */
-        private function sendConfirm(Context $context, \RedBeanPHP\OODBBean $bn) : void
+        private function sendConfirm(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
             $local = $context->local();
-            $code = $this->makeCode($context, $bn, 'C');
-            $local->sendmail([$bn->email],
+            $code = $this->makeCode($context, $user, 'C');
+            $local->sendmail([$user->email],
                 'Please confirm your email address for '.$local->configval('sitename'),
                 "Please use this link to confirm your email address\n\n\n".
                 $local->configval('siteurl').'/confirm/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
@@ -69,14 +66,13 @@
 /**
  * Mail a password reset code
  *
- * @param Context               $context     The context object
- * @param \RedBeanPHP\OODBBean   $bn          A User bean
+ * @internal
  */
-        private function sendReset(Context $context, \RedBeanPHP\OODBBean $bn) : void
+        private function sendReset(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
             $local = $context->local();
-            $code = $this->makeCode($context, $bn, 'P');
-            $local->sendmail([$bn->email], 'Reset your '.$local->configval('sitename').' password',
+            $code = $this->makeCode($context, $user, 'P');
+            $local->sendmail([$user->email], 'Reset your '.$local->configval('sitename').' password',
                 "Please use this link to reset your password\n\n\n".
                 $local->configval('siteurl').'/forgot/'.$code."\n\n\nThank you,\n\n The ".$local->configval('sitename')." Team\n\n",
                 '',
@@ -86,11 +82,9 @@
 /**
  * Handle a login
  *
- * @param Context  $context    The context object for the site
- *
  * @uses \Support\Login
  */
-        public function login(Context $context) : string
+        private function login(Context $context) : string
         {
             $local = $context->local();
             $local->addval('register', Config::REGISTER);
@@ -107,11 +101,9 @@
 /**
  * handle a registration
  *
- * @param Context  $context    The context object for the site
- *
  * @throws \Framework\Exception\BadOperation
  */
-        public function register(Context $context) : string
+        private function register(Context $context) : string
         {
             if (!Config::REGISTER)
             {
@@ -152,7 +144,7 @@
                             $errmess[] = 'Please provide a valid email address';
                         }
                         if (empty($errmess))
-                        {
+                        { // no errors
                             $x = R::dispense(FW::USER);
                             $x->login = $login;
                             $x->email = $email;
@@ -197,9 +189,6 @@
  * Handle confirmation
  *
  * @internal
- *
- * @param Context               $context
- * @param \RedBeanPHP\OODBBean  $user
  */
         private function confmessage(Context $context, \RedBeanPHP\OODBBean $user) : void
         {
@@ -219,10 +208,8 @@
         }
 /**
  * Handle things to do with email address confirmation
- *
- * @param Context  $context    The context object for the site
  */
-        public function confirm(Context $context) : string
+        private function confirm(Context $context) : string
         {
             if ($context->hasuser())
             { // logged in, so this stupid....
@@ -371,27 +358,21 @@
         }
 /**
  * Login success so set up session
- *
- * @param Context               $context
- * @param \RedBeanPHP\OODBBean  $user
- * @param string                $page
  */
-        public function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page)
+        private function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page) // : never
         {
             if (\session_status() !== \PHP_SESSION_ACTIVE)
             { // no session started yet
                 \session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
             }
             $_SESSION['userID'] = $user->getID();
-            $context->divert($page === '' ? '/' : $page); // success - divert to home page
+            $context->divert($page === '' ? '/' : $page); // success - divert to home page or requested page
             /* NOT REACHED */
         }
 /**
  * Handle TwoFA
- *
- * @param Context   $context    The context object for the site
  */
-        public function twofa(Context $context)
+        private function twofa(Context $context) : string
         {
             if ($context->web()->isPost())
             {
@@ -424,7 +405,7 @@
             return '@content/twofa.twig';
         }
 /**
- * Handle /login /logout /register /forgot /confirm
+ * Handle /login /logout /register /forgot /confirm /twofa
  *
  * @param Context  $context    The context object for the site
  */
