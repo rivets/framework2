@@ -23,7 +23,7 @@
         private function dofields(\Framework\FormData\AccessBase $fdt) : array
         {
             $emess = [];
-            foreach (self::$editfields as $fld => $flags)
+            foreach (self::$editfields as $fld => $flags) // @phan-suppress-current-line PhanUndeclaredStaticProperty
             {
                 if ($flags[1])
                 { // this is a checkbox - they can't be required
