@@ -42,7 +42,7 @@
  *
  * @throws \Framework\Exception\BadValue
  */
-        final public static function add(Context $context) : \RedBeanPHP\OODBBean
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $now = $context->utcnow(); // make sure time is in UTC
             $fdt = $context->formdata('post');
@@ -79,35 +79,35 @@
 /**
  * Is this user an admin?
  */
-        final public function isAdmin() : bool
+        public function isAdmin() : bool
         {
             return \is_object($this->hasrole(FW::FWCONTEXT, FW::ADMINROLE));
         }
 /**
  * Is this user active?
  */
-        final public function isActive() : bool
+        public function isActive() : bool
         {
             return $this->bean->active != 0;
         }
 /**
  * Is this user confirmed?
  */
-        final public function isConfirmed() : bool
+        public function isConfirmed() : bool
         {
             return $this->bean->confirm != 0;
         }
 /**
  * Is this user a developer?
  */
-        final public function isDeveloper() : bool
+        public function isDeveloper() : bool
         {
             return \is_object($this->hasRole(FW::FWCONTEXT, FW::DEVELROLE));
         }
 /**
  * Set the user's password
  */
-        final public function setPW(string $password) : void
+        public function setPW(string $password) : void
         {
             $this->bean->password = \password_hash($password, PASSWORD_DEFAULT);
             \R::store($this->bean);
@@ -115,14 +115,14 @@
 /**
  * Check a password
  */
-        final public function pwOK(string $password) : bool
+        public function pwOK(string $password) : bool
         {
             return \password_verify($password, $this->bean->password);
         }
 /**
  * Set the email confirmation flag
  */
-        final public function doConfirm() : void
+        public function doConfirm() : void
         {
             $this->bean->active = 1;
             $this->bean->confirm = 1;
@@ -137,7 +137,7 @@
  * @psalm-suppress UnusedVariable
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        final public function makeToken(string $url, string $device = '') : string
+        public function makeToken(string $url, string $device = '') : string
         {
             $token = (object) ['iss' => $url, 'iat' => \idate('U'), 'sub' => $this->bean->getID()];
             /** @psalm-suppress UndefinedClass - JWT is not currently included in the psalm checks... */
@@ -148,7 +148,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        final public function startEdit(Context $context, array $rest) : void
+        public function startEdit(Context $context, array $rest) : void
         {
             // nothing to do
         }
@@ -157,7 +157,7 @@
  *
  * @return array  [TRUE if error, [error messages]]
  */
-        final public function edit(Context $context) : array
+        public function edit(Context $context) : array
         {
             $fdt = $context->formData('post');
             $emess = $this->doFields($fdt);
@@ -180,7 +180,7 @@
 /**
  * Return the user's 2FA secret
  */
-        final public function secret() : string
+        public function secret() : string
         {
             return $this->bean->secret;
         }

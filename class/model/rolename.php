@@ -23,7 +23,7 @@
  *
  * @throws \Framework\Exception\BadValue
  */
-        final public function update() : void
+        public function update() : void
         {
             if (!\preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
@@ -35,7 +35,7 @@
  *
  * @see Framework\Ajax\Bean
  */
-        final public static function add(Context $context) : \RedBeanPHP\OODBBean
+        public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $p = \R::dispense(FW::ROLENAME);
             $p->name = $context->formdata('post')->mustFetch('name');
