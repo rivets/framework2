@@ -83,7 +83,7 @@
  * This uses reflection to check for the value. This allows the framework to add new
  * constants and not break old code.
  */
-        public static function constant(string $name, array|int|string $default = '') : array|int|string
+        public static function constant(string $name, array|bool|int|string $default = '') : array|bool|int|string
         {
             if (defined('\\Config\\Config::'.$name))
             {
