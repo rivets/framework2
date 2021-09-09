@@ -37,23 +37,17 @@
         public function __call($function, $args)
         {
         }
-/**
- * @return int
- */
+
         public function getID() : int
         {
              return 0;
         }
-/**
- * @param \RedBeanPHP\OODBBean $bn
- * @return bool
- */
-        public function equals(\RedBeanPHP\OODBBean $bn) : bool
+
+        public function equals(?\RedBeanPHP\OODBBean $bn) : bool
         {
              return FALSE;
         }
 /**
- * @param string $m
  * @return mixed
  * @psalm-suppress PossiblyUnusedParam
  */
@@ -62,8 +56,6 @@
             return '';
         }
 /**
- * @param string $x
- * @return OODBBean
  * @psalm-suppress PossiblyUnusedParam
  * @psalm-suppress PossiblyUnusedMethod
  */
@@ -72,8 +64,6 @@
              return $this;
         }
 /**
- * @param string $x
- * @return OODBBean
  * @psalm-suppress PossiblyUnusedParam
  * @psalm-suppress PossiblyUnusedMethod
  */
@@ -82,7 +72,6 @@
              return $this;
         }
 /**
- * @return string
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function export() : string
