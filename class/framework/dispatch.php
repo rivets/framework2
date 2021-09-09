@@ -4,7 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2021 Newcastle University
- * @package Framework
+ * @package Framework\Framework
  */
     namespace Framework;
 
@@ -15,6 +15,8 @@
     use \Support\Context;
 /**
  * This class dispatches pages to the appropriate places
+ *
+ * @todo use an enum for constants when 8.1 arrives
  */
     class Dispatch
     {
@@ -67,7 +69,7 @@
  */
         public const XREHOME8   = 12;
 /**
- * @var array<array> $actions Values for determining handling of above codes
+ * @var array<array> Values for determining handling of above codes
  */
         private static array $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
@@ -99,15 +101,12 @@
             self::XREHOME8      => 'checkXRedirect',
         ];
 /**
- * @var array $configs Constants that might be defined in the configuration that
- * need to be passed into twigs.
+ * @var array<string> Constants that might be defined in the configuration that
+ *                    need to be passed into templates.
  */
         private static array $configs = ['lang', 'keywords', 'description'];
 /**
- * Setup basic values
- *
- * @param Context   $context
- * @param string    $action
+ * Setup basic values for templates
  */
         public static function basicSetup(Context $context, string $action) : void
         {
@@ -142,9 +141,6 @@
 /**
  * Handle dispatch of a page.
  *
- * @param Context   $context
- * @param string    $action
- *
  * @psalm-suppress PossiblyUndefinedMethod
  */
         public static function handle(Context $context, string $action) : void
@@ -152,7 +148,7 @@
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
 /*
- * Look in the database for what to do based on the first part of the URL. DBRX means do a regexp match
+ * Look in the database for what to do based on the first part of the URL. DBRX means do a regexp match (not yet implemented)
  */
             try
             {
@@ -164,11 +160,11 @@
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
             catch (\Throwable)
-            { // You catch DB errors from hacky URL values here.
+            { // You catch DB errors from pages that are not active or don't explicitly exist.
                 $page = NULL;
             }
             if (!is_object($page))
-            { // No such page or it is marked as inactive
+            { // No such page or it is marked as inactive so pass it to NoPage to handle it
                $page = new \stdClass();
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
@@ -207,7 +203,7 @@
                     /* NOT REACHED */
                 }
 
-                if (is_array($tpl)) // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
+                if (\is_array($tpl)) // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 { // page is returning more than just a template filename
                     [$tpl, $mime, $code] = $tpl;
                 }
@@ -250,7 +246,7 @@
 /**
  * Check OBJECT
  *
- * @param string $source
+ * @param string $source This should be a class name possibly namespaced
  *
  * @throws BadValue
  * @psalm-suppress UnusedMethod
@@ -258,7 +254,7 @@
  */
         private static function checkObject(string $source) : void
         {
-            if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
+            if (!\preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
             {
                 throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
             }
@@ -266,7 +262,7 @@
 /**
  * Check TEMPLATE
  *
- * @param string $source
+ * @param string $source This should be a twig file name, possibly namespaced
  *
  * @throws BadValue
  * @psalm-suppress UnusedMethod
@@ -274,7 +270,7 @@
  */
         private static function checkTemplate(string $source) : void
         {
-            if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
+            if (!\preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
             {
                 throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
             }
@@ -282,7 +278,7 @@
 /**
  * Check REDIRECT - internal so no http
  *
- * @param string $source
+ * @param string $source This should be a local url path
  *
  * @throws BadValue
  * @psalm-suppress UnusedMethod
@@ -290,15 +286,15 @@
  */
         private static function checkRedirect(string $source) : void
         {
-            if (!preg_match('#^(/.*?)+#i', $source))
+            if (!\preg_match('#^(/.*?)+#i', $source))
             {
-                throw new BadValue('Invalid source for page type (local path)');
+                throw new BadValue('Invalid source for page type (local url path)');
             }
         }
 /**
  * Check XREDIRECT - external so must be a url
  *
- * @param string $source
+ * @param string $source This should be a URL
  *
  * @throws BadValue
  * @psalm-suppress UnusedMethod
@@ -306,16 +302,13 @@
  */
         private static function checkXRedirect(string $source) : void
         {
-            if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
+            if (\filter_var($source, \FILTER_VALIDATE_URL) === FALSE)
             {
                 throw new BadValue('Invalid source for page type (URL)');
             }
         }
 /**
  * Check if a value is appropriate for the dispatch kind
- *
- * @param int    $kind
- * @param string $source
  *
  * @throws BadValue
  */

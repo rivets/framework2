@@ -19,7 +19,7 @@
 /**
  * Return permission requirements
  *
- * First element is a bool indicating of login is required. The second element is a list of ['Context', 'Role']
+ * First element is a bool indicating if login is required. The second element is a list of ['Context', 'Role']
  * that the user must have.
  */
         public function requires() : array
