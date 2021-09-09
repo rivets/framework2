@@ -109,7 +109,7 @@
         public function resequence() : void
         {
             $seqn = 10;
-            array_walk($this->sequence(), static function($flds) use ($seqn) {
+            array_walk($this->sequence(), static function($flds) use (&$seqn) {
                 array_walk($flds, static function($fld) use ($seqn) {
                     $sqn = \explode('/', $fld->seqn);
                     $sqn[0] = $seqn;
