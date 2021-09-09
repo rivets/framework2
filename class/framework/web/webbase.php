@@ -24,7 +24,7 @@
  */
         protected array $headers    = [];
 /**
- * @var array<array<string>>   Holds values for Cache-Control headers
+ * @var array<string>   Holds values for Cache-Control headers
  */
         protected array $cache      = [];
 /**
