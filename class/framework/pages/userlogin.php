@@ -228,7 +228,7 @@
                 }
                 // now handle the form
                 $user = self::eorl($lg);
-                if (!is_object($user))
+                if (!\is_object($user))
                 {
                     $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
                 }
@@ -245,7 +245,7 @@
             else
             { // confirming the email
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'C']);
-                if (is_object($x))
+                if (\is_object($x))
                 {
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 3)
