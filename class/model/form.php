@@ -110,21 +110,31 @@
         public function resequence() : void
         {
             $seqn = 10;
-            foreach ($this->sequence() as $flds)
-            {
-                foreach ($flds as $fld)
-                {
+            array_walk($this->sequence(), function($key, $flds) use ($seqn) {
+                array_walk($flds, function($k, $fld) use ($seqn) {
                     $sqn = \explode('/', $fld->seqn);
                     $sqn[0] = $seqn;
                     $fld->seqn = \implode('/', $sqn);
                     \R::store($fld);
-                }
+                });
                 $seqn += 10;
-            }
+            });
+            //foreach ($this->sequence() as $flds)
+            //{
+            //    foreach ($flds as $fld)
+            //    {
+            //        $sqn = \explode('/', $fld->seqn);
+            //        $sqn[0] = $seqn;
+            //        $fld->seqn = \implode('/', $sqn);
+            //        \R::store($fld);
+            //    }
+            //    $seqn += 10;
+            //}
         }
 /**
  * Setup for an edit
  *
+ * @see Framework\Pages\Admin
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context, array $rest) : void
@@ -175,8 +185,8 @@
 /**
  * Render a form
  *
- * @param array     $values Values to enter into form
- * @param bool      $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
+ * @param $values Values to enter into form
+ * @param $noform If TRUE then do not put out the <form> and </form> tags - useful when building forms in parts
  */
         public function render(array $values = [], bool $noform = FALSE) : string
         {
