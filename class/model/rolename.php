@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object RoleName
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2021 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 
@@ -24,7 +23,7 @@
  *
  * @throws \Framework\Exception\BadValue
  */
-        public function update() : void
+        final public function update() : void
         {
             if (!\preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
@@ -34,11 +33,9 @@
 /**
  * Add a RoleName from a form
  *
- * @see Framework\Ajax::bean
- *
- * @param Context  $context  The Context object for the site
+ * @see Framework\Ajax\Bean
  */
-        public static function add(Context $context) : \RedBeanPHP\OODBBean
+        final public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $p = \R::dispense(FW::ROLENAME);
             $p->name = $context->formdata('post')->mustFetch('name');

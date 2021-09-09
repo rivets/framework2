@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object FWConfig
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2021 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 
@@ -23,8 +22,6 @@
  * Add a new FWConfig bean
  *
  * @see Framework\Ajax::bean
- *
- * @param \Support\Context    $context    The context object
  *
  * @throws \Framework\Exception\BadValue
  */

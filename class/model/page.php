@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object Page
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2021 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 
@@ -27,7 +26,7 @@
  */
         private string $roletype = FW::PAGEROLE;
 /**
- * @var Array   Key is name of field and the array contains flags for checkboxes
+ * @var array<bool>   Key is name of field and the array contains flags for checkboxes
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static array $editfields = [
@@ -63,8 +62,6 @@
 /**
  * Check user can access the page - does not return if they cannot
  *
- * @param \Support\Context    $context    The context object
- *
  * @psalm-suppress PossiblyNullReference - we know we have a user when we call context->user
  */
         public function check(Context $context) : void
@@ -94,16 +91,13 @@
             }
         }
 /**
- * Make a twig file if we have permission
- *
- * @param Context          $context    The Context object
- * @param array<string>    $name       The name of the twig
+ * Make a twig file if we have permission and it does not exist already
  *
  * @throws \Framework\Exception\InternalError
  */
-        private static function makeTwig(Context $context, array $name) : void
+        private static function makeTwig(Context $context, array $fileName) : void
         {
-            $file = $context->local()->makebasepath('twigs', ...$name);
+            $file = $context->local()->makebasepath('twigs', ...$fileName);
             if (!\file_exists($file))
             { // make the file
                 if (!\copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
@@ -115,15 +109,15 @@
 /**
  * Handle an object page
  */
-        private static function doObject(Context $context, \RedBeanPHP\OODBBean $p)
+        private static function doObject(Context $context, \RedBeanPHP\OODBBean $page)
         {
-            if (!\preg_match('/\\\\/', $p->source))
+            if (!\preg_match('/\\\\/', $page->source))
             { // no namespace so put it in \Pages
-                $p->source = '\\Pages\\'.$p->source;
-                \R::store($p);
+                $page->source = '\\Pages\\'.$page->source;
+                \R::store($page);
             }
-            $tl = \strtolower($p->source);
-            $tspl = \explode('\\', $p->source);
+            $tl = \strtolower($page->source);
+            $tspl = \explode('\\', $page->source);
             $base = \array_pop($tspl);
             $lbase = \strtolower($base);
             $namespace = \implode('\\', \array_filter($tspl));
@@ -134,7 +128,7 @@
                 $fd = \fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
-                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $p->name, 'namespace' => $namespace]));
+                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $page->name, 'namespace' => $namespace]));
                     \fclose($fd);
                 }
                 else
@@ -142,39 +136,39 @@
                     throw new \Framework\Exception\InternalError('Cannot create PHP file');
                 }
             }
-            self::makeTwig($context, ['content', $lbase.'.twig']);
+            self::makeTwig($context, ['content', $lbase.'.twig']); // make a basic twig if there is not one there already.
         }
 /**
  * Handle a template page
  */
-        public static function doTemplate(Context $context, \RedBeanPHP\OODBBean $p) : void
+        public static function doTemplate(Context $context, \RedBeanPHP\OODBBean $page) : void
         {
-            if (!\preg_match('/\.twig$/', $p->source))
+            if (!\preg_match('/\.twig$/', $page->source))
             { // doesn't end in .twig
-                $p->source .= '.twig';
+                $page->source .= '.twig';
             }
             else
             { // sometimes there are extra .twig extensions...
-                $p->source = \preg_replace('/(\.twig)+$/', '.twig', $p->source); // this removes extra .twigs .....
+                $page->source = \preg_replace('/(\.twig)+$/', '.twig', $page->source); // this removes extra .twigs .....
             }
-            if (!\preg_match('/^@/', $p->source))
+            if (!\preg_match('/^@/', $page->source))
             {
-                if (\preg_match('#/#', $p->source))
+                if (\preg_match('#/#', $page->source))
                 { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
                     $name = $p->source;
                 }
                 else
                 { // no namespace so put it in @content
-                    $p->source = '@content/'.$p->source;
-                    $name = ['content', $p->source];
-                    \R::store($p);
+                    $p->source = '@content/'.$page->source;
+                    $name = ['content', $page->source];
+                    \R::store($page);
                 }
             }
-            elseif (\preg_match('%^@content/(.*)%', $p->source, $m))
+            elseif (\preg_match('%^@content/(.*)%', $page->source, $m))
             { // this is in the User twig content directory
                 $name = ['content', $m[1]];
             }
-            elseif (\preg_match('%@([a-z]+)/(.*)%', $p->source, $m))
+            elseif (\preg_match('%@([a-z]+)/(.*)%', $page->source, $m))
             { // this is using a system twig
                 $name = ['framework', $m[1], $m[2]];
             }
@@ -194,23 +188,23 @@
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata('post');
-            $p = \R::dispense('page');
+            $page = \R::dispense('page');
             foreach (['name', 'kind', 'source'] as $fld)
             { // mandatory
-                $p->{$fld} = $fdt->mustFetch($fld);
+                $page->{$fld} = $fdt->mustFetch($fld);
             }
             foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
             { // optional flags
-                $p->{$fld} = $fdt->fetch($fld, 0);
+                $page->{$fld} = $fdt->fetch($fld, 0);
             }
             try
             {
-                \R::store($p);
+                \R::store($page);
                 foreach ($fdt->fetchArray('context') as $ix => $cid)
                 { // context, role, start, end, otherinfo
                     if ($cid !== '')
                     {
-                        $p->addRoleByBean(
+                        $page->addRoleByBean(
                             $fdt->mustFetchBean(['context', $ix], FW::ROLECONTEXT),  // the context id
                             $fdt->mustFetchBean(['role', $ix], FW::ROLENAME),        // the rolename id
                             $fdt->mustFetch(['otherinfo', $ix]),
@@ -222,10 +216,10 @@
                 switch ($p->kind)
                 {
                 case Dispatch::OBJECT:
-                    self::doObject($context, $p);
+                    self::doObject($context, $page);
                     break;
                 case Dispatch::TEMPLATE:
-                    self::doTemplate($context, $p);
+                    self::doTemplate($context, $page);
                     break;
                 case Dispatch::REDIRECT:
                 case Dispatch::REHOME:
@@ -234,19 +228,16 @@
 /** @todo check that the values passed in make sense */
                     break;
                 }
-                return $p;
+                return $page;
             }
             catch (\Throwable $e)
             { // clean up the page we made above. This will cascade delete any pageroles that might have been created
-                \R::trash($p);
+                \R::trash($page);
                 throw $e; // throw it up to the handlers above
             }
         }
 /**
- * Setup for an edit
- *
- * @param Context    $context  The context object
- * @paream array     $rest     The rest of the URL
+ * Setup for an edit - nothing to do for pages at the moment.
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -255,8 +246,6 @@
         }
 /**
  * Handle an edit form for this page
- *
- * @param Context   $context    The context object
  *
  * @return array [TRUE if error, [error messages]]
  */

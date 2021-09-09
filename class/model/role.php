@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object Role
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2021 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 
@@ -54,12 +53,12 @@
             return $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
- * Update - called when a rolename bean is stored
+ * Update - called by RedBean when a rolename bean is stored
  *
  * @throws \Framework\Exception\BadValue
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function update() : void
+        final public function update() : void
         {
             $this->bean->start = $this->checkstart($this->bean->start);
             $this->bean->end = $this->checkend($this->bean->end);
@@ -69,12 +68,11 @@
             }
         }
 /**
- * Is this role currently valid?
- * i.e. start < now < end (if end has a value)
+ * Is this role currently valid? i.e. start < now < end (if end has a value)
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function valid() : bool
+        final public function valid() : bool
         {
             $now = Context::getinstance()->utcnow();
             return $this->bean->start <= $now && (!empty($this->bean->end) || $now <= $this->bean->end);

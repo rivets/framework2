@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object PageRole
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2020 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 

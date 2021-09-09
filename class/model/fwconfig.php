@@ -2,12 +2,11 @@
 /**
  * A model class for the RedBean object FWConfig
  *
- * This is a Framework system class - do not edit!
+ * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2018-2021 Newcastle University
- * @package Framework
- * @subpackage SystemModel
+ * @package Framework\Model
  */
     namespace Model;
 
@@ -37,7 +36,7 @@
 /**
  * Check for a URL or // URL or a local filename - return value or throw
  *
- * @param string   $type   For error message
+ * @param $type For error message
  *
  * @throws \Framework\Exception\BadValue
  */
@@ -95,8 +94,6 @@
  *
  * @see Framework\Ajax::bean
  *
- * @param \Support\Context    $context    The context object
- *
  * @throws \Framework\Exception\BadValue
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
@@ -121,8 +118,6 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context   The context object
- *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function startEdit(Context $context) : void
@@ -130,8 +125,6 @@
         }
 /**
  * Handle an edit form for this fwconfig item
- *
- * @param \Support\Context   $context    The context object
  *
  * @return  array   [TRUE if error, [error messages]]
  */
@@ -143,13 +136,13 @@
 /**
  * Handle an update from the page updater
  *
- * @param object $cdata  Update values from the json updater
- * @param string $base
- * @param bool   $doit
+ * @param $cdata  Update values from the json updater
+ * @param $base   Relocation to make local URLS
+ * @param $doit   If TRUE then update
  */
-        public function doupdate(object $cdata, string $base, bool $doit) : string
+        public function doUpdate(object $cdata, string $base, bool $doit) : string
         {
-            if ($this->bean->local == 0)
+            if ($this->bean->local === 0)
             { // update if not locally set and there is a new value
                 $change = FALSE;
                 $cdata->value = \preg_replace('/%BASE%/', $base, $cdata->value); // relocate to this base.
