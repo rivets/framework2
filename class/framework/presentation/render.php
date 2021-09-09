@@ -4,7 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2021 Newcastle University
- * @package Framework
+ * @package Framework\Framework\Presentation
  */
     namespace Framework\Presentation;
 

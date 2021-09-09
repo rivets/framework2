@@ -4,8 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2021 Newcastle University
- * @package Framework
- * @subpackage SystemSupport
+ * @package Framework\Framework\Support
  */
     namespace Framework\Support;
 
@@ -14,18 +13,24 @@
     use \RedBeanPHP\OODBBean;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
+ *
+ * This is a base class for the derived class \Framework\Context which adds
+ * more features. This exists simply to reduce the overall complexity/density of the code rather
+ * than to provide any other possibilities.
+ *
+ * Data that is local to the installation should be handled by the \Framework\Local class.
  */
     class ContextBase
     {
         use \Framework\Utility\Singleton;
 
-/** @var ?OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var NULL or an object decribing the current logged in User (if we have logins at all) */
         protected ?OODBBean $luser        = NULL;
-/** @var string The first component of the current URL */
+/** @var The first component of the current URL */
         protected string $reqaction    = 'home';
-/** @var array<string>    The rest of the current URL exploded at / */
-        protected array $reqrest      = [];
-/** @var bool   True if authenticated by token */
+/** @var array<string> The rest of the current URL exploded at / */
+        protected array $reqrest      = [''];
+/** @var True if authenticated by JWT token */
         protected bool $tokenAuth    = FALSE;
 /** @var array<OODBBean>            A cache for rolename beans */
         protected array $roles        = [];
@@ -43,7 +48,7 @@
 /**
  * Return the main action part of the URL as set by .htaccess
  *
- * @return string
+ * The framework trats a URL as /action/rest... The action returned is always in lowercase.
  */
         public function action() : string
         {
@@ -69,9 +74,7 @@
  ***************************************
  */
 /**
- * Return the current logged in user if any
- *
- * @return ?OODBBean
+ * Return the current logged in user bean, if any
  */
         public function user() : ?OODBBean
         {
@@ -79,17 +82,13 @@
         }
 /**
  * Do we have a logged in user?
- *
- * @return bool
  */
         public function hasUser() : bool
         {
             return is_object($this->luser);
         }
 /**
- * Find out if this was validated using a token, if so, it is coming from a device not a browser
- *
- * @return bool
+ * Find out if this was validated using a JWT token, if so, it is (probably) coming from a device not a browser
  */
         public function hasToken() : bool
         {
@@ -103,11 +102,13 @@
 /**
  * Save values into the on cache
  *
- * @param string   $id
- * @param string   $on
- * @param string   $fn
+ * ON JavaScript on tags is saved up so that it can all be generated into a single block
+ * that can be hashed/nonced so that CSP does not complain.
  *
- * @return void
+ * @param $id The id for the tag
+ * @param $on The type of on (e.g. click, load etc.)
+ * @param $fn The code to be executed
+ *
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function saveOn(string $id, string $on, string $fn) : void
@@ -117,7 +118,8 @@
 /**
  * Get the JS for onloading the ons
  *
- * @return string
+ * This generates a block of vanilla JavaScript that will set up all the necessary in conditions.
+ *
  * @psalm-suppress PossiblyUnusedMethod
  * @phpcsSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
@@ -136,11 +138,12 @@
 /**
  * Find a rolename bean
  *
- * @param string    $name   A Role name
+ * This will load the name cache if needed and then return the relevant bean (if it exists). The
+ * existence test could be replaced by an assert if you really wanted.
+ *
+ * @param  $name   A Role name
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function roleName(string $name) : OODBBean
@@ -158,11 +161,12 @@
 /**
  * Find a rolecontext bean
  *
- * @param string    $name   A Role Context
+ * This will load the name cache if needed and then return the relevant bean (if it exists). The
+ * existence test could be replaced by an assert if you really wanted.
+ *
+ * @param $name   A Context name
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function roleContext(string $name) : OODBBean
@@ -178,22 +182,22 @@
             return $this->contexts[$name];
         }
 /**
- * Load a bean
+ * Load a bean that must exist, otherwise throw an exception.
  *
- * @param string    $bean       A bean type name
- * @param int       $id         A bean id
- * @param bool      $forupdate  If TRUE then use loadforupdate
+ * R::load returns a new bean with id 0 if the given id does not exist. This function throws an exception
+ * if that happens as it is assumed that the bean must exist.
  *
- * R::load returns a new bean with id 0 if the given id does not exist.
+ * @param $bean       A bean type name
+ * @param $id         A bean id
+ * @param $forupdate  If TRUE then use loadforupdate
+ * @param $msg        A custom error message
  *
  * @throws  \Framework\Exception\MissingBean
- * @throws  \InvalidArgumentException - this would be an internal error
- *
- * @return OODBBean
  */
         public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : OODBBean
         {
-            $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
+            //$foo = $forupdate ? \R::loadForUpdate($bean, $id) : \R::load($bean, $id);
+            $foo = ($forupdate ? \R::loadForUpdate : \R::load)($bean, $id);
             if ($foo->getID() == 0)
             {
                 throw new \Framework\Exception\MissingBean($msg !== '' ? $msg : 'Missing '.$bean);
@@ -201,11 +205,9 @@
             return $foo;
         }
 /**
- * Return the local object
+ * Return the Local singleton
  *
  * @psalm-suppress MoreSpecificReturnType
- *
- * @return \Framework\Local
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
@@ -216,7 +218,7 @@
 /**
  * Return a Formdata object
  *
- * @param string $which
+ * @param $which The formdata object needed - get, post, put, file, cookie
  *
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
@@ -231,7 +233,7 @@
             return $this->getters[$which];
         }
 /**
- * Return the Web object
+ * Return the Web singleton
  *
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
@@ -246,7 +248,7 @@
  ***************************************
  */
 /**
- * Look for a mobile access token
+ * Look for a mobile access JWT token
  *
  * @internal
  *
@@ -255,9 +257,10 @@
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            $auth = \array_filter(\getallheaders(), static function ($key) {
-                return FW::AUTHTOKEN === \strtoupper($key);
-            }, \ARRAY_FILTER_USE_KEY);
+            //$auth = \array_filter(\getallheaders(), static function ($key) {
+            //    return FW::AUTHTOKEN === \strtoupper($key);
+            //}, \ARRAY_FILTER_USE_KEY);
+            $auth = \array_filter(\getallheaders(), fn($key) => FW::AUTHTOKEN === \strtoupper($key), \ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
             { // we have mobile authentication in use
                 try
@@ -297,7 +300,7 @@
                 /** @psalm-suppress UnusedFunctionCall */
                 \session_start(['name' => Config::SESSIONNAME]);
                 if (isset($_SESSION['userID']))
-                {
+                { // there is a user id in the session so load the relevant user bean
                     $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
                 }
                 else

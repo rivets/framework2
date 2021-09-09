@@ -11,7 +11,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2021 Newcastle University
- * @package Framework
+ * @package Framework\Config
  */
     namespace Config;
 
@@ -63,26 +63,27 @@
  */
             $dir = dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall */
-            set_include_path(
-                implode(PATH_SEPARATOR, [
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
-                    get_include_path(),
+            \set_include_path(
+                \implode(PATH_SEPARATOR, [
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
+                    \get_include_path(),
                 ])
             );
             /** @psalm-suppress UnusedFunctionCall */
-            spl_autoload_extensions('.php');
-            spl_autoload_register();
+            \spl_autoload_extensions('.php');
+            \spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
-            include $dir.'/vendor/autoload.php';
+            include $dir.'/vendor/autoload.php'; // bring in all the stuff from composer
         }
 /**
- * Get the value of a Configuration constant. Rather than accessing constants directly
- * This uses refelection to check for the value. This allows the framework to add new
+ * Get the value of a Configuration constant rather than accessing constants directly.
+ *
+ * This uses reflection to check for the value. This allows the framework to add new
  * constants and not break old code.
  *
- * @param string $name        The constant name - all in upper case
+ * @param $name  The constant name - all in upper case
  * @param mixed  $default     A default value for if it is not defined
  *
  * @return mixed

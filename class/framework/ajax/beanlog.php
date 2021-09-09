@@ -4,14 +4,15 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020-2021 Newcastle University
- * @package Framework
- * @subpackage SystemAjax
+ * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
 
     use \Support\Context;
 /**
  * Class to log operations on beans
+ *
+ * @todo use an enum instead of const when PHP 8.1 comes out
  */
     class BeanLog
     {
@@ -21,22 +22,21 @@
 /**
  * make log entry
  *
- * @param Context $context
- * @param int $op
- * @param \RedBeanPHP\OODBBean $bean
- * @param string $field
- * @param mixed $value
+ * @param $op          The operation (see constants above)
+ * @param $bean        The bean being changed
+ * @param $field       The field being changed
+ * @param mixed $value The value used in the change
  */
         public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : void
         {
             $lg = \R::dispense('beanlog');
-            $lg->user = $context->user();
-            $lg->updated = $context->utcnow();
-            $lg->op = $op;
-            $lg->bean = $bean->getMeta('type');
-            $lg->bid = $bean->getID();
-            $lg->field = $field;
-            $lg->value = $value;
+            $lg->user = $context->user();       // who changed it
+            $lg->updated = $context->utcnow();  // when
+            $lg->op = $op;                      // how they changed it
+            $lg->bean = $bean->getMeta('type'); // the bean type
+            $lg->bid = $bean->getID();          // the bean id
+            $lg->field = $field;                // the field changed
+            $lg->value = (string) $value;       // the previous value
             \R::store($lg);
         }
     }

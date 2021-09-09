@@ -42,7 +42,7 @@
  */
         private function checkstart(string $start) : string
         {
-            return $start === '' || \strtolower($start) == 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
+            return $start === '' || \strtolower($start) === 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
 /**
  * Fixes up end values
@@ -51,7 +51,7 @@
  */
         private function checkend(string $end) : ?string
         {
-            return $end === '' || \strtolower($end) == 'never' ? NULL : Context::getinstance()->utcdate($end);
+            return $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
  * Update - called when a rolename bean is stored

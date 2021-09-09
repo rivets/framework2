@@ -4,6 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020-2021 Newcastle University
+ * @package Framework\Ajax
  */
     namespace Ajax;
 
@@ -17,21 +18,33 @@
     {
 /**
  * @var array<mixed> If you want to use the permission checking functions. If you just want to control access
- *            then just put the list of contextname/rolename pairs in the result of requires.
+ *                   then just put the list of contextname/rolename pairs in the result of requires.
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
          private static array $permissions = [];
 /**
- * Return permission requirements. The version in the base class requires logins and adds nothing else.
+ * Return permission requirements.
+ *
+ * The version in the base class requires logins and adds nothing else.
  * If that is what you need then you can remove this method. This function is called from the base
- * class constructor when it does some permission checking.
+ * class constructor when it does some permission checking. The first element in the returned array
+ * is a boolean indicating whether or not login is required, the second element is a list of ['Context', 'Role']
+ * pairs that the user must have.
+ *
+ * @return array<mixed>
  */
         public function requires() : array
         {
             return [TRUE, []];
         }
 /**
- * Upload a file for a note
+ * Upload files and associate them with a bean
+ *
+ * The AJAX call is of the form /ajax/attach/<bean type>/<bean id>/ and the file data is passed
+ * in through the usual file mechanism. This code assume sthat there is also a POST value called
+ * descr associated with each file - if you don't need this then make the change documented below
+ *
+ * @see \Framework\Model\Upload
  */
         public function handle() : void
         {
@@ -48,7 +61,7 @@
                 {
                     throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
                 }
-                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl;
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl; // if you want the descr field
                 //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add
             }
 

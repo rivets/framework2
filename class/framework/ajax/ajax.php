@@ -4,8 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2020-2021 Newcastle University
- * @package Framework
- * @subpackage SystemAjax
+ * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
 
@@ -33,11 +32,11 @@
             $this->checkPerms($context->user(), $perms);
         }
 /**
- * Check that a bean has a field. Do not allow id field to be manipulated.
+ * Check that a bean has a field. Do not allow id field to be manipulated unless flag is set.
  *
- * @param string    $type    The type of bean
- * @param string    $field   The field name
- * @param bool      $idok    Allow the id field
+ * @param $type   The type of bean
+ * @param $field  The field name
+ * @param $idok   Allow the id field to be tested
  *
  * @throws \Framework\Exception\BadValue
  */
@@ -51,11 +50,6 @@
         }
 /**
  * Check access to a bean
- *
- * @param ?\RedBeanPHP\OODBBean  $user
- * @param array                 $permissions
- * @param string                $beanType
- * @param string                $field
  *
  * @throws Forbidden
  */
@@ -82,9 +76,6 @@
 /**
  * Check that user has the permissions that are specified in an array
  *
- * @param ?\RedBeanPHP\OODBBean  $user   The current user or NULL
- * @param array                  $pairs  The permission array
- *
  * @throws Forbidden
  * @psalm-suppress PossiblyNullReference
  */
@@ -94,20 +85,9 @@
             { // you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }
-            foreach ($pairs as $rcs)
+            foreach ($pairs as [$cname, $rname])
             {
-                //if (is_array($rcs[0]))
-                //{ // this is an OR
-                //    foreach ($rcs as $orv)
-                //    {
-                //        if (is_object($user->hasRole($orv[0], $orv[1])))
-                //        {
-                //            continue 2;
-                //        }
-                //    }
-                //    throw new Forbidden('Permission denied');
-                //}
-                if (!\is_object($user->hasRole($rcs[0], $rcs[1])))
+                if (!\is_object($user->hasRole($cname, $rname)))
                 {
                     throw new Forbidden('Permission denied');
                 }
@@ -115,11 +95,11 @@
         }
 /**
  * Check URL string for n parameter values and pull them out
- * Returns the parameter values in an array indexed from 0 with last parameter, anything left in an array
  *
+ * Returns the parameter values in an array indexed from 0 with last parameter, anything left in an array
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param int   $count  The number to check for
+ * @param $count  The number of parameters to check for
  *
  * @throws \Framework\Exception\ParameterCount
  */
