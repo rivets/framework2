@@ -196,8 +196,7 @@
  */
         public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : OODBBean
         {
-            //$foo = $forupdate ? \R::loadForUpdate($bean, $id) : \R::load($bean, $id);
-            $foo = ($forupdate ? \R::loadForUpdate : \R::load)($bean, $id);
+            $foo = $forupdate ? \R::loadForUpdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
                 throw new \Framework\Exception\MissingBean($msg !== '' ? $msg : 'Missing '.$bean);
@@ -257,10 +256,7 @@
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            //$auth = \array_filter(\getallheaders(), static function ($key) {
-            //    return FW::AUTHTOKEN === \strtoupper($key);
-            //}, \ARRAY_FILTER_USE_KEY);
-            $auth = \array_filter(\getallheaders(), fn($key) => FW::AUTHTOKEN === \strtoupper($key), \ARRAY_FILTER_USE_KEY);
+            $auth = \array_filter(\getallheaders(), static fn($key) => FW::AUTHTOKEN === \strtoupper($key), \ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
             { // we have mobile authentication in use
                 try
