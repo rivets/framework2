@@ -155,11 +155,11 @@
             {
                 if (\preg_match('#/#', $page->source))
                 { // has directory separator characters in it so leave it alone - may be new top-level twig directory.
-                    $name = $p->source;
+                    $name = $page->source;
                 }
                 else
                 { // no namespace so put it in @content
-                    $p->source = '@content/'.$page->source;
+                    $page->source = '@content/'.$page->source;
                     $name = ['content', $page->source];
                     \R::store($page);
                 }
@@ -213,7 +213,7 @@
                         );
                     }
                 }
-                switch ($p->kind)
+                switch ($page->kind)
                 {
                 case Dispatch::OBJECT:
                     self::doObject($context, $page);
