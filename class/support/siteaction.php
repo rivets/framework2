@@ -8,7 +8,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2021 Newcastle University
- * @package Framework
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -26,8 +26,6 @@
 /**
  * Set any cache headers that are wanted for a normal page delivery
  *
- * @param \Support\Context    $context The context object
- *
  * @psalm-suppress PossiblyUnusedMethod
  * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
@@ -37,8 +35,6 @@
         }
 /**
  * Set any cache headers that are wanted on a 304 response
- *
- * @param \Support\Context    $context   The context object for the site
  *
  * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
@@ -65,8 +61,6 @@
  *
  * This needs to be overridden by pages that can generate etags
  *
- * @param \Support\Context    $context   The context object for the site
- *
  * @psalm-suppress PossiblyUnusedParam
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -78,8 +72,6 @@
  * Make a max age value for an item
  *
  * This needs to be overridden by pages that want to use this
- *
- * @param \Support\Context    $context   The context object for the site
  *
  * @psalm-suppress PossiblyUnusedParam
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -94,8 +86,6 @@
  * This needs to be overridden if it is to be used. Currently returns TRUE,
  * thus assuming that pages always exist....
  *
- * @param \Support\Context    $context  The context object for the site
- *
  * @psalm-suppress PossiblyUnusedParam
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -108,8 +98,6 @@
  *
  * By default this returns the current time. For pages that need to use this in anger,
  * then this function may need to be overridden.
- *
- * @param \Support\Context  $context  The context object for the site
  *
  * @psalm-suppress PossiblyUnusedParam
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
@@ -125,9 +113,6 @@
  * The assumption is that pages that implement etags will override this function
  * appropriately to do actual value checking.
  *
- * @param Context   $context    The context object for the site
- * @param string    $time       The time value to check
- *
  * @psalm-suppress PossiblyUnusedParam
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
@@ -137,9 +122,6 @@
         }
 /**
  * Check an etag to see if we need to send the page again or not.
- *
- * @param Context   $context    The context object for the site
- * @param string    $tag        The etag value to check
  */
         public function checketag(Context $context, string $tag) : bool
         {

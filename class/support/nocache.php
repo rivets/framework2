@@ -4,7 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2019-2020 Newcastle University
- * @package Framework
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -17,10 +17,6 @@
     {
 /**
  * Make it so that the page does not get cached
- *
- * @param \Support\Context    $context The context object
- *
- * @return void
  */
         public function setCache(Context $context) : void
         {
@@ -32,10 +28,6 @@
         }
 /**
  * Set any cache headers that are wanted on a 304 response
- *
- * @param \Support\Context    $context   The context object for the site
- *
- * @return void
  */
         public function set304Cache(Context $context) : void
         {

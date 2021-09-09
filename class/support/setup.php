@@ -3,8 +3,8 @@
  * A class to allow some setup for all pages
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
- * @package Framework
+ * @copyright 2019-2021 Newcastle University
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -18,13 +18,11 @@
 /**
  * For user code
  *
- * @param Context                          $context    The context object
- * @param \RedBeanPHP\OODBBean|\stdClass   $page       An object about the page about to be rendered
+ * @used-by \Framework\Dispatch
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public static function preliminary(Context $context, object $page) : void
+        public static function preliminary(Context $context, \RedBeanPHP\OODBBean|\stdClass $page) : void
         {
             // Any code you wish to be run before ever page
         }

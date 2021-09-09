@@ -4,7 +4,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2021 Newcastle University
- * @package Framework
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -48,10 +48,6 @@
         protected static $log = []; // ['bean'..... A list of bean names]
 /**
  * Handle AJAX operations
- *
- * @param Context   $context    The context object for the site
- *
- * @return void
  */
         public function handle(Context $context) : void
         {
