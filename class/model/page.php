@@ -26,7 +26,7 @@
  */
         private string $roletype = FW::PAGEROLE;
 /**
- * @var array<bool>   Key is name of field and the array contains flags for checkboxes
+ * @var array<array<bool>>   Key is name of field and the array contains flags for checkboxes
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static array $editfields = [

@@ -5,9 +5,8 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
- * @package Framework
- * @subpackage ModelExtend
+ * @copyright 2018-2021 Newcastle University
+ * @package Framework\ModelExtend
  */
     namespace ModelExtend;
 
@@ -18,8 +17,6 @@
     {
 /**
  * Handle editing of beans
- *
- * @param \Framework\FormData\AccessBase   $fdt  The formdata object from the context
  *
  * @return array<string>
  */
