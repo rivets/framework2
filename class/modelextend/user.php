@@ -19,13 +19,13 @@
 /**
  * A function to ensure that any relevant password rules are applied when setting a new password.
  *
- * Defaults to be not-empty. Modify this method if you want to implement particular password rules.
+ * Defaults to longer than 7. Modify this method if you want to implement particular password rules. A min length is important. Don't be restrictive otherwise
  *
  * @throws \Framework\Exception\BadValue If a bad password is detected this could be thrown
  */
         public static function pwValid(string $password) : bool
         {
-            return $pw !== '';
+            return \strlen($password) >= \Config\Framework::constant('MINPWLENGTH', 8);
         }
 /**
  * Do any extra registration stuff
