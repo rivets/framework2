@@ -109,6 +109,7 @@
  * Deal with untrapped exceptions - see PHP documentation
  *
  * @psalm-return never-return
+ * @return never
  */
     function exception_handler(Throwable $e) // : never
     {
