@@ -132,7 +132,7 @@
  * Generate a JWT token for this user that can be used as a unique id from a phone.
  *
  * @param $url    The URL of the site
- * @param device  Currently not used!!
+ * @param $device  Currently not used!!
  *
  * @psalm-suppress UnusedVariable
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
