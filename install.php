@@ -108,7 +108,7 @@
 /**
  * Deal with untrapped exceptions - see PHP documentation
  *
- * @psalm-return never-return
+ * @      psalm-return never-return
  * @return never
  */
     function exception_handler(Throwable $e) // : never
@@ -121,7 +121,6 @@
         echo \str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', \str_replace(PHP_EOL, '<br/>'.PHP_EOL, \htmlentities($back))).'</pre>';
         cleanup();
         exit;
-        /** NOT REACHED **/
     }
 /**
  * Called when a PHP error is detected - see PHP documentation for details
