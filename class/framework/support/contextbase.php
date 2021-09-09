@@ -24,13 +24,13 @@
     {
         use \Framework\Utility\Singleton;
 
-/** @var NULL or an object decribing the current logged in User (if we have logins at all) */
+/** @var ?OODBBean NULL or an object decribing the current logged in User (if we have logins at all) */
         protected ?OODBBean $luser        = NULL;
-/** @var The first component of the current URL */
+/** @var string The first component of the current URL */
         protected string $reqaction    = 'home';
 /** @var array<string> The rest of the current URL exploded at / */
         protected array $reqrest      = [''];
-/** @var True if authenticated by JWT token */
+/** @var bool True if authenticated by JWT token */
         protected bool $tokenAuth    = FALSE;
 /** @var array<OODBBean>            A cache for rolename beans */
         protected array $roles        = [];

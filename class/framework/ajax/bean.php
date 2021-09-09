@@ -20,9 +20,9 @@
     class Bean extends Ajax
     {
 /**
- * @var These permissions let the Site Admin manipulate the Framework internal tables. The first element is a
+ * @var array These permissions let the Site Admin manipulate the Framework internal tables. The first element is a
  *      bool indicating if a login is required, the second is a list of ['Context', 'Role'] pairs that a user
- *      must have. The third element is a list
+ *      must have. The third element is a list of accessible field names 
  */
         private static array $permissions = [
             FW::AJAX        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
