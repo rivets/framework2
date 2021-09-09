@@ -23,11 +23,11 @@
 /**
  * Find a user based on either a login or an email address
  *
- * @internal
+ * @used-by \Support\Login
  *
- * @param string  $lg   A username or email address
+ * @param $lg   A username or email address
  */
-        private static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
+        public static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
         {
             return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
         }
@@ -224,24 +224,22 @@
                 $lg = $context->formdata('post')->fetch('eorl', '');
                 if ($lg === '')
                 { // show the form
-                    $tpl = '@users/resend.twig';
+                    return '@users/resend.twig';
+                }
+                // now handle the form
+                $user = self::eorl($lg);
+                if (!is_object($user))
+                {
+                    $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
+                }
+                elseif ($user->confirm)
+                {
+                    $local->message(Local::WARNING, 'Your email address has already been confirmed.');
                 }
                 else
-                { // handle the form
-                    $user = self::eorl($lg);
-                    if (!is_object($user))
-                    {
-                        $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
-                    }
-                    elseif ($user->confirm)
-                    {
-                        $local->message(Local::WARNING, 'Your email address has already been confirmed.');
-                    }
-                    else
-                    {
-                        $this->sendconfirm($context, $user);
-                        $local->message(Local::MESSAGE, 'A new confirmation link has been sent to your email address.');
-                    }
+                {
+                    $this->sendconfirm($context, $user);
+                    $local->message(Local::MESSAGE, 'A new confirmation link has been sent to your email address.');
                 }
             }
             else
