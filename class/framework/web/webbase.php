@@ -5,8 +5,7 @@
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2012-2021 Newcastle University
- * @package Framework
- * @subpackage Web
+ * @package Framework\Framework\Web
  */
     namespace Framework\Web;
 
