@@ -20,11 +20,11 @@
 
         public const HTMLMIME  = 'text/html; charset="utf-8"';
 /**
- * @var array   Holds values for headers that are required. Keyed by the name of the header
+ * @var array<array<string>>   Holds values for headers that are required. Keyed by the name of the header
  */
         protected array $headers    = [];
 /**
- * @var array   Holds values for Cache-Control headers
+ * @var array<array<string>>   Holds values for Cache-Control headers
  */
         protected array $cache      = [];
 /**
@@ -57,8 +57,9 @@
             }
         }
 /**
- * Debuffer - sometimes when we need to do output we are inside buffering. This seems
- * to be a problem with some LAMP stack systems.
+ * Debuffer - sometimes when we need to do output we are inside buffering.
+ *
+ * This seems to be a problem with some LAMP stack systems.
  */
         private function debuffer() : void
         {
@@ -70,12 +71,12 @@
 /**
  * output a header and msg - this never returns
  *
- * @param int       $code   The return code
- * @param string    $msg    The message (or '')
+ * @param $code   The return code
+ * @param $msg    The message (or '')
  *
- * @psalm-return never-return
+ * @return never
  */
-        protected function sendHead(int $code, string $msg = '') : void
+        protected function sendHead(int $code, string $msg = '') : void // never
         {
             if ($msg !== '')
             {
@@ -98,15 +99,15 @@
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param string    $where      The URL to divert to
- * @param bool      $temporary  TRUE if this is a temporary redirect
- * @param string    $msg        A message to send
- * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param bool      $use303     If TRUE then use 303 rather than 302
+ * @param $where      The URL to divert to
+ * @param $temporary  TRUE if this is a temporary redirect
+ * @param $msg        A message to send
+ * @param $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param $use303     If TRUE then use 303 rather than 302
  *
- * @psalm-return never-return
+ * @return never
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void // never
         {
             if ($temporary)
             {
@@ -129,14 +130,14 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param int           $size    The size of the output data
- * @param string|int    $code    The HTTP return code or ''
+ * @param $size    The size of the output data
+ * @param $code    The HTTP return code or ''
  *
  * @psalm-suppress InvalidOperand
  * @psalm-suppress PossiblyInvalidOperand
  * @psalm-suppress InvalidNullableReturnType
  */
-        public function hasRange(int $size, $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
+        public function hasRange(int $size, string|int $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
         {
             if (!\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
             {
@@ -163,10 +164,10 @@
 /**
  * Make a header sequence for a particular return code and add some other useful headers
  *
- * @param int       $code   The HTTP return code
- * @param string    $mtype  The mime-type of the file
- * @param ?int      $length The length of the data or NULL
- * @param string    $name   A file name
+ * @param $code   The HTTP return code
+ * @param $mtype  The mime-type of the file
+ * @param $length The length of the data or NULL
+ * @param $name   A file name
  */
         public function sendHeaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
         {
@@ -188,9 +189,9 @@
 /**
  * Deliver a file as a response.
  *
- * @param string    $path    The path to the file
- * @param string    $name    The name of the file as told to the downloader
- * @param string    $mime    The mime type of the file
+ * @param $path    The path to the file
+ * @param $name    The name of the file as told to the downloader
+ * @param $mime    The mime type of the file
  */
         public function sendFile(string $path, string $name = '', string $mime = '') : void
         {
@@ -217,9 +218,9 @@
 /**
  * Deliver a string as a response.
  *
- * @param string    $value   The data to send
- * @param string    $mime    The mime type of the file
- * @param int       $code    The HTTP return code
+ * @param $value   The data to send
+ * @param $mime    The mime type of the file
+ * @param $code    The HTTP return code
  */
         public function sendString(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
         {
@@ -230,10 +231,8 @@
         }
 /**
  * Deliver JSON response.
- *
- * @param mixed    $res
  */
-        public function sendJSON($res, int $code = StatusCodes::HTTP_OK) : void
+        public function sendJSON(array|bool|float|int|object|string $res, int $code = StatusCodes::HTTP_OK) : void
         {
             $this->sendString(\json_encode($res, \JSON_UNESCAPED_SLASHES), 'application/json', $code);
         }
@@ -243,7 +242,6 @@
  * This supports having more than one header with the same name.
  *
  * @param string|array<string>  $key  Either an array of key/value pairs or the key for the value that is in the second parameter
- * @param string                $value
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
@@ -263,7 +261,7 @@
  *
  * This assumes that file_get_contents can access a URL
  *
- * @param string    $secret  The recaptcha secret for this site
+ * @param $secret  The recaptcha secret for this site
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
@@ -287,7 +285,7 @@
                 $result = \file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
                 if ($result !== FALSE)
                 {
-                    return \json_decode($result, TRUE)->success;
+                    return \json_decode($result, TRUE)->success; // @phan-suppress-current-line PhanTypeExpectedObjectPropAccess
                 }
             }
             return FALSE;
