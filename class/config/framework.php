@@ -52,6 +52,22 @@
 
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
+
+        public static $fwBeans = [
+            FW::CONFIG      => '',
+            FW::CSP         => '',
+            FW::FORM        => '',
+            FW::FORMFIELD   => '',
+            FW::PAGE        => '',
+            FW::PAGEROLE    => '',
+            FW::ROLE        => '',
+            FW::ROLECONTEXT => '',
+            FW::ROLENAME    => '',
+            FW::TABLE       => '',
+            FW::TEST        => '',
+            FW::UPLOAD      => '',
+            FW::USER        => '',
+        ];
 /**
  * Initialise some standard things for any invocation of a page
  */
@@ -90,6 +106,13 @@
                 return constant('\\Config\\Config::'.$name);
             }
             return $default;
+        }
+/**
+ * Is this a framework bean?
+ */
+        public static function isFWBean(string $beanType)
+        {
+            return isset(self::$fwBeans[$beanType]);
         }
     }
 ?>

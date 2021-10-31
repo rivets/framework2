@@ -18,26 +18,11 @@
     class FWBeanHelper extends \RedBeanPHP\BeanHelper\SimpleFacadeBeanHelper
     {
         static $path = '\\Framework\\Model\\';
-        static $beans = [
-            FW::CONFIG      => '',
-            FW::CSP         => '',
-            FW::FORM        => '',
-            FW::FORMFIELD   => '',
-            FW::PAGE        => '',
-            FW::PAGEROLE    => '',
-            FW::ROLE        => '',
-            FW::ROLECONTEXT => '',
-            FW::ROLENAME    => '',
-            //FW::TABLE       => '',
-            //FW::TEST        => '',
-            FW::UPLOAD      => '',
-            FW::USER        => '',
-        ];
 
         final public function getModelForBean(\RedBeanPHP\OODBBean $bean)
         {
             $type = $bean->getMeta('type');
-            if (!empty(self::$paths[$type]))
+            if (FW::isFWBean($type))
             {
                 $modelName = $path.$type;
                 $obj = self::factory($modelName);
