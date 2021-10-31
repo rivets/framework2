@@ -54,19 +54,19 @@
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
         public static $fwBeans = [
-            FW::CONFIG      => '',
-            FW::CSP         => '',
-            FW::FORM        => '',
-            FW::FORMFIELD   => '',
-            FW::PAGE        => '',
-            FW::PAGEROLE    => '',
-            FW::ROLE        => '',
-            FW::ROLECONTEXT => '',
-            FW::ROLENAME    => '',
-            FW::TABLE       => '',
-            FW::TEST        => '',
-            FW::UPLOAD      => '',
-            FW::USER        => '',
+            self::CONFIG      => '',
+            self::CSP         => '',
+            self::FORM        => '',
+            self::FORMFIELD   => '',
+            self::PAGE        => '',
+            self::PAGEROLE    => '',
+            self::ROLE        => '',
+            self::ROLECONTEXT => '',
+            self::ROLENAME    => '',
+            self::TABLE       => '',
+            self::TEST        => '',
+            self::UPLOAD      => '',
+            self::USER        => '',
         ];
 /**
  * Initialise some standard things for any invocation of a page
