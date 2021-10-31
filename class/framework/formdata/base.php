@@ -31,6 +31,10 @@
             { // we have nominated a superglobal
                 $this->super = $this->getSuper($this->which);
             }
+            else
+            {
+                $this->super = [];
+            }
         }
 /*
  *******************************************************************
