@@ -34,7 +34,7 @@
                         $upl = \R::dispense('upload');
                         if (!$upl->savefile($context, $fa, $fdp->fetch(['public', $ix]), $context->user(), $ix))
                         { // something went wrong
-                            \Model\Upload::fail($context, $fa);
+                            \Framework\Model\Upload::fail($context, $fa);
                         }
                         else
                         {
@@ -49,7 +49,7 @@
                         $upl = \R::dispense('upload');
                         if (!$upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix))
                         { // something went wrong
-                            \Model\Upload::fail($context, $fa);
+                            \Framework\Model\Upload::fail($context, $fa);
                         }
                         else
                         {

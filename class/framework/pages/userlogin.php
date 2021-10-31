@@ -131,7 +131,7 @@
                         {
                             $errmess[] = 'The passwords do not match';
                         }
-                        if (!\Model\User::pwValid($pw))
+                        if (!\Framework\Model\User::pwValid($pw))
                         {
                             $errmess[] = 'The password does not meet the specification';
                         }
