@@ -66,18 +66,18 @@
  *
  * @internal
  *
- * @param array|string    $key       The key
+ * @param array|string    $keys       The key
  * @param mixed           $default    The default value if needed
  * @param bool            $throw      If TRUE then throw an execption if it does not exist
  * @param bool            $isArray    If TRUE then check that this is an array
  * @param ?int            $filter     Filter to apply or NULL
  * @param array|int       $options    Filter options
  */
-        final public function getValue(array|string $key, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, array|int $options = 0) : array
+        final public function getValue(array|string $keys, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, array|int $options = 0) : array
         {
             try
             {
-                $dt = $this->fetchFrom($key, $default, TRUE, $filter, $options);
+                $dt = $this->fetchFrom($keys, $default, TRUE, $filter, $options);
             }
             catch (BadValue $e)
             { // does not exist
@@ -93,7 +93,7 @@
                 {
                     if ($throw)
                     {
-                        throw new BadValue('Form Item '.$key.' is an array');
+                        throw new BadValue('Form Item is an array');
                     }
                     return [FALSE, $default];
                 }
@@ -102,7 +102,7 @@
             {
                 if ($throw)
                 {
-                    throw new BadValue('Form Item '.$key.' is not an array');
+                    throw new BadValue('Form Item is not an array');
                 }
                 return [FALSE, $default];
             }
@@ -119,7 +119,10 @@
  */
         private function find(array|string $keys) : array|string
         {
-            $keys = \is_array($keys) ? $keys : [$keys];
+            if (!\is_array($keys))
+            {
+                $keys = [$keys];
+            }
             $part = $this->super;
             $etrack = [];
             while (TRUE) // iterate over the array of keys
@@ -151,8 +154,12 @@
  *
  * @throws BadValue
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = 0) : array|string
+        private function fetchFrom(array|string $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = 0) : array|string
         {
+            //if (!\is_array($keys))
+            //{
+            //    $keys = [$keys];
+            //}
             try
             {
                 $part = $this->find($keys);
@@ -192,11 +199,11 @@
 /**
  * Check for keys in the array
  */
-        public function exists(array|string $key) : bool
+        public function exists(array|string $keys) : bool
         {
             try
             {
-                $this->find($key);
+                $this->find($keys);
             }
             catch (BadValue)
             { // not there
@@ -209,9 +216,9 @@
  *
  * @throws BadValue
  */
-        public function mustExist(array|string $key) : bool
+        public function mustExist(array|string $keys) : bool
         {
-            $this->find($key);
+            $this->find($keys);
             return TRUE;
         }
 /**
