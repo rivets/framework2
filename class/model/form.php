@@ -86,7 +86,8 @@
         public function sequence() : array
         {
             $res = [];
-            array_walk($this->fields(), static function ($fld) use ($res) {
+            foreach ($this->fields() as $fld)
+            {
                 $sqn = \explode('/', $fld->seqn);
                 if (\count($sqn) > 1)
                 { // there are sub orderings in here
@@ -96,7 +97,7 @@
                 {
                     $res[$sqn[0]][] = $fld;
                 }
-            });
+            }
             return $res;
         }
 /**
@@ -109,26 +110,17 @@
         public function resequence() : void
         {
             $seqn = 10;
-            array_walk($this->sequence(), static function($flds) use (&$seqn) {
-                array_walk($flds, static function($fld) use ($seqn) {
+            foreach ($this->sequence() as $flds)
+            {
+                foreach ($flds as $fld)
+                {
                     $sqn = \explode('/', $fld->seqn);
                     $sqn[0] = $seqn;
                     $fld->seqn = \implode('/', $sqn);
                     \R::store($fld);
-                });
+                }
                 $seqn += 10;
-            });
-            //foreach ($this->sequence() as $flds)
-            //{
-            //    foreach ($flds as $fld)
-            //    {
-            //        $sqn = \explode('/', $fld->seqn);
-            //        $sqn[0] = $seqn;
-            //        $fld->seqn = \implode('/', $sqn);
-            //        \R::store($fld);
-            //    }
-            //    $seqn += 10;
-            //}
+            }
         }
 /**
  * Setup for an edit
@@ -225,7 +217,7 @@
                 case 'label': // labelling for checkbox and radio groupings
                     $crlabel = '<label'.$fld->fieldAttr('', FALSE).'>'.$fld->label.'</label>'; // make the label
                     \array_shift($flds); // pop off the label- the rest will be checkboxes or radios
-                    // no break
+                    /******** DROP THROUGH ********/
                 case 'checkbox':
                 case 'radio':
                     $form .= '<div class="form-group">'.$crlabel.'<div class="form-check form-check-inline">';
@@ -277,7 +269,7 @@
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<input'.$fld->fieldAttr('form-control', TRUE, $values).'/></div>';
                     break;
                 }
-                $form .= PHP_EOL;
+                $form .= \PHP_EOL;
             }
             if ($fset)
             {
