@@ -8,7 +8,7 @@
  * @copyright 2016-2021 Newcastle University
  * @package Framework\Model
  */
-    namespace Model;
+    namespace Framework\Model;
 
 /**
  * A class implementing a RedBean model for Form beans

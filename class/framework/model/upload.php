@@ -8,7 +8,7 @@
  * @copyright 2015-2021 Newcastle University
  * @package Framework\Model
  */
-    namespace Model;
+    namespace Framework\Model;
 
     use \Support\Context;
 /**

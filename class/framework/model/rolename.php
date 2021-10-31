@@ -1,6 +1,6 @@
 <?php
 /**
- * A model class for the RedBean object RoleContext
+ * A model class for the RedBean object RoleName
  *
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
@@ -8,18 +8,18 @@
  * @copyright 2018-2021 Newcastle University
  * @package Framework\Model
  */
-    namespace Model;
+    namespace Framework\Model;
 
     use \Config\Framework as FW;
-    use \Support\Context;
+    use Support\Context;
 /**
- * A class implementing a RedBean model for RoleContext beans
+ * A class implementing a RedBean model for RoleName beans
  * @psalm-suppress UnusedClass
  */
-    final class RoleContext extends \RedBeanPHP\SimpleModel
+    final class RoleName extends \RedBeanPHP\SimpleModel
     {
 /**
- * Function called when a rolecontext bean is updated - do error checking in here
+ * Function called when a rolename bean is updated - do error checking in here
  *
  * @throws \Framework\Exception\BadValue
  */
@@ -27,17 +27,17 @@
         {
             if (!\preg_match('/^[a-z][a-z0-9]*/i', $this->bean->name))
             {
-                throw new \Framework\Exception\BadValue('Invalid context name');
+                throw new \Framework\Exception\BadValue('Invalid role name');
             }
         }
 /**
- * Add a RoleContext from a form - invoked by the AJAX bean operation
+ * Add a RoleName from a form
  *
- * @see \Framework\Ajax\Bean
+ * @see Framework\Ajax\Bean
  */
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
-            $p = \R::dispense(FW::ROLECONTEXT);
+            $p = \R::dispense(FW::ROLENAME);
             $p->name = $context->formdata('post')->mustFetch('name');
             $p->fixed = 0;
             \R::store($p);

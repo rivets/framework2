@@ -8,7 +8,7 @@
  * @copyright 2018-2021 Newcastle University
  * @package Framework\Model
  */
-    namespace Model;
+    namespace Framework\Model;
 
     use \Config\Framework as FW;
     use \Support\Context;

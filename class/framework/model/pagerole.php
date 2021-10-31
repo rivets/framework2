@@ -8,7 +8,7 @@
  * @copyright 2017-2020 Newcastle University
  * @package Framework\Model
  */
-    namespace Model;
+    namespace Framework\Model;
 
 /**
  * A class implementing a RedBean model for PageRole beans
