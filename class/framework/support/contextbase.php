@@ -321,7 +321,7 @@
  */
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
-                $bsplit = \array_filter(\explode('/', $this->local()->base()));
+                $bsplit = \array_filter(\explode('/', $this->local()->base()), 'strlen');
                 $req = \array_slice($req, \count($bsplit));
             }
             if (!empty($req))
