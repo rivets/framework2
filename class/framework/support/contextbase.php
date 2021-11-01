@@ -310,7 +310,7 @@
             }
             $this->mtoken();
 
-            $req = \array_filter(\explode('/', $this->web()->request())); // array_filter removes empty elements - trailing / or multiple /
+            $req = \array_filter(\explode('/', $this->web()->request()), static fn($val) => $val !== ''); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
@@ -321,7 +321,7 @@
  */
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
-                $bsplit = \array_filter(\explode('/', $this->local()->base()), 'strlen');
+                $bsplit = \array_filter(\explode('/', $this->local()->base()), static fn($val) => $val !== '');
                 $req = \array_slice($req, \count($bsplit));
             }
             if (!empty($req))
