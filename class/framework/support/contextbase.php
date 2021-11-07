@@ -222,7 +222,7 @@
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formData(string $which) : \Framework\FormData\AccessBase
+        public function formData(string $which) : \Framework\FormData\Base
         {
             if (!isset($this->getters[$which]))
             {
