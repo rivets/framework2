@@ -17,7 +17,7 @@
  */
     class FWBeanHelper extends \RedBeanPHP\BeanHelper\SimpleFacadeBeanHelper
     {
-        static $path = '\\Framework\\Model\\';
+        private static $path = '\\Framework\\Model\\';
 
         final public function getModelForBean(\RedBeanPHP\OODBBean $bean)
         {
