@@ -129,7 +129,7 @@
                 }
                 R::freeze(!$devel); // freeze DB for production systems
                 R::usePartialBeans(TRUE);
-                R::getRedBean()->setBeanHelper(new Support\FWBeanHelper);
+                R::getRedBean()->setBeanHelper(new Support\FWBeanHelper());
                 $this->fwconfig = [];
                 foreach (R::findAll(FW::CONFIG) as $cnf)
                 {
