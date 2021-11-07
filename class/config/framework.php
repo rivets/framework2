@@ -53,7 +53,7 @@
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
-        public static $fwBeans = [
+        private static $fwBeans = [
             self::CONFIG      => '',
             self::CSP         => '',
             self::FORM        => '',
