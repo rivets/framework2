@@ -20,7 +20,7 @@
  *
  * @return array<string>
  */
-        private function dofields(\Framework\FormData\AccessBase $fdt) : array
+        private function doFields(\Framework\FormData\Base $fdt) : array
         {
             $emess = [];
             foreach (self::$editfields as $fld => $flags) // @phan-suppress-current-line PhanUndeclaredStaticProperty

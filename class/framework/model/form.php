@@ -76,7 +76,7 @@
  */
         public function fields() : array
         {
-            return $this->bean->with('order by seqn,name')->ownFormfield;
+            return $this->bean->with('order by seqn,name')->ownFormField;
         }
 /**
  * Return the form's fields by sequence
@@ -130,7 +130,7 @@
  */
         public function startEdit(Context $context, array $rest) : void
         {
-            $context->local()->addval('flags', self::$flags);
+            $context->local()->addVal('flags', self::$flags);
         }
 /**
  * Handle a form edit
@@ -139,8 +139,8 @@
  */
         public function edit(Context $context) : array
         {
-            $fdt = $context->formdata('post');
-            $emess = $this->dofields($fdt);
+            $fdt = $context->formData('post');
+            $emess = $this->doFields($fdt);
 
             foreach ($fdt->fetchArray('new') as $ix => $fid) // @phan-suppress-current-line PhanUnusedVariableValueOfForeachWithKey
             {
