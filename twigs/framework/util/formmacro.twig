@@ -122,7 +122,7 @@
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
 
-{% macro editable(opts) %}
+{% macro editable(opts) -%}
     {% if option.type == 'select' %}
         {% set menu = '' %}
         {% for x in opts.options %}
@@ -136,7 +136,7 @@
         {% set menu = opts.value %}
     {% endif %}
     <a href="#" class="{{opts.class}}" data-value="{{menu}}" data-name="{{opts.name}}" data-type="{{opts.type}}" data-pk="{{opts.id}}" data-title="{{opts.msg}}" data-emptytext="--------">{{value}}</a>
-{% endmacro editable %}
+{%- endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
