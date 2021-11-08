@@ -123,7 +123,17 @@
 #}
 
 {% macro editable(option) %}
-    <a href="#" class="{{option.class}}" {% if option.type == 'select' %}data-value="{{option.values}}" {% endif %}data-name="{{option.name}}" data-type="{{option.type}}" data-pk="{{option.id}}" data-title="{{option.msg}}" data-emptytext="--------">{{value}}</a>
+    {% if option.type == 'select' %}
+        {% set menu = '' %}
+        {% for x in option.values %}
+            {% if not loop.start %}
+                {% set menu = menu ~ ';'~ x %}
+            {% else %}
+                {% set menu = x %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <a href="#" class="{{option.class}}" {% if option.type == 'select' %}data-value="{{menu}}" {% endif %}data-name="{{option.name}}" data-type="{{option.type}}" data-pk="{{option.id}}" data-title="{{option.msg}}" data-emptytext="--------">{{value}}</a>
 {% endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
