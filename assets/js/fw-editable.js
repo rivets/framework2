@@ -17,6 +17,7 @@ fwdom.makeEdit = function(d, type)
     {
     case 'select':
         box = '<select class="edbox">';
+        console.log(text, text.split(';'));
         for (let opt of text.split(';'))
         {
             box += '<option>'+opt+'</option>';
