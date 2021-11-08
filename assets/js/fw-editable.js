@@ -8,6 +8,7 @@ fwdom.edOptions = [];
 fwdom.makeEdit = function(d, type, text)
  {
     let box = '';
+    let ctext = d.innertext;
     if (text === d.getAttribute('data-emptytext'))
     {
         text = '';
@@ -16,10 +17,9 @@ fwdom.makeEdit = function(d, type, text)
     {
     case 'select':
         box = '<select class="edbox">';
-        console.log(text, text.split(';'));
         for (let opt of text.split(';'))
         {
-            box += '<option>'+opt+'</option>';
+            box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
         }
         box += '</select>';
         break;
