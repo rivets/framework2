@@ -3,6 +3,7 @@
 
 fwdom.popover = null;
 fwdom.inline = null;
+fwdom.edOptions = [];
 
 fwdom.makeEdit = function(d, type)
  {
@@ -46,6 +47,7 @@ fwdom.makeEdit = function(d, type)
  };
 
  fwdom.editable = function(div) {
+console.log(div);
     if (div.innerText === '')
     {
         div.innerText = div.getAttribute('data-emptytext');

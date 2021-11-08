@@ -123,7 +123,7 @@
 #}
 
 {% macro editable(opts) -%}
-    {% if option.type == 'select' %}
+    {% if opts.type == 'select' %}
         {% set menu = '' %}
         {% for x in opts.options %}
             {% if not loop.start %}
