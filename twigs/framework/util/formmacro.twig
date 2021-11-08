@@ -132,8 +132,10 @@
                 {% set menu = x %}
             {% endif %}
         {% endfor %}
+    {% else %}
+        {% set menu = option.value %}
     {% endif %}
-    <a href="#" class="{{option.class}}" {% if option.type == 'select' %}data-value="{{menu}}" {% endif %}data-name="{{option.name}}" data-type="{{option.type}}" data-pk="{{option.id}}" data-title="{{option.msg}}" data-emptytext="--------">{{value}}</a>
+    <a href="#" class="{{option.class}}" data-value="{{menu}}" data-name="{{option.name}}" data-type="{{option.type}}" data-pk="{{option.id}}" data-title="{{option.msg}}" data-emptytext="--------">{{value}}</a>
 {% endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
