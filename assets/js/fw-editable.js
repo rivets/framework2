@@ -5,7 +5,7 @@ fwdom.popover = null;
 fwdom.inline = null;
 fwdom.edOptions = [];
 
-fwdom.makeEdit = function(d, type)
+fwdom.makeEdit = function(d, type, text)
  {
     let box = '';
     let text = d.innerText;
