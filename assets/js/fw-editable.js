@@ -16,7 +16,12 @@ fwdom.makeEdit = function(d, type)
     switch (type)
     {
     case 'select':
-        box = '<span>Not supported yet<span>';
+        box = '<select class="edbox">';
+        for (let opt of text.split(';'))
+        {
+            box += '<option>'+opt+'</option>';
+        }
+        box += '</select>';
         break;
     case 'textarea':
         box = '<textarea rows="5" cols="25" class="edbox">' + text + '</textarea>';
@@ -46,8 +51,7 @@ fwdom.makeEdit = function(d, type)
     }
  };
 
- fwdom.editable = function(div) {
-console.log(div);
+ fwdom.editable = function(div, options) {
     if (div.innerText === '')
     {
         div.innerText = div.getAttribute('data-emptytext');
@@ -64,7 +68,7 @@ console.log(div);
             title: this.getAttribute('data-title'),
             html: true,
             sanitize: false,
-            content: fwdom.makeEdit(this, type),
+            content: fwdom.makeEdit(this, type, this.getAttribute('data-value')),
             placement: 'auto',
             template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
