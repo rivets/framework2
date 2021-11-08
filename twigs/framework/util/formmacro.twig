@@ -122,6 +122,10 @@
     {% macro inline(type, name, msg, id, value) %}{{value}}{% endmacro inline %}
 #}
 
+{% macro editable(option) %}
+    <a href="#" class="{{option.class}}" {% if option.type == 'select' %}data-value="{{option.values}}" {% endif %}data-name="{{option.name}}" data-type="{{option.type}}" data-pk="{{option.id}}" data-title="{{option.msg}}" data-emptytext="--------">{{value}}</a>
+{% endmacro editable %}
+
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
 
 {% macro startform(opts) %}{% import _self as fx %}{{fx.on(opts)}}
