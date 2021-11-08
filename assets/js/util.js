@@ -182,10 +182,10 @@
             let link = framework.base;
             for (let item of arguments)
             {
-                if (link !== '')
-                {
+                //if (link !== '')
+                //{
                     link += '/' + item;
-                }
+               // }
             }
             return link + '/';
         },
