@@ -51,13 +51,14 @@ fwdom.makeEdit = function(d, type, text)
     }
  };
 
- fwdom.editable = function(div, options) {
+ fwdom.editable = function(div, options = {}) {
     if (div.innerText === '')
     {
         div.innerText = div.getAttribute('data-emptytext');
         div.classList.add('edempty');
     }
     let name = div.getAttribute('name');
+    fwdom.edOptions[name] = options;
     let type = div.getAttribute('data-type');
     div.addEventListener('click', function(e){
         if (fwdom.inline !== null)
