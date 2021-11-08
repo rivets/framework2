@@ -125,7 +125,7 @@
 {% macro editable(opts) %}
     {% if option.type == 'select' %}
         {% set menu = '' %}
-        {% for x in opts.values %}
+        {% for x in opts.options %}
             {% if not loop.start %}
                 {% set menu = menu ~ ';'~ x %}
             {% else %}
