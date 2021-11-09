@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
 
     <title>
-        {% block title %}{% if title is defined %}{{title}}{% else %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endif %}{% endblock title %}
+        {% block title %}{% if title is defined %}{{title|raw}}{% else %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endif %}{% endblock title %}
     </title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
