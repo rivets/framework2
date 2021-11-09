@@ -135,7 +135,7 @@
     {% else %}
         {% set menu = opts.value %}
     {% endif %}
-    <a href="#" class="{{opts.class}}" data-value="{{menu}}" data-name="{{opts.name}}" data-type="{{opts.type}}" data-pk="{{opts.id}}" data-title="{{opts.msg}}" data-emptytext="--------">{{opts.value}}</a>
+    <a href="#" id="{{opts.id}}" class="{{opts.class}}" data-value="{{menu}}" data-name="{{opts.name}}" data-type="{{opts.type}}" data-pk="{{opts.id}}" data-title="{{opts.msg}}" data-emptytext="--------">{{opts.value}}</a>
 {%- endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
