@@ -2,6 +2,10 @@
 
 {% macro hvd(attr, value, dflt)%} {{attr}}="{{value != '' ? value : dflt}}"{% endmacro hvd %}
 
+{% macro dv(attr, value)%}{% if value != '' %} data-{{attr}}="{{value}}"{% endif %}{% endmacro dv %}
+
+{% macro dvd(attr, value, dflt)%} data-{{attr}}="{{value != '' ? value : dflt}}"{% endmacro dvd %}
+
 {% macro cd(cond, attr, value) %}{% if cond %} {{attr}}="{{value}}"{% endif %}{% endmacro cd %}
 
 {% macro cdb(cond, attr) %}{% if cond %} {{attr}}{% endif %}{% endmacro cdb %}
@@ -135,7 +139,8 @@
     {% else %}
         {% set menu = opts.value %}
     {% endif %}
-    <a href="#" {{fx.hv('id', opts.id)}}{{fx.hv('class', opts.class)}} data-value="{{menu}}" data-name="{{opts.name}}" data-type="{{opts.type}}" data-pk="{{opts.id}}" data-title="{{opts.msg}}" data-emptytext="--------">{{opts.value}}</a>
+    <a href="#" {{fx.hv('id', opts.id)}}{{fx.hv('class', opts.class)}}{{fx.dv('options', menu)}}{{fx.dv('name', opts.name)}}
+    {{fx.dv('type', opts.type)}}{{fx.dv('key', opts.id)}}{{fx.dv('title', opts.title)}}{{fx.dv('emptytext', opts.emptytext)}}>{{opts.value}}</a>
 {%- endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}
