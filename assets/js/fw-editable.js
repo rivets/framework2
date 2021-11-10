@@ -6,21 +6,6 @@ fwdom.inline = null;
 fwdom.domid = -1;
 fwdom.edOptions = [];
 
-fwdom.makeSelect = function(options){
-    for (let opt of options.source)
-    {
-        if (typeof opt == 'object')
-        {
-            box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
-        }
-        else
-        {
-            box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
-        }
-    }
-    box += '</select>';
-};
-
 fwdom.makeEdit = function(d)
  {
     const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
