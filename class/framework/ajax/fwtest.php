@@ -41,7 +41,7 @@
         final public function handle() : void
         {
             $res = (object)[
-                'rest' => $this->context('rest'),
+                'rest' => $this->context->rest(),
                 'method' => $this->context->web()->method(),
                 'data' => $this->context->formdata($this->context->web()->method())->fetchRaw(),
             ];
