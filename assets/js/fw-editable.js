@@ -67,13 +67,10 @@ fwdom.makeEdit = function(d)
             nopt[fld] = options[fld];
         }
     }
-    else
+    let datas = div.dataset;
+    for (let fld in datas)
     {
-        let datas = div.dataset;
-        for (let fld in datas)
-        {
-            nopt[fld] = datas[fld];
-        }
+        nopt[fld] = datas[fld];
     }
     fwdom.domid += 1;
     fwdom.edOptions[fwdom.domid] = nopt;
