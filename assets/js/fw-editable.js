@@ -21,7 +21,14 @@ fwdom.makeEdit = function(d)
         box = '<select class="edbox">';
         for (let opt of options.source)
         {
-            box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
+            if (typeof opt == 'object')
+            {
+                box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
+            }
+            else
+            {
+                box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
+            }
         }
         box += '</select>';
         break;
