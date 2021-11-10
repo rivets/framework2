@@ -67,7 +67,7 @@ fwdom.makeEdit = function(d)
     }
     else
     {
-        let nopt = fwdom.defaultOptions;
+        nopt = fwdom.defaultOptions;
         let datas = div.dataset;
         for (let fld in datas)
         {
