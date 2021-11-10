@@ -5,12 +5,6 @@ fwdom.popover = null;
 fwdom.inline = null;
 fwdom.domid = -1;
 fwdom.edOptions = [];
-fwdom.defaultOptions = {
-    type: 'text',
-    emptyText: '------',
-    title: 'Edit String',
-    update: null
-}
 
 fwdom.makeEdit = function(d)
  {
@@ -60,7 +54,12 @@ fwdom.makeEdit = function(d)
  };
 
  fwdom.editable = function(div, options = null) {
-    let nopt = fwdom.defaultOptions;
+    let nopt = {
+        type: 'text',
+        emptyText: '------',
+        title: 'Edit String',
+        update: null
+    };
     if (options != null)
     {
         for (let fld in options)
