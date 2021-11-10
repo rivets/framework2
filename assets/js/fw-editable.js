@@ -62,7 +62,6 @@ fwdom.makeEdit = function(d)
     if (options != null)
     {
         fwdom.edOptions[div] = options;
-        console.log(fwdom.edOptions);
     }
     else
     {
@@ -74,6 +73,7 @@ fwdom.makeEdit = function(d)
         }
         fwdom.edOptions[div] = nopt;
     }
+console.log(fwdom.edOptions);
     if (div.innerText === '')
     {
         div.innerText = div.getAttribute('data-emptytext');
