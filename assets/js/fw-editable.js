@@ -14,7 +14,6 @@ fwdom.defaultOptions = {
 fwdom.makeEdit = function(d)
  {
     const options = fwdom.edOptions[d];
-console.log(options, fwdom.edOptions);
     let ctext = d.innerText;
     let box;
     if (ctext === options.emptyText)
@@ -63,6 +62,7 @@ console.log(options, fwdom.edOptions);
     if (options != null)
     {
         fwdom.edOptions[div] = options;
+        console.log(fwdom.edOptions);
     }
     else
     {
