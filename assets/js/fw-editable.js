@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap */
+/* globals document, fwdom, bootstrap, framework */
 /* jshint undef: true, unused: false */
 
 fwdom.popover = null;
@@ -52,6 +52,13 @@ fwdom.makeEdit = function(d)
         fwdom.popDispose(e);
     }
  };
+
+fwdom.editUpdate = function(options, value) {
+    return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.name), {
+        method: putorpatch,
+        data: { value: value }
+    });
+};
 
  fwdom.editable = function(div, options = null) {
     let nopt = {
@@ -112,17 +119,22 @@ fwdom.makeEdit = function(d)
                 }
                 else
                 {
-                    options.update(options, box.value);
-                    if (box.value === '')
-                    {
-                       fwdom.inline.innerText = options.emptytext;
-                       fwdom.inline.classList.add('edempty');
-                    }
-                    else
-                    {
-                       fwdom.inline.innerText = box.value;
-                       fwdom.inline.classList.remove('edempty');
-                    }
+                    options.update(options, box.value).done(function(res){
+                        console.log(res);
+                        if (box.value === '')
+                        {
+                           fwdom.inline.innerText = options.emptytext;
+                           fwdom.inline.classList.add('edempty');
+                        }
+                        else
+                        {
+                           fwdom.inline.innerText = box.value;
+                           fwdom.inline.classList.remove('edempty');
+                        }
+                    }).fail(function(jx){
+                        console.log(jx);
+                        fwdom.alert('Update failed');
+                    });
                 }
             }
             fwdom.popDispose();

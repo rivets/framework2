@@ -18,6 +18,9 @@
     <script src="{{assets}}/js/fw-editable.js"></script>
 {% endblock scripts %}
 
+{% block setup %}
+{% endblock setup %}
+
 {% block onload %}
     document.getElementById('nopu').addEventListener('click', function(e){
         fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
@@ -25,11 +28,18 @@
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
     for (let d of document.getElementsByClassName('editable'))
     {
-        fwdom.editable(d);
+        fwdom.editable(d, {
+            op: 'fwtest',
+            bean: 'fwtest',
+            update : fwdom.editUpdate
+        });
     }
     fwdom.editable(document.getElementById('edsel'), {
         type: 'select',
-        source: ['yes', 'no', 'N/A']
+        source: ['yes', 'no', 'N/A'],
+        update : fwdom.editUpdate,
+        op: 'fwtest',
+        bean: 'fwtest'
     });
 {% endblock onload %}
 
