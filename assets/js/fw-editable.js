@@ -6,6 +6,23 @@ fwdom.inline = null;
 fwdom.domid = -1;
 fwdom.edOptions = [];
 
+fwdom.makeSelect = function(options){
+    let box = '<select class="edbox">';
+    for (let opt of options.source)
+    {
+        if (typeof opt == 'object')
+        {
+            box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
+        }
+        else
+        {
+            box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
+        }
+    }
+    box += '</select>';
+    return box;
+};
+
 fwdom.makeEdit = function(d)
  {
     const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
@@ -18,7 +35,6 @@ fwdom.makeEdit = function(d)
     switch (options.type)
     {
     case 'select':
-        box = '<select class="edbox">';
         if (typeof options.source == 'string')
         {
             framework.getJSON(options.source, function(data){
@@ -31,18 +47,7 @@ fwdom.makeEdit = function(d)
         {
             options.source = options.source();
         }
-        for (let opt of options.source)
-        {
-            if (typeof opt == 'object')
-            {
-                box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
-            }
-            else
-            {
-                box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
-            }
-        }
-        box += '</select>';
+        box += fwdom.makeSelect(options);
         break;
     case 'textarea':
         box = '<textarea rows="5" cols="25" class="edbox">' + ctext + '</textarea>';

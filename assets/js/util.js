@@ -117,10 +117,11 @@
 /**
  * get JSON
  */
-        getJSON : function(url, success, fail){
+        getJSON : function(url, success, fail, async = true){
             var request = new XMLHttpRequest();
+            let ajaxObj = new FWAjaxRQ(request);
             request.open('GET', url, true);
-            request.setRequestHeader('Accept', 'application/json');
+            request.setRequestHeader('Accept', 'application/json', async);
             request.onload = function() {
               if (this.status >= 200 && this.status < 400) {
                 // Success!
@@ -136,6 +137,7 @@
               fail(this);
             };
             request.send();
+            return ajaxObj;
         },
 /**
  * Generate HTML for a font-awesome toggle icon
