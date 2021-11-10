@@ -106,23 +106,24 @@ fwdom.makeEdit = function(d)
             let box = tip.querySelector('.edbox');
             if (box.value != fwdom.inline.innerText)
             {
-                if (box.value === '')
-                {
-                   fwdom.inline.innerText = options.emptytext;
-                   fwdom.inline.classList.add('edempty');
-                }
-                else
-                {
-                   fwdom.inline.innerText = box.value;
-                   fwdom.inline.classList.remove('edempty');
-                }
-            console.log(options);
                 if (options.update == null)
                 {
                     fwdom.alert('No update function defined');
-                    return;
                 }
-                options.update(options, box.value);
+                else
+                {
+                    options.update(options, box.value);
+                    if (box.value === '')
+                    {
+                       fwdom.inline.innerText = options.emptytext;
+                       fwdom.inline.classList.add('edempty');
+                    }
+                    else
+                    {
+                       fwdom.inline.innerText = box.value;
+                       fwdom.inline.classList.remove('edempty');
+                    }
+                }
             }
             fwdom.popDispose();
         });
