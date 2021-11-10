@@ -13,7 +13,7 @@ fwdom.defaultOptions = {
 
 fwdom.makeEdit = function(d)
  {
-    const options = fwdom.edOptions[d];
+    const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
     let ctext = d.innerText;
     let box;
     if (ctext === options.emptyText)
