@@ -8,8 +8,7 @@ fwdom.defaultOptions = {
     type: 'text',
     emptyText: '------',
     title: 'Edit String',
-    update: null,
-    class: 'editable'
+    update: null
 }
 
 fwdom.makeEdit = function(d)
@@ -17,10 +16,10 @@ fwdom.makeEdit = function(d)
     const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
     let ctext = d.innerText;
     let box;
-    //if (d.classList.contains('edempty'))
-    //{
-    //    ctext = '';
-    //}
+    if (ctext === options.emptyText)
+    {
+        ctext = '';
+    }
     switch (options.type)
     {
     case 'select':

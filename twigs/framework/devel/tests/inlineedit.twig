@@ -2,9 +2,9 @@
 
     <table class="table table-striped">
         <tbody>
-            <tr><td>Text</td><td>{{f.editable({type: 'text', name: 'test', title: 'Edit test', key: 6, value: 'This is a test'})}}</td></tr>
-            <tr><td>Empty Text</td><td>{{f.editable({type: 'text', name: 'empty', title: 'Edit empty', key: 6, value: ''})}}</td></tr>
-            <tr><td>Textarea</td><td>{{f.editable({type: 'textarea', name: 'tarea', title: 'Edit tarea', key: 6, value: 'this is a value'})}}</td></tr>
-            <tr><td>Select</td><td>{{f.editable({type: 'select', name: 'tsel', title: 'Make a selection', key: 6, value: 'yes', options: ['yes', 'no', 'N/A']})}}</td></tr>
+            <tr><td>Text</td><td>{{f.editable({type: 'text', name: 'test', title: 'Edit test', key: 6, value: 'This is a test', class: 'editable'})}}</td></tr>
+            <tr><td>Empty Text</td><td>{{f.editable({type: 'text', name: 'empty', title: 'Edit empty', key: 6, value: '', class: 'editable'})}}</td></tr>
+            <tr><td>Textarea</td><td>{{f.editable({type: 'textarea', name: 'tarea', title: 'Edit tarea', key: 6, value: 'this is a value', class: 'editable'})}}</td></tr>
+            <tr><td>Select</td><td>{{f.editable({type: 'select', name: 'tsel', title: 'Make a selection', key: 6, value: 'yes', options: ['yes', 'no', 'N/A'], class:'editable'})}}</td></tr>
         </tbody>
     </table>
