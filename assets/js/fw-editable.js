@@ -59,9 +59,11 @@ fwdom.makeEdit = function(d)
  };
 
  fwdom.editable = function(div, options = null) {
+    let nopt;
     if (options != null)
     {
-        fwdom.edOptions[div] = options;
+        fwdom.edOptions[fwdom.edOptions.length] = options;
+        nopt = options;
     }
     else
     {
@@ -71,12 +73,12 @@ fwdom.makeEdit = function(d)
         {
             nopt[fld] = datas[fld];
         }
-        fwdom.edOptions[div] = nopt;
+        fwdom.edOptions[fwdom.edOptions.length] = nopt;
     }
-console.log(fwdom.edOptions);
+    div.setAttribute('data-editable-id', fwdom.edOptions.length);
     if (div.innerText === '')
     {
-        div.innerText = div.getAttribute('data-emptytext');
+        div.innerText = nopt.emptyText;
         div.classList.add('edempty');
     }
     div.addEventListener('click', function(e){
@@ -86,7 +88,7 @@ console.log(fwdom.edOptions);
             fwdom.popDispose();
         }
         let popover = new bootstrap.Popover(div, {
-            title: fwdom.edOptions[this].title, //this.getAttribute('data-title'),
+            title: nopt.title,
             html: true,
             sanitize: false,
             content: fwdom.makeEdit(this),
@@ -100,12 +102,13 @@ console.log(fwdom.edOptions);
         tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.stop(e);
+            let options =  fwdom.edOptions[fwdom.inline.getAttribute('data-editable-id')];
             let box = tip.querySelector('.edbox');
             if (box.value != fwdom.inline.innerText)
             {
                 if (box.value === '')
                 {
-                   fwdom.inline.innerText = fwdom.edOptions[fwdom.inline].emptytext;
+                   fwdom.inline.innerText = options.emptytext;
                    fwdom.inline.classList.add('edempty');
                 }
                 else
@@ -113,6 +116,7 @@ console.log(fwdom.edOptions);
                    fwdom.inline.innerText = box.value;
                    fwdom.inline.classList.remove('edempty');
                 }
+            console.log(options);
                 if (options.update == null)
                 {
                     fwdom.alert('No update function defined');
