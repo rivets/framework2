@@ -76,6 +76,7 @@ fwdom.makeEdit = function(d)
         }
     }
     fwdom.edOptions[fwdom.edOptions.length] = nopt;
+    console.log(fwdom.edOptions);
     div.setAttribute('data-editable-id', fwdom.edOptions.length);
     if (div.innerText === '')
     {
