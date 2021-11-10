@@ -40,7 +40,12 @@
  */
         final public function handle() : void
         {
-            $this->context->web()->sendJSON($this->context->rest());
+            $res = (object)[
+                'rest' => $this->context('rest'),
+                'method' => $this->context->web()->method(),
+                'data' => $this->context->formdata($this->context->web()->method())->fetchRaw(),
+            ];
+            $this->context->web()->sendJSON($res);
         }
     }
 ?>
