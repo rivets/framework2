@@ -24,6 +24,7 @@
         private static array $restops = [
             'bean'          => Ajax\Bean::class,
             'config'        => Ajax\Config::class,
+            'fwtest'        => Ajax\FWTest::class,
             'hints'         => Ajax\Hints::class,
             'paging'        => Ajax\Paging::class,
             'pwcheck'       => Ajax\PwCheck::class,
