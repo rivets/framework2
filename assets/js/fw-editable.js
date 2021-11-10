@@ -54,7 +54,7 @@ fwdom.makeEdit = function(d)
  };
 
 fwdom.editUpdate = function(options, value) {
-    return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.name), {
+    return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.field), {
         method: putorpatch,
         data: { value: value }
     });
