@@ -139,7 +139,7 @@
     {% else %}
         {% set menu = opts.value %}
     {% endif %}
-    <a href="#" {{fx.hv('id', opts.id)}}{{fx.hv('class', opts.class)}}{{fx.dv('options', menu)}}{{fx.dv('name', opts.name)}}
+    <a href="#" {{fx.hv('id', opts.id)}}{{fx.hv('class', opts.class)}}{{fx.dv('source', menu)}}{{fx.dv('name', opts.name)}}
     {{fx.dv('type', opts.type)}}{{fx.dv('key', opts.id)}}{{fx.dv('title', opts.title)}}{{fx.dv('emptytext', opts.emptytext)}}>{{opts.value}}</a>
 {%- endmacro editable %}
 
