@@ -40,10 +40,11 @@
  */
         final public function handle() : void
         {
+            $method = strtolower($this->context->web()->method());
             $res = (object)[
                 'rest' => $this->context->rest(),
-                'method' => $this->context->web()->method(),
-                'data' => $this->context->formdata($this->context->web()->method())->fetchRaw(),
+                'method' => $method,
+                'data' => $this->context->formdata($method == 'patch' ? 'put' : $method)->fetchRaw(),
             ];
             $this->context->web()->sendJSON($res);
         }
