@@ -17,10 +17,10 @@ fwdom.makeEdit = function(d)
     const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
     let ctext = d.innerText;
     let box;
-    if (d.classList.contains('edempty'))
-    {
-        ctext = '';
-    }
+    //if (d.classList.contains('edempty'))
+    //{
+    //    ctext = '';
+    //}
     switch (options.type)
     {
     case 'select':
