@@ -19,6 +19,14 @@ fwdom.makeEdit = function(d)
     {
     case 'select':
         box = '<select class="edbox">';
+        if (typeof options.source == 'string')
+        {
+            framework.getJSON(options.source, function(data){
+                console.log(data);
+            }, function(jx){
+                fwdom.alert('Cannot fetch list');
+            });
+        }
         for (let opt of options.source)
         {
             if (typeof opt == 'object')
