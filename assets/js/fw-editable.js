@@ -22,10 +22,14 @@ fwdom.makeEdit = function(d)
         if (typeof options.source == 'string')
         {
             framework.getJSON(options.source, function(data){
-                console.log(data);
+                options.source = data;
             }, function(jx){
                 fwdom.alert('Cannot fetch list');
             });
+        }
+        else if (typeof options.source == 'function')
+        {
+            options.source = options.source();
         }
         for (let opt of options.source)
         {
