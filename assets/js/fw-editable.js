@@ -7,7 +7,8 @@ fwdom.edOptions = [];
 fwdom.defaultOptions = {
     type: 'text',
     emptytext: '------',
-    title: 'Edit String'
+    title: 'Edit String',
+    update: null
 }
 
 fwdom.makeEdit = function(d)
@@ -112,7 +113,7 @@ console.log(options, fwdom.edOptions);
                    fwdom.inline.innerText = box.value;
                    fwdom.inline.classList.remove('edempty');
                 }
-                if (options.update === null)
+                if (options.update == null)
                 {
                     fwdom.alert('No update function defined');
                     return;
