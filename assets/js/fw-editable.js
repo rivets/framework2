@@ -6,7 +6,7 @@ fwdom.inline = null;
 fwdom.edOptions = [];
 fwdom.defaultOptions = {
     type: 'text',
-    emptytext: '------',
+    emptyText: '------',
     title: 'Edit String',
     update: null
 }
