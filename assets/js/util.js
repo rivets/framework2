@@ -1,5 +1,5 @@
 /* globals fwdom: false */
-/* globals XMLHttpRequest, window, putorpatch, setTimeout, document */
+/* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery */
 /* jshint undef: true, unused: false */
     class FWAjaxRQ
     {
@@ -182,10 +182,7 @@
             let link = framework.base;
             for (let item of arguments)
             {
-                //if (link !== '')
-                //{
-                    link += '/' + item;
-               // }
+                link += '/' + item;
             }
             return link + '/';
         },
@@ -551,6 +548,6 @@
             {
                 container.insertBefore(el, position);
             }
-        },
+        }
     };
     framework.tableClick = framework.containerClick; // just for some backward compatibility....
