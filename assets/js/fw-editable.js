@@ -59,22 +59,23 @@ fwdom.makeEdit = function(d)
  };
 
  fwdom.editable = function(div, options = null) {
-    let nopt;
+    let nopt = fwdom.defaultOptions;
     if (options != null)
     {
-        fwdom.edOptions[fwdom.edOptions.length] = options;
-        nopt = options;
+        for (let fld in options)
+        {
+            nopt[fld] = options[fld];
+        }
     }
     else
     {
-        nopt = fwdom.defaultOptions;
         let datas = div.dataset;
         for (let fld in datas)
         {
             nopt[fld] = datas[fld];
         }
-        fwdom.edOptions[fwdom.edOptions.length] = nopt;
     }
+    fwdom.edOptions[fwdom.edOptions.length] = nopt;
     div.setAttribute('data-editable-id', fwdom.edOptions.length);
     if (div.innerText === '')
     {
