@@ -7,7 +7,7 @@ fwdom.edOptions = [];
 fwdom.defaultOptions = {
     type: 'text',
     emptytext: '------',
-    title: 'Edit String'
+    title: 'Edit String',
 }
 
 fwdom.makeEdit = function(d)
@@ -68,7 +68,6 @@ fwdom.makeEdit = function(d)
         let datas = div.dataset;
         for (let fld in datas)
         {
-console.log(fld);
             nopt[fld] = datas[fld];
         }
         fwdom.edOptions[div] = nopt;
