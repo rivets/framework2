@@ -3,6 +3,7 @@
 
 fwdom.popover = null;
 fwdom.inline = null;
+fwdom.domid = -1;
 fwdom.edOptions = [];
 fwdom.defaultOptions = {
     type: 'text',
@@ -75,9 +76,10 @@ fwdom.makeEdit = function(d)
             nopt[fld] = datas[fld];
         }
     }
-    fwdom.edOptions[fwdom.edOptions.length] = nopt;
+    fwdom.domid += 1;
+    fwdom.edOptions[fwdom.domid] = nopt;
     console.log(fwdom.edOptions);
-    div.setAttribute('data-editable-id', fwdom.edOptions.length);
+    div.setAttribute('data-editable-id', fwdom.domid);
     if (div.innerText === '')
     {
         div.innerText = nopt.emptyText;
