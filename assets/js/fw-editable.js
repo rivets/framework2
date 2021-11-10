@@ -7,7 +7,6 @@ fwdom.domid = -1;
 fwdom.edOptions = [];
 
 fwdom.makeSelect = function(options){
-    let box = '<select class="edbox">';
     for (let opt of options.source)
     {
         if (typeof opt == 'object')
@@ -20,7 +19,6 @@ fwdom.makeSelect = function(options){
         }
     }
     box += '</select>';
-    return box;
 };
 
 fwdom.makeEdit = function(d)
@@ -35,19 +33,31 @@ fwdom.makeEdit = function(d)
     switch (options.type)
     {
     case 'select':
+        box = '<select class="edbox">';
         if (typeof options.source == 'string')
         {
             framework.getJSON(options.source, function(data){
                 options.source = data;
             }, function(jx){
                 fwdom.alert('Cannot fetch list');
-            });
+            }, false);
         }
         else if (typeof options.source == 'function')
         {
             options.source = options.source();
         }
-        box += fwdom.makeSelect(options);
+        for (let opt of options.source)
+        {
+            if (typeof opt == 'object')
+            {
+                box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
+            }
+            else
+            {
+                box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
+            }
+        }
+        box += '</select>';
         break;
     case 'textarea':
         box = '<textarea rows="5" cols="25" class="edbox">' + ctext + '</textarea>';
@@ -78,7 +88,6 @@ fwdom.makeEdit = function(d)
  };
 
 fwdom.editUpdate = function(options, value) {
-    console.log(options);
     return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.field), {
         method: putorpatch,
         data: { value: value }
@@ -106,7 +115,6 @@ fwdom.editUpdate = function(options, value) {
     }
     fwdom.domid += 1;
     fwdom.edOptions[fwdom.domid] = nopt;
-    console.log(fwdom.edOptions);
     div.setAttribute('data-editable-id', fwdom.domid);
     if (div.innerText === '')
     {
