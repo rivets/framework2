@@ -7,12 +7,13 @@ fwdom.edOptions = [];
 fwdom.defaultOptions = {
     type: 'text',
     emptytext: '------',
-    title: 'Edit String',
+    title: 'Edit String'
 }
 
 fwdom.makeEdit = function(d)
  {
     const options = fwdom.edOptions[d];
+console.log(options, fwdom.edOptions);
     let ctext = d.innerText;
     let box;
     if (ctext === options.emptyText)
