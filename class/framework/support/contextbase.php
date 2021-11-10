@@ -224,6 +224,7 @@
  */
         public function formData(string $which) : \Framework\FormData\Base
         {
+            $which = strtolower($which);
             if (!isset($this->getters[$which]))
             {
                 $class = '\Framework\FormData\\'.ucfirst($which);
