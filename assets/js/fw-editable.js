@@ -108,6 +108,7 @@ fwdom.editUpdate = function(options, value) {
     }
     div.addEventListener('click', function(e){
         fwdom.stop(e);
+        const type = fwdom.edOptions[this.getAttribute('data-editable-id')].type;
         if (fwdom.inline !== null)
         {
             fwdom.popDispose();
@@ -119,7 +120,7 @@ fwdom.editUpdate = function(options, value) {
             sanitize: false,
             content: fwdom.makeEdit(this),
             placement: 'auto',
-            template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+            template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
         popover.show();
         let tip = popover.tip;
