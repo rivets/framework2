@@ -20,15 +20,8 @@ fwdom.makeEdit = function(d)
     {
     case 'select':
         box = '<select class="edbox">';
-        if (typeof options.source == 'string')
-        {
-            framework.getJSON(options.source, function(data){
-                options.source = data;
-            }, function(jx){
-                fwdom.alert('Cannot fetch list');
-            }, false);
-        }
-        else if (typeof options.source == 'function')
+
+        if (typeof options.source == 'function')
         {
             options.source = options.source();
         }
@@ -80,7 +73,67 @@ fwdom.editUpdate = function(options, value) {
     });
 };
 
- fwdom.editable = function(div, options = null) {
+fwdom.popClick = function(){
+    if (this.hasAttribute('disabled'))
+    {
+        return;
+    }
+    const type = fwdom.edOptions[this.getAttribute('data-editable-id')].type;
+    const title = fwdom.edOptions[this.getAttribute('data-editable-id')].title;
+    if (fwdom.inline !== null)
+    {
+        fwdom.popDispose();
+    }
+    let popover = new bootstrap.Popover(this, {
+        title: title,
+        container: 'body',
+        html: true,
+        sanitize: false,
+        content: fwdom.makeEdit(this),
+        placement: 'auto',
+        template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+    });
+    popover.show();
+    let tip = popover.tip;
+    tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
+    tip.querySelector('.edyes').addEventListener('click', function(e){
+        fwdom.stop(e);
+        let options =  fwdom.edOptions[fwdom.inline.getAttribute('data-editable-id')];
+        let box = tip.querySelector('.edbox');
+        if (box.value != fwdom.inline.innerText)
+        {
+            if (options.update == null)
+            {
+                fwdom.alert('No update function defined');
+            }
+            else
+            {
+                options.update(options, box.value).done(function(res){
+                    console.log(res);
+                    if (box.value === '')
+                    {
+                       fwdom.inline.innerText = options.emptytext;
+                       fwdom.inline.classList.add('edempty');
+                    }
+                    else
+                    {
+                       fwdom.inline.innerText = box.value;
+                       fwdom.inline.classList.remove('edempty');
+                    }
+                }).fail(function(jx){
+                    console.log(jx);
+                    fwdom.alert('Update failed');
+                });
+            }
+        }
+        fwdom.popDispose();
+    });
+    document.body.addEventListener('click', fwdom.outsideClick);
+    fwdom.popover = popover;
+    fwdom.inline = this;
+};
+
+fwdom.editable = function(div, options = null) {
     let nopt = {
         type: 'text',
         emptyText: '------',
@@ -109,61 +162,20 @@ fwdom.editUpdate = function(options, value) {
     }
     div.addEventListener('click', function(e){
         fwdom.stop(e);
-        if (div.hasAttribute('disabled'))
+        const domid = this.getAttribute('data-editable-id');
+        const options = fwdom.edOptions[domid];
+        if (typeof options.source == 'string')
         {
-            return;
+            framework.getJSON(options.source, function(data){
+               fwdom.edOptions[domid].source = data;
+               fwdom.popClick();
+            }, function(jx){
+                fwdom.alert('Cannot fetch list');
+            }, false);
         }
-        const type = fwdom.edOptions[this.getAttribute('data-editable-id')].type;
-        if (fwdom.inline !== null)
+        else
         {
-            fwdom.popDispose();
+            fwdom.popClick();
         }
-        let popover = new bootstrap.Popover(div, {
-            title: nopt.title,
-            container: 'body',
-            html: true,
-            sanitize: false,
-            content: fwdom.makeEdit(this),
-            placement: 'auto',
-            template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
-        });
-        popover.show();
-        let tip = popover.tip;
-        tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
-        tip.querySelector('.edyes').addEventListener('click', function(e){
-            fwdom.stop(e);
-            let options =  fwdom.edOptions[fwdom.inline.getAttribute('data-editable-id')];
-            let box = tip.querySelector('.edbox');
-            if (box.value != fwdom.inline.innerText)
-            {
-                if (options.update == null)
-                {
-                    fwdom.alert('No update function defined');
-                }
-                else
-                {
-                    options.update(options, box.value).done(function(res){
-                        console.log(res);
-                        if (box.value === '')
-                        {
-                           fwdom.inline.innerText = options.emptytext;
-                           fwdom.inline.classList.add('edempty');
-                        }
-                        else
-                        {
-                           fwdom.inline.innerText = box.value;
-                           fwdom.inline.classList.remove('edempty');
-                        }
-                    }).fail(function(jx){
-                        console.log(jx);
-                        fwdom.alert('Update failed');
-                    });
-                }
-            }
-            fwdom.popDispose();
-        });
-        document.body.addEventListener('click', fwdom.outsideClick);
-        fwdom.popover = popover;
-        fwdom.inline = div;
     });
  };
