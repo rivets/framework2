@@ -130,7 +130,7 @@ fwdom.popClick = function(div){
     });
     document.body.addEventListener('click', fwdom.outsideClick);
     fwdom.popover = popover;
-    fwdom.inline = this;
+    fwdom.inline = div;
 };
 
 fwdom.editable = function(div, options = null) {
