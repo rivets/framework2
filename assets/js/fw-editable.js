@@ -79,7 +79,6 @@ fwdom.popClick = function(div){
         return;
     }
     const options = fwdom.edOptions[div.getAttribute('data-editable-id')];
-    console.log(options);
     const type = options.type;
     const title = options.title;
     if (fwdom.inline !== null)
@@ -112,13 +111,32 @@ fwdom.popClick = function(div){
             {
                 options.update(options, box.value).done(function(res){
                     console.log(res);
-                    if (box.value === '')
+                    if (options.type == 'select')
                     {
+                        for (let x of options.source)
+                        {
+                            if (typeof x == 'object')
+                            {
+                                if (box.value == x.value)
+                                {
+                                    fwdom.inline.innerText = x.text;
+                                    break;
+                                }
+                            }
+                            else if (box.value == x)
+                            {
+                                fwdom.inline.innerText = x;
+                                break;
+                            }
+                        }
+                    }
+                    else if (box.value === '')
+                    { // empty string so indicate this
                        fwdom.inline.innerText = options.emptytext;
                        fwdom.inline.classList.add('edempty');
                     }
                     else
-                    {
+                    { // not empty
                        fwdom.inline.innerText = box.value;
                        fwdom.inline.classList.remove('edempty');
                     }
