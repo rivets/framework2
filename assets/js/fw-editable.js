@@ -129,12 +129,11 @@ fwdom.editUpdate = function(options, value) {
         });
         if (type == 'textarea')
         {
+            console.log(popover);
             popover.style.maxWidth = '100%';
         }
         popover.show();
         let tip = popover.tip;
-
-
         tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.stop(e);
