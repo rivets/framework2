@@ -6,10 +6,11 @@ fwdom.inline = null;
 fwdom.domid = -1;
 fwdom.edOptions = [];
 
-fwdom.makeEdit = function()
+fwdom.makeEdit = function(d)
  {
-    const options = fwdom.edOptions[this.getAttribute('data-editable-id')];
-    let ctext = this.innerText;
+    console.log(this);
+    const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
+    let ctext = d.innerText;
     let box;
     if (ctext === options.emptyText)
     {
@@ -122,7 +123,7 @@ fwdom.editUpdate = function(options, value) {
             container: 'body',
             html: true,
             sanitize: false,
-            content: fwdom.makeEdit(),
+            content: fwdom.makeEdit(this),
             placement: 'auto',
             template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
