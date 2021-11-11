@@ -73,23 +73,23 @@ fwdom.editUpdate = function(options, value) {
     });
 };
 
-fwdom.popClick = function(){
-    if (this.hasAttribute('disabled'))
+fwdom.popClick = function(div){
+    if (div.hasAttribute('disabled'))
     {
         return;
     }
-    const type = fwdom.edOptions[this.getAttribute('data-editable-id')].type;
-    const title = fwdom.edOptions[this.getAttribute('data-editable-id')].title;
+    const type = fwdom.edOptions[div.getAttribute('data-editable-id')].type;
+    const title = fwdom.edOptions[div.getAttribute('data-editable-id')].title;
     if (fwdom.inline !== null)
     {
         fwdom.popDispose();
     }
-    let popover = new bootstrap.Popover(this, {
+    let popover = new bootstrap.Popover(div, {
         title: title,
         container: 'body',
         html: true,
         sanitize: false,
-        content: fwdom.makeEdit(this),
+        content: fwdom.makeEdit(div),
         placement: 'auto',
         template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
     });
@@ -164,18 +164,19 @@ fwdom.editable = function(div, options = null) {
         fwdom.stop(e);
         const domid = this.getAttribute('data-editable-id');
         const options = fwdom.edOptions[domid];
+        const div = this;
         if (typeof options.source == 'string')
         {
             framework.getJSON(options.source, function(data){
                fwdom.edOptions[domid].source = data;
-               fwdom.popClick();
+               fwdom.popClick(div);
             }, function(jx){
                 fwdom.alert('Cannot fetch list');
             }, false);
         }
         else
         {
-            fwdom.popClick();
+            fwdom.popClick(div);
         }
     });
  };
