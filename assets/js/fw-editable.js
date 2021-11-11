@@ -81,7 +81,7 @@ fwdom.popClick = function(div){
     const options = fwdom.edOptions[div.getAttribute('data-editable-id')];
     console.log(options);
     const type = options.type;
-    const title = optionstitle;
+    const title = options.title;
     if (fwdom.inline !== null)
     {
         fwdom.popDispose();
