@@ -108,6 +108,10 @@ fwdom.editUpdate = function(options, value) {
     }
     div.addEventListener('click', function(e){
         fwdom.stop(e);
+        if (div.hasAttribute('disabled'))
+        {
+            return;
+        }
         const type = fwdom.edOptions[this.getAttribute('data-editable-id')].type;
         if (fwdom.inline !== null)
         {
