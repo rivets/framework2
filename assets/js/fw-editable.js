@@ -114,6 +114,7 @@ fwdom.editUpdate = function(options, value) {
         }
         let popover = new bootstrap.Popover(div, {
             title: nopt.title,
+            container: 'body',
             html: true,
             sanitize: false,
             content: fwdom.makeEdit(this),

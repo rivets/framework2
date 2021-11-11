@@ -117,11 +117,11 @@
 /**
  * get JSON
  */
-        getJSON : function(url, success, fail, async = true){
+        getJSON : function(url, success, fail){
             var request = new XMLHttpRequest();
             let ajaxObj = new FWAjaxRQ(request);
             request.open('GET', url, true);
-            request.setRequestHeader('Accept', 'application/json', async);
+            request.setRequestHeader('Accept', 'application/json');
             request.onload = function() {
               if (this.status >= 200 && this.status < 400) {
                 // Success!
