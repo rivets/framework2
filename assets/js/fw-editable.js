@@ -127,11 +127,6 @@ fwdom.editUpdate = function(options, value) {
             placement: 'auto',
             template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
-        if (type == 'textarea')
-        {
-            console.log(popover);
-            popover.style.maxWidth = '100%';
-        }
         popover.show();
         let tip = popover.tip;
         tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
