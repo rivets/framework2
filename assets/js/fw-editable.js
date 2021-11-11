@@ -6,10 +6,10 @@ fwdom.inline = null;
 fwdom.domid = -1;
 fwdom.edOptions = [];
 
-fwdom.makeEdit = function(d)
+fwdom.makeEdit = function()
  {
-    const options = fwdom.edOptions[d.getAttribute('data-editable-id')];
-    let ctext = d.innerText;
+    const options = fwdom.edOptions[this.getAttribute('data-editable-id')];
+    let ctext = this.innerText;
     let box;
     if (ctext === options.emptyText)
     {
@@ -45,7 +45,7 @@ fwdom.makeEdit = function(d)
         box += '</select>';
         break;
     case 'textarea':
-        box = '<textarea rows="5" cols="25" class="edbox">' + ctext + '</textarea>';
+        box = '<textarea rows="5" cols="80" class="edbox">' + ctext + '</textarea>';
         break;
     default:
         box = '<input type="'+options.type+'" value="' + ctext + '" class="edbox"/>';
@@ -122,7 +122,7 @@ fwdom.editUpdate = function(options, value) {
             container: 'body',
             html: true,
             sanitize: false,
-            content: fwdom.makeEdit(this),
+            content: fwdom.makeEdit(),
             placement: 'auto',
             template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
