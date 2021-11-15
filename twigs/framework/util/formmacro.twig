@@ -127,7 +127,7 @@
 #}
 
 {% macro editable(opts) -%}{% import _self as fx %}
-    <a href="#" class="editable{% if opts.class != '' %} {{opts.class}}{% endif %}"{{fx.hv('id', opts.id)}}{{fx.hv('realvalue', opts.realvalue)}}{{fx.dv('field', opts.field)}}{{fx.dv('type', opts.type)}}{{fx.dv('key', opts.key)}}{{fx.dv('title', opts.title)}}{{fx.dv('emptytext', opts.emptytext)}}>{{opts.value}}</a>
+    <a href="#" class="editable{% if opts.class != '' %} {{opts.class}}{% endif %}"{{fx.hv('id', opts.id)}}{{fx.dv('field', opts.field)}}{{fx.dv('type', opts.type)}}{{fx.dv('key', opts.key)}}{{fx.dv('title', opts.title)}}{{fx.dv('emptytext', opts.emptytext)}}>{{opts.value}}</a>
 {%- endmacro editable %}
 
 {% macro wrap(t) %}'+{{t}}+'{% endmacro wrap %}

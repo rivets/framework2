@@ -21,7 +21,7 @@
         public function hasAdmin() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isadmin();
+            return $this->hasUser() && $this->user()->isAdmin();
         }
 /**
  * Do we have a logged in developer user?
@@ -31,7 +31,7 @@
         public function hasDeveloper() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isdeveloper();
+            return $this->hasUser() && $this->user()->isDeveloper();
         }
 /*
  ***************************************
@@ -45,7 +45,7 @@
  *
  * @return void
  */
-        public function setpages($count = NULL) : void
+        public function setPages($count = NULL) : void
         {
             $fdt = $this->formData('get');
             $psize = (int) $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
