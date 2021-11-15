@@ -13,7 +13,12 @@
 .editable:hover {
    text-decoration: underline dotted blue;
 }
+
 .edempty {
     color: red;
     text-decoration: underline solid blue;
+}
+
+.popover {
+    width: 100%;
 }

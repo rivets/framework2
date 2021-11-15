@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap, framework */
+/* globals document, fwdom, bootstrap, framework, putorpatch, console */
 /* jshint undef: true, unused: false */
 
 fwdom.popover = null;
