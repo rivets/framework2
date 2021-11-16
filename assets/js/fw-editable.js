@@ -65,7 +65,7 @@ var fweditable = {
 
     outsideClick : function(e)
     {
-       if (fwdom.inline != e.target && fwdom.inline != fwdom.popover.tip && !fwdom.popover.tip.contains(e.target))
+       if (fweditable.inline != e.target && fweditable.inline != fweditable.popover.tip && !fweditable.popover.tip.contains(e.target))
        {
            fweditable.popDispose(e);
        }
@@ -102,10 +102,10 @@ var fweditable = {
         });
         popover.show();
         let tip = popover.tip;
-        tip.querySelector('.edno').addEventListener('click', fwdom.popDispose);
+        tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.stop(e);
-            let options =  fweditable.edOptions[fwdom.inline.getAttribute('data-editable-id')];
+            let options =  fweditable.edOptions[fweditable.inline.getAttribute('data-editable-id')];
             let box = tip.querySelector('.edbox');
             if (box.value != fweditable.inline.innerText)
             {
@@ -177,7 +177,7 @@ var fweditable = {
             nopt[fld] = datas[fld];
         }
         fweditable.domid += 1;
-        fweditable.edOptions[fwdom.domid] = nopt;
+        fweditable.edOptions[fweditable.domid] = nopt;
         div.setAttribute('data-editable-id', fweditable.domid);
         if (div.innerText === '')
         {
