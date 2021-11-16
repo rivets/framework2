@@ -135,7 +135,7 @@ var fweditable = {
                                 }
                             }
                         }
-                        else if (box.value === '')
+                        else if (box.value === '' || box.value == undefined)
                         { // empty string so indicate this
                            fweditable.inline.innerText = options.emptytext;
                            fweditable.inline.classList.add('edempty');
