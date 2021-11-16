@@ -135,9 +135,9 @@ var fweditable = {
                                 }
                             }
                         }
-                        else if (box.value === '' || box.value == undefined)
+                        else if (box.value === '')
                         { // empty string so indicate this
-                           fweditable.inline.innerText = options.emptytext;
+                           fweditable.inline.innerText = options.emptyText;
                            fweditable.inline.classList.add('edempty');
                         }
                         else
