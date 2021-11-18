@@ -1,7 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
-{% set jquery = FALSE %}
+{% set jquery = TRUE %}
 {% set fwdom = TRUE %}
 
 {% extends '@content/page.twig' %}
@@ -98,7 +98,7 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <p>{{m.invoke('#addu', 'Add User')}}</p>
+            <p>{{m.invoke('addu', 'Add User')}}</p>
         </article>
     </section>
     {{m.open({id: 'addu', title: 'Add A New User'})}}
