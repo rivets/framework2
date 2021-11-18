@@ -40,7 +40,7 @@
             });
         }
         framework.beanCreate('user', data, function(ret){
-            bootstrap.Modal.getOrCreateInstance(document.getElementByID('addu')).hide();
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('addu')).hide();
             framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
                 '<td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
