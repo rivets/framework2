@@ -1,6 +1,8 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
+{% set jquery = FALSE %}
+{% set fwdom = TRUE %}
 
 {% extends '@content/page.twig' %}
 
@@ -34,7 +36,7 @@
              data[el.getAttribute('name')] = el.value;
         });
         framework.beanCreate('user', data, function(ret){
-            fwdom.mkjQ('#addu').modal('hide');
+            bootstrap.Modal.getOrCreateInstance(document.getElementByID('addu')).hide();
             framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
                 '<td>'+data.login+'</td>'+
                 '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
