@@ -33,7 +33,7 @@
         this.disabled = true;
         let data = {admin : 0, devel : 0};
         let aform = document.getElementById('adduform');
-        for (let x of ['input::checked', 'input[type="text"]', 'input[type="password"]', 'input[type="email"]'])
+        for (let x of ['input:checked', 'input[type="text"]', 'input[type="password"]', 'input[type="email"]'])
         {
             aform.querySelectorAll(x).forEach(function(el, index){
                  data[el.getAttribute('name')] = el.value;
