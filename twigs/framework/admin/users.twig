@@ -32,9 +32,13 @@
         fwdom.stop(e);
         this.disabled = true;
         let data = {admin : 0, devel : 0};
-        document.getElementById('adduform').querySelectorAll('input:checked,input:text,input:password,input[type="email"]').forEach(function(el, index){
-             data[el.getAttribute('name')] = el.value;
-        });
+        let aform = document.getElementById('adduform');
+        for (let x of ['input:checked', 'input:text', 'input:password', 'input[type="email"]'])
+        {
+            aform.querySelectorAll(x).forEach(function(el, index){
+                 data[el.getAttribute('name')] = el.value;
+            });
+        }
         framework.beanCreate('user', data, function(ret){
             bootstrap.Modal.getOrCreateInstance(document.getElementByID('addu')).hide();
             framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
