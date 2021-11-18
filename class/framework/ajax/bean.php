@@ -207,7 +207,7 @@
                 throw new BadValue('Missing value');
             }
             $bean = $this->context->load($beanType, (int) $id);
-            if (!\method_exists('\\Model\\'.$beanType, 'ajaxGet'))
+            if (!\method_exists($this->model, 'ajaxGet'))
             {
                 throw new \Framework\Exception\BadOperation('GET is not supported');
             }
