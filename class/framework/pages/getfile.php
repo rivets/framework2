@@ -41,11 +41,11 @@
 /** @var string    The last modified time for the file */
         private string $mtime = '';
 
+        use \Support\GetFile;
+
 /**
  * Return data files as requested
  * Always return empty string as all the file sending is done internally.
- *
- * @param Context   $context    The context object for the site
  *
  * @throws \Framework\Exception\BadValue
  * @throws \Framework\Exception\Forbidden
@@ -94,7 +94,7 @@
             }
             if (!$file->canaccess($context->user(), 'r'))
             { // current user cannot access the file
-                throw new \Framework\Exception\Forbidden('No access');
+                return $this->missing();
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
             if (($this->mtime = (string) \filemtime($this->file)) === FALSE)
