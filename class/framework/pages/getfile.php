@@ -62,7 +62,7 @@
                 $file = \R::load('upload', (int) $fpt[1]);
                 if ($file->getID() == 0)
                 {
-                    throw new \Framework\Exception\BadValue('No such file');
+                    return $this->missing();
                 }
                 $this->file = \substr($file->fname, 1); // drop the separator at the start....
             }
@@ -92,9 +92,9 @@
                     /* NOT REACHED */
                 }
             }
-            if (!$file->canaccess($context->user(), 'r'))
+            if (!$file->canAccess($context->user(), 'r'))
             { // current user cannot access the file
-                return $this->missing();
+                return $this->noaccess();
             }
             /** @psalm-suppress InvalidPropertyAssignmentValue */
             if (($this->mtime = (string) \filemtime($this->file)) === FALSE)

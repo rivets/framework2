@@ -13,9 +13,20 @@
  */
     trait GetFile
     {
-        public function missing() : string
+        public function noaccess() : string
         {
             throw new \Framework\Exception\Forbidden('No access');
+        }
+
+        public function missing(): string
+        {
+            throw new \Framework\Exception\BadValue('No such file');
+        }
+
+
+        public function other(string $msg): string
+        {
+            throw new \Framework\Exception\BadValue($msg);
         }
     }
 ?>
