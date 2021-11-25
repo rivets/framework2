@@ -80,7 +80,7 @@
                 $this->file = \implode(DIRECTORY_SEPARATOR, $fpt);
                 if (!\preg_match('#^[0-9]+/[0-9]+/[0-9]+/[^/]+$#', \implode('/', $fpt)))
                 { // filename constructed is not the right format
-                    throw new \Framework\Exception\BadValue('Illegal filename');
+                    return $this->other('Illegal filename');
                 }
 /*
  * Now do an access control check
