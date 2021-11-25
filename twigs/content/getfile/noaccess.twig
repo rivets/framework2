@@ -1,0 +1,20 @@
+{% set title = 'No Access' %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>No Access</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <p>You do not have permission to access that file.</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}
