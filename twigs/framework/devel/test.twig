@@ -29,13 +29,13 @@
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
     for (let d of document.getElementsByClassName('editable'))
     {
-        fwdom.editable(d, {
+        fwdeditable.editable(d, {
             op: 'fwtest',
             bean: 'fwtest',
             update : fwdom.editUpdate
         });
     }
-    fwdom.editable(document.getElementById('edsel'), {
+    fweditable.editable(document.getElementById('edsel'), {
         type: 'select',
         source: ['yes', 'no', 'N/A'],
         update : fwdom.editUpdate,
