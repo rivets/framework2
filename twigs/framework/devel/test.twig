@@ -44,10 +44,12 @@
     });
     document.getElementById('testalert').addEventListener('click', function(e){
         fwdom.stop(e);
+        console.log('alert');
         framework.alert('This is an alert', 'Alert!!');
     });
     document.getElementById('testconfirm').addEventListener('click', function(e){
         fwdom.stop(e);
+        console.log('confirm');
     });
 {% endblock onload %}
 
