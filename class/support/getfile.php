@@ -23,14 +23,14 @@
 /**
  * File does not exist
  */
-        public function missing(): string
+        public function missing() : string
         {
             return '@content/getfile/missing.twig';
         }
 /**
  * Some other error
  */
-        public function other(string $msg): string
+        public function other(string $msg) : string
         {
             Context::getInstance()->local()->addval(['msg' => $msg]);
             return '@content/getfile/other.twig';
