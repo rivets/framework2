@@ -42,6 +42,13 @@
         op: 'fwtest',
         bean: 'fwtest'
     });
+    document.getElementById('testalert').addEventListener('click', function(e){
+        fwdom.stop(e);
+        framework.alert('This is an alert', 'Alert!!');
+    });
+    document.getElementById('testconfirm').addEventListener('click', function(e){
+        fwdom.stop(e);
+    });
 {% endblock onload %}
 
 {% block headerbody %}

@@ -73,9 +73,13 @@
  */
         base : '',
  /**
- * Some routers do not support PUT so use PATCH - set in the initialisation javascript
- */
+  * Some routers do not support PUT so use PATCH - set in the initialisation javascript
+  */
         putorpatch : 'PUT',
+/**
+ * any modal that is popped up
+ */
+        currentModal : null,
 /**
  * encode object into a query string
  *
@@ -525,7 +529,7 @@
             );
         },
 /**
- * Make a new element qnd add it in the right place in a container.
+ * Make a new element and add it in the right place in a container.
  *
  * @param {object} container - a Dom element
  * @param {string} element - what we want to insert
@@ -554,7 +558,24 @@
 /**
  * Pop up an alert
  */
-        alert: function(message) {
+        alert: function(message, title = '') {
+            framework.currentModal = document.createTextNode('<div class="modal" id="_fwalert" tabindex="-1">'+
+                '<div class="modal-dialog">'+
+                '<div class="modal-content">'+
+                '<div class="modal-header">'+
+                '<h5 class="modal-title">'+title+'</h5>'+
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                '<p>'+message+'</p>'+
+                '</div>'+
+                '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>'+
+                '</div></div></div></div>');
+            framework.currentModal.addEventListener('hide.bs.modal', function(){
+                framework.currentModal.remove();
+                framework.currentModal = null;
+            });
         },
 /**
  * Pop up a confirmation
