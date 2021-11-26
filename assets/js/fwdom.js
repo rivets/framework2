@@ -35,7 +35,7 @@
         },
 
         alert: function(msg){
-            bootbox.alert(msg);
+            framework.alert(msg);
         },
 
         confirm: function(msg, fn){
