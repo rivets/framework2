@@ -93,21 +93,21 @@
         <file name="class/framework/web/web.php" />
         <file name="class/framework/web/webbase.php" />
 
-        <file name="class/model/form.php" />
-        <file name="class/model/formfield.php" />
-        <file name="class/model/fwconfig.php" />
-        <file name="class/model/fwcsp.php" />
-        <file name="class/model/page.php" />
-        <file name="class/model/pagerole.php" />
-        <file name="class/model/role.php" />
-        <file name="class/model/rolecontext.php" />
-        <file name="class/model/rolename.php" />
-        <file name="class/model/upload.php" />
-        <file name="class/model/user.php" />
+        <file name="class/framework/model/form.php" />
+        <file name="class/framework/model/formfield.php" />
+        <file name="class/framework/model/fwconfig.php" />
+        <file name="class/framework/model/fwcsp.php" />
+        <file name="class/framework/model/page.php" />
+        <file name="class/framework/model/pagerole.php" />
+        <file name="class/framework/model/role.php" />
+        <file name="class/framework/model/rolecontext.php" />
+        <file name="class/framework/model/rolename.php" />
+        <file name="class/framework/model/fwupload.php" />
+        <file name="class/framework/model/user.php" />
 
         <file name="class/modelextend/fwedit.php" />
         <file name="class/modelextend/makeguard.php" />
-        <file name="class/modelextend/upload.php" />
+        <file name="class/modelextend/fwupload.php" />
         <file name="class/modelextend/user.php" />
 
         <file name="class/pages/contact.php" />
@@ -117,6 +117,7 @@
 
         <file name="class/support/ajax.php" />
         <file name="class/support/context.php" />
+        <file name="class/support/getfile.php" />
         <file name="class/support/login.php" />
         <file name="class/support/nocache.php" />
         <file name="class/support/setup.php" />

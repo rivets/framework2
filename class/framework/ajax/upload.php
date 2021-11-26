@@ -71,7 +71,7 @@
             {
                 foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
                 {
-                    $upl = \R::dispense('upload');
+                    $upl = \R::dispense(FW::UPLOAD);
                     if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
                     {
                         $emess = 'upload failed '.$file['name'].' '.$file['size'].' '.$file['error'];
@@ -121,7 +121,7 @@
                     { // attach the uploads to the beans and add any link data
                         if ($data !== NULL)
                         {
-                            $bean->link($stable[$ix], $data[$ix])->upload = $upl;
+                            $bean->link($stable[$ix], $data[$ix])->{FW::UPLOAD} = $upl;
                         }
                         else
                         {

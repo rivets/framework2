@@ -11,6 +11,7 @@
 
     use \Config\Config;
     use \Support\Context;
+    use \Config\Framework as FW;
 /**
  * Deal with a file upload URL
  */
@@ -31,10 +32,11 @@
                     $fdp = $context->formdata('post');
                     foreach($fdt->fileArray('uploads') as $ix => $fa) // @phan-suppress-current-line PhanUndeclaredMethod
                     {
-                        $upl = \R::dispense('upload');
+                        $upl = \R::dispense(FW::UPLOAD);
                         if (!$upl->savefile($context, $fa, $fdp->fetch(['public', $ix]), $context->user(), $ix))
                         { // something went wrong
-                            \Framework\Model\Upload::fail($context, $fa);
+                            $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                            $umodel::fail($context, $fa);
                         }
                         else
                         {
@@ -46,10 +48,11 @@
                 {
                     foreach($fdt->fileArray('uploads') as $ix => $fa) // @phan-suppress-current-line PhanUndeclaredMethod
                     { // we only support private or public in this case so there is no flag
-                        $upl = \R::dispense('upload');
+                        $upl = \R::dispense(FW::UPLOAD);
                         if (!$upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix))
                         { // something went wrong
-                            \Framework\Model\Upload::fail($context, $fa);
+                            $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                            $umodel::fail($context, $fa);
                         }
                         else
                         {

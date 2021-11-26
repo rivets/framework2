@@ -54,7 +54,7 @@
                 {
                     throw new \Framework\Exception\BadValue('Login name already exists');
                 }
-                $u = \R::dispense('user');
+                $u = \R::dispense(FW::USER);
                 $u->login = $login;
                 $u->email = $fdt->mustFetch('email');
                 $u->active = 1;

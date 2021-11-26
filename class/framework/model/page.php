@@ -188,7 +188,7 @@
         public static function add(Context $context) : \RedBeanPHP\OODBBean
         {
             $fdt = $context->formdata('post');
-            $page = \R::dispense('page');
+            $page = \R::dispense(FW::PAGE);
             foreach (['name', 'kind', 'source'] as $fld)
             { // mandatory
                 $page->{$fld} = $fdt->mustFetch($fld);

@@ -8,6 +8,7 @@
  */
     namespace Ajax;
 
+    use \Config\Framework as FW;
 /**
  * Attach operation
  *
@@ -44,24 +45,24 @@
  * in through the usual file mechanism. This code assume sthat there is also a POST value called
  * descr associated with each file - if you don't need this then make the change documented below
  *
- * @see \Framework\Model\Upload
+ * @see \Framework\Model\FWUpload
  */
         public function handle() : void
         {
             $context = $this->context;
             $rest = $context->rest();
-            $type = strtolower($rest[1]);
+            $type = \strtolower($rest[1]);
             $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
-            $table = $type < 'upload' ? $type.'_upload' : 'upload_'.$type;
+            $table = $type < FW::UPLOAD ? $type.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$type;
             foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
             {
-                $upl = \R::dispense('upload');
+                $upl = \R::dispense(FW::UPLOAD);
                 if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
                 {
                     throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
                 }
-                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->upload = $upl; // if you want the descr field
+                $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->{FW::UPLOAD} = $upl; // if you want the descr field
                 //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add
             }
 

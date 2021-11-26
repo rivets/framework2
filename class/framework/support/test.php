@@ -193,11 +193,12 @@
             {
                 if ($fdt->hasForm())
                 {
-                    $upl = \R::dispense('upload');
+                    $upl = \R::dispense(FW::UPLOAD);
                     $fa = $fdt->fileData('upload');  // @phan-suppress-current-line PhanUndeclaredMethod
                     if (!$upl->savefile($context, $fa, FALSE, $context->user(), 0))
                     {
-                        \Framework\Model\Upload::fail($context, $fa);
+                        $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                        $umodel::fail($context, $fa);
                     }
                     else
                     {

@@ -29,7 +29,7 @@
  */
         public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : void
         {
-            $lg = \R::dispense('beanlog');
+            $lg = \R::dispense(FW::BEANLOG);
             $lg->user = $context->user();       // who changed it
             $lg->updated = $context->utcnow();  // when
             $lg->op = $op;                      // how they changed it

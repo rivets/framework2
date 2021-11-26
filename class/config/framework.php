@@ -34,6 +34,7 @@
         public const TESTCONTEXT    = self::DBPREFIX.'Test';
 
         public const AJAX           = 'fwajax'; // table names
+        public const BEANLOG        = 'beanlog';
         public const CONFIG         = 'fwconfig';
         public const CONFIRM        = self::DBPREFIX.'confirm';
         public const CSP            = 'fwcsp';
@@ -54,6 +55,7 @@
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
         private static $fwBeans = [
+            self::BEANLOG     => '',
             self::CONFIG      => '',
             self::CSP         => '',
             self::FORM        => '',
