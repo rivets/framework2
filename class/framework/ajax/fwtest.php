@@ -41,7 +41,7 @@
         final public function handle() : void
         {
             $method = strtolower($this->context->web()->method());
-            $res = (object)[
+            $res = (object) [
                 'rest' => $this->context->rest(),
                 'method' => $method,
                 'data' => $this->context->formdata($method == 'patch' ? 'put' : $method)->fetchRaw(),
