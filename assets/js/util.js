@@ -584,38 +584,33 @@
  */
         confirm: function(message, yes, no = null, title = '') {
             document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="modal" id="_fwconfirm" tabindex="-1">'+
-                '<div class="modal-dialog">'+
-                '<div class="modal-content">'+
-                '<div class="modal-header">'+
+                '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
                 '<h5 class="modal-title">'+title+'</h5>'+
-                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
-                '</div>'+
-                '<div class="modal-body">'+
-                '<p>'+message+'</p>'+
-                '</div>'+
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>'+
+                '<div class="modal-body"><p>'+message+'</p></div>'+
                 '<div class="modal-footer">'+
-                '<button type="button" id="_fwno" class="btn btn-secondary">No</button>'+
-                '<button type="button" id="_fwyes" class="btn btn-primary">Yes</button>'+
+                '<button type="button" id="_fwno" '+(no == null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-secondary">No</button>'+
+                '<button type="button" id="_fwyes" '+(yes == null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-primary">Yes</button>'+
                 '</div></div></div></div>');
             framework.currentModal = document.getElementById('_fwconfirm');
             framework.currentModal.addEventListener('hide.bs.modal', function(e){
                 framework.currentModal.remove();
                 framework.currentModal = null;
             });
-            document.getElementById('_fwno').addEventListener('click', function(e) {
-                if (yes != null)
-                {
+            if (yes != null)
+            {
+                document.getElementById('_fwyes').addEventListener('click', function(e) {
                     yes();
-                }
-                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
-            });
-            document.getElementById('_fwyes').addEventListener('click', function(e){
-                if (no != null)
-                {
+                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
+                });
+            }
+            if (no != null)
+            {
+                document.getElementById('_fwno').addEventListener('click', function(e){
                     no();
-                }
-                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
-            });
+                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
+                });
+            }
             bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
         }
     };
