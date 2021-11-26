@@ -59,7 +59,7 @@
         fwdom.stop(e);
         framework.confirm('Do you want to?', null, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
     });
-    fwdom.on('#testconfirm3', ('click', function(e){
+    fwdom.on('#testconfirm3', 'click', function(e){
         fwdom.stop(e);
         framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, null, 'Please confirm');
     });
