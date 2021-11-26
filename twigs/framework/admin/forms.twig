@@ -20,7 +20,7 @@
 {% endblock setup %}
 
 {% block onload %}
-    fwdom.on('#addfform', 'submit', function(e){e.preventDefault()});
+    fwdom.on('#addfform', 'submit', function(e){fwdom.stop(e); return false; });
     fwdom.mkjQ('#addfform').parsley()
     document.getElementById('#addb').addEventListener('click', function(e){
         fwdom.stop(e)
@@ -45,13 +45,13 @@
                 '<td title="View">{{i.view('viewb')}}</td>' +
                 '<td title="Edit">{{i.edit('editb')}}</td>' +
                 '<td>{{i.delete('delb')}}</td></tr>'
-            );
+            });
             fwdom.on('.delb', 'click', deltable, newd);
             document.querySelector('#utab').appendChild(newd);
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
         }, 'addb');
     })
-    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}; framework.containerClick(e);});
+    fwdom.on('#utab', 'click', function(e){ e.data = {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}; framework.containerClick(e);});
 {% endblock onload %}
 
 {% block headerbody %}
