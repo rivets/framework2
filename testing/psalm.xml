@@ -50,6 +50,18 @@
         <file name="../class/framework/formdata/post.php" />
         <file name="../class/framework/formdata/put.php" />
 
+        <file name="../class/framework/model/form.php" />
+        <file name="../class/framework/model/formfield.php" />
+        <file name="../class/framework/model/fwconfig.php" />
+        <file name="../class/framework/model/fwcsp.php" />
+        <file name="../class/framework/model/page.php" />
+        <file name="../class/framework/model/pagerole.php" />
+        <file name="../class/framework/model/role.php" />
+        <file name="../class/framework/model/rolecontext.php" />
+        <file name="../class/framework/model/rolename.php" />
+        <file name="../class/framework/model/fwupload.php" />
+        <file name="../class/framework/model/user.php" />
+
         <file name="../class/framework/pages/add2fa.php" />
         <file name="../class/framework/pages/admin.php" />
         <file name="../class/framework/pages/assets.php" />
@@ -94,17 +106,6 @@
         <file name="../class/framework/web/web.php" />
         <file name="../class/framework/web/webbase.php" />
 
-        <file name="../class/framework/model/form.php" />
-        <file name="../class/framework/model/formfield.php" />
-        <file name="../class/framework/model/fwconfig.php" />
-        <file name="../class/framework/model/fwcsp.php" />
-        <file name="../class/framework/model/page.php" />
-        <file name="../class/framework/model/pagerole.php" />
-        <file name="../class/framework/model/role.php" />
-        <file name="../class/framework/model/rolecontext.php" />
-        <file name="../class/framework/model/rolename.php" />
-        <file name="../class/framework/model/fwupload.php" />
-        <file name="../class/framework/model/user.php" />
 
         <file name="../class/modelextend/fwedit.php" />
         <file name="../class/modelextend/makeguard.php" />
