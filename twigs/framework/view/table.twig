@@ -30,15 +30,6 @@
         {
             return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
         }
-
-
-        function tabparamset(params)
-        {
-            params.id = params.pk;
-            params.bean = '{{bean.name}}';
-            params.op = 'table';
-            return params;
-        }
     {% endif %}
 {% endblock setup %}
 
