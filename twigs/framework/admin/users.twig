@@ -1,8 +1,9 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
-{% set parsley = TRUE %}
-{% set jquery = TRUE %}
 {% set fwdom = TRUE %}
+{% set parsley = TRUE %}
+{% set usejquery = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -28,7 +29,7 @@
 
 {% block onload %}
     fwdom.mkjQ('#adduform').on('submit', false).parsley();
-    document.getElementById('addb').addEventListener('click', function(e){
+    fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e);
         this.disabled = true;
         let data = {admin : 0, devel : 0};

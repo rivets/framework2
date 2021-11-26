@@ -1,6 +1,8 @@
-{% set ajax = TRUE %}
+{% set ajax = FALSE %}
 {% set fwutils = TRUE %}
-{% set usebootbox = TRUE %}
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -23,7 +25,7 @@
 {% block onload %}
     for (var op of testing.ajaxops)
     {
-        document.getElementById(op).addEventListener('click', testing['test'+op]);
+        fwdom.on('#'+op, 'click', testing['test'+op]);
     }
 {% endblock onload %}
 

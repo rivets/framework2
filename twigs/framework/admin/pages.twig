@@ -2,6 +2,7 @@
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
 {% set editable = FALSE %}
+{% set usebootbox = FALSE %}
 {% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Pages'}] %}
 
 {% extends '@content/page.twig' %}
@@ -53,7 +54,7 @@
 {% block onload %}
     document.querySelectorAll('.editable').forEach(function(edb){
         fweditable.editable(edb, {
-            op: 'bean', 
+            op: 'bean',
             bean: '{{constant('Config\\Framework::PAGE')}}',
             source: kname,
             update: fweditable.editUpdate

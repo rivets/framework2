@@ -1,5 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% set x = context.web.addCSP('script-src', "'unsafe-inline'") %}
 
@@ -7,27 +9,28 @@
 {% set inline = view is not defined %}
 
 {% set parsley = allownew %}
-{% set editable = inline %}
+{% set editable = FALSE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     {%if inline %} {# only want this if we are doing inline edits  #}
         function mkinline(type, name, msg, id, value)
         {
-            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
+            return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
         }
 
-        function paramset(params)
-        {
-            params.id = params.pk;
-            params.bean = '{{bean.name}}';
-            params.op = 'bean';
-            return params;
-        }
 
         function tabparamset(params)
         {
@@ -41,11 +44,13 @@
 
 {% block onload %}
     {%if inline %}
-        fwdom.mkjQ('.ppedit').editable({
-            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-            params: paramset,
-            onblur: 'cancel',
-            url: framework.editcall
+        document.querySelectorAll('.editable').forEach(function(edb){
+            fweditable.editable(edb, {
+                op: 'bean',
+                bean: '{{constant('Config\\Framework::PAGE')}}',
+                source: kname,
+                update: fweditable.editUpdate
+            });
         });
         fwdom.mkjQ('.tabppedit').editable({
             ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
@@ -56,7 +61,7 @@
     {% endif %}
     {% if allownew %}
         fwdom.mkjQ('#nfform').on('submit', false).parsley();
-        document.getelementById('addb').addEventListener('click', function(e){
+        fwdom.on('#addb', 'click', function(e){
             fwdom.stop(e);
             const pn = document.getElementById('nfname').value.toLowerCase();
             let sp = null;
@@ -65,7 +70,7 @@
                 const t = f.innerHTML;
                 if (t == pn)
                 {
-                    fwdom.alert('That field already exists');
+                    framework.alert('That field already exists');
                     return;
                 }
                 if (t > pn)
@@ -75,7 +80,7 @@
                 }
             }
         })
-        fwdom.mkjQ('#nfield').on('show.bs.modal', function(e){
+        fwdom.on('#nfield', 'show.bs.modal', function(e){
             document.getElementById('nfform).reset();
         })
     {% else %}
