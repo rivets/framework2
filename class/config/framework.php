@@ -26,7 +26,7 @@
  */
         public const ADMINROLE = 'Admin'; // role names
         public const DEVELROLE = 'Developer';
-        public const TESTROLE = 'Tester';
+        public const TESTROLE  = 'Tester';
 
         public const DBPREFIX = '';
 
