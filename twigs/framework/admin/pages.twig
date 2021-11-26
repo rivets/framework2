@@ -34,13 +34,6 @@
         window.location = event.target.parentNode.getAttribute('href');
     }
 
-    function paramset(params)
-    {
-        params.id = params.pk;
-        params.bean = '{{constant('Config\\Framework::PAGE')}}';
-        params.op = 'bean';
-        return params;
-    }
     const kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -58,12 +51,12 @@
 {% endblock setup %}
 
 {% block onload %}
-    fwdom.mkjQ('.ppedit').editable({
-        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: framework.editcall
+    document.querySelectorAll('.editable').forEach(function(edb){
+        edb.editable({
+            bean: '{{constant('Config\\Framework::PAGE')}}',
+            source: kname,
+            update: fweditable.editUpdate
+        });
     });
     fwdom.mkjQ('#npform').on('submit', false).parsley();
     document.getElementById('npkind').addEventListener('change', function(e) {
@@ -88,7 +81,7 @@
         const pn = document.getElementById('npname').value.toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
-            fwdom.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
+            framework.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
             return;
         }
         let sp = null;
@@ -109,21 +102,21 @@
         }
         if (error)
         {
-            fwdom.alert('That page already exists');
+            framework.alert('That page already exists');
             this.disabled = false;
             return;
         }
         const src = document.getElementById('npsrc').value;
         if (src == '')
         {
-            fwdom.alert('Please specify a source');
+            framework.alert('Please specify a source');
             this.disabled = false;
             return;
         }
         const kind = document.getElementById('npkind').value;
         if (kind == '')
         {
-            fwdom.alert('Please pick a page type');
+            framework.alert('Please pick a page type');
             this.disabled = false;
             return;
         }
@@ -140,7 +133,7 @@
                 '<td><a href="'+base+'/'+pn+'">{{i.link('linkb')}}</a></td>'+
                 '<td>{{i.edit('editb')}}</td>'+
                 '<td>{{i.delete('delb')}}</td>', sp);
-                fwdom.mkjQ('#npage').modal('hide');
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('npage')).hide();
             //fwdom.mkjQ('.ppedit', nx).editable({params: paramset, source: kname});
         };
         let dt = {
