@@ -60,8 +60,9 @@
             update: fweditable.editUpdate
         });
     });
-    fwdom.mkjQ('#npform').on('submit', false).parsley();
-    document.getElementById('npkind').addEventListener('change', function(e) {
+    fwdom.on('#npform', 'submit', fwdom.nosubmit);
+    fwdom.mkjQ('#npform').parsley();
+    fwdom.on('#npkind', 'change', function(e) {
         fwdom.stop(e);
         var pn = document.getElementById('npname').value.toLowerCase();
         if (pn !== '')
@@ -77,7 +78,7 @@
             }
         }
     })
-    document.getElementById('addb').addEventListener('click', function(e){
+    fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e);
         this.disabled = true; // disable submit button
         const pn = document.getElementById('npname').value.toLowerCase();
@@ -98,7 +99,7 @@
             }
             if (t > pn)
             {
-                sp = fwdom.mkjQ(this);
+                sp = this;
                 break;
             }
         }
@@ -161,11 +162,11 @@
         }
         framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
-    document.getElementById('ptab').addEventListener('click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.containerClick(e);});
-    fwdom.mkjQ('#npage').on('show.bs.modal', function(e){
+    fwdom.on('#ptab', 'click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.containerClick(e);});
+    fwdom.on('#npage', 'show.bs.modal', function(e){
         document.getElementById('npform').reset();
     });
-    document.getElementById('more').addEventListener('click', framework.addMore);
+    fwdom.on('#more', 'click', framework.addMore);
 {% endblock onload %}
 
 {% if not page is defined %}

@@ -60,7 +60,8 @@
         });
     {% endif %}
     {% if allownew %}
-        fwdom.mkjQ('#nfform').on('submit', false).parsley();
+        fwdom.on('#nfform', 'submit', fwdom.nosubmit);
+        fwdom.mkjQ('#nfform').parsley();
         fwdom.on('#addb', 'click', function(e){
             fwdom.stop(e);
             const pn = document.getElementById('nfname').value.toLowerCase();
@@ -75,7 +76,7 @@
                 }
                 if (t > pn)
                 {
-                    sp = fwdom.mkjQ(this);
+                    sp = this;
                     break;
                 }
             }

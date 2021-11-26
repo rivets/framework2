@@ -28,7 +28,8 @@
 {% endblock setup %}
 
 {% block onload %}
-    fwdom.mkjQ('#adduform').on('submit', false).parsley();
+    fwdom.on('#adduform', 'submit', fwdom.nosubmit);
+    fwdom.mkjQ('#adduform').parsley();
     fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e);
         this.disabled = true;

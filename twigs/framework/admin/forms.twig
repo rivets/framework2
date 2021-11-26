@@ -36,7 +36,7 @@
             });
         }
         framework.beanCreate('{{constant('Config\\Framework::FORM')}}', data, function(ret){
-            fwdom.mkjQ('#addf').modal('hide')
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('addf')).hide();
             let newd = document.createElement('tr');
             newd.setAttribute('data-id', ret);
             newd.innerHTML = '<td>' + data.name + '</td>'+

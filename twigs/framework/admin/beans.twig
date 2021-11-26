@@ -15,7 +15,7 @@
         fwdom.stop(e);
         let tr = this.closest('[data-bean]');
         let table = tr.getAttribute('data-bean');
-        fwdom.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+        framework.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
                 framework.ajax(base+'/ajax/table/'+table, {
@@ -31,10 +31,9 @@
 {% endblock setup %}
 
 {% block onload %}
-    const nbf = document.getElementById('nbform');
-    nbf.addEventListener('submit', function(e){ e.preventDefault();});
+    fwdom.on('#nbform', 'submit', fwdom.nosubmit);
     fwdom.mkjQ('#nbform').parsley();
-    document.getElementById('addb').addEventListener('click', function(e){
+    fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e);
         const btn = e.target;
         const form = document.getElementById('nbform');
@@ -58,7 +57,7 @@
         }
         if (error)
         {
-            fwdom.alert('That bean already exists');
+            framework.alert('That bean already exists');
             this.disabled = false;
             return;
         }
@@ -88,13 +87,13 @@
             {
                 document.getElementById('btab').insertBefore(newd, sp);
             }
-            fwdom.mkjQ('#nbean').modal('hide');
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('nbean')).hide();
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
             fwdom.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function() { btn.disabled = false; });
     });
-    fwdom.mkjQ('#nbean').on('show.bs.modal', function(e){
+    fwdom.on('#nbean', 'show.bs.modal', function(e){
         document.getElementById('nbform').reset();
     });
     fwdom.on('.delb', 'click', deltable);
