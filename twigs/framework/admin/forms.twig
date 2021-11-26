@@ -22,7 +22,7 @@
 {% block onload %}
     fwdom.on('#addfform', 'submit', function(e){fwdom.stop(e); return false; });
     fwdom.mkjQ('#addfform').parsley()
-    document.getElementById('#addb').addEventListener('click', function(e){
+    fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e)
         this.disabled = true;
         let data = {}
