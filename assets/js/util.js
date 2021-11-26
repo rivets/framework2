@@ -597,7 +597,7 @@
                 '<button type="button" id="_fwno" class="btn btn-secondary" data-bs-dismiss="modal">No</button>'+
                 '<button type="button" id="_fwyes" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>'+
                 '</div></div></div></div>');
-            framework.currentModal = document.getElementById('_fwalert');
+            framework.currentModal = document.getElementById('_fwconfirm');
             framework.currentModal.addEventListener('hide.bs.modal', function(e){
                 framework.currentModal.remove();
                 framework.currentModal = null;
