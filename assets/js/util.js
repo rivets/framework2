@@ -428,7 +428,7 @@
  */
         beanCreate: function(bean, data, fn, button)
         {
-            framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data})
+            framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data: data})
             .done(fn)
             .fail(function(jx){
                 fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
