@@ -32,13 +32,13 @@
         fweditable.editable(d, {
             op: 'fwtest',
             bean: 'fwtest',
-            update : fwdom.editUpdate
+            update : fweditable.editUpdate
         });
     }
     fweditable.editable(document.getElementById('edsel'), {
         type: 'select',
         source: ['yes', 'no', 'N/A'],
-        update : fwdom.editUpdate,
+        update : fweditable.editUpdate,
         op: 'fwtest',
         bean: 'fwtest'
     });
