@@ -582,7 +582,28 @@
 /**
  * Pop up a confirmation
  */
-        confirm: function(message, yes, no) {
+        confirm: function(message, yes, no = null, title = '') {
+            document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="modal" id="_fwconfirm" tabindex="-1">'+
+                '<div class="modal-dialog">'+
+                '<div class="modal-content">'+
+                '<div class="modal-header">'+
+                '<h5 class="modal-title">'+title+'</h5>'+
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                '</div>'+
+                '<div class="modal-body">'+
+                '<p>'+message+'</p>'+
+                '</div>'+
+                '<div class="modal-footer">'+
+                '<button type="button" id="_fwno" class="btn btn-secondary" data-bs-dismiss="modal">No</button>'+
+                '<button type="button" id="_fwyes" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>'+
+                '</div></div></div></div>');
+            framework.currentModal = document.getElementById('_fwalert');
+            framework.currentModal.addEventListener('hide.bs.modal', function(e){
+                framework.currentModal.remove();
+                framework.currentModal = null;
+                console.log(e);
+            });
+            bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
         }
     };
     framework.tableClick = framework.containerClick; // just for some backward compatibility....

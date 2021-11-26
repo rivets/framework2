@@ -1,4 +1,4 @@
-/* globals document, bootbox, jQuery */
+/* globals document, framework, bootbox jQuery */
 /* jshint undef: true, unused: false */
 /*
  * Some utility functions to make getting round the dom a bit less wordy
@@ -40,5 +40,5 @@
 
         confirm: function(msg, fn){
             bootbox.confirm(msg, fn);
-        },
+        }
     };
