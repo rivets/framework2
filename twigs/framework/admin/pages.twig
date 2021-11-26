@@ -1,7 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
-{% set editable = TRUE %}
+{% set editable = FALSE %}
 {% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Pages'}] %}
 
 {% extends '@content/page.twig' %}
@@ -15,10 +15,18 @@
     'In-site 307', 'External 307',
     'In-site 308', 'External 308'] %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
+        return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
     }
 
     function golink(event)
@@ -195,9 +203,9 @@
                 <tbody id="ptab">
                     {% for p in siteinfo.pages(page, pagesize) %}
                         <tr data-id="{{p.getID}}">
-                            <td class="pname">{{f.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-                            <td>{{f.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-                            <td>{{f.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                            <td class="pname">{{f.editable(type: 'text', field: 'name', title: 'Enter name', key: p.getID, value: p.name})}}</td>
+                            <td>{{f.editable({type: 'select', field: 'kind', title: 'Enter kind', key: p.getID, value: types[p.kind-1}])}}</td>
+                            <td>{{f.editable({type: 'text', field: 'source', title: 'Enter source', key: p.getID, value: p.source})}}</td>
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
@@ -287,5 +295,4 @@
 {% endblock main %}
 
 {% block pagefooter %}
-{# I don't want a footer #}
 {% endblock pagefooter %}
