@@ -22,7 +22,7 @@
             $type = $bean->getMeta('type');
             if (FW::isFWBean($type))
             {
-                if (\file_exists(Context::getInstance()->local()->makeBasePath('class', 'framework', 'model', $type.'.php')))
+                if (\file_exist(\Support\Context::getInstance()->local()->makeBasePath('class', 'framework', 'model', $type.'.php')))
                 {
                     $obj = self::factory(FW::MODELPATH.$type);
                     $obj->loadBean($bean);
