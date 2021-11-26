@@ -1,7 +1,8 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
 {% set parsley = TRUE %}
-{% set editable = TRUE %}
+{% set editable = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -12,19 +13,20 @@
     'radio', 'select', 'file', 'range', 'number', 'button', 'submit',
     'label', 'fieldset', 'endfset', 'recaptcha'] %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+        return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
     }
 
-    function paramset(params)
-    {
-        params.id = params.pk
-        params.bean = '{{constant('Config\\Framework::FORMFIELD')}}'
-        params.op = 'bean'
-        return params
-    }
     let kname = [
         {% for v in types %}
             {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -41,15 +43,16 @@
 {% endblock setup %}
 
 {% block onload %}
-    fwdom.mkjQ('.ppedit').editable({
-        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: framework.editcall
+    document.querySelectorAll('.editable').forEach(function(edb){
+        fweditable.editable(edb, {
+            op: 'bean',
+            bean: '{{constant('Config\\Framework::FORMFIELD')}}',
+            source: kname,
+            update: fweditable.editUpdate
+        });
     });
 
-    document.getElementById('ptab').addEventListener('click', function(e){
+    fwdom.on('#ptab', 'click', function(e) {
         const ecl = e.target.classList;
         for (let cl of clicks)
         {
@@ -63,9 +66,12 @@
     });
     fwdom.on('.typesel', 'change', function(e){
         const val = this.value;
-        $('#example .flagsel input[name="fldchecked"]').prop('checked', false).prop('disabled', !(val == 'checkbox' || val == 'radio'))
-        $('#example .flagsel input[name="fldmultiple"]').prop('checked', false).prop('disabled', val != 'select')
-    }, document.getElementById('example'))
+        const fsel = document.getElementById('example').querySelector('.flagsel');
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('disabled', !(val == 'checkbox' || val == 'radio'))
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('disabled', val != 'select')
+    }, document.getElementById('example'));
 {% endblock onload %}
 
 {% block headerbody %}
@@ -112,14 +118,14 @@
                             {% for fld in bean.fields %}
                                 <tr data-id="{{fld.getID}}" class="border-top border-dark">
                                     <td rowspan="3">
-                                        <p>{{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
-                                        <p>{{f.inline('text', 'seqn', 'Enter seqn no.', fld.getID, fld.seqn)}}</td>
+                                        <p>{{f.editable({type: 'select', field: 'type', title: 'Select Type', key: fld.getID, value: fld.type})}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
+                                        <p>{{f.editable({type: 'text', field: 'seqn', title: 'Enter seqn no.', key: fld.getID, value: fld.seqn})}}</td>
                                     </td>
-                                    <td>{{f.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
-                                    <td>{{f.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
-                                    <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
-                                    <td>{{f.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
-                                    <td>{{f.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'label', title: 'Enter label', key: fld.getID, value: fld.label})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'name', title: 'Enter name', key: fld.getID, value: fld.name})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'idval', title: 'Enter id', key: fld.getID, value: fld.idval})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'class', title: 'Enter class', key: fld.getID, value: fld.class})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'value', title: 'Enter value', key: fld.getID, value: fld.value})}}</td>
                                     <td rowspan="3">{{i.delete('delb')}}</td>
                                 </tr>
                                 <tr>
