@@ -22,9 +22,13 @@
             $type = $bean->getMeta('type');
             if (FW::isFWBean($type))
             {
-                $obj = self::factory(FW::MODELPATH.$type);
-                $obj->loadBean($bean);
-                return $obj;
+                if (\file_exists(Context::getInstance()->local()->makeBasePath('class', 'framework', 'model', $type.'.php')))
+                {
+                    $obj = self::factory(FW::MODELPATH.$type);
+                    $obj->loadBean($bean);
+                    return $obj;
+                }
+                return NULL;
             }
             return parent::getModelForBean($bean);
         }
