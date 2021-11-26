@@ -38,7 +38,7 @@
             framework.alert(msg);
         },
 
-        confirm: function(msg, fn){
-            bootbox.confirm(msg, fn);
+        confirm: function(msg, yes, no = null, title = ''){
+            framework.confirm(msg, yes, no, title);
         }
     };
