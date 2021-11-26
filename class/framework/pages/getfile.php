@@ -24,8 +24,8 @@
  */
     namespace Framework\Pages;
 
-    use \Support\Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * The Getfile class
  *

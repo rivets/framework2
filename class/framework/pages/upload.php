@@ -10,8 +10,8 @@
     namespace Framework\Pages;
 
     use \Config\Config;
-    use \Support\Context;
     use \Config\Framework as FW;
+    use \Support\Context;
 /**
  * Deal with a file upload URL
  */
