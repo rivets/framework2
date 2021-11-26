@@ -559,7 +559,7 @@
  * Pop up an alert
  */
         alert: function(message, title = '') {
-            framework.currentModal = document.createTextNode('<div class="modal" id="_fwalert" tabindex="-1">'+
+            document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="modal" id="_fwalert" tabindex="-1">'+
                 '<div class="modal-dialog">'+
                 '<div class="modal-content">'+
                 '<div class="modal-header">'+
@@ -572,6 +572,7 @@
                 '<div class="modal-footer">'+
                 '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>'+
                 '</div></div></div></div>');
+            framework.currentModal = document.getElementById('_fwalert');
             framework.currentModal.addEventListener('hide.bs.modal', function(){
                 framework.currentModal.remove();
                 framework.currentModal = null;
