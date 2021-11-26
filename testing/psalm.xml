@@ -20,7 +20,6 @@
 
         <file name="../class/framework/ajax/ajax.php" />
         <file name="../class/framework/ajax/bean.php" />
-        <file name="../class/framework/ajax/beanlog.php" />
         <file name="../class/framework/ajax/config.php" />
         <file name="../class/framework/ajax/hints.php" />
         <file name="../class/framework/ajax/paging.php" />
@@ -32,6 +31,8 @@
         <file name="../class/framework/ajax/unique.php" />
         <file name="../class/framework/ajax/uniquenl.php" />
         <file name="../class/framework/ajax/upload.php" />
+
+        <file name="../class/framework/ajax/support/beanlog.php" />
 
         <file name="../class/framework/exception/badoperation.php" />
         <file name="../class/framework/exception/badvalue.php" />
