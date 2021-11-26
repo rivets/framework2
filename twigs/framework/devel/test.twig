@@ -44,12 +44,16 @@
     });
     document.getElementById('testalert').addEventListener('click', function(e){
         fwdom.stop(e);
-        console.log('alert');
         framework.alert('This is an alert', 'Alert!!');
+    });
+    document.getElementById('testalert2').addEventListener('click', function(e){
+        fwdom.stop(e);
+        framework.alert('This is another alert', 'Alert 2!!');
     });
     document.getElementById('testconfirm').addEventListener('click', function(e){
         fwdom.stop(e);
         console.log('confirm');
+        framework.confirm('Do you want to?', function(e) { console.log('yes'); }, function(e) { console.log('no'); }, 'Please confirm');
     });
 {% endblock onload %}
 
