@@ -8,6 +8,7 @@
  */
     namespace Framework\Ajax;
 
+    use \Config\Framework as FW;
     use \Support\Context;
 /**
  * Class to log operations on beans
