@@ -216,7 +216,7 @@
                         break;
 
                     case'delete':
-                        \R::trash($context->load('upload', $id));
+                        \R::trash($context->load(FW::UPLOAD, $id));
                         $context->divert('/devel/test/upload?ok=1'); // this clears the RESTful URL
                         /* NOT REACHED */
                     default:

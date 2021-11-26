@@ -25,6 +25,7 @@
     namespace Framework\Pages;
 
     use \Support\Context;
+    use \Config\Framework as FW;
 /**
  * The Getfile class
  *
@@ -57,9 +58,9 @@
             \chdir($context->local()->basedir());
             $fpt = $context->rest();
 
-            if (\count($fpt) == 2 && $fpt[0] == 'file')
+            if (\count($fpt) >= 2 && $fpt[0] == 'file')
             { // this is access by upload ID
-                $file = \R::load('upload', (int) $fpt[1]);
+                $file = \R::load(FW::UPLOAD, (int) $fpt[1]);
                 if ($file->getID() == 0)
                 {
                     return $this->missing();
@@ -85,7 +86,7 @@
 /*
  * Now do an access control check
  */
-                $file = \R::findOne('upload', 'fname=?', [\DIRECTORY_SEPARATOR . self::DATADIR . \DIRECTORY_SEPARATOR . $this->file]);
+                $file = \R::findOne(FW::UPLOAD, 'fname=?', [\DIRECTORY_SEPARATOR . self::DATADIR . \DIRECTORY_SEPARATOR . $this->file]);
                 if (!\is_object($file))
                 { // not recorded in the database so 404 it
                     $web->notfound();

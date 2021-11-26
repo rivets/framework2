@@ -279,7 +279,7 @@
                 }
                 else
                 {
-                    $this->luser = $this->load('user', $tok->sub);
+                    $this->luser = $this->load(FW::USER, $tok->sub);
                 }
                 $this->tokenAuth = TRUE;
             }
