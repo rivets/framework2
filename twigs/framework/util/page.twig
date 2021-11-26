@@ -70,11 +70,11 @@
         {% if fwdom or fwutils %}
             <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
-        {% if usebootstrapjs or usebootbox or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
+        {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
             <!--<script {{h.urlattr(fwurls.popperjs)}}></script>-->
             <script {{h.urlattr(fwurls.bootjs)}}></script>
         {% endif %}
-        {% if usebootbox or fwutils %} {# fwutils uses bootbox #}
+        {% if usebootbox %}
             <script {{h.urlattr(fwurls.bootbox)}}></script>
         {% endif %}
         {% if fwutils %}
