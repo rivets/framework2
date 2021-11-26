@@ -51,7 +51,7 @@
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
         }, 'addb');
     })
-    fwdom.on('#utab', 'click', function(e){ e.data = {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}; framework.containerClick(e);});
+    fwdom.on('#utab', 'click', function(e){ e.data = {bean: '{{constant('Config\\Framework::FORM')}}', clicks: clicks}; framework.containerClick(e); });
 {% endblock onload %}
 
 {% block headerbody %}
