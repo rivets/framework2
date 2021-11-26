@@ -594,14 +594,27 @@
                 '<p>'+message+'</p>'+
                 '</div>'+
                 '<div class="modal-footer">'+
-                '<button type="button" id="_fwno" class="btn btn-secondary" data-bs-dismiss="modal">No</button>'+
-                '<button type="button" id="_fwyes" class="btn btn-primary" data-bs-dismiss="modal">Yes</button>'+
+                '<button type="button" id="_fwno" class="btn btn-secondary">No</button>'+
+                '<button type="button" id="_fwyes" class="btn btn-primary">Yes</button>'+
                 '</div></div></div></div>');
             framework.currentModal = document.getElementById('_fwconfirm');
             framework.currentModal.addEventListener('hide.bs.modal', function(e){
-                console.log(e);
                 framework.currentModal.remove();
                 framework.currentModal = null;
+            });
+            document.getElementById('_fwno').addEventListener('click', function(e) {
+                if (yes != null)
+                {
+                    yes();
+                }
+                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
+            });
+            document.getElementById('_fwyes').addEventListener('click', function(e){
+                if (no != null)
+                {
+                    no();
+                }
+                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
             });
             bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
         }
