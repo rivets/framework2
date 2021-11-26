@@ -129,8 +129,8 @@
                                     <td rowspan="3">{{i.delete('delb')}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
-                                    <td colspan="3">{{f.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+                                    <td colspan="2">{{f.editable({type: 'text', field: 'placeholder', title: 'Enter placeholder', key: fld.getID, value: fld.placeholder)}}</td>
+                                    <td colspan="3">{{f.editable({type: 'text', field: 'other', title: 'Enter other attributes', key: fld.getID, value: fld.other)}}</td>
                                 </tr>
                                 <tr>
                                     {% for fn,fv in flags %}
