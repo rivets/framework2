@@ -600,15 +600,17 @@
             if (yes != null)
             {
                 document.getElementById('_fwyes').addEventListener('click', function(e) {
+                    framework.currentModal.remove();
+                    framework.currentModal = null;
                     yes();
-                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
                 });
             }
             if (no != null)
             {
                 document.getElementById('_fwno').addEventListener('click', function(e){
+                    framework.currentModal.remove();
+                    framework.currentModal = null;
                     no();
-                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
                 });
             }
             bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
