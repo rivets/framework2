@@ -45,7 +45,7 @@
                 '<td title="View">{{i.view('viewb')}}</td>' +
                 '<td title="Edit">{{i.edit('editb')}}</td>' +
                 '<td>{{i.delete('delb')}}</td></tr>'
-            });
+            );
             fwdom.on('.delb', 'click', deltable, newd);
             document.querySelector('#utab').appendChild(newd);
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
