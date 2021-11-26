@@ -550,6 +550,16 @@
             {
                 container.insertBefore(el, position);
             }
+        },
+/**
+ * Pop up an alert
+ */
+        alert: function(message) {
+        },
+/**
+ * Pop up a confirmation
+ */
+        confirm: function(message, yes, no) {
         }
     };
     framework.tableClick = framework.containerClick; // just for some backward compatibility....
