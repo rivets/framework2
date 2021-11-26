@@ -53,6 +53,7 @@
 {% block onload %}
     document.querySelectorAll('.editable').forEach(function(edb){
         fweditable.editable(edb, {
+            op: 'bean', 
             bean: '{{constant('Config\\Framework::PAGE')}}',
             source: kname,
             update: fweditable.editUpdate
