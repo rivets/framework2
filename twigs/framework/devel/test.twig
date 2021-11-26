@@ -23,7 +23,8 @@
 {% endblock setup %}
 
 {% block onload %}
-    document.getElementById('nopu').addEventListener('click', function(e){
+    fwdom.on('#nopu', 'click', function(e){
+        fwdom.stop(e);
         fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
     });
     fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
@@ -42,23 +43,23 @@
         op: 'fwtest',
         bean: 'fwtest'
     });
-    document.getElementById('testalert').addEventListener('click', function(e){
+    fwdom.on('#testalert', 'click', function(e){
         fwdom.stop(e);
         framework.alert('This is an alert', 'Alert!!');
     });
-    document.getElementById('testalert2').addEventListener('click', function(e){
+    fwdom.on('#testalert2', 'click', function(e){
         fwdom.stop(e);
         framework.alert('This is another alert', 'Alert 2!!');
     });
-    document.getElementById('testconfirm').addEventListener('click', function(e){
+    fwdom.on('#testconfirm', 'click', function(e){
         fwdom.stop(e);
         framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
     });
-    document.getElementById('testconfirm2').addEventListener('click', function(e){
+    fwdom.on('#testconfirm2', 'click', function(e){
         fwdom.stop(e);
         framework.confirm('Do you want to?', null, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
     });
-    document.getElementById('testconfirm3').addEventListener('click', function(e){
+    fwdom.on('#testconfirm3', ('click', function(e){
         fwdom.stop(e);
         framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, null, 'Please confirm');
     });
