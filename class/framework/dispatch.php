@@ -129,7 +129,7 @@
                     $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
-                catch (\ReflectionException)
+                catch (\ReflectionException) // @phpcs-suppress PHP_CodeSniffer.Standards.Generic.Sniffs.CodeAnalysis.EmptyStatementSniff
                 {
                     // void
                 }
@@ -155,8 +155,8 @@
                 /**
                  * @psalm-suppress TypeDoesNotContainType
                  * @psalm-suppress RedundantCondition
+                 * @phan-suppress-next-line PhanUndeclaredClassConstant
                  */
-                /* @phan-suppress-next-line PhanUndeclaredClassConstant */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
             catch (\Throwable)
