@@ -17,15 +17,12 @@
  */
     class FWBeanHelper extends \RedBeanPHP\BeanHelper\SimpleFacadeBeanHelper
     {
-        private static $path = '\\Framework\\Model\\';
-
         final public function getModelForBean(\RedBeanPHP\OODBBean $bean)
         {
             $type = $bean->getMeta('type');
             if (FW::isFWBean($type))
             {
-                $modelName = self::$path.$type;
-                $obj = self::factory($modelName);
+                $obj = self::factory(FW::FWMODELPATH.$type);
                 $obj->loadBean($bean);
                 return $obj;
             }

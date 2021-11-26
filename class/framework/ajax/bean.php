@@ -228,7 +228,7 @@
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }
             /** @psalm-suppress UndefinedConstant */
-            $this->model = (class_exists('\\Framework\\Model\\'.$beanType) ? '\\Framework\\Model\\' : '\\Model\\').$beanType;
+            $this->model = (class_exists(FW::MODELPATH.$beanType) ? FW::MODELCLASS : '\\Model\\').$beanType;
             /**
              * @psalm-suppress RedundantCondition
              * @psalm-suppress ArgumentTypeCoercion

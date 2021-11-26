@@ -197,7 +197,7 @@
                     $fa = $fdt->fileData('upload');  // @phan-suppress-current-line PhanUndeclaredMethod
                     if (!$upl->savefile($context, $fa, FALSE, $context->user(), 0))
                     {
-                        $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                        $umodel = FW::UPLOADMCLASS;
                         $umodel::fail($context, $fa);
                     }
                     else

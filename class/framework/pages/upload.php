@@ -35,7 +35,7 @@
                         $upl = \R::dispense(FW::UPLOAD);
                         if (!$upl->savefile($context, $fa, $fdp->fetch(['public', $ix]), $context->user(), $ix))
                         { // something went wrong
-                            $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                            $umodel = FW::UPLOADMCLASS;
                             $umodel::fail($context, $fa);
                         }
                         else
@@ -51,7 +51,7 @@
                         $upl = \R::dispense(FW::UPLOAD);
                         if (!$upl->savefile($context, $fa, Config::UPUBLIC, $context->user(), $ix))
                         { // something went wrong
-                            $umodel = '\\Framework\Model\\'.FW::FWUPLOAD;
+                            $umodel = FW::UPLOADMCLASS;
                             $umodel::fail($context, $fa);
                         }
                         else

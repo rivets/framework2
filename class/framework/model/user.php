@@ -50,7 +50,7 @@
             if (self::pwValid($pw))
             {
                 $login = $fdt->mustFetch('login');
-                if (\is_object(\R::findOne('user', 'login=?', [$login])))
+                if (\is_object(\R::findOne(FW::USER, 'login=?', [$login])))
                 {
                     throw new \Framework\Exception\BadValue('Login name already exists');
                 }

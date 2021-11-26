@@ -51,6 +51,10 @@
         public const UPLOAD         = 'fwupload';
         public const USER           = 'user';
 
+        public const MODELPATH    = '\\Framework\\Model\\';
+        public const UPLOADMCLASS   = self::MODELPATH.self::UPLOAD;
+        public const USERMCLASS     = self::MODELPATH.self::USER;
+
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
