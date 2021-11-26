@@ -1,5 +1,7 @@
 {% set fwutils = TRUE %}
-{% set ajax = TRUE %}
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -8,7 +10,7 @@
 {% import '@util/modalmacro.twig' as m %}
 
 {% block onload %}
-    document.getElementById('caform').addEventListener('submit', function(e){fwdom.stop(e);});
+    fwdom.on('#caform', 'submit', fwdom.nosubmit});
     fwdom.on('table', 'click', function(e){
         const targ = e.target;
         if (targ.classList.contains('delb'))
@@ -20,9 +22,9 @@
     fwdom.on('.actb', 'click', function(e){
         document.getElementById('caform').reset();
         document.getElementById('ctype').value = this.previousElementSibling.innerHTML;
-        fwdom.mkjQ('#cadd').modal('show');
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('cadd')).show();
     });
-    document.getElementById('addb').addEventListener('click', function(e){
+    fwdom.on('#addb', 'click', function(e){
         fwdom.stop(e);
         this.disabled = true;
         const type = document.getElementById('ctype').value;
@@ -49,7 +51,7 @@
                 node.innerHTML = '<td class="w-50">'+host+'</td><td class="w-50">'+(essential ? '{{icon.fa('ban')}}' : '{{icon.delete('delb')}}')+'</td>';
                 tbody.appendChild(node);*/
             }
-            fwdom.mkjQ('#cadd').modal('hide');
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('cadd')).hide();
         }, this);
     });
 {% endblock onload %}

@@ -40,5 +40,10 @@
 
         confirm: function(msg, yes, no = null, title = ''){
             framework.confirm(msg, yes, no, title);
+        },
+
+        nosubmit: function(e) {
+            fwdom.stop(e);
+            return false;
         }
     };
