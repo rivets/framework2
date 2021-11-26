@@ -129,9 +129,9 @@
                     $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
-                catch (\ReflectionException) // @phpcs-suppress PHP_CodeSniffer.Standards.Generic.Sniffs.CodeAnalysis.EmptyStatementSniff
+                catch (\ReflectionException)
                 {
-                    // void
+                    NULL; // void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
