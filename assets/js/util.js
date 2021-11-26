@@ -1,5 +1,5 @@
 /* globals fwdom: false */
-/* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery */
+/* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery, bootstrap */
 /* jshint undef: true, unused: false */
     class FWAjaxRQ
     {
@@ -577,6 +577,7 @@
                 framework.currentModal.remove();
                 framework.currentModal = null;
             });
+            bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
         },
 /**
  * Pop up a confirmation
