@@ -22,7 +22,7 @@
             $type = $bean->getMeta('type');
             if (FW::isFWBean($type))
             {
-                $obj = self::factory(FW::FWMODELPATH.$type);
+                $obj = self::factory(FW::MODELPATH.$type);
                 $obj->loadBean($bean);
                 return $obj;
             }
