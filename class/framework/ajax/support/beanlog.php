@@ -6,7 +6,7 @@
  * @copyright 2020-2021 Newcastle University
  * @package Framework\Framework\Ajax
  */
-    namespace Framework\Ajax;
+    namespace Framework\Ajax\Support;
 
     use \Config\Framework as FW;
     use \Support\Context;

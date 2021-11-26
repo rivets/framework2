@@ -14,6 +14,7 @@
     use \Framework\Exception\BadOperation;
     use \Framework\Exception\BadValue;
     use \R;
+    use \Framework\Ajax\Support\Beanlog as Beanlog;
 /**
  * AJAX operations on beans
  */
