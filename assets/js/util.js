@@ -589,8 +589,8 @@
                 '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>'+
                 '<div class="modal-body"><p>'+message+'</p></div>'+
                 '<div class="modal-footer">'+
-                '<button type="button" id="_fwno" '+(no == null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-secondary">No</button>'+
-                '<button type="button" id="_fwyes" '+(yes == null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-primary">Yes</button>'+
+                '<button type="button" id="_fwno" '+(no != null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-secondary">No</button>'+
+                '<button type="button" id="_fwyes" '+(yes != null ? '' : 'data-bs-dismiss="modal" ')+'class="btn btn-primary">Yes</button>'+
                 '</div></div></div></div>');
             framework.currentModal = document.getElementById('_fwconfirm');
             framework.currentModal.addEventListener('hide.bs.modal', function(e){
@@ -600,16 +600,14 @@
             if (yes != null)
             {
                 document.getElementById('_fwyes').addEventListener('click', function(e) {
-                    framework.currentModal.remove();
-                    framework.currentModal = null;
+                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
                     yes();
                 });
             }
             if (no != null)
             {
                 document.getElementById('_fwno').addEventListener('click', function(e){
-                    framework.currentModal.remove();
-                    framework.currentModal = null;
+                    bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
                     no();
                 });
             }
