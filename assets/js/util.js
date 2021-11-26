@@ -599,9 +599,9 @@
                 '</div></div></div></div>');
             framework.currentModal = document.getElementById('_fwconfirm');
             framework.currentModal.addEventListener('hide.bs.modal', function(e){
+                console.log(e);
                 framework.currentModal.remove();
                 framework.currentModal = null;
-                console.log(e);
             });
             bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
         }
