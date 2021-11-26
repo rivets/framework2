@@ -132,8 +132,16 @@ class R
     {
         return [];
     }
-    
+
     public static function freeze(bool $x) : void
+    {
+    }
+
+    public static function usePartialBeans()
+    {
+    }
+
+    public static function getRedBean()
     {
     }
 }
