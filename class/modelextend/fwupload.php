@@ -15,7 +15,7 @@
 /**
  * Upload table stores info about files that have been uploaded...
  */
-    trait Upload
+    trait FWUpload
     {
 /**
  * Determine if a user can access the file

@@ -15,9 +15,9 @@
  * Upload table stores info about files that have been uploaded...
  * @psalm-suppress UnusedClass
  */
-    final class Upload extends \RedBeanPHP\SimpleModel
+    final class FWUpload extends \RedBeanPHP\SimpleModel
     {
-        use \ModelExtend\Upload;
+        use \ModelExtend\FWUpload;
 /**
  * Return the owner of this uplaod
  */
