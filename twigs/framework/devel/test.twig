@@ -52,8 +52,15 @@
     });
     document.getElementById('testconfirm').addEventListener('click', function(e){
         fwdom.stop(e);
-        console.log('confirm');
-        framework.confirm('Do you want to?', function() { framework.alert('yes'); }, function() { framework.alert('no'); }, 'Please confirm');
+        framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
+    });
+    document.getElementById('testconfirm2').addEventListener('click', function(e){
+        fwdom.stop(e);
+        framework.confirm('Do you want to?', null, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
+    });
+    document.getElementById('testconfirm3').addEventListener('click', function(e){
+        fwdom.stop(e);
+        framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, null, 'Please confirm');
     });
 {% endblock onload %}
 
