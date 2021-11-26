@@ -44,9 +44,6 @@
         private string $model = '';
 /**
  * Call the ajaxResult method on a bean if it exists in its Model or else generate a 'no content' or 'created' if its a POST
- *
- * @param $bean    The bean
- * @param $method  The method used to get here
  */
         private function ajaxResult(\RedBeanPHP\OODBBean $bean, string $method) : void
         {
