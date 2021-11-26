@@ -196,7 +196,7 @@
                 <tbody id="ptab">
                     {% for p in siteinfo.pages(page, pagesize) %}
                         <tr data-id="{{p.getID}}">
-                            <td class="pname">{{f.editable(type: 'text', field: 'name', title: 'Enter name', key: p.getID, value: p.name})}}</td>
+                            <td class="pname">{{f.editable({type: 'text', field: 'name', title: 'Enter name', key: p.getID, value: p.name})}}</td>
                             <td>{{f.editable({type: 'select', field: 'kind', title: 'Enter kind', key: p.getID, value: types[p.kind-1}])}}</td>
                             <td>{{f.editable({type: 'text', field: 'source', title: 'Enter source', key: p.getID, value: p.source})}}</td>
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
