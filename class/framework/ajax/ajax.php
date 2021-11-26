@@ -34,9 +34,9 @@
 /**
  * Check that a bean has a field. Do not allow id field to be manipulated unless flag is set.
  *
- * @param $type   The type of bean
- * @param $field  The field name
- * @param $idok   Allow the id field to be tested
+ * @param string $type   The type of bean
+ * @param string $field  The field name
+ * @param bool   $idok   Allow the id field to be tested
  *
  * @throws \Framework\Exception\BadValue
  */
@@ -99,7 +99,7 @@
  * Returns the parameter values in an array indexed from 0 with last parameter, anything left in an array
  * The value in $rest[0] is assumed to be an opcode so we always start at $rest[1]
  *
- * @param $count  The number of parameters to check for
+ * @param int $count  The number of parameters to check for
  *
  * @throws \Framework\Exception\ParameterCount
  */
