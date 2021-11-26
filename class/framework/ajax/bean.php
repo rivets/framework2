@@ -14,7 +14,6 @@
     use \Framework\Exception\BadOperation;
     use \Framework\Exception\BadValue;
     use \R;
-    use Support\BeanLog as BeanLog;
 /**
  * AJAX operations on beans
  */
@@ -95,7 +94,7 @@
             $bean = $this->model::add($this->context);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::CREATE, $bean, '*', NULL);
+                Support\BeanLog::mklog($this->context, Support\BeanLog::CREATE, $bean, '*', NULL);
             }
             $this->ajaxResult($bean, 'post');
         }
@@ -141,7 +140,7 @@
             {
                 foreach ($old as $of => $ov)
                 {
-                    BeanLog::mklog($this->context, BeanLog::UPDATE, $bean, $of, $ov);
+                    Support\BeanLog::mklog($this->context, Support\BeanLog::UPDATE, $bean, $of, $ov);
                 }
             }
             $this->ajaxResult($bean, $method);
@@ -183,7 +182,7 @@
             $bean = $this->context->load($beanType, (int) $id);
             if ($log)
             {
-                BeanLog::mklog($this->context, BeanLog::DELETE, $bean, '*', \json_encode($bean->export()));
+                Support\BeanLog::mklog($this->context, Support\BeanLog::DELETE, $bean, '*', \json_encode($bean->export()));
             }
             R::trash($bean); // If there is a delete function in the model it will get called automatically.
             $this->context->web()->noContent();
