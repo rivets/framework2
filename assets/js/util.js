@@ -107,12 +107,17 @@
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
+            let accept = options.hasOwnProperty('accept') ? options.accept : '';
             let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
             let ajaxObj = new FWAjaxRQ(request);
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
+            if (accept != '')
+            {
+                request.setRequestHeader('Accept', accept);
+            }
             request.onload = ajaxObj.onloaded;
             request.onerror = ajaxObj.onfailed;
             request.send(data);
