@@ -1,7 +1,6 @@
- /**
-  * global fwdom
-  * global framework
-  */
+/* global fwdom, goodlogin, userbean */
+/* global framework, testbeanid, testtable */
+
     var testing = {
 
         ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
@@ -15,7 +14,7 @@
         },
 
         testconfig : function (){
-            let t = $(this).parent();
+            let t = this.parentNode;
             testing.makecall('config/testconfig', { method: 'POST', data: {value: 123, type: 'string'} }, function(){
                 t.append('<p>Create config item OK</p>');
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
@@ -66,7 +65,7 @@
         },
 
         testhints: function (){
-            let t = $(this).parent();
+            let t = this.parentNode;
             testing.makecall('hints/'+testtable+'/f1?search=a%', { method: 'GET' }, function(data){
                 t.append('<p>Hints OK: '+data.length+' '+data[0].value+' '+data[0].text+'</p>');
             }, function(jx) {
@@ -108,7 +107,7 @@
         },
 
         testtablecheck: function (){
-            let t = $(this).parent();
+            let t = this.parentNode;
             testing.makecall('tablecheck/'+testtable, { method: 'GET' }, function(){
                 t.append('<p>Existing table fails - 200 on existing login</p>');
             }, function(jx){
@@ -129,7 +128,7 @@
         },
 
         testtablesearch: function (){
-            let t = $(this).parent();
+            let t = this.parentNode;
             testing.makecall('tablesearch/'+testtable+'/f1/4?value=string', { method: 'GET' }, function(data){
                 t.append('<p>Search for string OK : '+data.length+'</p>');
             }, function(jx) {
@@ -155,7 +154,7 @@
         },
 
         testtoggle : function(){
-            let t = $(this).parent();
+            let t = this.parentNode;
             let tstate = 2;
             testing.makecall('toggle/'+testtable+'/'+testbeanid+'/tog', { method: 'POST' }, function(data){
                 t.append('<p>Toggle OK : '+data+'</p>');
@@ -183,7 +182,7 @@
         },
 
         testunique: function (){
-            let t = $(this).parent();
+            let t = this.parentNode;
             testing.makecall('unique/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }, function(jx){
@@ -204,8 +203,8 @@
         },
 
         testuniquenl :function (){
-            let t = $(this).parent();
-            let res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
+            let t = this.parentNode;
+            testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin, { method: 'GET' }, function(){
                 t.append('<p>Existing login fails - 200 on existing login</p>');
             }, function(jx){
                 if (jx.status == 404)
@@ -217,10 +216,10 @@
                     t.append('<p>Existing login fails - '+jx.status+' '+jx.responseText+'</p>');
                 }
             });
-            res = testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
+            testing.makecall('uniquenl/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
                 t.append('<p>Non-existent login OK</p>');
             }, function(jx) {
                 t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
-        },
+        }
     };
