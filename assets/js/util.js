@@ -111,9 +111,9 @@
             {
                 request.setRequestHeader('Accept', accept);
             }
+            let ajaxObj = new FWAjaxRQ(request);
             request.onload = ajaxObj.onloaded;
             request.onerror = ajaxObj.onfailed;
-            let ajaxObj = new FWAjaxRQ(request);
             request.send(data);
             return ajaxObj;
         },
