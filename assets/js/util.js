@@ -9,16 +9,13 @@
         }
 /**
  * called when loaded
- *
- * @param {object} rq   - request object
- * @param {object} options - options object
  */
         onloaded(){
             if (this.status >= 200 && this.status < 400)
             { // Success!
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(this.response, this);
+                    this.options.success(this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response, this);
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
@@ -32,9 +29,6 @@
         }
 /**
  * called when there is a send error
- *
- * @param {object} rq   - request object
- * @param {object} options - options object
  */
         onfailed(){
             // There was a connection error of some sort
@@ -110,7 +104,6 @@
             let accept = options.hasOwnProperty('accept') ? options.accept : '';
             let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
-            let ajaxObj = new FWAjaxRQ(request);
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
@@ -120,6 +113,7 @@
             }
             request.onload = ajaxObj.onloaded;
             request.onerror = ajaxObj.onfailed;
+            let ajaxObj = new FWAjaxRQ(request);
             request.send(data);
             return ajaxObj;
         },
@@ -132,18 +126,18 @@
             request.open('GET', url, true);
             request.setRequestHeader('Accept', 'application/json');
             request.onload = function() {
-              if (this.status >= 200 && this.status < 400) {
-                // Success!
-                success(JSON.parse(this.response));
-
-              } else {
-                // We reached our target server, but it returned an error
-                fail(this);
-              }
+                if (this.status >= 200 && this.status < 400)
+                { // Success!
+                    success(JSON.parse(this.response));
+                }
+                else
+                { // We reached our target server, but it returned an error
+                    fail(this);
+                }
             };
             request.onerror = function() {
-              // There was a connection error of some sort
-              fail(this);
+                // There was a connection error of some sort
+                fail(this);
             };
             request.send();
             return ajaxObj;
