@@ -38,8 +38,8 @@
             framework.alert(msg);
         },
 
-        confirm: function(msg, yes, no = null, title = ''){
-            framework.confirm(msg, yes, no, title);
+        confirm: function(msg, handle, title = ''){
+            framework.confirm(msg, handle, title);
         },
 
         nosubmit: function(e) {
