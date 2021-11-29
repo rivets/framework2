@@ -123,7 +123,7 @@
                 $errfile,
                 $errline
             );
-            if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
+            if ($errno != E_DEPRECATED  || $this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
             { // this is an internal error or we are debugging, so we need to stop
                 $this->make500($ekey);
                 exit;
