@@ -54,15 +54,7 @@
     });
     fwdom.on('#testconfirm', 'click', function(e){
         fwdom.stop(e);
-        framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
-    });
-    fwdom.on('#testconfirm2', 'click', function(e){
-        fwdom.stop(e);
-        framework.confirm('Do you want to?', null, function() { framework.alert('No', 'You said...'); }, 'Please confirm');
-    });
-    fwdom.on('#testconfirm3', 'click', function(e){
-        fwdom.stop(e);
-        framework.confirm('Do you want to?', function() { framework.alert('Yes', 'You said...'); }, null, 'Please confirm');
+        framework.confirm('Do you want to?', function(r) { framework.alert(r? 'Yes' : 'No', 'You said...'); },'Please confirm');
     });
 {% endblock onload %}
 
