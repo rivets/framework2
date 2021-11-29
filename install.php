@@ -172,7 +172,7 @@
         \R::store($role);
         $role->end = NULL; // clear end date as we don't want to time limit admin
         \R::store($role);
-        $xown = 'xown'.ucfirst($type);
+        $xown = 'xown'.ucfirst($type).'List';
         $owner->{$xown}[] = $role;
         $cname->{$xown}[] = $role;
         $rname->{$xown}[] = $role;
@@ -663,7 +663,7 @@
                 $conf->issued = $now;
                 $conf->kind = 'C';
                 \R::store($conf);
-                $user->{'xown'.FW::CONFIRM}[] = $conf;
+                $user->{'xown'.ucfirst(FW::CONFIRM).'List'}[] = $conf;
                 \R::store($user);
                 \R::trash($conf);
     /**

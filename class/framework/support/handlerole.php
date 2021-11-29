@@ -140,7 +140,7 @@
         {
             if ($all)
             {
-                return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
+                return $this->bean->with('order by start,end')->{'own'.\ucfirst($this->roletype)};
             }
             $cond = 'start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end';
             return $this->bean->withCondition($cond)->{'own'.\ucfirst($this->roletype)};
