@@ -142,7 +142,7 @@
             $fdt = $context->formData('post');
             $emess = $this->doFields($fdt);
 
-            foreach ($fdt->fetchArray('new') as $ix => $fid) // @phan-suppress-current-line PhanUnusedVariableValueOfForeachWithKey
+            foreach (array_keys($fdt->fetchArray('new')) as $ix)
             {
                 if (($type = $fdt->fetch(['type', $ix], '')) !== '')
                 {
@@ -153,12 +153,12 @@
                         $fld->$fname = $fdt->fetch(['fld'.$fname, $ix], '');
                     }
                     $fld->flags = 0;
-                    foreach (self::$flags as $fn => $fv) // @phan-suppress-current-line PhanUnusedVariableValueOfForeachWithKey
+                    foreach (array_keys(self::$flags) as $fn)
                     {
                         $fld->flags |= $fdt->fetch(['fld'.$fn, $ix], 0);
                     }
                     \R::store($fld);
-                    $this->bean->xownForm[] = $fld;
+                    $this->bean->xownFormList[] = $fld;
                 }
             }
             \R::store($this->bean);
@@ -206,6 +206,7 @@
                     $form .= ($fset ? '</fieldset>' : '').'<fieldset'.$fld->fieldAttr('', TRUE).'>'.($fld->label !== '' ? '<legend>'.$fld->label.'</legend>' : '');
                     $fset = TRUE;
                     break;
+
                 case 'endfset':
                     if ($fset)
                     {
@@ -232,6 +233,7 @@
                     }
                     $form .= '</div></div>';
                     break;
+
                 case 'select':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<select'.$fld->fieldAttr('form-control', FALSE).'>';
                     $this->optgroup = FALSE;
@@ -246,9 +248,11 @@
                     }
                     $form .= '</select></div>';
                     break;
+
                 case 'textarea':
                     $form .= '<div class="form-group">'.$fld->doLabel(TRUE).'<textarea'.$fld->fieldAttr('form-control', FALSE).'>'.($values[$fld->name] ?? $fld->value).'</textarea></div>';
                     break;
+
                 case 'recaptcha':
                     /** @psalm-suppress UndefinedConstant */
                     if (Config::RECAPTCHA != 0)
@@ -256,11 +260,12 @@
                         $form .= '<div class="form-group"><button '.$fld->fieldAttr('', FALSE).' data-sitekey="'.Config::RECAPTCHAKEY.'">'.$fld->value.'</button>';
                         break;
                     }
-                    // no break
+                    /* ******* DROP THROUGH ******* */
                 case 'submit':
                 case 'button':
                     $form .= '<div class="form-group"><button'.$fld->fieldAttr('', FALSE).'>'.$fld->value.'</button></div>';
                     break;
+
                 default: // all the other types are very much the same.
                     if (isset($values[$fld->name]))
                     {
@@ -278,9 +283,19 @@
             return $noform || $this->bean->method == 0 ? $form : $form.'</form>';
         }
 /**
+ * Deal with an optgroup possibility
+ */
+        private function optgroup(bool $mkit, ?string $label, bool $disabled) : string
+        {
+            $selbod = $this->optgroup ? '</optgroup>' : ''; // if one open already, close it
+            $this->optgroup = $mkit;
+            assert(!$mkit || !is_null($label));
+            return $selbod.($mkit ? '<optgroup label="'.$label.'"'.($disabled ? ' disabled="disabled"' : '').'>' : '');
+        }
+/**
  * Handle making an option. Deals with optgroups
  */
-        private function doOption(object|array $option) : string
+        private function doOption(array|object $option) : string
         {
             $form = '';
             if (\is_object($option))
@@ -291,11 +306,12 @@
                     { // one open already so close it
                         $form = '</optgroup>';
                     }
-                    if ($option->optgroup !== '') // If the name is not empty then we want to close an open optgroup and start a new one
+                    if ($option->optgroup !== '') // If the name is not empty then start a new one
                     {
                         $this->optgroup = TRUE;
                         return $form.'<optgroup label="'.$option->optgroup.'"'.(isset($option->disabled) ? ' disabled="disabled"' : '').'>';
                     }
+                    // $og = $this->optgroup($option->optgroup !== '', $option->optgroup, $option->disabled;
                 }
                 return $this->mkoption($option->value, $option->text, isset($option->selected), isset($option->disabled));
             }
@@ -306,11 +322,12 @@
                 { // one open already so close it
                     $form = '</optgroup>';
                 }
-                if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without startng a new one
+                if ($option[1] !== NULL) // If the name is also NULL then we want to close an open optgroup without starting a new one
                 {
                     $this->optgroup = TRUE;
                     return $form.'<optgroup label="'.$option[1].'"'.(isset($option[2]) ? ' disabled="disabled"' : '').'>';
                 }
+                // $og = $this->optgroup(!is_null($option[1]), $option[1], $option[2]);
             }
             return $this->mkoption($option[0], $option[1], isset($option[2]), isset($option[3]));
         }

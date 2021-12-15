@@ -24,8 +24,8 @@
                 {{f.startform({action : base~'/forgot/reset', method: 'post', class: 'jumbotron'})}}
                     {{f.hidden({name: 'uid', value: pwuser.getID})}}
                     {{f.hidden({name: 'code', value: code})}}
-                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, parsley: {'equal-to': '#rpw'} })}}
-                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {'equal-to': '#pw', trigger: 'change'} })}}
+                    {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE, valid {'equal-to': '#rpw'} })}}
+                    {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, valid: {'equal-to': '#pw', trigger: 'change'} })}}
                     {{f.submit({value: 'Set'})}}
                 {{f.endform()}}
             {% endif %}

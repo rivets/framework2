@@ -94,7 +94,7 @@
     {{m.open({id: 'addf', title: 'Add a Form'})}}
     <div class="modal-body">
         <form id="addfform" action="#" method="post">
-            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: TRUE, parsley: {trigger: 'change', type: 'alphanum'} })}}
             {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
             {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
             {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}

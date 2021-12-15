@@ -7,7 +7,7 @@
 {% block main %}
     <section class="row">
         <article class="mx-auto col">
-            {% if context.hasuser  and context.user.hasrole('Test', 'Tester') %}
+            {% if context.hasUser  and context.user.hasRole(constant('Config\\Framework::TESTCONTEXT'), 'Tester') %}
                 <p>You are logged in as the  tester.</p>
             {% else %}
                 <p>If you can see this then the page access permission checking system is not working!</p>

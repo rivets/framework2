@@ -135,23 +135,23 @@
                         <div class="form-group">
                             <label for="sn" class="control-label">Site Name</label>
                             <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
-                                class="form-control" required="required" data-parsley-type="alphanum"/>
+                                class="form-control" required data-parsley-type="alphanum"/>
                         </div>
                         <div class="form-group">
                             <label for="sn" class="control-label">Site URL</label>
                             <input type="text" id="sn" name="siteurl" value="{{siteurl}}" placeholder="The canonical url for your site" class="form-control"
-                              required="required" data-parsley-type="url"/>
+                              required data-parsley-type="url"/>
                         </div>
                         <div class="form-group">
                             <label for="sn" class="control-label">Site No Reply Email</label>
-                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required="required"/>
+                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required/>
                         </div>
                     </fieldset>
                     <fieldset>
                         <legend>Database Information</legend>
                         <div class="form-group">
                             <label for="dt" class="control-label">Database Type</label>
-                            <select is="dt" name="dbtype" class="form-control" required="required">
+                            <select is="dt" name="dbtype" class="form-control" required>
                                 <option value="mysql">MySQL</option>
                                 <option value="mysql">MariaDB</option>
                                 <option value="pgsql">PostgresSQL</option>
@@ -161,25 +161,25 @@
                         </div>
                         <div class="form-group">
                             <label for="dh" class="control-label">Host</label>
-                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
+                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label for="dn" class="control-label">Database</label>
                             <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
-                                required="required" data-parsley-type="alphanum"/>
+                                required data-parsley-type="alphanum"/>
                         </div>
                         <div class="control-group">
                             <label for="du" class="control-label">User</label>
                             <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
-                            required="required" data-parsley-type="alphanum"/>
+                            required data-parsley-type="alphanum"/>
                         </div>
                         <div class="control-group">
                             <label for="dp" class="control-label">Password</label>
-                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
+                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required/>
                         </div>
                         <div class="control-group">
                             <label for="cdp" class="control-label">Confirm Password</label>
-                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required/>
                         </div>
                     </fieldset>
                     <p class="mt-4">
@@ -316,20 +316,20 @@
                         </div>
                         <div class="form-group">
                             <label for="em" class="control-label">Admin Email</label>
-                            <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required="required"/>
+                            <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required/>
                         </div>
                         <div class="form-group">
                             <label for="au" class="control-label">Admin User Login</label>
                             <input type="text" id="au" name="admin" value="{{name}}admin" placeholder="Admin user login" class="form-control"
-                                required="required" data-parsley-type="alphanum"/>
+                                required data-parsley-type="alphanum"/>
                         </div>
                         <div class="form-group">
                             <label for="ap" class="control-label">Admin Password</label>
-                            <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required="required"/>
+                            <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required/>
                         </div>
                         <div class="form-group">
                             <label for="acdp" class="control-label">Confirm Password</label>
-                            <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required="required"/>
+                            <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required/>
                         </div>
                     </fieldset>
                     <p><input type="submit" class="btn btn-primary" value="Install"/></p>

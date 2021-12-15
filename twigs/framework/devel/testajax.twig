@@ -31,9 +31,9 @@
 
 {% block headerbody %}
         <h1>Test Framework AJAX calls</h1>
-        {% if context.hasadmin %}
+        {% if context.hasAdmin %}
             <h2>Running as Site Admin</h2>
-        {% elseif context.user.hasrole('Test', 'Tester') %}
+        {% elseif context.hasUser and context.user.hasRole(constant('Config\\Framework::TESTCONTEXT'), 'Tester') %}
             <h2>Running as Test Tester</h2>
         {% endif %}
 {% endblock headerbody %}

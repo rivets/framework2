@@ -110,7 +110,7 @@
     {{m.open({id: 'addu', title: 'Add A New User'})}}
     <div class="modal-body">
         {{f.startform({id: 'adduform', method: 'post'})}}
-            {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'username - alphanumeric characters only', required: TRUE, parsley: {
+            {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'username - alphanumeric characters only', required: TRUE, valid {
                 trigger: 'change',
                 'remote-reverse': 'false',
                 remote: base~'/ajax/unique/'~constant('Config\\Framework::USER')~'/login/{value}',
@@ -118,11 +118,11 @@
                 type: 'alphanum'
             } })}}
             {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE})}}
-            {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {
+            {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, valid {
                 trigger: 'change',
                 'equal-to': '#pw'
             } })}}
-            {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.com', parsley: {trigger: 'change'}, required: TRUE})}}
+            {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.com', valid {trigger: 'change'}, required: TRUE})}}
             {{f.checkbox({label: 'Roles', group: TRUE, labels: ['Admin', 'Developer'], values: [1, 1], names: ['admin', 'devel']})}}
         {{f.endform()}}
     </div>

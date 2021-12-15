@@ -31,8 +31,6 @@
  * class constructor when it does some permission checking. The first element in the returned array
  * is a boolean indicating whether or not login is required, the second element is a list of ['Context', 'Role']
  * pairs that the user must have.
- *
- * @return array<mixed>
  */
         public function requires() : array
         {
@@ -54,7 +52,7 @@
             $type = \strtolower($rest[1]);
             $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
-            $table = $type < FW::UPLOAD ? $type.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$type;
+            $table = $type < FW::UPLOAD ? $type.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$type; // get names in right order for RedBean
             foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
             {
                 $upl = \R::dispense(FW::UPLOAD);
