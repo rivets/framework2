@@ -41,8 +41,8 @@
                 {{bean.guard|raw}}
                 <fieldset>
                     <legend>Login details</legend>
-                    {{f.text({ label: 'Login', id: 'ln', name: 'login', value: bean.login, readonly: true })}}
-                    {{f.email({ label: 'Email', id: 'em', name: 'email', value: bean.email, required: true })}}
+                    {{f.text({ label: 'Login', id: 'ln', name: 'login', value: bean.login, readonly: TRUE })}}
+                    {{f.email({ label: 'Email', id: 'em', name: 'email', value: bean.email, required: TRUE })}}
                     {{f.password({ label: 'Password', id: 'psw', name: 'pw', ph: 'Password' })}}
                     {{f.password({ label: 'Repeat Password', id: 'rpsw', name: 'rpw', ph: 'Repeat Password', data: {'parsley-equalto': '#psw', 'parsley-trigger': 'change'} })}}
                 </fieldset>
