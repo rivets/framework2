@@ -15,7 +15,7 @@ var fweditable = {
     makeEdit: function(d)
     {
        const options = fweditable.edOptions[d.getAttribute('data-editable-id')];
-       let ctext = d.innerText;
+       let ctext = d.innerHTML;
        let box;
        if (ctext === options.emptyText)
        {
@@ -107,7 +107,7 @@ var fweditable = {
             fwdom.stop(e);
             let options =  fweditable.edOptions[fweditable.inline.getAttribute('data-editable-id')];
             let box = tip.querySelector('.edbox');
-            if (box.value != fweditable.inline.innerText)
+            if (box.value != fweditable.inline.innerHTML)
             {
                 if (options.update == null)
                 {
@@ -124,25 +124,25 @@ var fweditable = {
                                 {
                                     if (box.value == x.value)
                                     {
-                                        fweditable.inline.innerText = x.text;
+                                        fweditable.inline.innerHTML = x.text;
                                         break;
                                     }
                                 }
                                 else if (box.value == x)
                                 {
-                                    fweditable.inline.innerText = x;
+                                    fweditable.inline.innerHTML = x;
                                     break;
                                 }
                             }
                         }
                         else if (box.value === '')
                         { // empty string so indicate this
-                           fweditable.inline.innerText = options.emptyText;
+                           fweditable.inline.innerHTML = options.emptyText;
                            fweditable.inline.classList.add('edempty');
                         }
                         else
                         { // not empty
-                           fweditable.inline.innerText = box.value;
+                           fweditable.inline.innerHTML = box.value;
                            fweditable.inline.classList.remove('edempty');
                         }
                     }).fail(function(jx){
@@ -179,9 +179,9 @@ var fweditable = {
         fweditable.domid += 1;
         fweditable.edOptions[fweditable.domid] = nopt;
         div.setAttribute('data-editable-id', fweditable.domid);
-        if (div.innerText === '')
+        if (div.innerHTML === '')
         {
-            div.innerText = nopt.emptyText;
+            div.innerHTML = nopt.emptyText;
             div.classList.add('edempty');
         }
         div.addEventListener('click', function(e){
