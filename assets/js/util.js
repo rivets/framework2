@@ -1,4 +1,5 @@
 /* globals fwdom: false */
+/* globals FormData*/
 /* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery, bootstrap */
 /* jshint undef: true, unused: false */
     class FWAjaxRQ
@@ -102,7 +103,7 @@
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
             let accept = options.hasOwnProperty('accept') ? options.accept : '';
-            let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
+            let data = options.hasOwnProperty('data') ? (options.data instanceof FormData || typeof options.data !== 'object' ? options.data : framework.makeQString(options.data)) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
