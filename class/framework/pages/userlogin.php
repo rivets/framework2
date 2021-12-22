@@ -366,8 +366,7 @@
             }
             $_SESSION['userID'] = $user->getID();
             $dpage = $context->local()->config('defaultpage');
-            $dpage = $dpage !== NULL ? $dpage->value : '/';
-            $context->divert($page === '' ? $dpage : $page); // success - divert to home page or requested page
+            $context->divert($page === '' ? ($dpage !== NULL ? $dpage->value : '/') : $page); // success - divert to default page or requested page
             /* NOT REACHED */
         }
 /**
