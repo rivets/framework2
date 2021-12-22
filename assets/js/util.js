@@ -121,7 +121,7 @@
             let type = options.hasOwnProperty('type') ? options.type : dtype;
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
-            if (type !== '' || type == 'multipart/form-data')
+            if (type !== '' && type != 'multipart/form-data')
             {
                 request.setRequestHeader('Content-Type', type);
             }
