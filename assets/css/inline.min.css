@@ -15,6 +15,11 @@
    text-decoration: underline dotted blue;
 }
 
+.editable.disabled{
+    color: #777;
+    text-decoration: none;
+}
+
 .edempty {
     color: red;
     -webkit-text-decoration: underline solid blue;
