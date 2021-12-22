@@ -26,7 +26,7 @@
             $fdt = $context->formdata('post');
             if (($lg = $fdt->fetch('login', '')) !== '')
             {
-                $page = $fdt->fetch('goto', '');
+                $page = $fdt->fetch('goto', $context->local()->config('defaultpage') ?? '');
                 $pw = $fdt->fetch('password', '');
                 if ($pw !== '')
                 {
@@ -44,7 +44,7 @@
                 $context->local()->message(\Framework\Local::MESSAGE, 'Please try again.');
                 return FALSE;
             }
-            $context->local()->addval('goto', $context->formdata('get')->fetch('goto', ''));
+            $context->local()->addval('goto', $context->formdata('get')->fetch('goto', $context->local()->config('defaultpage') ?? ''));
             return TRUE;
         }
 /**

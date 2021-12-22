@@ -385,7 +385,7 @@
                 {
                     $user->code2fa = '';
                     R::store($user);
-                    $this->loginSession($context, $user, $fdt->fetch('goto', ''));
+                    $this->loginSession($context, $user, $fdt->fetch('goto', $context->local()->config('defaultpage') ?? ''));
                     /* NOT REACHED */
                 }
                 $context->local()->message(\Framework\Local::ERROR, 'Invalid code - please try again');
@@ -399,7 +399,7 @@
             }
             $context->local()->addval([
                 'hash' => $hash,
-                'goto' => $fget->fetch('goto'),
+                'goto' => $fdt->fetch('goto', $context->local()->config('defaultpage') ?? ''),
             ]);
             return '@content/twofa.twig';
         }
