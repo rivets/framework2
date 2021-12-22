@@ -96,15 +96,29 @@
 /*
  * non-jquery ajax function
  *
- * @param {string} url    - the URL to invoke
- * @param {object} data   - the data to pass
+ * @param {string} url       - the URL to invoke
+ * @param {object} options   - options specifying what to do
  */
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
             let accept = options.hasOwnProperty('accept') ? options.accept : '';
-            let data = options.hasOwnProperty('data') ? (options.data instanceof FormData || typeof options.data !== 'object' ? options.data : framework.makeQString(options.data)) : '';
-            let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
+            let data = '';
+            let dtype = 'text/plain; charset=UTF-8';
+            if (options.hasOwnProperty('data'))
+            {
+                if (options.data instanceof FormData || typeof options.data !== 'object')
+                {
+                    data = options.data;
+                    dtype = 'multipart/form-data';
+                }
+                else
+                {
+                    data = framework.makeQString(options.data);
+                    dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
+                }
+            }
+            let type = options.hasOwnProperty('type') ? options.type : dtype;
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
