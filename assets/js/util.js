@@ -110,7 +110,7 @@
                 if (options.data instanceof FormData || typeof options.data !== 'object')
                 {
                     data = options.data;
-                    dtype = 'multipart/form-data';
+                    dtype = ''; // dont set content type for this
                 }
                 else
                 {
@@ -121,7 +121,10 @@
             let type = options.hasOwnProperty('type') ? options.type : dtype;
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
-            request.setRequestHeader('Content-Type', type);
+            if (type !== '')
+            {
+                request.setRequestHeader('Content-Type', type);
+            }
             if (accept != '')
             {
                 request.setRequestHeader('Accept', accept);
