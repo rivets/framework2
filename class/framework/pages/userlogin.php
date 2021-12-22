@@ -399,7 +399,7 @@
             }
             $context->local()->addval([
                 'hash' => $hash,
-                'goto' => $fdt->fetch('goto', $context->local()->config('defaultpage') ?? ''),
+                'goto' => $fget->fetch('goto', $context->local()->config('defaultpage') ?? ''),
             ]);
             return '@content/twofa.twig';
         }
