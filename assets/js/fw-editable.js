@@ -80,7 +80,7 @@ var fweditable = {
 
     popClick : function(div)
     {
-        if (div.hasAttribute('disabled'))
+        if (div.classList.contains('disabled'))
         {
             return;
         }
