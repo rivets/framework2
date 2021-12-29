@@ -80,7 +80,7 @@ var fweditable = {
 
     popClick : function(div)
     {
-        if (div.querySelector('.editable').hasAttribute('disabled'))
+        if (div.hasAttribute('disabled'))
         {
             return;
         }
