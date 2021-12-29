@@ -348,7 +348,7 @@
         dodelbean: function(e, x, bean, msg = '', success = null)
         {
             let pnode = x.closest('[data-id]');
-            if (pnode instanceof jQuery)
+            if (typeof jQuery != 'undefined' && pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
