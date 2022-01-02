@@ -87,7 +87,7 @@
             {
                 if (data.hasOwnProperty(prop))
                 {
-                    enc += amp + encodeURI(prop + '=' + encodeURIComponent(data[prop]));
+                    enc += amp + encodeURI(prop + '=' + data[prop]);
                     amp = '&';
                 }
             }
@@ -114,7 +114,7 @@
                 }
                 else
                 {
-                    data = framework.makeQString(options.data);
+                    data = encodeURIComponent(framework.makeQString(options.data));
                     dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
                 }
             }
