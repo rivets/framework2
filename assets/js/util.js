@@ -114,7 +114,7 @@
                 }
                 else
                 {
-                    data = encodeURIComponent(framework.makeQString(options.data));
+                    data = framework.makeQString(options.data);
                     dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
                 }
             }
