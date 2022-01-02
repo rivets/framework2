@@ -87,7 +87,7 @@
             {
                 if (data.hasOwnProperty(prop))
                 {
-                    enc += amp + encodeURI(prop + '=' + data[prop]);
+                    enc += amp + encodeURIComponent(prop + '=' + data[prop]);
                     amp = '&';
                 }
             }
