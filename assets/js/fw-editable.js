@@ -124,25 +124,25 @@ var fweditable = {
                                 {
                                     if (box.value == x.value)
                                     {
-                                        fweditable.inline.innerHTML = x.text;
+                                        fweditable.inline.innerText = x.text;
                                         break;
                                     }
                                 }
                                 else if (box.value == x)
                                 {
-                                    fweditable.inline.innerHTML = x;
+                                    fweditable.inline.innerText = x;
                                     break;
                                 }
                             }
                         }
                         else if (box.value === '')
                         { // empty string so indicate this
-                           fweditable.inline.innerHTML = options.emptyText;
+                           fweditable.inline.innerText = options.emptyText;
                            fweditable.inline.classList.add('edempty');
                         }
                         else
                         { // not empty
-                           fweditable.inline.innerHTML = box.value;
+                           fweditable.inline.innerText = box.value;
                            fweditable.inline.classList.remove('edempty');
                         }
                     }).fail(function(jx){
