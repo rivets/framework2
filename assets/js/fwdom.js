@@ -5,7 +5,7 @@
  */
     var fwdom = {
         on: function(selector, op, func, parent = null) {
-            (selector instanceof String ? ((parent !== null ? parent : document).querySelectorAll(selector)) : selector).forEach(function(d){
+            (parent !== null ? parent : document).querySelectorAll(selector).forEach(function(d){
                 d.addEventListener(op, func, false);
             });
         },
