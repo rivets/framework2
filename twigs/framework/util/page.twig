@@ -68,7 +68,7 @@
             {% endif %}
         {% endif %}
         {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS #}
-            <!--<script {{h.urlattr(fwurls.popperjs)}}></script>-->
+            {#<script {{h.urlattr(fwurls.popperjs)}}></script>#}
             <script {{h.urlattr(fwurls.bootjs)}}></script>
         {% endif %}
         {% if usebootbox %}
