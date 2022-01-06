@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap, framework, putorpatch, console */
+/* globals document, fwdom, bootstrap, framework, console */
 /* jshint undef: true, unused: false */
 
 var fweditable = {
@@ -73,7 +73,7 @@ var fweditable = {
 
     editUpdate : function(options, value) {
         return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.field), {
-            method: putorpatch,
+            method: framework.putorpatch,
             data: { value: value }
         });
     },

@@ -19,7 +19,7 @@
                 t.insertAdjacentHTML('beforeend', '<p>Create config item OK</p>');
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.insertAdjacentHTML('beforeend', '<p>Read config item OK '+data+'</p>');
-                    testing.makecall('config/testconfig', { method: putorpatch, data: {value: 345} }, function(data){
+                    testing.makecall('config/testconfig', { method: framework.putorpatch, data: {value: 345} }, function(data){
                         t.insertAdjacentHTML('beforeend', '<p>Update config item OK returns '+data.value+'</p>');
                         testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                             if (data == 345)

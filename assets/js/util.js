@@ -242,7 +242,7 @@
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: putorpatch})
+                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: framework.putorpatch})
                     .done(function(){ framework.toggle(x); }).fail(function(jx) { framework.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
@@ -284,7 +284,7 @@
  */
         editcall: function(params) {
             return framework.ajax(framework.buildFWLink('ajax', params.op, params.bean, params.pk, params.name), {
-                method: putorpatch,
+                method: framework.putorpatch,
                 data: { value: params.value }
             });
         },
