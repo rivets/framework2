@@ -19,7 +19,7 @@
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['local', 'fixed', 'defer', 'async'] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['multipart'] ],
             // FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
-            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['needlogin', 'mobileonly', 'active', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] ],
+            FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['needlogin', 'mobileonly', 'active', 'needajax', 'needfwutils', 'needfwdom', 'needvalidate', 'neededitable'] ],
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['fixed'] ],
             // FW::TABLE       => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],

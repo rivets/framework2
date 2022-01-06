@@ -38,7 +38,8 @@
             'needlogin'     => [TRUE, TRUE],
             'needajax'      => [TRUE, TRUE],
             'needfwutils'   => [TRUE, TRUE],
-            'needparsley'   => [TRUE, TRUE],
+            'needfwdom'   => [TRUE, TRUE],
+            'needvalidate'   => [TRUE, TRUE],
             'neededitable'  => [TRUE, TRUE],
         ];
 
@@ -193,7 +194,7 @@
             { // mandatory
                 $page->{$fld} = $fdt->mustFetch($fld);
             }
-            foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needparsley', 'neededitable'] as $fld)
+            foreach (['active', 'needlogin', 'mobileonly', 'needajax', 'needfwutils', 'needfwdom', 'needvalidate', 'neededitable'] as $fld)
             { // optional flags
                 $page->{$fld} = $fdt->fetch($fld, 0);
             }

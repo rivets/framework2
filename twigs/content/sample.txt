@@ -12,8 +12,8 @@
 {% set fwutils = TRUE %}
 #}
 {#
-    If your page uses Parsley include this line at the start of the file
-{% set parsley = TRUE %}
+    If your page uses form validation include this line at the start of the file
+{% set validate = TRUE %}
 #}
 {#
     If your page uses the inline editable package include this line at the start of the file

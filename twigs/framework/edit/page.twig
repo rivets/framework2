@@ -1,6 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
-{% set parsley = TRUE %}
+{% set validate = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -69,7 +70,7 @@
                 <fieldset>
                     <legend>Page Functional Requirements</legend>
                     {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
-                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needfwdom', 'needvalidate', 'neededitable'],
                         values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}

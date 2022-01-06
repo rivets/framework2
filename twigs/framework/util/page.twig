@@ -60,7 +60,7 @@
         <script {{h.urlattr(fwurls.vuejs)}}></script>
         <script {{h.urlattr(fwurls.bootvuejs)}}></script>
     {% else %}
-        {% if usejquery or parsley %}
+        {% if usejquery or parsley or validate %}
             {% if ajax %}
                 <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
             {% else %}
@@ -78,7 +78,7 @@
             <script {{h.urlattr(fwurls.utiljs)}}></script>
             <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
-        {% if parsley %}
+        {% if parsley or validate %}
             <script {{h.urlattr(fwurls.parsley)}}></script>
         {% endif %}
         {% if editable %}
