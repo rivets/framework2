@@ -60,15 +60,12 @@
         <script {{h.urlattr(fwurls.vuejs)}}></script>
         <script {{h.urlattr(fwurls.bootvuejs)}}></script>
     {% else %}
-        {% if usejquery %}
+        {% if usejquery or parsley %}
             {% if ajax %}
                 <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
             {% else %}
                 <script {{h.urlattr(fwurls.jqueryslim)}}></script>
             {% endif %}
-        {% endif %}
-        {% if fwdom or fwutils %}
-            <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
         {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS #}
             <!--<script {{h.urlattr(fwurls.popperjs)}}></script>-->
@@ -77,8 +74,9 @@
         {% if usebootbox %}
             <script {{h.urlattr(fwurls.bootbox)}}></script>
         {% endif %}
-        {% if fwutils %}
+        {% if fwutils or ajax or fwdom or editable %}
             <script {{h.urlattr(fwurls.utiljs)}}></script>
+            <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
         {% if parsley %}
             <script {{h.urlattr(fwurls.parsley)}}></script>

@@ -21,7 +21,7 @@
                 value: e.target.checked ? 1 : 0
             }
         }).fail(function(jx){
-            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     }
 
@@ -63,7 +63,7 @@
             document.getElementById('Xnewtype').value = '';
             document.getElementById('inval').classList.add('d-none');
         }).fail(function(jx){
-            fwdom.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
+            framework.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });
     }
 {% endblock setup %}
@@ -79,20 +79,20 @@
             method: '{{patch}}', // because we are updating an item
             data: { value: this.value }
         }).fail(function(jx){
-            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out integrity and crossorigin - they might be diferent
         framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
             method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
-            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
         framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
             method: '{{patch}}', // because we are updating an item
             data: { value: '' }
         }).fail(function(jx){
-            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     });
     fwdom.on('#Xnewconf', 'blur', function(e){
@@ -102,7 +102,7 @@
         {
             if (!name.match(/^[a-z][a-z0-9]*$/i))
             {
-                fwdom.alert('Invalid name format')
+                framework.alert('Invalid name format')
                 this.value = ''
             }
             else
@@ -110,7 +110,7 @@
                 framework.ajax(base+'/ajax/unique/{{config}}/name/'+name, {method: 'get'}).done(function(d){
                     document.getElementById('inval').classList.remove('d-none');
                 }).fail(function(d){
-                    fwdom.alert('That item already exists');
+                    framework.alert('That item already exists');
                 });
             }
         }

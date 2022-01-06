@@ -23,7 +23,7 @@
                 }).done(function(){
                     framework.fadetodel(tr);
                 }).fail(function(jx){
-                    fwdom.alert('<h3>Delete failed</h3>'+jx.responseText);
+                    framework.alert('<h3>Delete failed</h3>'+jx.responseText);
                 });
             }
         });
@@ -90,7 +90,7 @@
             bootstrap.Modal.getOrCreateInstance(document.getElementById('nbean')).hide();
         };
         framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
-            fwdom.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+            framework.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
         }).always(function() { btn.disabled = false; });
     });
     fwdom.on('#nbean', 'show.bs.modal', function(e){

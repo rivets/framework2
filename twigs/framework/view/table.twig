@@ -104,7 +104,7 @@
                 }
                 $('#tsearch').modal('hide');
             }).fail(function(jx){
-                fwdom.alert('<h3>Search failed</h3>'+jx.responseText);
+                framework.alert('<h3>Search failed</h3>'+jx.responseText);
             });
         });
     {% endif %}
@@ -150,7 +150,7 @@
         {{m.open({is: 'nfield', title: 'New Field'})}}
         <div class="modal-body">
             <form action="#" method="POST" id="nfform">
-                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, valid {pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
+                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, valid: {pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
                 {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
             </form>
         </div>

@@ -2,6 +2,7 @@
 {% set breadcrumbs = [{link: base, text: 'Home'}, {text: 'Contact'}] %}
 {% set schema = 'itemscope="" itemtype="http://schema.org/ContactPage"' %}
 {% set usebootbox = FALSE %}
+{% set title = 'Profile for ' ~ context.user.login %}
 
 {% extends '@content/page.twig' %}
 
@@ -22,7 +23,7 @@
             {{f.startform({id: 'cform', method: 'post'})}}
                 {{f.email({label: 'Email', id: 'em', name: 'emal', ph: 'Email', value: context.user.email})}}
                 {{f.password({label: 'New Password', id: 'np', name: 'pw', ph: '***********'})}}
-                {{f.password({label: 'Repeat Password', id: 'rnp', name: 'rpw', ph: '***********', data: {'parsley-equalto': '#np', 'parsley-trigger': 'change'}})}}
+                {{f.password({label: 'Repeat Password', id: 'rnp', name: 'rpw', ph: '***********', valid: {'equalto': '#np', 'trigger': 'blur'}})}}
                 {{f.submit({value: 'Update'})}}
             {{f.endform()}}
             <p class="mt-5"><a href="{{base}}/add2fa/" class="btn btn-sm btn-info">{{context.user.secret == '' ? 'Enable' : 'Disable'}} 2-Factor Authentication</a></p>

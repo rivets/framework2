@@ -222,7 +222,7 @@
     <div class="modal-body">
         {{f.startform({method: 'post', id: 'npform'})}}
             {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
-                valid { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: "#{base}/ajax/unique/#{constant('Config\\Framework::PAGE')}/name/{value}",
+                valid: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: "#{base}/ajax/unique/#{constant('Config\\Framework::PAGE')}/name/{value}",
                 'remote-message': 'That page already exists'} })}}
             {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                     {value: '', text: '&mdash; Pick a Type &mdash;'},

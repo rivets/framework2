@@ -32,11 +32,11 @@
                     <h1 class="jumbotron">Register for {{fwurls.sitename.value}}</h1>
                     {{f.startform({method: 'post', class: 'jumbotron', id: 'regform'})}}
                         {{f.text({label: 'User Name', id: 'un', name: 'login', value: login, ph: 'User name - alphanumeric characters only',
-                            valid {trigger: 'change',  'remote-reverse': 'false', remote: base~'/ajax/uniquenl/user/login/{value}',
+                            valid: {trigger: 'change',  'remote-reverse': 'false', remote: base~'/ajax/uniquenl/user/login/{value}',
                             'remote-message': 'That user name is not available', type: 'alphanum'}, required: TRUE})}}
                         {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '*********', required: TRUE})}}
-                        {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '*********', valid {trigger: 'change', equalTo: '#pw'}, required: TRUE})}}
-                        {{f.email({label: 'Email Address', id: 'em', name: 'email', value: email, ph: 'pat@smith.org', valid {trigger: 'change'}, required: TRUE})}}
+                        {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '*********', valid: {trigger: 'change', equalTo: '#pw'}, required: TRUE})}}
+                        {{f.email({label: 'Email Address', id: 'em', name: 'email', value: email, ph: 'pat@smith.org', valid: {trigger: 'change'}, required: TRUE})}}
                         <p class="mt-4">
                             {{f.submit({value: 'Register'})}}
                         </p>

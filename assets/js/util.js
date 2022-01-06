@@ -243,7 +243,7 @@
                         pnode = pnode[0];
                     }
                     framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: putorpatch})
-                    .done(function(){ framework.toggle(x); }).fail(function(jx) { fwdom.alert('<h3>Toggle failed</h3>'+jx.responseText); });
+                    .done(function(){ framework.toggle(x); }).fail(function(jx) { framework.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
@@ -271,7 +271,7 @@
                 { // user picked OK
                     framework.ajax(framework.buildFWLink('ajax/bean', bean, id), {method: 'DELETE'})
                     .done(yes)
-                    .fail(function(jx){ fwdom.alert('<h3>Delete failed</h3>'+jx.responseText); });
+                    .fail(function(jx){ framework.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -452,7 +452,7 @@
             framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data: data})
             .done(fn)
             .fail(function(jx){
-                fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+                framework.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
             })
             .always(function(){
                 (button instanceof Object ? button : document.getElementById(button)).disabled = false;

@@ -111,7 +111,7 @@ var fweditable = {
             {
                 if (options.update == null)
                 {
-                    fwdom.alert('No update function defined');
+                    framework.alert('No update function defined');
                 }
                 else
                 {
@@ -146,7 +146,7 @@ var fweditable = {
                            fweditable.inline.classList.remove('edempty');
                         }
                     }).fail(function(jx){
-                        fwdom.alert('Update failed');
+                        framework.alert('Update failed');
                     });
                 }
             }
@@ -195,7 +195,7 @@ var fweditable = {
                    fweditable.edOptions[domid].source = data;
                    fweditable.popClick(div);
                 }, function(jx){
-                    fwdom.alert('Cannot fetch list');
+                    framework.alert('Cannot fetch list');
                 }, false);
             }
             else

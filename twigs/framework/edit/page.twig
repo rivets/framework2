@@ -30,7 +30,7 @@
     <section class="row">
         <article class="mx-auto col">
             {% include '@util/message.twig' %}
-            <form action="#" method="post" id="uform" data-parsley-validate>
+            {{f.startform({method: 'post', id: 'uform'})}}
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 {{bean.guard|raw}}
                 <fieldset>
@@ -74,7 +74,7 @@
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
-            </form>
+            {{f.endform()}}
         </article>
     </section>
 {% endblock main %}

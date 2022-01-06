@@ -1,4 +1,4 @@
-/* global fwdom, goodlogin, userbean */
+/* global goodlogin, userbean */
 /* global framework, testbeanid, testtable */
 
     var testing = {
@@ -10,7 +10,7 @@
             framework.ajax(framework.base+'/ajax/'+url, data).done(cdone).fail(cfail);
         },
         testbean: function (){
-            fwdom.alert('Bean operation test complete');
+            framework.alert('Bean operation test complete');
         },
 
         testconfig : function (){
@@ -91,19 +91,19 @@
         },
 
         testpaging: function (){
-            fwdom.alert('Paging operation test complete');
+            framework.alert('Paging operation test complete');
         },
 
         testpwcheck: function (){
-            fwdom.alert('Pwcheck operation test complete');
+            framework.alert('Pwcheck operation test complete');
         },
 
         testshared: function (){
-            fwdom.alert('Shared operation test complete');
+            framework.alert('Shared operation test complete');
         },
 
         testtable: function (){
-            fwdom.alert('Table operation test complete');
+            framework.alert('Table operation test complete');
         },
 
         testtablecheck: function (){
