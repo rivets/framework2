@@ -266,7 +266,7 @@
             {
                 msg = 'this '+bean;
             }
-            fwdom.confirm('Are you sure you you want to delete '+msg+'?', function(r){
+            framework.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
                     framework.ajax(framework.buildFWLink('ajax/bean', bean, id), {method: 'DELETE'})
