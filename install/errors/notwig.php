@@ -17,7 +17,7 @@
 <body lang="en-GB">
     <article class="container">
         <section class="row">
-           <div class="ml-auto col-md-6 mr-auto">
+           <div class="mx-auto col-md-6">
                <p>Please run composer or install the Twig template engine by hand.</p>
            </div>
         </section>

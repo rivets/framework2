@@ -1,37 +1,36 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
 {% set parsley = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
-    $('#more').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
+    fwdom.on('#more', 'click', function(e){
+        fwdom.stop(e);
         const mrow = $('#mrow');
         mrow.before($('#example').clone());
-        const pr = $mrow.prev();
+        const pr = mrow.prev();
         $('input', pr).val(''); // clear the inputs
         $('option', pr).prop('selected', false); // clear any selections
-        $('.delb', pr).on('click', function(e){
+        fwdom.on('.delb', 'click', function(e){
             framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
-        });
+        }, pr);
     });
-    $('#uform').on('submit', function(e){
+    fwdom.on(''#uform', 'submit', function(e){
         return $(this).parsley().validate();
     });
-    $('.delb').on('click', function(e){
+    fwdom.on('.delb', 'click', function(e){
         framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
     });
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>User &ldquo;{{bean.login}}&rdquo;</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>User &ldquo;{{bean.login}}&rdquo;</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">

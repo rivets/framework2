@@ -1,6 +1,6 @@
     {% if context.hasAdmin %}
-        <li class="nav-item dropdown{{action == 'admin' ? ' active'}}">
-            <a href="#" class="nav-link dropdown-toggle" id="ddadmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle{{action == 'admin' ? ' active'}}" id="ddadmin" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin<b class="caret"></b></a>
             <div class="dropdown-menu" aria-labelledby="ddadmin">
                 <a class="dropdown-item" href="{{base}}/admin/pages/">Pages</a>
                 <div class="dropdown-divider"></div>
@@ -20,18 +20,20 @@
         </li>
     {% endif %}
     {% if context.hasDeveloper %}
-        <li class="nav-item dropdown{{action == 'devel' ? ' active'}}">
-            <a href="#" class="nav-link dropdown-toggle" id="dddevel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle{{action == 'devel' ? ' active'}}" id="dddevel" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Developer<b class="caret"></b></a>
             <div class="dropdown-menu" aria-labelledby="dddevel">
                 <a class="dropdown-item" href="{{base}}/devel/ajax/">AJAX</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{base}}/devel/csp/">CSP</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{base}}/devel/hack/">Run Code</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{base}}/admin/info/">PHP Info</a>
             </div>
         </li>
-        <li class="nav-item dropdown{{action == 'test' ? ' active'}}">
-            <a href="#" class="nav-link dropdown-toggle" id="ddtest" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle{{action == 'test' ? ' active'}}" id="ddtest" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Testing<b class="caret"></b></a>
             <div class="dropdown-menu" aria-labelledby="ddtest">
                 <a class="dropdown-item" href="{{base}}/devel/test/page/">Test Page</a>
                 <a class="dropdown-item" href="{{base}}/test/">Page Access Check Test</a>

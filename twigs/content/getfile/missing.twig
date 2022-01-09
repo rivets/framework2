@@ -1,0 +1,20 @@
+{% set title = 'Missing File' %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>File Does Not Exist</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <p>That file does not exist.</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -16,10 +16,6 @@
  */
     class AccessBase extends Base
     {
-        public function __construct(?int $which)
-        {
-            parent::__construct($which);
-        }
 /*
  ***************************************
  * Fetching methods
@@ -34,10 +30,8 @@
  * @param ?int          $filter   Filter to apply
  * @param array|int     $options  Filter options
  * @param bool          $isArray  Expect an array ratherthan a simple value
- *
- * @return mixed
  */
-        public function mustFetch($name, $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function mustFetch($name, $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
@@ -49,12 +43,10 @@
  * @param string|array  $name     The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  * @param mixed         $default  Returned if the key does not exist
  * @param ?int          $filter   Filter to apply
- * @param mixed         $options  Filter options
+ * @param array|int     $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
- *
- * @return mixed
  */
-        public function fetch($name, $default = '', $filter = NULL, $options = [], bool $isArray = FALSE)
+        public function fetch($name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
@@ -66,12 +58,10 @@
  * @param mixed    $name        The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  * @param string   $bean        The bean type
  * @param bool     $forupdate   If TRUE then load for update
- *
- * @return \RedBeanPHP\OODBBean
  */
         public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
-            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, FILTER_VALIDATE_INT, FALSE)[1], $forupdate);
+            return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, \FILTER_VALIDATE_INT)[1], $forupdate);
         }
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
@@ -79,7 +69,6 @@
  * @param mixed    $name    The key or if it is an array then the key and the fields that are needed XXX['xyz'][0]
  *
  * @throws BadValue
- * @return \ArrayIterator
  */
         public function mustFetchArray($name) : \ArrayIterator
         {
@@ -88,10 +77,8 @@
 /**
  * Look in the array for a key that is an array and return an ArrayIterator over it
  *
- * @param mixed   $name    The key
- * @param mixed[] $dflt    Returned if the key does not exist
- *
- * @return \ArrayIterator
+ * @param mixed        $name    The key
+ * @param array<mixed> $default    Returned if the key does not exist
  */
         public function fetchArray($name, array $default = []) : \ArrayIterator
         {
@@ -99,8 +86,6 @@
         }
 /**
  * Return an ArrayIterator over all the values in the form
- *
- * @return \ArrayIterator
  */
         public function fetchAll() : \ArrayIterator
         {
@@ -108,8 +93,6 @@
         }
 /**
  * Return the array of values
- *
- * @return array
  */
         public function fetchRaw() : array
         {

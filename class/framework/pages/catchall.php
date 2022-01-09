@@ -5,7 +5,7 @@
  * request.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -26,17 +26,15 @@
  * Which might be better. Needs thought.
  *
  * @param Context  $context     The context object for the site
- *
- * @return string|array     A template name or array
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $tpl = '';
             $local = $context->local();
             switch ($context->action())
             {
             case 'favicon.ico':
-                $context->web()->sendfile($context->local()->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
+                $context->web()->sendfile($local->assetsdir().'/favicons/favicon.ico', 'favicon.ico', 'image/x-icon');
                 break;
 
             case 'robots.txt':
@@ -47,8 +45,21 @@
                 $local->addval('url', $local->configval('siteurl'));
                 return ['@info/sitemap.twig', 'application/xml; charset="utf-8"', StatusCodes::HTTP_OK];
 
+            case '.well-known':
+                $rest = $context->rest();
+                switch ($rest[0])
+                {
+                case 'gpc.json':
+                    $context->web()->sendJSON((object) ['gpc' => TRUE, 'version' => 1]);
+                    break;
+                default:
+                    $context->web()->notfound();
+                    /* NOT REACHED */
+                }
+                break;
+
             default:
-                $local->addval('page', $_SERVER['REQUEST_URI']);
+                $local->addval('page', $context->web()->request());
                 \Framework\Dispatch::basicSetup($context, 'error');
                 return ['@error/404.twig', Web::HTMLMIME, StatusCodes::HTTP_NOT_FOUND];
             }

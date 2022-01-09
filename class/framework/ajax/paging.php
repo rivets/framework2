@@ -3,9 +3,8 @@
  * Class to handle the Framework AJAX paging operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
- * @package Framework
- * @subpackage SystemAjax
+ * @copyright 2020-2021 Newcastle University
+ * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
 
@@ -16,29 +15,28 @@
     class Paging extends Ajax
     {
 /**
- * @var array
+ * @var array These permissions let the Site Admin manipulate the Framework internal tables. The first element is a
+ *            bool indicating if a login is required, the second is a list of ['Context', 'Role'] pairs that a user
+ *            must have. The third element is a list of accessible field names.
  */
-        private static $permissions = [
+        private static array $permissions = [
             FW::PAGE  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
             FW::USER  => [TRUE,   [[FW::FWCONTEXT, FW::ADMINROLE]], []],
         ];
 /**
  * Return permission requirements
  *
- * @return array
+ * First element is a bool indicating of login is required. The second element is a list of ['Context', 'Role']
+ * that the user must have.
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // login not required
         }
 /**
  * Get a page of bean values
  *
- * @param Context    $context    The context object for the site
- *
  * @throws \Framework\Exception\Forbidden
- *
- * @return void
  */
         final public function handle() : void
         {

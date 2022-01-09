@@ -1,6 +1,9 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
 {% set parsley = TRUE %}
+{% set usejquery = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -18,40 +21,42 @@
         ['editb', framework.goedit],
         ['mailb', doMail],
     ];
-    function doMail(event)
+    function doMail(e)
     {
         window.location = e.target.getAttribute('href');
     }
 {% endblock setup %}
 
 {% block onload %}
-    $('#adduform').on('submit', false).parsley();
-    $('#addb').on('click', function(e){
-        e.preventDefault();
-        $(this).attr('disabled', true);
+    fwdom.on('#adduform', 'submit', fwdom.nosubmit);
+    fwdom.mkjQ('#adduform').parsley();
+    fwdom.on('#addb', 'click', function(e){
+        fwdom.stop(e);
+        this.disabled = true;
         let data = {admin : 0, devel : 0};
-        const frm = $('#adduform');
-        $('input:checked', frm).each(function(index, element){
-             data[$(this).attr('name')] = 1;
-        });
-        $('input:text,input:password,input[type="email"]', frm).each(function(index, element){
-             data[$(this).attr('name')] = $(this).val();
-        });
+        let aform = document.getElementById('adduform');
+        for (let x of ['input:checked', 'input[type="text"]', 'input[type="password"]', 'input[type="email"]'])
+        {
+            aform.querySelectorAll(x).forEach(function(el, index){
+                 data[el.getAttribute('name')] = el.value;
+            });
+        }
         framework.beanCreate('user', data, function(ret){
-            $('#addu').modal('hide');
-            $('#utab').append('<tr data-id="'+ret+'"><td>'+data.login+'</td>'+
-                '<td><a href="mailto:'+data.email+'" class="mailb">'+data.email+'</a></td>'+
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('addu')).hide();
+            framework.addElement(document.getElementById('utab'), 'tr', {'data-id': data},
+                '<td>'+data.login+'</td>'+
+                '<td><a href="mailto:'+data.email+'">'+data.email+'</a></td>'+
                 '<td>'+framework.mktoggle('confirm', data.confirm)+'</td>'+
                 '<td>'+framework.mktoggle('active', data.active)+'</td>'+
                 '<td>'+framework.mktoggle('admb', data.admin)+'</td>'+
                 '<td>'+framework.mktoggle('devb', data.devel)+'</td>'+
                 '<td>{{i.edit('editb')}}</td>' +
-                '<td>{{i.delete('delb')}}</td></tr>'
+                '<td>{{i.delete('delb')}}</td>'
             );
             framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4);
-        }, '#addb');
+        }, 'addb');
     });
-    $('#utab').on('click', {bean: 'user', clicks: clicks}, framework.tableClick);
+    document.getElementById('utab').addEventListener('click', function(e){ e.data = {bean: 'user', clicks: clicks}; framework.containerClick(e);});
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -61,15 +66,13 @@
 
 {% set pages = siteinfo.pagecount('user', pagesize) %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-	<h1>Users</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Users</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="offset-md-1 col-md-9">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
             <table class="table table-striped table-hover">
                 <thead>
@@ -101,13 +104,13 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <p><button class="btn btn-primary" data-toggle="modal" data-target="#addu" type="button">Add User</button></p>
+            <p>{{m.invoke('addu', 'Add User')}}</p>
         </article>
     </section>
     {{m.open({id: 'addu', title: 'Add A New User'})}}
     <div class="modal-body">
         {{f.startform({id: 'adduform', method: 'post'})}}
-            {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'username - alphanumeric characters only', required: TRUE, parsley: {
+            {{f.text({label: 'User Name', id: 'un', name: 'login', ph: 'username - alphanumeric characters only', required: TRUE, valid {
                 trigger: 'change',
                 'remote-reverse': 'false',
                 remote: base~'/ajax/unique/'~constant('Config\\Framework::USER')~'/login/{value}',
@@ -115,11 +118,11 @@
                 type: 'alphanum'
             } })}}
             {{f.password({label: 'Password', id: 'pw', name: 'password', ph: '************', required: TRUE})}}
-            {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, parsley: {
+            {{f.password({label: 'Repeat Password', id: 'rpw', name: 'repeat', ph: '************', required: TRUE, valid {
                 trigger: 'change',
                 'equal-to': '#pw'
             } })}}
-            {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.com', parsley: {trigger: 'change'}, required: TRUE})}}
+            {{f.email({label: 'Email Address', id: 'em', name: 'email', ph: 'pat@smith.com', valid {trigger: 'change'}, required: TRUE})}}
             {{f.checkbox({label: 'Roles', group: TRUE, labels: ['Admin', 'Developer'], values: [1, 1], names: ['admin', 'devel']})}}
         {{f.endform()}}
     </div>

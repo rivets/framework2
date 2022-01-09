@@ -1,0 +1,20 @@
+{% set title = 'File Error' %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>File Error</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <p>{{msg}}</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

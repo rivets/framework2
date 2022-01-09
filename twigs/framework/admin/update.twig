@@ -1,21 +1,22 @@
 {% extends '@content/page.twig' %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Update the Framework</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Update the Framework</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/message.twig' %}
             <h2>Latest version is Framework {{version}}</h2>
             {% if not older %}
                 <p>You have the latest code version</p>
             {% else %}
-                <p>You have version {{current}} - please do a <i>git pull</i> to get the latest version</p>
+                <p>You have version {{current}} &mdash; please do a <i>git pull</i> to get the latest version</p>
             {% endif %}
+            {% for cdata in newcsp %}
+                <p>{{cdata[0]}} source &#8220;{{cdata[1]}}&#8221; has been added to the CSP table</p>
+            {% endfor %}
             {% for key,val in updated %}
                 <p>"{{key}}" {% if not done %}will be {% endif %}updated to "{{val}}"</p>
             {% else %}

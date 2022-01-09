@@ -3,7 +3,7 @@
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -19,6 +19,8 @@
     abstract class SiteAction
     {
         use \Support\SiteAction;
+
+        private bool $ifms;
 /**
  * Handle an action
  *
@@ -28,19 +30,14 @@
  *
  * @psalm-suppress InvalidReturnType
  */
-        public function handle(Context $context)
-        { // should never get called really
-            $context->divert('/');
-            /* NOT REACHED */
-        }
+        abstract public function handle(Context $context) : array|string;
 /**
  * Set up any CSP headers for a page
  *
  * There will be a basic set of default CSP permissions for the site to function,
  * but individual pages may wish to extend or restrict these.
  *
- * @return void
- * @phpcsSuppress NunoMaduro\PhpInsights\Domain\Sniffs\ForbiddenSetterSniff
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.ForbiddenSetter
  */
         public function setCSP() : void
         {
@@ -57,81 +54,44 @@
  * The actual ways of determining page freshness will be page specific and you may
  * need to override some of the other methods that this method calls in order to make things work!
  *
- * The Data class provides (or will in the future...) an example of how to use this code when dealing with file data.
- *
- * @return void
+ * @param Context $context
  */
-        public function ifmodcheck(Context $context) : void
+        final public function ifmodcheck(Context $context) : void
         {
-            $ifms = TRUE; // the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
-            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
+            $this->ifms = TRUE; // the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
+            $leave = FALSE;
+            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
             {
                 $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
-                if (preg_match('/^(.*);(.*)$/', $ifmod, $m))
+                if (\preg_match('/^(.*);(.*)$/', $ifmod, $m))
                 {
                     $ifmod = $m[1];
                 }
-                $st = strtotime($ifmod);
+                $st = \strtotime($ifmod);
                 /** @psalm-suppress InvalidScalarArgument */
-                $ifms = $st !== FALSE && $this->checkmodtime($context, $st); // will 304 later if there is no NONE_MATCH or nothing matches
+                $this->ifms = $st !== FALSE && $this->checkmodtime($context, (string) $st); // will 304 later if there is no NONE_MATCH or nothing matches
             }
-            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
+            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
             {
-                if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
-                {
-                    if ($this->exists($context))
-                    { // this request would generate a page and has not been modified
-                        $this->etagmatched($context);
-                        /* NOT REACHED */
-                    }
-                }
-                else
-                {
-                    foreach (explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
-                    {
-                        if ($this->checketag($context, substr(trim($etag), 1, -1))) // extract the ETag from its surrounding quotes
-                        { // We have matched the etag and file has not been modified
-                            $this->etagmatched($context);
-                            /* NOT REACHED */
-                        }
-                    }
-                }
-                $ifms = TRUE; // no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
+                $leave = $this->noneMatch($context); // If TRUE then etag was matched
             }
-            if (!$ifms)
+            if (!$this->ifms || $leave)
             { // we dont need to send the page
                 $this->etagmatched($context);
                 /* NOT REACHED */
             }
-            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
+            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
             {
-                $match = FALSE;
-                if ($_SERVER['HTTP_IF_MATCH'] == '*')
-                {
-                    $match = $this->exists($context);
-                }
-                else
-                {
-                    foreach (explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
-                    {
-                        $match |= $this->checketag($context, substr(trim($etag), 1, -1)); // extract the ETag from its surrounding quotes
-                    }
-                }
-                if (!$match)
-                { // nothing matched or did not exist
-                    $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
-                    exit;
-                    /* NOT REACHED */
-                }
+                $this->match($context);
             }
-            if (filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
+            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
             {
                 $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
-                if (preg_match('/^(.*);(.*)$/', $ifus, $m))
+                if (\preg_match('/^(.*);(.*)$/', $ifus, $m))
                 {
                     $ifus = $m[1];
                 }
-                $st = strtotime($ifus); // ignore if not a valid time
+                $st = \strtotime($ifus); // ignore if not a valid time
                 if ($st !== FALSE && $st < $this->lastmodified($context))
                 {
                     $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
@@ -141,15 +101,66 @@
             }
         }
 /**
+ * Check the IF_NONE_MATCH header
+ *
+ * @param Context $context
+ */
+        private function noneMatch(Context $context) : bool
+        {
+            if ($_SERVER['HTTP_IF_NONE_MATCH'] == '*')
+            {
+                if ($this->exists($context))
+                { // this request would generate a page and has not been modified
+                    return TRUE;
+                }
+            }
+            else
+            {
+                foreach (\explode(',', $_SERVER['HTTP_IF_NONE_MATCH']) as $etag)
+                {
+                    if ($this->checketag($context, \substr(\trim($etag), 1, -1))) // extract the ETag from its surrounding quotes
+                    { // We have matched the etag and file has not been modified
+                        return TRUE;
+                    }
+                }
+            }
+            $this->ifms = TRUE; // no entity tags matched  or matched but modified, so we must ignore any IF_MODIFIED_SINCE
+            return FALSE;
+        }
+/**
+ * Check the IF_MATCH header
+ *
+ * @param Context $context
+ */
+        private function match(Context $context) : void
+        {
+            $match = FALSE;
+            if ($_SERVER['HTTP_IF_MATCH'] == '*')
+            {
+                $match = $this->exists($context);
+            }
+            else
+            {
+                foreach (\explode(',', $_SERVER['HTTP_IF_MATCH']) as $etag)
+                {
+                    $match = $match || $this->checketag($context, \substr(\trim($etag), 1, -1)); // extract the ETag from its surrounding quotes
+                }
+            }
+            if (!$match)
+            { // nothing matched or did not exist
+                $context->web()->sendheaders(StatusCodes::HTTP_PRECONDITION_FAILED);
+                exit;
+                /* NOT REACHED */
+            }
+        }
+/**
  * Format a time suitable for Last-Modified header
  *
  * @param int   $time    The last modified time
- *
- * @return string
  */
         public function makemod(int $time) : string
         {
-            return gmdate('D, d M Y H:i:s', $time).' GMT';
+            return \gmdate('D, d M Y H:i:s', $time).' GMT';
         }
 /**
  * We have a matched etag - check request method and send the appropriate header.
@@ -158,7 +169,6 @@
  * @link https://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.26
  *
  * @psalm-return never-return
- * @return void
  */
         private function etagmatched(Context $context) : void
         {
@@ -186,14 +196,13 @@
  * @param string[]          $format   Currently not used
  *
  * @throws \Framework\Exception\ParameterCount
- * @return array<string>
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function checkRest(array $rest, int $start, int $num, $format = [])
+        public function checkRest(array $rest, int $start, int $num, $format = []) : array
         {
-            if (count($rest) >= $num + $start)
+            if (\count($rest) >= $num + $start)
             {
-                return array_slice($rest, $start, $num);
+                return \array_slice($rest, $start, $num);
             }
             throw new \Framework\Exception\ParameterCount('Missing Parameter');
         }

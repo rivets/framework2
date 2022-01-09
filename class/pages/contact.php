@@ -3,8 +3,7 @@
   * Class for handling contact messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2012-2020 Newcastle University
-  * @copyright 2012-2019 Newcastle University
+  * @copyright 2012-2021 Newcastle University
   * @package Framework
   * @subpackage UserPages
   */
@@ -23,10 +22,8 @@
  * Handle various contact operations /contact
  *
  * @param Context   $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $fd = $context->formdata('post');
             if (($msg = $fd->fetch('message', '')) !== '')
@@ -38,7 +35,7 @@
                     $context->local()->sendmail(
                         [Config::SYSADMIN],
                         \Config\Config::SITENAME.': '.$subj,
-                        $sender.PHP_EOL.PHP_EOL.$msg
+                        $sender.\PHP_EOL.\PHP_EOL.$msg
                     );
                     $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
                 }

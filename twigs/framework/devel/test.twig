@@ -1,30 +1,72 @@
-{% set breadcrumbs = [{link: base~'/devel', text: 'Developer'}, {link: base~'/devel/test/', text: 'Test'}, {text: 'Test Page'}] %}
+{% set breadcrumbs = [{link: base~'/devel', text: 'Developer'}, {text: 'Test Page'}] %}
 {% set title = 'The Framework: Test Page' %}
 {% set keywords = 'framework, test' %}
 {% set description = 'A page that tests various features of the Framework' %}
+{% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/accmacro.twig' as a %}
+{% import '@util/formmacro.twig' as f %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js"></script>
+{% endblock scripts %}
+
+{% block setup %}
+{% endblock setup %}
 
 {% block onload %}
-    $('#nopu').on('click', function(e){
-        $(this).toggleClass('btn-primary').toggleClass('btn-warning');
-    })
-    {{a.caretJS('acc1')}}
+    fwdom.on('#nopu', 'click', function(e){
+        fwdom.stop(e);
+        fwdom.toggleClass([this], ['btn-primary', 'btn-warning']);
+    });
+    fwdom.on('.clkclose', 'click', function(e){ this.style.display = 'none'; });
+    for (let d of document.getElementsByClassName('editable'))
+    {
+        fweditable.editable(d, {
+            op: 'fwtest',
+            bean: 'fwtest',
+            update : fweditable.editUpdate
+        });
+    }
+    fweditable.editable(document.getElementById('edsel'), {
+        type: 'select',
+        source: ['yes', 'no', 'N/A'],
+        update : fweditable.editUpdate,
+        op: 'fwtest',
+        bean: 'fwtest'
+    });
+    fwdom.on('#testalert', 'click', function(e){
+        fwdom.stop(e);
+        framework.alert('This is an alert', 'Alert!!');
+    });
+    fwdom.on('#testalert2', 'click', function(e){
+        fwdom.stop(e);
+        framework.alert('This is another alert', 'Alert 2!!');
+    });
+    fwdom.on('#testconfirm', 'click', function(e){
+        fwdom.stop(e);
+        framework.confirm('Do you want to?', function(r) { framework.alert(r? 'Yes' : 'No', 'You said...'); },'Please confirm');
+    });
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Developer tools</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">Test Developer Tools and Macros</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mb-5">
-            {% include '@util/message.twig' %}
+        <article class="mx-auto col-md-10 my-5">
             {{a.accordion('acc1', [
+                {id: 'inline', title: 'Inline Edit', file: '@devel/tests/inlineedit.twig' },
                 {id: 'form0', title: 'Messaging', file: '@util/message.twig', with: {fwerrmessage: fwerrmessage, fwwarnmessage: fwwarnmessage, fwmessage: fwmessage} },
                 {id: 'form1', title: 'Form Text Macros', file: '@devel/tests/formtext.twig'},
                 {id: 'form2', title: 'Form Other Macros', file: '@devel/tests/formother.twig'},

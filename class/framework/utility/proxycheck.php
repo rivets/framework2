@@ -25,7 +25,7 @@
  *
  * @param string            $key      Your API key
  * @param string            $ip       The IP address to check
- * @param array<string>     $options  Options for the check - see proxycheck.io API definition
+ * @param array<mixed>      $options  Options for the check - see proxycheck.io API definition
  * @param ?string           $tag      A tag to identify this call.
  *
  * @return array<string>
@@ -49,15 +49,15 @@
 /*
  * Now use curl to talk to proxycheck.io
  */
-            $ch = curl_init(self::PCURL.$ip.'?'.implode('&', $query));
+            $ch = \curl_init(self::PCURL.$ip.'?'.\implode('&', $query));
             $curlopts = [
                 CURLOPT_CONNECTTIMEOUT  => 30,
                 CURLOPT_POST            => 1,
-                CURLOPT_POSTFIELDS      => 'tag='.urlencode($tag ?? \Config\Config::SITENAME),
+                CURLOPT_POSTFIELDS      => 'tag='.\urlencode($tag ?? \Config\Config::SITENAME),
                 CURLOPT_RETURNTRANSFER  => TRUE,
             ];
-            curl_setopt_array($ch, $curlopts);
-            $json = curl_exec($ch);
+            \curl_setopt_array($ch, $curlopts);
+            $json = \curl_exec($ch);
             if ($json === FALSE)
             {
                 $res = ['status' => 'error', 'message' => curl_error($ch)];
@@ -65,7 +65,7 @@
             else
             {
                 /** @psalm-suppress InvalidScalarArgument */
-                $res = json_decode($json, TRUE);
+                $res = \json_decode($json, TRUE);
                 $res['block'] = FALSE;
                 $res['reason'] = '';
 
@@ -77,14 +77,15 @@
                         $res['reason'] = ($res[$ip]['type'] == 'VPN' ? 'vpn' : 'proxy');
                     }
 
-                    if (!empty($options['countries']) && in_array($res[$ip]['isocode'], $options['countries']))
+                    if (!empty($options['countries']) && \in_array($res[$ip]['isocode'], $options['countries']))
                     {
                         $res['block'] = TRUE;
                         $res['block_reason'] = 'country';
                     }
                 }
             }
-            curl_close($ch);
+            \curl_close($ch);
             return $res;
         }
     }
+?>

@@ -2,14 +2,14 @@
     {% import '@content/iconmacro.twig' as fa %}
     <div class="accordion" id="{{id}}">
         {% for t in tabs %}
-            <div class="card">
-                <div class="card-header" id="{{t.id}}">
-                    <h4 class="mb-0">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">{{t.title}}{% if carets %} {{fa.fa('caret-right')}}{% endif %}</button>
-                    </h4>
-                </div>
-                <div id="col{{t.id}}" class="collapse" aria-labelledby="{{t.id}}" data-parent="#{{id}}">
-                    <div class="card-body">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="{{t.id}}">
+                    <button class="accordion-button{% if not t.open %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#col{{t.id}}" aria-expanded="true" aria-controls="col{{t.id}}">
+                        {{t.title}}
+                    </button>
+                </h2>
+                <div id="col{{t.id}}" class="accordion-collapse{% if not t.open %}  collapse{% endif %}" aria-labelledby="{{t.id}}" data-bs-parent="#{{id}}">
+                    <div class="accordion-body">
                         {% if t.with is defined %}
                             {% include t.file with t.with%}
                         {% else %}
@@ -23,11 +23,13 @@
 {% endmacro accordion %}
 
 {% macro caretJS(id) %}
-    $('#{{id}}').on('show.bs.collapse', function(e){
-        let ch = $(e.target).attr('aria-labelledby');
-        $('.fa-caret-right', $('#'+ch)).removeClass('fa-caret-right').addClass('fa-caret-down');
-    }).on('hide.bs.collapse', function(e) {
-        let ch = $(e.target).attr('aria-labelledby');
-        $('.fa-caret-down', $('#'+ch)).removeClass('fa-caret-down').addClass('fa-caret-right');
+    let v{{id}} = document.getElementById('{{id}}');
+    fwdom.on(v{{id}}, 'show.bs.collapse', function(e){
+        let ch = e.target.closest('.card');
+        fwdom.toggleClass(ch.querySelectorAll('.fa-caret-right'), ['fa-caret-right', 'fa-caret-down']);
+    });
+    fwdom.on(v{{id}}, 'hide.bs.collapse', function(e) {
+        let ch = e.target.closest('.card');
+        fwdom.toggleClass(ch.querySelectorAll('.fa-caret-down'), ['fa-caret-right', 'fa-caret-down']);
     });
 {% endmacro caretJS %}

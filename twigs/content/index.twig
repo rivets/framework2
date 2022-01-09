@@ -1,21 +1,27 @@
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
+
 {% extends '@content/page.twig' %}
 
+{% block setup %}
+    var toast = new bootstrap.Toast(document.getElementById('ext'), {});
+{% endblock setup %}
+
 {% block onload %}
-    $('#alert').on('click', function(){
-        bootbox.alert('Hello World')
+    document.getElementById('alert').addEventListener('click', function(){
+        toast.show();
     })
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1 class="text-center">Header</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">Header</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <aside class="col">
-            <p>Left</p>
+        <aside class="col bg-light">
+            <p>Left Column</p>
         </aside>
         <article class="col-md-8">
             <div class="jumbotron">
@@ -23,10 +29,22 @@
             </div>
             <button id="alert" class="btn btn-lg btn-info" type="button">Alert</button>
         </article>
-        <aside id="rightbar" class="col">
-            <p>Right</p>
+        <aside id="rightbar" class="col bg-light">
+            <p>Right Column</p>
         </aside>
     </section>
+    <div class="toast-container position-absolute p-3 top-50 end-0" id="toastPlacement">
+        <div class="toast" id="ext" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Alert!</strong>
+                <small>Hello World</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Hello, world! This is a Bootstrap toast message.
+            </div>
+        </div>
+    </div>
 {% endblock main %}
 
 {% block footer %}

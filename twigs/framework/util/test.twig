@@ -1,15 +1,13 @@
 {% extends '@content/page.twig' %}
 
-{% block header %}
-    <section class="col-md-6 mr-auto">
-        <h1>Test/Tester Access Only</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Test/Tester Access Only</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-8 mr-auto">
-            {% if context.hasuser  and context.user.hasrole('Test', 'Tester') %}
+        <article class="mx-auto col">
+            {% if context.hasUser  and context.user.hasRole(constant('Config\\Framework::TESTCONTEXT'), 'Tester') %}
                 <p>You are logged in as the  tester.</p>
             {% else %}
                 <p>If you can see this then the page access permission checking system is not working!</p>

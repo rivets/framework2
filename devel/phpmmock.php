@@ -19,7 +19,7 @@
         public $Subject = '';
 /** @var string */
         public $AltBody = '';
- /** @psalm-suppress PossiblyUnusedParam */
+/** @psalm-suppress PossiblyUnusedParam */
         public function __construct(bool $x)
         {
         }
@@ -39,6 +39,23 @@
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
+        public function addCC(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function addBCC(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function addAttachment(string $x) : void
+        {
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
+        public function isHTML(string $x) : bool
+        {
+            return FALSE;
+        }
+ /** @psalm-suppress PossiblyUnusedParam */
         public function setFrom(string $x) : void
         {
         }
@@ -47,8 +64,9 @@
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function send() : void
+        public function send() : string
         {
+            return '';
         }
     }
 ?>

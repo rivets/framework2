@@ -2,7 +2,16 @@
     "require": {
         "twig/twig": "^3.0",
         "gabordemooij/redbean": "dev-master",
-        "phpmailer/phpmailer": "~6.0"
+        "phpmailer/phpmailer": "~6.0",
+        "robthree/twofactorauth": "~1.8",
+        "endroid/qr-code": "dev-master",
+        "bacon/bacon-qr-code": "^2"
+    },
+    "require-dev": {
+        "phan/phan": "^2.4",
+        "vimeo/psalm": "^3.8",
+        "phpstan/phpstan": "^0.12.7",
+        "nunomaduro/phpinsights": "dev-master"
     }
 
 }

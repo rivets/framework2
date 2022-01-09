@@ -10,11 +10,12 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2020 Newcastle University
- * @package Framework
+ * @copyright 2015-2021 Newcastle University
+ * @package Framework\Config
  */
     namespace Config;
 
+    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 /**
  * Class for doing initial setup of the Framework.
  */
@@ -25,32 +26,56 @@
  */
         public const ADMINROLE = 'Admin'; // role names
         public const DEVELROLE = 'Developer';
-        public const TESTROLE = 'Tester';
+        public const TESTROLE  = 'Tester';
 
         public const DBPREFIX = '';
 
-        public const FWCONTEXT = self::DBPREFIX.'Site'; // context names
-        public const TESTCONTEXT = self::DBPREFIX.'Test';
+        public const FWCONTEXT      = self::DBPREFIX.'Site'; // context names
+        public const TESTCONTEXT    = self::DBPREFIX.'Test';
 
-        public const CONFIG = self::DBPREFIX.'fwconfig'; // table names
-        public const CONFIRM = self::DBPREFIX.'confirm';
-        public const FORM = self::DBPREFIX.'form';
-        public const FORMFIELD = self::DBPREFIX.'formfield';
-        public const PAGE = self::DBPREFIX.'page';
-        public const PAGEROLE = self::DBPREFIX.'pagerole';
-        public const ROLE = self::DBPREFIX.'role';
-        public const ROLECONTEXT = self::DBPREFIX.'rolecontext';
-        public const ROLENAME = self::DBPREFIX.'rolename';
-        public const TABLE = self::DBPREFIX.'table';
-        public const TEST = self::DBPREFIX.'fwtest';
-        public const USER = self::DBPREFIX.'user';
+        public const AJAX           = 'fwajax'; // table names
+        public const BEANLOG        = 'beanlog';
+        public const CONFIG         = 'fwconfig';
+        public const CONFIRM        = self::DBPREFIX.'confirm';
+        public const CSP            = 'fwcsp';
+        public const FLOOD          = 'fwflood';
+        public const FORM           = self::DBPREFIX.'form';
+        public const FORMFIELD      = self::DBPREFIX.'formfield';
+        public const PAGE           = self::DBPREFIX.'page';
+        public const PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const ROLE           = self::DBPREFIX.'role';
+        public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
+        public const ROLENAME       = self::DBPREFIX.'rolename';
+        public const TABLE          = self::DBPREFIX.'table';
+        public const TEST           = 'fwtest';
+        public const UPLOAD         = 'fwupload';
+        public const USER           = 'user';
+
+        public const MODELPATH    = '\\Framework\\Model\\';
+        public const UPLOADMCLASS   = self::MODELPATH.self::UPLOAD;
+        public const USERMCLASS     = self::MODELPATH.self::USER;
 
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
+
+        private static $fwBeans = [
+            self::BEANLOG     => '',
+            self::CONFIG      => '',
+            self::CSP         => '',
+            self::FORM        => '',
+            self::FORMFIELD   => '',
+            self::PAGE        => '',
+            self::PAGEROLE    => '',
+            self::ROLE        => '',
+            self::ROLECONTEXT => '',
+            self::ROLENAME    => '',
+            self::TABLE       => '',
+            self::TEST        => '',
+            self::UPLOAD      => '',
+            self::USER        => '',
+        ];
 /**
  * Initialise some standard things for any invocation of a page
- *
- * @return void
  */
         public static function initialise() : void
         {
@@ -60,37 +85,40 @@
  */
             $dir = dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall */
-            set_include_path(
-                implode(PATH_SEPARATOR, [
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
-                    implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
-                    get_include_path(),
+            \set_include_path(
+                \implode(PATH_SEPARATOR, [
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/model']),
+                    \implode(DIRECTORY_SEPARATOR, [$dir, 'class/modelextend']),
+                    \get_include_path(),
                 ])
             );
             /** @psalm-suppress UnusedFunctionCall */
-            spl_autoload_extensions('.php');
-            spl_autoload_register();
+            \spl_autoload_extensions('.php');
+            \spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
-            include $dir.'/vendor/autoload.php';
+            include $dir.'/vendor/autoload.php'; // bring in all the stuff from composer
         }
 /**
- * Get the value of a Configuration constant. Rather than accessing constants directly
- * This uses refelection to check for the value. This allows the framework to add new
+ * Get the value of a Configuration constant rather than accessing constants directly.
+ *
+ * This uses reflection to check for the value. This allows the framework to add new
  * constants and not break old code.
- *
- * @param string $name        The constant name - all in upper case
- * @param mixed  $default     A default value for if it is not defined
- *
- * @return mixed
  */
-        public static function constant($name, $default = '')
+        public static function constant(string $name, array|bool|int|string $default = '') : array|bool|int|string
         {
             if (defined('\\Config\\Config::'.$name))
             {
                 return constant('\\Config\\Config::'.$name);
             }
             return $default;
+        }
+/**
+ * Is this a framework bean?
+ */
+        public static function isFWBean(string $beanType)
+        {
+            return isset(self::$fwBeans[$beanType]);
         }
     }
 ?>

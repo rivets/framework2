@@ -4,8 +4,8 @@
  * many calls from a given IP address
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
- * @package Framework
+ * @copyright 2020-2021 Newcastle University
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -20,14 +20,12 @@
 /**
  * Check if an IP is flooding
  *
- * @param int    $limit    Number of seconds allowed between calls
- * @param bool   $divert   If TRUE Then don't return but divert somewhere else
- *
- * @return bool
+ * @param $limit    Number of seconds allowed between calls
+ * @param $divert   If TRUE Then don't return but divert somewhere else
  */
         public static function flooding(int $limit, bool $divert = TRUE) : bool
         {
-            $now = time();
+            $now = \time();
             \R::exec('delete from '.self::TABLE.' where ('.$now.' - calltime) > '.self::KEEPTIME);
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
             $f = \R::findOne(self::TABLE, 'ip=?', [$ip]);

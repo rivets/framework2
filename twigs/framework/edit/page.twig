@@ -4,38 +4,31 @@
 
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as icon %}
 {% import '@util/formmacro.twig' as f %}
 
 {% block onload %}
-     $('#more').on('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        const mrow = $('#mrow');
-        mrow.before($('#example').clone());
-        const pr = $mrow.prev();
-        $('input', pr).val(''); // clear the inputs
-        $('option', pr).prop('selected', false); // clear any selections
-        $('.delb', pr).on('click', function(e){
+    document.getElementById('more').addEventListener('click', function(e){
+        framework.addMore(e);
+    });
+    document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
+        return fwdom.mkjQ(this).parsley().validate()
+    });
+    for (var node of document.querySelectorAll('.delb'))
+    {
+        node.addEventListener('click', function(e){
             framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
         });
-    });
-    $('#uform').on('submit', function(e){
-        return $(this).parsley().validate()
-    });
-    $('.delb').on('click', function(e){
-        framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
-    });
+    }
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Page &ldquo;{{bean.name}}&rdquo;</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Page &ldquo;{{bean.name}}&rdquo;</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             {% include '@util/message.twig' %}
             <form action="#" method="post" id="uform" data-parsley-validate>
                 {{f.hidden({name: 'bean', value: bean.id})}}
@@ -71,12 +64,12 @@
                     {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params, ph: 'Not in use currently', disabled: TRUE})}}
                     {{f.text({ label: 'Source', id: 'npsrc', name: 'source', value: bean.source, ph: 'page.twig="page, class name, /local/redirection or URL', required: TRUE})}}
                     {{f.checkbox({labels: ['Active', 'Mobile Only', 'Must Login'], ids : ['npactive', 'npmobile', 'nplogin'],
-                        names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], check: [bean.active, bean.mobileonly, bean.needlogin]})}}
+                        names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], inline: TRUE, check: [bean.active, bean.mobileonly, bean.needlogin]})}}
                 </fieldset>
                 <fieldset>
                     <legend>Page Functional Requirements</legend>
                     {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
-                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
                         values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}

@@ -1,7 +1,9 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
-{% set editable = TRUE %}
+{% set editable = FALSE %}
+{% set usebootbox = FALSE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Pages'}] %}
 
 {% extends '@content/page.twig' %}
 
@@ -14,10 +16,18 @@
     'In-site 307', 'External 307',
     'In-site 308', 'External 308'] %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
+        return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
     }
 
     function golink(event)
@@ -25,13 +35,6 @@
         window.location = event.target.parentNode.getAttribute('href');
     }
 
-    function paramset(params)
-    {
-        params.id = params.pk;
-        params.bean = '{{constant('Config\\Framework::PAGE')}}';
-        params.op = 'bean';
-        return params;
-    }
     const kname = [
         {% for v in types %}
             {value: {{loop.index}}, text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -49,99 +52,93 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({
-        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: framework.editcall
+    document.querySelectorAll('.editable').forEach(function(edb){
+        fweditable.editable(edb, {
+            op: 'bean',
+            bean: '{{constant('Config\\Framework::PAGE')}}',
+            source: kname,
+            update: fweditable.editUpdate
+        });
     });
-    $('#npform').on('submit', false).parsley();
-    $('#npkind').on('change', function(e) {
-        var pn = $('#npname').val().toLowerCase();
-        if (pn != '')
+    fwdom.on('#npform', 'submit', fwdom.nosubmit);
+    fwdom.mkjQ('#npform').parsley();
+    fwdom.on('#npkind', 'change', function(e) {
+        fwdom.stop(e);
+        var pn = document.getElementById('npname').value.toLowerCase();
+        if (pn !== '')
         {
-            switch ($(this).val())
+            switch (this.value)
             {
             case '1':
-                $('#npsrc').val('\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1));
+                document.getElementById('npsrc').value = '\\Pages\\'+pn.substr(0,1).toUpperCase()+pn.substr(1);
                 break;
             case '2':
-                $('#npsrc').val('@content/'+pn+'.twig');
+                document.getElementById('npsrc').value = '@content/'+pn+'.twig';
                 break;
             }
         }
     })
-    $('#addb').on('click', function(e){
-        e.preventDefault();
-        $(this).attr('disabled', true); // disable submit button
-        const pn = $('#npname').val().toLowerCase();
+    fwdom.on('#addb', 'click', function(e){
+        fwdom.stop(e);
+        this.disabled = true; // disable submit button
+        const pn = document.getElementById('npname').value.toLowerCase();
         if (!pn.match(/^[a-z][a-z0-9.]*$/))
         {
-            bootbox.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
+            framework.alert('&quot;'+pn+'&quot; is not a valid page name. Letters and numbers only');
             return;
         }
         let sp = null;
         let error = false;
-        $('.pname').each(function(e){
-            const t = $(this).text();
+        for (let el of document.getElementsByClassName('pname'))
+        {
+            const t = el.innerHTML;
             if (t == pn)
             {
                 error = true;
-                return false;
+                break;
             }
             if (t > pn)
             {
-                sp = $(this);
-                return false;
+                sp = this;
+                break;
             }
-        })
+        }
         if (error)
         {
-            bootbox.alert('That page already exists');
-            $(this).attr('disabled', false);
+            framework.alert('That page already exists');
+            this.disabled = false;
             return;
         }
-        const src = $('#npsrc').val()
+        const src = document.getElementById('npsrc').value;
         if (src == '')
         {
-            bootbox.alert('Please specify a source');
-            $(this).attr('disabled', false);
+            framework.alert('Please specify a source');
+            this.disabled = false;
             return;
         }
-        const kind = $('#npkind').val();
+        const kind = document.getElementById('npkind').value;
         if (kind == '')
         {
-            bootbox.alert('Please pick a page type');
-            $(this).attr('disabled', false);
+            framework.alert('Please pick a page type');
+            this.disabled = false;
             return;
         }
-        const active = $('#npactive').is(':checked') ? 1 : 0;
-        const login = $('#nplogin').is(':checked') ? 1 : 0;
-        const mobile = $('#npmobile').is(':checked') ? 1 : 0;
-        $('#npage').modal('hide');
+        const active = document.getElementById('npactive').checked ? 1 : 0;
+        const login = document.getElementById('nplogin').checked ? 1 : 0;
+        const mobile = document.getElementById('npmobile').checked ? 1 : 0;
         var fn = function(data){
-                const htm = '<tr data-id="'+data+'"><td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
+            framework.addElement(document.getElementById('ptab'), 'tr', {'data-id': data}, '<td>'+mkinline('text', 'name', 'Enter name', data, pn)+'</td>'+
                 '<td>'+mkinline('select', 'kind', 'Enter kind', data, kname[kind-1].text)+'</td>'+
-                '<td>'+mkinline('text', 'source', 'Enter source', data, $('#npsrc').val())+'</td>'+
+                '<td>'+mkinline('text', 'source', 'Enter source', data, document.getElementById('npsrc').value)+'</td>'+
                 '<td>'+framework.mktoggle('logn', login)+'</td>'+
                 '<td>'+framework.mktoggle('mobo', mobile)+'</td>'+
                 '<td>'+framework.mktoggle('actb', active)+'</td>'+
                 '<td><a href="'+base+'/'+pn+'">{{i.link('linkb')}}</a></td>'+
                 '<td>{{i.edit('editb')}}</td>'+
-                '<td>{{i.delete('delb')}}</td></tr>';
-                let nx
-                if (sp == null)
-                {
-                     nx = $(htm).appendTo($('#ptab tbody'));
-                }
-                else
-                {
-                    nx = $(htm).insertBefore(sp.parent());
-                }
-                nx.data('id', data);
-                //$('.ppedit', nx).editable({params: paramset, source: kname});
-            };
+                '<td>{{i.delete('delb')}}</td>', sp);
+                bootstrap.Modal.getOrCreateInstance(document.getElementById('npage')).hide();
+            //fwdom.mkjQ('.ppedit', nx).editable({params: paramset, source: kname});
+        };
         let dt = {
                 name : pn,
                 kind : kind,
@@ -150,31 +147,26 @@
                 needlogin : login,
                 mobileonly: mobile
             };
-        const sel = ['context', 'role'];
-        const inp = ['start', 'end', 'otherinfo'];
-        const f = $('#npform');
-        var inx = 0;
-        for (let nv of inp)
+        const f = document.getElementById('npform');
+        for (let nv of ['start', 'end', 'otherinfo'])
         {
-            inx = 0;
-            $('input[name^="'+nv+'"]', f).each(function(){
-                dt[nv+'['+inx+']'] = $(this).val();
+            f.querySelectorAll('input[name^="'+nv+'"]').forEach(function(el, index){
+                dt[nv+'['+index+']'] = el.value;
             });
         }
-        for (let sv of sel)
+        for (let sv of ['context', 'role'])
         {
-            inx = 0;
-            $('select[name^="'+sv+'"]', f).each(function(){
-                dt[sv+'['+inx+']'] = $(this).val();
+            f.querySelectorAll('select[name^="'+sv+'"]').forEach(function(el, index){
+                dt[sv+'['+index+']'] = el.options[el.selectedIndex].value;
             });
         }
-        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, '#addb');
+        framework.beanCreate('{{constant('Config\\Framework::PAGE')}}', dt, fn, 'addb');
     });
-    $('#ptab').on('click', {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}, framework.tableClick);
-    $('#npage').on('show.bs.modal', function(e){
-        $('#npform option').attr('selected', false)
+    fwdom.on('#ptab', 'click', function(e){ e.data = {bean: '{{constant('Config\\Framework::PAGE')}}', clicks: clicks}; framework.containerClick(e);});
+    fwdom.on('#npage', 'show.bs.modal', function(e){
+        document.getElementById('npform').reset();
     });
-    $('#more').on('click', framework.addMore);
+    fwdom.on('#more', 'click', framework.addMore);
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -184,17 +176,15 @@
 
 {% set pages = siteinfo.pagecount('page',  pagesize) %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Pages</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Pages</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
         <article class="offset-md-1 col">
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-            <table class="table table-responsive table-striped table-hover" id="ptab">
+            <table class="table table-responsive table-striped table-hover">
                 <thead class="thead-inverse">
                     <tr>
                         <th>Name</th>
@@ -206,12 +196,12 @@
                         <th colspan="3">&nbsp;</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ptab">
                     {% for p in siteinfo.pages(page, pagesize) %}
                         <tr data-id="{{p.getID}}">
-                            <td class="pname">{{f.inline('text', 'name', 'Enter name', p.getID, p.name)}}</td>
-                            <td>{{f.inline('select', 'kind', 'Enter kind', p.getID, types[p.kind-1])}}</td>
-                            <td>{{f.inline('text', 'source', 'Enter source', p.getID, p.source)}}</td>
+                            <td class="pname">{{f.editable({type: 'text', field: 'name', title: 'Enter name', key: p.getID, value: p.name})}}</td>
+                            <td>{{f.editable({type: 'select', field: 'kind', title: 'Enter kind', key: p.getID, value: types[p.kind-1]})}}</td>
+                            <td>{{f.editable({type: 'text', field: 'source', title: 'Enter source', key: p.getID, value: p.source})}}</td>
                             <td>{{f.tick(p.needlogin, 'logn')}}</td>
                             <td>{{f.tick(p.mobileonly, 'mobo')}}</td>
                             <td>{{f.tick(p.active, 'actb')}}</td>
@@ -230,9 +220,9 @@
     </section>
     {{m.open({id: 'npage', title: 'New Page'})}}
     <div class="modal-body">
-        <form action="#" method="POST" id="npform">
+        {{f.startform({method: 'post', id: 'npform'})}}
             {{f.text({label: 'Name', id: 'npname', ph: 'Page name - alphanumeric characters only', required: TRUE,
-                parsley: { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: base ~ '/ajax/unique/' ~ constant('Config\\Framework::PAGE') ~ '/name/{value}',
+                valid { trigger: 'blur', type: 'alphanum', 'remote-reverse': 'false', remote: "#{base}/ajax/unique/#{constant('Config\\Framework::PAGE')}/name/{value}",
                 'remote-message': 'That page already exists'} })}}
             {{f.select({label: 'Kind', id: 'npkind', required: TRUE, options:[
                     {value: '', text: '&mdash; Pick a Type &mdash;'},
@@ -290,16 +280,15 @@
                         </tr>
                         <tr id="mrow">
                             <td colspan="4">&nbsp;</td>
-                            <td><button id="more" class="btn btn-xs btn-info pull-right">Add More</button></td>
+                            <td><button id="more" class="btn btn-xs btn-info float-end">Add More</button></td>
                         </tr>
                     </tbody>
                 </table>
             </fieldset>
-        </form>
+        {{f.endform()}}
     </div>
     {{m.close({action: 'Add', id: 'addb'})}}
 {% endblock main %}
 
 {% block pagefooter %}
-{# I don't want a footer #}
 {% endblock pagefooter %}

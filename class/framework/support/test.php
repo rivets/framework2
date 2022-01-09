@@ -16,7 +16,7 @@
  */
     class Test
     {
-        private static $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
+        private static array $tests = [ // function, parameters, expected result, if FALSE then failure is expected and result may be default or an exception
             ['exists', ['exist'], TRUE, TRUE],
             ['exists', ['notexist'], FALSE, TRUE],
             ['exists', [['aexist', 0]], TRUE, TRUE],
@@ -58,40 +58,8 @@
             ['fetchArray', ['knotexist'], ['iterator', []], FALSE],
             ['mustFetchArray', ['knotexist'], ['iterator', []], FALSE],
         ];
-
-        private static $oldtests = [ // function, parameters, expected result, if TRUE then failure is expected and result may be default or an exception
-            ['has', ['exist'], TRUE, TRUE],
-            ['has', ['notexist'], FALSE, FALSE],
-            ['has', [['aexist', 0]], TRUE, TRUE],
-            ['has', [['aexist', 3]], FALSE, TRUE],
-            ['has', [['nexist', 0]], FALSE, TRUE],
-            ['', ['exist', 3], '42', TRUE],
-            ['', ['notexist', 3], 3, FALSE],
-            ['must', ['exist'], '42', TRUE],
-            ['must', ['notexist'], '42', FALSE],
-            ['', [['aexist', 0], 3], '42', TRUE],
-            ['', [['aexist', 3], 3], 3, FALSE],
-            ['must', [['aexist', 1]],'66', TRUE],
-            ['must', [['aexist', 3]], '42', FALSE],
-            ['', [['nexist', 14], 3], '42', TRUE],
-            ['', [['nexist', 13], 3], 3, FALSE],
-            ['must', [['nexist', 14]],'42', TRUE],
-            ['must', [['nexist', 13]], '42', FALSE],
-            ['', [['kexist', 'key1'], 3], '42', TRUE],
-            ['', [['kexist', 'key45'], 3], 3, FALSE],
-            ['must', [['kexist', 'key1']],'42', TRUE],
-            ['must', [['kexist', 'key45']], '42', FALSE],
-            ['filter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-            ['mustfilter', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-            ['filter', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-            ['mustfilter', ['email', FILTER_VALIDATE_INT], 3, FALSE],
-        ];
 /**
  * Test AJAX functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function ajax(Context $context) : string
         {
@@ -100,10 +68,6 @@
         }
 /**
  * Test failed assertion handling
- *
- * @param Context $context  The site context object
- *
- * @return void
  */
         public function assert(Context $context) : string
         {
@@ -113,42 +77,20 @@
         }
 /**
  * Test run time error handling
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function fail(Context $context) : string
         {
-            2 / 0;
+            2 / 0; // @phan-suppress-current-line PhanDivisionByZero,PhanNoopBinaryOperator
             $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
 /**
- * mapping old tests
- *
- * @param string $type
- *
- * @return array
- */
-        private static function mapping(string $type)
-        {
-            return array_map(static function ($item) use ($type) {
-                return [$item[0].$type, $item[1], $item[2], $item[3]];
-            }, self::$oldtests);
-        }
-/**
- * Do test
- *
- * @param string $type
- *
- * @return string
+ * Run a set of tests
  */
         private static function dotest(Context $context, string $type) : string
         {
             $tester = new \Framework\Support\TestSupport($context, $type);
-            $tester->run(self::mapping($type), TRUE);
-            $tester->run(self::$tests, FALSE);
+            $tester->run(self::$tests);
             $context->local()->addval('op', $type);
             if (filter_has_var(INPUT_GET, 'remote'))
             {
@@ -158,10 +100,6 @@
         }
 /**
  * Test the FormData Get functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function get(Context $context) : string
         {
@@ -169,10 +107,6 @@
         }
 /**
  * Test the FormData Post functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function post(Context $context) : string
         {
@@ -180,10 +114,6 @@
         }
 /**
  * Test the FormData Put functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function put(Context $context) : string
         {
@@ -191,10 +121,6 @@
         }
 /**
  * Test the FormData Cookie functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function cookie(Context $context) : string
         {
@@ -202,10 +128,6 @@
         }
 /**
  * Test the FormData File functions
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function file(Context $context) : string
         {
@@ -215,10 +137,6 @@
         }
 /**
  * Test mail
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function mail(Context $context) : string
         {
@@ -239,10 +157,6 @@
         }
 /**
  * Generate a test page. This tests various twig macros etc.
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function page(Context $context) : string
         {
@@ -257,36 +171,34 @@
 /**
  * Throw an unhandled exception. Tests exception handling.
  *
- * @param Context $context  The site context object
- *
  * @throws \Exception
- * @return void
  */
         public function toss(Context $context) : string
         {
-            throw new \Exception('Unhandled Exception Test');
+            throw new \Exception('Unhandled Exception Test'); // @phan-suppress-next-line PhanPluginUnreachableCode
             $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
             return '@devel/test.twig';
         }
 /**
  * Test the upload features
- *
- * @param Context $context  The site context object
- *
- * @return string
  */
         public function upload(Context $context) : string
         {
             $fdt = $context->formdata('file');
+            if (isset($_GET['ok']))
+            {
+                $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+            }
             try
             {
-                if ($fdt->exists('upload'))
+                if ($fdt->hasForm())
                 {
-                    $upl = \R::dispense('upload');
-                    $fa = $fdt->fileData('upload');
+                    $upl = \R::dispense(FW::UPLOAD);
+                    $fa = $fdt->fileData('upload');  // @phan-suppress-current-line PhanUndeclaredMethod
                     if (!$upl->savefile($context, $fa, FALSE, $context->user(), 0))
                     {
-                        \Model\Upload::fail($context, $fa);
+                        $umodel = FW::UPLOADMCLASS;
+                        $umodel::fail($context, $fa);
                     }
                     else
                     {
@@ -305,9 +217,9 @@
                         break;
 
                     case'delete':
-                        \R::trash($context->load('upload', $id));
-                        $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
-                        break;
+                        \R::trash($context->load(FW::UPLOAD, $id));
+                        $context->divert('/devel/test/upload?ok=1'); // this clears the RESTful URL
+                        /* NOT REACHED */
                     default:
                         throw new \Framework\Exception\BadValue('Illegal operation "'.$rest[2].'"');
                     }

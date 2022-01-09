@@ -21,7 +21,7 @@
         public function hasAdmin() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isadmin();
+            return $this->hasUser() && $this->user()->isAdmin();
         }
 /**
  * Do we have a logged in developer user?
@@ -31,7 +31,7 @@
         public function hasDeveloper() : bool
         {
             /** @psalm-suppress PossiblyNullReference */
-            return $this->hasuser() && $this->user()->isdeveloper();
+            return $this->hasUser() && $this->user()->isDeveloper();
         }
 /*
  ***************************************
@@ -45,10 +45,10 @@
  *
  * @return void
  */
-        public function setpages($count = NULL) : void
+        public function setPages($count = NULL) : void
         {
             $fdt = $this->formData('get');
-            $psize = $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
+            $psize = (int) $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
             $values = [
                 'page'      => $fdt->fetch('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
                 'pagesize'  => $psize,
@@ -83,7 +83,7 @@
  */
         public function utcnow() : string
         { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(time() - date('Z'));
+            return \R::isodatetime(time() - (int) date('Z'));
         }
 /**
  * Return an iso formatted time in UTC
@@ -94,7 +94,7 @@
  */
         public function utcdate(string $datetime) : string
         { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(strtotime($datetime) - date('Z'));
+            return \R::isodatetime(strtotime($datetime) - (int) date('Z'));
         }
 /*
  ***************************************

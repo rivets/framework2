@@ -70,7 +70,7 @@
 /**
  * @var array<string>        The messages for each code.
  */
-        private static $messages = [
+        private static array $messages = [
         // [Informational 1xx]
             100    => 'Continue',
             101    => 'Switching Protocols',
@@ -126,8 +126,6 @@
  * Generate a header
  *
  * @param int            $code    The code number
- *
- * @return string
  */
         public static function httpHeaderFor(int $code) : string
         {
@@ -137,8 +135,6 @@
  * Return the message part for a code
  *
  * @param int  $code    The code number
- *
- * @return string
  */
         public static function getMessage(int $code) : string
         {
@@ -148,8 +144,6 @@
  * return code and message
  *
  * @param int            $code    The code number
- *
- * @return string
  */
         public static function getMessageForCode(int $code) : string
         {
@@ -160,7 +154,6 @@
  *
  * @param int  $code    The code number
  *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public static function isError(int $code) : bool
@@ -171,8 +164,6 @@
  * Is this a valid code?
  *
  * @param int  $code    The code number
- *
- * @return bool
  */
         public static function isValid(int $code) : bool
         {
@@ -183,7 +174,6 @@
  *
  * @param int  $code    The code number
  *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public static function canHaveBody(int $code) : bool

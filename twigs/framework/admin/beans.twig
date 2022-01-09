@@ -1,6 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
 {% set parsley = TRUE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Beans'}] %}
 
 {% extends '@content/page.twig' %}
 
@@ -11,19 +12,18 @@
 {% block setup %}
     function deltable(e)
     {
-        e.preventDefault();
-        e.stopPropagation();
-        let tr = $(this).parent().parent();
-        let table = $('.bname', tr).text();
-        bootbox.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
+        fwdom.stop(e);
+        let tr = this.closest('[data-bean]');
+        let table = tr.getAttribute('data-bean');
+        framework.confirm('Are you sure you you want to delete the '+table+' bean type?', function(r){
             if (r)
             { // user picked OK
-                $.ajax(base+'/ajax/table/'+table, {
+                framework.ajax(base+'/ajax/table/'+table, {
                     method: 'DELETE',
                 }).done(function(){
                     framework.fadetodel(tr);
                 }).fail(function(jx){
-                    bootbox.alert('<h3>Delete failed</h3>'+jx.responseText);
+                    fwdom.alert('<h3>Delete failed</h3>'+jx.responseText);
                 });
             }
         });
@@ -31,60 +31,73 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#nbform').on('submit', false).parsley();
-    $('#addb').on('click', function(e){
-        const btn = $(this);
-        const form = $('#nbform');
-        btn.attr('disabled', true);
-        e.preventDefault()
-        let name = $('#xbn').val();
+    fwdom.on('#nbform', 'submit', fwdom.nosubmit);
+    fwdom.mkjQ('#nbform').parsley();
+    fwdom.on('#addb', 'click', function(e){
+        fwdom.stop(e);
+        const btn = e.target;
+        const form = document.getElementById('nbform');
+        btn.disabled = true;
+        let name = document.getElementById('xbn').value;
         let sp = null;
         let error = false;
-        $('.bname').each(function(e){
-            const t = $(this).text();
-            if (t == name)
+        for (let x of document.querySelectorAll('[data-bean]'))
+        {
+            const t = x.getAttribute('data-bean');
+            if (t === name)
             {
                 error = true;
-                return false;
+                break;
             }
             if (t > name)
             {
-                sp = $(this);
-                return false;
+                sp = x;
+                break;
             }
-        })
+        }
         if (error)
         {
-            bootbox.alert('That page already exists');
-            $(this).attr('disabled', false);
+            framework.alert('That bean already exists');
+            this.disabled = false;
             return;
         }
-        const dt = {};
-        $('input[name="field[]"]', form).each(function(index) {
-            dt['field[' + index + ']'] = $(this).val();
-        });
-        $('input[name="sample[]"]', form).each(function(index) {
-            dt['sample[' + index + ']'] = $(this).val();
-        });
+        let dt = {method: 'post'};
+        let data = {};
+        for (let v of ['field', 'sample'])
+        {
+            form.querySelectorAll('input[name="'+v+'[]"]').forEach(function(item, index){
+
+                data[v+'[' + index + ']'] = item.value;
+            });
+        }
+        dt['data'] = data;
         const fn = function(data){
-            var htm = '<tr><td class="bname">'+name+'</td>'+
-            '<td><a href="'+base+'/admin/view/table/'+name+'/">{{i.view()}}</a></td>'+
-            '<td><a href="'+base+'/admin/edit/table/'+name+'/">{{i.edit()}}</a></td>'+
-            '<td>{{i.delete('delb')}}</td></tr>';
-            var nx = sp == null ? $(htm).appendTo($('#btab tbody')) : $(htm).insertBefore(sp.parent());
-            $('.delb', nx).on('click', deltable);
-            nx.data('id', data);
-            $('#nbean').modal('hide');
+            let newd = document.createElement('tr');
+            newd.setAttribute('data-id', data);
+            newd.innerHTML = '<td class="bname">'+name+'</td>'+
+                '<td><a href="'+base+'/admin/view/table/'+name+'/">{{i.view()}}</a></td>'+
+                '<td><a href="'+base+'/admin/edit/table/'+name+'/">{{i.edit()}}</a></td>'+
+                '<td>{{i.delete('delb')}}</td>';
+            fwdom.on('.delb', 'click', deltable, newd);
+            if (sp === null)
+            {
+                document.getElementById('btab').appendChild(newd);
+            }
+            else
+            {
+                document.getElementById('btab').insertBefore(newd, sp);
+            }
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('nbean')).hide();
         };
-        $.post('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
-            bootbox.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
-        }).always(function() { btn.attr('disabled', false); });
+        framework.ajax('{{base}}/ajax/table/' + name, dt).done(fn).fail(function(jx){
+            fwdom.alert('<h3>Failed to create new bean<h3>'+jx.responseText);
+        }).always(function() { btn.disabled = false; });
     });
-    $('#nbean').on('show.bs.modal', function(e){
-        $('#nbform input,select').val('');
+    fwdom.on('#nbean', 'show.bs.modal', function(e){
+        document.getElementById('nbform').reset();
     });
-    $('.delb').on('click', deltable);
-    $('#mrow button').on('click', function(e) { framework.addMore(e); });
+    fwdom.on('.delb', 'click', deltable);
+    fwdom.on('#addm', 'click', function(e) { framework.addMore(e); });
 {% endblock onload %}
 
 {% if not page is defined %}
@@ -106,25 +119,23 @@
 
 {% set pages = ((siteinfo.tablecount(all) + pagesize) / pagesize)|round(0, 'floor') %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Beans</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Beans</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
         <article class="offset-md-1 col-md-9">
             {% include '@util/message.twig' %}
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages, extra: extra } %}
-            <table class="table table-responsive table-striped table-hover" id="btab">
+            <table class="table table-responsive table-striped table-hover">
                 <thead class="thead-inverse">
                     <tr>
                         <th>Name</th>
                         <th colspan="3">&nbsp;</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="btab">
                     {% for nb in beans %}
                         <tr data-bean="{{nb.name}}">
                             <td class="bname">{{nb.name}}</td>
@@ -138,21 +149,21 @@
                 </tbody>
             </table>
             {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages, extra: extra } %}
-	    <p><button class="btn btn-primary" data-toggle="modal" data-target="#nbean" type="button">Add Bean</button></p>
+	    <p>{{m.invoke('#nbean', 'Add Bean')}}</p>
         </article>
     </section>
     {{m.open({id: 'nbean', title: 'New Bean'})}}
     <div class="modal-body">
         <form action="#" method="POST" id="nbform">
             {{f.text({label: 'Bean Name', id: 'xbn', name: 'name', ph: 'Bean name - alphanumeric characters only', required: TRUE,
-                parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
+                valid: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*', 'remote-reverse': 'false', remote: base ~ '/ajax/tablecheck/{value}',
                 'remote-message': 'That bean already exists'} })}}
             <fieldset id="example">
-                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', parsley: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
+                {{f.text({label: 'Field Name', name: 'field[]', ph: 'Field name - alphanumeric characters only', valid: { trigger: 'blur', pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
                 {{f.text({label: 'Sample Value', name: 'sample[]', ph: 'Field Sample Value'})}}
             </fieldset>
             <p id="mrow">
-                <button class="btn btn-sm btn-info" type="button">More</button>
+                <button class="btn btn-sm btn-info" id="addm" type="button">More</button>
             </p>
         </form>
     </div>

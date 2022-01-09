@@ -3,7 +3,7 @@
  * A class for the object Table
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -16,25 +16,18 @@
  */
     class Table
     {
-/**
- * @var string The name of the table
- */
-        private $table;
-
         use \ModelExtend\MakeGuard;
 /**
  * Constructor
  *
- * @param string $name The name of the table
+ * @param string $table The name of the table
  */
-        public function __construct(string $name)
+        public function __construct(private string $table)
         {
-            if (!\Support\SiteInfo::tableExists($name))
+            if (!\Support\SiteInfo::tableExists($table))
             {
-                throw new \Framework\Exception\BadValue('Table does not exist');
-                /* NOT REACHED */
+                throw new \Framework\Exception\BadValue('Table "'.$table.'" does not exist');
             }
-            $this->table = $name;
         }
 /**
  * Process new bean
@@ -42,26 +35,24 @@
  * @internal
  * @param Context   $context    The context object
  * @param string    $bean       The bean type
- *
- * @return void
  */
-        private static function makebean(Context $context, string $bean) : void
+        private static function makeBean(Context $context, string $bean) : void
         {
             $fk = [];
-            $fdt = $context->formdata('post');
+            $fdt = $context->formData('post');
             $bn = \R::dispense($bean);
             foreach ($fdt->fetchArray('field') as $ix => $field)
             {
                 if ($field !== '')
                 {
-                    if (preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
+                    if (\preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
                     { // this is a special case for foreign keys
                         $fkbn = \R::dispense($m[1]); // make a bean of the required type
                         \R::store($fkbn);
                         $bn->{$field} = $fkbn;
                         $fk[] = $fkbn;  // remember this bean as it needs to be deleted later - see below
                     }
-                    elseif (!preg_match('/^[a-z][a-z0-9]*/', $field))
+                    elseif (!\preg_match('/^[a-z][a-z0-9]*/', $field))
                     {
                         $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
                     }
@@ -83,22 +74,20 @@
  * Add a new table
  *
  * @param Context    $context  The context object
- *
- * @return bool
  */
         public static function add(Context $context) : bool
         {
             $fdt = $context->formdata('post');
-            if ($fdt->exists('name'))
+            if ($fdt->hasForm())
             {
                 $name = strtolower($fdt->mustFetch('name'));
-                if ($name === '' || !preg_match('/^[a-z][a-z0-9]*/', $name))
+                if ($name === '' || !\preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'You must provide a valid bean name');
                 }
                 else
                 {
-                    self::makebean($context, $name);
+                    self::makeBean($context, $name);
                     return TRUE;
                 }
             }
@@ -106,8 +95,6 @@
         }
 /**
  * Return the fields in this table
- *
- * @return array<string>
  */
         public function fields() : array
         {
@@ -117,8 +104,6 @@
  * Test if a field exists
  *
  * @param string   $fld The field name
- *
- * @return bool
  */
         public function hasField(string $fld) : bool
         {
@@ -127,8 +112,6 @@
         }
 /**
  * Return the name of the table
- *
- * @return string
  */
         public function name() : string
         {
@@ -139,19 +122,17 @@
  *
  * @param \Support\Context    $context  The context object
  * @param array               $rest     The rest of the URL
- *
- * @return void
  */
         public function startEdit(Context $context, array $rest) : void
         {
-            if (count($rest) >= 4)
+            if (\count($rest) >= 4)
             {
                 try
                 {
                     $bn = $context->load($rest[2], $rest[3]);
                     $context->local()->addval('object', $bn);
                 }
-                catch (\Framework\Exception\MissingBean $e)
+                catch (\Framework\Exception\MissingBean)
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'Object does not exist');
                 }
@@ -163,7 +144,6 @@
  * @param \Support\Context    $context  The context object
  * @param array               $rest
  *
- * @return array
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function edit(Context $context, array $rest) : array
@@ -176,8 +156,6 @@
  *
  * @param \Support\Context    $context  The context object
  * @param array               $rest
- *
- * @return void
  */
         public function view(Context $context, array $rest) : void
         {

@@ -3,9 +3,8 @@
  * Class to handle the Framework AJAX hints operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
- * @package Framework
- * @subpackage SystemAjax
+ * @copyright 2020-2021 Newcastle University
+ * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
 
@@ -17,27 +16,27 @@
     class Hints extends Ajax
     {
 /**
- * @var array
+ * @var array These permissions let the Site Admin manipulate the Framework internal tables. The first element is a
+ *            bool indicating if a login is required, the second is a list of ['Context', 'Role'] pairs that a user
+ *            must have. The third element is a list of accessible field names.
  */
-        private static $permissions = [
-            FW::TEST        => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
+        private static array $permissions = [
+            FW::TEST => [ TRUE, [[FW::FWCONTEXT, FW::DEVELROLE]], ['f1'] ], // table does not always exist
         ];
 /**
  * Return permission requirements
  *
- * @return array
+ * First element is a bool indicating if login is required. The second element is a list of ['Context', 'Role']
+ * that the user must have.
  */
-        public function requires()
+        public function requires() : array
         {
             return [FALSE, []]; // login not required
         }
 /**
  * Get search hints for a bean
  *
- * @param Context    $context    The context object for the site
- *
  * @throws Forbidden
- * @return void
  */
         final public function handle() : void
         {
@@ -52,7 +51,7 @@
             $order = $fdt->fetch('order', $field);
             if ($order !== $field)
             { // strop the fieldname if it occurs in the order spec
-                $order = preg_replace('/\b'.$ofield.'\b/', $field, $order);
+                $order = \preg_replace('/\b'.$ofield.'\b/', $field, $order);
             }
             $limit = $fdt->fetch('limit', 10);
             $search = $fdt->fetch('search', '%');

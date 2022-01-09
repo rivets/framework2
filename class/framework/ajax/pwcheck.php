@@ -3,7 +3,7 @@
  * Check password
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -17,11 +17,7 @@
 /**
  * Do a password verification
  *
- * @param Context    $context
- *
  * @throws \Framework\Exception\Forbidden
- *
- * @return void
  */
         final public function handle() : void
         {

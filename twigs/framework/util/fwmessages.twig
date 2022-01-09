@@ -1,0 +1,15 @@
+    {%if fwerrmessage is defined %}
+        {% for msg in fwerrmessage %}
+            <div class="alert alert-danger clkclose">{{eraw is defined ? msg|raw : msg}}</div>
+        {% endfor %}
+    {% endif %}
+    {%if fwwarnmessage is defined %}
+        {% for msg in fwwarnmessage %}
+            <div class="alert alert-warning clkclose">{{wraw is defined ? msg|raw : msg}}</div>
+        {% endfor %}
+    {% endif %}
+    {%if fwmessage is defined %}
+        {% for msg in fwmessage %}
+            <div class="alert alert-info clkclose">{{mraw is defined ? msg|raw : msg}}</div>
+        {% endfor %}
+    {% endif %}

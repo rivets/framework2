@@ -3,7 +3,7 @@
  * Contains the definition of Formdata PUT or PATCH support class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -29,8 +29,7 @@
  * @param mixed    $name
  * @param mixed    $key
  *
- * @throws BadValue
- * @return array
+ * @throws \Framework\Exception\BadValue
  */
         public function fileData($name, $key = '') : array
         {
@@ -55,8 +54,6 @@
  * Make arrays of files work more like singletons
  *
  * @param string    $name
- *
- * @return \ArrayIterator
  */
         public function fileArray(string $name, array $dflt = []) : \ArrayIterator
         {

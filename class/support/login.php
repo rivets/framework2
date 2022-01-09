@@ -3,13 +3,13 @@
  * A trait that allows extending the UserLogin class for different authentication processes
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
- * @package Framework
+ * @copyright 2019-2021 Newcastle University
+ * @package Framework\Support
  */
     namespace Support;
 
 /**
- * Allows developers to change the way logins and logouts are handled.
+ * Allows developers to change the way logins and logouts are handled in the User Model
  */
     trait Login
     {
@@ -20,10 +20,6 @@
  * that uses the local database table.
  *
  * @used-by \Framework\Pages\UserLogin
- *
- * @param Context $context
- *
- * @return bool
  */
         public function checkLogin(Context $context) : bool
         {
@@ -35,14 +31,13 @@
                 if ($pw !== '')
                 {
                     $user = \Framework\Pages\UserLogin::eorl($lg); // use either a login name or the email address - see framework/pages/userlogin.php
-                    if (is_object($user) && $user->pwok($pw) && $user->confirm)
+                    if (\is_object($user) && $user->pwok($pw) && $user->confirm)
                     {
-                        if (session_status() !== PHP_SESSION_ACTIVE)
-                        { // no session started yet
-                            session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
+                        if ($user->secret() !== '')
+                        {
+                            $context->divert('/twofa?xx='.\Framework\Support\Security::getInstance()->makeUCode($user).($page !== '' ? '&goto='.$page : ''));
                         }
-                        $_SESSION['user'] = $user;
-                        $context->divert($page === '' ? '/' : $page); // success - divert to home page
+                        $this->loginSession($context, $user, $page);
                         /* NOT REACHED */
                     }
                 }
@@ -61,11 +56,8 @@
  *
  * @link    http://php.net/manual/en/function.session-destroy.php
  *
- * @param Context   $context    The context object for the site
- *
  * @used-by \Framework\Pages\UserLogin
  *
- * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function logout(Context $context) : void
@@ -74,16 +66,16 @@
 
             // If it's desired to kill the session, also delete the session cookie.
             // Note: This will destroy the session, and not just the session data!
-            if (ini_get('session.use_cookies'))
+            if (\ini_get('session.use_cookies'))
             {
-                $params = session_get_cookie_params();
-                setcookie(session_name(), '', time() - 42000,
+                $params = \session_get_cookie_params();
+                \setcookie(\session_name(), '', \time() - 42000,
                     $params['path'], $params['domain'], $params['secure'], $params['httponly']
                 );
             }
-            if (session_status() === PHP_SESSION_ACTIVE)
+            if (\session_status() === \PHP_SESSION_ACTIVE)
             { // no session started yet
-                session_destroy(); // Finally, destroy the -session.
+                \session_destroy(); // Finally, destroy the -session.
             }
             $context->divert('/');
             /* NOT REACHED */

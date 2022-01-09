@@ -1,8 +1,8 @@
 <?php
 /**
- * You can put arbitrary code below and run it
+ * You can put arbitrary code below and run it. Make sure to remove the code after you have finished with it of course.
  *
- * Don't remove these lines
+ * Don't remove these next few lines unless you really understand what is going on!
  */
     use \R as R;
 

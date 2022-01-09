@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX shared operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -15,10 +15,7 @@
  */
     class Shared extends Ajax
     {
-/**
- * @var array
- */
-        private static $permissions = [
+        private static array $permissions = [
             FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORM        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
             FW::FORMFIELD   => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], [] ],
@@ -32,14 +29,10 @@
 /**
  * Carry out operations on RB shared lists
  *
- * @param \Support\Context    $context The context object
- *
  * @throws \Framework\Exception\BadOperation
- * @return void
  */
         final public function handle() : void
         {
-
             [$b1, $id1, $b2, $id2] = $this->restCheck(4);
             $bn1 = $this->context->load($b1, (int) $id1);
             $bn2 = $this->context->load($b2, (int) $id2);
@@ -57,10 +50,9 @@
                 unset($bn1->{'shared'.ucfirst($b2).'List'}[$bn2->getID()]);
                 \R::store($bn1);
                 break;
-
-            case'PUT':
-            case 'PATCH':
-            case 'GET':
+//            case 'PUT':
+//            case 'PATCH':
+//            case 'GET':
             default:
                 throw new \Framework\Exception\BadOperation($this->context->web()->method().' not supported');
             }

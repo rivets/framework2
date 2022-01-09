@@ -3,7 +3,7 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -16,7 +16,7 @@
  *
  * Admin status is checked in index.php so does not need to be done here.
  */
-    class Admin extends \Framework\SiteAction
+    final class Admin extends \Framework\SiteAction
     {
         private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
         private const VIEWABLE = [FW::TABLE, FW::FORM];
@@ -82,8 +82,6 @@
  * @throws \Framework\Exception\Forbidden
  * @throws \Framework\Exception\ParameterCount
  * @throws \Framework\Exception\InternalError
- *
- * @return string
  */
         private function edit(Context $context, array $rest) : string
         {
@@ -96,7 +94,7 @@
             {
                 throw new \Framework\Exception\Forbidden('Not editable');
             }
-            if (($notmodel = in_array($kind, self::NOTMODEL)))
+            if (($notmodel = \in_array($kind, self::NOTMODEL)))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
@@ -112,10 +110,10 @@
             }
             else
             {
-                $obj = $context->load($kind, $rest[2]);
+                $obj = $context->load($kind, (int) $rest[2]);
             }
             $context->local()->addval('bean', $obj);
-            if (is_object($obj))
+            if (\is_object($obj))
             {
                 $obj->startEdit($context, $rest); // do any special setup that the edit requires
                 if (($bid = $context->formdata('post')->fetch('bean', '')) !== '')
@@ -149,21 +147,19 @@
  *
  * @param Context           $context  The Context object
  * @param array<string>     $rest     The rest of the URL
- *
- * @return string
  */
         private function view(Context $context, array $rest) : string
         {
-            if (count($rest) < 3)
+            if (\count($rest) < 3)
             {
                 throw new \Framework\Exception\ParameterCount('Too few parameters');
             }
             $kind = $rest[1];
-            if (!in_array($kind, self::VIEWABLE))
+            if (!\in_array($kind, self::VIEWABLE))
             {
                 throw new \Framework\Exception\Forbidden('Not Viewable');
             }
-            if (in_array($kind, self::NOTMODEL))
+            if (\in_array($kind, self::NOTMODEL))
             {
                 $class = '\\Framework\\Support\\'.$kind;
                 try
@@ -179,7 +175,7 @@
             }
             else
             {
-                $obj = $context->load($kind, $rest[2]);
+                $obj = $context->load($kind, (int) $rest[2]);
             }
             if (is_object($obj))
             {
@@ -189,24 +185,27 @@
             return '@view/'.$kind.'.twig';
         }
 /**
- * Check for version updates and update config info
+ * Check for version updates and update config info. Check for new CSP needed
  *
  * @param Context    $context  The Context object
- *
- * @return string
  */
         private function update(Context $context) : string
         {
             $doit = $context->formdata('get')->fetch('update', 0) == 1;
             $updated = [];
-            $upd = json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
+            $newCSP = [];
+            $upd = \json_decode(file_get_contents('https://catless.ncl.ac.uk/framework/update/'));
             if (isset($upd->fwconfig))
             { // now see if there are any config values that need updating.
                 $base = $context->local()->base();
                 foreach ($upd->fwconfig as $cname => $cdata)
                 {
+                    if (\strpos($cdata->value, '%BASE%') === FALSE && $context->web()->checkCSP($cdata->value, $cdata->type))
+                    {
+                        $newCSP[] = [$cdata->value, $cdata->type];
+                    }
                     $lval = \R::findOne(FW::CONFIG, 'name=?', [$cname]);
-                    if (is_object($lval))
+                    if (\is_object($lval))
                     {
                         if (($upderr = $lval->doupdate($cdata, $base, $doit)) !== '')
                         {
@@ -220,7 +219,7 @@
                         $lval->local = 0;
                         foreach ($cdata as $k => $v)
                         {
-                            $lval->$k = preg_replace('/%BASE%/', $base, $v); // relocate to this base.
+                            $lval->$k = \preg_replace('/%BASE%/', $base, $v); // relocate to this base.
                         }
                         \R::store($lval);
                         $updated[$cname] = $cdata->value;
@@ -230,13 +229,14 @@
                 { // there is a message about the update
                     $context->local()->message(\Framework\Local::MESSAGE, $upd->message);
                 }
-                $current = trim(file_get_contents($context->local()->makebasepath('version.txt')));
+                $current = \trim(\file_get_contents($context->local()->makebasepath('version.txt')));
                 $context->local()->addval([
                     'version'   => $upd->version,
-                    'older'     => version_compare($current, $upd->version, '<'),
+                    'older'     => \version_compare($current, $upd->version, '<'),
                     'updated'   => $updated,
                     'done'      => $doit,
                     'current'   => $current,
+                    'newcsp'    => $newCSP,
                 ]);
             }
             return '@admin/update.twig';
@@ -247,30 +247,28 @@
  * Remember that if you go offline rather than adminonly you have to remove the file by hand to get back online!
  *
  * @param Context   $context    The Context object
- *
- * @return string
  */
         private function offline(Context $context)
         {
             $local = $context->local();
             $adon = $local->makebasepath('admin', 'adminonly');
-            $adminonly = file_exists($adon);
+            $adminonly = \file_exists($adon);
             $fdt = $context->formdata('post');
-            if ($fdt->exists('msg'))
-            {
+            if ($fdt->hasForm())
+            { // it's a post
                 $msg = $fdt->mustFetch('msg');
                 $onlyadmin = $fdt->fetch('onlyadmin', 0);
                 $online = $fdt->fetch('online', 0);
                 if ($adminonly && ($online || $fdt->fetch('deladonly', 0) == 1))
                 {
-                    unlink($adon);
+                    \unlink($adon);
                 }
                 if ($online == 0)
                 {
                     $file = $onlyadmin == 1 ? $adon : $local->makebasepath('admin', 'offline');
-                    $fd = fopen($file, 'w');
-                    fputs($fd, $msg);
-                    fclose($fd);
+                    $fd = \fopen($file, 'w');
+                    \fputs($fd, $msg);
+                    \fclose($fd);
                 }
                 else
                 {
@@ -287,10 +285,8 @@
  * Handle various admin operations /admin/xxxx
  *
  * @param Context  $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             $rest = $context->rest();
             $context->setpages(); // most of the pages use pagination so get values if any

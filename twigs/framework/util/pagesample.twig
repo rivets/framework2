@@ -1,0 +1,30 @@
+<?php
+ /**
+  * {{pagename}} page class
+  *
+  * @author Your Name <Your@email.org>
+  * @copyright year You
+  * @package Framework
+  * @subpackage UserPages
+  */
+    namespace {{namespace}};
+
+    use \Support\Context;
+/**
+ * A {{pagename}} page class
+ */
+    class {{pagename|capitalize}} extends \Framework\SiteAction
+    {
+/**
+ * Handle various contact operations /
+ *
+ * @param Context $context    The context object for the site
+ *
+ * @return string|array     A template name or an array with more complex information
+ */
+        public function handle(Context $context)
+        {
+            return '@content/{{pagename}}.twig';
+        }
+    }
+?>

@@ -3,9 +3,8 @@
  * Class to handle the Framework AJAX config operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
- * @package Framework
- * @subpackage SystemAjax
+ * @copyright 2020-2021 Newcastle University
+ * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
 
@@ -20,18 +19,16 @@
 /**
  * Return permission requirements
  *
- * @return array
+ * First element is a bool indicating if login is required. The second element is a list of ['Context', 'Role']
+ * that the user must have.
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site ADmins to do this
         }
 /**
  * Handle POST
  *
- * @param ?\RedBeanPHP\OODBBean $v
- *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -46,15 +43,12 @@
             $v->name = $name;
             $v->value = $fdt->mustFetch('value');
             $v->type = $fdt->mustFetch('type');
-            R::store($v);
-            $this->context->web()->noContent();
+            $v->local = $fdt->fetch('local', 0);
+            echo R::store($v); // send back the id of the new config bean
         }
 /**
  * Handle PUT or PATCH
  *
- * @param ?\RedBeanPHP\OODBBean $v
- *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -80,7 +74,6 @@
 /**
  * Map put onto patch
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -91,9 +84,6 @@
 /**
  * Handle DELETE
  *
- * @param ?\RedBeanPHP\OODBBean $v
- *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -111,7 +101,6 @@
  *
  * @param ?\RedBeanPHP\OODBBean $v
  *
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
@@ -128,15 +117,13 @@
  *
  * @throws \Framework\Exception\BadOperation
  * @throws \Framework\Exception\BadValue
- *
- * @return void
  */
         final public function handle() : void
         {
             [$name] = $this->restCheck(1);
             $v = R::findOne(FW::CONFIG, 'name=?', [$name]);
-            $method = strtolower($this->context->web()->method());
-            if (!method_exists(self::class, $method))
+            $method = \strtolower($this->context->web()->method());
+            if (!\method_exists(self::class, $method))
             {
                 throw new \Framework\Exception\BadOperation($method.' is not supported');
             }

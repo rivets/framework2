@@ -1,6 +1,6 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
-{% set parsley = TRUE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Config'}] %}
 
 {% extends '@content/page.twig' %}
 
@@ -14,15 +14,14 @@
     function setlocal(e)
     {
         e.preventDefault();
-        const t = $(this);
-        const id = t.parent().parent().parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
+        const id = fwdom.data(e.target, 'id');
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
             method: '{{patch}}', // because we are updating an item
             data: {
-                value: t.is(':checked') ? 1 : 0
+                value: e.target.checked ? 1 : 0
             }
         }).fail(function(jx){
-            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
+            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
         });
     }
 
@@ -30,91 +29,98 @@
     {
         framework.dodelbean(e, this, '{{config}}');
     }
-{% endblock setup %}
 
-{% block onload %}
-    $('#inval').hide();
-    $('#cfr').on('submit', false);
-    $('.delb').on('click', framework.delbean)
-    $('.lval').on('change', setlocal)
-    $('.cval').on('blur', function(e){
-        e.preventDefault();
-        const t = $(this);
-        const id = t.parent().parent().data('id');
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
-            method: '{{patch}}', // because we are updating an item
-            data: { value: t.val() }
-        }).fail(function(jx){
-            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
-        });
-// clear out integrity and crossorigin - they might be diferent
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
-            method: '{{patch}}', // because we are updating an item
-            data: { value: '' }
-        }).fail(function(jx){
-            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
-        });
-        $.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
-            method: '{{patch}}', // because we are updating an item
-            data: { value: '' }
-        }).fail(function(jx){
-            bootbox.alert('<h3>Update failed</h3>'+jx.responseText);
-        });
-    });
-    $('.nname').on('blur', function(e){
-        e.preventDefault()
-        const t = $(this)
-        const name = t.val()
-        if (name != '')
-        {
-            if (!name.match(/^[a-z][a-z0-9]*$/i))
-            {
-                bootbox.alert('Invalid name format')
-                t.val('')
-            }
-            else if ($('input[name="'+name+'"]').length != 0)
-            {
-                bootbox.alert('That item already exists');
-            }
-            else
-            {
-                $('#inval').show();
-                $('#Xnewval').focus();
-            }
-        }
-    })
-    $('.nval').on('blur', function(e){
-        e.preventDefault();
-        const t = $(this);
-        const name = $('.nname').val();
-        const value = t.val();
-        const local = $('#Xnewlocal').is(':checked') ? 1 : 0;
-        $.ajax('{{base}}/ajax/bean/{{config}}/', {
+    function makeConfig(name, value, type, local)
+    {
+        framework.ajax('{{base}}/ajax/config/'+name, {
             method: 'POST', // because we are creating a new item
             data: {
-                name: name,
-                value: value,
-                local: 0
+                value,
+                type,
+                local
             }
         }).done(function(data){
-            $('.nname').parent().parent().prev().prev().after('<div class="row mb-2" data-id="'+data+'">'+
+            let newd = document.createElement('div');
+            let nname = document.getElementById('Xnewconf');
+            newd.setAttribute('data-id', data);
+            newd.classList.add('row');
+            newd.classList.add('mb-2');
+            newd.innerHTML =
                 '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
                     '<div class="col-md-9">'+
                             '<input type="text" id="X'+name+'" name="'+name+'" value="'+value+'" class="form-control cval"/>'+
                     '</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
-                            '<label class="form-check-label"><input class="lval nlval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
-                        '</div>{{i.delete('delb ndelb')}}</div></div>'
-            );
-            $('.ndelb').on('click', framework.framework.delbean).removeClass('ndelb')
-            $('.nlval').on('change', setlocal).removeClass('nlval')
-            $('.nname').val('');
-            t.val('');
-            $('#inval').hide();
+                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
+                        '</div>{{i.delete('delb')}}</div></div>';
+            document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
+            fwdom.on('.delb', 'click', delbean, newd)
+            fwdom.on('.lval', 'change', setlocal, newd)
+            nname.value = '';
+            document.getElementById('Xnewlocal').checked = 0;
+            document.getElementById('Xnewval').value = '';
+            document.getElementById('Xnewtype').value = '';
+            document.getElementById('inval').classList.add('d-none');
         }).fail(function(jx){
-            bootbox.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
+            fwdom.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
         });
+    }
+{% endblock setup %}
+
+{% block onload %}
+    fwdom.on('#cfr', 'submit', function(e){ e.preventDefault(); });
+    fwdom.on('.delb', 'click', delbean);
+    fwdom.on('.lval', 'change', setlocal)
+    fwdom.on('.cval', 'blur', function(e){
+        fwdom.stop(e);
+        const id = fwdom.data(e.target, 'id');
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: this.value }
+        }).fail(function(jx){
+            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+// clear out integrity and crossorigin - they might be diferent
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: '' }
+        }).fail(function(jx){
+            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: '' }
+        }).fail(function(jx){
+            fwdom.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+    });
+    fwdom.on('#Xnewconf', 'blur', function(e){
+        fwdom.stop(e);
+        const name = this.value;
+        if (name != '')
+        {
+            if (!name.match(/^[a-z][a-z0-9]*$/i))
+            {
+                fwdom.alert('Invalid name format')
+                this.value = ''
+            }
+            else
+            {
+                framework.ajax(base+'/ajax/unique/{{config}}/name/'+name, {method: 'get'}).done(function(d){
+                    document.getElementById('inval').classList.remove('d-none');
+                }).fail(function(d){
+                    fwdom.alert('That item already exists');
+                });
+            }
+        }
+    })
+    fwdom.on('#Xnewval', 'blur', function(e){
+        fwdom.stop(e);
+        const type = document.getElementById('Xnewtype').value;
+        const name = document.getElementById('Xnewconf').value;
+        const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
+        makeConfig(name, this.value, type, local);
     });
 {% endblock onload %}
 
@@ -125,16 +131,14 @@
 
 {% set pages = siteinfo.pagecount(config, pagesize) %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Configuration Values</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Configuration Values</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
         <article class="col-md-12">
-            <form id="cfr" action="#" method="post">
+            {{f.startform({id: 'cfr', method: 'post'})}}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
                 {% for p in siteinfo.siteconfig(page, pagesize) %}
                     <div class="row mb-2" data-id="{{p.getID}}">
@@ -155,23 +159,24 @@
                 {% endfor %}
 {# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
                 {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
-                <div class="jumbotron">
-                    {{f.text({label: 'New Config Item', name: 'newconf', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
-                    <div id="inval">
-                        {{f.text({label: 'New Value', name: 'newval', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
-                        {{f.select({label : 'Type', name: 'type',
-                        options: [
-                            { value: '',  text: '&mdash; Pick a Type &mdash;' },
-                            { value: 'boolean', text: 'boolean' },
-                            { value: 'css', text: 'css' },
-                            { value: 'integer', text: 'integer' },
-                            { value: 'js', text: 'js' },
-                            { value: 'string', text: 'string' },
-                        ]
-                    })}}
+                <div class="jumbotron" id="nvbox">
+                    {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
+                    <div id="inval" class="d-none">
+                        {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                        {{f.select({label : 'Type', id: 'Xnewtype',
+                            options: [
+                                { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                                { value: 'boolean', text: 'boolean' },
+                                { value: 'css', text: 'css' },
+                                { value: 'integer', text: 'integer' },
+                                { value: 'js', text: 'js' },
+                                { value: 'string', text: 'string' },
+                            ]
+                        })}}
+                        {{f.checkbox({ids: ['Xnewlocal'], labels: ['Local'], values : [1]})}}
                     </div>
                 </div>
-            </form>
+            {{f.endform()}}
         </div>
     </section>
 {% endblock main %}

@@ -1,14 +1,86 @@
+/* globals fwdom: false */
+/* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery, bootstrap */
+/* jshint undef: true, unused: false */
+    class FWAjaxRQ
+    {
+        constructor(rq)
+        {
+            this.request = rq;
+        }
+/**
+ * called when loaded
+ */
+        onloaded(){
+            if (this.status >= 200 && this.status < 400)
+            { // Success!
+                if (this.options.hasOwnProperty('success'))
+                {
+                    this.options.success(this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response, this);
+                }
+            }
+            else if (this.options.hasOwnProperty('fail'))
+            { // something went wrong
+                this.options.fail(this);
+            }
+            if (this.options.hasOwnProperty('always'))
+            { // always do this
+                this.options.always(this);
+            }
+        }
+/**
+ * called when there is a send error
+ */
+        onfailed(){
+            // There was a connection error of some sort
+              if (this.options.hasOwnProperty('fail'))
+              {
+                  this.options.fail(this);
+              }
+              if (this.options.hasOwnProperty('always'))
+              {
+                  this.options.always(this);
+              }
+        }
+
+        done(fn)
+        {
+            this.request.options.success = fn;
+            return this;
+        }
+
+        fail(fn)
+        {
+            this.request.options.fail= fn;
+            return this;
+        }
+
+        always(fn)
+        {
+            this.request.options.always = fn;
+            return this;
+        }
+    }
+
     var framework = {
-        dejq: function(el) {
-            console.log(el);
-        },
+/**
+ * The base directory value to add to all local URLs - set in the initialisation javascript
+ */
+        base : '',
+ /**
+  * Some routers do not support PUT so use PATCH - set in the initialisation javascript
+  */
+        putorpatch : 'PUT',
+/**
+ * any modal that is popped up
+ */
+        currentModal : null,
 /**
  * encode object into a query string
  *
  * @param {object} data   - the object to encode
  */
         makeQString: function(data) {
-            var enc = '';
+            let enc = '';
             let amp = '';
             for (var prop in data)
             {
@@ -20,78 +92,55 @@
             }
             return enc;
         },
-
-        onloaded: function(rq, options){
-            if (rq.status >= 200 && rq.status < 400)
-            { // Success!
-                if (options.hasOwnProperty('success'))
-                {
-                    options.success(rq.response);
-                }
-            }
-            else if (options.hasOwnProperty('fail'))
-            { // something went wrong
-                options.fail(rq.response);
-            }
-            if (options.hasOwnProperty('always'))
-            { // always do this
-                options.always(rq.response);
-            }
-        },
-        onfailed: function(rq, options){
-            // There was a connection error of some sort
-              if (options.hasOwnProperty('fail'))
-              {
-                  options.fail(rq.response);
-              }
-              if (options.hasOwnProperty('always'))
-              {
-                  options.always(rq.response);
-              }
-        },
-/**
- * non-jquery post function
+/*
+ * non-jquery ajax function
  *
- * @param {string} op     - the operation to use
  * @param {string} url    - the URL to invoke
  * @param {object} data   - the data to pass
  */
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
-            let data = options.hasOwnProperty('data') ? framework.makeQString(options.data) : '';
+            let accept = options.hasOwnProperty('accept') ? options.accept : '';
+            let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
             let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
-            request.open(method, url, true);
+            request.options = options;
+            request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
             request.setRequestHeader('Content-Type', type);
-            request.onload = function() {
-                framework.onloaded(this, options);
-            };
-            request.onerror = function() {
-                framework.onfailed(this, options);
-            };
+            if (accept != '')
+            {
+                request.setRequestHeader('Accept', accept);
+            }
+            let ajaxObj = new FWAjaxRQ(request);
+            request.onload = ajaxObj.onloaded;
+            request.onerror = ajaxObj.onfailed;
             request.send(data);
+            return ajaxObj;
         },
 /**
  * get JSON
  */
         getJSON : function(url, success, fail){
             var request = new XMLHttpRequest();
+            let ajaxObj = new FWAjaxRQ(request);
             request.open('GET', url, true);
+            request.setRequestHeader('Accept', 'application/json');
             request.onload = function() {
-              if (this.status >= 200 && this.status < 400) {
-                // Success!
-                success(JSON.parse(this.response));
-
-              } else {
-                // We reached our target server, but it returned an error
-                fail(this);
-              }
+                if (this.status >= 200 && this.status < 400)
+                { // Success!
+                    success(JSON.parse(this.response));
+                }
+                else
+                { // We reached our target server, but it returned an error
+                    fail(this);
+                }
             };
             request.onerror = function() {
-              // There was a connection error of some sort
-              fail(this);
+                // There was a connection error of some sort
+                fail(this);
             };
             request.send();
+            return ajaxObj;
         },
 /**
  * Generate HTML for a font-awesome toggle icon
@@ -125,8 +174,22 @@
  */
         toggle: function(x)
         {
-            x.classList.toggle('fa-toggle-off');
-            x.classList.toggle('fa-toggle-on');
+            fwdom.toggleClass([x], ['fa-toggle-off', 'fa-toggle-on']);
+        },
+/**
+ * build a link from base
+ *
+ * @param (arguments)
+ *
+ * @return string
+ */
+        buildFWLink: function (){
+            let link = framework.base;
+            for (let item of arguments)
+            {
+                link += '/' + item;
+            }
+            return link + '/';
         },
 /**
  * Send a toggle operation to the server using AJAX to toggle a given field in a bean.
@@ -135,8 +198,8 @@
  *
  * @todo generalise the position of the data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {string} fld - the name of the field in the bean to toggle
  *
@@ -144,8 +207,7 @@
  */
         dotoggle: function(e, x, bean, fld)
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             let cl = x.classList;
             if (!cl.contains('fadis'))
             {
@@ -157,31 +219,21 @@
                 }
                 else
                 { // toggle at the other end
-                    //$.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                    //    method: putorpatch,
-                    //}).done(function(){
-                    //   framework.toggle(x);
-                    //}).fail(function(jx){
-                    //    bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText);
-                    //});
                     let pnode = x.closest('[data-id]');
                     if (pnode instanceof jQuery)
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(base+'/ajax/toggle/'+bean+'/'+pnode.getAttribute('data-id')+'/'+fld, {
-                        method: putorpatch,
-                        success: function(){ framework.toggle(x); },
-                        fail: function(jx) { bootbox.alert('<h3>Toggle failed</h3>'+jx.responseText); }
-                    });
+                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: putorpatch})
+                    .done(function(){ framework.toggle(x); }).fail(function(jx) { fwdom.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
 /**
  * Ask user if they want to delete a bean and if so, send an AJAX call to the server to do the deletion
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {int} id - the id of the bean to be deleted
  * @param {function} yes - the function to call on success
@@ -191,20 +243,17 @@
  */
         deletebean: function(e, x, bean, id, yes, msg = '')
         {
-            e.preventDefault();
-            e.stopPropagation();
+            fwdom.stop(e);
             if (msg === '')
             {
                 msg = 'this '+bean;
             }
-            bootbox.confirm('Are you sure you you want to delete '+msg+'?', function(r){
+            fwdom.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
-                    framework.ajax(base+'/ajax/bean/'+bean+'/'+id+'/', {
-                        method: 'DELETE',
-                        success: yes,
-                        fail : function(jx){ bootbox.alert('<h3>Delete failed</h3>'+jx.responseText); },
-                    });
+                    framework.ajax(framework.buildFWLink('ajax/bean', bean, id), {method: 'DELETE'})
+                    .done(yes)
+                    .fail(function(jx){ fwdom.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -216,8 +265,7 @@
  * @return {void}
  */
         editcall: function(params) {
-            const url = base + '/ajax/' + params.op + '/' + params.bean + '/' + params.pk + '/'+params.name+'/';
-            return $.ajax(url, {
+            return framework.ajax(framework.buildFWLink('ajax', params.op, params.bean, params.pk, params.name), {
                 method: putorpatch,
                 data: { value: params.value }
             });
@@ -225,7 +273,7 @@
 /**
  * Remove a node. If it has a rowspan then remove the next rows as well
  *
- * @param {object} tr - a dom object
+ * @param {object} node - a dom object
  *
  * @return void
  */
@@ -247,19 +295,19 @@
 /**
  * Turn background of the dom object yellow and then fade to white.
  *
- * @param {object} tr - a  dom object
+ * @param {object} el - a dom object
  * @param {?function} atend - a function called after fade finishes or null
  *
  * @return void
  */
-        fadetodel: function(tr, atend = null){
-            tr.classList.add('fader');
-            tr.style.opacity = '0';
+        fadetodel: function(el, atEnd = null){
+            el.classList.add('fader');
+            el.style.opacity = '0';
             setTimeout(function(){
-                framework.removeNode(tr);
-                if (atend !== null)
+                framework.removeNode(el);
+                if (atEnd !== null)
                 {
-                    atend();
+                    atEnd();
                 }
             }, 1500);
         },
@@ -272,8 +320,8 @@
  *
  * @see dotoggle above for info about data-id usage
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery object
+ * @param {object} e - an event
+ * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {string} msg - included in part of the "do you want to delete" prompt
  *
@@ -289,61 +337,86 @@
             framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){ framework.fadetodel(pnode, success);}, msg);
         },
 /**
- * When a table detects a click call this. Expects there to be an
+ * When a container detects a click call this. Expects there to be an
  * field in the event data called clicks which is an array of 3 element arrays
  * containing a classname, a function, and a paramter to pass  to the function.
  * If the item within the table that was clicked has the class name then the function is called.
  *
- * @param {object} event - a jQuery event object
+ * @param {object} event - an event object
  *
  * @return void
  */
-        tableClick: function(event)
+        containerClick: function(event)
         {
-            event.preventDefault();
-            const x = $(event.target);
+            fwdom.stop(event);
+            const clist = event.target.classList;
             event.data.clicks.forEach(function(value){
                 let [cls, fn, par] = value;
-                if (x.hasClass(cls))
+                if (clist.contains(cls))
                 {
                     fn(event, event.target, event.data.bean, par);
                 }
             });
         },
 /**
- * Relocate to an admin edit URL - used by the framework admin interface
+ * Relocate to link inside the framework with an id added in
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery dom object
- * @param {string} t - a RedBean bean name
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
  *
  * @return void
  */
-        goedit: function(e, x, t)
+        goFWLink: function(x, pre, t, post = '/')
         {
             let pnode = x.closest('[data-id]');
             if (pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
-            window.location.href = base+'/admin/edit/'+t+'/' + pnode.getAttribute('data-id') + '/';
+            window.location.href = framework.buildFWLink(pre, t, pnode.getAttribute('data-id'), post);
+        },
+/**
+ * Relocate to an admin edit URL - used by the framework admin interface
+ *
+ * @see toggle above for info on use of data-id field
+ *
+ * @param {object} event - an event (not used - for compatibility when used with containerClick)
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
+ *
+ * @return void
+ */
+        goedit: function(event, x, t)
+        {
+            framework.goFWLink(x, 'admin/edit', t);
+        },
+/**
+ * Handle a click on a link
+ *
+ * @param {object} e - an event
+ *
+ * @return void
+ */
+        goLink: function(e)
+        {
+            window.location.href = e.target.getAttribute('href');
         },
 /**
  * Relocate to an admin view URL - used by the framework admin interface
  *
  * @see toggle above for info on use of data-id field
  *
- * @param {object} e - a jQuery event
- * @param {object} x - a jQuery dom object
- * @param {string} t - a RedBean bean name
+ * @param {object} event - an event (not used - for compatibility when used with containerClick)
+ * @param {object} x     - a dom object
+ * @param {string} t     - a RedBean bean name
  *
  * @return void
  */
-        goview: function(e, x, t)
+        goview: function(event, x, t)
         {
-            window.location.href = base+'/admin/view/'+t+'/' + x.parent().parent().data('id') + '/';
+            framework.goFWLink(x, 'admin/view', t);
         },
 /**
  * Use AJAX to create a new RedBean bean.
@@ -352,31 +425,59 @@
  * @param {string} bean - a bean name
  * @param {object} data - data to pass to the bean creation: the fields to set
  * @param {function} fn - called on success
- * @param {string} button - the id attribute value for the button that was used to initiate the operation
+ * @param {string|object} button - the id attribute value for the button that was used to initiate the operation
  *
  * @return void
  */
         beanCreate: function(bean, data, fn, button)
         {
-            $.post(base+'/ajax/bean/'+bean+'/', data).done(fn).fail(function(jx){
-                bootbox.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
-            }).always(function(){
-                $(button).attr('disabled', false);
+            framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data: data})
+            .done(fn)
+            .fail(function(jx){
+                fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+            })
+            .always(function(){
+                (button instanceof Object ? button : document.getElementById(button)).disabled = false;
             });
         },
 /**
  * Duplicate the #example item of a form. Allows users to send more data if they need to.
  *
- * @param {object} e - a jQuery event
+ * @param {object} e - an event
  *
  * @return void
  */
         addMore: function(e)
         {
-            e.preventDefault();
-            $('#mrow').before($('#example').clone());
-            $('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
-            $('option', $('#mrow').prev()).prop('selected', false); // clear any selections
+            fwdom.stop(e);
+            const mrow = document.getElementById('mrow');
+            const clone = mrow.previousElementSibling.cloneNode(true);
+            for (var node of clone.getElementsByTagName('input'))
+            { // empty inputs
+                if (node.getAttribute('type') == 'checkbox' || node.getAttribute('type') == 'radio')
+                {
+                    node.checked = false;
+                }
+                else
+                {
+                    node.value = '';
+                }
+            }
+            for (node of clone.getElementsByTagName('textarea'))
+            { // empty textareas
+                node.innerHTML = '';
+            }
+            for (node of clone.getElementsByTagName('option'))
+            { // clear all selections
+                node.selected = false;
+            }
+            for (node of clone.getElementsByTagName('select'))
+            { // select first element
+                node.children[0].selected = true;
+            }
+            mrow.parentNode.insertBefore(clone, mrow);
+            //$('input,textarea', $('#mrow').prev()).val(''); // clear the new inputs
+            //$('option', $('#mrow').prev()).prop('selected', false); // clear any selections
         },
 /**
  * Used by doBGFade to calculate the next value in a progressive fade
@@ -426,4 +527,80 @@
                 intervals
             );
         },
+/**
+ * Make a new element and add it in the right place in a container.
+ *
+ * @param {object} container - a Dom element
+ * @param {string} element - what we want to insert
+ * @param {object} attr - any atributes we want to add
+ * @param {string} content - what goes inside the new element
+ * @param {object} position - where to put it before or null
+ *
+ * @return void
+ */
+        addElement: function(container, element, attr, content, position = null) {
+            const el = document.createElement(element);
+            const keys = Object.keys(attr);
+            keys.forEach(function(key){
+                el.setAttribute(key, attr[key]);
+            });
+            el.innerHTML = content;
+            if (position === null)
+            {
+                container.appendChild(el);
+            }
+            else
+            {
+                container.insertBefore(el, position);
+            }
+        },
+/**
+ * Pop up an alert
+ */
+        alert: function(message, title = '') {
+            document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="modal" id="_fwalert" tabindex="-1"><div class="modal-dialog">'+
+                '<div class="modal-content"><div class="modal-header"><h5 class="modal-title">'+title+'</h5>'+
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>'+
+                '<div class="modal-body"><p>'+message+'</p></div>'+
+                '<div class="modal-footer">'+
+                '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>'+
+                '</div></div></div></div>');
+            framework.currentModal = document.getElementById('_fwalert');
+            framework.currentModal.addEventListener('hide.bs.modal', function(){
+                framework.currentModal.remove();
+                framework.currentModal = null;
+            });
+            bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
+        },
+/**
+ * Pop up a confirmation
+ */
+        confirm: function(message, handle, title = '') {
+            document.querySelector('body').insertAdjacentHTML('beforeend', '<div class="modal" id="_fwconfirm" tabindex="-1">'+
+                '<div class="modal-dialog"><div class="modal-content"><div class="modal-header">'+
+                '<h5 class="modal-title">'+title+'</h5>'+
+                '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>'+
+                '<div class="modal-body"><p>'+message+'</p></div>'+
+                '<div class="modal-footer">'+
+                '<button type="button" id="_fwno" class="btn btn-secondary">No</button>'+
+                '<button type="button" id="_fwyes" class="btn btn-primary">Yes</button>'+
+                '</div></div></div></div>');
+            framework.currentModal = document.getElementById('_fwconfirm');
+            framework.currentModal.addEventListener('hide.bs.modal', function(e){
+                framework.currentModal.remove();
+                framework.currentModal = null;
+            });
+            document.getElementById('_fwyes').addEventListener('click', function(e) {
+                e.preventDefault();
+                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
+                handle(true);
+            });
+            document.getElementById('_fwno').addEventListener('click', function(e){
+                e.preventDefault();
+                bootstrap.Modal.getOrCreateInstance(framework.currentModal).hide();
+                handle(false);
+            });
+            bootstrap.Modal.getOrCreateInstance(framework.currentModal).show();
+        }
     };
+    framework.tableClick = framework.containerClick; // just for some backward compatibility....

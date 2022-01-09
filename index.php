@@ -10,13 +10,12 @@
  *
  * @link https://catless.ncl.ac.uk/framework/
  */
-    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
-
     include 'class/config/framework.php';
     \Config\Framework::initialise();
     \Config\Config::setup(); // add default headers etc. - anything that the user choses to add to the code.
 
-    $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE, TRUE, TRUE); // Not Ajax, developer mode on, load twig, load RB
+    $local = \Framework\Local::getinstance()->setup(__DIR__, FALSE, TRUE,
+        ['twig', ['templateDir' => 'twigs'/*, 'cache' => 'twigcache'*/]], TRUE); // Not Ajax, developer mode on, renderer, load RB
     $context = \Support\Context::getinstance()->setup();
 
     $local->enabledebug(); // turn debugging on

@@ -3,37 +3,43 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
- * @package Framework
- * @subpackage SystemSupport
+ * @copyright 2012-2021 Newcastle University
+ * @package Framework\Framework\Support
  */
     namespace Framework\Support;
 
     use \Config\Config;
     use \Config\Framework as FW;
+    use \RedBeanPHP\OODBBean;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
+ *
+ * This is a base class for the derived class \Framework\Context which adds
+ * more features. This exists simply to reduce the overall complexity/density of the code rather
+ * than to provide any other possibilities.
+ *
+ * Data that is local to the installation should be handled by the \Framework\Local class.
  */
     class ContextBase
     {
         use \Framework\Utility\Singleton;
 
-/** @var ?\RedBeanPHP\OODBBean  NULL or an object decribing the current logged in User (if we have logins at all) */
-        protected $luser        = NULL;
+/** @var ?OODBBean NULL or an object decribing the current logged in User (if we have logins at all) */
+        protected ?OODBBean $luser        = NULL;
 /** @var string The first component of the current URL */
-        protected $reqaction    = 'home';
-/** @var array<string>    The rest of the current URL exploded at / */
-        protected $reqrest      = [];
-/** @var bool   True if authenticated by token */
-        protected $tokenAuth    = FALSE;
-/** @var array<\RedBeanPHP\OODBBean>            A cache for rolename beans */
-        protected $roles        = [];
-/** @var array<\RedBeanPHP\OODBBean>            A cache for rolecontext beans */
-        protected $contexts     = [];
+        protected string $reqaction    = 'home';
+/** @var array<string> The rest of the current URL exploded at / */
+        protected array $reqrest      = [''];
+/** @var bool True if authenticated by JWT token */
+        protected bool $tokenAuth    = FALSE;
+/** @var array<OODBBean>            A cache for rolename beans */
+        protected array $roles        = [];
+/** @var array<OODBBean>            A cache for rolecontext beans */
+        protected array $contexts     = [];
 /** @var array<array<string>>                   A cache for JS ons */
-        protected $ons          = [];
+        protected array $ons          = [];
 /** @var array<\Framework\FormData\Base>        FormData handler cache */
-        protected $getters      = [];
+        protected array $getters      = [];
 /*
  ***************************************
  * URL and REST support functions
@@ -42,9 +48,9 @@
 /**
  * Return the main action part of the URL as set by .htaccess
  *
- * @return string
+ * The framework trats a URL as /action/rest... The action returned is always in lowercase.
  */
-        public function action()
+        public function action() : string
         {
             return $this->reqaction;
         }
@@ -58,7 +64,7 @@
  *
  * @return array<string>
  */
-        public function rest()
+        public function rest() : array
         {
             return $this->reqrest;
         }
@@ -68,27 +74,21 @@
  ***************************************
  */
 /**
- * Return the current logged in user if any
- *
- * @return ?\RedBeanPHP\OODBBean
+ * Return the current logged in user bean, if any
  */
-        public function user() : ?\RedBeanPHP\OODBBean
+        public function user() : ?OODBBean
         {
             return $this->luser;
         }
 /**
  * Do we have a logged in user?
- *
- * @return bool
  */
         public function hasUser() : bool
         {
             return is_object($this->luser);
         }
 /**
- * Find out if this was validated using a token, if so, it is coming from a device not a browser
- *
- * @return bool
+ * Find out if this was validated using a JWT token, if so, it is (probably) coming from a device not a browser
  */
         public function hasToken() : bool
         {
@@ -102,49 +102,51 @@
 /**
  * Save values into the on cache
  *
- * @param string   $id
- * @param string   $on
- * @param string   $fn
+ * ON JavaScript on tags is saved up so that it can all be generated into a single block
+ * that can be hashed/nonced so that CSP does not complain.
  *
- * @return void
+ * @param $id The id for the tag
+ * @param $on The type of on (e.g. click, load etc.)
+ * @param $fn The code to be executed
+ *
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function saveOn($id, $on, $fn) : void
+        public function saveOn(string $id, string $on, string $fn) : void
         {
             $this->ons[$id][$on] = $fn;
         }
 /**
  * Get the JS for onloading the ons
  *
- * @return string
+ * This generates a block of vanilla JavaScript that will set up all the necessary in conditions.
+ *
  * @psalm-suppress PossiblyUnusedMethod
  * @phpcsSuppress PhpCs.StringNotation.SingleQuoteFixer
  */
-        public function getOns()
+        public function getOns() : string
         {
             $res = '';
             foreach ($this->ons as $id => $conds)
             {
-                $xres = '';
                 foreach ($conds as $on => $fn)
                 {
-                    $xres .= ".on('".$on."', ".$fn.')';
+                    $res .= "document.getElementById('".$id."').addEventListener('".$on."', ".$fn.');'.PHP_EOL;
                 }
-                $res .= "$('#".$id."')".$xres.";\n";
             }
             return $res;
         }
 /**
  * Find a rolename bean
  *
- * @param string    $name   A Role name
+ * This will load the name cache if needed and then return the relevant bean (if it exists). The
+ * existence test could be replaced by an assert if you really wanted.
+ *
+ * @param  $name   A Role name
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function roleName(string $name) : \RedBeanPHP\OODBBean
+        public function roleName(string $name) : OODBBean
         {
             if (!isset($this->roles[$name]))
             {
@@ -159,14 +161,15 @@
 /**
  * Find a rolecontext bean
  *
- * @param string    $name   A Role Context
+ * This will load the name cache if needed and then return the relevant bean (if it exists). The
+ * existence test could be replaced by an assert if you really wanted.
+ *
+ * @param $name   A Context name
  *
  * @throws \Framework\Exception\InternalError
- *
- * @return \RedBeanPHP\OODBBean
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function roleContext(string $name) : \RedBeanPHP\OODBBean
+        public function roleContext(string $name) : OODBBean
         {
             if (!isset($this->contexts[$name]))
             {
@@ -179,56 +182,49 @@
             return $this->contexts[$name];
         }
 /**
- * Load a bean
+ * Load a bean that must exist, otherwise throw an exception.
  *
- * @param string    $bean       A bean type name
- * @param int       $id         A bean id
- * @param bool      $forupdate  If TRUE then use loadforupdate
+ * R::load returns a new bean with id 0 if the given id does not exist. This function throws an exception
+ * if that happens as it is assumed that the bean must exist.
  *
- * R::load returns a new bean with id 0 if the given id does not exist.
+ * @param $bean       A bean type name
+ * @param $id         A bean id
+ * @param $forupdate  If TRUE then use loadforupdate
+ * @param $msg        A custom error message
  *
  * @throws  \Framework\Exception\MissingBean
- * @throws  \InvalidArgumentException - this would be an internal error
- *
- * @return \RedBeanPHP\OODBBean
  */
-        public function load(string $bean, int $id, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function load(string $bean, int $id, bool $forupdate = FALSE, string $msg = '') : OODBBean
         {
-            $foo = $forupdate ? \R::loadforupdate($bean, $id) : \R::load($bean, $id);
+            $foo = $forupdate ? \R::loadForUpdate($bean, $id) : \R::load($bean, $id);
             if ($foo->getID() == 0)
             {
-                throw new \Framework\Exception\MissingBean('Missing '.$bean);
+                throw new \Framework\Exception\MissingBean($msg !== '' ? $msg : 'Missing '.$bean);
             }
             return $foo;
         }
 /**
- * Return the local object
+ * Return the Local singleton
  *
  * @psalm-suppress MoreSpecificReturnType
- *
- * @return \Framework\Local
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
         public function local() : \Framework\Local
         {
-            return \Framework\Local::getInstance();
+            return \Framework\Local::getInstance(); // @phan-suppress-current-line PhanTypeMismatchReturn
         }
 /**
  * Return a Formdata object
  *
- * @param ?string $which
+ * @param $which The formdata object needed - get, post, put, file, cookie
  *
- * @return object
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
-        public function formData(?string $which = NULL) : object
+        public function formData(string $which) : \Framework\FormData\Base
         {
-            if ($which == NULL)
-            { // this is backward compatibility and will be removed in the future
-                return \Framework\Support\FormData::getInstance();
-            }
+            $which = strtolower($which);
             if (!isset($this->getters[$which]))
             {
                 $class = '\Framework\FormData\\'.ucfirst($which);
@@ -237,15 +233,14 @@
             return $this->getters[$which];
         }
 /**
- * Return the Web object
+ * Return the Web singleton
  *
- * @return \Framework\Web\Web
  * @psalm-suppress LessSpecificReturnStatement
  * @psalm-suppress MoreSpecificReturnType
  */
         public function web() : \Framework\Web\Web
         {
-            return \Framework\Web\Web::getInstance();
+            return \Framework\Web\Web::getInstance(); // @phan-suppress-current-line PhanTypeMismatchReturn
         }
 /*
  ***************************************
@@ -253,25 +248,22 @@
  ***************************************
  */
 /**
- * Look for a mobile access token
+ * Look for a mobile access JWT token
  *
  * @internal
  *
- * @return void
  * @throws \Framework\Exception\InternalError
  */
         private function mtoken() : void
         {
             // This has to be a loop as we have no guarantees of the case of the keys in the returned array.
-            $auth = array_filter(getallheaders(), static function ($key) {
-                return FW::AUTHTOKEN === strtoupper($key);
-            }, ARRAY_FILTER_USE_KEY);
+            $auth = \array_filter(\getallheaders(), static fn($key) => FW::AUTHTOKEN === \strtoupper($key), \ARRAY_FILTER_USE_KEY);
             if (!empty($auth))
             { // we have mobile authentication in use
                 try
                 {
                     /** @psalm-suppress UndefinedClass - the JWT code is not included in the psalm tests at the moment */
-                    $tok = \Framework\Utility\JWT\JWT::decode(array_shift($auth), FW::AUTHKEY);
+                    $tok = \Framework\Utility\JWT\JWT::decode(\array_shift($auth), FW::AUTHKEY);
                 }
                 catch (\Throwable $e)
                 { // token error of some kind so return no access.
@@ -283,54 +275,43 @@
                     if ($this->luser->getID() != $tok->sub)
                     {
                         throw new \Framework\Exception\InternalError('User conflict');
-                        /* NOT REACHED */
                     }
                 }
                 else
                 {
-                    $this->luser = $this->load('user', $tok->sub);
+                    $this->luser = $this->load(FW::USER, $tok->sub);
                 }
                 $this->tokenAuth = TRUE;
             }
         }
 /**
  * Initialise the context and return self
- *
- * @return \Framework\Support\ContextBase
  */
-        public function setup() : \Framework\Support\ContextBase
+        public function setup() : ContextBase
         {
-            ini_set('session.use_only_cookies', TRUE); // make sure PHP is set to make sessions use cookies only
-            ini_set('session.use_trans_sid', FALSE);   // this helps a bit towards making session hijacking more difficult
-            ini_set('session.cookie_httponly', 1);
+            \ini_set('session.use_only_cookies', '1'); // make sure PHP is set to make sessions use cookies only
+            \ini_set('session.use_trans_sid', '0');   // this helps a bit towards making session hijacking more difficult
+            \ini_set('session.cookie_httponly', '1');     // You can get rid of these calls if you know your php.ini is set up correctly
             if (isset($_COOKIE[Config::SESSIONNAME]))
-            {# see if there is a user variable in the session....
+            { // see if there is a userID variable in the session....
                 /** @psalm-suppress UnusedFunctionCall */
-                session_start(['name' => Config::SESSIONNAME]);
-                if (isset($_SESSION['user']))
-                {
-                    $this->luser =  $_SESSION['user']->fresh();
+                \session_start(['name' => Config::SESSIONNAME]);
+                if (isset($_SESSION['userID']))
+                { // there is a user id in the session so load the relevant user bean
+                    $this->luser =  $this->load(FW::USER, $_SESSION['userID']);
+                }
+                else
+                { // something not right so kill session and the session cookie
+                    \session_destroy();
+                    $params = \session_get_cookie_params();
+                    \setcookie(\session_name(), '', \time() - 42000,
+                        $params['path'], $params['domain'], $params['secure'], $params['httponly']
+                    );
                 }
             }
             $this->mtoken();
 
-            if (isset($_SERVER['REDIRECT_URL']) && !preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
-            {
-/*
- *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
- *  Older versions will not have this so the code will do nothing.
- */
-                $uri = preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
-            }
-            else
-            {
-                $uri = $_SERVER['REQUEST_URI'];
-            }
-            if ($_SERVER['QUERY_STRING'] !== '')
-            { // there is a query string so get rid it of it from the URI
-                [$uri] = explode('?', $uri);
-            }
-            $req = array_filter(explode('/', $uri)); // array_filter removes empty elements - trailing / or multiple /
+            $req = \array_filter(\explode('/', $this->web()->request()), static fn($val) => $val !== ''); // array_filter removes empty elements - trailing / or multiple /
 /*
  * If you know that the base directory is empty then you can delete the next test block.
  *
@@ -341,16 +322,13 @@
  */
             if ($this->local()->base() !== '')
             { // we are in at least one sub-directory
-                $bsplit = array_filter(explode('/', $this->local()->base()));
-                foreach (range(1, count($bsplit)) as $c)
-                {
-                    array_shift($req); // pop off the directory name...
-                }
+                $bsplit = \array_filter(\explode('/', $this->local()->base()), static fn($val) => $val !== '');
+                $req = \array_slice($req, \count($bsplit));
             }
             if (!empty($req))
             { // there was something after the domain name so split it into action and rest...
-                $this->reqaction = strtolower(array_shift($req));
-                $this->reqrest = empty($req) ? [''] : array_values($req);
+                $this->reqaction = \strtolower(\array_shift($req));
+                $this->reqrest = empty($req) ? [''] : $req;  // there may only have been an action
             }
             return $this;
         }

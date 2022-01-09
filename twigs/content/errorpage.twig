@@ -4,15 +4,13 @@
 
 {% import "@content/iconmacro.twig" as i %}
 
-{% block header %}
-    <section class="col-md-12 mt-5 text-center">
-        <h1 class="text-center">{{heading}}</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1 class="text-center">{{heading}}</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row mt-4">
-        <article class="ml-auto col-lg mr-auto text-center">
+        <article class="mx-auto col-lg text-center">
             <div class="jumbotron">
                 {% if left %}
                     <div class="text-left">{{raw ? message|raw : message}}</div>

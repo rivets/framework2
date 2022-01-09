@@ -1,6 +1,8 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
 {% set parsley = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -20,45 +22,43 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('#addfform').on('submit', false).parsley()
-    $('#addb').on('click', function(e){
-        e.preventDefault();
-        $(this).attr('disabled', true); // disable submit button
+    fwdom.on('#addfform', 'submit', function(e){fwdom.stop(e); return false; });
+    fwdom.mkjQ('#addfform').parsley()
+    fwdom.on('#addb', 'click', function(e){
+        fwdom.stop(e)
+        this.disabled = true;
         let data = {}
-        const frm = $('#addfform')
-        $('input:checked', frm).each(function(index, element){
-             data[$(this).attr('name')] = $(this).val();
-        })
-        $('input:text', frm).each(function(index, element){
-             data[$(this).attr('name')] = $(this).val()
-        })
+        const frm = document.getElementById('addfform');
+        for (let sel of ['checked', 'text'])
+        {
+            frm.querySelectorAll('input:'+sel).foreach(function(el, index){
+                 data[el.getAttribute('name')] = el.value;
+            });
+        }
         framework.beanCreate('{{constant('Config\\Framework::FORM')}}', data, function(ret){
-            $('#addf').modal('hide')
-            $('#utab tbody').append('<tr data-id="'+ret+'"><td>' + data.name + '</td>'+
-                '<td>' + data.action + '</td>' +
-                '<td>' + data.idval + '</td>' +
-                '<td>' + mname[data.method] + '</td>' +
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('addf')).hide();
+            let newd = document.createElement('tr');
+            newd.setAttribute('data-id', ret);
+            newd.innerHTML = '<td>' + data.name + '</td>'+
+                '<td>' + data.action + '</td><td>' + data.idval + '</td><td>' + mname[data.method] + '</td>' +
                 '<td>' + (data.multipart != undefined ? '{{i.check()}}' : '') + '</td>' +
-                '<td title="View">{{i.view('viewb')}}</td>' +
-                '<td title="Edit">{{i.edit('editb')}}</td>' +
-                '<td>{{i.delete('delb')}}</td></tr>'
-            )
-            framework.doBGFade('#utab tbody:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
-        }, '#addb');
-    })
-    $('#utab').on('click', {bean: '{{constant('Config\\FRAMEWORK::FORM')}}', clicks: clicks}, framework.tableClick);
+                '<td title="View">{{i.view('viewb')}}</td><td title="Edit">{{i.edit('editb')}}</td><td>{{i.delete('delb')}}</td></tr>';
+            fwdom.on('.delb', 'click', deltable, newd);
+            document.querySelector('#utab').appendChild(newd);
+            framework.doBGFade('#utab:last-child', [245,255,159], [255,255,255], 'transparent', 75, 20, 4)
+        }, 'addb');
+    });
+    fwdom.on('#utab', 'click', function(e){ e.data = {bean: '{{constant('Config\\Framework::FORM')}}', clicks: clicks}; framework.containerClick(e); });
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Forms</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Forms</h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mr-auto">
-            <table class="table table-striped table-hover" id="utab">
+        <article class="mx-auto col">
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -67,10 +67,10 @@
                         <th>Class</th>
                         <th>Method</th>
                         <th>Multipart</th>
-            		<th colspan="3">&nbsp;</th>
+                        <th colspan="3">&nbsp;</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="#utab">
                     {% for u in siteinfo.forms %}
                     <tr data-id="{{u.id}}">
                         <td>{{u.name}}</td>
@@ -88,13 +88,13 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <p><button class="btn btn-primary" data-toggle="modal" data-target="#addf" type="button">Add a Form</button></p>
+            <p>{{m.invoke('#addf', 'Add a Form')}}</p>
         </article>
     </section>
     {{m.open({id: 'addf', title: 'Add a Form'})}}
     <div class="modal-body">
         <form id="addfform" action="#" method="post">
-            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, parsley: {trigger: 'change', type: 'alphanum'} })}}
+            {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: TRUE, parsley: {trigger: 'change', type: 'alphanum'} })}}
             {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', parsley: {trigger: 'change', type: 'url'} })}}
             {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', parsley: {trigger: 'change', type: 'alphanum'} })}}
             {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class' })}}

@@ -3,7 +3,7 @@
  * A trait supporting classess that use roles
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2020 Newcastle University
+ * @copyright 2017-2021 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -24,8 +24,6 @@
  *
  * @param array<array<string>>  $roles  [['context', 'role'],...]]
  * @param bool                  $or     If TRUE then the condition is OR
- *
- * @return array
  */
         public function checkrole(array $roles, bool $or = TRUE) : array
         {
@@ -34,17 +32,14 @@
             {
                 $res[] = $this->hasrole(...$rc);
             }
-            $res = array_filter($res); // get rid of any null entries
-            return $or ? $res : (count($res) === count($roles) ? $res : []); // for an "and" you have to have all of them.
+            $res = \array_filter($res); // get rid of any null entries
+            return $or ? $res : (\count($res) === \count($roles) ? $res : []); // for an "and" you have to have all of them.
         }
 /**
  * Check for a role
  *
  * @param string    $contextname    The name of a context...
  * @param string    $rolename       The name of a role - if this is the empty string then having the context is enough
- *
- *
- * @return ?object
  */
         public function hasrole(string $contextname, string $rolename) : ?object
         {
@@ -54,7 +49,7 @@
                 $rolecontextbean = $cont->rolecontext($contextname);
                 $rolenamebean = $rolename === '' ? NULL : $cont->rolename($rolename); // if === '' then only checking for a context
             }
-            catch (\Framework\Exception\InternalError $e)
+            catch (\Framework\Exception\InternalError)
             {
                 return NULL;
             }
@@ -65,15 +60,13 @@
  *
  * @param \RedBeanPHP\OODBBean    $rolecontext  A rolecontext
  * @param ?\RedBeanPHP\OODBBean   $rolename     A rolename - if this is NULL having the context is enough
- *
- * @return ?object
  */
         public function hasRoleByBean(\RedBeanPHP\OODBBean $rolecontext, ?\RedBeanPHP\OODBBean $rolename) : ?object
         {
             return \R::findOne($this->roletype, FW::ROLECONTEXT.'_id=? and '.FW::USER.'_id=? '.
-                (!is_null($rolename) ? 'and '.FW::ROLENAME.'_id=? ' : '').
+                (!\is_null($rolename) ? 'and '.FW::ROLENAME.'_id=? ' : '').
                 'and start <= UTC_TIMESTAMP() and (end is NULL or end >= UTC_TIMESTAMP())',
-                [$rolecontext->getID(), $this->bean->getID(), is_null($rolename) ? '' : $rolename->getID()]);
+                [$rolecontext->getID(), $this->bean->getID(), \is_null($rolename) ? '' : $rolename->getID()]);
         }
 /**
  * Delete a role
@@ -82,7 +75,6 @@
  * @param string    $rolename       The name of a role....
  *
  * @throws \Framework\Exception\BadValue
- * @return void
  */
         public function delrole(string $contextname, string $rolename) : void
         {
@@ -109,7 +101,6 @@
  * @param string    $end            A datetime or ''
  *
  * @throws \Framework\Exception\BadValue
- * @return \RedBeanPHP\OODBBean
  */
         public function addrole(string $contextname, string $rolename, string $otherinfo,
             string $start, string $end = '') : \RedBeanPHP\OODBBean
@@ -126,8 +117,6 @@
  * @param string                $otherinfo      Any other info that is to be stored with the role
  * @param string                $start          A datetime
  * @param string                $end            A datetime or ''
- *
- * @return \RedBeanPHP\OODBBean
  */
         public function addRoleByBean(\RedBeanPHP\OODBBean $rolecontext, \RedBeanPHP\OODBBean $rolename,
             string $otherinfo, string $start, string $end = '') : \RedBeanPHP\OODBBean
@@ -146,17 +135,15 @@
  * Get all currently valid roles for this bean
  *
  * @param bool  $all    If TRUE then include expired roles
- *
- * @return array<\RedBeanPHP\OODBBean>
  */
         public function roles(bool $all = FALSE) : array
         {
             if ($all)
             {
-                return $this->bean->with('order by start,end')->{'own'.ucfirst($this->roletype)};
+                return $this->bean->with('order by start,end')->{'own'.\ucfirst($this->roletype)};
             }
             $cond = 'start <= UTC_TIMESTAMP() and (end is null or end >= UTC_TIMESTAMP()) order by start, end';
-            return $this->bean->withCondition($cond)->{'own'.ucfirst($this->roletype)};
+            return $this->bean->withCondition($cond)->{'own'.\ucfirst($this->roletype)};
         }
 /**
  * Deal with the role selecting part of a form
@@ -164,13 +151,11 @@
  * @param \Support\Context  $context    The context object
  *
  * @psalm-suppress UndefinedClass
- *
- * @return void
  */
         public function editroles(\Support\Context $context) : void
         {
             $fdt = $context->formdata('post');
-            if ($fdt->exists('exist'))
+            if ($fdt->hasForm())
             {
                 foreach ($fdt->fetchArray('exist') as $ix => $rid)
                 {
@@ -190,8 +175,8 @@
                     $start = $fdt->fetch(['start', $ix]);
                     $info = $fdt->fetch(['otherinfo', $ix]);
 
-                    $rcb = $context->load(FW::ROLECONTEXT, $cn);
-                    $rnb = $context->load(FW::ROLENAME, $rn);
+                    $rcb = $context->load(FW::ROLECONTEXT, (int) $cn);
+                    $rnb = $context->load(FW::ROLENAME, (int) $rn);
                     $prole = $this->hasRoleByBean($rcb, $rnb);
                     if (is_object($prole))
                     { // exists already...

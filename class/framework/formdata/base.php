@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -16,25 +16,24 @@
     class Base
     {
 /**
- * @var int Indicates which Superglobal we are using
- */
-        protected $which;
-/**
  * @var array The array that contains the relevant values.
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
  */
-        protected $super;
+        protected array $super;
 /**
  * Constructor
  *
  * @param ?int  $which  The appropriate INPUT_ filter or NULL (which will be for PUT/PATCH...)
  */
-        public function __construct(?int $which)
+        public function __construct(protected ?int $which)
         {
-            $this->which = $which;
             if ($this->which !== NULL)
-            {
+            { // we have nominated a superglobal
                 $this->super = $this->getSuper($this->which);
+            }
+            else
+            {
+                $this->super = [];
             }
         }
 /*
@@ -46,21 +45,23 @@
  *  Return the relevant Superglobal
  *
  *  @TODO Change this to use match() when PHP 8 is released
- *
- *  @param int  $which
- *
- *  @return array
  */
         protected function getSuper(?int $which = NULL) : array
         {
             switch($which ?? $this->which)
             {
-            case INPUT_GET:     return $_GET;
-            case INPUT_POST:    return $_POST;
-            case INPUT_COOKIE:  return $_COOKIE;
-            case INPUT_SERVER:  return $_SERVER;
-            case INPUT_ENV:     return $_ENV;
-            case NULL:          return $this->super;
+            case \INPUT_GET:
+                return $_GET;
+            case \INPUT_POST:
+                return $_POST;
+            case \INPUT_COOKIE:
+                return $_COOKIE;
+            case \INPUT_SERVER:
+                return $_SERVER;
+            case \INPUT_ENV:
+                return $_ENV;
+            case NULL:
+                return $this->super;
             }
             throw new BadValue('Invalid Superglobal constant');
         }
@@ -69,21 +70,18 @@
  *
  * @internal
  *
- * @param string    $name       The key
- * @param mixed     $default    The default value if needed
- * @param bool      $throw      If TRUE then throw an execption if it does not exist
- * @param bool      $isArray    If TRUE then check that this is an array
- * @param ?int      $filter     Filter to apply or NULL
- * @param mixed     $options    Filter options
- * @param bool      $allowArray If TRUE then allow return of array elements rather than just a value
- *
- * @return array
+ * @param array|string    $keys       The key
+ * @param mixed           $default    The default value if needed
+ * @param bool            $throw      If TRUE then throw an execption if it does not exist
+ * @param bool            $isArray    If TRUE then check that this is an array
+ * @param ?int            $filter     Filter to apply or NULL
+ * @param array|int       $options    Filter options
  */
-        final public function getValue($name, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, $options = []) : array
+        final public function getValue(array|string $keys, $default = NULL, bool $throw = TRUE, bool $isArray = FALSE, ?int $filter = NULL, array|int $options = 0) : array
         {
             try
             {
-                $dt = $this->fetchFrom(is_array($name) ? $name : [$name], $default, TRUE, $filter, $options);
+                $dt = $this->fetchFrom($keys, $default, TRUE, $filter, $options);
             }
             catch (BadValue $e)
             { // does not exist
@@ -99,7 +97,7 @@
                 {
                     if ($throw)
                     {
-                        throw new BadValue('Form Item '.$name.' is an array');
+                        throw new BadValue('Form Item is an array');
                     }
                     return [FALSE, $default];
                 }
@@ -108,7 +106,7 @@
             {
                 if ($throw)
                 {
-                    throw new BadValue('Form Item '.$name.' is not an array');
+                    throw new BadValue('Form Item is not an array');
                 }
                 return [FALSE, $default];
             }
@@ -121,22 +119,23 @@
  *
  * @internal
  *
- * @param string[]  $keys       An array of keys
- *
- * @return mixed;
  * @throws BadValue
  */
-        private function find(array $keys)
+        private function find(array|string $keys) : array|string
         {
+            if (!\is_array($keys))
+            {
+                $keys = [$keys];
+            }
             $part = $this->super;
             $etrack = [];
             while (TRUE) // iterate over the array of keys
             {
-                $key = array_shift($keys);
+                $key = \array_shift($keys);
                 $etrack[] = $key;
                 if (!isset($part[$key]))
                 { // missing item so fail or return default
-                    throw new BadValue('Missing form item: '.implode('/', $etrack));
+                    throw new BadValue('Missing form item: '.\implode('/', $etrack));
                 }
                 $part = $part[$key];
                 if (empty($keys))
@@ -155,13 +154,16 @@
  * @param mixed     $default    A value to return if the item is missing and we are not failing
  * @param bool      $throw      If TRUE Then throw an exception rather than returning the default
  * @param ?int      $filter     A PHP filter
- * @param mixed     $options    Filter options
+ * @param array|int $options    Filter options
  *
  * @throws BadValue
- * @return mixed
  */
-        private function fetchFrom(array $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, $options = [])
+        private function fetchFrom(array|string $keys, $default = NULL, bool $throw = FALSE, ?int $filter = NULL, array|int $options = 0) : array|string
         {
+            //if (!\is_array($keys))
+            //{
+            //    $keys = [$keys];
+            //}
             try
             {
                 $part = $this->find($keys);
@@ -179,7 +181,7 @@
                 $part = trim($part);
                 if (!empty($filter))
                 { // need to apply a filter to the value
-                    $part = filter_var($part, $filter, $options);
+                    $part = \filter_var($part, $filter, $options);
                     if ($part === FALSE || $part === NULL)
                     { // it failed
                         if ($throw)
@@ -188,7 +190,7 @@
                         }
                         return $default;
                     }
-                    $part = trim($part);
+                    $part = \trim($part);
                 }
             }
             return $part;
@@ -199,42 +201,37 @@
  *******************************************************************
  */
 /**
- * Is the key in the array?
- *
- * @TODO Fix the need for two calls. They are there because getval does an array check which is
- *       not relevant for an existence check. We need a three valued boolean :-)
- *
- * @param mixed    $name   The keys
- *
- * @return bool
+ * Check for keys in the array
  */
-        public function exists($name) : bool
+        public function exists(array|string $keys) : bool
         {
             try
             {
-                $this->find(is_array($name) ? $name : [$name]);
+                $this->find($keys);
             }
-            catch (BadValue $e)
+            catch (BadValue)
             { // not there
                 return FALSE;
             }
             return TRUE;
         }
 /**
- * Is the key in the array?
- *
- * @TODO Fix the need for two calls. They are there because getval does an array check which is
- *       not relevant for an existence check. We need a three valued boolean :-)
- *
- * @param mixed    $name   The keys
+ * Key(s) must be in array, otherwise throw
  *
  * @throws BadValue
- * @return bool
  */
-        public function mustExist($name) : bool
+        public function mustExist(array|string $keys) : bool
         {
-            $this->find(is_array($name) ? $name : [$name]);
+            $this->find($keys);
             return TRUE;
+        }
+/**
+ * Return TRUE if the  related Superglobal is not empty
+ * Not 100% reliable for cookies but good for GET and POST
+ */
+        public function hasForm() : bool
+        {
+            return count($this->super) > 0;
         }
     }
 ?>

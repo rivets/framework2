@@ -2,11 +2,9 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Test FormData calls for {{op}}</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Test FormData calls for {{op}}</h1>
+{% endblock headerbody %}
 
 {% block onload %}
     {% if op == 'put' %}
@@ -35,7 +33,7 @@
     {% if op == 'cookie' %}
         document.cookie = 'exist=42';
         document.cookie = 'email=foo@bar.com';
-        document.cookie = 'notarray=43';
+        document.cookie = 'notarray[0]=43';
         document.cookie = 'aexist[0]=42';
         document.cookie = 'aexist[1]=66'; // two cookies with same name overwrite each other so [] doesnt work more than once
         document.cookie = 'nexist[14]=42';
@@ -51,7 +49,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="ml-auto col-md-10 mb-5">
+        <article class="mx-auto col-md-10 mb-5">
             {% include '@util/message.twig' %}
             <pre>{{array}}</pre>
             {{f.startform({method: op == 'cookie' ? 'get' : op, id: 'tform'})}}

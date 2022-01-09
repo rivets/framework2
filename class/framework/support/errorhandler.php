@@ -17,8 +17,6 @@
 /**
  * Generate a message page for early failures
  *
- * @internal
- *
  * @param string    $title      Page title and heading
  * @param string    $msg        The message to be displayed
  * @param bool      $tellAdmin  If TRUE then mail admin
@@ -31,7 +29,7 @@
             {
                 $this->tellAdmin($title.' - '.$msg, 'Error', 'local.php', 0);
             }
-            if ($this->local->hasTwig())
+            if ($this->local->hasRenderer())
             { // we have twig so can render a template
                 $this->local->render('@admin/msgpage.twig', ['title' => $title, 'msg' => $msg]);
             }
@@ -84,7 +82,7 @@
             }
             $this->back = $e->getTraceAsString();
             $ekey = $this->tellAdmin(
-                get_class($e).': '.$e->getMessage(),
+                $e::class.': '.$e->getMessage(),
                 0,
                 $e->getFile(),
                 $e->getLine()
@@ -125,34 +123,18 @@
                 $errfile,
                 $errline
             );
-            if ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR]))
+            if ($errno != E_DEPRECATED && ($this->debug || in_array($errno, [E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR])))
             { // this is an internal error or we are debugging, so we need to stop
                 $this->make500($ekey);
                 exit;
                 /* NOT REACHED */
             }
 /*
- * If we get here it's a warning or a notice, so we arent stopping
+ * If we get here it's a warning or a notice, so we aren't stopping
  *
  * Change this to an exit if you don't want to continue on any errors
  */
             return TRUE;
-        }
-/**
- * Handle an expectation failure
- *
- * @param string    $file    File name
- * @param int       $line      Line number in file
- * @param string    $message    Message
- *
- * @return void
- */
-        public function assertFail($file, $line, $message) : void
-        {
-            $ekey = $this->tellAdmin('Assertion Failure: '.$message, 0, $file, $line);
-            $this->make500($ekey);
-            exit;
-            /* NOT REACHED */
         }
     }
 ?>

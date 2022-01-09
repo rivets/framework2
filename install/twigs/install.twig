@@ -7,39 +7,51 @@
 {% block setup %}
     function shbit(btn, id)
     {
-        var ce = $('#'+id)
-        if (btn.is(':checked'))
+        var ce = document.getElementById(id)
+        if (btn.checked)
         { // show fieldset and enable inputs
-            ce.show();
-            $('input', ce).prop('disabled', false)
+            ce.style.display ='block';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = false;
+            });
         }
         else
         { // hide and disable
-            ce.hide();
-            $('input', ce).prop('disabled', true)
+            ce.style.display = 'none';
+            ce.querySelectorAll('input').forEach(function(item){
+                item.disabled = true;
+            });
         }
     }
 {% endblock setup %}
 
 {% block onload %}
-    $('#mailconfig,#cfem,#recapkeys').hide()
-    $('#mailon').on('click', function(){ shbit($(this), 'mailconfig'); });
-    $('#regis').on('click', function(){ shbit($(this), 'cfem'); });
-    $('#recap').on('change', function(){
-        if ($(this).is(':checked'))
-        {
-           $('#recapkeys').hide();
-        }
-        else
-        {
-           $('#$recapkeys').show();
-        }
+    for (let id of ['mailconfig', 'cfem', 'recapkeys', 'ssltime'])
+    {
+        document.getElementById(id).style.display = 'none';
+    }
+    document.getElementById('mailon').addEventListener('change', function(e){ shbit(this, 'mailconfig'); });
+    document.getElementById('regis').addEventListener('change', function(e){ shbit(this, 'cfem'); });
+    document.getElementById('fssl').addEventListener('change', function(e){
+        document.getElementById('ssltime').style.display = this.checked ? 'block' : 'none';
+    });
+    document.querySelectorAll('[name="recaptcha"]').forEach(function(item){
+        item.addEventListener('change', function(){
+            if (this.value == 0)
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'none' : 'block';
+            }
+            else
+            {
+                document.getElementById('recapkeys').style.display = this.checked ? 'block' : 'none';
+            }
+        });
     });
 {% endblock onload %}
 
 {% block main%}
     <div class="row">
-        <div class="ml-auto col-md-8 mr-auto">
+        <div class="mx-auto col-md-8">
             <h1>Framework Installer</h1>
             {% if fail %}
                 <h2>Error!!</h2>
@@ -123,23 +135,23 @@
                         <div class="form-group">
                             <label for="sn" class="control-label">Site Name</label>
                             <input type="text" id="sn" name="sitename" value="{{name}}" placeholder="The name of your site"
-                                class="form-control" required="required" data-parsley-type="alphanum"/>
+                                class="form-control" required data-parsley-type="alphanum"/>
                         </div>
                         <div class="form-group">
                             <label for="sn" class="control-label">Site URL</label>
                             <input type="text" id="sn" name="siteurl" value="{{siteurl}}" placeholder="The canonical url for your site" class="form-control"
-                              required="required" data-parsley-type="url"/>
+                              required data-parsley-type="url"/>
                         </div>
                         <div class="form-group">
                             <label for="sn" class="control-label">Site No Reply Email</label>
-                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required="required"/>
+                            <input type="email" id="sn" name="sitenoreply" value="{{noreply}}" placeholder="noreply@your.site" class="form-control" required/>
                         </div>
                     </fieldset>
                     <fieldset>
                         <legend>Database Information</legend>
                         <div class="form-group">
                             <label for="dt" class="control-label">Database Type</label>
-                            <select is="dt" name="dbtype" class="form-control" required="required">
+                            <select is="dt" name="dbtype" class="form-control" required>
                                 <option value="mysql">MySQL</option>
                                 <option value="mysql">MariaDB</option>
                                 <option value="pgsql">PostgresSQL</option>
@@ -149,25 +161,25 @@
                         </div>
                         <div class="form-group">
                             <label for="dh" class="control-label">Host</label>
-                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control" required="required"/>
+                            <input type="text" id="dh" name="dbhost" value="localhost" placeholder="Where your DB is hosted" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label for="dn" class="control-label">Database</label>
                             <input type="text" id="dn" name="dbname" value="{{name}}" placeholder="Your database name" class="form-control"
-                                required="required" data-parsley-type="alphanum"/>
+                                required data-parsley-type="alphanum"/>
                         </div>
                         <div class="control-group">
                             <label for="du" class="control-label">User</label>
                             <input type="text" id="du" name="dbuser" value="{{name}}" placeholder="Your database username" class="form-control"
-                            required="required" data-parsley-type="alphanum"/>
+                            required data-parsley-type="alphanum"/>
                         </div>
                         <div class="control-group">
                             <label for="dp" class="control-label">Password</label>
-                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required="required"/>
+                            <input type="password" id="dp" name="dbpass" placeholder="**************" class="form-control" required/>
                         </div>
                         <div class="control-group">
                             <label for="cdp" class="control-label">Confirm Password</label>
-                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required="required"/>
+                            <input type="password" id="cdp" name="cdbpass" placeholder="**************" class="form-control" data-parsley-equalto="#dp" required/>
                         </div>
                     </fieldset>
                     <p class="mt-4">
@@ -256,6 +268,10 @@
                     </fieldset>
                     <fieldset>
                         <legend>Security</legend>
+                        <div class="form-group">
+                            <label for="mpl" class="control-label">Minimum password length</label>
+                            <input type="text" id="mpl" name="minpwlen" value="8" placeholder="Minimum password length" class="form-control"/>
+                        </div>
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input" name="usecsp" value="1"/> Emit a Content Security Policy header
@@ -268,46 +284,52 @@
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">HSTS</a> header (SSL all the time)
+                                <input type="checkbox" id="fssl" class="form-check-input" name="forcessl" value="1"/> Emit <a href="https://tools.ietf.org/html/rfc6797">Strict Transport Security</a> header (SSL all the time)
                             </label>
                         </div>
+                        <div id="ssltime">
+                            <div class="form-group">
+                                <label for="st" class="control-label">Enforced SSL Period in seconds</label>
+                                <input type="text" id="st" name="ssltime" value="31536000" placeholder="Time period in seconds" class="form-control"/>
+                            </div>
+                        </div>
                         <div class="form-check">
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" id="recap" class="form-check-input" name="recaptcha" value="0" checked/> No Captcha
                             </label>
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" class="form-check-input" name="recaptcha" value="2"/> Recaptcha V2
                             </label>
-                            <label class="form-check-label">
+                            <label class="form-check-label col-md-3">
                                 <input type="radio" class="form-check-input" name="recaptcha" value="3"/> Recaptcha V3
                             </label>
                         </div>
                         <div id="recapkeys">
                             <div class="form-group">
                                 <label for="rk" class="control-label">Your ReCaptcha Key</label>
-                                <input type="text" id="rk" name="recaptchakey" value="{{name}}" placeholder="ReCaptcha Key" value="" class="form-control"/>
+                                <input type="text" id="rk" name="recaptchakey" placeholder="ReCaptcha Key" value="" class="form-control"/>
                             </div>
                             <div class="form-group">
                                 <label for="srk" class="control-label">Your ReCaptcha Secret</label>
-                                <input type="text" id="srk" name="recaptchasecret" value="{{name}}" placeholder="ReCaptcha Secret" value="" class="form-control"/>
+                                <input type="text" id="srk" name="recaptchasecret" placeholder="ReCaptcha Secret" value="" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="em" class="control-label">Admin Email</label>
-                            <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required="required"/>
+                            <input type="email" id="em" name="sysadmin" value="{{adminemail}}" placeholder="Email address for error reporting etc." class="form-control" required/>
                         </div>
                         <div class="form-group">
                             <label for="au" class="control-label">Admin User Login</label>
                             <input type="text" id="au" name="admin" value="{{name}}admin" placeholder="Admin user login" class="form-control"
-                                required="required" data-parsley-type="alphanum"/>
+                                required data-parsley-type="alphanum"/>
                         </div>
                         <div class="form-group">
                             <label for="ap" class="control-label">Admin Password</label>
-                            <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required="required"/>
+                            <input type="password" id="ap" name="adminpw" placeholder="**************" class="form-control" required/>
                         </div>
                         <div class="form-group">
                             <label for="acdp" class="control-label">Confirm Password</label>
-                            <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required="required"/>
+                            <input type="password" id="acdp" name="cadminpw" placeholder="**************" class="form-control" data-equalto="#ap" required/>
                         </div>
                     </fieldset>
                     <p><input type="submit" class="btn btn-primary" value="Install"/></p>

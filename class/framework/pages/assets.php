@@ -3,7 +3,7 @@
  * Handle assets access if that is what is wanted
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
+ * @copyright 2016-2021 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -16,11 +16,11 @@
     class Assets extends \Framework\SiteAction
     {
 /** @var string The file name */
-        private $file = '';
+        private string $file = '';
 /** @var int    Last modified time for the file */
-        private $mtime = 0;
+        private int $mtime = 0;
 /** @var array<string> Mime type values */
-        private static $mtypes = [
+        private static array $mtypes = [
             ''      => 'text/plain',
             'css'   => 'text/css',
             'js'    => 'text/javascript',
@@ -38,12 +38,10 @@
  * in the Apache config or you code it in here!
  *
  * @param Context   $context    The context object for the site
- *
- * @return string   A template name
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
-            chdir($context->local()->assetsdir());
+            \chdir($context->local()->assetsdir());
 
             $rest = $context->rest();
             $this->file = implode(DIRECTORY_SEPARATOR, $rest);
@@ -52,30 +50,18 @@
  * PHP file info does not give the correct mime type for compressed css files
  * so we need to do it ourselves which is a pain
  */
-            $fname = array_pop($rest);
+            $fname = \array_pop($rest);
             /** @psalm-suppress PossiblyFalseArgument */
             $dotp = strrchr($fname, '.');
             if ($dotp !== FALSE)
             {
-                $ext = strtolower(substr($dotp, 1));
+                $ext = \strtolower(\substr($dotp, 1));
             }
             else
             {
                 $ext = '';
             }
-            if (isset(self::$mtypes[$ext]))
-            {
-                $mime = self::$mtypes[$ext];
-            }
-            else
-            {
-                $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                if (($mime = finfo_file($finfo, $this->file)) === FALSE)
-                { // there was an error of some kind.
-                    $mime = '';
-                }
-                finfo_close($finfo);
-            }
+            $mime =  self::$mtypes[$ext] ??  \Framework\Support\Security::getInstance()->mimetype($this->file);
             $mag = $this->makemaxage($context);
             $web = $context->web();
             $web->addheader([
@@ -92,24 +78,20 @@
  * Make an etag - overrides the function in SiteAction
  *
  * @param Context   $context   The context object for the site
- *
- * @return string
  */
         public function makeetag(Context $context) : string
         {
-            return sprintf('%u', crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
+            return \sprintf('%u', \crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
         }
 /**
  * Check an etag to see if we need to send the page again or not.
  *
  * @param Context   $context    The context object for the site
  * @param string    $tag        The etag value to check
- *
- * @return bool
  */
         public function checketag(Context $context, string $tag) : bool
         {
-            return substr($tag, 0, -1) === substr($this->makeetag($context), 0, -1);
+            return \substr($tag, 0, -1) === \substr($this->makeetag($context), 0, -1);
         }
 /**
  * Make a maximum age - overrides function in SiteAction
@@ -117,8 +99,6 @@
  * An hour for the most recent volume and a year for everything else
  *
  * @param Context    $context   The context object for the site
- *
- * @return int
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function makemaxage(Context $context) : int
@@ -130,8 +110,6 @@
  *
  * @param Context   $context    The context object for the site
  * @param string    $time       The time value to check
- *
- * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function checkmodtime(Context $context, string $time) : bool

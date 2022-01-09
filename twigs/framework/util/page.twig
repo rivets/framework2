@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
 
     <title>
-        {% block title %}{% if title is defined %}{{title}}{% else %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endif %}{% endblock title %}
+        {% block title %}{% if title is defined %}{{title|raw}}{% else %}{{fwurls.sitename.value|upper}}{% if action != 'home' %} &mdash; {{action}}{% endif %}{% endif %}{% endblock title %}
     </title>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -42,12 +42,12 @@
     {% endblock head %}
     {% if block('style') is defined %}
         {% set nonce = security.makeNonce() %}
-        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        {% do context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('style')}}</style>
     {% endif %}
     {% if block('criticalCSS') is defined %}
         {% set nonce = security.makeNonce() %}
-        {% set x = context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
+        {% do context.web.addcsp('style-src', "'nonce-"~nonce~"'") %}
         <style nonce="{{nonce}}">{{block('criticalCSS')}}</style>
     {% endif %}
 
@@ -67,11 +67,14 @@
                 <script {{h.urlattr(fwurls.jqueryslim)}}></script>
             {% endif %}
         {% endif %}
-        {% if usebootstrapjs or usebootboxjs or fwutils or editable %}  {# editable and bootbox use Bootstrap JS and fwutils uses bootbox #}
-            <script {{h.urlattr(fwurls.popperjs)}}></script>
+        {% if fwdom or fwutils %}
+            <script src="{{assets}}/js/fwdom-min.js"></script>
+        {% endif %}
+        {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS #}
+            <!--<script {{h.urlattr(fwurls.popperjs)}}></script>-->
             <script {{h.urlattr(fwurls.bootjs)}}></script>
         {% endif %}
-        {% if usebootbox or fwutils %} {# fwutils uses bootbox #}
+        {% if usebootbox %}
             <script {{h.urlattr(fwurls.bootbox)}}></script>
         {% endif %}
         {% if fwutils %}
@@ -103,13 +106,22 @@
     {% set sjs, ojs = '', context.getons %}
     {% if block('setup') is defined %}{% set sjs = sjs ~ block('setup')|trim %}{% endif %}
     {% if block('onload') is defined %}
-        {% set ojs = ojs~block('onload')|trim %}
-        {% if ojs|length > 0 %}{% set ojs = 'document.addEventListener(\'DOMContentLoaded\', function(){'~ojs~'});' %}{% endif %}
+        {% set ojs = ojs ~ block('onload')|trim %}
+        {% if ojs|length > 0 %}{% set ojs = "document.addEventListener('DOMContentLoaded', function(){#{ojs}});" %}{% endif %}
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
-        {% set js = "const base = '"~base~"', putorpatch = '" ~ constant('Config\\Config::PUTORPATCH') ~ "';" ~ sjs ~ "\n" ~ ojs %}
-        <script hash="{{context.web.saveCSP('script-src', js)}}">{{js|raw}}</script>
+        {% set nonce = security.makeNonce() %}
+        {% do context.web.addcsp('script-src', "'nonce-#{nonce}'") %}
+        <script nonce="{{nonce}}">const base = '{{base}}', putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
+            {% if fwutils -%}
+                framework.base = '{{base}}'; framework.putorpatch = '{{constant('Config\\Config::PUTORPATCH')}}';
+            {%- else -%}
+                var framework = { base: '{{base}}', putorpatch: '{{constant('Config\\Config::PUTORPATCH')}}' };
+            {%- endif %}
+            {{sjs|raw}}
+            {{ojs|raw}}
+        </script>
     {% endif %}
 </body>
 </html>

@@ -3,8 +3,8 @@
  * A wrapper so that users dont need to edit the FWContext class in order to add features.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2020 Newcastle University
- * @package Framework
+ * @copyright 2016-2021 Newcastle University
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -20,9 +20,6 @@
 /**
  * Return TRUE if the user in the parameter is the same as the current user
  *
- * @param ?\RedBeanPHP\OODBBean    $user
- *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function sameUser(?\RedBeanPHP\OODBBean $user) : bool
@@ -31,7 +28,7 @@
             return $user !== NULL && $this->hasuser() && $this->user()->equals($user);
         }
 /**
- * Any functions that you need to be available through context.
+ * Any functions that you need to be available through context below this comment
  */
     }
 ?>

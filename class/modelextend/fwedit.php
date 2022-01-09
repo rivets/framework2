@@ -5,9 +5,8 @@
  * Add any new methods you want the User bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
- * @package Framework
- * @subpackage ModelExtend
+ * @copyright 2018-2021 Newcastle University
+ * @package Framework\ModelExtend
  */
     namespace ModelExtend;
 
@@ -19,14 +18,12 @@
 /**
  * Handle editing of beans
  *
- * @param \Framework\FormData\AccessBase   $fdt  The formdata object from the context
- *
  * @return array<string>
  */
-        private function dofields(\Framework\FormData\AccessBase $fdt) : array
+        private function doFields(\Framework\FormData\Base $fdt) : array
         {
             $emess = [];
-            foreach (self::$editfields as $fld => $flags)
+            foreach (self::$editfields as $fld => $flags) // @phan-suppress-current-line PhanUndeclaredStaticProperty
             {
                 if ($flags[1])
                 { // this is a checkbox - they can't be required

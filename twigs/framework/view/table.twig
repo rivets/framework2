@@ -1,5 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% set x = context.web.addCSP('script-src', "'unsafe-inline'") %}
 
@@ -7,139 +9,130 @@
 {% set inline = view is not defined %}
 
 {% set parsley = allownew %}
-{% set editable = inline %}
+{% set editable = FALSE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     {%if inline %} {# only want this if we are doing inline edits  #}
         function mkinline(type, name, msg, id, value)
         {
-            return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}';
-        }
-
-        function paramset(params)
-        {
-            params.id = params.pk;
-            params.bean = '{{bean.name}}';
-            params.op = 'bean';
-            return params;
-        }
-
-        function tabparamset(params)
-        {
-            params.id = params.pk;
-            params.bean = '{{bean.name}}';
-            params.op = 'table';
-            return params;
+            return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
         }
     {% endif %}
 {% endblock setup %}
 
 {% block onload %}
     {%if inline %}
-        $('.ppedit').editable({
-            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-            params: paramset,
-            onblur: 'cancel',
-            url: framework.editcall
+        document.querySelectorAll('.ppedit').forEach(function(edb){
+            fweditable.editable(edb, {
+                op: 'bean',
+                bean: '{{constant('Config\\Framework::PAGE')}}',
+                source: kname,
+                update: fweditable.editUpdate
+            });
         });
-        $('.tabppedit').editable({
-            ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-            params: tabparamset,
-            onblur: 'cancel',
-            url: framework.editcall
+        document.querySelectorAll('.tabppedit').forEach(function(edb){
+            fweditable.editable(edb, {
+                op: 'table',
+                bean: '{{constant('Config\\Framework::PAGE')}}',
+                source: kname,
+                update: fweditable.editUpdate
+            });
         });
     {% endif %}
     {% if allownew %}
-        $('#nfform').on('submit', false).parsley();
-        $('#addb').on('click', function(e){
-            e.preventDefault();
-            const pn = $('#nfname').val().toLowerCase();
+        fwdom.on('#nfform', 'submit', fwdom.nosubmit);
+        fwdom.mkjQ('#nfform').parsley();
+        fwdom.on('#addb', 'click', function(e){
+            fwdom.stop(e);
+            const pn = document.getElementById('nfname').value.toLowerCase();
             let sp = null;
-            let error = false;
-            $('.fname').each(function(e){
-                const t = $(this).text();
+            for (let f of document.getElementsByClasssName('fname'))
+            {
+                const t = f.innerHTML;
                 if (t == pn)
                 {
-                    error = true;
-                    return false;
+                    framework.alert('That field already exists');
+                    return;
                 }
                 if (t > pn)
                 {
-                    sp = $(this);
-                    return false;
+                    sp = this;
+                    break;
                 }
-            })
-            if (error)
-            {
-                bootbox.alert('That field already exists');
-                return;
             }
         })
-        $('#nfield').on('show.bs.modal', function(e){
-            $('#nfform input,select').val('');
+        fwdom.on('#nfield', 'show.bs.modal', function(e){
+            document.getElementById('nfform).reset();
         })
     {% else %}
         $('#searchb').on('click', function(e){
-            e.preventDefault();
-            $.get(base + '/ajax/tablesearch/{{bean.name}}'+'/'+$('#fname').val()+'/'+$('#fop').val(), {
-                value:  $('#fval').val(),
+            fwdom.stop(e);
+            framework.ajax(base + '/ajax/tablesearch/{{bean.name}}'+'/'+document.getElementById('fname').value+'/'+document.getElementById('fop').value, {
+                method: 'get',
+                data: {value:  document.getElementById('fval').value},
             }).done(function(data){
-                var bdy = $('#sres article');
+                var bdy = document.getElementById('sres'.querySelector('article');
                 if (data.length == 0)
                 {
-                    bdy.html('<div class="alert alert-warning">No results</div>');
+                    bdy.innerHtml = '<div class="alert alert-warning">No results</div>';
                 }
                 else
                 {
                     htm = ''
                     for (let bn of data)
                     {
-                        htm += '<table class="table table-striped table-hover border mt-2"><tbody>';
+                        htm += '<table class="table table-striped table-hover border my-2"><tbody>';
                         for (var fld in bn)
                         {
                             htm += '<tr><td width="10em">' + fld + '</td><td>' + bn[fld] + '</td></tr>';
                         }
+                        bdy.innerHTML = htm + '</tbody></table>';
                     }
-                    bdy.html(htm + '</tbody></table>');
                 }
                 $('#tsearch').modal('hide');
             }).fail(function(jx){
-                bootbox.alert('<h3>Search failed</h3>'+jx.responseText);
+                fwdom.alert('<h3>Search failed</h3>'+jx.responseText);
             });
         });
     {% endif %}
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Bean &ldquo;{{bean.name}}&rdquo;</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Bean &ldquo;{{bean.name}}&rdquo;</h1>
+{% endblock headerbody %}
 
 {% set foptions = [] %}
 {% block main %}
+    {% include '@util/message.twig' with {userow: ''} %}
     <section class="row">
-        {% include '@util/message.twig' %}
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
             <table class="table table-responsive table-striped">
                 <tbody>
                     {% for name,type in bean.fields %}
                         {% set foptions = foptions|merge([{value: name}]) %}
                         <tr>
-                            <td class="fname">{% if view is defined or name == 'id' %}{{name}}{% else %}{{f.inline('text', 'name', 'Enter new field name', name, name, 'tabppedit')}}{% endif %}</td>
-                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.inline('text', 'type', 'Enter new field type', name, type, 'tabppedit')}}{% endif %}</td>
+                            <td class="fname">{% if view is defined or name == 'id' %}{{name}}{% else %}{{f.editable({type: 'text', field: 'name', title: 'Enter new field name', key: name, value: name, class: 'tabppedit'})}}{% endif %}</td>
+                            <td>{% if view is defined or name == 'id' %}{{type}}{% else %}{{f.editable({type: 'text', field: 'type', title: 'Enter new field type', key: name, value: type, class: 'tabppedit'})}}{% endif %}</td>
                             {% if object is defined %}
                                 {% set x = attribute(object, name) %}
                                 {% if name ends with '_id' %}
                                     {% set xn = name|split('_') %}
                                     <td><a href="{{base}}/admin/{{ view is defined ? 'view' : 'edit'}}/table/{{xn[0]}}/{{x}}">{{xn[0]}} {{x}}</a></td>
                                 {% else %}
-                                    <td>{% if view is defined  or name == 'id' %}{{x}}{% else %}{{f.inline('text', name, 'Enter '~name, object.getID, x)}}{% endif %}</td>
+                                    <td>{% if view is defined  or name == 'id' %}{{x}}{% else %}{{f.editable({type: 'text', field: name, title: 'Enter '~name, key: object.getID, value: x, class: 'ppedit'})}}{% endif %}</td>
                                 {% endif %}
                             {% endif %}
                         </tr>
@@ -147,9 +140,9 @@
                 </tbody>
             </table>
             {% if allownew %}
-                <p><button class="btn btn-primary" data-toggle="modal" data-target="#nfield" type="button">Add Field</button></p>
+                <p>{{m.invoke('#nfield', 'Add Field')}}</p>
             {% else %}
-                <p><button class="btn btn-primary" data-toggle="modal" data-target="#tsearch" type="button">Search</button></p>
+                <p>{{m.invoke('#tsearch', 'Search')}}</p>
             {% endif %}
         </article>
     </section>
@@ -157,7 +150,7 @@
         {{m.open({is: 'nfield', title: 'New Field'})}}
         <div class="modal-body">
             <form action="#" method="POST" id="nfform">
-                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, parsley: {pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
+                {{f.text({label: 'Name', id: 'nfname', ph: 'Field Name', required: TRUE, valid {pattern: '[A-Za-z][a-zA-Z0-9]*'} })}}
                 {{f.text({label: 'Sample Value', id: 'nsamp', ph: 'Sample field value'})}}
             </form>
         </div>
@@ -186,7 +179,7 @@
         {{m.close({action: 'Search', id: 'searchb'})}}
     {% endif %}
     <section id="sres" class="row">
-        <article class="ml-auto col-md-10 mr-auto">
+        <article class="mx-auto col">
         </article>
     </section>
 {% endblock main %}

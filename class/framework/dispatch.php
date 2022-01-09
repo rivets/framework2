@@ -3,8 +3,8 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2020 Newcastle University
- * @package Framework
+ * @copyright 2017-2021 Newcastle University
+ * @package Framework\Framework
  */
     namespace Framework;
 
@@ -15,6 +15,8 @@
     use \Support\Context;
 /**
  * This class dispatches pages to the appropriate places
+ *
+ * @todo use an enum for constants when 8.1 arrives
  */
     class Dispatch
     {
@@ -67,9 +69,9 @@
  */
         public const XREHOME8   = 12;
 /**
- * @var array<array> $actions Values for determining handling of above codes
+ * @var array<array> Values for determining handling of above codes
  */
-        private static $actions = [
+        private static array $actions = [
             self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
             self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
             self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
@@ -84,7 +86,7 @@
 /**
  * @var array<string>
  */
-        private static $checks = [
+        private static array $checks = [
             self::OBJECT        => 'checkObject',
             self::TEMPLATE      => 'checkTemplate',
             self::REDIRECT      => 'checkRedirect',
@@ -99,17 +101,12 @@
             self::XREHOME8      => 'checkXRedirect',
         ];
 /**
- * @var array $configs Constants that might be defined in the configuration that
- * need to be passed into twigs.
+ * @var array<string> Constants that might be defined in the configuration that
+ *                    need to be passed into templates.
  */
-        private static $configs = ['lang', 'keywords', 'description'];
+        private static array $configs = ['lang', 'keywords', 'description'];
 /**
- * Setup basic values
- *
- * @param Context   $context
- * @param string    $action
- *
- * @return void
+ * Setup basic values for templates
  */
         public static function basicSetup(Context $context, string $action) : void
         {
@@ -132,44 +129,42 @@
                     $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
-                catch (\ReflectionException $e)
+                catch (\ReflectionException)
                 {
                     NULL; // void
                 }
             }
             $context->local()->addval($basicvals, '', TRUE);
+            $context->web()->initCSP(); // prepare the CSP values
+            \Framework\Support\Security::getInstance()->sslCheck($context);
         }
 /**
  * Handle dispatch of a page.
  *
- * @param Context   $context
- * @param string    $action
- *
  * @psalm-suppress PossiblyUndefinedMethod
- *
- * @return void
  */
         public static function handle(Context $context, string $action) : void
         {
             $local = $context->local();
             $mime = \Framework\Web\Web::HTMLMIME;
 /*
- * Look in the database for what to do based on the first part of the URL. DBRX means do a regexp match
+ * Look in the database for what to do based on the first part of the URL. DBRX means do a regexp match (not yet implemented)
  */
             try
             {
                 /**
                  * @psalm-suppress TypeDoesNotContainType
                  * @psalm-suppress RedundantCondition
+                 * @phan-suppress-next-line PhanUndeclaredClassConstant
                  */
                 $page = \R::findOne(FW::PAGE, 'name'.(Config::DBRX ? ' regexp ' : '=').'? and active=?', [$action, 1]);
             }
-            catch (\Throwable $e)
-            { // You catch DB errors from hacky URL values here.
+            catch (\Throwable)
+            { // You catch DB errors from pages that are not active or don't explicitly exist.
                 $page = NULL;
             }
             if (!is_object($page))
-            { // No such page or it is marked as inactive
+            { // No such page or it is marked as inactive so pass it to NoPage to handle it
                $page = new \stdClass();
                $page->kind = self::OBJECT;
                $page->source = '\Pages\NoPage';
@@ -208,7 +203,7 @@
                     /* NOT REACHED */
                 }
 
-                if (is_array($tpl))
+                if (\is_array($tpl)) // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 { // page is returning more than just a template filename
                     [$tpl, $mime, $code] = $tpl;
                 }
@@ -235,11 +230,12 @@
                 /* NOT REACHED */
             }
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-            if ($tpl !== '')
+            if ($tpl !== '') // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
             { // an empty template string means generate no output here...
-                $html = $local->getrender($tpl);
+                $html = $local->getrender($tpl); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
+                // Now set up CSP Header in use : rendering the page may have generated new hashcodes.
                 /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
-                $csp->setCSP(); // set up CSP Header in use : rendering the page may have generated new hashcodes.
+                $csp->setCSP(); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 $context->web()->sendstring($html, $mime, $code);
             }
             //else if ($code != StatusCodes::HTTP_OK);
@@ -250,16 +246,15 @@
 /**
  * Check OBJECT
  *
- * @param string $source
+ * @param string $source This should be a class name possibly namespaced
  *
  * @throws BadValue
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkObject(string $source)
+        private static function checkObject(string $source) : void
         {
-            if (!preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
+            if (!\preg_match('/^(\\\\?[a-z][a-z0-9]*)+$/i', $source))
             {
                 throw new BadValue('Invalid source for page type (class name) "'.$source.'"');
             }
@@ -267,16 +262,15 @@
 /**
  * Check TEMPLATE
  *
- * @param string $source
+ * @param string $source This should be a twig file name, possibly namespaced
  *
  * @throws BadValue
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkTemplate(string $source)
+        private static function checkTemplate(string $source) : void
         {
-            if (!preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
+            if (!\preg_match('#^@?(\w+/)?\w+\.twig$#i', $source))
             {
                 throw new BadValue('Invalid source for page type (twig) "'.$source.'"');
             }
@@ -284,33 +278,31 @@
 /**
  * Check REDIRECT - internal so no http
  *
- * @param string $source
+ * @param string $source This should be a local url path
  *
  * @throws BadValue
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkRedirect(string $source)
+        private static function checkRedirect(string $source) : void
         {
-            if (!preg_match('#^(/.*?)+#i', $source))
+            if (!\preg_match('#^(/.*?)+#i', $source))
             {
-                throw new BadValue('Invalid source for page type (local path)');
+                throw new BadValue('Invalid source for page type (local url path)');
             }
         }
 /**
  * Check XREDIRECT - external so must be a url
  *
- * @param string $source
+ * @param string $source This should be a URL
  *
  * @throws BadValue
- * @return void
  * @psalm-suppress UnusedMethod
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static function checkXRedirect(string $source)
+        private static function checkXRedirect(string $source) : void
         {
-            if (filter_var($source, FILTER_VALIDATE_URL) === FALSE)
+            if (\filter_var($source, \FILTER_VALIDATE_URL) === FALSE)
             {
                 throw new BadValue('Invalid source for page type (URL)');
             }
@@ -318,11 +310,7 @@
 /**
  * Check if a value is appropriate for the dispatch kind
  *
- * @param int    $kind
- * @param string $source
- *
  * @throws BadValue
- * @return void
  */
         public static function check(int $kind, string $source) : void
         {

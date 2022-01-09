@@ -61,7 +61,7 @@
 /**
  * Generate a name and a token
  *
- * @return array
+ * @return array<string>
  */
         public function generate() : array
         {
@@ -105,7 +105,7 @@
                 {
                     break;
                 }
-                /* FALLTHROUGH */
+                // no break
             default:
                 return;
             }

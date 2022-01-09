@@ -1,16 +1,15 @@
 {% set parsley = TRUE %}
-
+{% set breadcrumbs = [{link: base, text: 'Home'}, {text: 'Contact'}] %}
 {% set schema = 'itemscope="" itemtype="http://schema.org/ContactPage"' %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
 {% import '@util/formmacro.twig' as f %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-	<h1>Contact</h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Contact</h1>
+{% endblock headerbody %}
 
 {% block onload %}
     $('#cform').parsley()
@@ -18,7 +17,7 @@
 
 {% block main %}
     <section class="row">
-        <article class="offset-md-1 col">
+        <article class="mx-auto col-md-10 col-lg-8">
             {% include '@util/message.twig' %}
             {{f.startform({id: 'cform', method: 'post'})}}
                 {{f.hidden({name: 'details', value: '1'})}}

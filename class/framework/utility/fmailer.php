@@ -1,7 +1,7 @@
 <?php
 /**
  * This provides a class that supports mailing using either the built in PHP mail() function
- * or using the SMTP part so f PHPMailer
+ * or using the SMTP parts of PHPMailer
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2017-2020 Newcastle University

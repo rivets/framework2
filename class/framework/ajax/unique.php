@@ -15,10 +15,8 @@
  */
     class Unique extends Ajax
     {
-/**
- * @var array
- */
-        private static $permissions = [
+        private static array $permissions = [
+            FW::CONFIG      => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
             FW::PAGE        => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
             FW::ROLECONTEXT => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
             FW::ROLENAME    => [ TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]], ['name'] ],
@@ -26,10 +24,8 @@
         ];
 /**
  * Return permission requirements
- *
- * @return array
  */
-        public function requires()
+        public function requires() : array
         {
             return [TRUE, []]; // requires login
         }
@@ -38,8 +34,6 @@
  * Send a 404 if it exists (That's how parsley works)
  *
  * @todo Possibly should allow for more than just alphanumeric for non-parsley queries???
- *
- * @return void
  */
         final public function handle() : void
         {
@@ -47,7 +41,7 @@
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
             if (\R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
-                $this->context->web()->notfound(); // error if it exists....
+                $this->context->web()->notFound(); // error if it exists....
                 /* NOT REACHED */
             }
             $this->context->web()->noContent();

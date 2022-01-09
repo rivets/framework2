@@ -1,7 +1,9 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
+{% set fwdom = TRUE %}
 {% set parsley = TRUE %}
-{% set editable = TRUE %}
+{% set editable = FALSE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -12,19 +14,20 @@
     'radio', 'select', 'file', 'range', 'number', 'button', 'submit',
     'label', 'fieldset', 'endfset', 'recaptcha'] %}
 
+{% block css %}
+    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
+{% endblock css %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
+{% endblock scripts %}
+
 {% block setup %}
     function mkinline(type, name, msg, id, value)
     {
-        return '{{f.inline(f.wrap('type'), f.wrap('name'), f.wrap('msg'), f.wrap('id'), f.wrap('value'))}}'
+        return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
     }
 
-    function paramset(params)
-    {
-        params.id = params.pk
-        params.bean = '{{constant('Config\\Framework::FORMFIELD')}}'
-        params.op = 'bean'
-        return params
-    }
     let kname = [
         {% for v in types %}
             {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
@@ -41,38 +44,40 @@
 {% endblock setup %}
 
 {% block onload %}
-    $('.ppedit').editable({
-        ajaxOptions: { type: '{{constant('Config\\Config::PUTORPATCH')}}' },
-        params: paramset,
-        source: kname,
-        onblur: 'cancel',
-        url: framework.editcall
+    document.querySelectorAll('.editable').forEach(function(edb){
+        fweditable.editable(edb, {
+            op: 'bean',
+            bean: '{{constant('Config\\Framework::FORMFIELD')}}',
+            source: kname,
+            update: fweditable.editUpdate
+        });
     });
 
-    $('#ptab').on('click', function(e){
-        const x = $(e.target);
+    fwdom.on('#ptab', 'click', function(e) {
+        const ecl = e.target.classList;
         for (let cl of clicks)
         {
             let [cls, fn, par] = cl;
-            if (x.hasClass(cls))
+            if (ecl.contains((cls))
             {
-                fn(e, x, '{{constant('Config\\Framework::FORMFIELD')}}', par);
+                fn(e, e.target, '{{constant('Config\\Framework::FORMFIELD')}}', par);
                 break;
             }
         }
     });
-    $('#example .typesel').on('change', function(e){
-        const val = $(this).val();
-        $('#example .flagsel input[name="fldchecked"]').prop('checked', false).prop('disabled', !(val == 'checkbox' || val == 'radio'))
-        $('#example .flagsel input[name="fldmultiple"]').prop('checked', false).prop('disabled', val != 'select')
-    })
+    fwdom.on('.typesel', 'change', function(e){
+        const val = this.value;
+        const fsel = document.getElementById('example').querySelector('.flagsel');
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('disabled', !(val == 'checkbox' || val == 'radio'))
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('disabled', val != 'select')
+    }, document.getElementById('example'));
 {% endblock onload %}
 
-{% block header %}
-    <section class="col-md-12 mt-5">
-        <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}">{{i.view('viewb')}}</a></h1>
-    </section>
-{% endblock header %}
+{% block headerbody %}
+    <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}">{{i.view('viewb')}}</a></h1>
+{% endblock headerbody %}
 
 {% block main %}
     <section class="row">
@@ -83,16 +88,16 @@
                 {{bean.guard|raw}}
                 <fieldset>
                     <legend>Form details</legend>
-                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: 1, value: bean.name, parsley: {trigger: 'change', type: 'alphanum'} })}}
-                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, parsley: {trigger: 'change', type: 'url'} })}}
-                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, parsley: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: TRUE, value: bean.name, valid: {trigger: 'change', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, valid: {trigger: 'change', type: 'url'} })}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, valid: {trigger: 'change', type: 'alphanum'} })}}
                         {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
                         {{f.radio({group: TRUE, name: 'method', values:[1, 2, 0], labels: ['GET', 'POST', 'PARTIAL'], check: [bean.method == 1, bean.method == 2, bean.method == 0]})}}
                         {{f.checkbox({group: TRUE, names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
                 </fieldset>
                 <fieldset>
                     <legend>Field details</legend>
-                    <table id="ptab" class="table">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th>Type</th>
@@ -110,23 +115,23 @@
                                 <th>&nbsp;</th>
                            </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="ptab">
                             {% for fld in bean.fields %}
                                 <tr data-id="{{fld.getID}}" class="border-top border-dark">
                                     <td rowspan="3">
-                                        <p>{{f.inline('select', 'type', 'Select Type', fld.getID, fld.type)}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
-                                        <p>{{f.inline('text', 'seqn', 'Enter seqn no.', fld.getID, fld.seqn)}}</td>
+                                        <p>{{f.editable({type: 'select', field: 'type', title: 'Select Type', key: fld.getID, value: fld.type})}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
+                                        <p>{{f.editable({type: 'text', field: 'seqn', title: 'Enter seqn no.', key: fld.getID, value: fld.seqn})}}</td>
                                     </td>
-                                    <td>{{f.inline('text', 'label', 'Enter label', fld.getID, fld.label)}}</td>
-                                    <td>{{f.inline('text', 'name', 'Enter name', fld.getID, fld.name)}}</td>
-                                    <td>{{f.inline('text', 'idval', 'Enter id', fld.getID, fld.idval)}}</td>
-                                    <td>{{f.inline('text', 'class', 'Enter class', fld.getID, fld.class)}}</td>
-                                    <td>{{f.inline('text', 'value', 'Enter value', fld.getID, fld.value)}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'label', title: 'Enter label', key: fld.getID, value: fld.label})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'name', title: 'Enter name', key: fld.getID, value: fld.name})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'idval', title: 'Enter id', key: fld.getID, value: fld.idval})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'class', title: 'Enter class', key: fld.getID, value: fld.class})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'value', title: 'Enter value', key: fld.getID, value: fld.value})}}</td>
                                     <td rowspan="3">{{i.delete('delb')}}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">{{f.inline('text', 'placeholder', 'Enter placeholder', fld.getID, fld.placeholder)}}</td>
-                                    <td colspan="3">{{f.inline('text', 'other', 'Enter other attributes', fld.getID, fld.other)}}</td>
+                                    <td colspan="2">{{f.editable({type: 'text', field: 'placeholder', title: 'Enter placeholder', key: fld.getID, value: fld.placeholder)}}</td>
+                                    <td colspan="3">{{f.editable({type: 'text', field: 'other', title: 'Enter other attributes', key: fld.getID, value: fld.other)}}</td>
                                 </tr>
                                 <tr>
                                     {% for fn,fv in flags %}
@@ -176,7 +181,7 @@
                             </tr>
                             <tr id="mrow">
                                 <td colspan="10">&nbsp;</td>
-                                <td colspan="2"><button class="more btn btn-xs btn-info pull-right">Add More</button></td>
+                                <td colspan="2"><button class="more btn btn-xs btn-info float-end">Add More</button></td>
                             </tr>
                         </tbody>
                     </table>

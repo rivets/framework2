@@ -6,7 +6,7 @@
  * the first part of the URL after ajax is an opcode that defines what is to be done.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2020 Newcastle University
+ * @copyright 2014-2021 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -19,11 +19,12 @@
     {
         use \Framework\Utility\Singleton;
 /**
- * @var array<array> Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
+ * @var array Allowed Framework operation codes. Values indicate : [needs login, Roles that user must have]
  */
-        private static $restops = [
+        private static array $restops = [
             'bean'          => Ajax\Bean::class,
             'config'        => Ajax\Config::class,
+            'fwtest'        => Ajax\FWTest::class,
             'hints'         => Ajax\Hints::class,
             'paging'        => Ajax\Paging::class,
             'pwcheck'       => Ajax\PwCheck::class,
@@ -34,17 +35,19 @@
             'toggle'        => Ajax\Toggle::class,
             'unique'        => Ajax\Unique::class,
             'uniquenl'      => Ajax\UniqueNl::class,
+            'upload'        => Ajax\Upload::class,
         ];
 /**
  * Return the log requirements array from the child
  *
- * @param string $bean  The name of a bean
+ * @param string $beanType  The name of a bean
  *
  * @return bool
  */
-        final public function log(string $bean) : bool
+        final public function log(string $beanType) : bool
         {
-            return in_array($bean, static::$log); // @phpstan-ignore-line
+            /** @phpstan-ignore-next-line */
+            return \in_array($beanType, static::$log); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
  * Return the permission requirements array from the child
@@ -55,7 +58,12 @@
  */
         final public function permissions(string $which, array $system = []) : array
         {
-            return array_merge(static::$fwPermissions[$which], $system); //@phpstan-ignore-line
+            /** @phpstan-ignore-next-line */
+            if (isset(static::$fwPermissions[$which]))  // @phan-suppress-current-line PhanUndeclaredStaticProperty
+            {
+                return \array_merge(static::$fwPermissions[$which], $system);  // @phan-suppress-current-line PhanUndeclaredStaticProperty
+            }
+            return $system;
         }
 /**
  * Handle AJAX operations
@@ -63,6 +71,7 @@
  * @param Context   $context    The context object for the site
  *
  * @return void
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.CyclomaticComplexityIsHigh
  */
         public function handle(Context $context) : void
         {
@@ -75,7 +84,7 @@
             else
             {
                 $class = '\\Ajax\\'.$op;
-                if (!class_exists($class))
+                if (!\class_exists($class))
                 { // not a developer provided ajax op
                     $context->web()->bad('No such operation');
                     /* NOT REACHED */
@@ -83,7 +92,7 @@
             }
             try
             {
-                (new $class($context, $this))->handle($context);
+                (new $class($context, $this))->handle();
             }
             catch (Exception\Forbidden $e)
             {
@@ -93,7 +102,7 @@
             {
                 $context->web()->bad($e->getMessage());
             }
-            catch (\Throwable $e)
+            catch(\Throwable $e)
             { // any other exception - this will be a framework internal error
                 $context->web()->internal($e->getMessage());
             }

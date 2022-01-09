@@ -14,109 +14,34 @@
  */
     class Web extends WebBase
     {
-        use CSP; // bring in CSP handling code
+        use CSP;      // bring in CSP handling code
+        use Response; // bring in response generating functions.
 /**
- * Send a 204 response - OK but no content
- *
- * @return void
+ * Check to see if the client accepts gzip encoding
  */
-        public function noContent() : void
+        public function acceptgzip() : bool
         {
-            $this->sendheaders(StatusCodes::HTTP_NO_CONTENT);
-        }
-/**
- * Send a 201 response - Created
- *
- * @param string  $value  a string to return
- * @param string  $mime   the mimetype
- *
- * @return void
- */
-        public function created(string $value, string $mime = 'text/plain; charset=UTF-8') : void
-        {
-            $this->sendString($value, $mime, \Framework\Web\StatusCodes::HTTP_CREATED);
-        }
-/**
- * Send a 304 response - this assumes that the Etag etc. have been set up using the set304Cache function in the \Support\SiteAction class
- *
- * @see \Support\SiteAction
- *
- * @return void
- */
-        public function send304() : void
-        {
-            $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
-        }
-/**
- * Generate a 400 Bad Request error return
- *
- * @param string    $msg    A message to be sent
- *
- * @return void
- * @psalm-return never-return
- */
-        public function bad(string $msg = '') : void
-        {
-            $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
-        }
-/**
- * Generate a 403 Access Denied error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function noAccess(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_FORBIDDEN, $msg);
-        }
-/**
- * Generate a 404 Not Found error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function notFound(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_NOT_FOUND, $msg);
-        }
-/**
- * Generate a 500 Internal Error error return
- *
- * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
- * @return void
- */
-        public function internal(string $msg = '') : void
-        {
-            $this->sendHead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
+            return $this->accepts('gzip');
         }
 /**
  * Check to see if the client accepts gzip encoding
  *
- * @return bool
+ * @param string  $type  The type you are looking for...
  */
-        public function acceptgzip() : bool
+        public function accepts(string $type) : bool
         {
-            return filter_has_var(INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') > 0;
+            return \filter_has_var(\INPUT_SERVER, 'HTTP_ACCEPT_ENCODING') && \substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], $type) > 0;
         }
 /**
  * What kind of request was this?
- *
- * @return string
  */
         public function method() : string
         {
-            return $_SERVER['REQUEST_METHOD'];
+            return \strtoupper($_SERVER['REQUEST_METHOD']);
         }
 /**
  * Is this a POST?
  *
- * @return bool
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function isPost() : bool
@@ -127,12 +52,43 @@
  * Add an item for use in a Cache-Control header
  *
  * @param string[]  $items  An array of items
- *
- * @return void
  */
         public function addCache(array $items) : void
         {
             $this->cache = array_merge($this->cache, $items);
+        }
+/**
+ * Return the URI without any Query String
+ */
+        public function request()
+        {
+            if (isset($_SERVER['REDIRECT_URL']) && !\preg_match('/index.php/', $_SERVER['REDIRECT_URL']))
+            {
+/*
+ *  Apache v 2.4.17 changed the the REDIRECT_URL value to be a full URL, so we need to strip this.
+ *  Older versions will not have this so the code will do nothing.
+ */
+                $uri = \preg_replace('#^https?://[^/]+#', '', $_SERVER['REDIRECT_URL']);
+            }
+            else
+            {
+                $uri = $_SERVER['REQUEST_URI'];
+            }
+            if ($_SERVER['QUERY_STRING'] !== '')
+            { // there is a query string so get rid it of it from the URI
+                [$uri] = \explode('?', $uri);
+            }
+            return $uri;
+        }
+/**
+ * Return header value or NULL if it does not exist
+ *
+ * @param string $name
+ */
+        public function header(string $name) : ?string
+        {
+            $xname = \strtoupper('HTTP_'.\preg_replace('/\s+/', '_', \trim($name)));
+            return \filter_has_var(\INPUT_SERVER, $xname) ? $_SERVER[$xname] : NULL;
         }
     }
 ?>

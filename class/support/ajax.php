@@ -3,8 +3,8 @@
  * A class that handles Ajax calls
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2019 Newcastle University
- * @package Framework
+ * @copyright 2017-2021 Newcastle University
+ * @package Framework\Support
  */
     namespace Support;
 
@@ -48,13 +48,10 @@
         protected static $log = []; // ['bean'..... A list of bean names]
 /**
  * Handle AJAX operations
- *
- * @param Context   $context    The context object for the site
- *
- * @return void
  */
         public function handle(Context $context) : void
         {
+            /* You can put code here if you really need to, but do think carefully about whether this is the right place */
             parent::handle($context);
         }
     }

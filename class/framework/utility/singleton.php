@@ -41,66 +41,58 @@
     trait Singleton
     {
 /**
- * The only instance of using class
- * @var object
+ * @var ?object The only instance of the class that is using this trait
  */
-        protected static $instance = NULL;
+        protected static ?object $instance = NULL;
 /**
  * Checks, instantiates and returns the only instance of the using class.
  *
- * @template object
  * @psalm-return object
  *
  * @psalm-suppress MismatchingDocblockReturnType
  * @psalm-suppress ReservedWord
- *
- * @return object
  */
-        public static function getinstance() : object
+        final public static function getinstance() : object
         {
-            if (!(static::$instance instanceof static)) // cannot get this to work with namespaces for some reason
-            {
-                static::$instance = new static(); // @phpstan-ignore-line
-            }
-            return static::$instance;
+            //if (static::$instance !== NULL) // cannot get this to work with namespaces for some reason
+            //{
+            //    static::$instance = new static();
+            //}
+            return static::$instance ?? (static::$instance = new static()); // // @phpstan-ignore-line
         }
 /**
  * Class constructor. The concrete class using this trait can override it.
  * @internal
  */
-        protected function __construct()
+        final protected function __construct()
         {
             // void
         }
 /**
  * Prevents object cloning
- * @internal
+ *
  * @throws \Framework\Exception\InternalError
  */
-        public function __clone()
+        final public function __clone()
         {
             throw new \Framework\Exception\InternalError('Cannot clone Singleton objects');
         }
 /**
  * Prevents object serialization
- * @internal
+ *
  * @throws \Framework\Exception\InternalError
  */
-        public function __sleep() : array
+        final public function __sleep() : array
         {
             throw new \Framework\Exception\InternalError('Cannot serialize Singleton objects');
         }
 /**
  * Returns the only instance if is called as a function
  *
- * @internal
- *
  * @template object
  * @psalm-return object
- *
- * @return object
  */
-        public function __invoke() : object
+        final public function __invoke() : object
         {
             return static::getInstance();
         }
