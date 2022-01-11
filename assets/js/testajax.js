@@ -199,9 +199,9 @@
                 }
             });
             testing.makecall('unique/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
-                t.append('<p>Non-existent login OK</p>');
+                t.insertAdjacentHTML('beforeend', '<p>Non-existent login OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
+                t.insertAdjacentHTML('beforeend', '<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
 
