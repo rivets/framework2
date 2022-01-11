@@ -1,6 +1,7 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
-{% set parsley = TRUE %}
+{% set validate = TRUE %}
+{% set usebootbox = FALSE %}
 
 {% extends '@content/page.twig' %}
 
@@ -30,7 +31,7 @@
     <section class="row">
         <article class="mx-auto col">
             {% include '@util/message.twig' %}
-            <form action="#" method="post" id="uform" data-parsley-validate>
+            {{f.startform({method: 'post', id: 'uform'})}}
                 {{f.hidden({name: 'bean', value: bean.id})}}
                 {{bean.guard|raw}}
                 <fieldset>
@@ -69,12 +70,12 @@
                 <fieldset>
                     <legend>Page Functional Requirements</legend>
                     {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
-                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needparsley', 'neededitable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needfwdom', 'needvalidate', 'neededitable'],
                         values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
                 </fieldset>
                 {% include '@admin/roleselect.twig' with {bean : bean } %}
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
-            </form>
+            {{f.endform()}}
         </article>
     </section>
 {% endblock main %}

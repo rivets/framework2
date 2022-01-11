@@ -3,27 +3,24 @@
     that the Framework includes in the output. Look at twigs/content/page.twig to see all
     the possible variables and how they are used.
 #}
-{#
-    If your page uses AJAX include this line at the start of the file - it loads a different version of jQuery.
-{% set ajax = TRUE %}
-#}
+
 {#
     If your page uses the Framework JS util package include this line at the start of the file
 {% set fwutils = TRUE %}
 #}
 {#
-    If your page uses Parsley include this line at the start of the file
-{% set parsley = TRUE %}
+    If your page uses the Framework JS dom package include this line at the start of the file
+{% set fwdom = TRUE %}
+#}
+{#
+    If your page uses form validation include this line at the start of the file
+{% set validate = TRUE %}
 #}
 {#
     If your page uses the inline editable package include this line at the start of the file
 {% set editable = TRUE %}
 #}
 
-{#
-    If your page does NOT need not use bootbox then this will stop the JS being loaded for it
-{% set usebootbox = FALSE %}
-#}
 
 {#
     if you want to set the title of your  page that is displayed in browser tabs set this variable
@@ -64,6 +61,10 @@
 {% import '@util/modalmacro.twig' as m %}
 #}
 
+{# this brings in the icon macros
+{% import '@content/iconmacro.twig' as m %}
+#}
+
 {% block meta %}
 {# <meta> for things like keywords etc.#}
 {% endblock meta %}
@@ -80,12 +81,12 @@
 {# <link> for any other CSS files you need #}
 {% endblock css %}
 
-{# If you want some inline CSS then put it in this block - no <style> tags - it is better NOT to use this though!!
+{# If you want some inline CSS then put it in this block - ***NB no <style> tag needed - it is better NOT to use this though!!
 {% block style %}
 {% endblock style %}
 #}
 
-{# If you want to add critical CSS then put it in this block - no <style> tags
+{# If you want to add critical CSS then put it in this block - ***NB no <style> tag needed
 {% block criticalCSS %}
 {% endblock criticalCSS %}
 #}
@@ -112,7 +113,7 @@
     navigation bar. It is included by default from page.twig
 #}
 
-{# uncomment this and delete header block below to remove the <header> tag altogether
+{# uncomment this and delete the headerbody block below to remove the <header> tag altogether
 {% block pageheader %}
 {% endblock pageheader %}
 #}

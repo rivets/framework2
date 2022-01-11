@@ -1,6 +1,6 @@
 {% set ajax = TRUE %}
 {% set fwutils = TRUE %}
-{% set parsley = TRUE %}
+{% set validate = TRUE %}
 {# Role names and Context names pages are identical apart from the typology #}
 
 {% extends '@content/page.twig' %}
@@ -27,7 +27,7 @@
         const pn = document.getElementById('nrname').value;
         if (!pn.match(/^[a-zA-Z][a-zA-Z0-9]*$/))
         {
-            fwdom.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
+            framework.alert('&quot;'+pn+'&quot; is not a valid {{beantype}} name. Letters and numbers only');
             btn.disabled = false;
             return;
         }
@@ -111,7 +111,7 @@
     <div class="modal-body">
         {{f.startform({method: 'post', id: 'nrform', on:{submit: 'function(e){fwdom.stop(e);}'} })}}
             <div class="form-group">
-                {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, valid { trigger: 'change',
+                {{f.text({id: 'nrname', label: 'Name', ph: ctype ~ ' Name', required: TRUE, valid: { trigger: 'change',
                 'remote-reverse': 'false', remote: "#{base}/ajax/unique/#{beantype}/name/{value}",
                 'remote-message': "That #{type} name is not available", type: 'alphanum'} })}}
             </div>

@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap, framework, putorpatch, console */
+/* globals document, fwdom, bootstrap, framework, console */
 /* jshint undef: true, unused: false */
 
 var fweditable = {
@@ -15,7 +15,7 @@ var fweditable = {
     makeEdit: function(d)
     {
        const options = fweditable.edOptions[d.getAttribute('data-editable-id')];
-       let ctext = d.innerText;
+       let ctext = d.innerHTML;
        let box;
        if (ctext === options.emptyText)
        {
@@ -73,14 +73,14 @@ var fweditable = {
 
     editUpdate : function(options, value) {
         return framework.ajax(framework.buildFWLink('ajax', options.op, options.bean, options.key, options.field), {
-            method: putorpatch,
+            method: framework.putorpatch,
             data: { value: value }
         });
     },
 
     popClick : function(div)
     {
-        if (div.hasAttribute('disabled'))
+        if (div.classList.contains('disabled'))
         {
             return;
         }
@@ -107,11 +107,11 @@ var fweditable = {
             fwdom.stop(e);
             let options =  fweditable.edOptions[fweditable.inline.getAttribute('data-editable-id')];
             let box = tip.querySelector('.edbox');
-            if (box.value != fweditable.inline.innerText)
+            if (box.value != fweditable.inline.innerHTML)
             {
                 if (options.update == null)
                 {
-                    fwdom.alert('No update function defined');
+                    framework.alert('No update function defined');
                 }
                 else
                 {
@@ -146,7 +146,7 @@ var fweditable = {
                            fweditable.inline.classList.remove('edempty');
                         }
                     }).fail(function(jx){
-                        fwdom.alert('Update failed');
+                        framework.alert('Update failed');
                     });
                 }
             }
@@ -179,9 +179,9 @@ var fweditable = {
         fweditable.domid += 1;
         fweditable.edOptions[fweditable.domid] = nopt;
         div.setAttribute('data-editable-id', fweditable.domid);
-        if (div.innerText === '')
+        if (div.innerHTML === '')
         {
-            div.innerText = nopt.emptyText;
+            div.innerHTML = nopt.emptyText;
             div.classList.add('edempty');
         }
         div.addEventListener('click', function(e){
@@ -195,7 +195,7 @@ var fweditable = {
                    fweditable.edOptions[domid].source = data;
                    fweditable.popClick(div);
                 }, function(jx){
-                    fwdom.alert('Cannot fetch list');
+                    framework.alert('Cannot fetch list');
                 }, false);
             }
             else

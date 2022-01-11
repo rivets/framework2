@@ -1,16 +1,19 @@
-/* global fwdom, goodlogin, userbean */
+/* global goodlogin, userbean */
 /* global framework, testbeanid, testtable */
 
     var testing = {
 
-        ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
+        ajaxops : [ 'bean', 'config', 'hints', 'js', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
 
         makecall : function (url, data, cdone, cfail){
             data.async = true;
-            framework.ajax(framework.base+'/ajax/'+url, data).done(cdone).fail(cfail);
+            framework.ajax(framework.base+'/ajax/'+url, data).done(function(data){
+                console.log('done 1');
+                return data;
+            }).done(cdone).fail(cfail);
         },
         testbean: function (){
-            fwdom.alert('Bean operation test complete');
+            framework.alert('Bean operation test complete');
         },
 
         testconfig : function (){
@@ -19,7 +22,7 @@
                 t.insertAdjacentHTML('beforeend', '<p>Create config item OK</p>');
                 testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                     t.insertAdjacentHTML('beforeend', '<p>Read config item OK '+data+'</p>');
-                    testing.makecall('config/testconfig', { method: putorpatch, data: {value: 345} }, function(data){
+                    testing.makecall('config/testconfig', { method: framework.putorpatch, data: {value: 345} }, function(data){
                         t.insertAdjacentHTML('beforeend', '<p>Update config item OK returns '+data.value+'</p>');
                         testing.makecall('config/testconfig', { method: 'GET' }, function(data){
                             if (data == 345)
@@ -91,19 +94,19 @@
         },
 
         testpaging: function (){
-            fwdom.alert('Paging operation test complete');
+            framework.alert('Paging operation test complete');
         },
 
         testpwcheck: function (){
-            fwdom.alert('Pwcheck operation test complete');
+            framework.alert('Pwcheck operation test complete');
         },
 
         testshared: function (){
-            fwdom.alert('Shared operation test complete');
+            framework.alert('Shared operation test complete');
         },
 
         testtable: function (){
-            fwdom.alert('Table operation test complete');
+            framework.alert('Table operation test complete');
         },
 
         testtablecheck: function (){
@@ -196,9 +199,9 @@
                 }
             });
             testing.makecall('unique/'+userbean+'/login/'+goodlogin+'XXXXX', { method: 'GET' }, function(){
-                t.append('<p>Non-existent login OK</p>');
+                t.insertAdjacentHTML('beforeend', '<p>Non-existent login OK</p>');
             }, function(jx) {
-                t.append('<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
+                t.insertAdjacentHTML('beforeend', '<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
         },
 
@@ -220,6 +223,24 @@
                 t.insertAdjacentHTML('beforeend', '<p>Non-existent login OK</p>');
             }, function(jx) {
                 t.insertAdjacentHTML('beforeend', '<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
+            });
+        },
+
+        testjs :function (){
+            let t = this.parentNode;
+            framework.ajax(framework.base+'/ajax/nosuchop', { method: 'GET' }).done(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Should fail but succeeded</p>');
+            }).fail(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Fail 1 called</p>');
+            })
+            .fail(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Fail 2 called</p>');
+            })
+            .always(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Always 1 called</p>');
+            })
+            .always(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Always 2 called</p>');
             });
         }
     };

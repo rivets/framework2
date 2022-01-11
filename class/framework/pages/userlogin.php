@@ -365,7 +365,8 @@
                 \session_start(['name' => \Config\Config::SESSIONNAME, 'cookie_path' => $context->local()->base().'/']);
             }
             $_SESSION['userID'] = $user->getID();
-            $context->divert($page === '' ? '/' : $page); // success - divert to home page or requested page
+            $dpage = $context->local()->config('defaultpage');
+            $context->divert($page === '' ? ($dpage !== NULL ? $dpage->value : '/') : $page); // success - divert to default page or requested page
             /* NOT REACHED */
         }
 /**
@@ -373,6 +374,7 @@
  */
         private function twofa(Context $context) : string
         {
+
             if ($context->web()->isPost())
             {
                 $fdt = $context->formdata('post');
@@ -385,7 +387,7 @@
                 {
                     $user->code2fa = '';
                     R::store($user);
-                    $this->loginSession($context, $user, $fdt->fetch('goto', ''));
+                    $this->loginSession($context, $user, $fdt->fetch('goto'));
                     /* NOT REACHED */
                 }
                 $context->local()->message(\Framework\Local::ERROR, 'Invalid code - please try again');

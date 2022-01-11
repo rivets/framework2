@@ -1,4 +1,5 @@
 /* globals fwdom: false */
+/* globals FormData*/
 /* globals XMLHttpRequest, window, putorpatch, setTimeout, document, jQuery, bootstrap */
 /* jshint undef: true, unused: false */
     class FWAjaxRQ
@@ -13,18 +14,28 @@
         onloaded(){
             if (this.status >= 200 && this.status < 400)
             { // Success!
+                let val = this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response;
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response, this);
+                    for (let fn of this.options.success)
+                    {
+                        val = fn(val, this);
+                    }
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
             { // something went wrong
-                this.options.fail(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
             }
             if (this.options.hasOwnProperty('always'))
             { // always do this
-                this.options.always(this);
+                for (let fn of this.options.always)
+                {
+                    fn(this);
+                }
             }
         }
 /**
@@ -34,29 +45,47 @@
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
-                  this.options.fail(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
               }
               if (this.options.hasOwnProperty('always'))
               {
-                  this.options.always(this);
+                for (let fn of this.options.always)
+                {
+                    fn(this);
+                }
               }
         }
 
         done(fn)
         {
-            this.request.options.success = fn;
+            if (!this.request.options.hasOwnProperty('success'))
+            {
+                this.request.options.success = [];
+            }
+            this.request.options.success.push(fn);
             return this;
         }
 
         fail(fn)
         {
-            this.request.options.fail= fn;
+            if (!this.request.options.hasOwnProperty('fail'))
+            {
+                this.request.options.fail = [];
+            }
+            this.request.options.fail.push(fn);
             return this;
         }
 
         always(fn)
         {
-            this.request.options.always = fn;
+            if (!this.request.options.hasOwnProperty('always'))
+            {
+                this.request.options.always = [];
+            }
+            this.request.options.always.push(fn);
             return this;
         }
     }
@@ -86,7 +115,7 @@
             {
                 if (data.hasOwnProperty(prop))
                 {
-                    enc += amp + encodeURI(prop + '=' + data[prop]);
+                    enc += amp + prop + '=' + encodeURIComponent(data[prop]);
                     amp = '&';
                 }
             }
@@ -95,18 +124,35 @@
 /*
  * non-jquery ajax function
  *
- * @param {string} url    - the URL to invoke
- * @param {object} data   - the data to pass
+ * @param {string} url       - the URL to invoke
+ * @param {object} options   - options specifying what to do
  */
         ajax: function (url, options) {
             let request = new XMLHttpRequest();
             let method = options.hasOwnProperty('method') ? options.method : 'GET';
             let accept = options.hasOwnProperty('accept') ? options.accept : '';
-            let data = options.hasOwnProperty('data') ? (typeof options.data === "object" ? framework.makeQString(options.data) : options.data) : '';
-            let type = options.hasOwnProperty('type') ? options.type : (data !== '' ? 'application/x-www-form-urlencoded; charset=UTF-8' : 'text/plain; charset=UTF-8');
+            let data = '';
+            let dtype = 'text/plain; charset=UTF-8';
+            if (options.hasOwnProperty('data'))
+            {
+                if (options.data instanceof FormData || typeof options.data !== 'object')
+                {
+                    data = options.data;
+                    dtype = ''; // dont set content type for this
+                }
+                else
+                {
+                    data = framework.makeQString(options.data);
+                    dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
+                }
+            }
+            let type = options.hasOwnProperty('type') ? options.type : dtype;
             request.options = options;
             request.open(method, url, options.hasOwnProperty('async') ? options.async : true);
-            request.setRequestHeader('Content-Type', type);
+            if (type !== '' && type != 'multipart/form-data')
+            {
+                request.setRequestHeader('Content-Type', type);
+            }
             if (accept != '')
             {
                 request.setRequestHeader('Accept', accept);
@@ -224,8 +270,8 @@
                     {
                         pnode = pnode[0];
                     }
-                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: putorpatch})
-                    .done(function(){ framework.toggle(x); }).fail(function(jx) { fwdom.alert('<h3>Toggle failed</h3>'+jx.responseText); });
+                    framework.ajax(framework.buildFWLink('ajax/toggle', bean, pnode.getAttribute('data-id'), fld), {method: framework.putorpatch})
+                    .done(function(){ framework.toggle(x); }).fail(function(jx) { framework.alert('<h3>Toggle failed</h3>'+jx.responseText); });
                 }
             }
         },
@@ -248,12 +294,12 @@
             {
                 msg = 'this '+bean;
             }
-            fwdom.confirm('Are you sure you you want to delete '+msg+'?', function(r){
+            framework.confirm('Are you sure you you want to delete '+msg+'?', function(r){
                 if (r)
                 { // user picked OK
                     framework.ajax(framework.buildFWLink('ajax/bean', bean, id), {method: 'DELETE'})
                     .done(yes)
-                    .fail(function(jx){ fwdom.alert('<h3>Delete failed</h3>'+jx.responseText); });
+                    .fail(function(jx){ framework.alert('<h3>Delete failed</h3>'+jx.responseText); });
                 }
             });
         },
@@ -266,7 +312,7 @@
  */
         editcall: function(params) {
             return framework.ajax(framework.buildFWLink('ajax', params.op, params.bean, params.pk, params.name), {
-                method: putorpatch,
+                method: framework.putorpatch,
                 data: { value: params.value }
             });
         },
@@ -330,7 +376,7 @@
         dodelbean: function(e, x, bean, msg = '', success = null)
         {
             let pnode = x.closest('[data-id]');
-            if (pnode instanceof jQuery)
+            if (typeof jQuery != 'undefined' && pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
@@ -434,7 +480,7 @@
             framework.ajax(framework.buildFWLink('ajax/bean', bean), {method: 'POST', data: data})
             .done(fn)
             .fail(function(jx){
-                fwdom.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
+                framework.alert('<h3>Failed to create new '+bean+'</h3>'+jx.responseText);
             })
             .always(function(){
                 (button instanceof Object ? button : document.getElementById(button)).disabled = false;
