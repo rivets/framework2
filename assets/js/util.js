@@ -32,7 +32,7 @@
             }
             if (this.options.hasOwnProperty('always'))
             { // always do this
-                for (let fn of this.options.fail)
+                for (let fn of this.options.always)
                 {
                     fn(this);
                 }
@@ -52,7 +52,7 @@
               }
               if (this.options.hasOwnProperty('always'))
               {
-                for (let fn of this.options.fail)
+                for (let fn of this.options.always)
                 {
                     fn(this);
                 }
