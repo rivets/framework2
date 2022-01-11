@@ -25,11 +25,17 @@
             }
             else if (this.options.hasOwnProperty('fail'))
             { // something went wrong
-                this.options.fail(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
             }
             if (this.options.hasOwnProperty('always'))
             { // always do this
-                this.options.always(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
             }
         }
 /**
@@ -39,11 +45,17 @@
             // There was a connection error of some sort
               if (this.options.hasOwnProperty('fail'))
               {
-                  this.options.fail(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
               }
               if (this.options.hasOwnProperty('always'))
               {
-                  this.options.always(this);
+                for (let fn of this.options.fail)
+                {
+                    fn(this);
+                }
               }
         }
 
@@ -59,13 +71,21 @@
 
         fail(fn)
         {
-            this.request.options.fail= fn;
+            if (!this.request.options.hasOwnProperty('success'))
+            {
+                this.request.options.fail = [];
+            }
+            this.request.options.fail.push(fn);
             return this;
         }
 
         always(fn)
         {
-            this.request.options.always = fn;
+            if (!this.request.options.hasOwnProperty('success'))
+            {
+                this.request.options.always = [];
+            }
+            this.request.options.always.push(fn);
             return this;
         }
     }
