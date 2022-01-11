@@ -49,7 +49,7 @@
 
         done(fn)
         {
-            if (!this.options.hasOwnProperty('success'))
+            if (!this.request.options.hasOwnProperty('success'))
             {
                 this.request.options.success = [];
             }
