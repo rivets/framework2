@@ -16,7 +16,11 @@
             { // Success!
                 if (this.options.hasOwnProperty('success'))
                 {
-                    this.options.success(this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response, this);
+                    let val = this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response;
+                    for (let fn of this.options.success)
+                    {
+                        fn(val, this);
+                    }
                 }
             }
             else if (this.options.hasOwnProperty('fail'))
@@ -45,7 +49,11 @@
 
         done(fn)
         {
-            this.request.options.success = fn;
+            if (!this.options.hasOwnProperty('success'))
+            {
+                this.request.options.success = [];
+            }
+            this.request.options.success.push(fn);
             return this;
         }
 
