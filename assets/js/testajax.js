@@ -7,7 +7,10 @@
 
         makecall : function (url, data, cdone, cfail){
             data.async = true;
-            framework.ajax(framework.base+'/ajax/'+url, data).done(cdone).fail(cfail);
+            framework.ajax(framework.base+'/ajax/'+url, data).done(function(data){
+                console.log('done 1');
+                return data;
+            }).done(cdone).fail(cfail);
         },
         testbean: function (){
             framework.alert('Bean operation test complete');
