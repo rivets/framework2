@@ -10,7 +10,6 @@
     namespace Pages;
 
     use \Support\Context;
-    use \Config\Config as Config;
 /**
  * A profile page class
  */
