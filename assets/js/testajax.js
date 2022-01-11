@@ -221,5 +221,23 @@
             }, function(jx) {
                 t.insertAdjacentHTML('beforeend', '<p>Non-existent login fails - '+jx.status+' '+jx.responseText+'</p>');
             });
+        },
+
+        testjs :function (){
+            let t = this.parentNode;
+            framework.ajax(framework.base+'/ajax/nosuchop', { method: 'GET' }).done(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Should fail but succeeded</p>');
+            }).fail(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Fail 1 called</p>');
+            })
+            .fail(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Fail 2 called</p>');
+            })
+            .always(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Always 1 called</p>');
+            })
+            .always(function(){
+                t.insertAdjacentHTML('beforeend', '<p>Always 2 called</p>');
+            });
         }
     };
