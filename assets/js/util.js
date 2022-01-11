@@ -14,12 +14,12 @@
         onloaded(){
             if (this.status >= 200 && this.status < 400)
             { // Success!
+                let val = this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response;
                 if (this.options.hasOwnProperty('success'))
                 {
-                    let val = this.options.hasOwnProperty('accept') && this.options.accept == 'application/json' ? JSON.parse(this.response) : this.response;
                     for (let fn of this.options.success)
                     {
-                        fn(val, this);
+                        val = fn(val, this);
                     }
                 }
             }
@@ -71,7 +71,7 @@
 
         fail(fn)
         {
-            if (!this.request.options.hasOwnProperty('success'))
+            if (!this.request.options.hasOwnProperty('fail'))
             {
                 this.request.options.fail = [];
             }
@@ -81,7 +81,7 @@
 
         always(fn)
         {
-            if (!this.request.options.hasOwnProperty('success'))
+            if (!this.request.options.hasOwnProperty('always'))
             {
                 this.request.options.always = [];
             }
