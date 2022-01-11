@@ -3,7 +3,7 @@
 
     var testing = {
 
-        ajaxops : [ 'bean', 'config', 'hints', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
+        ajaxops : [ 'bean', 'config', 'hints', 'js', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'],
 
         makecall : function (url, data, cdone, cfail){
             data.async = true;
