@@ -37,25 +37,21 @@
  */
         public function send304() : void
         {
-            $this->sendheaders(StatusCodes::HTTP_NOT_MODIFIED);
+            $this->sendHeaders(StatusCodes::HTTP_NOT_MODIFIED);
         }
 /**
  * Generate a 400 Bad Request error return
  *
  * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
  */
         public function bad(string $msg = '') : never
         {
-            $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
+            $this->sendHead(StatusCodes::HTTP_BAD_REQUEST, $msg);
         }
 /**
  * Generate a 403 Access Denied error return
  *
  * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
  */
         public function noAccess(string $msg = '') : never
         {
@@ -65,8 +61,6 @@
  * Generate a 404 Not Found error return
  *
  * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
  */
         public function notFound(string $msg = '') : never
         {
@@ -76,8 +70,6 @@
  * Generate a 500 Internal Error error return
  *
  * @param string    $msg    A message to be sent
- *
- * @psalm-return never-return
  */
         public function internal(string $msg = '') : never
         {
