@@ -19,8 +19,6 @@
  * Handle various profile operations /
  *
  * @param Context $context    The context object for the site
- *
- * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function handle(Context $context) : array|string
         {
