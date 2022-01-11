@@ -72,10 +72,8 @@
  *
  * @param $code   The return code
  * @param $msg    The message (or '')
- *
- * @return never
  */
-        protected function sendHead(int $code, string $msg = '') : void // never
+        protected function sendHead(int $code, string $msg = '') : never
         {
             if ($msg !== '')
             {
@@ -106,7 +104,7 @@
  *
  * @return never
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void // never
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : never
         {
             if ($temporary)
             {

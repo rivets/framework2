@@ -46,7 +46,7 @@
  *
  * @psalm-return never-return
  */
-        public function bad(string $msg = '') : void
+        public function bad(string $msg = '') : never
         {
             $this->sendhead(StatusCodes::HTTP_BAD_REQUEST, $msg);
         }
@@ -57,7 +57,7 @@
  *
  * @psalm-return never-return
  */
-        public function noAccess(string $msg = '') : void
+        public function noAccess(string $msg = '') : never
         {
             $this->sendHead(StatusCodes::HTTP_FORBIDDEN, $msg);
         }
@@ -68,7 +68,7 @@
  *
  * @psalm-return never-return
  */
-        public function notFound(string $msg = '') : void
+        public function notFound(string $msg = '') : never
         {
             $this->sendHead(StatusCodes::HTTP_NOT_FOUND, $msg);
         }
@@ -79,7 +79,7 @@
  *
  * @psalm-return never-return
  */
-        public function internal(string $msg = '') : void
+        public function internal(string $msg = '') : never
         {
             $this->sendHead(StatusCodes::HTTP_INTERNAL_SERVER_ERROR, $msg);
         }
