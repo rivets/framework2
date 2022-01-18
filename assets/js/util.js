@@ -143,7 +143,14 @@
                 else
                 {
                     data = framework.makeQString(options.data);
-                    dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
+                    if (method.toUpperCaser() == 'GET')
+                    {
+                        dtype = 'text/plain';
+                    }
+                    else
+                    {
+                        dtype = 'application/x-www-form-urlencoded; charset=UTF-8';
+                    }
                 }
             }
             let type = options.hasOwnProperty('type') ? options.type : dtype;

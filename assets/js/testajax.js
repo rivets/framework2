@@ -228,7 +228,7 @@
 
         testjs :function (){
             let t = this.parentNode;
-            framework.ajax(framework.base+'/ajax/nosuchop', { method: 'GET' }).done(function(){
+            framework.ajax(framework.base+'/ajax/nosuchop', { method: 'GET', data: {test: 'testdata'} }).done(function(){
                 t.insertAdjacentHTML('beforeend', '<p>Should fail but succeeded</p>');
             }).fail(function(){
                 t.insertAdjacentHTML('beforeend', '<p>Fail 1 called</p>');
