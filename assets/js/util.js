@@ -146,6 +146,8 @@
                     if (method.toUpperCase() == 'GET')
                     {
                         dtype = 'text/plain';
+                        url += '?'.data;
+                        data = '';
                     }
                     else
                     {
