@@ -143,7 +143,7 @@
                 else
                 {
                     data = framework.makeQString(options.data);
-                    if (method.toUpperCaser() == 'GET')
+                    if (method.toUpperCase() == 'GET')
                     {
                         dtype = 'text/plain';
                     }
