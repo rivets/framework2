@@ -130,6 +130,12 @@ return [
              'maxComplexity' => 25,
              'exclude' => [
                 'framework/model/form.php',
+                'class/framework/formdata/base.php',
+                'class/framework/model/page.php',
+                'class/framework/pages/admin.php',
+                'class/framework/pages/userlogin.php',
+                'class/framework/support/testsupport.php',
+                'class/framework/web/webbase.php',
              ]
         ],
         \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class => [
