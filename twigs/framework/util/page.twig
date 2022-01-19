@@ -76,7 +76,6 @@
         {% endif %}
         {% if fwutils or ajax or fwdom or editable %}
             <script {{h.urlattr(fwurls.utiljs)}}></script>
-            <script src="{{assets}}/js/fwdom-min.js"></script>
         {% endif %}
         {% if parsley or validate %}
             <script {{h.urlattr(fwurls.parsley)}}></script>

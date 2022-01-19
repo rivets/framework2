@@ -1,5 +1,4 @@
 {% set fwutils = TRUE %}
-{% set fwdom = TRUE %}
 {% set usebootbox = FALSE %}
 
 {% set x = context.web.addCSP('script-src', "'unsafe-inline'") %}
@@ -8,7 +7,6 @@
 {% set inline = view is not defined %}
 
 {% set validate = allownew %}
-{% set editable = FALSE %}
 
 {% extends '@content/page.twig' %}
 
