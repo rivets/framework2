@@ -126,13 +126,13 @@ return [
     ],
 
     'config' => [
-        NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
+        \NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
              'maxComplexity' => 25,
              'exclude' => [
                 'framework/model/form.php',
              ]
         ],
-        NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class => [
+        \NunoMaduro\PhpInsights\Domain\Insights\ForbiddenGlobals::class => [
             'exclude' => [
                 'framework/utility/*',
                 'framework/ajax.php',
@@ -145,45 +145,45 @@ return [
             ],
         ],
 
-        ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff::class => [
+        \ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff::class => [
             'maxNestingLevel' => 6,
         ],
         \ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff::class => [
             'maxCount' => 15,
         ],
 
-        ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff::class => [
+        \ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff::class => [
             'maxLength' => 600,
         ],
-        ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff::class => [
+        \ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff::class => [
             'maxLength' => 200,
         ],
-        ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff::class => [
+        \ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff::class => [
             'maxCount' => 20,
         ],
 
-        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class => [
+        \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class => [
             'lineLimit' => 190,
             'absoluteLineLimit' => 190
         ],
 
-        PhpCsFixer\Fixer\Basic\BracesFixer::class => [
+        \PhpCsFixer\Fixer\Basic\BracesFixer::class => [
             'allow_single_line_closure' => false,
             'position_after_anonymous_constructs' => 'same', // possible values ['same', 'next']
             'position_after_control_structures' => 'next', // possible values ['same', 'next']
             'position_after_functions_and_oop_constructs' => 'next', // possible values ['same', 'next']
         ],
 
-        SlevomatCodingStandard\Sniffs\Namespaces\NamespaceSpacingSniff::class => [
+        \SlevomatCodingStandard\Sniffs\Namespaces\NamespaceSpacingSniff::class => [
             'linesCountBeforeNamespace' => 0,
             'linesCountAfterNamespace' => 1,
         ],
-        SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff::class => [
+        \SlevomatCodingStandard\Sniffs\Namespaces\UseSpacingSniff::class => [
             'linesCountBeforeFirstUse' => 1,
             'linesCountBetweenUseTypes' => 0,
             'linesCountAfterLastUse' => 0,
         ],
-        SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff::class => [
+        \SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff::class => [
            'spacesCountBeforeColon' => 1,
         ],
         //  ExampleInsight::class => [
