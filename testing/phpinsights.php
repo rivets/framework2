@@ -145,10 +145,6 @@ return [
             ],
         ],
 
-        \ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff::class => [
-            'maxCount' => 15,
-        ],
-
         \ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff::class => [
             'maxLength' => 600,
         ],
