@@ -59,6 +59,7 @@
             }
             try
             {
+$this->local->message(Local::WARNING, $this->display($params));
                 $res = $this->fdt->{$func}(...$params);
                 if (\is_object($res))
                 {
