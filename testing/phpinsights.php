@@ -145,9 +145,6 @@ return [
             ],
         ],
 
-        \ObjectCalisthenics\Sniffs\Files\ClassTraitAndInterfaceLengthSniff::class => [
-            'maxLength' => 600,
-        ],
         \ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff::class => [
             'maxLength' => 200,
         ],
