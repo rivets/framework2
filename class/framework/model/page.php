@@ -17,6 +17,7 @@
 /**
  * A class implementing a RedBean model for Page beans
  * @psalm-suppress UnusedClass
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.CyclomaticComplexityIsHigh
  */
     final class Page extends \RedBeanPHP\SimpleModel
     {
@@ -122,7 +123,7 @@
             $base = \array_pop($tspl);
             $lbase = \strtolower($base);
             $namespace = \implode('\\', \array_filter($tspl));
-            $src = \preg_replace('/\\\\/', DIRECTORY_SEPARATOR, $tl).'.php';
+            $src = \preg_replace('/\\\\/', \DIRECTORY_SEPARATOR, $tl).'.php';
             $file = $context->local()->makebasepath('class', $src);
             if (!\file_exists($file))
             { // make the file
