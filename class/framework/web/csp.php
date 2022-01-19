@@ -56,27 +56,15 @@
  * @param string|array<mixed>  $type    What the item is for (script-src, style-src etc.)
  * @param string               $host    The host to add
  */
-        public function addCSP($type, string $host = '') : void
+        public function addCSP(array|string $type, string $host = '') : void
         {
-            if (!is_array($type))
-            {
-                \assert($host !== '');
-                $type = [$type => [$host]];
-            }
-            foreach ($type as $t => $h)
+            foreach (\is_array($type) ? $type : [$type => [$host]] as $t => $h)
             {
                 if (!\is_array($h))
                 {
                     $h = [$h];
                 }
-                if (!isset($this->csp[$t]))
-                {
-                    $this->csp[$t] = $h;
-                }
-                else
-                {
-                    $this->csp[$t] = \array_merge($this->csp[$t], $h);
-                }
+                $this->csp[$t] = isset($this->csp[$t]) ? \array_merge($this->csp[$t], $h) : $h;
             }
         }
 /**
@@ -87,14 +75,9 @@
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function removeCSP($type, string $host = '') : void
+        public function removeCSP(array|string $type, string $host = '') : void
         {
-            if (!\is_array($type))
-            {
-                \assert($host !== '');
-                $type = [$type => $host];
-            }
-            foreach ($type as $t => $h)
+            foreach (\is_array($type) ? $type : [$type => [$host]] as $t => $h)
             {
                 if (isset($this->csp[$t]))
                 {
@@ -140,7 +123,7 @@
 /**
  * Initialise CSP
  *
- * If the data is in the database then use that, if not thensetup the table from Config::$defaultCSP
+ * If the data is in the database then use that, if not then setup the table from Config::$defaultCSP
  *
  * @return void
  */
@@ -193,7 +176,7 @@
         {
             if (isset(self::$cspFields[$type]))
             {
-                $host = \parse_url($url, PHP_URL_HOST);
+                $host = \parse_url($url, \PHP_URL_HOST);
                 if ($host !== '' && \R::findOne(FW::CSP, 'type=? and host=?', [self::$cspFields[$type], $host]) === NULL)
                 { // it might be hidden behind a pattern
                     $x = \explode('.', $host);
