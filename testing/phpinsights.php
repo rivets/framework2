@@ -145,13 +145,6 @@ return [
             ],
         ],
 
-        \ObjectCalisthenics\Sniffs\Files\FunctionLengthSniff::class => [
-            'maxLength' => 200,
-        ],
-        \ObjectCalisthenics\Sniffs\Metrics\PropertyPerClassLimitSniff::class => [
-            'maxCount' => 20,
-        ],
-
         \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff::class => [
             'lineLimit' => 190,
             'absoluteLineLimit' => 190
