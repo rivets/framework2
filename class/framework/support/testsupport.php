@@ -37,10 +37,10 @@
  * @param mixed $pars
  * @param bool $all
  */
-        private function display($pars, $all = FALSE) : string
+        private function display($pars, bool $all = FALSE) : string
         {
-            $x = preg_replace('/array\(/', '[', preg_replace('/,\)/', ']', preg_replace('/\d=>/', '', preg_replace('/\s+/ims', '', var_export($pars, TRUE)))));
-            return preg_replace('/\[\)/', '[]', preg_replace('/,/', ', ', $all ? $x : substr($x, 1, strlen($x)-2)));
+            $x = \preg_replace('/array\(/', '[', \preg_replace('/,\)/', ']', \preg_replace('/\d=>/', '', \preg_replace('/\s+/ims', '', \var_export($pars, TRUE)))));
+            return \preg_replace('/\[\)/', '[]', \preg_replace('/,/', ', ', $all ? $x : \substr($x, 1, \strlen($x)-2)));
         }
 /**
  * Run tests specified
@@ -51,7 +51,7 @@
             {
                 return TRUE;
             }
-            $this->local->addval('array', var_export($_REQUEST, TRUE));
+            $this->local->addval('array', \var_export($_REQUEST, TRUE));
             $msg = $func.'('.$this->display($params).') : '.$this->display($result, TRUE);
             if ($result === 'userid')
             {
@@ -60,9 +60,9 @@
             try
             {
                 $res = $this->fdt->{$func}(...$params);
-                if (is_object($res))
+                if (\is_object($res))
                 {
-                    if (is_array($result) && $result[0] == 'iterator')
+                    if (\is_array($result) && $result[0] == 'iterator')
                     {
                         if ($res instanceof \ArrayIterator)
                         {
@@ -94,11 +94,11 @@
                         $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.$res::class);
                     }
                 }
-                elseif (is_array($result))
+                elseif (\is_array($result))
                 {
-                    if (is_array($res))
+                    if (\is_array($res))
                     {
-                        $diff = array_diff($res, $result);
+                        $diff = \array_diff($res, $result);
                         if (empty($diff))
                         {
                             $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
