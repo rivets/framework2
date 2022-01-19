@@ -244,11 +244,7 @@
  */
         public function addHeader(array|string $key, string $value = '') : void
         {
-            if (!\is_array($key))
-            {
-                $key = [$key => $value];
-            }
-            foreach ($key as $k => $val)
+            foreach (is_array($key) ? $key : [$key => $value] as $k => $val)
             {
                 $this->headers[trim($k)][] = \str_replace("\0", '', trim($val));
             }
