@@ -145,9 +145,6 @@ return [
             ],
         ],
 
-        \ObjectCalisthenics\Sniffs\Metrics\MaxNestingLevelSniff::class => [
-            'maxNestingLevel' => 6,
-        ],
         \ObjectCalisthenics\Sniffs\Metrics\MethodPerClassLimitSniff::class => [
             'maxCount' => 15,
         ],
