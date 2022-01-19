@@ -78,16 +78,12 @@
             if ($msg !== '')
             {
                 $msg = '<p>'.$msg.'</p>';
-                $length = \strlen($msg);
+                $this->sendheaders($code, self::HTMLMIME, \strlen($msg));
+                echo $msg;
             }
             else
             {
-                $length = NULL;
-            }
-            $this->sendheaders($code, self::HTMLMIME, $length);
-            if ($msg !== '')
-            {
-                echo $msg;
+                $this->sendheaders($code, self::HTMLMIME);
             }
             exit;
         }
