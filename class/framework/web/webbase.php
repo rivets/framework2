@@ -136,27 +136,27 @@
  */
         public function hasRange(int $size, string|int $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
         {
-            if (!\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
-            {
-                return [$code, [], $size];
-            }
-            if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
-            { // split the range request
-                if ((int) $rng[1] <= $size)
-                { // start is before end of file
-                    if (!isset($rng[2]) || $rng[2] === '')
-                    { // no top value specified, so use the filesize (-1 of course!!)
-                        $rng[2] = $size - 1;
-                    }
-                    if ($rng[2] < $size)
-                    { // end is before end of file
-                        $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
-                        return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], (int) $rng[2] - (int) $rng[1]+1];
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
+            { // there is a range request
+                if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
+                { // split the  request
+                    if ((int) $rng[1] <= $size)
+                    { // start is before end of file
+                        if (!isset($rng[2]) || $rng[2] === '')
+                        { // no top value specified, so use the filesize (-1 of course!!)
+                            $rng[2] = $size - 1;
+                        }
+                        if ($rng[2] < $size)
+                        { // end is before end of file
+                            $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
+                            return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], (int) $rng[2] - (int) $rng[1]+1];
+                        }
                     }
                 }
+                $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
+                /* NOT REACHED */
             }
-            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
-            /* NOT REACHED */
+            return [$code, [], $size];
         }
 /**
  * Make a header sequence for a particular return code and add some other useful headers
