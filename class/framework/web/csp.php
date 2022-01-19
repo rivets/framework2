@@ -132,29 +132,29 @@
             $local = $this->context->local();
             if ($local->configval('usecsp'))
             {
+                $this->csp = [];
                 if (\Support\SiteInfo::tableExists(\Config\Framework::CSP))
                 { // we have the table
-                    $this->csp = [];
                     foreach (\R::findAll(\Config\Framework::CSP) as $csp)
                     {
                         $this->csp[$csp->type][] = $csp->host;
                     }
                 }
-                else
-                { // copy the default set
-                    $this->csp = self::$defaultCSP;
-                    foreach ($this->csp as $type => $host)
-                    { // now set up the database for future working...
-                        foreach ($host as $h)
-                        {
-                            $bn = \R::dispense(\Config\Framework::CSP);
-                            $bn->type = $type;
-                            $bn->host = $h;
-                            $bn->essential = 1;
-                            \R::store($bn);
-                        }
-                    }
-                }
+                //else
+                //{ // copy the default set
+                //    $this->csp = self::$defaultCSP;
+                //    foreach ($this->csp as $type => $host)
+                //    { // now set up the database for future working...
+                //        foreach ($host as $h)
+                //        {
+                //            $bn = \R::dispense(\Config\Framework::CSP);
+                //            $bn->type = $type;
+                //            $bn->host = $h;
+                //            $bn->essential = 1;
+                //            \R::store($bn);
+                //        }
+                //    }
+                //}
             }
         }
 /**
