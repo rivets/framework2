@@ -138,7 +138,7 @@
 /**
  * Helper function for role/context names
  */
-        private function getRCName(string $bean, string $holder, string $name) : string
+        private function getRCName(string $bean, string $holder, string $name) : OODBBean
         {
             if (!isset($this->{$holder}[$name]))
             {
