@@ -18,7 +18,7 @@
     class Upload extends \Framework\SiteAction
     {
 /**
- * Handle various admin operations /upload
+ * Handle various admin operations /
  *
  * @param Context  $context    The context object for the site
  */

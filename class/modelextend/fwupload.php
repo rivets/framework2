@@ -1,11 +1,11 @@
 <?php
 /**
- * A trait that allows extending the model class for the RedBean object Upload
+ * A trait that allows extending the model class for the RedBean object FWUpload
  *
- * Add any new methods you want the Upload bean to have here.
+ * Add any new methods you want the  bean to have here.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2022 Newcastle University
  * @package Framework
  * @subpackage ModelExtend
  */
@@ -13,7 +13,7 @@
 
     use \Support\Context;
 /**
- * Upload table stores info about files that have been uploaded...
+ *  table stores info about files that have been uploaded...
  */
     trait FWUpload
     {
@@ -26,7 +26,6 @@
  * @param ?\RedBeanPHP\OODBBean   $user   A user object
  * @param string                  $op     r for read, u for update, d for delete
  *
- * @return bool
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function canaccess(?\RedBeanPHP\OODBBean $user, string $op = 'r') : bool
@@ -40,7 +39,6 @@
  * @param int       $index      If you are reading data from an array fo files, this is the index
  *                              in the file. You may have paralleld data arrays and need this index.
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function addData(Context $context, int $index) : void
@@ -56,7 +54,6 @@
  * @param int        $index     If you are reading data from an array of files, this is the index
  *                              in the file. You may have parallel data arrays and need this index.
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function updateData(Context $context, int $index = 0) : void
@@ -70,7 +67,6 @@
  *
  * @param Context    $context   The context object for the site
  *
- * @return void
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
         public function downloaded(Context $context) : void
@@ -80,10 +76,9 @@
              */
         }
 /**
- * Automatically called by RedBean when you try to trash an upload. Do any cleanup in here
+ * Automatically called by RedBean when you try to trash an . Do any cleanup in here
  *
  * @throws \Framework\Exception\Forbidden
- * @return void
  */
         public function delete() : void
         {

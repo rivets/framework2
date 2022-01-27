@@ -1,6 +1,6 @@
 <?php
 /**
- * A model class for the RedBean object Upload
+ * A model class for the RedBean FWUpload object
  *
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
@@ -12,7 +12,7 @@
 
     use \Support\Context;
 /**
- * Upload table stores info about files that have been uploaded...
+ *  FWUpload table stores info about files that have been uploaded...
  * @psalm-suppress UnusedClass
  */
     final class FWUpload extends \RedBeanPHP\SimpleModel
