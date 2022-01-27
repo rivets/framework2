@@ -14,43 +14,52 @@ var fweditable = {
 
     makeEdit: function(d)
     {
-       const options = fweditable.edOptions[d.getAttribute('data-editable-id')];
-       let ctext = d.innerHTML;
-       let box;
-       if (ctext === options.emptyText)
-       {
-           ctext = '';
-       }
-       switch (options.type)
-       {
-       case 'select':
-           box = '<select class="edbox">';
+        const options = fweditable.edOptions[d.getAttribute('data-editable-id')];
+        let ctext = d.innerHTML;
+        let box;
+        if (ctext === options.emptyText)
+        {
+            ctext = '';
+        }
+        switch (options.type)
+        {
+        case 'select':
+            box = '<select class="edbox">';
 
-           if (typeof options.source == 'function')
-           {
-               options.source = options.source();
-           }
-           for (let opt of options.source)
-           {
-               if (typeof opt == 'object')
-               {
-                   box += '<option value="'+opt.value+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
-               }
-               else
-               {
-                   box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
-               }
-           }
-           box += '</select>';
-           break;
-       case 'textarea':
-           box = '<textarea rows="5" cols="80" class="edbox">' + ctext + '</textarea>';
-           break;
-       default:
-           box = '<input type="'+options.type+'" value="' + ctext + '" class="edbox"/>';
-           break;
-       }
-       return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
+            if (typeof options.source == 'function')
+            {
+                options.source = options.source();
+            }
+            for (let opt of options.source)
+            {
+                if (typeof opt == 'object')
+                {
+                    let vlu = opt.value;
+                    if (vlu.includes('"'))
+                    {
+                        vlu = vlu.replace(/"/, '&quot;');
+                    }
+                    box += '<option value="'+vlu+'"'+(opt.text == ctext ? ' selected' : '')+'>'+opt.text+'</option>';
+                }
+                else
+                {
+                    box += '<option'+(opt == ctext ? ' selected' : '')+'>'+opt+'</option>';
+                }
+            }
+            box += '</select>';
+            break;
+        case 'textarea':
+            box = '<textarea rows="5" cols="80" class="edbox">' + ctext + '</textarea>';
+            break;
+        default:
+            if (ctext.includes('"'))
+            {
+                ctext = ctext.replace(/"/, '&quot;');
+            }
+            box = '<input type="'+options.type+'" value="' + ctext + '" class="edbox"/>';
+            break;
+        }
+        return box + '<i class="fas fa-times-circle edno"></i><i class="fas fa-check-circle edyes"></i>';
     },
 
     popDispose : function()

@@ -3,7 +3,7 @@
  * Contains definition of Test class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2022 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -31,10 +31,10 @@
             ['mustFetch', ['notexist'], '42', FALSE],
             ['fetch', [['aexist', 0], 3], '42', TRUE],
             ['fetch', [['aexist', 3], 3], 3, FALSE],
-            ['fetch', ['aexist', 3, NULL, '', FALSE], 3, FALSE],
-            ['fetch', ['aexist', 3, NULL, '', TRUE], ['42', '66'], TRUE],
-            ['mustFetch', ['aexist', NULL, '', FALSE], 3, FALSE],
-            ['mustFetch', ['aexist', NULL, '', TRUE], ['42', '66'], TRUE],
+            ['fetch', ['aexist', 3, NULL, 0, FALSE], 3, FALSE],
+            ['fetch', ['aexist', 3, NULL, 0, TRUE], ['42', '66'], TRUE],
+            ['mustFetch', ['aexist', NULL, 0, FALSE], 3, FALSE],
+            ['mustFetch', ['aexist', NULL, 0, TRUE], ['42', '66'], TRUE],
             ['mustFetch', [['aexist', 1]],'66', TRUE],
             ['mustFetch', [['aexist', 3]], '42', FALSE],
             ['fetch', [['nexist', 14], 3], '42', TRUE],
@@ -45,10 +45,10 @@
             ['fetch', [['kexist', 'key45'], 3], 3, FALSE],
             ['mustFetch', [['kexist', 'key1']],'42', TRUE],
             ['mustFetch', [['kexist', 'key45']], '42', FALSE],
-            ['fetch', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
-            ['mustFetch', ['email', FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
-            ['fetch', ['email', 3, FILTER_VALIDATE_INT], 3, FALSE],
-            ['mustFetch', ['email', FILTER_VALIDATE_INT], 3, FALSE],
+            ['fetch', ['email', \FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE],
+            ['mustFetch', ['email', \FILTER_VALIDATE_EMAIL], 'foo@bar.com', TRUE,''],
+            ['fetch', ['email', 3, \FILTER_VALIDATE_INT], 3, FALSE],
+            ['mustFetch', ['email', \FILTER_VALIDATE_INT], 3, FALSE],
             ['mustFetchBean', ['beanid', 'user'], 'userid', TRUE],
             ['mustFetchBean', ['notbeanid', 'user'], 'userid', FALSE],
             ['mustFetchBean', ['badbeanid', 'user'], 'userid', FALSE],

@@ -170,7 +170,7 @@
  *
  * @psalm-return never-return
  */
-        private function etagmatched(Context $context) : void
+        private function etagmatched(Context $context) : never
         {
             $web = $context->web();
             $rqm = $web->method();

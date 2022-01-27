@@ -72,24 +72,18 @@
  *
  * @param $code   The return code
  * @param $msg    The message (or '')
- *
- * @return never
  */
-        protected function sendHead(int $code, string $msg = '') : void // never
+        protected function sendHead(int $code, string $msg = '') : never
         {
             if ($msg !== '')
             {
                 $msg = '<p>'.$msg.'</p>';
-                $length = \strlen($msg);
+                $this->sendheaders($code, self::HTMLMIME, \strlen($msg));
+                echo $msg;
             }
             else
             {
-                $length = NULL;
-            }
-            $this->sendheaders($code, self::HTMLMIME, $length);
-            if ($msg !== '')
-            {
-                echo $msg;
+                $this->sendheaders($code, self::HTMLMIME);
             }
             exit;
         }
@@ -106,7 +100,7 @@
  *
  * @return never
  */
-        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : void // never
+        public function relocate(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : never
         {
             if ($temporary)
             {
@@ -138,27 +132,27 @@
  */
         public function hasRange(int $size, string|int $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
         {
-            if (!\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
-            {
-                return [$code, [], $size];
-            }
-            if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
-            { // split the range request
-                if ((int) $rng[1] <= $size)
-                { // start is before end of file
-                    if (!isset($rng[2]) || $rng[2] === '')
-                    { // no top value specified, so use the filesize (-1 of course!!)
-                        $rng[2] = $size - 1;
-                    }
-                    if ($rng[2] < $size)
-                    { // end is before end of file
-                        $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
-                        return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], (int) $rng[2] - (int) $rng[1]+1];
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
+            { // there is a range request
+                if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
+                { // split the  request
+                    if ((int) $rng[1] <= $size)
+                    { // start is before end of file
+                        if (!isset($rng[2]) || $rng[2] === '')
+                        { // no top value specified, so use the filesize (-1 of course!!)
+                            $rng[2] = $size - 1;
+                        }
+                        if ($rng[2] < $size)
+                        { // end is before end of file
+                            $this->addHeader(['Content-Range' => 'bytes '.$rng[1].'-'.$rng[2].'/'.$size]);
+                            return [StatusCodes::HTTP_PARTIAL_CONTENT, [$rng[1], $rng[2]], (int) $rng[2] - (int) $rng[1]+1];
+                        }
                     }
                 }
+                $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
+                /* NOT REACHED */
             }
-            $this->sendHead(StatusCodes::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE);
-            /* NOT REACHED */
+            return [$code, [], $size];
         }
 /**
  * Make a header sequence for a particular return code and add some other useful headers
@@ -246,11 +240,7 @@
  */
         public function addHeader(array|string $key, string $value = '') : void
         {
-            if (!\is_array($key))
-            {
-                $key = [$key => $value];
-            }
-            foreach ($key as $k => $val)
+            foreach (is_array($key) ? $key : [$key => $value] as $k => $val)
             {
                 $this->headers[trim($k)][] = \str_replace("\0", '', trim($val));
             }

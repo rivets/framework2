@@ -358,7 +358,7 @@
 /**
  * Login success so set up session
  */
-        private function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page) // : never
+        private function loginSession(Context $context, \RedBeanPHP\OODBBean $user, string $page) : never
         {
             if (\session_status() !== \PHP_SESSION_ACTIVE)
             { // no session started yet

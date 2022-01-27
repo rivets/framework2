@@ -60,7 +60,7 @@
                 $access = $permissions[$beanType];
                 if (\is_object($user) || !$access[0])
                 { // either we have a user or no login required
-                    $checks = count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
+                    $checks = \count($access) == 2 ? $access[1] : [ [$access[1], $access[2]] ];
                     foreach ($checks as $check)
                     {
                         $this->checkPerms($user, $check[0]); // check user plays the right roles

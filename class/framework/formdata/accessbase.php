@@ -46,7 +46,7 @@
  * @param array|int     $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
  */
-        public function fetch($name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
+        public function fetch($name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string|int|float|bool
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }

@@ -3,7 +3,7 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework\Framework\Support
  */
     namespace Framework\Support;
@@ -85,7 +85,7 @@
  */
         public function hasUser() : bool
         {
-            return is_object($this->luser);
+            return \is_object($this->luser);
         }
 /**
  * Find out if this was validated using a JWT token, if so, it is (probably) coming from a device not a browser
@@ -136,6 +136,21 @@
             return $res;
         }
 /**
+ * Helper function for role/context names
+ */
+        private function getRCName(string $bean, string $holder, string $name) : OODBBean
+        {
+            if (!isset($this->{$holder}[$name]))
+            {
+                if (!is_object($bn = \R::findOne($bean, 'name=?', [$name])))
+                {
+                    throw new \Framework\Exception\InternalError('Missing role name: '.$name);
+                }
+                $this->{$holder}[$name] = $bn;
+            }
+            return $this->{$holder}[$name];
+        }
+/**
  * Find a rolename bean
  *
  * This will load the name cache if needed and then return the relevant bean (if it exists). The
@@ -148,15 +163,7 @@
  */
         public function roleName(string $name) : OODBBean
         {
-            if (!isset($this->roles[$name]))
-            {
-                if (!is_object($bn = \R::findOne(FW::ROLENAME, 'name=?', [$name])))
-                {
-                    throw new \Framework\Exception\InternalError('Missing role name: '.$name);
-                }
-                $this->roles[$name] = $bn;
-            }
-            return $this->roles[$name];
+            return $this->getRCName(FW::ROLENAME, 'roles', $name);
         }
 /**
  * Find a rolecontext bean
@@ -171,15 +178,7 @@
  */
         public function roleContext(string $name) : OODBBean
         {
-            if (!isset($this->contexts[$name]))
-            {
-                if (!is_object($bn = \R::findOne(FW::ROLECONTEXT, 'name=?', [$name])))
-                {
-                    throw new \Framework\Exception\InternalError('Missing context name: '.$name);
-                }
-                $this->contexts[$name] = $bn;
-            }
-            return $this->contexts[$name];
+            return $this->getRCName(FW::ROLECONTEXT, 'contexts', $name);
         }
 /**
  * Load a bean that must exist, otherwise throw an exception.

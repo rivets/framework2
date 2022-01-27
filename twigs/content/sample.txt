@@ -9,10 +9,6 @@
 {% set fwutils = TRUE %}
 #}
 {#
-    If your page uses the Framework JS dom package include this line at the start of the file
-{% set fwdom = TRUE %}
-#}
-{#
     If your page uses form validation include this line at the start of the file
 {% set validate = TRUE %}
 #}
