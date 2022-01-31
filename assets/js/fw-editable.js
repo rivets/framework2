@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap, framework, console */
+/* globals document, fwdom, bootstrap, framework, console, window */
 /* jshint undef: true, unused: false */
 
 var fweditable = {
