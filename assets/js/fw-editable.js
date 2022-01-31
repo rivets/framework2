@@ -111,6 +111,7 @@ var fweditable = {
         });
         popover.show();
         document.querySelector('.popover').querySelector('.edbox').focus();
+        window.getSelection().removeAllRanges();
         let tip = popover.tip;
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
