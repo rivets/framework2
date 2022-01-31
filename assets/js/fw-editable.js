@@ -110,7 +110,7 @@ var fweditable = {
             template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
         popover.show();
-        popover.querySelector('.edbox').focus();
+        document.querySelector('.popover.edbox').focus();
         let tip = popover.tip;
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
