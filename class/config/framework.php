@@ -42,7 +42,7 @@
         public const FORM           = self::DBPREFIX.'form';
         public const FORMFIELD      = self::DBPREFIX.'formfield';
         public const PAGE           = self::DBPREFIX.'page';
-        public const PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const PAGEROLE       = 'fwpagerole';
         public const ROLE           = self::DBPREFIX.'role';
         public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
         public const ROLENAME       = self::DBPREFIX.'rolename';

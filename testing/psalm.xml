@@ -54,12 +54,12 @@
         <file name="../class/framework/model/formfield.php" />
         <file name="../class/framework/model/fwconfig.php" />
         <file name="../class/framework/model/fwcsp.php" />
+        <file name="../class/framework/model/fwpagerole.php" />
+        <file name="../class/framework/model/fwupload.php" />
         <file name="../class/framework/model/page.php" />
-        <file name="../class/framework/model/pagerole.php" />
         <file name="../class/framework/model/role.php" />
         <file name="../class/framework/model/rolecontext.php" />
         <file name="../class/framework/model/rolename.php" />
-        <file name="../class/framework/model/fwupload.php" />
         <file name="../class/framework/model/user.php" />
 
         <file name="../class/framework/pages/add2fa.php" />
