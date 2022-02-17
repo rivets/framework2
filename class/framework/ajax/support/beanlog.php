@@ -11,9 +11,16 @@
     use \Config\Framework as FW;
     use \Support\Context;
 /**
+ * Enumerartion for beanlog constants
+ */
+    enum BeanLogOps : int
+    {
+        case CREATE = 0;
+        case UPDATE = 1;
+        case DELETE = 2;
+    }
+/**
  * Class to log operations on beans
- *
- * @todo use an enum instead of const when PHP 8.1 comes out
  */
     class BeanLog
     {

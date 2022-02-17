@@ -7,7 +7,7 @@
  */
     namespace Framework\Model;
 
-    use \Framework\Ajax\Support\BeanLog as BL;
+    use \Framework\Ajax\Support\BeanLogOps as BL;
 /**
  * A class implementing a RedBean model for BeanLog beans
  */
