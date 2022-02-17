@@ -34,15 +34,15 @@
         public const TESTCONTEXT    = self::DBPREFIX.'Test';
 
         public const AJAX           = 'fwajax'; // table names
-        public const BEANLOG        = 'beanlog';
+        public const BEANLOG        = 'fwbeanlog';
         public const CONFIG         = 'fwconfig';
-        public const CONFIRM        = self::DBPREFIX.'confirm';
+        public const CONFIRM        = 'fwconfirm';
         public const CSP            = 'fwcsp';
         public const FLOOD          = 'fwflood';
         public const FORM           = self::DBPREFIX.'form';
         public const FORMFIELD      = self::DBPREFIX.'formfield';
         public const PAGE           = self::DBPREFIX.'page';
-        public const PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const PAGEROLE       = 'fwpagerole';
         public const ROLE           = self::DBPREFIX.'role';
         public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
         public const ROLENAME       = self::DBPREFIX.'rolename';

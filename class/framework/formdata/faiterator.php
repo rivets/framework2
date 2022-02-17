@@ -40,7 +40,7 @@
 /**
  * Returns the value of the current element of the "array"
  *
- * This returns an array that looks like what you would get if the file upload was a
+ * This returns an array that looks like what you would get if the file  was a
  * singleton and not an array. This can simplify coding in certain circumstances even
  * though it involves restructuring the data and hence is slightly inefficient. Basically
  * the $_FILES array should be made from objects with fields not arrays of keyed values!!!

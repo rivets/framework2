@@ -37,7 +37,7 @@
             return [TRUE, []];
         }
 /**
- * Upload files and associate them with a bean
+ *  files and associate them with a bean
  *
  * The AJAX call is of the form /ajax/attach/<bean type>/<bean id>/ and the file data is passed
  * in through the usual file mechanism. This code assume sthat there is also a POST value called
@@ -58,7 +58,7 @@
                 $upl = \R::dispense(FW::UPLOAD);
                 if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
                 {
-                    throw new \Framework\Exception\BadValue('upload failed '.$file['name'].' '.$file['size'].' '.$file['error']);
+                    throw new \Framework\Exception\BadValue(' failed '.$file['name'].' '.$file['size'].' '.$file['error']);
                 }
                 $bean->link($table, ['descr' => $context->formdata('post')->mustfetch('descr')])->{FW::UPLOAD} = $upl; // if you want the descr field
                 //$bean->sharedUploadList[] = $upl; // if you haven't got anything to add

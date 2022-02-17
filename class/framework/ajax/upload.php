@@ -74,7 +74,7 @@
                     $upl = \R::dispense(FW::UPLOAD);
                     if (!$upl->savefile($context, $file, FALSE, $context->user(), 0))
                     {
-                        $emess = 'upload failed '.$file['name'].' '.$file['size'].' '.$file['error'];
+                        $emess = 'Upload failed '.$file['name'].' '.$file['size'].' '.$file['error'];
                         break;
                     }
                     $uploads[] = $upl;
@@ -95,7 +95,7 @@
                     foreach ($pdt as $key => $value)
                     { // get all the link data
                         if (\is_array($value))
-                        { // this one is an array so it must be one item for each upload
+                        { // this one is an array so it must be one item for each Upload
                             if (\count($value) != $ucount)
                             {
                                 \R::trashAll($uploads); //get rid of any loaded successfully.

@@ -4,17 +4,17 @@
  * many calls from a given IP address
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @copyright 2020-2022 Newcastle University
  * @package Framework\Support
  */
     namespace Support;
 
+    use \Config\Framework as FW;
 /**
  * Handles AntiFlood calls
  */
     final class AntiFlood
     {
-        private const TABLE     = 'fwflood';
         private const KEEPTIME  = 60*60;
         private const DIVERSION = 'https://google.com';
 /**
@@ -26,9 +26,9 @@
         public static function flooding(int $limit, bool $divert = TRUE) : bool
         {
             $now = \time();
-            \R::exec('delete from '.self::TABLE.' where ('.$now.' - calltime) > '.self::KEEPTIME);
+            \R::exec('delete from '.FW::FLOOD.' where ('.$now.' - calltime) > '.self::KEEPTIME);
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
-            $f = \R::findOne(self::TABLE, 'ip=?', [$ip]);
+            $f = \R::findOne(FW::FLOOD, 'ip=?', [$ip]);
             if (is_object($f))
             {
                 $res =  ($now - $f->calltime) < $limit;
@@ -36,7 +36,7 @@
             else
             {
 // Not in table so log it.
-                $f = \R::dispense(self::TABLE);
+                $f = \R::dispense(FW::FLOOD);
                 $f->ip = $ip;
                 $res = FALSE;
             }
