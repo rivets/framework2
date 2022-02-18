@@ -101,7 +101,7 @@
             /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php'; // bring in all the stuff from composer
             define('REDBEAN_MODEL_PREFIX', '\\Model\\');
-            //\class_alias('\RedBeanPHP\R', '\R');
+            \class_alias('\RedBeanPHP\R', '\R');
             \Config\Update::apply(); // will normally do nothing
         }
 /**

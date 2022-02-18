@@ -119,7 +119,6 @@
  */
             if ($loadORM)
             {
-                \class_alias('\RedBeanPHP\R', '\R');
                 /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
                 if (!\Config\Framework::setupDB($devel))
                 {
