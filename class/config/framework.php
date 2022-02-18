@@ -28,27 +28,27 @@
         public const DEVELROLE = 'Developer';
         public const TESTROLE  = 'Tester';
 
-        public const DBPREFIX = '';
+        public const DBPREFIX = 'fw';
 
-        public const FWCONTEXT      = self::DBPREFIX.'Site'; // context names
-        public const TESTCONTEXT    = self::DBPREFIX.'Test';
+        public const FWCONTEXT      = 'Site'; // context names
+        public const TESTCONTEXT    = 'Test';
 
-        public const AJAX           = 'fwajax'; // table names
-        public const BEANLOG        = 'fwbeanlog';
-        public const CONFIG         = 'fwconfig';
-        public const CONFIRM        = 'fwconfirm';
-        public const CSP            = 'fwcsp';
-        public const FLOOD          = 'fwflood';
+        public const AJAX           = self::DBPREFIX.'ajax'; // table names
+        public const BEANLOG        = self::DBPREFIX.'beanlog';
+        public const CONFIG         = self::DBPREFIX.'config';
+        public const CONFIRM        = self::DBPREFIX.'confirm';
+        public const CSP            = self::DBPREFIX.'csp';
+        public const FLOOD          = self::DBPREFIX.'flood';
         public const FORM           = self::DBPREFIX.'form';
         public const FORMFIELD      = self::DBPREFIX.'formfield';
         public const PAGE           = self::DBPREFIX.'page';
-        public const PAGEROLE       = 'fwpagerole';
+        public const PAGEROLE       = self::DBPREFIX.'pagerole';
         public const ROLE           = self::DBPREFIX.'role';
         public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
         public const ROLENAME       = self::DBPREFIX.'rolename';
         public const TABLE          = self::DBPREFIX.'table';
-        public const TEST           = 'fwtest';
-        public const UPLOAD         = 'fwupload';
+        public const TEST           = self::DBPREFIX.'test';
+        public const UPLOAD         = self::DBPREFIX.'upload';
         public const USER           = 'user';
 
         public const MODELPATH    = '\\Framework\\Model\\';
@@ -59,6 +59,7 @@
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
         private static $fwBeans = [
+            self::AJAX        => '',
             self::BEANLOG     => '',
             self::CONFIG      => '',
             self::CSP         => '',

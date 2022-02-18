@@ -5,6 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2022 Newcastle University
  */
+    use Config\Framework as FW;
     use \Framework\Dispatch;
 
     $dir = \dirname(__DIR__, 2);
@@ -18,8 +19,6 @@
     /** @psalm-suppress UnusedFunctionCall */
     \spl_autoload_extensions('.php');
     \spl_autoload_register();
-
-    use Config\Framework as FW;
 
     global $verbose;
 /**
@@ -505,6 +504,7 @@
             if ($fd === FALSE)
             {
                 \header('HTTP/1.1 500 Internal Error');
+                echo '<h2>Cannot open "class/config/config.php" for writing/h2>';
                 exit;
             }
             \fputs($fd, '<?php'.\PHP_EOL.'    namespace Config;'.\PHP_EOL);
