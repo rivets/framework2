@@ -144,7 +144,7 @@
                     }
                     \R::freeze(!$devel); // freeze DB for production systems
                     \R::usePartialBeans(TRUE);
-                    \R::getRedBean()->setBeanHelper(new Support\FWBeanHelper());
+                    \R::getRedBean()->setBeanHelper(new \Framework\Support\FWBeanHelper());
                     self::$dbDone = TRUE;
                 }
             }
