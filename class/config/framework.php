@@ -131,7 +131,7 @@
  */
         public static function setupDB(bool $devel) : bool
         {
-            if (!self::$dbdone)
+            if (!self::$dbDone)
             {
                 \class_alias('\RedBeanPHP\R', '\R');
                 /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
@@ -145,7 +145,7 @@
                     \R::freeze(!$devel); // freeze DB for production systems
                     \R::usePartialBeans(TRUE);
                     \R::getRedBean()->setBeanHelper(new Support\FWBeanHelper());
-                    self::$dbdone = TRUE;
+                    self::$dbDone = TRUE;
                 }
             }
             return TRUE;
