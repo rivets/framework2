@@ -1,6 +1,7 @@
 {% set fwutils = TRUE %}
 {% set validate = TRUE %}
 {% set usebootbox = FALSE %}
+{% set editable = TRUE %}
 {% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Pages'}] %}
 
 {% extends '@content/page.twig' %}
@@ -11,16 +12,8 @@
 
 {% set types = ['Object', 'Template', 'In-site 302', 'In-site 301',
     'External 302',  'External 301', 'In-site 303', 'External 303',
-    'In-site 307', 'External 307',
-    'In-site 308', 'External 308'] %}
-
-{% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
-{% endblock css %}
-
-{% block scripts %}
-    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
-{% endblock scripts %}
+    'In-site 307', 'External 307', 'In-site 308', 'External 308']
+%}
 
 {% block setup %}
     function mkinline(type, name, msg, id, value)

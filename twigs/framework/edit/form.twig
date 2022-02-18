@@ -1,6 +1,7 @@
 {% set fwutils = TRUE %}
 {% set usebootbox = FALSE %}
 {% set validate = TRUE %}
+{% set editable = TRUE %}
 
 {% extends '@content/page.twig' %}
 
@@ -10,14 +11,6 @@
 {% set types = ['text', 'textarea', 'email', 'password', 'checkbox',
     'radio', 'select', 'file', 'range', 'number', 'button', 'submit',
     'label', 'fieldset', 'endfset', 'recaptcha'] %}
-
-{% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
-{% endblock css %}
-
-{% block scripts %}
-    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
-{% endblock scripts %}
 
 {% block setup %}
     function mkinline(type, name, msg, id, value)

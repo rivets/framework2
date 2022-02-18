@@ -3,6 +3,7 @@
 {% set keywords = 'framework, test' %}
 {% set description = 'A page that tests various features of the Framework' %}
 {% set fwutils = TRUE %}
+{% set editable = TRUE %}
 {% set usebootbox = FALSE %}
 {% set usejquery = FALSE %}
 
@@ -10,17 +11,6 @@
 
 {% import '@util/accmacro.twig' as a %}
 {% import '@util/formmacro.twig' as f %}
-
-{% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
-{% endblock css %}
-
-{% block scripts %}
-    <script src="{{assets}}/js/fw-editable.js"></script>
-{% endblock scripts %}
-
-{% block setup %}
-{% endblock setup %}
 
 {% block onload %}
     fwdom.on('#nopu', 'click', function(e){

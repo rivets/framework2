@@ -1,5 +1,6 @@
 {% set fwutils = TRUE %}
 {% set usebootbox = FALSE %}
+{% set editable = TRUE %}
 
 {% set x = context.web.addCSP('script-src', "'unsafe-inline'") %}
 
@@ -12,14 +13,6 @@
 
 {% import '@util/formmacro.twig' as f %}
 {% import '@util/modalmacro.twig' as m %}
-
-{% block css %}
-    <link rel="stylesheet" href="{{assets}}/css/inline.min.css"/>
-{% endblock css %}
-
-{% block scripts %}
-    <script src="{{assets}}/js/fw-editable.js?v=1"></script>
-{% endblock scripts %}
 
 {% block setup %}
     {%if inline %} {# only want this if we are doing inline edits  #}
