@@ -3,7 +3,7 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2021 Newcastle University
+ * @copyright 2017-2022 Newcastle University
  * @package Framework\Framework
  */
     namespace Framework;
@@ -13,6 +13,7 @@
     use \Framework\Exception\BadValue;
     use \Framework\Web\StatusCodes;
     use \Support\Context;
+    use \Framewwork\Support\DispatchOps as DOp;
 /**
  * This class dispatches pages to the appropriate places
  *
@@ -72,33 +73,33 @@
  * @var array<array> Values for determining handling of above codes
  */
         private static array $actions = [
-            self::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
-            self::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
-            self::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
-            self::XREHOME     => [FALSE, [FALSE, '', FALSE, FALSE]],
-            self::REDIRECT3   => [TRUE,  [TRUE, '', FALSE, TRUE]],
-            self::XREDIRECT3  => [FALSE, [TRUE, '', FALSE, TRUE]],
-            self::REDIRECT7   => [TRUE,  [TRUE, '', TRUE, FALSE]],
-            self::XREDIRECT7  => [FALSE, [TRUE, '', TRUE, FALSE]],
-            self::REHOME8     => [TRUE,  [FALSE, '', TRUE, FALSE]],
-            self::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
+            DOp::REDIRECT    => [TRUE,  [TRUE, '', FALSE, FALSE]],
+            DOp::REHOME      => [TRUE,  [FALSE, '', FALSE, FALSE]],
+            DOp::XREDIRECT   => [FALSE, [TRUE, '', FALSE, FALSE]],
+            DOp::XREHOME     => [FALSE, [FALSE, '', FALSE, FALSE]],
+            DOp::REDIRECT3   => [TRUE,  [TRUE, '', FALSE, TRUE]],
+            DOp::XREDIRECT3  => [FALSE, [TRUE, '', FALSE, TRUE]],
+            DOp::REDIRECT7   => [TRUE,  [TRUE, '', TRUE, FALSE]],
+            DOp::XREDIRECT7  => [FALSE, [TRUE, '', TRUE, FALSE]],
+            DOp::REHOME8     => [TRUE,  [FALSE, '', TRUE, FALSE]],
+            DOp::XREHOME8    => [FALSE, [FALSE, '', TRUE, FALSE]],
         ];
 /**
  * @var array<string>
  */
         private static array $checks = [
-            self::OBJECT        => 'checkObject',
-            self::TEMPLATE      => 'checkTemplate',
-            self::REDIRECT      => 'checkRedirect',
-            self::REDIRECT3     => 'checkRedirect',
-            self::REDIRECT7     => 'checkRedirect',
-            self::REHOME        => 'checkRedirect',
-            self::REHOME8       => 'checkRedirect',
-            self::XREDIRECT     => 'checkXRedirect',
-            self::XREDIRECT3    => 'checkXRedirect',
-            self::XREDIRECT7    => 'checkXRedirect',
-            self::XREHOME       => 'checkXRedirect',
-            self::XREHOME8      => 'checkXRedirect',
+            DOp::OBJECT        => 'checkObject',
+            DOp::TEMPLATE      => 'checkTemplate',
+            DOp::REDIRECT      => 'checkRedirect',
+            DOp::REDIRECT3     => 'checkRedirect',
+            DOp::REDIRECT7     => 'checkRedirect',
+            DOp::REHOME        => 'checkRedirect',
+            DOp::REHOME8       => 'checkRedirect',
+            DOp::XREDIRECT     => 'checkXRedirect',
+            DOp::XREDIRECT3    => 'checkXRedirect',
+            DOp::XREDIRECT7    => 'checkXRedirect',
+            DOp::XREHOME       => 'checkXRedirect',
+            DOp::XREHOME8      => 'checkXRedirect',
         ];
 /**
  * @var array<string> Constants that might be defined in the configuration that
@@ -179,7 +180,7 @@
             $code = StatusCodes::HTTP_OK;
             switch ($page->kind)
             {
-            case self::OBJECT: // fire up the object to handle the request
+            case DOp::OBJECT: // fire up the object to handle the request
                 $pageObj = new $page->source();
                 $csp = $pageObj;
                 try
@@ -209,7 +210,7 @@
                 }
                 break;
 
-            case self::TEMPLATE: // render a template
+            case DOp::TEMPLATE: // render a template
                 \Support\Setup::preliminary($context, $page); // any user setup code
                 $csp = $context->web();
                 $tpl = $page->source;

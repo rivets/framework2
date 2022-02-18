@@ -10,7 +10,7 @@
  * or a class, but that just seems nasty)
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2021 Newcastle University
+ * @copyright 2015-2022 Newcastle University
  * @package Framework\Config
  */
     namespace Config;

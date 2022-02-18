@@ -3,22 +3,13 @@
  * A class implementing logging of beans to the datbase
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
- * @package Framework\Framework\Ajax
+ * @copyright 2020-2022 Newcastle University
+ * @package Framework\Framework\Ajax\Support
  */
     namespace Framework\Ajax\Support;
 
     use \Config\Framework as FW;
     use \Support\Context;
-/**
- * Enumerartion for beanlog constants
- */
-    enum BeanLogOps : int
-    {
-        case CREATE = 0;
-        case UPDATE = 1;
-        case DELETE = 2;
-    }
 /**
  * Class to log operations on beans
  */

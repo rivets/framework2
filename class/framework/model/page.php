@@ -5,7 +5,7 @@
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2021 Newcastle University
+ * @copyright 2017-2022 Newcastle University
  * @package Framework\Model
  */
     namespace Framework\Model;
@@ -13,6 +13,7 @@
     use \Config\Framework as FW;
     use \Framework\Dispatch;
     use \Framework\Exception\BadValue;
+    use \Framework\Support\DispatchOps as DOp;
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
@@ -217,16 +218,16 @@
                 }
                 switch ($page->kind)
                 {
-                case Dispatch::OBJECT:
+                case DOp::OBJECT:
                     self::doObject($context, $page);
                     break;
-                case Dispatch::TEMPLATE:
+                case DOp::TEMPLATE:
                     self::doTemplate($context, $page);
                     break;
-                case Dispatch::REDIRECT:
-                case Dispatch::REHOME:
-                case Dispatch::XREDIRECT:
-                case Dispatch::XREHOME:
+                case DOp::REDIRECT:
+                case DOp::REHOME:
+                case DOp::XREDIRECT:
+                case DOp::XREHOME:
 /** @todo check that the values passed in make sense */
                     break;
                 }

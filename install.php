@@ -3,8 +3,10 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2021 Newcastle University
+ * @copyright 2014-2022 Newcastle University
  */
+    use \Framework\Support\DispatchOps as DOp;
+
     $dir = \dirname(__DIR__, 2);
     /** @psalm-suppress UnusedFunctionCall */
     \set_include_path(
@@ -276,23 +278,20 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
-        'editablecss'   => [$dir.'/assets/css/bs4-editable.css', 1, '', '', 0, 0, 'css'],
-        'facss'         => ['https://use.fontawesome.com/releases/v5.15.1/css/all.css', 1, '', '', 0, 0, 'css'],
-        'bootvuecss'    => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css', 1, '', '', 0, 0, 'css'],
+        'editablecss'   => [$dir.'/assets/css/fw-editable.min.css', 1, '', '', 0, 0, 'css'],
+        'facss'         => ['https://use.fontawesome.com/releases/v6.0.0/css/all.css', 1, '', '', 0, 0, 'css'],
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js', 1, '', '', 0, 0, 'js'],
         'bootbox'       => ['https://cdn.jsdelivr.net/npm/bootbox@5.5.2/bootbox.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
-        'editable'      => [$dir.'/assets/js/bs4-editable-min.js', 1, '', '', 0, 0, 'js'],
+        'editable'      => [$dir.'/assets/js/fw-editable-min.js', 1, '', '', 0, 0, 'js'],
         'parsley'       => ['https://cdn.jsdelivr.net/npm/parsleyjs@2.9.2/dist/parsley.min.js', 1, '', '', 0, 0, 'js'],
-        'popperjs'      => ['https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
+        // 'popperjs'      => ['https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
-        'vuejs'         => ['https://unpkg.com/vue/dist/vue.min.js', 1, '', '', 0, 0, 'js'],
-        'bootvuejs'     => ['https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js', 1, '', '', 0, 0, 'js'],
     ];
 /**
  *  RedBean needs an alias to use namespaces
@@ -714,24 +713,24 @@
                 $register = $options['register'] ? 1 : 0;
                 /* Type, location, Admin?, Must Login?, Developer?, Active?, Tester?  - Must Login and Active are 1 or 0 as they go into the database */
                 $pages = [
-                    'about'         => [\Framework\Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
-                    'add2fa'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Add2FA', FALSE, 1, FALSE, 1, FALSE],
-                    'admin'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
-                    'assets'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
-                    'confirm'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
-                    'contact'       => [\Framework\Dispatch::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
-                    'cspreport'     => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
-                    'devel'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1, FALSE],
-                    'forgot'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'home'          => [\Framework\Dispatch::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1, FALSE],
-                    'install.php'   => [\Framework\Dispatch::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1, FALSE],
-                    'login'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'logout'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
-                    'private'       => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
-                    'register'      => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
-                    'test'          => [Framework\Dispatch::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
-                    'twofa'         => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'upload'        => [\Framework\Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
+                    'about'         => [DOp::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'add2fa'        => [DOp::OBJECT, '\\Framework\\Pages\\Add2FA', FALSE, 1, FALSE, 1, FALSE],
+                    'admin'         => [DOp::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
+                    'assets'        => [DOp::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
+                    'confirm'       => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'contact'       => [DOp::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
+                    'cspreport'     => [DOp::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
+                    'devel'         => [DOp::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1, FALSE],
+                    'forgot'        => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'home'          => [DOp::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1, FALSE],
+                    'install.php'   => [DOp::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'login'         => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'logout'        => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
+                    'private'       => [DOp::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
+                    'register'      => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'test'          => [DOp::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
+                    'twofa'         => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'upload'        => [DOp::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)
                 {

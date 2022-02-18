@@ -13,23 +13,30 @@
  */
     class FWBeanLog extends \RedBeanPHP\SimpleModel
     {
-        private static $ops = [BL::CREATE => 'Create', BL::UPDATE => 'Update', BL::DELETE => 'Delete'];
-
+/**
+ * Return the Operation name
+ */
         public function operation() : string
         {
-            return self::$ops[$this->bean->op];
+            return BL::from($this->bean->op)->label();
         }
-
+/**
+ * Return the updated field
+ */
         public function updated() : string
         {
             return $this->bean->updated;
         }
-
+/**
+ * Return the associated bean
+ */
         public function bean() : \RedBeanPHP\OODBBean
         {
             return \R::load($this->bean->bean, $this->bean->bid);
         }
-
+/**
+ * Return the associated user
+ */
         public function user() : \RedBeanPHP\OODBBean
         {
             return $this->bean->user;

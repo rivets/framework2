@@ -27,9 +27,6 @@
     {% if usebootstrapcss %}
         <link rel="stylesheet" {{h.urlattr(fwurls.bootcss)}} media="screen,print"/>
     {% endif %}
-    {% if usevue %}
-        <link rel="stylesheet" {{h.urlattr(fwurls.bootvuecss)}}/>
-    {% endif %}
     {% if fwurls.facss.type == 'css' %}
         <link rel="stylesheet" {{h.urlattr(fwurls.facss)}}/>
     {% endif %}
@@ -56,45 +53,39 @@
     {% block body %}
     {% endblock body %}
 
-    {% if usevue %}
-        <script {{h.urlattr(fwurls.vuejs)}}></script>
-        <script {{h.urlattr(fwurls.bootvuejs)}}></script>
-    {% else %}
-        {% if usejquery or parsley or validate %}
-            {% if ajax %}
-                <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
-            {% else %}
-                <script {{h.urlattr(fwurls.jqueryslim)}}></script>
-            {% endif %}
+    {% if usejquery or parsley or validate %}
+        {% if ajax %}
+            <script {{h.urlattr(fwurls.jquery)}}></script> {# we need everything #}
+        {% else %}
+            <script {{h.urlattr(fwurls.jqueryslim)}}></script>
         {% endif %}
-        {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS #}
-            {#<script {{h.urlattr(fwurls.popperjs)}}></script>#}
-            <script {{h.urlattr(fwurls.bootjs)}}></script>
+    {% endif %}
+    {% if usebootstrapjs or usebootbox or fwutils or editable %}  {# editable and bootbox use Bootstrap JS #}
+        <script {{h.urlattr(fwurls.bootjs)}}></script>
+    {% endif %}
+    {% if usebootbox %}
+        <script {{h.urlattr(fwurls.bootbox)}}></script>
+    {% endif %}
+    {% if fwutils or ajax or fwdom or editable %}
+        <script {{h.urlattr(fwurls.utiljs)}}></script>
+    {% endif %}
+    {% if parsley or validate %}
+        <script {{h.urlattr(fwurls.parsley)}}></script>
+    {% endif %}
+    {% if editable %}
+        <script {{h.urlattr(fwurls.editable)}}></script>
+    {% endif %}
+    {% if recaptcha %}
+        {% if constant('Config\\Config::RECAPTCHA') == 2 %}
+            <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        {% elseif constant('Config\\Config::RECAPTCHA') == 3 %}
+            <script src="https://www.google.com/recaptcha/api.js?render={{constant('Config\\Config::RECAPTCHAKEY')}}"</script>
         {% endif %}
-        {% if usebootbox %}
-            <script {{h.urlattr(fwurls.bootbox)}}></script>
-        {% endif %}
-        {% if fwutils or ajax or fwdom or editable %}
-            <script {{h.urlattr(fwurls.utiljs)}}></script>
-        {% endif %}
-        {% if parsley or validate %}
-            <script {{h.urlattr(fwurls.parsley)}}></script>
-        {% endif %}
-        {% if editable %}
-            <script {{h.urlattr(fwurls.editable)}}></script>
-        {% endif %}
-        {% if recaptcha %}
-            {% if constant('Config\\Config::RECAPTCHA') == 2 %}
-                <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-            {% elseif constant('Config\\Config::RECAPTCHA') == 3 %}
-                <script src="https://www.google.com/recaptcha/api.js?render={{constant('Config\\Config::RECAPTCHAKEY')}}"</script>
-            {% endif %}
-        {% endif %}
-
     {% endif %}
 
     {% if fwurls.facss.type == 'js' %}
         <script {{h.urlattr(fwurls.facss)}}></script> {# if you are using a font awesome kit #}
+        {% set d = context.addCSP('style-src', "'unsafe-inline'") %} {# FontAwesome kit adds style sheets.... #}
     {% endif %}
 
     {% block userscripts %}
