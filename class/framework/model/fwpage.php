@@ -44,9 +44,9 @@
             'neededitable'  => [TRUE, TRUE],
         ];
 
-        use \ModelExtend\FWEdit;
         use \Framework\Support\HandleRole;
-        use \ModelExtend\MakeGuard;
+        use \Framework\Support\MakeGuard;
+        use \ModelExtend\FWEdit;
 /**
  * Function called when a page bean is updated - do error checking in here
  *
