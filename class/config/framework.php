@@ -15,7 +15,6 @@
  */
     namespace Config;
 
-    define('REDBEAN_MODEL_PREFIX', '\\Model\\');
 /**
  * Class for doing initial setup of the Framework.
  */
@@ -101,6 +100,8 @@
             \spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php'; // bring in all the stuff from composer
+            define('REDBEAN_MODEL_PREFIX', '\\Model\\');
+            \class_alias('\RedBeanPHP\R', '\R');
             \Config\Update::apply(); // will normally do nothing
         }
 /**
@@ -133,7 +134,6 @@
         {
             if (!self::$dbDone)
             {
-                \class_alias('\RedBeanPHP\R', '\R');
                 /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
                 if (Config::DBHOST !== '')
                 { // looks like there is a database configured
