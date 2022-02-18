@@ -5,7 +5,7 @@
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2014-2022 Newcastle University
  */
-    use \Framework\Support\DispatchOps as DOp;
+    use \Framework\Dispatch;
 
     $dir = \dirname(__DIR__, 2);
     /** @psalm-suppress UnusedFunctionCall */
@@ -713,24 +713,24 @@
                 $register = $options['register'] ? 1 : 0;
                 /* Type, location, Admin?, Must Login?, Developer?, Active?, Tester?  - Must Login and Active are 1 or 0 as they go into the database */
                 $pages = [
-                    'about'         => [DOp::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
-                    'add2fa'        => [DOp::OBJECT, '\\Framework\\Pages\\Add2FA', FALSE, 1, FALSE, 1, FALSE],
-                    'admin'         => [DOp::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
-                    'assets'        => [DOp::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
-                    'confirm'       => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
-                    'contact'       => [DOp::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
-                    'cspreport'     => [DOp::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
-                    'devel'         => [DOp::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1, FALSE],
-                    'forgot'        => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'home'          => [DOp::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1, FALSE],
-                    'install.php'   => [DOp::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1, FALSE],
-                    'login'         => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'logout'        => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
-                    'private'       => [DOp::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
-                    'register'      => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
-                    'test'          => [DOp::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
-                    'twofa'         => [DOp::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
-                    'upload'        => [DOp::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
+                    'about'         => [Dispatch::TEMPLATE, '@content/about.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'add2fa'        => [Dispatch::OBJECT, '\\Framework\\Pages\\Add2FA', FALSE, 1, FALSE, 1, FALSE],
+                    'admin'         => [Dispatch::OBJECT, '\\Framework\\Pages\\Admin', TRUE, 1, FALSE, 1, FALSE],
+                    'assets'        => [Dispatch::OBJECT, '\\Framework\\Pages\\Assets', FALSE, 1, FALSE, 0, FALSE], // not active - really only needed when total cacheability is needed
+                    'confirm'       => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'contact'       => [Dispatch::OBJECT, '\\Pages\\Contact', FALSE, 0, FALSE, 1, FALSE],
+                    'cspreport'     => [Dispatch::OBJECT, '\\Framework\\Pages\\CSPReport', FALSE, 0, FALSE, $options['reportcsp'] ? 1 : 0, FALSE],
+                    'devel'         => [Dispatch::OBJECT, '\\Framework\\Pages\\Developer', TRUE, 1, TRUE, 1, FALSE],
+                    'forgot'        => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'home'          => [Dispatch::OBJECT, '\\Pages\\Home', FALSE, 0, FALSE, 1, FALSE],
+                    'install.php'   => [Dispatch::TEMPLATE, '@util/oops.twig', FALSE, 0, FALSE, 1, FALSE],
+                    'login'         => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'logout'        => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 1, FALSE, 1, FALSE],
+                    'private'       => [Dispatch::OBJECT, '\\Framework\\Pages\\GetFile', FALSE, 1, FALSE, $private, FALSE],
+                    'register'      => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, $register, FALSE],
+                    'test'          => [Dispatch::TEMPLATE, '@util/test.twig', FALSE, 1, FALSE, 1, TRUE],
+                    'twofa'         => [Dispatch::OBJECT, '\\Framework\\Pages\\UserLogin', FALSE, 0, FALSE, 1, FALSE],
+                    'upload'        => [Dispatch::OBJECT, '\\Framework\\Pages\\Upload', FALSE, 1, FALSE, $options['public'] || $private, FALSE],
                 ];
                 foreach ($pages as $pname => $data)
                 {

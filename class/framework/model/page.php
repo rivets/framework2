@@ -13,7 +13,6 @@
     use \Config\Framework as FW;
     use \Framework\Dispatch;
     use \Framework\Exception\BadValue;
-    use \Framework\Support\DispatchOps as DOp;
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
@@ -218,16 +217,16 @@
                 }
                 switch ($page->kind)
                 {
-                case DOp::OBJECT:
+                case Dispatch::OBJECT:
                     self::doObject($context, $page);
                     break;
-                case DOp::TEMPLATE:
+                case Dispatch::TEMPLATE:
                     self::doTemplate($context, $page);
                     break;
-                case DOp::REDIRECT:
-                case DOp::REHOME:
-                case DOp::XREDIRECT:
-                case DOp::XREHOME:
+                case Dispatch::REDIRECT:
+                case Dispatch::REHOME:
+                case Dispatch::XREDIRECT:
+                case Dispatch::XREHOME:
 /** @todo check that the values passed in make sense */
                     break;
                 }
