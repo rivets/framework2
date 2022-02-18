@@ -35,6 +35,7 @@ var fweditable = {
                 if (typeof opt == 'object')
                 {
                     let vlu = opt.value;
+console.log(vlu);
                     if (vlu.includes('"'))
                     {
                         vlu = vlu.replace(/"/, '&quot;');
