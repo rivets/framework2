@@ -21,54 +21,54 @@
  */
     class Dispatch
     {
-///*
-// * Indicates that there is an Object that handles the call
-// */
-//        public const OBJECT     = 1;
-///*
-// * Indicates that there is only a template for this URL.
-// */
-//        public const TEMPLATE   = 2;
-///*
-// * Indicates that the URL should be temporarily redirected - 302
-// */
-//        public const REDIRECT   = 3;
-///*
-// * Indicates that the URL should be permanent redirected - 301
-// */
-//        public const REHOME     = 4;
-///*
-// * Indicates that the URL should be permanently redirected - 302
-// */
-//        public const XREDIRECT  = 5;
-///*
-// * Indicates that the URL should be temporarily redirected -301
-// */
-//        public const XREHOME    = 6;
-///*
-// * Indicates that the URL should be temporarily redirected - 303
-// */
-//        public const REDIRECT3  = 7;
-///*
-// * Indicates that the URL should be temporarily redirected - 303
-// */
-//        public const XREDIRECT3 = 8;
-///*
-// * Indicates that the URL should be temporarily redirected - 307
-// */
-//        public const REDIRECT7  = 9;
-///*
-// * Indicates that the URL should be temporarily redirected - 307
-// */
-//        public const XREDIRECT7 = 10;
-///*
-// * Indicates that the URL should be permanently redirected - 308
-// */
-//        public const REHOME8    = 11;
-///*
-// * Indicates that the URL should be permanently redirected - 308
-// */
-//        public const XREHOME8   = 12;
+/*
+ * Indicates that there is an Object that handles the call
+ */
+        public const OBJECT     = 1;
+/*
+ * Indicates that there is only a template for this URL.
+ */
+        public const TEMPLATE   = 2;
+/*
+ * Indicates that the URL should be temporarily redirected - 302
+ */
+        public const REDIRECT   = 3;
+/*
+ * Indicates that the URL should be permanent redirected - 301
+ */
+        public const REHOME     = 4;
+/*
+ * Indicates that the URL should be permanently redirected - 302
+ */
+        public const XREDIRECT  = 5;
+/*
+ * Indicates that the URL should be temporarily redirected -301
+ */
+        public const XREHOME    = 6;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        public const REDIRECT3  = 7;
+/*
+ * Indicates that the URL should be temporarily redirected - 303
+ */
+        public const XREDIRECT3 = 8;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        public const REDIRECT7  = 9;
+/*
+ * Indicates that the URL should be temporarily redirected - 307
+ */
+        public const XREDIRECT7 = 10;
+/*
+ * Indicates that the URL should be permanently redirected - 308
+ */
+        public const REHOME8    = 11;
+/*
+ * Indicates that the URL should be permanently redirected - 308
+ */
+        public const XREHOME8   = 12;
 /**
  * @var array<array> Values for determining handling of above codes
  */
