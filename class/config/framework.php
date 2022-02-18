@@ -138,7 +138,7 @@
                 if (Config::DBHOST !== '')
                 { // looks like there is a database configured
                     \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
-                    if (!R::testConnection())
+                    if (!\R::testConnection())
                     {
                         return FALSE;
                     }
