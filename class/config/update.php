@@ -21,7 +21,7 @@
  * Normally will do nothing.
  * There needs to be some kind of exclusion in place to stop things being applied multiple times!!
  */
-        public function apply() : void
+        static public function apply() : void
         {
         }
     }
