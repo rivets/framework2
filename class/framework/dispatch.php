@@ -13,7 +13,7 @@
     use \Framework\Exception\BadValue;
     use \Framework\Web\StatusCodes;
     use \Support\Context;
-    use \Framewwork\Support\DispatchOps as DOp;
+    use \Framework\Support\DispatchOps as DOp;
 /**
  * This class dispatches pages to the appropriate places
  *
