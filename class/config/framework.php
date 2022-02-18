@@ -99,6 +99,7 @@
             \spl_autoload_register();
             /** @psalm-suppress UnresolvableInclude */
             include $dir.'/vendor/autoload.php'; // bring in all the stuff from composer
+            \Config\Update::apply(); // will normally do nothing
         }
 /**
  * Get the value of a Configuration constant rather than accessing constants directly.
