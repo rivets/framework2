@@ -117,20 +117,16 @@
 /*
  * Initialise database access
  */
-            \class_alias('\RedBeanPHP\R', '\R');
-            /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
-            if (Config::DBHOST !== '' && $loadORM)
-            { // looks like there is a database configured
-                R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
-                if (!R::testConnection())
+            if ($loadORM)
+            {
+                \class_alias('\RedBeanPHP\R', '\R');
+                /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
+                if (!\Config\Framework::setupDB($devel))
                 {
                     $this->errorHandler->earlyFail('Database Error', 'Cannot connect to the database. Database may not be running or the site may be overloaded, please try later.', TRUE);
                     /* NOT REACHED */
                 }
-                R::freeze(!$devel); // freeze DB for production systems
-                R::usePartialBeans(TRUE);
-                R::getRedBean()->setBeanHelper(new Support\FWBeanHelper());
-                $this->fwconfig = [];
+                $this->fwconfig = []; // Now set up framework config values
                 foreach (R::findAll(FW::CONFIG) as $cnf)
                 {
                     $cnf->value = \preg_replace('/%BASE%/', $this->baseDName, $cnf->value);

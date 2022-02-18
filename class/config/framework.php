@@ -75,6 +75,8 @@
             self::UPLOAD      => '',
             self::USER        => '',
         ];
+
+        private static bool $dbDone = FALSE;
 /**
  * Initialise some standard things for any invocation of a page
  */
@@ -121,6 +123,32 @@
         public static function isFWBean(string $beanType)
         {
             return isset(self::$fwBeans[$beanType]);
+        }
+/**
+ * Initialise the database
+ * This is here because the special Update function may need to setup access to the database
+ * and will call this to do it. Normally just called from Context
+ */
+        public static function setupDB(bool $devel) : bool
+        {
+            if (!self::$dbdone)
+            {
+                \class_alias('\RedBeanPHP\R', '\R');
+                /** @psalm-suppress RedundantCondition - the mock config file has this set to a value so this. Ignore this error */
+                if (Config::DBHOST !== '')
+                { // looks like there is a database configured
+                    \R::setup(Config::DBTYPE.':host='.Config::DBHOST.';dbname='.Config::DB, Config::DBUSER, Config::DBPW); // mysql initialiser
+                    if (!R::testConnection())
+                    {
+                        return FALSE;
+                    }
+                    \R::freeze(!$devel); // freeze DB for production systems
+                    \R::usePartialBeans(TRUE);
+                    \R::getRedBean()->setBeanHelper(new Support\FWBeanHelper());
+                    self::$dbdone = TRUE;
+                }
+            }
+            return TRUE;
         }
     }
 ?>
