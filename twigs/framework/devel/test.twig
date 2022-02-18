@@ -33,6 +33,20 @@
         op: 'fwtest',
         bean: 'fwtest'
     });
+    fweditable.editable(document.getElementById('edsels'), {
+        type: 'select',
+        source: [{value: 'y', text: 'yes'}, {value: 'n', text: 'no'}, {value: '-', text: 'N/A'}],
+        update : fweditable.editUpdate,
+        op: 'fwtest',
+        bean: 'fwtest'
+    });
+    fweditable.editable(document.getElementById('edsel1'), {
+        type: 'select',
+        source: [{value: 1, text: 'yes'}, {value: 2, text: 'no'}, {value: 0, text: 'N/A'}],
+        update : fweditable.editUpdate,
+        op: 'fwtest',
+        bean: 'fwtest'
+    });
     fwdom.on('#testalert', 'click', function(e){
         fwdom.stop(e);
         framework.alert('This is an alert', 'Alert!!');

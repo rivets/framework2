@@ -24,5 +24,25 @@
         static public function apply() : void
         {
         }
+/*
+        private static function addBean(string $name, array $fields = [])
+        {
+            $bn = \R::dispense($name);
+            foreach ($fields as $field => $value)
+            {
+                $bn->{$field} = $value;
+            }
+            \R::store($bn);
+            \R::trash($bn); // get rid of the temporary bean
+        }
+        private static function renameBean(string $from, string $to)
+        {
+            \R::exec('rename table `'.$from.'` to `'.$to.'`');
+        }
+        private static function makeFK(string $from, string $to)
+        {
+            $qw = \R::getWriter();
+        }
+*/
     }
 ?>
