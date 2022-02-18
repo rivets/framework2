@@ -117,10 +117,10 @@
                 'siteinfo'          => \Support\SiteInfo::getinstance(), // make sure we get the derived version not the Framework version
                 'ajax'              => FALSE,                            // Mark pages as not using AJAX by default
                 'security'          => \Framework\Support\Security::getinstance(),
-                'usejquery'         => TRUE,
+                'usejquery'         => FALSE,
                 'usebootstrapcss'   => TRUE,
                 'usebootstrapjs'    => TRUE,
-                'usebootbox'        => TRUE,
+                'usebootbox'        => FALSE,
                 'usevue'            => FALSE,
             ];
             foreach (self::$configs as $cf)
