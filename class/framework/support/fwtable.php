@@ -14,9 +14,9 @@
  * A class Table object
  * @psalm-suppress UnusedClass
  */
-    class Table
+    class FWTable
     {
-        use \ModelExtend\MakeGuard;
+        use \Framework\Support\MakeGuard;
 /**
  * Constructor
  *

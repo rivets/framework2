@@ -31,10 +31,10 @@
             'email'     => [TRUE, FALSE],         // [NOTEMPTY]
         ];
 
-        use \ModelExtend\User;
-        use \ModelExtend\FWEdit;
-        use \ModelExtend\MakeGuard;
+        use \Framework\Support\MakeGuard;
         use \Framework\Support\HandleRole;
+        use \ModelExtend\FWEdit;
+        use \ModelExtend\User;
 /**
  * Add a User from a form - invoked by the AJAX bean operation
  *

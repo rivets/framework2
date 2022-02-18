@@ -31,8 +31,8 @@
             'type'        => [TRUE, FALSE],
         ];
 
+        use \Framework\Support\MakeGuard;
         use \ModelExtend\FWEdit;
-        use \ModelExtend\MakeGuard;
 /**
  * Check for a URL or // URL or a local filename - return value or throw
  *

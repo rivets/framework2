@@ -19,7 +19,7 @@
  * @psalm-suppress UnusedClass
  * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.CyclomaticComplexityIsHigh
  */
-    final class Page extends \RedBeanPHP\SimpleModel
+    final class FWPage extends \RedBeanPHP\SimpleModel
     {
 /**
  * @var string   The type of the bean that stores roles for this page

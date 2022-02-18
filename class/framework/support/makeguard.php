@@ -3,11 +3,10 @@
  * A trait providing CSRF guard function
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
- * @package Framework
- * @subpackage ModelExtend
+ * @copyright 2018-2022 Newcastle University
+ * @package Framework\Framework\Support
  */
-    namespace ModelExtend;
+    namespace Framework\Support;
 
 /**
  * User table stores info about users of the syste,

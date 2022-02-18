@@ -55,8 +55,8 @@
  */
         private bool $optgroup = FALSE;
 
+        use \Framework\Support\MakeGuard;
         use \ModelExtend\FWEdit;
-        use \ModelExtend\MakeGuard;
 /**
  * Return the form name
  */

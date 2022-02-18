@@ -14,7 +14,7 @@
 /**
  * A class implementing a RedBean model for Role beans
  */
-    class Role extends \RedBeanPHP\SimpleModel
+    class FWRole extends \RedBeanPHP\SimpleModel
     {
 /**
  * Return rolename object
