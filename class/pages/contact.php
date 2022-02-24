@@ -34,7 +34,7 @@
                 {
                     $context->local()->sendmail(
                         [Config::SYSADMIN],
-                        \Config\Config::SITENAME.': '.$subj,
+                        Config::SITENAME.': '.$subj,
                         $sender.\PHP_EOL.\PHP_EOL.$msg
                     );
                     $context->local()->message(Local::MESSAGE, 'Thank you. We will be in touch as soon as possible.');
