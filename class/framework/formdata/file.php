@@ -43,11 +43,12 @@
                 throw new \Framework\Exception\BadValue('Missing _FILES element');
             }
             return [
-                'name'     => $x['name'][$key],
-                'type'     => $x['type'][$key],
-                'size'     => $x['size'][$key],
-                'tmp_name' => $x['tmp_name'][$key],
-                'error'    => $x['error'][$key],
+                'name'      => $x['name'][$key],
+                'type'      => $x['type'][$key],
+                'size'      => $x['size'][$key],
+                'tmp_name'  => $x['tmp_name'][$key],
+                'error'     => $x['error'][$key],
+                'full_path' => $x['full_path'][$key],
             ];
         }
 /**
