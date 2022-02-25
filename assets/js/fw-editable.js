@@ -110,9 +110,16 @@ var fweditable = {
             template: '<div class="popover pop'+type+'" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
         });
         popover.show();
-        document.querySelector('.popover').querySelector('.edbox').focus();
-        window.getSelection().removeAllRanges();
         let tip = popover.tip;
+        div.addEventListener('shown.bs.popover', function(e){
+            fwdom.stop(e);
+            const tsta = document.querySelector('.popover').querySelector('.edbox');
+            tsta.focus({preventScroll: true});
+            if (tsta.nodeName != 'SELECT')
+            {
+                tsta.setSelectionRange(100000, 100000);
+            }
+        });
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.stop(e);
