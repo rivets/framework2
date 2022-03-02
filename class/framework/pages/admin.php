@@ -3,7 +3,7 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -318,6 +318,11 @@
                 exit; // phpinfo display is all we need
             case 'offline':
                 $tpl = $this->offline($context);
+                break;
+            case 'opflush':
+                \opcache_reset();
+                $context->local()->message(\Framework\Local::MESSAGE, 'Done');
+                $tpl = '@admin/admin.twig';
                 break;
             case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
