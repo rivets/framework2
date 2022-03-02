@@ -243,7 +243,7 @@
  */
         mktoggle: function (tclass, v)
         {
-            return '<i class="'+tclass+' fas fa-toggle-'+(v ? 'on' : 'off')+'"></i>';
+            return '<i class="'+tclass+' fa-solid fa-toggle-'+(v ? 'on' : 'off')+'"></i>';
         },
 /**
  * Use mktoggle to generate a toggle without any extra classes.
