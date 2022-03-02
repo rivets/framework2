@@ -1,7 +1,9 @@
 {% extends '@content/page.twig' %}
 
+{% import '@content/iconmacro.twig' as i %}
+
 {% block headerbody %}
-    <h1>View Form "{{bean.name}}" <a href="{{base}}/admin/edit/form/{{bean.id}}"><i class="viewb far fa-edit"></i></a></h1>
+    <h1>View Form "{{bean.name}}" <a href="{{base}}/admin/edit/form/{{bean.id}}">{{i.edit()}}</a></h1>
 {% endblock headerbody %}
 
 {% block main %}
