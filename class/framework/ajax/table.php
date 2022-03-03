@@ -123,7 +123,7 @@
  */
         private function delete(string $table, array $rest) : void
         {
-            if (\FW::isFWTable($table))
+            if (FW::isFWTable($table))
             { // nobody can delete framework tables
                 throw new Forbidden('Permission Denied');
             }
