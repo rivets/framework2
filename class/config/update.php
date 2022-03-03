@@ -20,6 +20,7 @@
  * Apply any updates that need to change the database name etc.
  * Normally will do nothing.
  * There needs to be some kind of exclusion in place to stop things being applied multiple times!!
+ * @psalm-suppress PossiblyUnusedParam
  */
         static public function apply(Context $context) : void
         {
