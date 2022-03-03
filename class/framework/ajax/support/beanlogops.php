@@ -17,7 +17,7 @@
         case UPDATE = 1;
         case DELETE = 2;
 
-        public function label(): string
+        public function label() : string
         {
             return match($this) {
                 static::CREATE => 'Create',
