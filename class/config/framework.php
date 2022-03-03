@@ -159,7 +159,7 @@
  */
         public static function tableCount(bool $all = FALSE) : int
         {
-            $x = \count(R::inspect());
+            $x = \count(\R::inspect());
             return $all ? $x : $x - \count(self::$fwTables); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
