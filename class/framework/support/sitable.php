@@ -48,7 +48,7 @@
             {
                 if ($all || !FW::isFWTable($tab))
                 {
-                    $beans[] = new \Framework\Support\Table($tab);
+                    $beans[] = new \Framework\Support\FWTable($tab);
                 }
             }
             return $start < 0 ? $beans : \array_slice($beans, ($start - 1) * $count, $count);
