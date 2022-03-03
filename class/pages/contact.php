@@ -3,7 +3,7 @@
   * Class for handling contact messages
   *
   * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
-  * @copyright 2012-2021 Newcastle University
+  * @copyright 2012-2022 Newcastle University
   * @package Framework
   * @subpackage UserPages
   */
@@ -29,7 +29,7 @@
             if (($msg = $fd->fetch('message', '')) !== '')
             { // there is a post
                 $subj = $fd->fetch('subject', '');
-                $sender = $fd->fetch('sender', '', FILTER_VALIDATE_EMAIL);
+                $sender = $fd->fetch('sender', '', \FILTER_VALIDATE_EMAIL);
                 if ($subj !== '' && $sender !== '' /* && $fd->recaptcha() */)
                 {
                     $context->local()->sendmail(

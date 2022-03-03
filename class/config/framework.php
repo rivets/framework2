@@ -4,11 +4,6 @@
  * it is setting up the autoloader and stuff. But it does keep things DRY - only one place to
  * add any new autoload places etc.
  *
- * Note this only has a single static function. This is not great for unit testing, but
- * it seems to make more sense than having to create an instance that is never going to
- * be used again. (Equally this could just be code in a file rather than being a function
- * or a class, but that just seems nasty)
- *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
  * @copyright 2015-2022 Newcastle University
  * @package Framework\Config
@@ -57,11 +52,13 @@
         public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
         public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
 
-        private static $fwBeans = [
+        private static array $fwBeans = [
             self::AJAX        => '',
             self::BEANLOG     => '',
             self::CONFIG      => '',
+            self::CONFIRM     => '',
             self::CSP         => '',
+            self::FLOOD       => '',
             self::FORM        => '',
             self::FORMFIELD   => '',
             self::PAGE        => '',
@@ -75,17 +72,36 @@
             self::USER        => '',
         ];
 
+        private static array $fwTables = [
+            self::AJAX,
+            self::BEANLOG,
+            self::CSP,
+            self::CONFIG,
+            self::CONFIRM,
+            self::FLOOD,
+            self::FORM,
+            self::FORMFIELD,
+            self::PAGE,
+            self::PAGEROLE,
+            self::ROLE,
+            self::ROLECONTEXT,
+            self::ROLENAME,
+            self::TEST,
+            self::UPLOAD,
+            self::USER,
+        ];
+
         private static bool $dbDone = FALSE;
 /**
  * Initialise some standard things for any invocation of a page
  */
         public static function initialise() : void
         {
-            error_reporting(E_ALL | E_STRICT);
+            \error_reporting(E_ALL | E_STRICT);
 /*
  * Setup the autoloader
  */
-            $dir = dirname(__DIR__, 2);
+            $dir = \dirname(__DIR__, 2);
             /** @psalm-suppress UnusedFunctionCall */
             \set_include_path(
                 \implode(PATH_SEPARATOR, [
@@ -112,9 +128,9 @@
  */
         public static function constant(string $name, array|bool|int|string $default = '') : array|bool|int|string
         {
-            if (defined('\\Config\\Config::'.$name))
+            if (\defined('\\Config\\Config::'.$name))
             {
-                return constant('\\Config\\Config::'.$name);
+                return \constant('\\Config\\Config::'.$name);
             }
             return $default;
         }
@@ -124,6 +140,27 @@
         public static function isFWBean(string $beanType)
         {
             return isset(self::$fwBeans[$beanType]);
+        }
+/**
+ * Check if table is a framework table
+ *
+ * @param string $table
+ *
+ * @psalm-suppress PossiblyUnusedMethod
+ */
+        public static function isFWTable(string $table) : bool
+        {
+            return \in_array($table, self::$fwTables); // @phan-suppress-current-line PhanUndeclaredStaticProperty
+        }
+/**
+ * Number of tables
+ *
+ * @psalm-suppress PossiblyUnusedMethod
+ */
+        public static function tableCount(bool $all = FALSE) : int
+        {
+            $x = \count(R::inspect());
+            return $all ? $x : $x - \count(self::$fwTables); // @phan-suppress-current-line PhanUndeclaredStaticProperty
         }
 /**
  * Initialise the database

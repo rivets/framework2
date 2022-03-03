@@ -104,7 +104,7 @@
  */
         public function lastmodified(Context $context) : string
         {
-            return (string) time();
+            return (string) \time();
         }
 /**
  * Check a timestamp to see if we need to send the page again or not.

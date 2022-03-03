@@ -49,7 +49,7 @@
                 while (isset($rest[$ix]))
                 {
                     $beanType = $rest[$ix];
-                    if (\Support\SiteInfo::isFWTable($beanType))
+                    if (FW::isFWTable($beanType))
                     {
                         throw new \Framework\Exception\BadValue('Cannot attach to framework beans');
                     }

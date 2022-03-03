@@ -42,15 +42,13 @@
  * Set up pagination data
  *
  * @param ?int    $count If not NULL then set pages based on this
- *
- * @return void
  */
-        public function setPages($count = NULL) : void
+        public function setPages(?int $count = NULL) : void
         {
             $fdt = $this->formData('get');
-            $psize = (int) $fdt->fetch('pagesize', 10, FILTER_VALIDATE_INT);
+            $psize = (int) $fdt->fetch('pagesize', 10, \FILTER_VALIDATE_INT);
             $values = [
-                'page'      => $fdt->fetch('page', 1, FILTER_VALIDATE_INT), // just in case there is any pagination going on
+                'page'      => $fdt->fetch('page', 1, \FILTER_VALIDATE_INT), // just in case there is any pagination going on
                 'pagesize'  => $psize,
             ];
             if ($count != NULL)
@@ -68,7 +66,6 @@
  * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
  * @param bool      $use303     If TRUE then 303 will be used instead of 307
  *
- * @return void
  * @psalm-return never-return
  */
         public function divert(string $where, bool $temporary = TRUE, string $msg = '', bool $nochange = FALSE, bool $use303 = FALSE) : never
@@ -78,8 +75,6 @@
         }
 /**
  * Return an iso formatted time for NOW  in UTC
- *
- * @return string
  */
         public function utcnow() : string
         { /** @psalm-suppress InvalidOperand */
@@ -87,14 +82,10 @@
         }
 /**
  * Return an iso formatted time in UTC
- *
- * @param string       $datetime
- *
- * @return string
  */
         public function utcdate(string $datetime) : string
         { /** @psalm-suppress InvalidOperand */
-            return \R::isodatetime(strtotime($datetime) - (int) date('Z'));
+            return \R::isodatetime(\strtotime($datetime) - (int) \date('Z'));
         }
 /*
  ***************************************

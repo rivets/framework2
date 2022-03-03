@@ -32,7 +32,7 @@
  */
         private function maketoken(string $uname) : string
         {
-            $token = bin2hex(random_bytes(self::STRENGTH));
+            $token = \bin2hex(\random_bytes(self::STRENGTH));
             /** @psalm-suppress RedundantCondition - not sure why psalm complains about this */
             if (isset($_SESSION))
             {
@@ -56,7 +56,7 @@
             }
             $token = $_SESSION[$uname];
             unset($_SESSION[$uname]);
-            return hash_equals($token, $tocheck); // constant time string comparison
+            return \hash_equals($token, $tocheck); // constant time string comparison
         }
 /**
  * Generate a name and a token
@@ -65,7 +65,7 @@
  */
         public function generate() : array
         {
-            $name ='CSRFGuard_'.mt_rand(0, mt_getrandmax());
+            $name ='CSRFGuard_'.\mt_rand(0, \mt_getrandmax());
             return [$name,  $this->maketoken($name)];
         }
 /**
@@ -90,17 +90,17 @@
  * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public function check(int $type = INPUT_POST) : void
+        public function check(int $type = \INPUT_POST) : void
         {
             switch ($type)
             {
-            case INPUT_POST:
+            case \INPUT_POST:
                 if (!$_SERVER['REQUEST_METHOD'] == 'POST')
                 {
                     return;
                 }
                 break;
-            case INPUT_GET:
+            case \INPUT_GET:
                 if ($_SERVER['REQUEST_METHOD'] == 'GET' && !empty($_GET))
                 {
                     break;
@@ -109,11 +109,11 @@
             default:
                 return;
             }
-            if (!filter_has_var($type, self::NAME) || !filter_has_var($type, self::TOKEN))
+            if (!\filter_has_var($type, self::NAME) || !\filter_has_var($type, self::TOKEN))
             {
                 throw new \Framework\Exception\InternalError('No CSRF Name found, probable invalid request.');
             }
-            if (!$this->validate(filter_input($type, self::NAME), filter_input($type, self::TOKEN)))
+            if (!$this->validate(filter_input($type, self::NAME), \filter_input($type, self::TOKEN)))
             {
                 throw new \Framework\Exception\InternalError('Invalid CSRF token');
             }

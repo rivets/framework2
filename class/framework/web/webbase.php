@@ -4,7 +4,7 @@
  * This exists to reduce the number of method in Web itself
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework\Framework\Web
  */
     namespace Framework\Web;
@@ -200,7 +200,7 @@
             {
                 $fd = \fopen($path, 'r'); // open the file, seek to the required place and read and return the required amount.
                 \fseek($fd, $range[0]);
-                echo fread($fd, $length);
+                echo \fread($fd, $length);
                 \fclose($fd);
             }
             else
@@ -240,9 +240,9 @@
  */
         public function addHeader(array|string $key, string $value = '') : void
         {
-            foreach (is_array($key) ? $key : [$key => $value] as $k => $val)
+            foreach (\is_array($key) ? $key : [$key => $value] as $k => $val)
             {
-                $this->headers[trim($k)][] = \str_replace("\0", '', trim($val));
+                $this->headers[trim($k)][] = \str_replace("\0", '', \trim($val));
             }
         }
 /**
@@ -256,7 +256,7 @@
  */
         public function recaptcha(string $secret) : bool
         {
-            if (\filter_has_var(INPUT_POST, 'g-recaptcha-response'))
+            if (\filter_has_var(\INPUT_POST, 'g-recaptcha-response'))
             {
                 $data = \http_build_query([
                     'secret'    => $secret,

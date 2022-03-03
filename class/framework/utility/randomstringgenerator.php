@@ -27,7 +27,7 @@
  */
         public function __construct(string $alphabet = '')
         {
-            $this->setAlphabet($alphabet !== '' ? $alphabet : implode(range('a', 'z')). implode(range('A', 'Z')) . implode(range(0, 9)));
+            $this->setAlphabet($alphabet !== '' ? $alphabet : \implode(range('a', 'z')). \implode(range('A', 'Z')) . \implode(range(0, 9)));
         }
 /**
  * Set up the alphabet to use

@@ -27,7 +27,7 @@
         {
             $action = $context->action();
             $rest = $action.'/'.\implode(\DIRECTORY_SEPARATOR, $context->rest());
-            if (!file_exists($context->local()->basedir().'/twigs/'.$rest.'.twig'))
+            if (!\file_exists($context->local()->basedir().'/twigs/'.$rest.'.twig'))
             {
                 $context->web()->notfound();
             }

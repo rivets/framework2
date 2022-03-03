@@ -16,7 +16,6 @@
  *
  * Required by Twig
  *
- * @return string
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function getName() : string
@@ -43,8 +42,6 @@
  *
  * @param int    $count
  * @param string $word
- *
- * @return string
  */
         public function essify(int $count, string $word) : string
         {
@@ -57,10 +54,8 @@
  * @param  string   $one    The singular case
  * @param  string   $some   The not singular case
  * @param  ?string  $none   Special case for 0
- *
- * @return string
  */
-        public function makePlural(int $count, string $one, string $some, $none = NULL) : string
+        public function makePlural(int $count, string $one, string $some, ?string $none = NULL) : string
         {
             switch ($count)
             {

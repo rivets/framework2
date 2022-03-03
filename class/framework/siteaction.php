@@ -3,7 +3,7 @@
  * Contains definition of abstract Siteaction class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -60,7 +60,7 @@
         {
             $this->ifms = TRUE; // the IF_MODIFIED_SINCE status is needed to correctly implement IF_NONE_MATCH
             $leave = FALSE;
-            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_IF_MODIFIED_SINCE'))
             {
                 $ifmod = $_SERVER['HTTP_IF_MODIFIED_SINCE'];
                 if (\preg_match('/^(.*);(.*)$/', $ifmod, $m))
@@ -71,7 +71,7 @@
                 /** @psalm-suppress InvalidScalarArgument */
                 $this->ifms = $st !== FALSE && $this->checkmodtime($context, (string) $st); // will 304 later if there is no NONE_MATCH or nothing matches
             }
-            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_IF_NONE_MATCH'))
             {
                 $leave = $this->noneMatch($context); // If TRUE then etag was matched
             }
@@ -80,11 +80,11 @@
                 $this->etagmatched($context);
                 /* NOT REACHED */
             }
-            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_MATCH'))
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_IF_MATCH'))
             {
                 $this->match($context);
             }
-            if (\filter_has_var(INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
+            if (\filter_has_var(\INPUT_SERVER, 'HTTP_IF_UNMODIFIED_SINCE'))
             {
                 $ifus = $_SERVER['HTTP_IF_UNMODIFIED_SINCE'];
                 if (\preg_match('/^(.*);(.*)$/', $ifus, $m))

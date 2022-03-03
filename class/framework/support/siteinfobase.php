@@ -18,28 +18,7 @@
     class SiteInfoBase
     {
         use \Framework\Utility\Singleton;
-/**
- * @var array<string>  A list of the Framework DB tables
- */
-        protected static array $fwtables = [
-            FW::CSP,
-            FW::CONFIG,
-            FW::CONFIRM,
-            FW::FLOOD,
-            FW::FORM,
-            FW::FORMFIELD,
-            FW::PAGE,
-            FW::PAGEROLE,
-            FW::ROLE,
-            FW::ROLECONTEXT,
-            FW::ROLENAME,
-            FW::TEST,
-            FW::UPLOAD,
-            FW::USER,
-        ];
-/**
- * @var \Support\Context  The Context object
- */
+
         protected Context $context;
 /**
  * Class constructor. The concrete class using this trait can override it.

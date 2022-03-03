@@ -29,7 +29,7 @@
             \R::exec('delete from '.FW::FLOOD.' where ('.$now.' - calltime) > '.self::KEEPTIME);
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
             $f = \R::findOne(FW::FLOOD, 'ip=?', [$ip]);
-            if (is_object($f))
+            if (\is_object($f))
             {
                 $res =  ($now - $f->calltime) < $limit;
             }

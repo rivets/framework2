@@ -25,7 +25,7 @@
         public const WARNING   = 1;        // 'fwwarnmessage';
         public const MESSAGE   = 2;        // 'fwmessage';
 
-        private array $fwconfig       = []; // Config values from database
+        private array $fwconfig      = []; // Config values from database
         private bool $devel          = FALSE; // Developer mode?
 /**
  * Return state of devel flag

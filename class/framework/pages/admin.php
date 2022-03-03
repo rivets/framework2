@@ -293,7 +293,11 @@
             switch ($rest[0])
             {
             case 'beans': // Look at the beans in the database
-                $context->local()->addval('all', $context->hasadmin() && $context->formdata('get')->exists('all'));
+                $all = $context->hasadmin() && $context->formdata('get')->exists('all');
+                $context->local()->addval([
+                    'all'        => $all,
+                    'tableCount' => FW::tableCount($all),
+                ]);
                 $tpl = '@admin/beans.twig';
                 break;
             case 'checksum': // calculate checksums for locally included files

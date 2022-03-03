@@ -18,7 +18,7 @@
  */
         public function operation() : string
         {
-            return BL::from($this->bean->op)->label();
+            return BL::label($this->bean->op);
         }
 /**
  * Return the updated field

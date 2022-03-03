@@ -3,7 +3,7 @@
  * Contains definition of Date Validation class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
+ * @copyright 2019-2022 Newcastle University
  * @package Framework
  * @subpackage Utility
  */
@@ -14,12 +14,9 @@
 /**
  * Check a date is valid
  *
- * @param string $date
- *
- * @return bool|string
  * @psalm-suppress PossiblyUnusedMethod
  */
-        public static function check(string $date)
+        public static function check(string $date) : bool|string
         {
             $time = \strtotime($date);
             if ($time !== FALSE)

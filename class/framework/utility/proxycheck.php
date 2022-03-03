@@ -3,7 +3,7 @@
  * Contains definition of ProxyCheck class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2020 Newcastle University
+ * @copyright 2018-2022 Newcastle University
  * @package Framework
  * @subpackage Utility
  */
@@ -51,16 +51,16 @@
  */
             $ch = \curl_init(self::PCURL.$ip.'?'.\implode('&', $query));
             $curlopts = [
-                CURLOPT_CONNECTTIMEOUT  => 30,
-                CURLOPT_POST            => 1,
-                CURLOPT_POSTFIELDS      => 'tag='.\urlencode($tag ?? \Config\Config::SITENAME),
-                CURLOPT_RETURNTRANSFER  => TRUE,
+                \CURLOPT_CONNECTTIMEOUT  => 30,
+                \CURLOPT_POST            => 1,
+                \CURLOPT_POSTFIELDS      => 'tag='.\urlencode($tag ?? \Config\Config::SITENAME),
+                \CURLOPT_RETURNTRANSFER  => TRUE,
             ];
             \curl_setopt_array($ch, $curlopts);
             $json = \curl_exec($ch);
             if ($json === FALSE)
             {
-                $res = ['status' => 'error', 'message' => curl_error($ch)];
+                $res = ['status' => 'error', 'message' => \curl_error($ch)];
             }
             else
             {

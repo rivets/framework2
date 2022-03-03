@@ -14,7 +14,7 @@
  * A class implementing a RedBean model for FWPageRole beans
  * @psalm-suppress UnusedClass
  */
-    final class FWPageRole extends Role
+    final class FWPageRole extends FWRole
     {
     }
 ?>

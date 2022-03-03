@@ -3,7 +3,7 @@
  * Profile page class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021 Newcastle University
+ * @copyright 2021-2022 Newcastle University
  * @package Framework
  * @subpackage UserPages
  */
@@ -30,7 +30,7 @@
                 $change = FALSE;
                 if ($email !== '' && $email != $user->email)
                 {
-                    if (filter_var($email, FILTER_VALIDATE_EMAIL) !== FALSE)
+                    if (\filter_var($email, \FILTER_VALIDATE_EMAIL) !== FALSE)
                     {
                         $user->email = $email;
                         $change = TRUE;

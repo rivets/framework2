@@ -126,7 +126,7 @@
             {
                 try
                 {
-                    $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', strtoupper($cf));
+                    $constant_reflex = new \ReflectionClassConstant('\\Config\\Config', \strtoupper($cf));
                     $basicvals[$cf] = $constant_reflex->getValue();
                 }
                 catch (\ReflectionException)
