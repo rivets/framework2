@@ -7,6 +7,7 @@
  * @package Framework\Framework\Ajax\Support
  */
     namespace Framework\Ajax\Support;
+
 /**
  * Enumeration for beanlog constants
  */

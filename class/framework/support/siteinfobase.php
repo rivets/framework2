@@ -9,7 +9,6 @@
  */
     namespace Framework\Support;
 
-    use \Config\Framework as FW;
     use \R;
     use \Support\Context;
 /**
