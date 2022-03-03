@@ -1,14 +1,9 @@
 *.komodoproject
 ._*
-.[a-z]*
+.[a-zA-Z]*
 vendor
 composer.lock
-
 *.codekit3
 *.php~
-docp
-dodiff
-mkcp
-assets/js/old
 assets/old
 
