@@ -29,9 +29,9 @@
         private static function addBean(string $name, array $fields = [])
         {
             $bn = \R::dispense($name);
-            foreach ($fields as $field => $value)
+            foreach ($fields as $field => $sampleValue)
             {
-                $bn->{$field} = $value;
+                $bn->{$field} = $sampleValue;
             }
             \R::store($bn);
             \R::trash($bn); // get rid of the temporary bean
