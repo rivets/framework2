@@ -112,6 +112,7 @@ return [
         \SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff::class,
         \SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff::class,
         \SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff::class,
+        \SlevomatCodingStandard\Sniffs\Classes\DisallowLateStaticBindingForConstantsSniff::class, // breaks with enums at the moment
         \SlevomatCodingStandard\Sniffs\Namespaces\UseDoesNotStartWithBackslashSniff::class,
         \SlevomatCodingStandard\Sniffs\Operators\DisallowEqualOperatorsSniff::class,
         \SlevomatCodingStandard\Sniffs\PHP\UselessParenthesesSniff::class,
@@ -122,6 +123,7 @@ return [
         \SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSniff::class,
         \SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSniff::class,
         \SlevomatCodingStandard\Sniffs\TypeHints\UselessConstantTypeHintSniff::class,
+        \SlevomatCodingStandard\Sniffs\Classes\UselessLateStaticBindingSniff::class, // breaks with enum at the moment
 
     ],
 
