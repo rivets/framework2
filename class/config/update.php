@@ -23,8 +23,9 @@
  * @psalm-suppress PossiblyUnusedParam
  * @psalm-suppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        static public function apply(Context $context) : void
+        static public function apply() : void
         {
+            // $context = Context::getInstance();
         }
 /*
         private static function addBean(string $name, array $fields = [])
