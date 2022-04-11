@@ -36,14 +36,6 @@
             {
                 $loader->addPath($twigdir.'/'.$tns, $tns);
             }
-            //foreach (['util'] as $tns)
-            //{
-            //    $loader->addPath($twigdir.'/vue/framework/'.$tns, 'vue'.$tns);
-            //}
-            //foreach (['content'] as $tns)
-            //{
-            //    $loader->addPath($twigdir.'/vue/'.$tns, 'vue'.$tns);
-            //}
             $this->engine = new \Twig\Environment(
                 $loader,
                 ['cache' => isset($options['cache']) ? $local->makebasepath($options['cache']) : FALSE]
@@ -189,6 +181,22 @@
             else
             {
                 $this->messages[$kind] = [];
+            }
+        }
+/**
+ * Make a twig file if we have permission and it does not exist already
+ *
+ * @throws \Framework\Exception\InternalError
+ */
+        private static function makeTwig(Context $context, array $fileName) : void
+        {
+            $file = $context->local()->makebasepath('twigs', ...$fileName);
+            if (!\file_exists($file))
+            { // make the file
+                if (!\copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
+                {
+                    throw new \Framework\Exception\InternalError('Cannot create '.$file);
+                }
             }
         }
     }
