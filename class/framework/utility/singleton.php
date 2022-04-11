@@ -88,9 +88,6 @@
         }
 /**
  * Returns the only instance if is called as a function
- *
- * @template object
- * @psalm-return object
  */
         final public function __invoke() : object
         {
