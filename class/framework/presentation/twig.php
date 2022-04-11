@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Support\Context;
 /**
  * Class that uses Twig to render pages
  */
