@@ -14,6 +14,7 @@
  */
     class Twig extends Render
     {
+        private const TDIR = 'twigs';
 /**
  * This is a class that maintains values about the local environment and does error handling
  *
@@ -27,7 +28,7 @@
         public function __construct(\Framework\Local $local, array $options)
         {
             parent::__construct($local, $options);
-            $twigdir = $local->makebasepath($options['templateDir'] ?? 'twigs');
+            $twigdir = $local->makebasepath($options['templateDir'] ?? self::TDIR);
             $loader = new \Twig\Loader\FilesystemLoader($twigdir);
             foreach (['admin', 'devel', 'edit', 'error', 'users', 'util', 'view'] as $tns)
             {
@@ -191,10 +192,10 @@
  */
         private static function makeTemplate(Context $context, array $fileName) : void
         {
-            $file = $context->local()->makebasepath('twigs', ...$fileName);
+            $file = $context->local()->makebasepath(self::TDIR, ...$fileName);
             if (!\file_exists($file))
             { // make the file
-                if (!\copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
+                if (!\copy($context->local()->makebasepath(self::TDIR, 'content', 'sample.txt'), $file))
                 {
                     throw new \Framework\Exception\InternalError('Cannot create '.$file);
                 }
