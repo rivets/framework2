@@ -3,7 +3,7 @@
  * Contains definition of Twig Rendering class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework
  */
     namespace Framework\Presentation;
@@ -188,7 +188,7 @@
  *
  * @throws \Framework\Exception\InternalError
  */
-        private static function makeTwig(Context $context, array $fileName) : void
+        private static function makeTemplate(Context $context, array $fileName) : void
         {
             $file = $context->local()->makebasepath('twigs', ...$fileName);
             if (!\file_exists($file))

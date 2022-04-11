@@ -3,7 +3,7 @@
  * A trait that implements the functions to call a renderer
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2021 Newcastle University
+ * @copyright 2019-2022 Newcastle University
  * @package Framework\Framework\Presentation
  */
     namespace Framework\Presentation;
@@ -120,6 +120,15 @@
         public function clearValues() : void
         {
             $this->renderer->clearValues();
+        }
+/**
+ * Make a template file if we have permission and it does not exist already
+ *
+ * @throws \Framework\Exception\InternalError
+ */
+        private static function makeTemplate(Context $context, array $fileName) : void
+        {
+            $this->renderer->makeTemplate($context, $fileName);
         }
     }
 ?>

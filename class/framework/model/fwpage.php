@@ -93,23 +93,9 @@
             }
         }
 /**
- * Make a twig file if we have permission and it does not exist already
- *
- * @throws \Framework\Exception\InternalError
- */
-        private static function makeTwig(Context $context, array $fileName) : void
-        {
-            $file = $context->local()->makebasepath('twigs', ...$fileName);
-            if (!\file_exists($file))
-            { // make the file
-                if (!\copy($context->local()->makebasepath('twigs', 'content', 'sample.txt'), $file))
-                {
-                    throw new \Framework\Exception\InternalError('Cannot create '.$file);
-                }
-            }
-        }
-/**
  * Handle an object page
+ *
+ * @todo detwig this
  */
         private static function doObject(Context $context, \RedBeanPHP\OODBBean $page)
         {
@@ -138,10 +124,13 @@
                     throw new \Framework\Exception\InternalError('Cannot create PHP file');
                 }
             }
-            self::makeTwig($context, ['content', $lbase.'.twig']); // make a basic twig if there is not one there already.
+
+            $context->local()->makeTemplate($context, ['content', $lbase.'.twig']); // make a basic twig if there is not one there already.
         }
 /**
  * Handle a template page
+ *
+ * @todo detwig this
  */
         public static function doTemplate(Context $context, \RedBeanPHP\OODBBean $page) : void
         {
@@ -178,7 +167,7 @@
             {
                 throw new \Framework\Exception\BadValue('Not recognised');
             }
-            self::makeTwig($context, $name);
+            $context->local->makeTemplate($context, $name);
         }
 /**
  * Add a Page
