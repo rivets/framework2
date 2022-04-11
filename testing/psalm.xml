@@ -107,7 +107,6 @@
         <file name="../class/framework/web/webbase.php" />
 
         <file name="../class/modelextend/fwedit.php" />
-        <file name="../class/modelextend/makeguard.php" />
         <file name="../class/modelextend/fwupload.php" />
         <file name="../class/modelextend/user.php" />
 
@@ -120,6 +119,7 @@
         <file name="../class/support/context.php" />
         <file name="../class/support/getfile.php" />
         <file name="../class/support/login.php" />
+        <file name="../class/support/makeguard.php" />
         <file name="../class/support/nocache.php" />
         <file name="../class/support/setup.php" />
         <file name="../class/support/siteaction.php" />
