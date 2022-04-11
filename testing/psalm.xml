@@ -81,6 +81,7 @@
         <file name="../class/framework/support/fwtable.php" />
         <file name="../class/framework/support/handlerole.php" />
         <file name="../class/framework/support/localbase.php" />
+        <file name="../class/framework/support/makeguard.php" />
         <file name="../class/framework/support/security.php" />
         <file name="../class/framework/support/sitable.php" />
         <file name="../class/framework/support/siteinfo.php" />
@@ -119,7 +120,6 @@
         <file name="../class/support/context.php" />
         <file name="../class/support/getfile.php" />
         <file name="../class/support/login.php" />
-        <file name="../class/support/makeguard.php" />
         <file name="../class/support/nocache.php" />
         <file name="../class/support/setup.php" />
         <file name="../class/support/siteaction.php" />
