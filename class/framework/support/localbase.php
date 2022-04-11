@@ -19,7 +19,6 @@
         protected string $basePath          = ''; // The absolute path to the site directory
         protected string $baseDName         = ''; // The name of the site directory
         protected ?ErrorHandler $errorHandler     = NULL;
-        protected ?Render $renderer         = NULL;
 /**
  * Send mail if possible
  *
