@@ -238,6 +238,8 @@
 /**
  * Handle an edit form for this page
  *
+ * @todo Fix things so that developers do not have to have admin. There will be things some can't then do but there can be a special account.
+ *
  * @return array [TRUE if error, [error messages]]
  */
         public function edit(Context $context) : array
