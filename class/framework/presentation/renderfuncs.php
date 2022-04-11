@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Support\Context;
 /**
  * Adds functions for calling the renderer
  */
@@ -126,7 +127,7 @@
  *
  * @throws \Framework\Exception\InternalError
  */
-        private static function makeTemplate(Context $context, array $fileName) : void
+        public function makeTemplate(Context $context, array $fileName) : void
         {
             $this->renderer->makeTemplate($context, $fileName);
         }
