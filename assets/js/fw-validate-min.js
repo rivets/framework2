@@ -1,0 +1,2 @@
+var fwValid={setup:function(t){t.querySelectorAll("data-fw-valid-trigger").each((function(){this.addEventHandler(this.getAttribute("data-fw-valid-trigger"),(function(t){fwdom.stop(t)}))}))},validate:function(t){let e=!0;return t.querySelectorAll("required").each((function(){""===this.value&&(e=!1)})),e}};
+//# sourceMappingURL=fw-validate-min.js.map
