@@ -2,47 +2,46 @@
   The fa macro is used by default so you can change which style it uses - regular (free), solid or duotone.
   fab is for brand icons and is also free.
 #}
-{% if fav6 is defined and fav6 %}
-    {% set fasolid = 'fa-solid' %}
-    {% set faregular = 'fa-regular' %}
-    {% set faduotone = 'fa-duotone' %}
-    {% set fabrand = 'fa-brand' %}
-
-    {% set faedit = 'pen-to-square' %}
-    {% set fafastbwd = 'backward-fast' %}
-    {% set fafastfwd = 'forward-fast' %}
-    {% set fasearch = 'magnifying-glass' %}
-    {% set fatrash = 'trash-can' %}
-{% else %}
-    {% set fasolid = 'fas' %}
-    {% set faregular = 'far' %}
-    {% set faduotone = 'fad' %}
-    {% set fabrand = 'fab' %}
-
-    {% set faedit = 'edit' %}
-    {% set fafastbwd = 'fast-backward' %}
-    {% set fafastfwd = 'fast-forward' %}
-    {% set fasearch = 'search' %}
-    {% set fatrash = 'trash-alt' %}
-{% endif %}
 {% macro show(type, icon, other, title, attr) -%}
     <i class="{{type}} fa-{{icon}}{{other != '' ? ' '~other : ''}}"{% if title != '' %} title="{{title}}"{% endif %}{% if attr != '' %} {{attr|raw}}{% endif %}></i>
 {%- endmacro show %}
-{% macro fa(icon, other='', title='', attr='', vars = _context) %}{% import _self as s %}{{s.show(vars.faregular, icon, other, title, attr)}}{% endmacro fa %}
-{% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(faregular, icon, other, title, attr)}}{% endmacro far %}
-{% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(fasolid, icon, other, title, attr)}}{% endmacro fas %}
-{% macro fad(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(faduotone, icon, other, title, attr)}}{% endmacro fad %}
-{% macro fab(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(fabrand, icon, other, title, attr)}}{% endmacro fab %}
+{% if fav6 is defined and fav6 %}
+    {% macro fa(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-regular', icon, other, title, attr)}}{% endmacro fa %}
+    {% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-regular', icon, other, title, attr)}}{% endmacro far %}
+    {% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-solid', icon, other, title, attr)}}{% endmacro fas %}
+    {% macro fad(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-duotone', icon, other, title, attr)}}{% endmacro fad %}
+    {% macro fab(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-brand', icon, other, title, attr)}}{% endmacro fab %}
 
-{% macro edit(other='', title='Edit', attr='') %}{% import _self as s %}{{s.fa(faedit, other, title, attr)}}{% endmacro edit %}
-{% macro delete(other='', title='Delete', attr='') %}{% import _self as s %}{{s.fa(fatrash, other, title, attr)}}{% endmacro delete %}
-{% macro view(other='', title='View', attr='') %}{% import _self as s %}{{s.fa('eye', other, title, attr)}}{% endmacro view %}
-{% macro forward(other='', title='Forward', attr='') %}{% import _self as s %}{{s.fa('forward', other, title, attr)}}{% endmacro forward %}
-{% macro fastfwd(other='', title='Fast Forward', attr='') %}{% import _self as s %}{{s.fa(fafastfwd, other, title, attr)}}{% endmacro fastfwd %}
-{% macro backward(other='', title='Backward', attr='') %}{% import _self as s %}{{s.fa('backward', other, title, attr)}}{% endmacro backward %}
-{% macro fastbwd(other='', title='Fast BackWard', attr='') %}{% import _self as s %}{{s.fa(fafastbwd, other, title, attr)}}{% endmacro fastbwd %}
-{% macro search(other='', title='Search', attr='') %}{% import _self as s %}{{s.fa(fasearch, other, title, attr)}}{% endmacro search %}
-{% macro check(other='', title='Check', attr='') %}{% import _self as s %}{{s.fa('check', other, title, attr)}}{% endmacro check %}
-{% macro link(other='', title='Web Link', attr='') %}{% import _self as s %}{{s.fa('link', other, title, attr)}}{% endmacro link %}
-{% macro open(other='', title='Close', attr='') %}{% import _self as s %}{{s.fa('caret-down', other, title, attr)}}{% endmacro open %}
-{% macro closed(other='', title='Open', attr='') %}{% import _self as s %}{{s.fa('caret-right', other, title, attr)}}{% endmacro closed %}
+    {% macro edit(other='', title='Edit', attr='') %}{% import _self as s %}{{s.fa('pen-to-square', other, title, attr)}}{% endmacro edit %}
+    {% macro delete(other='', title='Delete', attr='') %}{% import _self as s %}{{s.fa('trash-can', other, title, attr)}}{% endmacro delete %}
+    {% macro view(other='', title='View', attr='') %}{% import _self as s %}{{s.fa('eye', other, title, attr)}}{% endmacro view %}
+    {% macro forward(other='', title='Forward', attr='') %}{% import _self as s %}{{s.fa('forward', other, title, attr)}}{% endmacro forward %}
+    {% macro fastfwd(other='', title='Fast Forward', attr='') %}{% import _self as s %}{{s.fa('forward-fast', other, title, attr)}}{% endmacro fastfwd %}
+    {% macro backward(other='', title='Backward', attr='') %}{% import _self as s %}{{s.fa('backward', other, title, attr)}}{% endmacro backward %}
+    {% macro fastbwd(other='', title='Fast BackWard', attr='') %}{% import _self as s %}{{s.fa('backward-fast', other, title, attr)}}{% endmacro fastbwd %}
+    {% macro search(other='', title='Search', attr='') %}{% import _self as s %}{{s.fa('magnifyig-glass', other, title, attr)}}{% endmacro search %}
+    {% macro check(other='', title='Check', attr='') %}{% import _self as s %}{{s.fa('check', other, title, attr)}}{% endmacro check %}
+    {% macro link(other='', title='Web Link', attr='') %}{% import _self as s %}{{s.fa('link', other, title, attr)}}{% endmacro link %}
+    {% macro open(other='', title='Close', attr='') %}{% import _self as s %}{{s.fa('caret-down', other, title, attr)}}{% endmacro open %}
+    {% macro closed(other='', title='Open', attr='') %}{% import _self as s %}{{s.fa('caret-right', other, title, attr)}}{% endmacro closed %}
+{% else %}
+    {% macro fa(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('far', icon, other, title, attr)}}{% endmacro fa %}
+    {% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('far', icon, other, title, attr)}}{% endmacro far %}
+    {% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fas', icon, other, title, attr)}}{% endmacro fas %}
+    {% macro fad(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fad', icon, other, title, attr)}}{% endmacro fad %}
+    {% macro fab(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fab', icon, other, title, attr)}}{% endmacro fab %}
+
+    {% macro edit(other='', title='Edit', attr='') %}{% import _self as s %}{{s.fa('edit', other, title, attr)}}{% endmacro edit %}
+    {% macro delete(other='', title='Delete', attr='') %}{% import _self as s %}{{s.fa('trash-alt', other, title, attr)}}{% endmacro delete %}
+    {% macro view(other='', title='View', attr='') %}{% import _self as s %}{{s.fa('eye', other, title, attr)}}{% endmacro view %}
+    {% macro forward(other='', title='Forward', attr='') %}{% import _self as s %}{{s.fa('forward', other, title, attr)}}{% endmacro forward %}
+    {% macro fastfwd(other='', title='Fast Forward', attr='') %}{% import _self as s %}{{s.fa('fast-forward', other, title, attr)}}{% endmacro fastfwd %}
+    {% macro backward(other='', title='Backward', attr='') %}{% import _self as s %}{{s.fa('backward', other, title, attr)}}{% endmacro backward %}
+    {% macro fastbwd(other='', title='Fast BackWard', attr='') %}{% import _self as s %}{{s.fa('fast-backward', other, title, attr)}}{% endmacro fastbwd %}
+    {% macro search(other='', title='Search', attr='') %}{% import _self as s %}{{s.fa('search', other, title, attr)}}{% endmacro search %}
+    {% macro check(other='', title='Check', attr='') %}{% import _self as s %}{{s.fa('check', other, title, attr)}}{% endmacro check %}
+    {% macro link(other='', title='Web Link', attr='') %}{% import _self as s %}{{s.fa('link', other, title, attr)}}{% endmacro link %}
+    {% macro open(other='', title='Close', attr='') %}{% import _self as s %}{{s.fa('caret-down', other, title, attr)}}{% endmacro open %}
+    {% macro closed(other='', title='Open', attr='') %}{% import _self as s %}{{s.fa('caret-right', other, title, attr)}}{% endmacro closed %}
+{% endif %}
+
