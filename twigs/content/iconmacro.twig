@@ -28,7 +28,7 @@
 {% macro show(type, icon, other, title, attr) -%}
     <i class="{{type}} fa-{{icon}}{{other != '' ? ' '~other : ''}}"{% if title != '' %} title="{{title}}"{% endif %}{% if attr != '' %} {{attr|raw}}{% endif %}></i>
 {%- endmacro show %}
-{% macro fa(icon, other='', title='', attr='', vars = _context) %}{% import _self as s %}{{vars.faregular, icon, other, title, attr)}}{% endmacro fa %}
+{% macro fa(icon, other='', title='', attr='', vars = _context) %}{% import _self as s %}{{s.show(vars.faregular, icon, other, title, attr)}}{% endmacro fa %}
 {% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(faregular, icon, other, title, attr)}}{% endmacro far %}
 {% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(fasolid, icon, other, title, attr)}}{% endmacro fas %}
 {% macro fad(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show(faduotone, icon, other, title, attr)}}{% endmacro fad %}
