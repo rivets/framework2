@@ -214,7 +214,7 @@
  * Initialise template engine - check to see if it is installed!!
  *
  */
-    if (!\file_exists('vendor') || !is_dir('vendor'))
+    if (!\file_exists('vendor'))
     {
         include 'install/errors/composer.php';
         exit;
