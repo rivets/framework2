@@ -214,7 +214,7 @@
  * Initialise template engine - check to see if it is installed!!
  *
  */
-    if (!\file_exists('vendor'))
+    if (!\file_exists('vendor') || is_dir('vendor'))
     {
         include 'install/errors/composer.php';
         exit;
@@ -292,14 +292,6 @@
         // 'popperjs'      => ['https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', 1, '', '', 0, 0, 'js'],
         'utiljs'        => [$dir.'/assets/js/util-min.js', 1, '', '', 0, 0, 'js'],
     ];
-/**
- *  RedBean needs an alias to use namespaces
- */
-    if (!\class_alias('\RedBeanPHP\R','\R'))
-    {
-        include 'install/errors/notwig.php';
-        exit;
-    }
 
     try
     {
