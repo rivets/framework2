@@ -12,8 +12,8 @@
         <nav aria-label="{{arialabel is defined ? arialabel : 'Paginator'}}">
             <ul class="pagination">
                 {% if page > 1 %}
-                    <li class="page-item"><a href="{{url}}?page=1&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Page 1" aria-label="Page 1">{{i.fastbwd()}}<span class="sr-only">Page 1</span></i></a></li>
-                    <li class="page-item"><a href="{{url}}?page={{page-1}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Prev"  aria-label="Previous">{{i.backward()}}</i><span class="sr-only">Previous</span></a></li>
+                    <li class="page-item"><a href="{{url}}?page=1&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Page 1" aria-label="Page 1">{{i.fastbwd('', 'Page 1')}}<span class="sr-only">Page 1</span></i></a></li>
+                    <li class="page-item"><a href="{{url}}?page={{page-1}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Prev"  aria-label="Previous">{{i.backward('', 'Page '~(page-1))}}</i><span class="sr-only">Previous</span></a></li>
                 {% else %}
                     <li class="disabled page-item"><a class="noclick page-link" aria-label="Page 1">{{i.fastbwd()}}<span class="sr-only">Page 1</span></a></li>
                     <li class="disabled page-item"><a class="noclick page-link" aria-label="Previous">{{i.backward()}}<span class="sr-only">Previous</span></a></li>
