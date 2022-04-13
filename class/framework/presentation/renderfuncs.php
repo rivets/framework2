@@ -52,7 +52,7 @@
  * @param string    $tpl    The template
  * @param mixed[]   $vals   Values to set for the template
  */
-        public function getrender(string $tpl, array $vals = []) : string
+        public function getRender(string $tpl, array $vals = []) : string
         {
             return $this->renderer->getRender($tpl, $vals);
         }
