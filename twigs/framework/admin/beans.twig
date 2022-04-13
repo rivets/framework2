@@ -100,11 +100,6 @@
     fwdom.on('#addm', 'click', function(e) { framework.addMore(e); });
 {% endblock onload %}
 
-{% if not page is defined %}
-    {% set page = 1 %}
-    {% set pagesize = 10 %}
-{% endif %}
-
 {% set extra = '' %}
 
 {% if all is defined %}
@@ -116,8 +111,6 @@
 {% endif %}
 
 {% set beans = siteinfo.tables(all, page,  pagesize) %}
-
-{% set pages = ((tablecount + pagesize) / pagesize)|round(0, 'floor') %}
 
 {% block headerbody %}
     <h1>Beans</h1>

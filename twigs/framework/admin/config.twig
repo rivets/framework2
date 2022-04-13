@@ -123,13 +123,6 @@
     });
 {% endblock onload %}
 
-{% if not page is defined %}
-    {% set page = 1 %}
-    {% set pagesize = 10 %}
-{% endif %}
-
-{% set pages = siteinfo.pagecount(config, pagesize) %}
-
 {% block headerbody %}
     <h1>Configuration Values</h1>
 {% endblock headerbody %}
