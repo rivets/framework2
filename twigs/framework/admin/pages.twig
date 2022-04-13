@@ -160,15 +160,6 @@
     fwdom.on('#more', 'click', framework.addMore);
 {% endblock onload %}
 
-{% if not page is defined %}
-    {% set page = 1 %}
-    {% set pagesize = 10 %}
-{% endif %}
-
-{% if not pages is defined %}
-{% set pages = siteinfo.pagecount('page',  pagesize) %}
-{% endif %}
-
 {% block headerbody %}
     <h1>Pages</h1>
 {% endblock headerbody %}
