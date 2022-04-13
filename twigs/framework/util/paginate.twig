@@ -1,5 +1,6 @@
     {% import '@content/iconmacro.twig' as i %}
     {% set pages = pages|round(0, 'floor') %}
+    <p>{{page}} {{pages}} {{pagesize}}</p>
     {% if pages >= 2 %}
         {% if page > pages %}
             {% set page = pages %}

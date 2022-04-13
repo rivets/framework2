@@ -117,7 +117,7 @@
 
 {% set beans = siteinfo.tables(all, page,  pagesize) %}
 
-{% set pages = (tablecount + pagesize) / pagesize)|round(0, 'floor') %}
+{% set pages = ((tablecount + pagesize) / pagesize)|round(0, 'floor') %}
 
 {% block headerbody %}
     <h1>Beans</h1>
