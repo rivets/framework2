@@ -289,11 +289,12 @@
         public function handle(Context $context) : array|string
         {
             $rest = $context->rest();
-            $context->setPages(); // most of the pages use pagination so get values if any
+             // most of the pages use pagination so get values if any
             switch ($rest[0])
             {
             case 'beans': // Look at the beans in the database
                 $all = $context->hasadmin() && $context->formdata('get')->exists('all');
+                $context->setPages(FW::tableCount($all));
                 $context->local()->addval([
                     'all'        => $all,
                     'tableCount' => FW::tableCount($all),
@@ -306,15 +307,18 @@
                 break;
             case 'config':  // show and add config items
                 $tpl = '@admin/config.twig';
+                $context->setPages(\R::count(FW::CONFIG));
                 break;
             case 'contexts': // show and add contexts
                 $tpl = '@admin/contexts.twig';
+                $context->setPages(\R::count(FW::ROLECONTEXT));
                 break;
             case 'edit': // Edit something - forms, user, pages...
                 $tpl = $this->edit($context, $rest);
                 break;
             case 'forms': // show and add forms
                 $tpl = '@admin/forms.twig';
+                $context->setPages(\R::count(FW::FORM));
                 break;
             case 'info': // generate phpinfo page
                 $_SERVER['PHP_AUTH_PW'] = '*************'; // hide the password in case it is showing.
@@ -331,14 +335,16 @@
             case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
                 break;
-            case 'roles': // show and add roles
+            case 'roles': // show and add rolenames
                 $tpl = '@admin/roles.twig';
+                $context->setPages(\R::count(FW::ROLENAME));
                 break;
             case 'update': // See if we need an update
                 $tpl = $this->update($context);
                 break;
             case 'users': //show and add users
                 $tpl = '@admin/users.twig';
+                $context->setPages(\R::count(FW::USER));
                 break;
             case 'view': // view something - forms only at the moment
                 $tpl = $this->view($context, $rest);
