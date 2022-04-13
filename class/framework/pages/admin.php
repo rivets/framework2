@@ -334,6 +334,7 @@
                 break;
             case 'pages':  // show and add pages
                 $tpl = '@admin/pages.twig';
+                $context->setPages(\R::count(FW::PAGE));
                 break;
             case 'roles': // show and add rolenames
                 $tpl = '@admin/roles.twig';
