@@ -289,7 +289,7 @@
         public function handle(Context $context) : array|string
         {
             $rest = $context->rest();
-            $context->setpages(); // most of the pages use pagination so get values if any
+            $context->setPages(); // most of the pages use pagination so get values if any
             switch ($rest[0])
             {
             case 'beans': // Look at the beans in the database
