@@ -124,7 +124,10 @@
                     throw new \Framework\Exception\InternalError('Cannot create PHP file');
                 }
             }
-
+/**
+ * @todo Make the render initialisation value a config value somewhere
+ */
+            $context->local()->initRender(['twig', ['templateDir' => 'twigs'/*, 'cache' => 'twigcache'*/]]);
             $context->local()->makeTemplate($context, ['content', $lbase.'.twig']); // make a basic twig if there is not one there already.
         }
 /**
