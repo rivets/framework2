@@ -116,6 +116,7 @@
                 $fd = \fopen($file, 'w');
                 if ($fd !== FALSE)
                 {
+                    $context->local()->initRender(['twig', ['templateDir' => 'twigs'/*, 'cache' => 'twigcache'*/]]);
                     \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $page->name, 'namespace' => $namespace]));
                     \fclose($fd);
                 }
