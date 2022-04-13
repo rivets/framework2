@@ -190,7 +190,7 @@
  *
  * @throws \Framework\Exception\InternalError
  */
-        private static function makeTemplate(Context $context, array $fileName) : void
+        public static function makeTemplate(Context $context, array $fileName) : void
         {
             $file = $context->local()->makebasepath(self::TDIR, ...$fileName);
             if (!\file_exists($file))
