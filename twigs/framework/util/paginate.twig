@@ -42,8 +42,8 @@
                     <li class="disabled page-item"><a class="noclick page-link">&hellip;</a></li>
                 {% endif %}
                 {% if page < pages %}
-                    <li class="page-item"><a href="{{url}}?page={{page+1}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Next" aria-label="Next">{{i.forward()}}<span class="sr-only">Next</span></a></li>
-                    <li class="page-item"><a href="{{url}}?page={{pages}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Page {{pages}}" aria-label="Page {{pages}}">{{i.fastfwd()}}<span class="sr-only">Page {{pages}}</span></a></li>
+                    <li class="page-item"><a href="{{url}}?page={{page+1}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Next" aria-label="Next">{{i.forward('', 'Page '~(page+1))}}<span class="sr-only">Next</span></a></li>
+                    <li class="page-item"><a href="{{url}}?page={{pages}}&amp;pagesize={{pagesize}}{{extra}}" class="page-link" title="Page {{pages}}" aria-label="Page {{pages}}">{{i.fastfwd('', 'Page ' ~ pages)}}<span class="sr-only">Page {{pages}}</span></a></li>
                 {% else %}
                     <li class="disabled page-item"><a  class="noclick page-link" title="Next" aria-label="Next">{{i.forward()}}<span class="sr-only">Next</span></a></li>
                     <li class="disabled page-item"><a  class="noclick page-link" title="Page {{pages}}" aria-label="Page {{pages}}">{{i.fastfwd()}}<span class="sr-only">Page {{pages}}</span></a></li>
