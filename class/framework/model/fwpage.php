@@ -114,16 +114,13 @@
             if (!\file_exists($file))
             { // make the file
                 $fd = \fopen($file, 'w');
-                if ($fd !== FALSE)
-                {
-                    $context->local()->initRender(['twig', ['templateDir' => 'twigs'/*, 'cache' => 'twigcache'*/]]);
-                    \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $page->name, 'namespace' => $namespace]));
-                    \fclose($fd);
-                }
-                else
+                if ($fd === FALSE)
                 {
                     throw new \Framework\Exception\InternalError('Cannot create PHP file');
                 }
+                $context->local()->initRender(['twig', ['templateDir' => 'twigs'/*, 'cache' => 'twigcache'*/]]);
+                \fwrite($fd, $context->local()->getRender('@util/pagesample.twig', ['pagename' => $page->name, 'namespace' => $namespace]));
+                \fclose($fd);
             }
 /**
  * @todo Make the render initialisation value a config value somewhere
