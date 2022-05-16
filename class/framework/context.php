@@ -43,17 +43,44 @@
  *
  * @param ?int    $count If not NULL then set pages based on this
  */
-        public function setPages(?int $count = NULL) : void
+        public function setPages(?int $count = NULL, int $pageSize = 10) : void
         {
             $fdt = $this->formData('get');
-            $psize = (int) $fdt->fetch('pagesize', 10, \FILTER_VALIDATE_INT);
+            try
+            {
+                $page = (int) $fdt->fetch('page', 1, \FILTER_VALIDATE_INT);
+                if ($page <= 0)
+                {
+                    $page = 1;
+                }
+            }
+            catch (BadValue $e)
+            {
+                $page = 1;
+            }
+            try
+            {
+                $psize = (int) $fdt->fetch('pagesize', $pageSize, \FILTER_VALIDATE_INT);
+                if ($psize <= 0)
+                {
+                    $psize = $pageSize;
+                }
+            }
+            catch (BadValue $e)
+            {
+                $psize = $pageSize;
+            }
             $values = [
-                'page'      => $fdt->fetch('page', 1, \FILTER_VALIDATE_INT), // just in case there is any pagination going on
+                'page'      => $page,
                 'pagesize'  => $psize,
             ];
             if ($count != NULL)
             {
                 $values['pages'] = (int) \floor((($count % $psize > 0) ? ($count + $psize) : $count) / $psize);
+                if ($values['page'] > $values['pages'])
+                {
+                    $values['page'] = $values['pages'];
+                }
             }
             $this->local()->addval($values);
         }

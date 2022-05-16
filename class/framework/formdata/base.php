@@ -91,7 +91,7 @@
                 }
                 return [FALSE, $default];
             }
-            if (is_array($dt))
+            if (\is_array($dt))
             {
                 if (!$isArray)
                 {
