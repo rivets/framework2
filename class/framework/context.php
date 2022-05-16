@@ -8,6 +8,7 @@
  */
     namespace Framework;
 
+    use \Framework\Exception\BadValue;
 /**
  * A class that stores various useful pieces of data for access throughout the rest of the system.
  */
