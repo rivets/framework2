@@ -252,7 +252,8 @@
 
             $this->editroles($context);
             $admin = $this->hasrole(FW::FWCONTEXT, FW::ADMINROLE);
-            if (\is_object($devel = $this->hasrole(FW::FWCONTEXT, FW::DEVELROLE)) && !\is_object($admin))
+            $devel = $this->hasrole(FW::FWCONTEXT, FW::DEVELROLE);
+            if (\is_object($devel) && !\is_object($admin))
             { // if we need developer then we also need admin
                 $admin = $this->addrole(FW::FWCONTEXT, FW::ADMINROLE, '-', $devel->start, $devel->end);
             }
