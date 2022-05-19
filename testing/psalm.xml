@@ -78,6 +78,8 @@
         <file name="../class/framework/support/debug.php" />
         <file name="../class/framework/support/errorhandler.php" />
         <file name="../class/framework/support/errorhandlerbase.php" />
+        <file name="../class/framework/support/fwbeanhelper.php" />
+        <file name="../class/framework/support/fwpagehelper.php" />
         <file name="../class/framework/support/fwtable.php" />
         <file name="../class/framework/support/handlerole.php" />
         <file name="../class/framework/support/localbase.php" />

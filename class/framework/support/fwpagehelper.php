@@ -24,7 +24,7 @@
 /**
  * make a new FWPage object
  */
-        private static function doObject(Context $context, \RedBeanPHP\OODBBean $page) : void
+        public static function doObject(Context $context, \RedBeanPHP\OODBBean $page) : void
         {
             if (!\preg_match('/\\\\/', $page->source))
             { // no namespace so put it in \Pages
