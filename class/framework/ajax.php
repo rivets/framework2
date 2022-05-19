@@ -59,7 +59,7 @@
         final public function permissions(string $which, array $system = []) : array
         {
             /** @phpstan-ignore-next-line */
-            if (isset(static::$fwPermissions[$which]))  // @phan-suppress-current-line PhanUndeclaredStaticProperty
+            if (isset(static::$fwPermissions[$which]))
             {
                 return \array_merge(static::$fwPermissions[$which], $system);  // @phan-suppress-current-line PhanUndeclaredStaticProperty
             }
