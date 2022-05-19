@@ -10,9 +10,6 @@
  */
     namespace Framework\Support;
 
-    use \Config\Framework as FW;
-    use \Framework\Dispatch;
-    use \Framework\Exception\BadValue;
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
