@@ -13,8 +13,6 @@
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Page beans
- * @psalm-suppress UnusedClass
- * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.CyclomaticComplexityIsHigh
  */
     final class FWPageHelper
     {
