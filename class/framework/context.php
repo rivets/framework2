@@ -3,7 +3,7 @@
  * Contains the definition of the Context class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -55,7 +55,7 @@
                     $page = 1;
                 }
             }
-            catch (BadValue $e)
+            catch (BadValue)
             {
                 $page = 1;
             }
@@ -67,7 +67,7 @@
                     $psize = $pageSize;
                 }
             }
-            catch (BadValue $e)
+            catch (BadValue)
             {
                 $psize = $pageSize;
             }

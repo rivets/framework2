@@ -119,6 +119,7 @@
  * Setup for an edit
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+ * @phan-suppress-next-line PhanUnusedPublicFinalMethodParameter Inherited function spec
  */
         public function startEdit(Context $context) : void
         {
