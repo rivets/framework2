@@ -16,7 +16,7 @@
         case CREATE = 0;
         case UPDATE = 1;
         case DELETE = 2;
-
+/** @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.ForbiddenDefineFunctions **/
         public function label() : string
         {
             return match($this) {
