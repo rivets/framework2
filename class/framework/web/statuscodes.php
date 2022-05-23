@@ -14,7 +14,7 @@
 /**
  * Contains definition of StatusCodes class
  */
-    class StatusCodes
+    final class StatusCodes
     {
     // [Informational 1xx]
         public const HTTP_CONTINUE                         = 100;

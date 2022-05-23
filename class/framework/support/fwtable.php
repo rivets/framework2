@@ -22,7 +22,7 @@
  *
  * @param string $table The name of the table
  */
-        public function __construct(private string $table)
+        public function __construct(private readonly string $table)
         {
             if (!\Support\SiteInfo::tableExists($table))
             {
@@ -45,14 +45,14 @@
             {
                 if ($field !== '')
                 {
-                    if (\preg_match('/^([a-z][a-z0-9]*)_id/', $field, $m))
+                    if (\preg_match('/^([a-z][a-z0-9]*)_id/', (string) $field, $m))
                     { // this is a special case for foreign keys
                         $fkbn = \R::dispense($m[1]); // make a bean of the required type
                         \R::store($fkbn);
                         $bn->{$field} = $fkbn;
                         $fk[] = $fkbn;  // remember this bean as it needs to be deleted later - see below
                     }
-                    elseif (!\preg_match('/^[a-z][a-z0-9]*/', $field))
+                    elseif (!\preg_match('/^[a-z][a-z0-9]*/', (string) $field))
                     {
                         $context->local()->message(\Framework\Local::ERROR, 'Field names must be alphanumeric: '.$field.' not stored');
                     }
@@ -80,7 +80,7 @@
             $fdt = $context->formdata('post');
             if ($fdt->hasForm())
             {
-                $name = strtolower($fdt->mustFetch('name'));
+                $name = \strtolower((string) $fdt->mustFetch('name'));
                 if ($name === '' || !\preg_match('/^[a-z][a-z0-9]*/', $name))
                 {
                     $context->local()->message(\Framework\Local::ERROR, 'You must provide a valid bean name');
@@ -120,7 +120,6 @@
 /**
  * Setup for an edit
  *
- * @param \Support\Context    $context  The context object
  * @param array               $rest     The rest of the URL
  */
         public function startEdit(Context $context, array $rest) : void
@@ -140,9 +139,6 @@
         }
 /**
  * Handle a bean edit
- *
- * @param \Support\Context    $context  The context object
- * @param array               $rest
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */

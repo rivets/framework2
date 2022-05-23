@@ -39,9 +39,6 @@
         }
 /**
  * Add an s if not 1
- *
- * @param int    $count
- * @param string $word
  */
         public function essify(int $count, string $word) : string
         {
@@ -57,19 +54,11 @@
  */
         public function makePlural(int $count, string $one, string $some, ?string $none = NULL) : string
         {
-            switch ($count)
-            {
-            case 0:
-                $res = $none ?? $some;
-                break;
-            case 1:
-                $res = $one;
-                break;
-            default:
-                $res = $some;
-                break;
-            }
-
+            $res = match ($count) {
+                0 => $none ?? $some,
+                1 => $one,
+                default => $some,
+            };
             return sprintf($res, $count);
         }
     }

@@ -100,8 +100,6 @@
         }
 /**
  * Get all users with a particular context/role
- * @param string|\RedBeanPHP\OODBBean   $rolecontext
- * @param string|\RedBeanPHP\OODBBean   $rolename
  * @param bool                          $all        If TRUE do not check if role is currentyl active
  * @param int                           $start      Start position - used for pagination
  * @param int                           $count      The number to be fetched - used for pagination

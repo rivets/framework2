@@ -3,7 +3,7 @@
  * A trait that implements the CSP handling for the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2021 Newcastle University
+ * @copyright 2019-2022 Newcastle University
  * @package Framework
  */
     namespace Framework\Web;
@@ -71,7 +71,7 @@
  * Remove an item from a CSP header - could be 'unsafe-inline', a domain or other stuff
  *
  * @param string|array<string>  $type    What the item is for (script-src, style-src etc.)
- * @param string        $host    The item to remove
+ * @param string                $host    The item to remove
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
@@ -124,8 +124,6 @@
  * Initialise CSP
  *
  * If the data is in the database then use that, if not then setup the table from Config::$defaultCSP
- *
- * @return void
  */
         public function initCSP() : void
         {

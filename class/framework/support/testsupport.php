@@ -16,8 +16,8 @@
  */
     class TestSupport
     {
-        private Local $local;
-        private \Framework\FormData\AccessBase $fdt;
+        private readonly Local $local;
+        private readonly \Framework\FormData\AccessBase $fdt;
         private bool $noform = FALSE;
 /**
  * Constructor
@@ -25,7 +25,7 @@
  * @param Context $context
  * @param string  $type         get, post etc.
  */
-        public function __construct(private Context $context, string $type)
+        public function __construct(private readonly Context $context, string $type)
         {
             $this->local = $context->local();
             $this->fdt = $context->formdata($type);
@@ -35,11 +35,10 @@
  * Displayable version of data
  *
  * @param mixed $pars
- * @param bool $all
  */
         private function display($pars, bool $all = FALSE) : string
         {
-            $x = \preg_replace('/array\(/', '[', \preg_replace('/,\)/', ']', \preg_replace('/\d=>/', '', \preg_replace('/\s+/ims', '', \var_export($pars, TRUE)))));
+            $x = (string) \preg_replace('/array\(/', '[', \preg_replace('/,\)/', ']', \preg_replace('/\d=>/', '', \preg_replace('/\s+/ims', '', \var_export($pars, TRUE)))));
             return \preg_replace('/\[\)/', '[]', \preg_replace('/,/', ', ', $all ? $x : \substr($x, 1, \strlen($x)-2)));
         }
 /**
@@ -119,12 +118,7 @@
                     $this->local->message(Local::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : $this->display($result, TRUE)).' got '.$this->display($res, TRUE));
                 }
             }
-            catch (\Framework\Exception\BadValue $e)
-            {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
-                return $throwOK;
-            }
-            catch (\Framework\Exception\MissingBean $e)
+            catch (\Framework\Exception\BadValue|\Framework\Exception\MissingBean $e)
             {
                 $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;

@@ -22,8 +22,6 @@
         protected $alphabetLength;
 /**
  * Set up the class
- *
- * @param string $alphabet
  */
         public function __construct(string $alphabet = '')
         {
@@ -31,10 +29,6 @@
         }
 /**
  * Set up the alphabet to use
- *
- * @param string $alphabet
- *
- * @return void
  */
         public function setAlphabet(string $alphabet) : void
         {
@@ -43,10 +37,6 @@
         }
 /**
  * Genrate a string of the given length
- *
- * @param int $length
- *
- * @return string
  */
         public function generate(int $length) : string
         {
@@ -60,11 +50,6 @@
         }
 /**
  * Return a random integer in the given range
- *
- * @param int $min
- * @param int $max
- *
- * @return int
  */
         protected function getRandomInteger(int $min, int $max) : int
         {

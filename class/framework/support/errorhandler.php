@@ -3,7 +3,7 @@
  * Contains definition of ErrorHandler class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2022 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -20,8 +20,6 @@
  * @param string    $title      Page title and heading
  * @param string    $msg        The message to be displayed
  * @param bool      $tellAdmin  If TRUE then mail admin
- *
- * @return void
  */
         public function earlyFail(string $title, string $msg, bool $tellAdmin) : void
         {
@@ -71,8 +69,6 @@
         }
 /**
  * Deal with untrapped exceptions - see PHP documentation
- *
- * @param \Throwable    $e
  */
         public function exceptionHandler(\Throwable $e) : void
         {
@@ -98,13 +94,6 @@
  * It could be made more subtle by allowing the user to specifiy specific errors to ignore.
  * However, exception handling is a much much better way of dealing with this kind of thing
  * whenever possible.
- *
- * @param int       $errno
- * @param string    $errstr
- * @param string    $errfile
- * @param int       $errline
- *
- * @return bool
  */
         public function errorHandler(int $errno, string $errstr, string $errfile, int $errline) : bool
         {

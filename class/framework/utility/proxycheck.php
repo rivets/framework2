@@ -65,7 +65,7 @@
             else
             {
                 /** @psalm-suppress InvalidScalarArgument */
-                $res = \json_decode($json, TRUE);
+                $res = \json_decode($json, TRUE, 512, JSON_THROW_ON_ERROR);
                 $res['block'] = FALSE;
                 $res['reason'] = '';
 
