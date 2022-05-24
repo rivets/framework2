@@ -82,14 +82,11 @@
             $this->engine->enableDebug();
         }
 /**
- * Render a twig and return the string - do nothing if the template is the empty string
- *
- * @param string    $tpl    The template
- * @param mixed[]   $vals   Values to set for the twig
+ * Render a twig passing in the values and return the string - do nothing if the template is the empty string
  */
-        public function getRender(string $tpl, array $vals = []) : string
+        public function getRender(string $template, array $values = []) : string
         {
-            if ($tpl === '')
+            if ($template === '')
             { // no template so no output
                 return '';
             }
@@ -101,9 +98,9 @@
                 }
             }
             $this->clearMessages();
-            $this->addval($vals); // set up any values that have been passed
+            $this->addval($values); // set up any values that have been passed
             /** @psalm-suppress PossiblyNullReference */
-            return $this->engine->render($tpl, $this->tvals);
+            return $this->engine->render($template, $this->tvals);
         }
 /**
  * Add a value into the values stored for rendering the template

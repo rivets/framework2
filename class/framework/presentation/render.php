@@ -35,7 +35,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function __construct(array $_options = [])
+        public function __construct(array $options = [])  // @psalm-suppress PossiblyUnusedParam
         {
             $this->clearValues();
             $this->clearMessages();
@@ -69,7 +69,7 @@
  */
         public function render(string $template, array $values = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
-            if ($tpl !== '')
+            if ($template !== '')
             {
                 Web::getinstance()->sendstring($this->getrender($template, $values), $mimeType, $status);
             }
