@@ -173,19 +173,16 @@
         }
 /**
  * Deliver a file as a response.
- *
- * @param string $path    The path to the file
- * @param string $name    The name of the file as told to the downloader
  */
-        public function sendFile(string $path, string $name = '', string $mimeType = '') : void
+        public function sendFile(string $path, string $originalName = '', string $mimeType = '') : void
         {
             [$code, $range, $length] = $this->hasrange(filesize($path));
-            if ($mime === '')
+            if ($mimeType === '')
             {
-                $mime = \Framework\Support\Security::getInstance()->mimetype($path);
+                $mimeType = \Framework\Support\Security::getInstance()->mimetype($path);
             }
     //      $this->addHeader(['Content-Description' => 'File Transfer']);
-            $this->sendHeaders($code, $mime, $length, $name);
+            $this->sendHeaders($code, $mimeType, $length, $originalName);
             $this->debuffer();
             if (!empty($range))
             {
