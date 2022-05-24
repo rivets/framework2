@@ -12,15 +12,15 @@
         <file name="../devel/redmock.php" />
         <file name="../devel/r.php" />
 
-        <directory name="..class" />
+        <directory name="../class" />
         <file name="../ajax.php" />
         <file name="../index.php" />
-        <file name="../install.php" />
         <ignoreFiles>
             <directory name="../class/framework/utility/jwt" />
             <directory name="../vendor" />
             <directory name="../install" />
             <directory name="../testing" />
+            <directory name="../twigs" />
             <file name="../devel/hack.php" />
             <file name="../devel/testautoload.php" />
             <file name="../install.php" />
