@@ -18,6 +18,7 @@
  */
         public function operation() : string
         {
+            /** @phpstan-ignore-next-line */
             return BL::label($this->bean->op);
         }
 /**
