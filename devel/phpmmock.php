@@ -20,7 +20,7 @@
 /** @var string */
         public $AltBody = '';
 /** @psalm-suppress PossiblyUnusedParam */
-        public function __construct(bool $x)
+        public function __construct(bool $_x)
         {
         }
 /**
