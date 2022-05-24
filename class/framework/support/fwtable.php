@@ -144,8 +144,7 @@
  */
         public function edit(Context $context, array $rest) : array
         {
-            $emess = [];
-            return [!empty($emess), $emess];
+            return [FALSE, []];
         }
 /**
  * View a Bean
