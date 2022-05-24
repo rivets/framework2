@@ -43,7 +43,7 @@ class JWT
      * we want to provide some extra leeway time to
      * account for clock skew.
      */
-    private static $leeway = 0;
+    private static int $leeway = 0;
 
     /**
      * Allow the current timestamp to be specified.
@@ -53,7 +53,7 @@ class JWT
      */
     private static $timestamp = null;
 
-    private static $supported_algs = [
+    private static array $supported_algs = [
         'ES256' => ['openssl', 'SHA256'],
         'HS256' => ['hash_hmac', 'SHA256'],
         'HS384' => ['hash_hmac', 'SHA384'],
@@ -354,10 +354,8 @@ class JWT
      * Helper method to create a JSON error.
      *
      * @param int $errno An error number from json_last_error()
-     *
-     * @return void
      */
-    private static function handleJsonError(int $errno) : void
+    private static function handleJsonError(int $errno) : never
     {
         $messages = [
             JSON_ERROR_DEPTH => 'Maximum stack depth exceeded',
@@ -375,10 +373,6 @@ class JWT
 
     /**
      * Get the number of bytes in cryptographic strings.
-     *
-     * @param string $str
-     *
-     * @return int
      */
     private static function safeStrlen(string $str) : int
     {

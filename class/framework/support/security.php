@@ -29,7 +29,7 @@
             $rand = '';
             for ($i = 0; $i < 32; $i++)
             {
-                $rand .= \chr(mt_rand(0, 255));
+                $rand .= \chr(\random_int(0, 255));
             }
             return \hash('sha512', $rand);
         }

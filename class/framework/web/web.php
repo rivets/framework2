@@ -3,7 +3,7 @@
  * Contains definition of the Web class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2020 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework
  * @subpackage Web
  */
@@ -82,8 +82,6 @@
         }
 /**
  * Return header value or NULL if it does not exist
- *
- * @param string $name
  */
         public function header(string $name) : ?string
         {

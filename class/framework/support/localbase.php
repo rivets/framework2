@@ -152,8 +152,6 @@
         }
 /**
  * Check to see if non-admin users are being excluded
- *
- * @param bool $admin
  */
         public function adminOnly(bool $admin) : void
         {

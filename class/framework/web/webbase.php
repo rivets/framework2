@@ -274,7 +274,7 @@
                 $result = \file_get_contents('https://www.google.com/recaptcha/api/siteverify', FALSE, $context);
                 if ($result !== FALSE)
                 {
-                    return \json_decode($result, TRUE)->success; // @phan-suppress-current-line PhanTypeExpectedObjectPropAccess
+                    return \json_decode($result, TRUE, 512, JSON_THROW_ON_ERROR)->success; // @phan-suppress-current-line PhanTypeExpectedObjectPropAccess
                 }
             }
             return FALSE;

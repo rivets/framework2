@@ -234,7 +234,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function startEdit(Context $context, array $rest) : void
+        public function startEdit(Context $context, array $rest) : void // @phan-suppress-current-line PhanUnusedPublicFinalMethodParameter Inherited function spec
         {
         }
 /**

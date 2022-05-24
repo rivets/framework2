@@ -10,6 +10,7 @@
 
 /**
  * Enumeration for beanlog constants
+ * @phpcsSuppress NunoMaduro.PhpInsights.Domain.Insights.ForbiddenDefineFunctions
  */
     enum BeanLogOps : int
     {

@@ -65,13 +65,12 @@
  */
         public function generate() : array
         {
-            $name ='CSRFGuard_'.\mt_rand(0, \mt_getrandmax());
+            $name ='CSRFGuard_'.\random_int(0, \mt_getrandmax());
             return [$name,  $this->maketoken($name)];
         }
 /**
  * Return HTML inputs for CSRF
  *
- * @return string
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function inputs() : string
@@ -87,7 +86,6 @@
  * @throws \Framework\Exception\InternalError when CSRFName is expected and not found
  * @throws \Framework\Exception\InternalError when token or name is not as stored in session
  *
- * @return void
  * @psalm-suppress PossiblyUnusedMethod
  */
         public function check(int $type = \INPUT_POST) : void
