@@ -31,39 +31,38 @@
             return TRUE;
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function addAddress(string $x) : void
+        public function addAddress(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function addReplyTo(string $x) : void
+        public function addReplyTo(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function addCC(string $x) : void
+        public function addCC(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function addBCC(string $x) : void
+        public function addBCC(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function addAttachment(string $x) : void
+        public function addAttachment(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function isHTML(string $x) : bool
+        public function isHTML(string $_x) : bool
         {
             return FALSE;
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function setFrom(string $x) : void
+        public function setFrom(string $_x) : void
         {
         }
  /** @psalm-suppress PossiblyUnusedParam */
-        public function msgHTML(string $x) : void
+        public function msgHTML(string $_x) : void
         {
         }
- /** @psalm-suppress PossiblyUnusedParam */
         public function send() : string
         {
             return '';
