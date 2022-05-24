@@ -232,7 +232,7 @@
             /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
             if ($tpl !== '') // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
             { // an empty template string means generate no output here...
-                $html = $local->getrender($tpl); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
+                $html = $local->getRender($tpl); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable
                 // Now set up CSP Header in use : rendering the page may have generated new hashcodes.
                 /** @psalm-suppress PossiblyUndefinedVariable - if we get here it is defined */
                 $csp->setCSP(); // @phan-suppress-current-line PhanPossiblyUndeclaredVariable

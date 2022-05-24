@@ -43,7 +43,7 @@
         {
             $this->errorHandler->enableDebug();
             if ($this->hasRenderer())
-            { // now we know we have twig - hence suppress above
+            { // now we know we have a renderer - hence suppress above
                 $this->renderer->addExtension(new \Twig\Extension\DebugExtension());
                 $this->renderer->enableDebug();
             }
@@ -81,7 +81,7 @@
  * @param string    $basedir    The full path to the site directory
  * @param bool      $ajax       If TRUE then this is an AJAX call
  * @param bool      $devel      If TRUE then we are developing the system
- * @param array     $render     The name of the Renderer class and any options
+ * @param array     $render     The name of the renderer class and any options
  * @param bool      $loadORM    If TRUE then load in RedBean
  */
         public function setup(string $basedir, bool $ajax, bool $devel, array $render, bool $loadORM = TRUE) : \Framework\Local
