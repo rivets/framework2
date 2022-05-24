@@ -27,7 +27,7 @@
  */
         protected array $cache      = [];
 /**
- * @var object   The Context object
+ * @var Context   The Context object
  */
         protected Context $context;
 /**
@@ -69,21 +69,18 @@
         }
 /**
  * output a header and msg - this never returns
- *
- * @param $code   The return code
- * @param $msg    The message (or '')
  */
-        protected function sendHead(int $code, string $msg = '') : never
+        protected function sendHead(int $returnCode, string $msg = '') : never
         {
             if ($msg !== '')
             {
                 $msg = '<p>'.$msg.'</p>';
-                $this->sendheaders($code, self::HTMLMIME, \strlen($msg));
+                $this->sendheaders($returnCode, self::HTMLMIME, \strlen($msg));
                 echo $msg;
             }
             else
             {
-                $this->sendheaders($code, self::HTMLMIME);
+                $this->sendheaders($returnCode, self::HTMLMIME);
             }
             exit;
         }
@@ -92,11 +89,11 @@
  *
  * These codes are a mess and are handled by brtowsers incorrectly....
  *
- * @param $where      The URL to divert to
- * @param $temporary  TRUE if this is a temporary redirect
- * @param $msg        A message to send
- * @param $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
- * @param $use303     If TRUE then use 303 rather than 302
+ * @param atring    $where      The URL to divert to
+ * @param bool      $temporary  TRUE if this is a temporary redirect
+ * @param string    $msg        A message to send
+ * @param bool      $nochange   If TRUE then reply status codes 307 and 308 will be used rather than 301 and 302
+ * @param bool      $use303     If TRUE then use 303 rather than 302
  *
  * @return never
  */
@@ -123,18 +120,18 @@
  *
  * Media players ask for the file in chunks.
  *
- * @param $size    The size of the output data
- * @param $code    The HTTP return code or ''
+ * @param int $size     The size of the output data
+ * @param int|string    $code    The HTTP return code or ''
  *
  * @psalm-suppress InvalidOperand
  * @psalm-suppress PossiblyInvalidOperand
  * @psalm-suppress InvalidNullableReturnType
  */
-        public function hasRange(int $size, string|int $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
+        public function hasRange(int $size, int|string $code = StatusCodes::HTTP_OK) : array // @phan-suppress-current-line PhanPluginAlwaysReturnMethod
         {
             if (\filter_has_var(\INPUT_SERVER, 'HTTP_RANGE'))
             { // there is a range request
-                if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', $_SERVER['HTTP_RANGE'], $rng))
+                if (\preg_match('/=([0-9]+)-([0-9]*)\s*$/', (string) $_SERVER['HTTP_RANGE'], $rng))
                 { // split the  request
                     if ((int) $rng[1] <= $size)
                     { // start is before end of file
@@ -156,37 +153,31 @@
         }
 /**
  * Make a header sequence for a particular return code and add some other useful headers
- *
- * @param $code   The HTTP return code
- * @param $mtype  The mime-type of the file
- * @param $length The length of the data or NULL
- * @param $name   A file name
  */
-        public function sendHeaders(int $code, string $mtype = '', ?int $length = NULL, string $name = '') : void
+        public function sendHeaders(int $returnCode, string $mimeType = '', ?int $contentLength = NULL, string $fileName = '') : void
         {
-            \header(StatusCodes::httpHeaderFor($code));
+            \header(StatusCodes::httpHeaderFor($returnCode));
             $this->putheaders();
-            if ($mtype !== '')
+            if ($mimeType !== '')
             {
-                \header('Content-Type: '.$mtype);
+                \header('Content-Type: '.$mimeType);
             }
-            if ($length !== NULL)
+            if ($contentLength !== NULL)
             {
-                \header('Content-Length: '.$length);
+                \header('Content-Length: '.$contentLength);
             }
-            if ($name !== '')
+            if ($fileName !== '')
             {
-                \header('Content-Disposition: attachment; filename="'.$name.'"');
+                \header('Content-Disposition: attachment; filename="'.$fileName.'"');
             }
         }
 /**
  * Deliver a file as a response.
  *
- * @param $path    The path to the file
- * @param $name    The name of the file as told to the downloader
- * @param $mime    The mime type of the file
+ * @param string $path    The path to the file
+ * @param string $name    The name of the file as told to the downloader
  */
-        public function sendFile(string $path, string $name = '', string $mime = '') : void
+        public function sendFile(string $path, string $name = '', string $mimeType = '') : void
         {
             [$code, $range, $length] = $this->hasrange(filesize($path));
             if ($mime === '')
@@ -211,11 +202,11 @@
 /**
  * Deliver a string as a response.
  *
- * @param $value   The data to send
- * @param $mime    The mime type of the file
- * @param $code    The HTTP return code
+ * @param string $value   The data to send
+ * @param string $mime    The mime type of the file
+ * @param int|string $code    The HTTP return code
  */
-        public function sendString(string $value, string $mime = '', $code = StatusCodes::HTTP_OK) : void
+        public function sendString(string $value, string $mime = '', int|string $code = StatusCodes::HTTP_OK) : void
         {
             $this->debuffer();
             [$code, $range, $length] = $this->hasRange(strlen($value), $code);
@@ -250,7 +241,7 @@
  *
  * This assumes that file_get_contents can access a URL
  *
- * @param $secret  The recaptcha secret for this site
+ * @param string $secret  The recaptcha secret for this site
  *
  * @psalm-suppress PossiblyUnusedMethod
  */
