@@ -31,6 +31,7 @@
  */
         public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
         {
+            $mail = NULL;
             /** @psalm-suppress RedundantCondition */
             if (Config::USEPHPM || \ini_get('sendmail_path') !== '')
             {
