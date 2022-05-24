@@ -23,9 +23,6 @@
         public function __construct(bool $_x)
         {
         }
-/**
- * @return bool
- */
         public function isSMTP() : bool
         {
             return TRUE;
