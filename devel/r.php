@@ -136,7 +136,7 @@ class R
     {
     }
 
-    public static function usePartialBeans()
+    public static function usePartialBeans(bool $x)
     {
     }
 
