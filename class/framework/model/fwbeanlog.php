@@ -11,7 +11,7 @@
 /**
  * A class implementing a RedBean model for BeanLog beans
  */
-    class FWBeanLog extends \RedBeanPHP\SimpleModel
+    final class FWBeanLog extends \RedBeanPHP\SimpleModel
     {
 /**
  * Return the Operation name
