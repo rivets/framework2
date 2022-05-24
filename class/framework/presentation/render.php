@@ -3,7 +3,7 @@
  * Contains definition of Twig Rendering class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2022 Newcastle University
  * @package Framework\Framework\Presentation
  */
     namespace Framework\Presentation;
@@ -35,7 +35,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function __construct(\Framework\Local $local, array $options = [])
+        public function __construct(array $_options = [])
         {
             $this->clearValues();
             $this->clearMessages();
@@ -43,8 +43,6 @@
 /**
  * Calls a user defined function with Render object as a parameter.
  * The user can then add extensions, filters etc.
- *
- * @param callable     $fn      A user defined function
  */
         public function extendEngine(callable $fn) : void
         {
@@ -52,15 +50,10 @@
         }
 /**
  * Add a global template variable
- *
- * @param string   $name
- * @param mixed    $value
  */
         abstract public function addGlobal(string $name, $value) : void;
 /**
  * Add a template engine extension
- *
- * @param object $plugin
  */
         abstract public function addExtension(object $plugin) : void;
 /**
@@ -68,25 +61,17 @@
  */
         abstract public function enableDebug() : void;
 /**
- * Render a template and return the string - do nothing if the template is the empty string
- *
- * @param string    $tpl    The template
- * @param mixed[]   $vals   Values to set for the renderer
+ * Render a template passing in the given values and return the string - do nothing if the template is the empty string
  */
-        abstract public function getRender(string $tpl, array $vals = []) : string;
+        abstract public function getRender(string $template, array $values = []) : string;
 /**
- * Render a template - do nothing if the template is the empty string
- *
- * @param string   $tpl       The template
- * @param mixed[]  $vals      Values to set for the twig
- * @param string   $mimeType
- * @param int      $status
+ * Render a template passing in the given values - do nothing if the template is the empty string
  */
-        public function render(string $tpl, array $vals = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
+        public function render(string $template, array $values = [], string $mimeType = Web::HTMLMIME, int $status = \Framework\Web\StatusCodes::HTTP_OK) : void
         {
             if ($tpl !== '')
             {
-                Web::getinstance()->sendstring($this->getrender($tpl, $vals), $mimeType, $status);
+                Web::getinstance()->sendstring($this->getrender($template, $values), $mimeType, $status);
             }
         }
 /**
@@ -98,7 +83,7 @@
  *
  * @throws \Framework\Exception\InternalError
  */
-        public function addval(array|string $vname, $value = '', bool $tglobal = FALSE) : void
+        public function addVal(array|string $vname, $value = '', bool $tglobal = FALSE) : void
         {
             \assert(\is_object($this->engine)); // Should never be called if Twig is not initialised.
             if (!\is_array($vname))
