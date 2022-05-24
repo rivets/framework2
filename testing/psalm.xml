@@ -179,4 +179,9 @@
         <InvalidStringClass errorLevel="info" />
         <ReservedWord errorLevel="info" />
     </issueHandlers>
+    <taintAnalysis>
+        <ignoreFiles>
+            <file name="../class/framework/support/testsupport.php" />
+        </ignoreFiles>
+    </taintAnalysis>
 </psalm>
