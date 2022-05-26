@@ -163,10 +163,8 @@
         {
             $context->local()->message(Msg::ERROR, 'Error 1');
             $context->local()->message(Msg::ERROR, 'Error 2');
-            $context->local()->message(Msg::WARNING, 'Warning 1');
-            $context->local()->message(Msg::WARNING, 'Warning 2');
-            $context->local()->message(Msg::MESSAGE, 'Message 1');
-            $context->local()->message(Msg::MESSAGE, 'Message 2');
+            $context->local()->message(Msg::WARNING, ['Warning 1', 'Warning 2']); // use array parameter style
+            $context->local()->message(Msg::MESSAGE, ['Message 1', 'Message 2']);
             return '@devel/test.twig';
         }
 /**

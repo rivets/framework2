@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Framework\Support\MessageType as Msg;
     use \Support\Context;
 /**
  * Class that uses Twig to render pages
@@ -142,9 +143,9 @@
  *
  * The currently supported values for kind are :
  *
- *      \Framework\Local\ERROR
- *      \Framework\Local\WARNING
- *      \Framework\Local\MESSAGE
+ *      \Framework\Support\MessageType\ERROR
+ *      \Framework\Support\MessageType\WARNING
+ *      \Framework\Support\MessageType\MESSAGE
  *
  * To have your Twig deal with these you need
  *
@@ -155,7 +156,7 @@
  * @param int           $kind   The kind of message
  * @param array|string  $value  The value to be stored or an array of values
  */
-        public function message(int $kind, array|string $value) : void
+        public function message(int|Msg $kind, array|string $value) : void
         {
             if (\is_array($value))
             {
@@ -168,6 +169,8 @@
         }
 /**
  * Clear out messages
+ *
+ * @todo change type to int|Msg|null when 8.2 comes out
  *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
  */
