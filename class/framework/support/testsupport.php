@@ -16,7 +16,7 @@
  */
     class TestSupport
     {
-        private readonly Local $local;
+        private readonly \Framework\Local $local;
         private readonly \Framework\FormData\AccessBase $fdt;
         private bool $noform = FALSE;
 /**
