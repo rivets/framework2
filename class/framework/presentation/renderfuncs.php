@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Framework\Support\MessageType as Msg;
     use \Support\Context;
 /**
  * Adds functions for calling the renderer
@@ -102,7 +103,7 @@
  * @param int           $kind   The kind of message
  * @param array|string  $value  The value to be stored or an array of values
  */
-        public function message(int $kind, array|string $value) : void
+        public function message(int|Msg $kind, array|string $value) : void
         {
             $this->renderer->message($kind, $value);
         }
