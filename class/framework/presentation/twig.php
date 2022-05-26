@@ -158,6 +158,10 @@
  */
         public function message(int|Msg $kind, array|string $value) : void
         {
+            if (!is_int($kind))
+            {
+                $kind = $kind->value;
+            }
             $this->messages[$kind] = (\is_array($value) ? '\\array_merge' : '\\array_push')($this->messages[$kind], $value);
             //if (\is_array($value))
             //{
