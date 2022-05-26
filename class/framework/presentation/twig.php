@@ -153,7 +153,7 @@
  *
  * somewhere in the relevant template (usually at the top of the main body)
  *
- * @param int           $kind   The kind of message
+ * @param int|Msg       $kind   The kind of message
  * @param array|string  $value  The value to be stored or an array of values
  */
         public function message(int|Msg $kind, array|string $value) : void
