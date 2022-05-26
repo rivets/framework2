@@ -9,7 +9,7 @@
  */
     namespace Framework\Support;
 
-    use \Framework\Local;
+    use \Framework\Support\MessageType as Msg;
     use \Support\Context;
 /**
  * A class that handles various site testing related things
@@ -69,28 +69,28 @@
                             {
                                 if (!isset($result[1][$key]))
                                 {
-                                    $this->local->message(Local::ERROR, $msg.' FAIL : got ArrayIterator with incorrect key '.$key.'/'.$value);
+                                    $this->local->message(Msg::ERROR, $msg.' FAIL : got ArrayIterator with incorrect key '.$key.'/'.$value);
                                     return FALSE;
                                 }
                                 if ($value != $result[1][$key])
                                 {
-                                    $this->local->message(Local::ERROR, $msg.' FAIL : got ArrayIterator expected '.$key.'/'.$result[1][$key].' got '.$key.'/'.$value);
+                                    $this->local->message(Msg::ERROR, $msg.' FAIL : got ArrayIterator expected '.$key.'/'.$result[1][$key].' got '.$key.'/'.$value);
                                     return FALSE;
                                 }
                             }
-                            $this->local->message(Local::MESSAGE, $msg.' OK : expected ArrayIterator got '.$res::class);
+                            $this->local->message(Msg::MESSAGE, $msg.' OK : expected ArrayIterator got '.$res::class);
                             return TRUE;
                         }
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected ArrayIterator got '.$res::class);
+                        $this->local->message(Msg::ERROR, $msg.' FAIL : expected ArrayIterator got '.$res::class);
                     }
                     elseif ($res instanceof \RedBeanPHP\OODBBean)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.$res::class.' id='.$this->display($res->getID(), TRUE));
+                        $this->local->message(Msg::MESSAGE, $msg.' OK : expected \RedBeanPHP\OODBBean got '.$res::class.' id='.$this->display($res->getID(), TRUE));
                         return TRUE;
                     }
                     else
                     {
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.$res::class);
+                        $this->local->message(Msg::ERROR, $msg.' FAIL : expected \RedBeanPHP\OODBBean got '.$res::class);
                     }
                 }
                 elseif (\is_array($result))
@@ -100,32 +100,32 @@
                         $diff = \array_diff($res, $result);
                         if (empty($diff))
                         {
-                            $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
+                            $this->local->message(Msg::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                             return TRUE;
                         }
-                        $this->local->message(Local::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE).' diff '.$this->display($diff, TRUE));
+                        $this->local->message(Msg::ERROR, $msg.' FAIL : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE).' diff '.$this->display($diff, TRUE));
                         return FALSE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected array '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
+                    $this->local->message(Msg::ERROR, $msg.' FAIL : expected array '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                 }
                 else
                 {
                     if ($res === $result)
                     {
-                        $this->local->message(Local::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
+                        $this->local->message(Msg::MESSAGE, $msg.' OK : expected '.$this->display($result, TRUE).' got '.$this->display($res, TRUE));
                         return TRUE;
                     }
-                    $this->local->message(Local::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : $this->display($result, TRUE)).' got '.$this->display($res, TRUE));
+                    $this->local->message(Msg::ERROR, $msg.' FAIL : expected '.($throwOK ? 'exception' : $this->display($result, TRUE)).' got '.$this->display($res, TRUE));
                 }
             }
             catch (\Framework\Exception\BadValue|\Framework\Exception\MissingBean $e)
             {
-                $this->local->message($throwOK ? Local::MESSAGE : Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
+                $this->local->message($throwOK ? Msg::MESSAGE : Msg::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
                 return $throwOK;
             }
             catch (\Throwable $e)
             {
-                $this->local->message(Local::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
+                $this->local->message(Msg::ERROR, $msg.' throws exception: '.$e::class.' '.$e->getMessage());
             }
             return FALSE;
         }
@@ -136,7 +136,7 @@
         {
             if ($this->fdt instanceof \Framework\FormData\Base)
             {
-                $this->local->message(Local::MESSAGE, 'hasForm returns '.($this->fdt->hasForm() ? 'TRUE' : 'FALSE').' for '.$this->fdt::class);
+                $this->local->message(Msg::MESSAGE, 'hasForm returns '.($this->fdt->hasForm() ? 'TRUE' : 'FALSE').' for '.$this->fdt::class);
             }
             foreach ($tests as $test)
             {

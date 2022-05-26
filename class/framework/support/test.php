@@ -10,6 +10,7 @@
     namespace Framework\Support;
 
     use \Config\Framework as FW;
+    use \Framework\Support\MessageType as Msg;
     use \Support\Context;
 /**
  * A class that handles various site testing related things
@@ -72,7 +73,7 @@
         public function assert(Context $context) : string
         {
             assert(TRUE == FALSE);
-            $context->local()->message(\Framework\Local::ERROR, 'Assertion test : this should not be reached');
+            $context->local()->message(Msg::ERROR, 'Assertion test : this should not be reached');
             return '@devel/devel.twig';
         }
 /**
@@ -81,7 +82,7 @@
         public function fail(Context $context) : string
         {
             2 / 0; // @phan-suppress-current-line PhanDivisionByZero,PhanNoopBinaryOperator
-            $context->local()->message(\Framework\Local::ERROR, 'Failure test : this should not be reached');
+            $context->local()->message(Msg::ERROR, 'Failure test : this should not be reached');
             return '@devel/devel.twig';
         }
 /**
@@ -147,11 +148,11 @@
             $msg = $context->local()->sendmail([$context->user()->email], 'test', '<b>test</b>', 'plain test', ['From' => $context->user()->email]);
             if ($msg === '')
             {
-                $context->local()->message(\Framework\Local::MESSAGE, 'sent');
+                $context->local()->message(Msg::MESSAGE, 'sent');
             }
             else
             {
-                $context->local()->message(\Framework\Local::ERROR, $msg);
+                $context->local()->message(Msg::ERROR, $msg);
             }
             return '@devel/devel.twig';
         }
@@ -160,12 +161,12 @@
  */
         public function page(Context $context) : string
         {
-            $context->local()->message(\Framework\Local::ERROR, 'Error 1');
-            $context->local()->message(\Framework\Local::ERROR, 'Error 2');
-            $context->local()->message(\Framework\Local::WARNING, 'Warning 1');
-            $context->local()->message(\Framework\Local::WARNING, 'Warning 2');
-            $context->local()->message(\Framework\Local::MESSAGE, 'Message 1');
-            $context->local()->message(\Framework\Local::MESSAGE, 'Message 2');
+            $context->local()->message(Msg::ERROR, 'Error 1');
+            $context->local()->message(Msg::ERROR, 'Error 2');
+            $context->local()->message(Msg::WARNING, 'Warning 1');
+            $context->local()->message(Msg::WARNING, 'Warning 2');
+            $context->local()->message(Msg::MESSAGE, 'Message 1');
+            $context->local()->message(Msg::MESSAGE, 'Message 2');
             return '@devel/test.twig';
         }
 /**
@@ -176,7 +177,7 @@
         public function toss(Context $context) : string
         {
             throw new \Exception('Unhandled Exception Test'); // @phan-suppress-next-line PhanPluginUnreachableCode
-            $context->local()->message(\Framework\Local::ERROR, 'Throw test : this should not be reached');
+            $context->local()->message(Msg::ERROR, 'Throw test : this should not be reached');
             return '@devel/test.twig';
         }
 /**
@@ -187,7 +188,7 @@
             $fdt = $context->formdata('file');
             if (isset($_GET['ok']))
             {
-                $context->local()->message(\Framework\Local::MESSAGE, 'Deleted');
+                $context->local()->message(Msg::MESSAGE, 'Deleted');
             }
             try
             {
@@ -202,7 +203,7 @@
                     }
                     else
                     {
-                        $context->local()->message(\Framework\Local::MESSAGE, $fa['name'].' uploaded');
+                        $context->local()->message(Msg::MESSAGE, $fa['name'].' uploaded');
                         $context->local()->addval('download', $upl->getID());
                     }
                 }
@@ -227,7 +228,7 @@
             }
             catch (\Throwable $e)
             {
-                $context->local()->message(\Framework\Local::ERROR, $e->getmessage());
+                $context->local()->message(Msg::ERROR, $e->getmessage());
             }
             return '@devel/testupload.twig';
         }
