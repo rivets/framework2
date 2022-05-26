@@ -59,7 +59,7 @@ var fweditable = {
             box = '<input type="'+options.type+'" value="' + ctext + '" class="edbox"/>';
             break;
         }
-        return box + '<i class="fa-solid fa-times-xmark edno"></i><i class="fa-solid fa-circle-check edyes"></i>';
+        return box + '<i class="fa-solid fa-circle-xmark edno"></i><i class="fa-solid fa-circle-check edyes"></i>';
     },
 
     popDispose : function()
