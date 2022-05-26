@@ -158,7 +158,8 @@
  */
         public function message(int|Msg $kind, array|string $value) : void
         {
-            $this->messages[$kind] = (\is_array($value) ? \array_merge : \array_push)($this->messages[$kind], $value);
+            $fn = \is_array($value) ? \array_merge : \array_push;
+            $this->messages[$kind] = $fn($this->messages[$kind], $value);
             //if (\is_array($value))
             //{
             //    $this->messages[$kind] = \array_merge($this->messages[$kind], $value);
