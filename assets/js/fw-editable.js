@@ -51,6 +51,13 @@ var fweditable = {
         case 'textarea':
             box = '<textarea rows="5" cols="80" class="edbox">' + ctext + '</textarea>';
             break;
+        case 'text':
+            if (ctext.includes('"'))
+            {
+                ctext = ctext.replace(/"/, '&quot;');
+            }
+            box = '<form id="edboxfrm"><input type="'+options.type+'" value="' + ctext + '" class="edbox"/></form>';
+            break;
         default:
             if (ctext.includes('"'))
             {
@@ -120,6 +127,10 @@ var fweditable = {
                 tsta.setSelectionRange(100000, 100000);
             }
         });
+        if (type == 'text')
+        {
+            document.getElementById('edboxfrm').addEventListener(isEnter);
+        }
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
             fwdom.stop(e);
@@ -173,6 +184,10 @@ var fweditable = {
         document.body.addEventListener('click', fweditable.outsideClick);
         fweditable.popover = popover;
         fweditable.inline = div;
+    },
+
+    isEnter : function(){
+        alert('ENTER');
     },
 
     editable : function(div, options = null) {
