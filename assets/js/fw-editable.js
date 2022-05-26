@@ -129,7 +129,7 @@ var fweditable = {
         });
         if (type == 'text')
         {
-            document.getElementById('edboxfrm').addEventListener(fweditable.isEnter);
+            document.getElementById('edboxfrm').addEventListener('submit', fweditable.isEnter);
         }
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         tip.querySelector('.edyes').addEventListener('click', function(e){
