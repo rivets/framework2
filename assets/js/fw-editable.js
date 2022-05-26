@@ -127,12 +127,8 @@ var fweditable = {
                 tsta.setSelectionRange(100000, 100000);
             }
         });
-        if (type == 'text')
-        {
-            document.getElementById('edboxfrm').addEventListener('submit', fweditable.isEnter);
-        }
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
-        tip.querySelector('.edyes').addEventListener('click', function(e){
+        const tickFn = function(e){
             fwdom.stop(e);
             let options =  fweditable.edOptions[fweditable.inline.getAttribute('data-editable-id')];
             let box = tip.querySelector('.edbox');
@@ -180,14 +176,15 @@ var fweditable = {
                 }
             }
             fweditable.popDispose();
-        });
+        };
+        tip.querySelector('.edyes').addEventListener('click', tickFn);
+        if (type == 'text')
+        {
+            document.getElementById('edboxfrm').addEventListener('submit', tickFn);
+        }
         document.body.addEventListener('click', fweditable.outsideClick);
         fweditable.popover = popover;
         fweditable.inline = div;
-    },
-
-    isEnter : function(){
-        alert('ENTER');
     },
 
     editable : function(div, options = null) {
