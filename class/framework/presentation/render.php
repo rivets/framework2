@@ -108,9 +108,9 @@
  *
  * The currently supported values for kind are :
  *
- *      \Framework\Local\ERROR
- *      \Framework\Local\WARNING
- *      \Framework\Local\MESSAGE
+ *      \Framework\Support\MessageType\ERROR
+ *      \Framework\Support\MessageType\WARNING
+ *      \Framework\Support\MessageType\MESSAGE
  *
  * To have your Twig deal with these you need
  *
@@ -118,8 +118,8 @@
  *
  * somewhere in the relevant twig (usually at the top of the main body)
  *
- * @param int            $kind   The kind of message
- * @param array|string   $value  The value to be stored or an array of values
+ * @param int|Msg      $kind   The kind of message
+ * @param array|string $value  The value to be stored or an array of values
  */
         public function message(int|Msg $kind, array|string $value) : void
         {
@@ -135,9 +135,11 @@
 /**
  * Clear out messages
  *
+ * @todo When 8.2 comes change type to int|Msg|nullas you don't seem to be able to say ?Msg
+ *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
  */
-        public function clearMessages(?int|Msg $kind = NULL) : void
+        public function clearMessages(?int $kind = NULL) : void
         {
             if (\is_null($kind))
             {
