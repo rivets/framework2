@@ -8,6 +8,7 @@
  */
     namespace Framework\Presentation;
 
+    use \Framework\Support\MessageType as Msg;
     use \Framework\Web\Web;
 /**
  * Base class for other Twig like renderers
@@ -120,7 +121,7 @@
  * @param int            $kind   The kind of message
  * @param array|string   $value  The value to be stored or an array of values
  */
-        public function message(int $kind, array|string $value) : void
+        public function message(int|Msg $kind, array|string $value) : void
         {
             if (\is_array($value))
             {
@@ -136,7 +137,7 @@
  *
  * @param ?int    $kind   Either NULL for all messages or a specific kind
  */
-        public function clearMessages(?int $kind = NULL) : void
+        public function clearMessages(?int|Msg $kind = NULL) : void
         {
             if (\is_null($kind))
             {
