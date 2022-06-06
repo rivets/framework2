@@ -123,8 +123,8 @@
         {
             $r = \R::dispense($this->roletype);
             $r->{$this->bean->getmeta('type')} = $this->bean;
-            $r->rolecontext = $rolecontext;
-            $r->rolename = $rolename;
+            $r->fwrolecontext = $rolecontext;
+            $r->fwrolename = $rolename;
             $r->otherinfo = $otherinfo;
             $r->start = $start;
             $r->end = $end;
