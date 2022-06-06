@@ -23,7 +23,7 @@
  */
         final public function rolename() : \RedBeanPHP\OODBBean
         {
-            return $this->bean->rolename;
+            return $this->bean->fwrolename;
         }
 /**
  * Return rolecontext object
@@ -32,7 +32,7 @@
  */
         final public function rolecontext() : \RedBeanPHP\OODBBean
         {
-            return $this->bean->rolecontext;
+            return $this->bean->fwrolecontext;
         }
 /**
  * Fixes up start values
