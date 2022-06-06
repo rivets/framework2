@@ -44,4 +44,4 @@
             return $this->bean->{FW::USER};
         }
     }
-?
+?>
