@@ -10,6 +10,7 @@
  */
     namespace Framework\Model;
 
+    use \Config\Framework as FW;
     use \Support\Context;
 /**
  * A class implementing a RedBean model for Role beans
@@ -23,7 +24,7 @@
  */
         final public function rolename() : \RedBeanPHP\OODBBean
         {
-            return $this->bean->fwrolename;
+            return $this->bean->{FW::ROLENAME};
         }
 /**
  * Return rolecontext object
@@ -32,7 +33,7 @@
  */
         final public function rolecontext() : \RedBeanPHP\OODBBean
         {
-            return $this->bean->fwrolecontext;
+            return $this->bean->{FW::ROLECONTEXT};
         }
 /**
  * Fixes up start values
