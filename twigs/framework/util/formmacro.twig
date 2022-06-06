@@ -30,7 +30,7 @@
 
 {% macro on(opts) %}{% if opts.on is defined and opts.id != '' %}{% for e,v in opts.on %}{{context.saveon(opts.id, e, v)}}{% endfor %}{% endif %}{% endmacro on %}
 
-{% macro extra(opts) %} {% if opts.extra is defined %}{% for v in opts.extra %} {{v}}{% endfor %}{% endif %}{% endmacro extra %}
+{% macro extra(opts) %} {% if opts.extra is defined %}{% for v in opts.extra %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
