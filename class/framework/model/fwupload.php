@@ -5,7 +5,7 @@
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is a Framework system class - do not edit !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2021 Newcastle University
+ * @copyright 2015-2022 Newcastle University
  * @package Framework\Model
  */
     namespace Framework\Model;
