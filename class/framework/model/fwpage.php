@@ -76,7 +76,7 @@
                     $context->divert('/login/?goto='.\urlencode($context->local()->debase($_SERVER['REQUEST_URI'])), TRUE, 'You must login');
                     /* NOT REACHED */
                 }
-                if (\R::count(FW::PAGEROLE, 'page_id=?', [$this->bean->getID()]) > 0)
+                if (\R::count(FW::PAGEROLE, FW::PAGE.'_id=?', [$this->bean->getID()]) > 0)
                 { // there are roles to check
                     $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from '.FW::USER.
                         ' as u inner join role as r on u.id = r.'.FW::USER.'_id inner join (select * from '.

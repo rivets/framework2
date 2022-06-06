@@ -277,14 +277,14 @@
  */
     $fwurls = [ // url, fixed, integrity, crossorigin, defer, async, type
 // CSS
-        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
+        'bootcss'       => ['https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css', 1, '', '', 0, 0, 'css'],
 //        'editablecss'   => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css', 1, '', '', 0, 0, 'css'],
         'editablecss'   => [$dir.'/assets/css/fw-editable.min.css', 1, '', '', 0, 0, 'css'],
         'facss'         => ['https://use.fontawesome.com/releases/v6.0.0/css/all.css', 1, '', '', 0, 0, 'css'],
 // JS
         'jquery'        => ['https://code.jquery.com/jquery-3.5.1.min.js', 1, '', '', 0, 0, 'js'],
         'jqueryslim'    => ['https://code.jquery.com/jquery-3.5.1.slim.min.js', 1, '', '', 0, 0, 'js'],
-        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js', 1, '', '', 0, 0, 'js'],
+        'bootjs'        => ['https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js', 1, '', '', 0, 0, 'js'],
         'bootbox'       => ['https://cdn.jsdelivr.net/npm/bootbox@5.5.2/bootbox.js', 1, '', '', 0, 0, 'js'],
 //        'editable'      => ['//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js', 1, '', '', 0, 0, 'js'],
         'editable'      => [$dir.'/assets/js/fw-editable-min.js', 1, '', '', 0, 0, 'js'],
