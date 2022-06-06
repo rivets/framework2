@@ -19,7 +19,8 @@
                 <input type="hidden" name="goto" value="{{goto}}"/>
                 <input type="hidden" name="hash" value="{{hash}}"/>
                 {{f.startfset({legend: 'Two-Factor Authentication'})}}
-                    {{f.text({label: 'Code', id: 'cde', name: 'validator', ph: 'Code from your authenticator', required: TRUE, extra: ['autocomplete="one-time-code"']})}}
+                    {{f.text({label: 'Code', id: 'cde', name: 'validator', ph: 'Code from your authenticator', required: TRUE,
+                        extra: ['autocomplete="one-time-code"', 'inputmode="numeric"', 'pattern="[0-9]*"']})}}
                 {{f.endfset()}}
                 {{f.bsubmit({rvalue: icon.fa('sign-in-alt') ~ ' Login', class: 'mb-3'})}}
             {{f.endform()}}
