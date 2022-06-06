@@ -30,7 +30,7 @@
  */
         public function canaccess(?\RedBeanPHP\OODBBean $user, string $op = 'r') : bool
         {
-            return $user !== NULL &&  $this->bean->user->equals($user) || $user->isadmin();
+            return $user !== NULL &&  $this->bean->{FW::USER}->equals($user) || $user->isadmin();
         }
 /**
  * Hook for adding extra data to a file save.

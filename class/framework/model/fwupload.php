@@ -10,6 +10,7 @@
  */
     namespace Framework\Model;
 
+    use \Config\Framework as FW;
     use \Support\Context;
 /**
  *  FWUpload table stores info about files that have been uploaded...
@@ -23,7 +24,7 @@
  */
         public function owner() : ?\RedBeanPHP\OODBBean
         {
-            return $this->bean->user;
+            return $this->bean->{FW::USER};
         }
 /**
  * Return the value need for an HREF on a download <a> tag
@@ -77,7 +78,7 @@
             $this->bean->fname = \DIRECTORY_SEPARATOR.\implode(\DIRECTORY_SEPARATOR, $pname);
             $this->bean->filename = $fileData['name'];
             $this->bean->public = $public ? 1 : 0;
-            $this->bean->user = $owner;
+            $this->bean->{FW::USER} = $owner;
             $this->bean->mimetype = $mimetype;
             $this->addData($context, $index); // call the user extend function in the trait
             \R::store($this->bean);
@@ -99,7 +100,7 @@
         public function replace(Context $context, array $fileData, int $index = 0) : void
         {
             $oldfile = $this->bean->fname;
-            [$dir, $pname, $fname] = $this->mkpath($context, $this->bean->user, $this->bean->public, $fileData);
+            [$dir, $pname, $fname] = $this->mkpath($context, $this->bean->{FW::USER}, $this->bean->public, $fileData);
             if (!\move_uploaded_file($fileData['tmp_name'], $fname))
             {
                 \chdir($dir);

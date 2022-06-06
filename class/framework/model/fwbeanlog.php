@@ -7,6 +7,7 @@
  */
     namespace Framework\Model;
 
+    use \Config\Framework as FW;
     use \Framework\Ajax\Support\BeanLogOps as BL;
 /**
  * A class implementing a RedBean model for BeanLog beans
@@ -40,7 +41,7 @@
  */
         public function user() : \RedBeanPHP\OODBBean
         {
-            return $this->bean->user;
+            return $this->bean->{FW::USER};
         }
     }
-?>
+?

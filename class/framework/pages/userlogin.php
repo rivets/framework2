@@ -42,7 +42,7 @@
             $conf->code = $code;
             $conf->issued = $context->utcnow();
             $conf->kind = $kind;
-            $conf->user = $user;
+            $conf->{FW::USER} = $user;
             R::store($conf);
             return $code;
         }
@@ -251,7 +251,7 @@
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($x->issued));
                     if ($interval->days <= 3)
                     {
-                        $x->user->doconfirm();
+                        $x->{FW::USER}->doconfirm();
                         R::trash($x);
                         $local->message(Local::MESSAGE, 'Thank you for confirming your email address. You can now login.');
                     }
@@ -304,7 +304,7 @@
                 $user = $fdt->mustFetchBean('uid', FW::USER);
                 $code = $fdt->mustFetch('code');
                 $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
-                if (is_object($xc) && $xc->user_id == $user->getID())
+                if (is_object($xc) && $xc->{FW::USER}->equals($user))
                 {
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($xc->issued));
                     if ($interval->days <= 1)
@@ -312,7 +312,7 @@
                         $pw = $fdt->mustFetch('password');
                         if ($pw === $fdt->mustFetch('repeat'))
                         {
-                            $xc->user->setpw($pw);
+                            $xc->{FW::USER}->setpw($pw);
                             R::trash($xc);
                             $local->message(Local::MESSAGE, 'You have reset your password. You can now login.');
                             $local->addval('done', TRUE);
@@ -342,7 +342,7 @@
                     if ($interval->days <= 1)
                     {
                         $local->addval([
-                            'pwuser' => $x->user,
+                            'pwuser' => $x->{FW::USER},
                             'code'   => $x->code,
                         ]);
                         $tpl = '@users/pwreset.twig';
