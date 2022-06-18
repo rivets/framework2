@@ -79,7 +79,7 @@
                 if (\R::count(FW::PAGEROLE, FW::PAGE.'_id=?', [$this->bean->getID()]) > 0)
                 { // there are roles to check
                     $match = \R::getCell('select count(p.id) = count(r.id) and count(p.id) != 0 from '.FW::USER.
-                        ' as u inner join role as r on u.id = r.'.FW::USER.'_id inner join (select * from '.
+                        ' as u inner join '.FW::ROLE.' as r on u.id = r.'.FW::USER.'_id inner join (select * from '.
                         FW::PAGEROLE.' where '.FW::PAGE.'_id=?) as p on p.'.FW::ROLENAME.'_id = r.'.FW::ROLENAME.
                         '_id and p.'.FW::ROLECONTEXT.'_id = r.'.FW::ROLECONTEXT.'_id where u.id=?',
                         [$this->bean->getID(), $context->user()->getID()]);
