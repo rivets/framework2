@@ -140,7 +140,11 @@ class R
     {
     }
 
-    public static function getRedBean()
+    public static function getRedBean() : \RedBeanPHP\OODB
+    {
+    }
+
+    public static function getPDO() : ?\RedBeanPHP\PDO
     {
     }
 }
