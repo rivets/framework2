@@ -7,7 +7,12 @@
         /** @psalm-suppress MissingConstructor  */
         public $bean;
     }
-
+    class PDO
+    {
+        /** @var OODBBean */
+        /** @psalm-suppress MissingConstructor  */
+        public $bean;
+    }
     class BeanCollection
     {
 /**
