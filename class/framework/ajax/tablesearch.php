@@ -68,7 +68,7 @@
             $fields = \array_keys(\R::inspect($bean));
             if (!\in_array($field, $fields))
             {
-                $this->context->web()->bad();
+                throw new \Framework\Exception\Forbidden('Permission denied');
             }
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
