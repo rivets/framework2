@@ -13,6 +13,12 @@
         /** @psalm-suppress MissingConstructor  */
         public $bean;
     }
+    class QueryWriter
+    {
+        /** @var OODBBean */
+        /** @psalm-suppress MissingConstructor  */
+        public $bean;
+    }
     class BeanCollection
     {
 /**
