@@ -11,9 +11,9 @@
     class BeanCollection
     {
 /**
- * @return \RedBeanPHP\OODBBean
+ * @return ?\RedBeanPHP\OODBBean
  */
-        public function next() : \RedBeanPHP\OODBBean
+        public function next() : ?\RedBeanPHP\OODBBean
         {
             return new \RedBeanPHP\OODBBean;
         }

@@ -45,6 +45,7 @@
             {
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
+            R::getPDO()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, FALSE);
             $collection = R::findCollection($bean, $where, $params);
             /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
             while ($item = $collection->next())
