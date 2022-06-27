@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX tablesearch operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2022 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -65,7 +65,7 @@
                 break;
             }
             $res = [];
-            $fields = array_keys(\R::inspect($bean));
+            $fields = \array_keys(\R::inspect($bean));
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass();
