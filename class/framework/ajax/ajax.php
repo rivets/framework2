@@ -71,7 +71,7 @@
                     }
                 }
             }
-            throw new Forbidden('Permission denied: '.$beanType.' '.$field);
+            throw new Forbidden('Permission denied: '.$beanType);
         }
 /**
  * Check that user has the permissions that are specified in an array
