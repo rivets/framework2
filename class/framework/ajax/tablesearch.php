@@ -66,6 +66,10 @@
             }
             $res = [];
             $fields = \array_keys(\R::inspect($bean));
+            if (!\in_array($field, $fields))
+            {
+                $context->bad();
+            }
             foreach (\R::find($bean, $field.' '.$op.$incv, [$value]) as $bn)
             {
                 $bv = new \stdClass();
