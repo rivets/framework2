@@ -66,13 +66,12 @@
                         $this->checkPerms($user, $check[0]); // check user plays the right roles
                         if ($field === '' || empty($check[1]) || (\in_array($field, $check[1]) && ($field != 'id' || $idOK)))
                         {
-            throw new Forbidden('Permission denied: '.$beanType.' '.$field.' '.$check[1][0]);
                             return;
                         }
                     }
                 }
             }
-            throw new Forbidden('Permission denied: '.$beanType);
+            throw new Forbidden('Permission denied: '.$beanType.' '.$field);
         }
 /**
  * Check that user has the permissions that are specified in an array
