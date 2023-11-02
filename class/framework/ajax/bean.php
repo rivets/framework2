@@ -113,6 +113,10 @@
         private function patch(string $beanType, array $rest, bool $log, string $method = 'patch') : void
         {
             $perms = $this->controller->permissions(static::class, self::$permissions);
+            if (\count($rest) < 2)
+            {
+                throw new BadValue('Missing parameter');
+            }
             [$id, $field] = $rest;
             $fdt = $this->context->formdata('put');
             $more = $rest[2] ?? NULL;
