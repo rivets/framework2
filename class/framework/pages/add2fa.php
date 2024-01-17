@@ -11,8 +11,8 @@
 
     use \Endroid\QrCode\Builder\Builder;
     use \Endroid\QrCode\Encoding\Encoding;
-    use \Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
-    use \Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+    use \Endroid\QrCode\ErrorCorrectionLevel;
+    use \Endroid\QrCode\RoundBlockSizeMode;
     use \Endroid\QrCode\Writer\PngWriter;
     use \Support\Context;
 /**
@@ -64,10 +64,10 @@
                     ->writerOptions([])
                     ->data('otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret)
                     ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                    ->errorCorrectionLevel(ErrorCorrectionLevel::High
                     ->size(300)
                     ->margin(10)
-                    ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+                    ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
                     ->build();
                 $context->local()->addval('qrcode', $result->getDataURI());
             }
