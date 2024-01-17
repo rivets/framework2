@@ -32,10 +32,10 @@
  * is a boolean indicating whether or not login is required, the second element is a list of ['Context', 'Role']
  * pairs that the user must have.
  */
-        public function requires() : array
-        {
-            return [TRUE, []];
-        }
+//        public function requires() : array
+//        {
+//            return [TRUE, []];
+//        }
 /**
  *  files and associate them with a bean
  *
