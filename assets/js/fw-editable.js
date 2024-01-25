@@ -1,4 +1,4 @@
-/* globals document, fwdom, bootstrap, framework, console, window */
+/* globals document, fwdom, bootstrap, framework, console, window, tinymce */
 /* jshint undef: true, unused: false */
 
 var fweditable = {
@@ -7,16 +7,21 @@ var fweditable = {
     inline  : null,
 
     domid   : -1,
+    
+    taid    : '',
 
     edOptions: [],
 
     emptyText : '--------',
+    
+    emptyTiny: /<p><br[^>]*><\/p>/, // the text returned by an empty Tiny MCE editor
 
     makeEdit: function(d)
     {
         const options = fweditable.edOptions[d.getAttribute('data-editable-id')];
         let ctext = d.innerHTML;
         let box;
+        fweditable.taid = '';
         if (ctext === options.emptyText)
         {
             ctext = '';
@@ -56,22 +61,36 @@ var fweditable = {
             {
                 ctext = ctext.replace(/"/, '&quot;');
             }
+            if (ctext.includes('&'))
+            {
+                ctext = ctext.replace(/"/, '&amp;');
+            }
             box = '<form id="edboxfrm"><input type="'+options.type+'" value="' + ctext + '" class="edbox"/></form>';
+            break;
+        case 'html' :
+            fweditable.taid = 'hta' + fweditable.domid;
+            fweditable.domid += 1;
+            box = '<textarea rows="5" cols="80" class="edbox" id="'+fweditable.taid+'">' + ctext + '</textarea>';
             break;
         default:
             if (ctext.includes('"'))
             {
                 ctext = ctext.replace(/"/, '&quot;');
             }
+            if (ctext.includes('&'))
+            {
+                ctext = ctext.replace(/"/, '&amp;');
+            }
             box = '<input type="'+options.type+'" value="' + ctext + '" class="edbox"/>';
             break;
         }
-        return box + '<i class="fa-solid fa-circle-xmark edno"></i><i class="fa-solid fa-circle-check edyes"></i>';
+        return box + '<i class="fad fa-times-circle edno"></i><i class="fad fa-check-circle edyes"></i>';
     },
 
     popDispose : function()
     {
        document.body.removeEventListener('click', fweditable.outsideClick);
+       //document.querySelector('.popover-background').removeClass('visible');
        if (fweditable.popover !== null)
        {
            fweditable.popover.dispose();
@@ -83,7 +102,16 @@ var fweditable = {
     {
        if (fweditable.inline != e.target && fweditable.inline != fweditable.popover.tip && !fweditable.popover.tip.contains(e.target))
        {
-           fweditable.popDispose(e);
+            //console.log(e.target.classList.contains('tox-dialog-wrap__backdrop'));
+            if (e.target.closest('div[class~="tox-dialog"]') != null || e.target.classList.contains('tox-dialog-wrap__backdrop'))
+            {
+                fwdom.stop(e);
+            }
+            else
+            {
+                //console.log(e.target, e.target.closest('div[class~="tox-dialog"]'), e.target.classList, e.target.classList.contains('tox-dialog-wrap__backdrop'));
+                fweditable.popDispose(e);
+            }
        }
     },
 
@@ -126,13 +154,37 @@ var fweditable = {
             {
                 tsta.setSelectionRange(100000, 100000);
             }
+            if (fweditable.taid !== '')
+            {
+                tinymce.init({selector: 'textarea#'+fweditable.taid,
+                    branding: false,
+                    toolbar : 'undo redo | bold italic | superscript subscript | bullist numlist | link | code | charmap',
+                    menubar : false,
+                    plugins: 'lists link code charmap'
+                });
+            }
+            //document.querySelector('.popover-background').addClass('visible');
         });
         tip.querySelector('.edno').addEventListener('click', fweditable.popDispose);
         const tickFn = function(e){
             fwdom.stop(e);
             let options =  fweditable.edOptions[fweditable.inline.getAttribute('data-editable-id')];
+
             let box = tip.querySelector('.edbox');
-            if (box.value != fweditable.inline.innerHTML)
+            if (fweditable.taid !== '')
+            {
+                box.value = tinymce.activeEditor.getContent({format : 'raw'});
+                if (box.value.match(fweditable.emptyTiny))
+                {
+                    box.value = '';
+                }
+                else
+                {
+                    box.value.replace(/<br[^>*]><\/p>/i, '</p>'); // get rid of spurious breaks
+                }
+            }
+
+            if (box.value != fweditable.inline.innerText)
             {
                 if (options.update == null)
                 {
