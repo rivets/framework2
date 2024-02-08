@@ -2,8 +2,8 @@
 /**
  * Base class for AJax operations
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;

@@ -2,8 +2,8 @@
 /**
  * Class to handle the Framework AJAX tablesearch operation
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2022 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -34,6 +34,7 @@
 /**
  * Return permission requirements
  */
+        #[\Override]
         public function requires() : array
         {
             return [FALSE, []]; // Permission check done in handle

@@ -2,8 +2,8 @@
 /**
  * A wrapper so that users dont need to edit the FWContext class in order to add features.
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2016-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;

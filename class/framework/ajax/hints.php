@@ -29,6 +29,7 @@
  * First element is a bool indicating if login is required. The second element is a list of ['Context', 'Role']
  * that the user must have.
  */
+        #[\Override]
         public function requires() : array
         {
             return [FALSE, []]; // login not required

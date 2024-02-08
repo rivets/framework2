@@ -5,8 +5,8 @@
  * It assumes that RESTful ajax calls are made to {{base}}/ajax and that
  * the first part of the URL after ajax is an opcode that defines what is to be done.
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2014-2024 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -41,8 +41,6 @@
  * Return the log requirements array from the child
  *
  * @param string $beanType  The name of a bean
- *
- * @return bool
  */
         final public function log(string $beanType) : bool
         {
@@ -52,7 +50,8 @@
 /**
  * Return the permission requirements array from the child
  *
- * @param string $which The permissions required
+ * @param string $which   The permissions required
+ * @param array  $system  Permissions to add
  *
  * @return array<string>
  */
@@ -67,9 +66,6 @@
 /**
  * Handle AJAX operations
  *
- * @param Context   $context    The context object for the site
- *
- * @return void
  * @phpcsSuppress NunoMaduro.PhpInsights.Domain.CyclomaticComplexityIsHigh
  */
         public function handle(Context $context) : void

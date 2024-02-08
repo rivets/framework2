@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX upload operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021 Newcastle University
+ * @copyright 2021-2024 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -20,13 +20,6 @@
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
         private static $permissions = [];
-/**
- * Return permission requirements
- */
-        public function requires() : array
-        {
-            return [TRUE, []]; // requires login
-        }
 /**
  * Upload files and optionally attch them to a set of beans
  *

@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX uniquenl operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2024 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -21,6 +21,7 @@
 /**
  * Return permission requirements
  */
+        #[\Override]
         final public function requires() : array
         {
             return [FALSE, []]; // does not require login

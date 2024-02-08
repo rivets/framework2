@@ -3,8 +3,8 @@
  * A class that tries to detect when there have been too
  * many calls from a given IP address
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2022 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;
@@ -15,8 +15,8 @@
  */
     final class AntiFlood
     {
-        private const KEEPTIME  = 60*60;
-        private const DIVERSION = 'https://google.com';
+        private const int KEEPTIME     = 60*60;
+        private const string DIVERSION = 'https://google.com';
 /**
  * Check if an IP is flooding
  *
@@ -26,6 +26,9 @@
         public static function flooding(int $limit, bool $divert = TRUE) : bool
         {
             $now = \time();
+//
+// First delete any flooding data that has expired
+//
             \R::exec('delete from '.FW::FLOOD.' where ('.$now.' - calltime) > '.self::KEEPTIME);
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
             $f = \R::findOne(FW::FLOOD, 'ip=?', [$ip]);

@@ -2,8 +2,8 @@
 /**
  * Class to handle the Framework AJAX paging operation
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
@@ -29,6 +29,7 @@
  * First element is a bool indicating of login is required. The second element is a list of ['Context', 'Role']
  * that the user must have.
  */
+        #[\Override]
         public function requires() : array
         {
             return [FALSE, []]; // login not required

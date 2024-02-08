@@ -2,8 +2,8 @@
 /**
  * A trait that allows extending the GetFile page handler
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2021-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;

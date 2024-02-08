@@ -2,8 +2,8 @@
 /**
  * Class to handle the Framework AJAX tablecheck operation
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -18,6 +18,7 @@
 /**
  * Return permission requirements
  */
+        #[\Override]
         public function requires() : array
         {
             return [TRUE, [[FW::FWCONTEXT, FW::ADMINROLE]]]; // require login, only allow Site Admins to do this

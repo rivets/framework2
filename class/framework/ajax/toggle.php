@@ -2,8 +2,8 @@
 /**
  * Class to handle the Framework AJAX toggle operation
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2020-2024 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -36,18 +36,7 @@
  */
         final public function handle() : void
         {
-            //$rest = $this->context->rest();
-            //if (count($rest) > 2)
-            //{
             [$type, $bid, $field] = $this->restCheck(3);
-            //}
-            //else // this is legacy
-            //{
-            //    $fdt = $this->context->formdata('post');
-            //    $type = $fdt->mustFetch('bean');
-            //    $field = $fdt->mustFetch('field');
-            //    $bid = $fdt->mustFetch('id');
-            //}
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
             if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())

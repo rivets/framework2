@@ -2,7 +2,7 @@
 /**
  * Check password
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
  * @copyright 2020-2021 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
