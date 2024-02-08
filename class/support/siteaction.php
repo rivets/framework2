@@ -6,8 +6,8 @@
  * They are defined in here in order to allow framework developers to have settings that apply
  * to ALL object pages rather than having to override theme everywhere.
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2019-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;

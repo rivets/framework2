@@ -2,8 +2,8 @@
 /**
  * A trait that implements nocaching for pages
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2020 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2019-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;
@@ -21,7 +21,7 @@
         public function setCache(Context $context) : void
         {
             $hdrs = [
-                'Expires'       => $this->makemod(time()), // expires now...
+                'Expires'       => $this->makemod(\time()), // expires now...
             ];
             $context->web()->addheader($hdrs);
             $this->set304Cache($context);

@@ -2,8 +2,8 @@
 /**
  * A class that contains code to return info needed in various places on the site
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2016-2024 Newcastle University
  * @package Framework
  * @subpackage Support
  */

@@ -2,8 +2,8 @@
 /**
  * Contains definition of a trait that implements RESTful drivers for SiteAction
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2021-2024 Newcastle University
  * @package Framework
  */
     namespace Support;

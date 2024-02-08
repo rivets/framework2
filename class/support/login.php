@@ -2,8 +2,8 @@
 /**
  * A trait that allows extending the UserLogin class for different authentication processes
  *
- * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2019-2021 Newcastle University
+ * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
+ * @copyright 2019-2024 Newcastle University
  * @package Framework\Support
  */
     namespace Support;
