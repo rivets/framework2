@@ -54,10 +54,6 @@
  */
         final public static function getinstance() : object
         {
-            //if (static::$instance !== NULL) // cannot get this to work with namespaces for some reason
-            //{
-            //    static::$instance = new static();
-            //}
             return static::$instance ?? (static::$instance = new static()); // // @phpstan-ignore-line
         }
 /**
