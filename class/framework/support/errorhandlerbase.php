@@ -57,12 +57,9 @@
             \register_shutdown_function([$this, 'shutdown']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
             if ($devel)
             { // set up expectation handling if in developer mode
-                if (\ini_get('zend.assertions') == 1)
+                if (\ini_get('zend.assertions') != 1)
                 {
-                    \ini_set('assert.exception', '1');
-//                    assert_options(\ASSERT_ACTIVE, $devel);
-//                    assert_options(\ASSERT_WARNING, 0);
-//                    assert_options(\ASSERT_CALLBACK, [$this, 'assertFail']);
+                    \ini_set('zend.assertions', '1');
                 }
             }
         }
