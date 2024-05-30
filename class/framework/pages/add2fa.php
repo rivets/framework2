@@ -64,7 +64,7 @@
                     ->writerOptions([])
                     ->data('otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret)
                     ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(ErrorCorrectionLevel::High
+                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
                     ->size(300)
                     ->margin(10)
                     ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)

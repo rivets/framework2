@@ -1,0 +1,33 @@
+.edno {
+    color: red;
+    padding : 0 0.5rem;
+    cursor: pointer;
+}
+
+.edyes {
+    color: green;
+    padding : 0 0.5rem;
+    cursor: pointer;
+}
+
+.editable {
+    white-space: nowrap;
+}
+
+.editable:hover {
+   text-decoration: underline dotted blue;
+}
+
+.editable.disabled{
+    color: #777;
+    text-decoration: none;
+}
+
+.edempty {
+    color: red;
+    text-decoration: underline solid blue;
+}
+
+.popover {
+    width: 100%;
+}
