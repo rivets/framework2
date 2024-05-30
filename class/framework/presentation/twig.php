@@ -3,7 +3,7 @@
  * Contains definition of Twig Rendering class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2022 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework
  */
     namespace Framework\Presentation;
@@ -15,7 +15,7 @@
  */
     class Twig extends Render
     {
-        private const TDIR = 'twigs';
+        private const string TDIR = 'twigs';
 /**
  * This is a class that maintains values about the local environment and does error handling
  *

@@ -3,7 +3,7 @@
  * Contains definition of ProxyCheck class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2018-2022 Newcastle University
+ * @copyright 2018-2024 Newcastle University
  * @package Framework
  * @subpackage Utility
  */
@@ -19,7 +19,7 @@
  */
     class ProxyCheck
     {
-        private const PCURL = 'https://proxycheck.io/v2/';
+        private const string PCURL = 'https://proxycheck.io/v2/';
 /**
  * Check an IP address
  *

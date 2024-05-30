@@ -18,7 +18,7 @@
  * would not be hard to add.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -36,7 +36,7 @@
 /*
  * The name of the directory where files are kept
  */
-        private const DATADIR   = 'private';
+        private const string DATADIR   = 'private';
 /** @var string The name of the file we are working on */
         private string $file = '';
 /** @var string    The last modified time for the file */

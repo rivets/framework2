@@ -15,9 +15,9 @@
  */
     class BeanLog
     {
-        public const CREATE = 0;
-        public const UPDATE = 1;
-        public const DELETE = 2;
+        public const int CREATE = 0;
+        public const int UPDATE = 1;
+        public const int DELETE = 2;
 /**
  * make log entry
  *

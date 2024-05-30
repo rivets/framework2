@@ -4,7 +4,7 @@
  * This exists to reduce the number of method in Web itself
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2022 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework\Framework\Web
  */
     namespace Framework\Web;
@@ -17,7 +17,7 @@
     {
         use \Framework\Utility\Singleton;
 
-        public const HTMLMIME  = 'text/html; charset="utf-8"';
+        public const string HTMLMIME  = 'text/html; charset="utf-8"';
 /**
  * @var array<array<string>>   Holds values for headers that are required. Keyed by the name of the header
  */

@@ -3,7 +3,7 @@
  * Contains definition of the Security class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework
  * @subpackage Web
  */
@@ -18,7 +18,7 @@
     {
         use \Framework\Utility\Singleton;
 
-        private const ALGORITHM = 'sha256';
+        private string const ALGORITHM = 'sha256';
 
         private ?TwoFactorAuth $twoFA = NULL;
 /**

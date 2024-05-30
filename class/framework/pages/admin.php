@@ -3,7 +3,7 @@
  * Contains definition of Admin class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2022 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework
  * @subpackage SystemPages
  */
@@ -18,10 +18,10 @@
  */
     final class Admin extends \Framework\SiteAction
     {
-        private const EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
-        private const VIEWABLE = [FW::TABLE, FW::FORM];
-        private const NOTMODEL = [FW::TABLE];
-        //private const HASH     = 'sha384';
+        private const array EDITABLE = [FW::TABLE, FW::FORM, FW::CONFIG, FW::PAGE, FW::USER];
+        private const array VIEWABLE = [FW::TABLE, FW::FORM];
+        private const array NOTMODEL = [FW::TABLE];
+        //private const string HASH     = 'sha384';
 
         use \Support\NoCache; // don't cache admin pages.
 /**

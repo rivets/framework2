@@ -5,7 +5,7 @@
  * add any new autoload places etc.
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2015-2022 Newcastle University
+ * @copyright 2015-2024 Newcastle University
  * @package Framework\Config
  */
     namespace Config;
@@ -18,39 +18,39 @@
 /*
  * Constants that are used to get the names of the Framework's internal tables
  */
-        public const ADMINROLE = 'Admin'; // role names
-        public const DEVELROLE = 'Developer';
-        public const TESTROLE  = 'Tester';
+        public const string ADMINROLE      = 'Admin'; // role names
+        public const string DEVELROLE      = 'Developer';
+        public const string TESTROLE       = 'Tester';
 
-        public const DBPREFIX = 'fw';
+        public const string DBPREFIX       = 'fw';
 
-        public const FWCONTEXT      = 'Site'; // context names
-        public const TESTCONTEXT    = 'Test';
+        public const string FWCONTEXT      = 'Site'; // context names
+        public const string TESTCONTEXT    = 'Test';
 
-        public const AJAX           = self::DBPREFIX.'ajax'; // table names
-        public const BEANLOG        = self::DBPREFIX.'beanlog';
-        public const CONFIG         = self::DBPREFIX.'config';
-        public const CONFIRM        = self::DBPREFIX.'confirm';
-        public const CSP            = self::DBPREFIX.'csp';
-        public const FLOOD          = self::DBPREFIX.'flood';
-        public const FORM           = self::DBPREFIX.'form';
-        public const FORMFIELD      = self::DBPREFIX.'formfield';
-        public const PAGE           = self::DBPREFIX.'page';
-        public const PAGEROLE       = self::DBPREFIX.'pagerole';
-        public const ROLE           = self::DBPREFIX.'role';
-        public const ROLECONTEXT    = self::DBPREFIX.'rolecontext';
-        public const ROLENAME       = self::DBPREFIX.'rolename';
-        public const TABLE          = self::DBPREFIX.'table';
-        public const TEST           = self::DBPREFIX.'test';
-        public const UPLOAD         = self::DBPREFIX.'upload';
-        public const USER           = 'user';
+        public const string AJAX           = self::DBPREFIX.'ajax'; // table names
+        public const string BEANLOG        = self::DBPREFIX.'beanlog';
+        public const string CONFIG         = self::DBPREFIX.'config';
+        public const string CONFIRM        = self::DBPREFIX.'confirm';
+        public const string CSP            = self::DBPREFIX.'csp';
+        public const string FLOOD          = self::DBPREFIX.'flood';
+        public const string FORM           = self::DBPREFIX.'form';
+        public const string FORMFIELD      = self::DBPREFIX.'formfield';
+        public const string PAGE           = self::DBPREFIX.'page';
+        public const string PAGEROLE       = self::DBPREFIX.'pagerole';
+        public const string ROLE           = self::DBPREFIX.'role';
+        public const string ROLECONTEXT    = self::DBPREFIX.'rolecontext';
+        public const string ROLENAME       = self::DBPREFIX.'rolename';
+        public const string TABLE          = self::DBPREFIX.'table';
+        public const string TEST           = self::DBPREFIX.'test';
+        public const string UPLOAD         = self::DBPREFIX.'upload';
+        public const string USER           = 'user';
 
-        public const MODELPATH    = '\\Framework\\Model\\';
-        public const UPLOADMCLASS   = self::MODELPATH.self::UPLOAD;
-        public const USERMCLASS     = self::MODELPATH.self::USER;
+        public const string MODELPATH      = '\\Framework\\Model\\';
+        public const string UPLOADMCLASS   = self::MODELPATH.self::UPLOAD;
+        public const string USERMCLASS     = self::MODELPATH.self::USER;
 
-        public const AUTHTOKEN     = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
-        public const AUTHKEY       = 'Some string of text.....'; // The key used to encode the token validation
+        public const string AUTHTOKEN      = 'X-APPNAME-TOKEN'; // The name of the authentication token field.
+        public const string AUTHKEY        = 'Some string of text.....'; // The key used to encode the token validation
 
         private static array $fwBeans = [
             self::AJAX        => '',

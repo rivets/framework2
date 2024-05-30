@@ -3,7 +3,7 @@
  * Contains definition of Local class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2024 Newcastle University
  * @package Framework
  */
     namespace Framework;
@@ -21,9 +21,9 @@
     {
         use \Framework\Presentation\RenderFuncs;
 
-        public const ERROR     = 0;        // 'fwerrmessage';
-        public const WARNING   = 1;        // 'fwwarnmessage';
-        public const MESSAGE   = 2;        // 'fwmessage';
+        public const int ERROR       = 0;        // 'fwerrmessage';
+        public const int WARNING     = 1;        // 'fwwarnmessage';
+        public const int MESSAGE     = 2;        // 'fwmessage';
 
         private array $fwconfig      = []; // Config values from database
         private bool $devel          = FALSE; // Developer mode?

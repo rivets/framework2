@@ -34,9 +34,9 @@ use \DateTime;
  */
 class JWT
 {
-    private const ASN1_INTEGER = 0x02;
-    private const ASN1_SEQUENCE = 0x10;
-    private const ASN1_BIT_STRING = 0x03;
+    private const int ASN1_INTEGER = 0x02;
+    private const int ASN1_SEQUENCE = 0x10;
+    private const int ASN1_BIT_STRING = 0x03;
 
     /**
      * When checking nbf, iat or expiration times,
