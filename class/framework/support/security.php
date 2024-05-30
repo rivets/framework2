@@ -18,7 +18,7 @@
     {
         use \Framework\Utility\Singleton;
 
-        private string const ALGORITHM = 'sha256';
+        private const string ALGORITHM = 'sha256';
 
         private ?TwoFactorAuth $twoFA = NULL;
 /**
