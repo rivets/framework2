@@ -89,7 +89,7 @@
             {
                 if (\is_array($role))
                 { // $this is an OR
-                    if (!\array_reduce($role, function(bool $carry, array $pair) with $user {
+                    if (!\array_reduce($role, function(bool $carry, array $pair) use ($user) {
                         return $carry ? TRUE : \is_object($user->hasRole($pair[0], $pair[1]));
                     }, FALSE))
                     {
