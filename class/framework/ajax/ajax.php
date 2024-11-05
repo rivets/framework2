@@ -94,7 +94,7 @@
                     }, FALSE))
                     {
                         throw new Forbidden('Permission denied');
-                    }s
+                    }
                 }
                 elseif (!\is_object($user->hasRole($role[0], $role[1])))
                 {
