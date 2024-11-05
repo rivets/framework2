@@ -87,14 +87,14 @@
             }
             foreach ($pairs as $role)
             {
-                if (\is_array($role))
+                if (\is_array($role[0]))
                 { // $this is an OR
                     if (!\array_reduce($role, function(bool $carry, array $pair) use ($user) {
                         return $carry ? TRUE : \is_object($user->hasRole($pair[0], $pair[1]));
                     }, FALSE))
                     {
                         throw new Forbidden('Permission denied');
-                    }
+                    }s
                 }
                 elseif (!\is_object($user->hasRole($role[0], $role[1])))
                 {
