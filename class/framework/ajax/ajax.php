@@ -85,9 +85,17 @@
             { // you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }
-            foreach ($pairs as [$cname, $rname])
+            foreach ($pairs as $role)
             {
-                if (!\is_object($user->hasRole($cname, $rname)))
+                { // $this is an OR
+                    if (!\array_reduce($role, function(bool $carry, array $pair) with $user {
+                        return $carry ? TRUE : \is_object($user->hasRole($pair[0], $pair[1]));
+                    }, FALSE))
+                    {
+                        throw new Forbidden('Permission denied');
+                    }
+                }
+                elseif (!\is_object($user->hasRole($role[0], $role[1])))
                 {
                     throw new Forbidden('Permission denied');
                 }
