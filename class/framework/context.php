@@ -34,6 +34,15 @@
             /** @psalm-suppress PossiblyNullReference */
             return $this->hasUser() && $this->user()->isDeveloper();
         }
+/**
+ * Check for a role
+ *
+ * @return bool
+ */
+	public function hasRole(string $context, string $role) : bool
+	{
+	    return $this->hasUser() && \is_object($this->user()->hasRole($context, $role));
+	}
 /*
  ***************************************
  * Miscellaneous utility functions
