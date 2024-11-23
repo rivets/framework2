@@ -59,17 +59,27 @@
                 $secret  = \Framework\Support\Security::getinstance()->make2FASecret();
                 $user->code2fa = $secret;
                 \R::store($user);
-                $result = Builder::create()
-                    ->writer(new PngWriter())
-                    ->writerOptions([])
-                    ->data('otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret)
-                    ->encoding(new Encoding('UTF-8'))
-                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-                    ->size(300)
-                    ->margin(10)
-                    ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
-                    ->build();
-                $context->local()->addval('qrcode', $result->getDataURI());
+//              $result = Builder::create()
+//                  ->writer(new PngWriter())
+//                  ->writerOptions([])
+//                  ->data('otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret)
+//                  ->encoding(new Encoding('UTF-8'))
+//                  ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+//                  ->size(300)
+//                  ->margin(10)
+//                  ->roundBlockSizeMode(\Endroid\QrCode\RoundBlockSizeMode::Margin)
+//                  ->build();
+                $builder = new Builder(
+                    writer: new PngWriter(),
+                    writerOptions: [],
+                    data: 'otpauth://totp/'.\rawurlencode($context->local()->configVal('sitename').'  '.$user->login).'/?secret='.$secret,
+                    encoding: new Encoding('UTF-8'),
+                    errorCorrectionLevel: ErrorCorrectionLevel::High,
+                    size: 300,
+                    margin: 10,
+                    roundBlockSizeMode: \Endroid\QrCode\RoundBlockSizeMode::Margin,
+                );
+                $context->local()->addval('qrcode', $builder->build()->getDataURI());
             }
 
             return '@util/add2fa.twig';
