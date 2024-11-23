@@ -36,7 +36,7 @@
  *
  * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function __construct(array $options = [])  // @psalm-suppress PossiblyUnusedParam
+        public function __construct(array $_options = [])  // @psalm-suppress PossiblyUnusedParam
         {
             $this->clearValues();
             $this->clearMessages();
