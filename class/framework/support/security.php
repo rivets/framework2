@@ -10,6 +10,7 @@
     namespace Framework\Support;
 
     use \RobThree\Auth\TwoFactorAuth;
+    use RobThree\Auth\Providers\Qr\EndroidQrCodeProvider;
     use \Support\Context;
 /**
  * A class that handles provides various security related functions.
@@ -81,7 +82,7 @@
         {
             if ($this->twoFA === NULL)
             {
-                $this->twoFA = new TwoFactorAuth();
+                $this->twoFA = new TwoFactorAuth(new EndroidQrCodeProvider());
             }
             return $this->twoFA;
         }
