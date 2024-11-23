@@ -34,7 +34,7 @@
             }
 
             $sep = $m[1];
-            $parts = \preg_split('/\R?-+/' . \preg_quote($sep, '/') . '/s', $data);
+            $parts = \preg_split('/\R?-+'.\preg_quote($sep, '/').'/s', $data);
             \array_pop($parts);
 
             foreach ($parts as $part)
