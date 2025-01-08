@@ -96,7 +96,7 @@
     {% if block('onload') is defined %}
         {% set ojs = ojs ~ block('onload')|trim %}
         {# newline needed before }); in case the onload block ends with a // comment #}
-        {% if ojs|length > 0 %}{% set ojs = "document.addEventListener('DOMContentLoaded', function(){#{ojs}"~constant('\PHP_EOL')~'});' %}{% endif %}
+        {% if ojs|length > 0 %}{% set ojs = "document.addEventListener('DOMContentLoaded', function(){#{ojs}"~constant('\\PHP_EOL')~'});' %}{% endif %}
     {% endif %}
     {% set js = sjs~ojs %}
     {% if js|length > 0 %}
